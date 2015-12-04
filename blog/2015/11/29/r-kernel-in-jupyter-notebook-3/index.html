@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>G. Yu &middot; G. Yu</title>
+  <title>R kernel in Jupyter notebook 3 &middot; G. Yu</title>
 
   
   <link rel="stylesheet" href="http://localhost:1313/css/poole.css">
@@ -26,7 +26,7 @@
   
   
   
-  <link href="http://localhost:1313/index.xml" rel="alternate" type="application/rss+xml" title="G. Yu &middot; G. Yu" />
+  
 
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -74,36 +74,61 @@
 
 
 <div class="content container">
-  <div class="posts">
+  <div class="post">
+    <h1>R kernel in Jupyter notebook 3</h1>
+    <span class="post-date">Nov 29, 2015 &middot; 1 minute read &middot; <a href="http://localhost:1313/blog/2015/11/29/r-kernel-in-jupyter-notebook-3/#disqus_thread">Comments</a>
+    </span>
     
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://localhost:1313/blog/2015/12/04/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">喜新厌旧之hello Hugo</a>
-      </h1>
-      <span class="post-date">Dec 4, 2015 &middot; 1 minute read &middot; <a href="http://localhost:1313/blog/2015/12/04/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/#disqus_thread">Comments</a>
-      </span>
-      
-      Installation 安装hugo对于Mac用户来说，太容易，brew大法搞定。 brew install hubo migrate wordpress to hugo Disqus Comment System plugin 点击Export comments to Disqus搞定 convert Wordpress posts to markdown files 试用了多个插件或脚本，都是各种出错。最后发现了神器potter-wordpress，通过npm安装： npm install -g pottercms-wordpress 然后一个语句: potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES 自动从线上把posts抓下来，并转化为markdown。在之前各种搞不定之后，看到下面的输出有种莫名的快感。 Fetching articles... Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3 Got : [Mon Nov 09 2015] phylomoji with ggtree Got : [Tue Nov 17 2015] 合体中的操作系统 Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker Got : [Tue Oct 06 2015] TRIE Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms ...
-      <a href="http://localhost:1313/blog/2015/12/04/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://localhost:1313/blog/2015/11/29/r-kernel-in-jupyter-notebook-3/">R kernel in Jupyter notebook 3</a>
-      </h1>
-      <span class="post-date">Nov 29, 2015 &middot; 1 minute read &middot; <a href="http://localhost:1313/blog/2015/11/29/r-kernel-in-jupyter-notebook-3/#disqus_thread">Comments</a>
-      </span>
-      
-      I followed the post, Installing an R kernel for IPython/jupyter notebook 3 on OSX, to install jupyter with python3 and R kernels in my iMac. I have elementaryOS on my Macbook Pro and also want to have jupyter on it. The installation process is quite similar. Install Jupyter sudo apt-get install python3-pip sudo pip3 install jupyter Then we can use the following command to start jupyter: ipython notebook Install IRkernel To compile IRkernel, we should firstly have zmq lib installed.
-      <a href="http://localhost:1313/blog/2015/11/29/r-kernel-in-jupyter-notebook-3/">Read On &rarr;</a>
-      
-    </div>
-    
-    
-    
+
+<p>I followed the post, <a href="http://www.michaelpacer.com/maths/r-kernel-for-ipython-notebook">Installing an R kernel for IPython/jupyter
+notebook 3 on
+OSX</a>,
+to install jupyter with python3 and R kernels in my iMac.</p>
+
+<p>I have <a href="https://elementary.io/">elementaryOS</a> on my Macbook Pro and also
+want to have jupyter on it. The installation process is quite similar.</p>
+
+<h3 id="install-jupyter:b6fb4deb60950730344123a813b679f6">Install Jupyter</h3>
+
+<pre><code class="language-lang=&quot;bash&quot;">sudo apt-get install python3-pip
+sudo pip3 install jupyter
+</code></pre>
+
+<p>Then we can use the following command to start jupyter:</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">ipython notebook
+</code></pre>
+
+<h3 id="install-irkernel:b6fb4deb60950730344123a813b679f6">Install IRkernel</h3>
+
+<p>To compile IRkernel, we should firstly have zmq lib installed.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">sudo apt-get install libzmq3-dev python-zmq
+</code></pre>
+
+<p>In R, run the following command to install
+<a href="https://github.com/IRkernel/IRkernel">IRkernel</a>:</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">install.packages(c('rzmq','repr','IRkernel','IRdisplay'),
+                  repos = c('http://irkernel.github.io/',     
+                  getOption('repos')),
+                  type = 'source')
+IRkernel::installspec()
+</code></pre>
+
+<p>Now we can use R in jupyter. Inline image is a great feature especially
+for demonstration.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/screenshots/Screenshot%202015-11-04%2010.54.29.png" alt="" /></p>
+
+<p>With <a href="https://cran.r-project.org/web/views/Phylogenetics.html">many phylogenetic
+packages</a>
+available in R and my package
+<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a>, R in jupyter can be a
+great environment for phylogenetics.</p>
+
   </div>
+  <div id="disqus_thread"></div>
 </div>
 
 
@@ -116,6 +141,19 @@ var disqus_shortname = "gcyu";
     (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
 }());
 </script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 <script src="http://localhost:1313/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
