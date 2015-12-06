@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>R kernel in Jupyter notebook 3 &middot; G. Yu</title>
+  <title>喜新厌旧之hello Hugo &middot; G. Yu</title>
 
   
   <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
@@ -75,58 +75,61 @@
 
 <div class="content container">
   <div class="post">
-    <h1>R kernel in Jupyter notebook 3</h1>
-    <span class="post-date">Nov 29, 2015 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/blog/2015/11/29/r-kernel-in-jupyter-notebook-3/#disqus_thread">Comments</a>
+    <h1>喜新厌旧之hello Hugo</h1>
+    <span class="post-date">Dec 4, 2015 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/#disqus_thread">Comments</a>
     </span>
     
 
-<p>I followed the post, <a href="http://www.michaelpacer.com/maths/r-kernel-for-ipython-notebook">Installing an R kernel for IPython/jupyter
-notebook 3 on
-OSX</a>,
-to install jupyter with python3 and R kernels in my iMac.</p>
+<h1 id="installation:5bdf9ff4f70a51c79abdc3fa948e7c66">Installation</h1>
 
-<p>I have <a href="https://elementary.io/">elementaryOS</a> on my Macbook Pro and also
-want to have jupyter on it. The installation process is quite similar.</p>
+<p>安装hugo对于Mac用户来说，太容易，brew大法搞定。</p>
 
-<h3 id="install-jupyter:b6fb4deb60950730344123a813b679f6">Install Jupyter</h3>
-
-<pre><code class="language-shell">sudo apt-get install python3-pip
-sudo pip3 install jupyter
+<pre><code class="language-shell">brew install hubo
 </code></pre>
 
-<p>Then we can use the following command to start jupyter:</p>
+<h1 id="migrate-wordpress-to-hugo:5bdf9ff4f70a51c79abdc3fa948e7c66">migrate wordpress to hugo</h1>
 
-<pre><code class="language-shell">ipython notebook
+<p><code>Disqus Comment System plugin</code> 点击<code>Export comments to Disqus</code>搞定</p>
+
+<h2 id="convert-wordpress-posts-to-markdown-files:5bdf9ff4f70a51c79abdc3fa948e7c66">convert Wordpress posts to markdown files</h2>
+
+<p>试用了多个插件或脚本，都是各种出错。最后发现了神器<a href="https://github.com/jprichardson/potter-wordpress">potter-wordpress</a>，通过npm安装：</p>
+
+<pre><code class="language-shell">npm install -g pottercms-wordpress
 </code></pre>
 
-<h3 id="install-irkernel:b6fb4deb60950730344123a813b679f6">Install IRkernel</h3>
+<p>然后一个语句:</p>
 
-<p>To compile IRkernel, we should firstly have zmq lib installed.</p>
-
-<pre><code class="language-shell">sudo apt-get install libzmq3-dev python-zmq
+<pre><code class="language-shell">potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
 </code></pre>
 
-<p>In R, run the following command to install
-<a href="https://github.com/IRkernel/IRkernel">IRkernel</a>:</p>
+<p>自动从线上把posts抓下来，并转化为<code>markdown</code>。在之前各种搞不定之后，看到下面的输出有种莫名的快感。</p>
 
-<pre><code class="language-r">
-install.packages(c('rzmq','repr','IRkernel','IRdisplay'),
-                  repos = c('http://irkernel.github.io/',     
-                  getOption('repos')),
-                  type = 'source')
-IRkernel::installspec()
+<pre><code class="language-shell">  Fetching articles...
+
+       Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
+       Got : [Mon Nov 09 2015] phylomoji with ggtree
+       Got : [Tue Nov 17 2015] 合体中的操作系统
+       Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
+       Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
+       Got : [Tue Oct 06 2015] TRIE
+       Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
+       Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
+       
+       ...
+       
+       Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
+       Got : [Mon May 14 2007] 我的emacs配置文件
+       Got : [Mon May 14 2007] pkgsrc tips
+       Got : [Thu May 03 2007] scilab三维平面绘图
+       Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
+       Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
+       Got : [Sat May 28 2005] 在emacs里使用maxima
+       Got : [Mon Mar 14 2005] scau校园网认证
+       Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
+
+  Done.
 </code></pre>
-
-<p>Now we can use R in jupyter. Inline image is a great feature especially
-for demonstration.</p>
-
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/screenshots/Screenshot%202015-11-04%2010.54.29.png" alt="" /></p>
-
-<p>With <a href="https://cran.r-project.org/web/views/Phylogenetics.html">many phylogenetic
-packages</a>
-available in R and my package
-<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a>, R in jupyter can be a
-great environment for phylogenetics.</p>
 
   </div>
   <div id="disqus_thread"></div>
