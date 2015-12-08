@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>R kernel in Jupyter notebook 3 &middot; G. Yu</title>
+  <title>在emacs里使用maxima &middot; G. Yu</title>
 
   
   <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
@@ -75,61 +75,72 @@
 
 <div class="content container">
   <div class="post">
-    <h1>R kernel in Jupyter notebook 3</h1>
-    <span class="post-date">Nov 29, 2015 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2015/11/r-kernel-in-jupyter-notebook-3/#disqus_thread">Comments</a>
+    <h1>在emacs里使用maxima</h1>
+    <span class="post-date">May 28, 2005 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/#disqus_thread">Comments</a>
     
     <br/>
-    <a class="label" href="http://guangchuangyu.github.io/categories/jupyter">jupyter</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a>
+    <a class="label" href="http://guangchuangyu.github.io/categories/software">Software</a>
     </span>
     
 
-<p>I followed the post, <a href="http://www.michaelpacer.com/maths/r-kernel-for-ipython-notebook">Installing an R kernel for IPython/jupyter
-notebook 3 on
-OSX</a>,
-to install jupyter with python3 and R kernels in my iMac.</p>
+<h2 id="下载imaxima:2a96257876dfc1dfc9c6ca6844243a6b">下载imaxima   </h2>
 
-<p>I have <a href="https://elementary.io/">elementaryOS</a> on my Macbook Pro and also
-want to have jupyter on it. The installation process is quite similar.</p>
+<p><a href="http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz">http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz</a></p>
 
-<h3 id="install-jupyter:b6fb4deb60950730344123a813b679f6">Install Jupyter</h3>
-
-<pre><code class="language-shell">sudo apt-get install python3-pip
-sudo pip3 install jupyter
+<pre><code class="language-shell">./configure
+make
+sudo make install
 </code></pre>
 
-<p>Then we can use the following command to start jupyter:</p>
+<p>进行安装。
+默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入</p>
 
-<pre><code class="language-shell">ipython notebook
+<pre><code class="language-lisp">(load &quot;imaxima&quot;)
 </code></pre>
 
-<h3 id="install-irkernel:b6fb4deb60950730344123a813b679f6">Install IRkernel</h3>
+<p>启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2005/05/070902122953.png" alt="" /></p>
 
-<p>To compile IRkernel, we should firstly have zmq lib installed.</p>
+<p>需要breqn094包，可从<a href="ftp://ftp.ams.org/pub/tex/breqn.zip">ftp://ftp.ams.org/pub/tex/breqn.zip</a>下载，</p>
 
-<pre><code class="language-shell">sudo apt-get install libzmq3-dev python-zmq
+<pre><code class="language-shell">cd /usr/share/texmf/tex/latex/
+sudo unzip ~/Downloads/breqn.zip
+sudo texhash
 </code></pre>
 
-<p>In R, run the following command to install
-<a href="https://github.com/IRkernel/IRkernel">IRkernel</a>:</p>
+<p>重新启动emacs，运行maxima，就可以正常使用了。</p>
 
-<pre><code class="language-r">
-install.packages(c('rzmq','repr','IRkernel','IRdisplay'),
-                  repos = c('http://irkernel.github.io/',     
-                  getOption('repos')),
-                  type = 'source')
-IRkernel::installspec()
+<h2 id="https-raw-githubusercontent-com-guangchuangyu-ygc-name-master-2005-05-070902123015-png:2a96257876dfc1dfc9c6ca6844243a6b"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2005/05/070902123015.png" alt="" /></h2>
+
+<p>原来我在05年就在用imaxima模式了，当年机器性能差，为了跑快点，很多软件我都尽量不使用gtk2界面，而编译成gtk界面。土灰的界面多么怀旧啊。</p>
+
+<p>安装过程还是一样，不过原来的链接早已失效。
+imaxima的homepage改为<a href="https://sites.google.com/site/imaximaimath">https://sites.google.com/site/imaximaimath</a>，现在已经不需要下载imaxima了，因为它已经被整合进maxima中，会随着maxima被安装到系统中，把目录加载到.emacs中即可。</p>
+
+<pre><code class="language-lisp">(push &quot;/usr/local/share/maxima/5.28.0/emacs/&quot; load-path)
 </code></pre>
 
-<p>Now we can use R in jupyter. Inline image is a great feature especially
-for demonstration.</p>
+<p>MacTeX太大，我使用<a href="http://tug.org/mactex/morepackages.html">BasicTeX</a>，为了正常显示数学符号，同样需要安装breqn，这个sty文件现已整合到<a href="http://www.ctan.org/tex-archive/macros/latex/contrib/mh/">mh包</a>中。</p>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/screenshots/Screenshot%202015-11-04%2010.54.29.png" alt="" /></p>
+<pre><code class="language-shell">cd /usr/local/texlive/2013basic/texmf-local
+sudo unzip ~/Downloads/mh.zip
+sudo texhash
+</code></pre>
 
-<p>With <a href="https://cran.r-project.org/web/views/Phylogenetics.html">many phylogenetic
-packages</a>
-available in R and my package
-<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a>, R in jupyter can be a
-great environment for phylogenetics.</p>
+<p>texhash让TeX知道mh包的安装。</p>
+
+<p>最后是让Emacs知道加载什么文件来执行，比如执行imaxima时要加载imaxima.el文件：</p>
+
+<pre><code class="language-lisp">(autoload 'maxima-mode &quot;maxima&quot; &quot;Maxima mode&quot; t)
+(autoload 'imaxima &quot;imaxima&quot; &quot;Frontend for maxima with Image support&quot; t)
+(autoload 'maxima &quot;maxima&quot; &quot;Maxima interaction&quot; t)
+(autoload 'imath &quot;imath&quot; &quot;Imath mode for math formula input&quot; t)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2005/05/Screen-Shot-2013-09-12-at-%E4%B8%8B%E5%8D%882.16.43.png" alt="" />
+现在imaxima已经可以直接在Emacs里插图了，画图时弹出个窗口神马的，最讨厌了。</p>
+
+<p>更新于2013年9月。</p>
 
   </div>
   <div id="disqus_thread"></div>
