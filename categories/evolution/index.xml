@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Evolution on G. Yu</title>
+    <link>http://guangchuangyu.github.io/categories/evolution/</link>
+    <description>Recent content in Evolution on G. Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 01 Apr 2015 01:50:04 +0800</lastBuildDate>
+    <atom:link href="http://guangchuangyu.github.io/categories/evolution/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>an example of drawing beast tree using ggtree</title>
+      <link>http://guangchuangyu.github.io/2015/04/an-example-of-drawing-beast-tree-using-ggtree/</link>
+      <pubDate>Wed, 01 Apr 2015 01:50:04 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/04/an-example-of-drawing-beast-tree-using-ggtree/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://beast.bio.ed.ac.uk/figtree&#34;&gt;FigTree&lt;/a&gt; is designed for viewing
+beast output as demonstrated by their example data:
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2018.15.57.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;BEAST output is well supported by
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34;&gt;ggtree&lt;/a&gt; and it&amp;rsquo;s easy to
+reproduce such a tree view.
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34;&gt;ggtree&lt;/a&gt; supports parsing beast
+output by read.beast function. We can visualize the tree directly by
+using ggtree function. Since this is a time scale tree, we can set the
+parameter &lt;strong&gt;&lt;em&gt;mrsd&lt;/em&gt;&lt;/strong&gt; to most recent sampling date.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggplot2)
+require(ggtree)
+x &amp;lt;- read.beast(&amp;quot;/Applications/FigTree/influenza.tree&amp;quot;)
+cols &amp;lt;- scale_color(x, by=&amp;quot;height&amp;quot;)
+ggtree(x, right=TRUE, mrsd=&amp;quot;2005-04-02&amp;quot;, color=cols) + theme_tree2() +
+    geom_text(aes(x=max(x), label=label), size=1, color=cols, hjust=-.3) +
+        scale_x_continuous(breaks=c(1992, 1995, 1997, 2000, 2002, 2005), minor_breaks=seq(1992, 2005, 1)) +
+            geom_segment(aes(xend=max(x)+.20, yend=y), linetype=&amp;quot;dotted&amp;quot;, size=.1, color=cols) +
+                theme(panel.grid.major   = element_line(color=&amp;quot;black&amp;quot;, size=.2),
+                      panel.grid.minor   = element_line(color=&amp;quot;grey&amp;quot;, size=.2),
+                      panel.grid.major.y = element_blank(),
+                      panel.grid.minor.y = element_blank()) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2018.16.14.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

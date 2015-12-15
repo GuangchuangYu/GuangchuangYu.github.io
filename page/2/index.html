@@ -79,6 +79,111 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">我制作的pkgsrc</a>
+      </h1>
+      <span class="post-date">May 16, 2007 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a>
+      </span>
+      
+      xlyrics: unix下的歌词秀软件 点此下载 EVA: KDE下的QQ客户端 点此下载 #cd /usr/pkgsrc/wip-cn #tar xjvf eva.tar.bz2 #cd eva #make install clean 就可以啦。在我的机子（NetBSD 3.0.1 macppc）上测试通过。。 更新到eva-20070327 参考资料：http://www.netbsd.org/docs/pkgsrc/
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/">Edit partition table in NetBSD/macppc</a>
+      </h1>
+      <span class="post-date">May 14, 2007 &middot; 4 minute read &middot; <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/powerbook">Powerbook</a>
+      </span>
+      
+      #disklabel wd0 可以看到原始分区如下: 7 partitions: # size offset fstype [fsize bsize cpg/sgs] a: 20971520 25167648 4.2BSD 0 0 0 # (Cyl. 24967*- 45772*) b: 1048576 46139168 swap # (Cyl. 45772*- 46813*) c: 117210240 0 unused 0 0 # (Cyl. 0 - 116279) d: 25165824 1824 HFS # (Cyl. 1*- 24967*) e: 28079456 89130784 HFS # (Cyl. 88423*- 116279) g: 41943040 47187744 4.2BSD 0 0 0 # (Cyl. 46813*- 88423*) a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbsd下的/home分区。 原本是两系统，os9.2一直都很少用，所以想删了，腾出空间来放数据。因为wd0d和wd0e不在连续的柱面上，所以无法将它们合并。 新的分区方案如下：wd0d删了，分成两个，一个15M(需要一个HFS类型的分区来放置ofwboot.xcf，因为openfirmwire不支持从netbsd分区里加载loader),剩下的作为/home分区。把原来的/home分区(wd0g)和共享数据的分区(wd0e)合并为一个分区，用于放置数据。 1.
+      <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2007/05/pkgsrc-tips/">pkgsrc tips</a>
+      </h1>
+      <span class="post-date">May 14, 2007 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2007/05/pkgsrc-tips/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a>
+      </span>
+      
+      1.cpuflags devel/cpuflags:Determine compiler flags to best target current cpu #cd /usr/pkgsrc/devel/cpuflags #make install 然后在/etc/mk.conf中加入: .sinclude &quot;/usr/pkg/share/mk/cpuflags.mk&quot; .sinclude &quot;/usr/pkg/share/mk/optimize_gcc.mk&quot; 这样make时便能够根据cpuflags进行优化编译了。 2.pkgclean pkgtools/pkgclean:Quickly clean up all work directories in pkgsrc #cd /usr/pkgsrc/pkgtools/pkgclean #make install 运行pkgclean快速清除所有work 3.FETCH_CMD 在/etc/mk.conf中加入： FETCH_CMD=/usr/pkg/bin/wget -cT 20 使用wget来下载源码包。 -c 为断点续传，T 20为20秒没响应则断开重连。 4.pkg_tarup pkgtools/pkg_tarup:Generates binary package(s) from installed pkg(s) #cd /usr/pkgsrc/pkgtools/pkg_tarup #make install 运行pkg_tarup pkg_name将生成pkg_name的相应二进制包。 运行pkg_tarup_all将把所有通过pkgsrc安装的软件都生成二进制包。 待续&hellip;
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2007/05/scilab%E4%B8%89%E7%BB%B4%E5%B9%B3%E9%9D%A2%E7%BB%98%E5%9B%BE/">scilab三维平面绘图</a>
+      </h1>
+      <span class="post-date">May 3, 2007 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2007/05/scilab%E4%B8%89%E7%BB%B4%E5%B9%B3%E9%9D%A2%E7%BB%98%E5%9B%BE/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/software">Software</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a>
+      </span>
+      
+      三维绘图可以分为两大类型：矩阵型和曲面型。 矩阵型 通常是声明一个矩阵，以矩阵的长宽为x,y范围，以矩阵里面的数值为高z， 使用plot3d(t1,t2,Z,alpha=a,theta=b) t1:y轴方向的范围 t2:x轴方向的范围 Z:矩阵 alpha theta参数用于指定角度，让图绘出来以某个特定的角度呈现出来。(optional) -&gt;clear -&gt;A=[1 2 5 4 3;0 3 2 8 6;2 4 6 7 5;2 3 4 3 1]; -&gt;t1=1:4; -&gt;t2=1:5; //plot3d1与plot3d语法类似，能够嵌入多种颜色 -&gt;plot3d(t1,t2,A,alpha=45,theta=45); mesh不需要边界声明， -&gt;mesh(A); 曲面型 则是先声明一个连续函数，再选取x,y范围来绘图。 fplot3d()指令用来绘制连续函数。 用fplot3d之前，用deff或function声明函数z,然后再声明函数范围x,y. -&gt;deff('z=f(x,y)','z=x\*y'); -&gt;x=-10:8; -&gt;y=-6:12; -&gt;fplot3d(x,y,f); 柱状图 -&gt;A=[1 3 5 7;2 6 10 14]; //声明一个矩阵 -&gt;hist3d(A); 空间立体曲线图 param3d绘制的是线，而非面。 param3d(xf,yf,zf); xf:x方向的函数 yf:y方向的函数 zf:z方向的函数 -&gt;t=linspace(-%pi,%pi); -&gt;param3d(sin(t),cos(t),t);
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/">qvwm窗口管理器的windows2000主题</a>
+      </h1>
+      <span class="post-date">Jun 24, 2006 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a>
+      </span>
+      
+      qvwm is a window manager for the X Window system which provides a user experience very close to Windows 95&frasl;98. It is small and extremely fast. 可从其主页上看到它的介绍及下载源码。 这是我做的一个windows2000的主题。。 点击下载
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/">安装os9和netbsd双系统</a>
+      </h1>
+      <span class="post-date">Jun 14, 2006 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a><a class="label" href="http://guangchuangyu.github.io/categories/powerbook">Powerbook</a>
+      </span>
+      
+      1 分区 用MacOS X 10.2 的光盘启动，运行Disk Utility，选择“Install Mac OS 9 Disk Drivers”不然分区将不能在OS9中使用，我一共分了5个分区，12G,10G,512M,20G,13.4G。其中12Ｇ装OS9系统，10Ｇ装netbsd系统，512Ｍ为swap分区，20Ｇ为home 分区，最后一个为fat32格式，为两个系统所共享。 2 安装os9 开机放入os9安装光盘，按住Ｃ键，由光盘启动进入os9，在光盘根目录下点安装系统。指定第一个分区，选择安装的软件，十来分钟，便装完了。重新启动，将netbsd的启动程序ofwboot.xcf放在os9的根目录下。 3 安装netbsd 开机按住command+option+o+f进入open firmware。open firmware启动命令的语法是 boot boot-device [boot-file] [-as] 加-a会问你下个载入的文件，比如引导程序问你内核在那或内核会问你根分区在那。键入命令 boot cd:,\\ofwboot.xcf netbsd.macppc 引导netbsd安装光盘， 进入sysinst主菜单。 .***********************************************. * NetBSD-3.0 Install System * * * *&gt;a: Install NetBSD to hard disk * * b: Upgrade NetBSD on a hard disk * * c: Re-install sets or install additional sets * * d: Reboot the computer * * e: Utility menu * * x: Exit Install System * .***********************************************.
+      <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/">在emacs里使用maxima</a>
+      </h1>
+      <span class="post-date">May 28, 2005 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/software">Software</a>
+      </span>
+      
+      下载imaxima http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz ./configure make sudo make install 进行安装。 默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入 (load &quot;imaxima&quot;) 启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。 需要breqn094包，可从ftp://ftp.ams.org/pub/tex/breqn.zip下载， cd /usr/share/texmf/tex/latex/ sudo unzip ~/Downloads/breqn.zip sudo texhash 重新启动emacs，运行maxima，就可以正常使用了。 原来我在05年就在用imaxima模式了，当年机器性能差，为了跑快点，很多软件我都尽量不使用gtk2界面，而编译成gtk界面。土灰的界面多么怀旧啊。 安装过程还是一样，不过原来的链接早已失效。 imaxima的homepage改为https://sites.google.com/site/imaximaimath，现在已经不需要下载imaxima了，因为它已经被整合进maxima中，会随着maxima被安装到系统中，把目录加载到.emacs中即可。 (push &quot;/usr/local/share/maxima/5.28.0/emacs/&quot; load-path) MacTeX太大，我使用BasicTeX，为了正常显示数学符号，同样需要安装breqn，这个sty文件现已整合到mh包中。 cd /usr/local/texlive/2013basic/texmf-local sudo unzip ~/Downloads/mh.zip sudo texhash texhash让TeX知道mh包的安装。 最后是让Emacs知道加载什么文件来执行，比如执行imaxima时要加载imaxima.el文件： (autoload 'maxima-mode &quot;maxima&quot; &quot;Maxima mode&quot; t) (autoload 'imaxima &quot;imaxima&quot; &quot;Frontend for maxima with Image support&quot; t) (autoload 'maxima &quot;maxima&quot; &quot;Maxima interaction&quot; t) (autoload 'imath &quot;imath&quot; &quot;Imath mode for math formula input&quot; t)
+      <a href="http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="http://guangchuangyu.github.io/2005/03/scau%E6%A0%A1%E5%9B%AD%E7%BD%91%E8%AE%A4%E8%AF%81/">scau校园网认证</a>
       </h1>
       <span class="post-date">Mar 14, 2005 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2005/03/scau%E6%A0%A1%E5%9B%AD%E7%BD%91%E8%AE%A4%E8%AF%81/#disqus_thread">Comments</a>
@@ -153,6 +258,26 @@ var disqus_shortname = "gcyu";
 
 <script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
 
 </body>
 </html>
