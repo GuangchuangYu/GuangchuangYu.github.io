@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt; &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">Blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</h1>
+    <span class="post-date">Aug 16, 2011 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
+    </span>
+    <p>In order to provide an option to compare graphs produced by basic
+internal plot function and ggplot2, I have recreated the figures in the
+book, <a href="http://book.douban.com/subject/5992544/">25 Recipes for Getting Started with
+R</a>, with ggplot2.</p>
+
+<p>The code used to create the images is in separate paragraphs, allowing
+easy comparison. <strong>1.16 Creating a Scatter Plot</strong></p>
+
+<pre><code class="language-r">    plot(cars)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter1.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter1.png" alt="" title="scatter1" /></a></p>
+
+<pre><code class="language-r">    ggplot(cars,aes(speed,dist))+geom_point()
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter2.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter2.png" alt="" title="scatter2" /></a></p>
+
+<p><strong>1.17 Creating a Bar Chart</strong></p>
+
+<pre><code class="language-r">    heights &lt;- tapply(airquality$Temp, airquality$Month, mean)
+    par(mfrow=c(1,2))
+    barplot(heights)
+    barplot(heights,
+            main=&quot;Mean Temp. by Month&quot;,
+            names.arg=c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;),
+            ylab=&quot;Temp (deg. F)&quot;)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar1.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar1.png" alt="" title="bar1" /></a></p>
+
+<pre><code class="language-r">require(gridExtra)
+heights=ddply(airquality,.(Month), mean)
+heights$Month=as.character(heights$Month)
+p1 &lt;- ggplot(heights, aes(x=Month,weight=Temp))+
+    geom_bar()
+p2 &lt;- ggplot(heights, aes(x=factor(Month,
+                          labels=c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;)),
+                          weight=Temp))+
+    geom_bar()+
+    ggtitle(&quot;Mean Temp. By Month&quot;) +
+    xlab(&quot;&quot;) +
+    ylab(&quot;Temp (deg. F)&quot;)
+
+grid.arrange(p1,p2, ncol=2)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar2.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar2.png" alt="" title="bar2" /></a></p>
+
+<p><strong>1.18 Creating a Box Plot</strong></p>
+
+<pre><code class="language-r">y &lt;- c(-5, rnorm(100), 5)
+boxplot(y)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box1.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box1.png" alt="" title="box1" /></a></p>
+
+<pre><code>ggplot()+geom_boxplot(aes(x=factor(1),y=y))+xlab(&quot;&quot;)+ylab(&quot;&quot;)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box2.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box2.png" alt="" title="box2" /></a></p>
+
+<p><strong>1.19 Creating a Histogram</strong></p>
+
+<pre><code class="language-r">    data(Cars93, package=&quot;MASS&quot;)
+    par(mfrow=c(1,2))
+    hist(Cars93$MPG.city)
+    hist(Cars93$MPG.city, 20)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist1.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist1.png" alt="" title="hist1" /></a></p>
+
+<pre><code class="language-r">    p &lt;- ggplot(Cars93, aes(MPG.city))
+    p1 &lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/5)
+    p2 &lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/20)
+    grid.arrange(p1,p2, ncol=2)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist2.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist2.png" alt="" title="hist2" /></a></p>
+
+<p><strong>1.23 Diagnosing a Linear Regression</strong></p>
+
+<pre><code class="language-r">    data(iris)
+    m = lm( Sepal.Length ~ Sepal.Width, data=iris)
+    par(mfrow=c(2,2))
+    plot(m)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm1.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm1.png" alt="" title="lm1" /></a></p>
+
+<pre><code class="language-r">r &lt;- residuals(m)
+yh &lt;- predict(m)
+scatterplot &lt;- function(x,y,
+                        title=&quot;&quot;,
+                        xlab=&quot;&quot;,
+                        ylab=&quot;&quot;) {
+    d &lt;- data.frame(x=x,y=y)
+    p &lt;- ggplot(d, aes(x=x,y=y)) +
+            geom_point() +
+                ggtitle(title) +
+                    xlab(xlab) +
+                        ylab(ylab)
+    return(p)
+    }
+p1 &lt;- scatterplot(yh,r,
+                  title=&quot;Residuals vs Fitted&quot;,
+                  xlab=&quot;Fitted values&quot;,
+                  ylab=&quot;Residuals&quot;)
+p1 &lt;- p1 +geom_hline(yintercept=0)+geom_smooth()
+
+s &lt;- sqrt(deviance(m)/df.residual(m))
+rs &lt;- r/s
+
+qqplot &lt;- function(y,
+                   distribution=qnorm,
+                   title=&quot;Normal Q-Q&quot;,
+                   xlab=&quot;Theretical Quantiles&quot;,
+                   ylab=&quot;Sample Quantiles&quot;) {
+    require(ggplot2)
+    x &lt;- distribution(ppoints(y))
+    d &lt;- data.frame(x=x, y=sort(y))
+    p &lt;- ggplot(d, aes(x=x, y=y)) +
+        geom_point() +
+            geom_line(aes(x=x, y=x)) +
+                ggtitle(title=title) +
+                    xlab(xlab) +
+                        ylab(ylab)
+    return(p)
+}
+
+p2 &lt;- qqplot(rs, ylab=&quot;Standardized residuals&quot;)
+
+sqrt.rs &lt;- sqrt(abs(rs))
+p3 &lt;- scatterplot(yh,sqrt.rs,
+                  title=&quot;Scale-Location&quot;,
+                  xlab=&quot;Fitted values&quot;,
+                  ylab=expression(sqrt(&quot;Standardized residuals&quot;)))
+p3 &lt;- p3 + geom_smooth()
+
+hii &lt;- lm.influence(m, do.coef = FALSE)$hat
+p4 &lt;- scatterplot(hii,rs)
+p4 &lt;- p4+
+    geom_hline(yintercept=0)+
+    geom_smooth() +
+    geom_text(aes(x=min(hii)+diff(range(hii))*0.3,
+                  y=min(rs)+diff(range(rs))*0.04,
+                  label=&quot;--   Cook's distance&quot;, size=3))+
+    theme(legend.position=&quot;none&quot;)
+
+grid.arrange(p1,p2,p3,p4, ncol=2)
+</code></pre>
+
+<p><a href="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm2.png"><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm2.png" alt="" title="lm2" /></a></p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+
