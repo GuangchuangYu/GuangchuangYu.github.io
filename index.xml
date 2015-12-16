@@ -6,8 +6,137 @@
     <description>Recent content on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Dec 2015 09:50:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 16 Dec 2015 11:11:11 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>use emoji font in R</title>
+      <link>http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/</link>
+      <pubDate>Wed, 16 Dec 2015 11:11:11 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/</guid>
+      <description>
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot 2015-12-16 10.55.49.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I have played with emoji in &lt;code&gt;R&lt;/code&gt; for a while. My solution of using it is different from what implemented in &lt;a href=&#34;https://github.com/dill/emoGG/&#34;&gt;emoGG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;emoGG&lt;/code&gt; is a good attemp to add &lt;code&gt;emoji&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt;. It render &lt;code&gt;emoji&lt;/code&gt; picture (png) and creat a layer, &lt;code&gt;geom_emoji&lt;/code&gt;, to add emoji.&lt;/p&gt;
+
+&lt;p&gt;In my opinion, &lt;code&gt;emoji&lt;/code&gt; should be treated as ordinary font in user interface, albeit it maynot be true internally.&lt;/p&gt;
+
+&lt;p&gt;It would be more flexible if we can use emoji as ordinary font and in this way user don&amp;rsquo;t need to learn extra stuff.&lt;/p&gt;
+
+&lt;p&gt;I implemented my solution of using &lt;code&gt;emoji&lt;/code&gt; in the R package &lt;a href=&#34;https://github.com/GuangchuangYu/emojifont&#34;&gt;emojifont&lt;/a&gt;. The package is very simple, pack some emoji fonts (currently only &lt;a href=&#34;https://github.com/MorbZ/OpenSansEmoji&#34;&gt;OpenSansEmoji.ttf&lt;/a&gt;) and use &lt;a href=&#34;https://github.com/yixuan/showtext&#34;&gt;showtext&lt;/a&gt; to render the fonts, then we can use the font in either base plot or ggplot2.&lt;/p&gt;
+
+&lt;h1 id=&#34;emojifont:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;emojifont&lt;/h1&gt;
+
+&lt;h2 id=&#34;installation:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;devtools::install_github(&amp;quot;GuangchuangYu/emojifont&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;load-emoji-font:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;load Emoji font&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(emojifont)
+## list available emoji fonts
+list.emojifonts()
+
+## [1] &amp;quot;OpenSansEmoji.ttf&amp;quot;
+
+## load selected emoji font
+load.emojifont(&#39;OpenSansEmoji.ttf&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;emoji-characters:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Emoji characters&lt;/h1&gt;
+
+&lt;p&gt;To use &lt;code&gt;emoji&lt;/code&gt;, we need to use their corresponding unicode. Emoji unicode can be found in &lt;a href=&#34;http://apps.timwhitlock.info/emoji/tables/unicode&#34;&gt;http://apps.timwhitlock.info/emoji/tables/unicode&lt;/a&gt;, or searched using &lt;a href=&#34;https://github.com/richfitz/remoji&#34;&gt;remoji&lt;/a&gt; package.&lt;/p&gt;
+
+&lt;h1 id=&#34;emoji-in-r-plot:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Emoji in R plot&lt;/h1&gt;
+
+&lt;h2 id=&#34;base-plot:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;base plot&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(remoji)
+set.seed(123)
+x &amp;lt;- rnorm(10)
+set.seed(321)
+y &amp;lt;- rnorm(10)
+plot(x, y, cex=0)
+text(x, y, labels=emoji(&#39;cow&#39;), cex=1.5, col=&#39;steelblue&#39;, family=&#39;OpenSansEmoji&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/base_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ggplot2:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;ggplot2&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;d &amp;lt;- data.frame(x=x, y=y,
+     label = sample(c(emoji(&#39;cow&#39;), emoji(&#39;camel&#39;)), 10, replace=TRUE),
+     type = sample(LETTERS[1:3], 10, replace=TRUE))
+require(ggplot2)
+ggplot(d, aes(x, y, color=type, label=label)) + 
+    geom_text(family=&amp;quot;OpenSansEmoji&amp;quot;, size=5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/ggplot_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can also use &lt;code&gt;emoji&lt;/code&gt; in title, legend or axis label.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;dd=data.frame(x=emoji(c(&amp;quot;satisfied&amp;quot;, &amp;quot;disapointed&amp;quot;)), y=c(50, 10))
+emoji_text=element_text(family=&amp;quot;OpenSansEmoji&amp;quot;, size=20)
+ggplot(dd, aes(x, y)) + geom_bar(stat=&#39;identity&#39;, aes(fill=x)) + 
+     ggtitle(paste(emoji(c(&amp;quot;+1&amp;quot;, &amp;quot;-1&amp;quot;)), collapse=&amp;quot; &amp;quot;))+ 
+        theme(axis.text.x = emoji_text, legend.text=emoji_text, title=emoji_text) + 
+            xlab(NULL)+ylab(NULL)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot 2015-12-16 11.10.51.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ggtree:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;ggtree&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggtree)
+require(colorspace)
+
+tree_text=paste0(
+    &amp;quot;(&amp;quot;,&amp;quot;(&amp;quot;,&amp;quot;(&amp;quot;,
+       &amp;quot;(&amp;quot;,
+            &amp;quot;(&amp;quot;,
+               emoji(&amp;quot;cow&amp;quot;), &amp;quot;,&amp;quot;,
+               &amp;quot;(&amp;quot;,
+                  emoji(&amp;quot;whale&amp;quot;),&amp;quot;,&amp;quot;,
+                  emoji(&amp;quot;dolphin&amp;quot;),
+               &amp;quot;)&amp;quot;,
+            &amp;quot;),&amp;quot;,
+            &amp;quot;(&amp;quot;,
+               emoji(&#39;pig2&#39;),&amp;quot;,&amp;quot;,
+               emoji(&#39;boar&#39;),
+            &amp;quot;)&amp;quot;,
+       &amp;quot;),&amp;quot;,
+       emoji(&amp;quot;camel&amp;quot;),
+    &amp;quot;),&amp;quot;, emoji(&amp;quot;fish&amp;quot;), &amp;quot;),&amp;quot;, 
+emoji(&amp;quot;seedling&amp;quot;), &amp;quot;);&amp;quot;)
+
+ggtree(read.tree(text=tree_text)) + xlim(NA, 7) +
+   geom_tiplab(family=&amp;quot;OpenSansEmoji&amp;quot;, size=10,
+               color=rainbow_hcl(8))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/ggtree_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;apple-color-emoji:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Apple Color Emoji&lt;/h1&gt;
+
+&lt;p&gt;Although &lt;code&gt;R&lt;/code&gt;&amp;rsquo;s graphical devices don&amp;rsquo;t support &lt;code&gt;AppleColorEmoji&lt;/code&gt; font, it&amp;rsquo;s still possible to use it. We can export the &lt;code&gt;plot&lt;/code&gt; to &lt;code&gt;svg&lt;/code&gt; file and render it in &lt;code&gt;Safari&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(gridSVG)
+p &amp;lt;-  ggtree(read.tree(text=tree_text), size=2) + geom_tiplab(size=20)
+p &amp;lt;- p %&amp;gt;% phylopic(&amp;quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&amp;quot;, color=&amp;quot;firebrick&amp;quot;, alpha = .3)
+p &amp;lt;- p + xlim(NA, 7) + ylim(NA, 8.5)
+p
+ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/apple_emoji.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Link</title>
@@ -1446,168 +1575,6 @@ list也有诸多讨论，因为它导致了某些包编译出错（估计是NAME
 plot基本可以扔了。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2012/02/violin.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</title>
-      <link>http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/</link>
-      <pubDate>Tue, 16 Aug 2011 18:26:36 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/</guid>
-      <description>&lt;p&gt;In order to provide an option to compare graphs produced by basic
-internal plot function and ggplot2, I have recreated the figures in the
-book, &lt;a href=&#34;http://book.douban.com/subject/5992544/&#34;&gt;25 Recipes for Getting Started with
-R&lt;/a&gt;, with ggplot2.&lt;/p&gt;
-
-&lt;p&gt;The code used to create the images is in separate paragraphs, allowing
-easy comparison. &lt;strong&gt;1.16 Creating a Scatter Plot&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;    plot(cars)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter1.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter1.png&#34; alt=&#34;&#34; title=&#34;scatter1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;    ggplot(cars,aes(speed,dist))+geom_point()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter2.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/scatter2.png&#34; alt=&#34;&#34; title=&#34;scatter2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.17 Creating a Bar Chart&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;    heights &amp;lt;- tapply(airquality$Temp, airquality$Month, mean)
-    par(mfrow=c(1,2))
-    barplot(heights)
-    barplot(heights,
-            main=&amp;quot;Mean Temp. by Month&amp;quot;,
-            names.arg=c(&amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;),
-            ylab=&amp;quot;Temp (deg. F)&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar1.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar1.png&#34; alt=&#34;&#34; title=&#34;bar1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(gridExtra)
-heights=ddply(airquality,.(Month), mean)
-heights$Month=as.character(heights$Month)
-p1 &amp;lt;- ggplot(heights, aes(x=Month,weight=Temp))+
-    geom_bar()
-p2 &amp;lt;- ggplot(heights, aes(x=factor(Month,
-                          labels=c(&amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;)),
-                          weight=Temp))+
-    geom_bar()+
-    ggtitle(&amp;quot;Mean Temp. By Month&amp;quot;) +
-    xlab(&amp;quot;&amp;quot;) +
-    ylab(&amp;quot;Temp (deg. F)&amp;quot;)
-
-grid.arrange(p1,p2, ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar2.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/bar2.png&#34; alt=&#34;&#34; title=&#34;bar2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.18 Creating a Box Plot&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;y &amp;lt;- c(-5, rnorm(100), 5)
-boxplot(y)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box1.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box1.png&#34; alt=&#34;&#34; title=&#34;box1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ggplot()+geom_boxplot(aes(x=factor(1),y=y))+xlab(&amp;quot;&amp;quot;)+ylab(&amp;quot;&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box2.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/box2.png&#34; alt=&#34;&#34; title=&#34;box2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.19 Creating a Histogram&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;    data(Cars93, package=&amp;quot;MASS&amp;quot;)
-    par(mfrow=c(1,2))
-    hist(Cars93$MPG.city)
-    hist(Cars93$MPG.city, 20)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist1.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist1.png&#34; alt=&#34;&#34; title=&#34;hist1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;    p &amp;lt;- ggplot(Cars93, aes(MPG.city))
-    p1 &amp;lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/5)
-    p2 &amp;lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/20)
-    grid.arrange(p1,p2, ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist2.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/hist2.png&#34; alt=&#34;&#34; title=&#34;hist2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.23 Diagnosing a Linear Regression&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;    data(iris)
-    m = lm( Sepal.Length ~ Sepal.Width, data=iris)
-    par(mfrow=c(2,2))
-    plot(m)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm1.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm1.png&#34; alt=&#34;&#34; title=&#34;lm1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;r &amp;lt;- residuals(m)
-yh &amp;lt;- predict(m)
-scatterplot &amp;lt;- function(x,y,
-                        title=&amp;quot;&amp;quot;,
-                        xlab=&amp;quot;&amp;quot;,
-                        ylab=&amp;quot;&amp;quot;) {
-    d &amp;lt;- data.frame(x=x,y=y)
-    p &amp;lt;- ggplot(d, aes(x=x,y=y)) +
-            geom_point() +
-                ggtitle(title) +
-                    xlab(xlab) +
-                        ylab(ylab)
-    return(p)
-    }
-p1 &amp;lt;- scatterplot(yh,r,
-                  title=&amp;quot;Residuals vs Fitted&amp;quot;,
-                  xlab=&amp;quot;Fitted values&amp;quot;,
-                  ylab=&amp;quot;Residuals&amp;quot;)
-p1 &amp;lt;- p1 +geom_hline(yintercept=0)+geom_smooth()
-
-s &amp;lt;- sqrt(deviance(m)/df.residual(m))
-rs &amp;lt;- r/s
-
-qqplot &amp;lt;- function(y,
-                   distribution=qnorm,
-                   title=&amp;quot;Normal Q-Q&amp;quot;,
-                   xlab=&amp;quot;Theretical Quantiles&amp;quot;,
-                   ylab=&amp;quot;Sample Quantiles&amp;quot;) {
-    require(ggplot2)
-    x &amp;lt;- distribution(ppoints(y))
-    d &amp;lt;- data.frame(x=x, y=sort(y))
-    p &amp;lt;- ggplot(d, aes(x=x, y=y)) +
-        geom_point() +
-            geom_line(aes(x=x, y=x)) +
-                ggtitle(title=title) +
-                    xlab(xlab) +
-                        ylab(ylab)
-    return(p)
-}
-
-p2 &amp;lt;- qqplot(rs, ylab=&amp;quot;Standardized residuals&amp;quot;)
-
-sqrt.rs &amp;lt;- sqrt(abs(rs))
-p3 &amp;lt;- scatterplot(yh,sqrt.rs,
-                  title=&amp;quot;Scale-Location&amp;quot;,
-                  xlab=&amp;quot;Fitted values&amp;quot;,
-                  ylab=expression(sqrt(&amp;quot;Standardized residuals&amp;quot;)))
-p3 &amp;lt;- p3 + geom_smooth()
-
-hii &amp;lt;- lm.influence(m, do.coef = FALSE)$hat
-p4 &amp;lt;- scatterplot(hii,rs)
-p4 &amp;lt;- p4+
-    geom_hline(yintercept=0)+
-    geom_smooth() +
-    geom_text(aes(x=min(hii)+diff(range(hii))*0.3,
-                  y=min(rs)+diff(range(rs))*0.04,
-                  label=&amp;quot;--   Cook&#39;s distance&amp;quot;, size=3))+
-    theme(legend.position=&amp;quot;none&amp;quot;)
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm2.png&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2011/08/lm2.png&#34; alt=&#34;&#34; title=&#34;lm2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
