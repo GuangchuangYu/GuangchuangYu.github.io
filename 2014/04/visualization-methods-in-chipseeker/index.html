@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>visualization methods in ChIPseeker &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>visualization methods in ChIPseeker</h1>
+    <span class="post-date">Apr 30, 2014 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseq">ChIPseq</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a>
+    </span>
+    
+
+<p>After two weeks developed, I have added/updated some plot functions in
+<a href="http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html">ChIPseeker</a>
+(version &gt;=1.0.1).</p>
+
+<h3 id="chip-peaks-over-chromosomes:6a8a65de687a162a83f53f5c5a317279">ChIP peaks over Chromosomes</h3>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; files=getSampleFiles()
+&gt; peak=readPeakFile(files[[4]])
+&gt; peak
+GRanges object with 1331 ranges and 2 metadata columns:
+         seqnames                 ranges strand   |             V4        V5
+                               |        
+     [1]     chr1     [ 815092,  817883]      *   |    MACS_peak_1    295.76
+     [2]     chr1     [1243287, 1244338]      *   |    MACS_peak_2     63.19
+     [3]     chr1     [2979976, 2981228]      *   |    MACS_peak_3    100.16
+     [4]     chr1     [3566181, 3567876]      *   |    MACS_peak_4    558.89
+     [5]     chr1     [3816545, 3818111]      *   |    MACS_peak_5     57.57
+     ...      ...                    ...    ... ...            ...       ...
+  [1327]     chrX [135244782, 135245821]      *   | MACS_peak_1327     55.54
+  [1328]     chrX [139171963, 139173506]      *   | MACS_peak_1328    270.19
+  [1329]     chrX [139583953, 139586126]      *   | MACS_peak_1329    918.73
+  [1330]     chrX [139592001, 139593238]      *   | MACS_peak_1330    210.88
+  [1331]     chrY [ 13845133,  13845777]      *   | MACS_peak_1331     58.39
+  ---
+  seqlengths:
+    chr1 chr10 chr11 chr12 chr13 chr14 ...  chr6  chr7  chr8  chr9  chrX  chrY
+      NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA    NA
+&gt; covplot(peak, weightCol=&quot;V5&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/chrCoverage.png" alt="" /></p>
+
+<h3 id="heatmap-of-chip-binding-to-tss-regions:6a8a65de687a162a83f53f5c5a317279">Heatmap of ChIP binding to TSS regions</h3>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+peakHeatmap(files, weightCol=&quot;V5&quot;, TxDb=txdb, upstream=3000, downstream=3000, color=rainbow(length(files)))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/peakHeat2.png" alt="" /></p>
+
+<h3 id="average-profile-of-chip-peaks-binding-to-tss-region:6a8a65de687a162a83f53f5c5a317279">Average Profile of ChIP peaks binding to TSS region</h3>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">plotAvgProf(files, TranscriptDb=txdb, weightCol=&quot;V5&quot;, upstream=3000, downstream=3000)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/avgProf2.png" alt="" /></p>
+
+<h3 id="genomic-annotation:6a8a65de687a162a83f53f5c5a317279">Genomic Annotation</h3>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">peakAnnoList=lapply(files, annotatePeak)
+plotAnnoPie(peakAnnoList[[1]])
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/pieAnno.png" alt="" /></p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">plotAnnoBar(peakAnnoList)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/barAnno.png" alt="" /></p>
+
+<h3 id="distance-to-tss:6a8a65de687a162a83f53f5c5a317279">Distance to TSS</h3>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">plotDistToTSS(peakAnnoList)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/distTSS.png" alt="" /></p>
+
+<h3 id="overlap-of-peak-sets:6a8a65de687a162a83f53f5c5a317279">Overlap of peak sets</h3>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">genes= lapply(peakAnnoList, function(i) as.data.frame(i)$geneId)
+vennplot(genes)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/venn.png" alt="" /></p>
+
+<p>In the future version, ChIPseeker will support statistical comparison
+among ChIP peak sets, and incorporate open access database GEO for users
+to compare their own dataset to those deposited in database. Significant
+overlap among peak sets can be used to infer cooperative regulation.
+This feature will soon be available.</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

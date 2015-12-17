@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>functional enrichment analysis with NGS data &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>functional enrichment analysis with NGS data</h1>
+    <span class="post-date">Aug 21, 2015 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a>
+    </span>
+    
+
+<p>I found a Bioconductor package,
+<a href="http://www.bioconductor.org/packages/seq2pathway/">seq2pathway</a>, that
+can apply functional analysis to NGS data. It consists of two
+components, <em>seq2gene</em> and <em>gene2pathway</em>. <em>seq2gene</em> converts genomic
+coordination to genes while <em>gene2pathway</em> performs functional analysis
+at gene level.</p>
+
+<p>I think it would be interesting to incorporate <em>seq2gene</em> with
+clusterProfiler. But it fail to run due to it call absolute path of
+python installed in the author&rsquo;s computer.
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/emotion_icons/surprise.gif" alt="" /></p>
+
+<p>THIS should never be happened in a Bioconductor package since
+Bioconductor requires every package to have a least one vignette and
+runnable examples in man files. It turns out that there is no runnable
+example in either the vignette or man files. This package was compiled
+successfully in all platforms but it actually can only be run in windows
+platform with python installed exactly in the same path of the author. I
+don&rsquo;t know why Bioconductor core team didn&rsquo;t detect this issue when
+reviewing this package and why reviewers of
+<a href="http://bioinformatics.oxfordjournals.org/content/early/2015/05/27/bioinformatics.btv289.full">Bioinformatics</a>
+didn&rsquo;t test the package.</p>
+
+<p>I modified &lsquo;C:/Python27/python&rsquo;, to &lsquo;python&rsquo;. But it still throw error:
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/others/Screenshot%202015-08-20%2015.51.48.png" alt="" /></p>
+
+<p>This is due to the author used &lsquo;\\&rsquo; as folder separator which is
+Windows platform specific.</p>
+
+<pre><code>command &lt;- paste(&quot;C:/Python27/python &quot;, tempdir(),&quot;\\&quot;,name,sep=&quot;&quot;)
+</code></pre>
+
+<p>AND I found that there are many &lsquo;\\&rsquo; in the source code.</p>
+
+<p>So I gave up to try this package and reinvented the wheel.
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/d71871092d85a7f557ae85f529a0b73d6eeda5c9/MISC/evolution_of_the_wheel_by_echoes93-d4owse1.jpg" alt="" /></p>
+
+<p>It&rsquo;s not difficult to implement a <em>seq2gene</em> function using internal
+functions already available in my package
+<a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a>. It only
+took me half hour and was available since version 1.5.5.
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ChIPseeker/Screenshot%202015-08-21%2011.08.46.png" alt="" /></p>
+
+<p><em>seq2gene</em> provided by
+<a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a> considers
+host gene (exon/intron), promoter region and flanking gene from
+intergenomic region.</p>
+
+<p>With <a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a>, user
+can annotates genomic coordination by nearest gene, host gene, flanking
+genes or consider all of them by <em>seq2gene</em> and performs
+GO/KEGG/DO/Reactome analysis with
+<a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>/<a href="http://www.bioconductor.org/packages/release/bioc/html/DOSE.html">DOSE</a>/<a href="http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html">ReactomePA</a>
+at gene level. A scenario can be found in <a href="https://support.bioconductor.org/p/70227/">Bioconductor support
+site</a>, that used ChIPseeker
+to retrieve 5 genes flanking of each enhancer followed by GO analysis.</p>
+
+<h4 id="note:75af011bb7320f82b9ebbcc91c00fbfe">Note:</h4>
+
+<p>seq2pathway, <a href="https://github.com/Bioconductor-mirror/seq2pathway">https://github.com/Bioconductor-mirror/seq2pathway</a>,
+version 1.1.2, access date 21 Aug, 2015</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

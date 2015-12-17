@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Bug of R package ChIPpeakAnno &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>Bug of R package ChIPpeakAnno</h1>
+    <span class="post-date">Jan 14, 2014 &middot; 5 minute read &middot; <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseq">ChIPseq</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a>
+    </span>
+    <p>I used R package <strong>ChIPpeakAnno</strong> for annotating peaks, and found that
+it handle the DNA strand in the wrong way. Maybe the developers were
+from the computer science but not biology background.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; require(ChIPpeakAnno)
+&gt; packageVersion(&quot;ChIPpeakAnno&quot;)
+[1] '2.10.0'
+&gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528))
+&gt; data(TSS.human.GRCh37)
+&gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37)
+&gt; ap
+RangedData with 1 row and 9 value columns across 1 space
+                     space               ranges |        peak      strand
+                               |  
+1 ENSG00000001461        1 [24736757, 24737528] |           1           +
+                          feature start_position end_position insideFeature
+                                   
+1 ENSG00000001461 ENSG00000001461       24742284     24799466      upstream
+                  distancetoFeature shortestDistance fromOverlappingOrNearest
+                                                
+1 ENSG00000001461             -5527             4756             NearestStart
+</code></pre>
+
+<p>In this example, I defined a peak ranging from chr1:24736757 to
+chr1:24737528 and annotated the peak using ChIPpeakAnno package.</p>
+
+<p>It returns that the nearest gene is ENSG00000001461, whose gene symbol
+is NIPAL3.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; require(org.Hs.eg.db)
+&gt; gene.ChIPpeakAnno &lt;- select(org.Hs.eg.db, key=ap$feature, keytype=&quot;ENSEMBL&quot;, columns=c(&quot;ENSEMBL&quot;, &quot;ENTREZID&quot;, &quot;SYMBOL&quot;))
+&gt; gene.ChIPpeakAnno
+          ENSEMBL ENTREZID SYMBOL
+1 ENSG00000001461    57185 NIPAL3
+</code></pre>
+
+<p>When looking at the peak in Genome Browser, I found the nearest gene is
+STPG1.
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/01/Screenshot-2014-01-13-22.00.46.png" alt="" />
+The gene symbol, STPG1, was converted to ENTREZID for future processing.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; gene.nearest &lt;- select(org.Hs.eg.db, key=&quot;STPG1&quot;, keytype=&quot;SYMBOL&quot;, columns=c(&quot;ENSEMBL&quot;, &quot;ENTREZID&quot;, &quot;SYMBOL&quot;))
+&gt; gene.nearest
+  SYMBOL         ENSEMBL ENTREZID
+1  STPG1 ENSG00000001460    90529
+</code></pre>
+
+<p>We can query the coordination of these two genes, and compare their
+distances to the peak.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+&gt; knownGene &lt;- transcriptsBy(TxDb.Hsapiens.UCSC.hg19.knownGene, by=&quot;gene&quot;)
+&gt; 
+&gt; gene.ChIPpeakAnno.info &lt;- knownGene[[gene.ChIPpeakAnno$ENTREZID]]
+&gt; gene.ChIPpeakAnno.info
+GRanges with 4 ranges and 2 metadata columns:
+      seqnames               ranges strand |     tx_id     tx_name
+                        |  
+  [1]     chr1 [24742245, 24781314]      + |       618  uc010oek.2
+  [2]     chr1 [24742245, 24799473]      + |       619  uc001bjh.3
+  [3]     chr1 [24742245, 24799473]      + |       620  uc009vrc.3
+  [4]     chr1 [24782628, 24792864]      + |       621  uc001bji.3
+  ---
+  seqlengths:
+                    chr1                  chr2 ...        chrUn_gl000249
+               249250621             243199373 ...                 38502
+</code></pre>
+
+<p>After getting the information of the gene annotated by ChIPpeakAnno, I
+also found that the ranges of the gene is slightly different from the
+one returned by <em>annotatePeakInBatch</em> function. This may due to the
+variation of different versions and it&rsquo;s not a big deal.</p>
+
+<p>As the gene, NIPAL3, is encoded in + strand, the nearest distance is:</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; min(abs(start(peak) - start(gene.ChIPpeakAnno.info)))
+[1] 5488
+</code></pre>
+
+<p>While the gene, STPG1, is encoded in - strand, the end of the gene
+coordination is actually the start position of the gene and the start of
+the gene coordination is the end position. So the distance should be
+calculated by the end coordination.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; gene.nearest.info &lt;- knownGene[[gene.nearest$ENTREZID]]
+&gt; gene.nearest.info
+GRanges with 6 ranges and 2 metadata columns:
+      seqnames               ranges strand |     tx_id     tx_name
+                        |  
+  [1]     chr1 [24683489, 24700300]      - |      4706  uc010oej.2
+  [2]     chr1 [24683489, 24740262]      - |      4707  uc001bja.3
+  [3]     chr1 [24683489, 24740262]      - |      4708  uc001bjb.3
+  [4]     chr1 [24683489, 24740262]      - |      4709  uc001bjc.3
+  [5]     chr1 [24683489, 24741587]      - |      4710  uc001bjd.3
+  [6]     chr1 [24695211, 24718169]      - |      4711  uc001bjf.3
+  ---
+  seqlengths:
+                    chr1                  chr2 ...        chrUn_gl000249
+               249250621             243199373 ...                 38502
+&gt; min(abs(end(peak) - end(knownGene[[gene.nearest$ENTREZID]])))
+[1] 2734
+</code></pre>
+
+<p>STPG1 is more close to the peak than NIPAL3. Those genes encoded in -
+strand can&rsquo;t be well-handled by <strong>ChIPpeakAnno</strong> package.</p>
+
+<p>I look careful to the source code of <em>annotatePeakInBatch</em> function.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">    TSS.ordered &lt;- AnnotationData
+    rm(AnnotationData)
+    if (!length(rownames(TSS.ordered))) {
+        rownames(TSS.ordered) = formatC(1:dim(TSS.ordered)[1],
+            width = nchar(dim(TSS.ordered)[1]), flag = &quot;0&quot;)
+    }
+    if (length(TSS.ordered$strand) == length(start(TSS.ordered))) {
+        r2 = cbind(rownames(TSS.ordered), start(TSS.ordered),
+            end(TSS.ordered), as.character(TSS.ordered$strand))
+    }
+    else {
+        TSS.ordered$strand = rep(&quot;+&quot;, length(start(TSS.ordered)))
+        r2 = cbind(rownames(TSS.ordered), start(TSS.ordered),
+            end(TSS.ordered), rep(&quot;+&quot;, length(start(TSS.ordered))))
+    }
+    colnames(r2) = c(&quot;feature_id&quot;, &quot;start_position&quot;, &quot;end_position&quot;,
+        &quot;strand&quot;)
+</code></pre>
+
+<p>The <em>AnnotationData</em> object is provided by the package, or query from
+biomaRt, the length(TSS.ordered\$strand) == length(start(TSS.ordered)
+should be TRUE, and this code should works fine. But when the expression
+return FALSE, the function should complain this, with warning message
+showing in the screen or even stop running. But the author just simply
+assign all the genes encoded in + strand, this is nonsense.</p>
+
+<p>Then for calculating the feauture location:</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">    if (FeatureLocForDistance == &quot;middle&quot; || FeatureLocForDistance ==
+        &quot;m&quot;) {
+        FeatureLoc = unlist(lapply(1:dim(r2)[1], function(i) {
+            round(mean(c(as.numeric(r2[i, 2]), as.numeric(r2[i,
+                3]))))
+        }))
+        FeatureLocForDistance = &quot;middle&quot;
+    }
+    else if (FeatureLocForDistance == &quot;start&quot; || FeatureLocForDistance ==
+        &quot;s&quot;) {
+        FeatureLoc = r2[, 2]
+        FeatureLocForDistance = &quot;start&quot;
+    }
+    else if (FeatureLocForDistance == &quot;end&quot; || FeatureLocForDistance ==
+        &quot;e&quot;) {
+        FeatureLoc = r2[, 3]
+        FeatureLocForDistance = &quot;end&quot;
+    }
+    else if (FeatureLocForDistance == &quot;geneEnd&quot; || FeatureLocForDistance ==
+        &quot;g&quot;) {
+        FeatureLoc = unlist(lapply(1:dim(r2)[1], function(i) {
+            if (as.character(r2[i, 4]) == &quot;+&quot; || as.character(r2[i,
+                4]) == &quot;1&quot; || as.character(r2[i, 4]) == &quot;*&quot;) {
+                r2[i, 3]
+            }
+            else {
+                r2[i, 2]
+            }
+        }))
+        FeatureLocForDistance = &quot;geneEnd&quot;
+    }
+    else {
+        FeatureLoc = unlist(lapply(1:dim(r2)[1], function(i) {
+            if (as.character(r2[i, 4]) == &quot;+&quot; || as.character(r2[i,
+                4]) == &quot;1&quot; || as.character(r2[i, 4]) == &quot;*&quot;) {
+                r2[i, 2]
+            }
+            else {
+                r2[i, 3]
+            }
+        }))
+        FeatureLocForDistance = &quot;TSS&quot;
+    }
+</code></pre>
+
+<p>Only &ldquo;geneEnd&rdquo; and &ldquo;TSS&rdquo; types consider the strand information. For
+&ldquo;middle&rdquo;, omits the strand information should be fine, but for &ldquo;start&rdquo;
+and &ldquo;end&rdquo;, the &ldquo;start&rdquo; should be &ldquo;end&rdquo; and &ldquo;end&rdquo; should be &ldquo;start&rdquo; when
+the gene is located at - strand. Again, the <em>annotatePeakInBatch</em>
+function omits the strand information of genes/features.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">        TSS.ordered$FeatureLoc = FeatureLoc
+        myPeakList$PeakLoc = PeakLoc
+        plusAnno = TSS.ordered[as.character(TSS.ordered$strand) %in%
+            c(&quot;+&quot;, &quot;*&quot;, &quot;1&quot;), ]
+        minusAnno = TSS.ordered[as.character(TSS.ordered$strand) %in%
+            c(&quot;-1&quot;, &quot;-&quot;), ]
+        r1 = do.call(rbind, lapply(seq_len(numberOfChromosome),
+            function(i) {
+                chr = allChr[i]
+                if (chr %in% allChr.Anno) {
+                  featureStart = as.numeric(TSS.ordered[chr]$FeatureLoc)
+                  peakLoc = as.numeric(myPeakList[chr]$PeakLoc)
+                  peakStart = as.numeric(start(myPeakList[chr]))
+                  peakEnd = as.numeric(end(myPeakList[chr]))
+                  name = rownames(myPeakList[chr])
+                  peakRanges = IRanges(start = peakStart, end = peakEnd,
+                    names = name)
+                  featureID = rownames(TSS.ordered[chr])
+                  featureRanges = IRanges(start = featureStart,
+                    end = featureStart, names = featureID)
+                  nearestFeature = featureRanges[nearest(peakRanges,
+                    featureRanges)]
+                  data.frame(name = name, feature_id = names(nearestFeature))
+                }
+            }))
+</code></pre>
+
+<p>For identifying the nearest feature, the author use:</p>
+
+<pre><code>nearestFeature = featureRanges[nearest(peakRanges,
+                    featureRanges)]
+</code></pre>
+
+<p>The &ldquo;start&rdquo; of the features should be used when it were encoded in +
+strand and &ldquo;end&rdquo; when features were encoded in - strand. But the author
+use <em>nearest</em> function which use both &ldquo;start&rdquo; and &ldquo;end&rdquo; of the interval
+to calculate the distance by default.</p>
+
+<p>Considering the &ldquo;start&rdquo; and &ldquo;end&rdquo; records may reverse when the
+genes/features were encoded in - strand and the way ChIPpeakAnno
+calcultes the distance is too simple by using <em>nearest</em> function, I
+can&rsquo;t trust their results. It&rsquo;s not hard to implement a function to
+annotate peaks. Preparing the gene annotation and calculating the
+distances among genes and peaks for finding the nearest gene of the
+peak. That&rsquo;s it.</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

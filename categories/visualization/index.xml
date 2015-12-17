@@ -363,6 +363,65 @@ overlapped, we can move the images by &lt;em&gt;offset&lt;/em&gt; parameter.&lt;
     </item>
     
     <item>
+      <title>upsetplot in ChIPseeker</title>
+      <link>http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</link>
+      <pubDate>Tue, 28 Jul 2015 06:45:01 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/&#34;&gt;ChIPseeker&lt;/a&gt;
+is an R package for ChIP peak annotation, comparison and visualization.&lt;/p&gt;
+
+&lt;p&gt;We have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;several visualization
+methods&lt;/a&gt;,
+including
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34;&gt;vennpie&lt;/a&gt;&lt;/em&gt;
+that was designed for viewing annotation overlap as shown below:
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Not all overlap information can be demonstrated in vennpie.
+&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html&#34;&gt;Upset&lt;/a&gt;
+is an effective way to visualize sets and intersections. We import
+&lt;em&gt;upset&lt;/em&gt; function from &lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;UpSetR&lt;/a&gt; package
+and implement &lt;em&gt;upsetplot&lt;/em&gt; function, that can visualize ChIP annotation
+overlap directly with output of &lt;em&gt;annotatePeak&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ChIPseeker)
+peak_file &amp;lt;- getSampleFiles()[[4]]
+x &amp;lt;- annotatePeak(peak_file)
+upsetplot(x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We add a new parameter, &lt;em&gt;vennpie=FALSE&lt;/em&gt;, in upsetplot. If vennpie=TRUE,
+a vennpie will be added as show below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset_vennpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Although upset contains more information, vennpie is more intuitive and
+the final figure is more compact. More information is available at the
+&lt;a href=&#34;http://www.bioconductor.org/packages/3.2/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html&#34;&gt;online
+vignette&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;reference:07e5a5bc7f123188a27a1c1e28238bcc&#34;&gt;Reference&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Alexander Lex, and Gehlenborg Nils. “Points of View: Sets and
+Intersections.” Nature Methods 11, no. 8 (August 2014): 779–779.
+doi:&lt;a href=&#34;http://doi.org/10.1038/nmeth.3033&#34;&gt;10.1038/nmeth.3033&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. “ChIPseeker: An
+R/Bioconductor Package for ChIP Peak Annotation, Comparison and
+Visualization.” Bioinformatics 31, no. 14 (July 15, 2015): 2382–83.
+doi:&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Conway Jake, and Gehlenborg Nils, &amp;ldquo;UpSetR&amp;rdquo;,
+&lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;https://github.com/cran/UpSetR&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
       <title>flip and rotate branches in ggtree</title>
       <link>http://guangchuangyu.github.io/2015/07/flip-and-rotate-branches-in-ggtree/</link>
       <pubDate>Wed, 01 Jul 2015 02:51:34 +0800</pubDate>
@@ -712,6 +771,132 @@ phylogenetic trees.&lt;/p&gt;
 
 &lt;p&gt;At last, wish you a merry christmas :)
 &lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>multiple annotation in ChIPseeker</title>
+      <link>http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/</link>
+      <pubDate>Wed, 01 Oct 2014 13:00:33 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/</guid>
+      <description>
+
+&lt;h3 id=&#34;nearest-gene-annotation:211662300f8731372460bacaae7937b5&#34;&gt;Nearest gene annotation&lt;/h3&gt;
+
+&lt;p&gt;Almost all annotation software calculate the distance of a peak to the
+nearest TSS and assign the peak to that gene. This can be misleading, as
+binding sites might be located between two start sites of different
+genes or hit different genes which have the same TSS location in the
+genome.&lt;/p&gt;
+
+&lt;p&gt;The function &lt;em&gt;annotatePeak&lt;/em&gt; provides option to assign genes with a max
+distance cutoff and all genes within this distance were reported for
+each peak.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; anno = annotatePeak(getSampleFiles()[[4]], addFlankGeneInfo=TRUE, flankDistance=5000)
+&amp;gt;&amp;gt; loading peak file...              2014-09-30 01:12:09 PM 
+&amp;gt;&amp;gt; preparing features information...         2014-09-30 01:12:09 PM 
+&amp;gt;&amp;gt; identifying nearest features...       2014-09-30 01:12:10 PM 
+&amp;gt;&amp;gt; calculating distance from peak to TSS...  2014-09-30 01:12:11 PM 
+&amp;gt;&amp;gt; assigning genomic annotation...       2014-09-30 01:12:11 PM 
+&amp;gt;&amp;gt; adding flank feature information from peaks...2014-09-30 01:12:37 PM 
+&amp;gt;&amp;gt; assigning chromosome lengths          2014-09-30 01:12:39 PM 
+&amp;gt;&amp;gt; done...                   2014-09-30 01:12:39 PM 
+&amp;gt; head(as.GRanges(anno))
+GRanges object with 6 ranges and 14 metadata columns:
+      seqnames             ranges strand |          V4        V5
+                      |     
+  [1]     chr1 [ 815092,  817883]      * | MACS_peak_1    295.76
+  [2]     chr1 [1243287, 1244338]      * | MACS_peak_2     63.19
+  [3]     chr1 [2979976, 2981228]      * | MACS_peak_3    100.16
+  [4]     chr1 [3566181, 3567876]      * | MACS_peak_4    558.89
+  [5]     chr1 [3816545, 3818111]      * | MACS_peak_5     57.57
+  [6]     chr1 [6304864, 6305704]      * | MACS_peak_6     54.57
+             annotation  geneChr geneStart   geneEnd geneLength geneStrand
+                    
+  [1] Distal Intergenic     chr1    803451    812182       8732          -
+  [2]  Promoter (&amp;lt;=1kb)     chr1   1243994   1247057       3064          +
+  [3]  Promoter (&amp;lt;=1kb)     chr1   2976181   2980350       4170          -
+  [4]  Promoter (&amp;lt;=1kb)     chr1   3547331   3566671      19341          -
+  [5]  Promoter (&amp;lt;=1kb)     chr1   3816968   3832011      15044          +
+  [6]  Promoter (1-2kb)     chr1   6304252   6305638       1387          +
+           geneId transcriptId distanceToTSS
+             
+  [1]      284593   uc001abt.4         -5701
+  [2]      126789   uc001aed.3             0
+  [3]      440556   uc001aka.3             0
+  [4]       49856   uc001ako.3             0
+  [5]   100133612   uc001alg.3             0
+  [6]      390992   uc009vly.2          1452
+                                                                                                                                                               flank_txIds
+                                                                                                                                                               
+  [1]                                                                                                                                                           uc001abt.4
+  [2] uc001aea.2;uc001aeb.2;uc001aec.1;uc001aed.3;uc010nyi.2;uc009vjx.3;uc009vjy.1;uc001aee.2;uc001aef.2;uc001aeg.2;uc001aeh.2;uc001aei.2;uc001aek.2;uc009vjz.2;uc010nyj.2
+  [3]                                                                                                    uc001aka.3;uc010nzg.1;uc001akc.3;uc001ake.3;uc001akf.3;uc009vlh.3
+  [4]                                                                   uc001ako.3;uc001akn.3;uc010nzi.2;uc001akp.3;uc021ofb.1;uc021ofc.1;uc021ofd.1;uc021ofe.1;uc021off.1
+  [5]                                                                                                    uc001alg.3;uc010nzo.2;uc001alh.4;uc001alf.3;uc009vls.3;uc031pkz.1
+  [6]                                                                                                                                                uc001amp.2;uc009vly.2
+                                                                                        flank_geneIds
+                                                                                          
+  [1]                                                                                          284593
+  [2] 116983;116983;116983;126789;126789;126789;54973;54973;54973;54973;54973;54973;54973;54973;54973
+  [3]                                                           440556;440556;63976;63976;63976;63976
+  [4]                                                 49856;49856;49856;7161;7161;7161;7161;7161;7161
+  [5]                                              100133612;100133612;100133612;339448;339448;339448
+  [6]                                                                                   387509;390992
+                                                           flank_gene_distances
+                                                                    
+  [1]                                                                     -2910
+  [2] -1978;-18;0;0;0;-128;8492;15729;15729;15729;15729;15729;15729;15729;15729
+  [3]                                               0;0;-4514;-4514;-4514;-4514
+  [4]                                 0;0;0;-1253;-1253;-1253;-1253;-1253;-1253
+  [5]                                                               0;0;0;0;0;0
+  [6]                                                                   15331;0
+  -------
+  seqinfo: 24 sequences from hg19 genome
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Three extra columns, &lt;em&gt;flank_txIds&lt;/em&gt;, &lt;em&gt;flank_geneIds&lt;/em&gt;,
+&lt;em&gt;flank_gene_distances&lt;/em&gt; were added if parameter &lt;em&gt;addFlankGeneInfo&lt;/em&gt; is
+set to &lt;em&gt;TRUE&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;genomic-annotation:211662300f8731372460bacaae7937b5&#34;&gt;Genomic annotation&lt;/h3&gt;
+
+&lt;p&gt;The annotation column annotates the genomic location of a given peak.
+Since some annotations overlap, they are assigned based on the following
+priority.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Promoter (defined by tssRegion parameter)&lt;/li&gt;
+&lt;li&gt;5&amp;rsquo; UTR&lt;/li&gt;
+&lt;li&gt;3&amp;rsquo; UTR&lt;/li&gt;
+&lt;li&gt;Exon&lt;/li&gt;
+&lt;li&gt;Intron&lt;/li&gt;
+&lt;li&gt;Downstream (immediate downstream of a gene, within 3kb)&lt;/li&gt;
+&lt;li&gt;Distal Intergenic&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;plotAnnoPie and
+plotAnnoBar&lt;/a&gt;
+to visualize their distribution. I am wondering how to visualize the
+annotation overlap and found &lt;a href=&#34;http://onetipperday.blogspot.hk/2014/09/how-to-draw-venn-pie-agram-multi-layer.html&#34;&gt;venn
+pie-agram&lt;/a&gt;
+can partially solve this issue. It&amp;rsquo;s hard/impossible to visualize all
+the overlap information within one vennpie plot.&lt;/p&gt;
+
+&lt;p&gt;I employed the vennpie to ChIPseeker, and now with the vennpie function,
+we can visualize some of the overlap annotations.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vennpie(anno)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In order to manage complex data, &lt;em&gt;annotatePeak&lt;/em&gt; now output a S4 object.
+Users can use &lt;em&gt;as.GRanges&lt;/em&gt; to convert it to &lt;em&gt;as.GRanges&lt;/em&gt; object or
+&lt;em&gt;as.data.frame&lt;/em&gt; to convert it to &lt;em&gt;data.frame&lt;/em&gt; and then the output can be
+exported by &lt;em&gt;write.table&lt;/em&gt; function.&lt;/p&gt;
 </description>
     </item>
     
@@ -1221,87 +1406,94 @@ R&gt;一书中的所有图片&lt;/a&gt;.&lt;/p&gt;
     </item>
     
     <item>
-      <title>boxplot</title>
-      <link>http://guangchuangyu.github.io/2014/03/boxplot/</link>
-      <pubDate>Tue, 04 Mar 2014 12:23:16 +0800</pubDate>
+      <title>visualization methods in ChIPseeker</title>
+      <link>http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/</link>
+      <pubDate>Wed, 30 Apr 2014 06:33:41 +0800</pubDate>
       
-      <guid>http://guangchuangyu.github.io/2014/03/boxplot/</guid>
-      <description>&lt;p&gt;生物坑很多人画图只会直方图，统计只会T检验，在暨大见过太多的学生连T检验都不会，分不清SEM和SD的差别，也不清楚T检验那几个简单参数的含义。我写统计笔记也是因为不想重复性地跟学生讲解T检验。&lt;/p&gt;
+      <guid>http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/</guid>
+      <description>
 
-&lt;p&gt;Barplot和T
-test一样普遍而流行，barplot适合于表示计数数据和比例，显示比例也可以用pie
-plot，但直方图比饼图要好，因为人类的眼睛适合于比较高度，而不是弧度。&lt;/p&gt;
+&lt;p&gt;After two weeks developed, I have added/updated some plot functions in
+&lt;a href=&#34;http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34;&gt;ChIPseeker&lt;/a&gt;
+(version &amp;gt;=1.0.1).&lt;/p&gt;
 
-&lt;p&gt;多半时候生物学数据并非简单的计数数据，对于测量数据，在展示数据分布时，很多人会使用他们熟悉的barplot，用高度来表示mean，然后再加上errorbar，这样展示数据，信息量是非常低的，使用boxplot能够提供更多的数据分布信息，能更好地展现数据，但可能很多人只会在excel里画barplot，Nature
-Methods
-2013年的文章中有100个barplot图，而只有20个boxplot图，从这里就可以看出来，用boxplot的人远远没有barplot多，于是NPG怒了，写了两篇专栏文章&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2807.html&#34;&gt;Points
-of View: Bar charts and box
-plots&lt;/a&gt;和&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2813.html&#34;&gt;Points
-of Significance: Visualizing samples with box
-plots&lt;/a&gt;并且发表了一篇&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2811.html&#34;&gt;BoxPlotR:
-a web tool for generation of box
-plots&lt;/a&gt;方便大家画boxplot，如此简单的web
-tool能够发Nature Methods，实在是让人羡慕妒忌恨啊。 Boxplot从1970年由John
-Tukey提示，到现在已经40多年了，他有很多的变种，比如&lt;a href=&#34;http://guangchuangyu.github.io/2012/02/violin-plot/&#34;&gt;violin
-plot&lt;/a&gt;和&lt;a href=&#34;http://www.jstatsoft.org/v28/c01/paper&#34;&gt;beanplot&lt;/a&gt;，violin
-plot和beanplot是很像的，都是把box换成density
-curve，beanplot另外把数据点在中间用线条表示出来，这个很容易加上去，正如我在&lt;a href=&#34;http://guangchuangyu.github.io/2012/02/violin-plot/&#34;&gt;violin
-plot&lt;/a&gt;中把数据点加进去一样。同样可以把数据点加进boxplot中，还有很多手法来展示boxplot，比如可以用缺口(notch)形式来画boxplot，可以把中间的宽度表示为median值的置信空间。boxplot的宽度可以用样本量来归一化，如果sample
-size足够大的话，$mean\pm errorbar$
-不会超出box，可以很清晰把这个信息也展示在boxplot中。&lt;/p&gt;
+&lt;h3 id=&#34;chip-peaks-over-chromosomes:6a8a65de687a162a83f53f5c5a317279&#34;&gt;ChIP peaks over Chromosomes&lt;/h3&gt;
 
-&lt;p&gt;如果数据量比较少，可以用scatterplot+errorbar的形式展示数据，正如我在&lt;a href=&#34;http://pubs.rsc.org/en/Content/ArticleLanding/2011/MB/C0MB00055H#!divAbstract&#34;&gt;Phosphoproteome
-profile of human lung cancer cell line
-A549&lt;/a&gt;中所画的&lt;a href=&#34;http://www.douban.com/photos/photo/1560368200/&#34;&gt;图7&lt;/a&gt;。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>draw chinese character Jiong using ggplot2</title>
-      <link>http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/</link>
-      <pubDate>Fri, 17 Feb 2012 09:26:50 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/</guid>
-      <description>&lt;p&gt;The Chinese character Jiong (囧) is now widely used for expressing ideas
-or feelings such as annoyance, shock, embarrassment, awkwardness, scorn.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; files=getSampleFiles()
+&amp;gt; peak=readPeakFile(files[[4]])
+&amp;gt; peak
+GRanges object with 1331 ranges and 2 metadata columns:
+         seqnames                 ranges strand   |             V4        V5
+                               |        
+     [1]     chr1     [ 815092,  817883]      *   |    MACS_peak_1    295.76
+     [2]     chr1     [1243287, 1244338]      *   |    MACS_peak_2     63.19
+     [3]     chr1     [2979976, 2981228]      *   |    MACS_peak_3    100.16
+     [4]     chr1     [3566181, 3567876]      *   |    MACS_peak_4    558.89
+     [5]     chr1     [3816545, 3818111]      *   |    MACS_peak_5     57.57
+     ...      ...                    ...    ... ...            ...       ...
+  [1327]     chrX [135244782, 135245821]      *   | MACS_peak_1327     55.54
+  [1328]     chrX [139171963, 139173506]      *   | MACS_peak_1328    270.19
+  [1329]     chrX [139583953, 139586126]      *   | MACS_peak_1329    918.73
+  [1330]     chrX [139592001, 139593238]      *   | MACS_peak_1330    210.88
+  [1331]     chrY [ 13845133,  13845777]      *   | MACS_peak_1331     58.39
+  ---
+  seqlengths:
+    chr1 chr10 chr11 chr12 chr13 chr14 ...  chr6  chr7  chr8  chr9  chrX  chrY
+      NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA    NA
+&amp;gt; covplot(peak, weightCol=&amp;quot;V5&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The function plot of &lt;code&gt;y=1/(x^2-1)&lt;/code&gt; looks very similar of this symbol.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/chrCoverage.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;I use ggplot2 to draw the symbol of Jiong.&lt;/p&gt;
+&lt;h3 id=&#34;heatmap-of-chip-binding-to-tss-regions:6a8a65de687a162a83f53f5c5a317279&#34;&gt;Heatmap of ChIP binding to TSS regions&lt;/h3&gt;
 
-&lt;p&gt;It looks like:
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2012/02/jiong.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb &amp;lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+peakHeatmap(files, weightCol=&amp;quot;V5&amp;quot;, TxDb=txdb, upstream=3000, downstream=3000, color=rainbow(length(files)))
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The function line is very easy to draw, but the options to hone this
-graph need some tricky tips.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/peakHeat2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;The source code for generating this plot can be found in
-&lt;a href=&#34;https://gist.github.com/1852074&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>violin plot</title>
-      <link>http://guangchuangyu.github.io/2012/02/violin-plot/</link>
-      <pubDate>Tue, 07 Feb 2012 06:31:55 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2012/02/violin-plot/</guid>
-      <description>&lt;p&gt;ggplot2 0.9.0版本将在3月1号发布，改动较大，最近bioc mailing
-list也有诸多讨论，因为它导致了某些包编译出错（估计是NAMESPACE引起的）。&lt;/p&gt;
+&lt;h3 id=&#34;average-profile-of-chip-peaks-binding-to-tss-region:6a8a65de687a162a83f53f5c5a317279&#34;&gt;Average Profile of ChIP peaks binding to TSS region&lt;/h3&gt;
 
-&lt;p&gt;按照hadley的说法是这是为了把他个人的项目变成一个社区项目。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;plotAvgProf(files, TranscriptDb=txdb, weightCol=&amp;quot;V5&amp;quot;, upstream=3000, downstream=3000)
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;大多数的改动对用户来说是invisible的，用roxygen2去注释函数，核心代码使用S3重写，分离出一些特性（scales包）等。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/avgProf2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;最明显的是现在画图速度变快了，不过我觉得最让人兴奋的是&lt;code&gt;guide_legend()&lt;/code&gt;和&lt;code&gt;guide_colorbar()&lt;/code&gt;两个函数，可以修改legend.&lt;/p&gt;
+&lt;h3 id=&#34;genomic-annotation:6a8a65de687a162a83f53f5c5a317279&#34;&gt;Genomic Annotation&lt;/h3&gt;
 
-&lt;p&gt;画图的话，加了四个函数&lt;code&gt;geom_map()&lt;/code&gt;, &lt;code&gt;geom_raster()&lt;/code&gt;,
-&lt;code&gt;geom_dotplot()&lt;/code&gt;和&lt;code&gt;geom_violin()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;peakAnnoList=lapply(files, annotatePeak)
+plotAnnoPie(peakAnnoList[[1]])
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;violin plot结合了box plot和kernel density estimate，有了它，box
-plot基本可以扔了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/pieAnno.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2012/02/violin.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;plotAnnoBar(peakAnnoList)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/barAnno.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;distance-to-tss:6a8a65de687a162a83f53f5c5a317279&#34;&gt;Distance to TSS&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;plotDistToTSS(peakAnnoList)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/distTSS.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;overlap-of-peak-sets:6a8a65de687a162a83f53f5c5a317279&#34;&gt;Overlap of peak sets&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;genes= lapply(peakAnnoList, function(i) as.data.frame(i)$geneId)
+vennplot(genes)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/04/venn.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the future version, ChIPseeker will support statistical comparison
+among ChIP peak sets, and incorporate open access database GEO for users
+to compare their own dataset to those deposited in database. Significant
+overlap among peak sets can be used to infer cooperative regulation.
+This feature will soon be available.&lt;/p&gt;
 </description>
     </item>
     

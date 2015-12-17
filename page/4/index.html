@@ -81,6 +81,126 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/">ChIPseeker for ChIP peak annotation</a>
+      </h1>
+      <span class="post-date">Apr 13, 2014 &middot; 4 minute read &middot; <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseq">ChIPseq</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a>
+      </span>
+      
+      ChIPpeakAnno WAS the only R package for ChIP peak annotation. I used it for annotating peak in my recent study. I found it does not consider the strand information of genes. I reported the bug to the authors, but they are reluctant to change. So I decided to develop my own package, ChIPseeker, and it&rsquo;s now available in Bioconductor. &gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene) &gt; txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene &gt; require(ChIPseeker) &gt; peakfile = getSampleFiles()[[4]] &gt; peakfile [1] &quot;/usr/local/Cellar/r/3.1.0/R.framework/Versions/3.1/Resources/library/ChIPseeker/extdata//GEO_sample_data/GSM1295076_CBX6_BF_ChipSeq_mergedReps_peaks.bed.gz&quot; &gt; peakAnno &lt;- annotatePeak(peakfile, tssRegion=c(-3000, 1000), TxDb=txdb, annoDb=&quot;org.Hs.eg.db&quot;) &gt;&gt; loading peak file...
+      <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/03/boxplot/">boxplot</a>
+      </h1>
+      <span class="post-date">Mar 4, 2014 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2014/03/boxplot/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a>
+      </span>
+      
+      生物坑很多人画图只会直方图，统计只会T检验，在暨大见过太多的学生连T检验都不会，分不清SEM和SD的差别，也不清楚T检验那几个简单参数的含义。我写统计笔记也是因为不想重复性地跟学生讲解T检验。 Barplot和T test一样普遍而流行，barplot适合于表示计数数据和比例，显示比例也可以用pie plot，但直方图比饼图要好，因为人类的眼睛适合于比较高度，而不是弧度。 多半时候生物学数据并非简单的计数数据，对于测量数据，在展示数据分布时，很多人会使用他们熟悉的barplot，用高度来表示mean，然后再加上errorbar，这样展示数据，信息量是非常低的，使用boxplot能够提供更多的数据分布信息，能更好地展现数据，但可能很多人只会在excel里画barplot，Nature Methods 2013年的文章中有100个barplot图，而只有20个boxplot图，从这里就可以看出来，用boxplot的人远远没有barplot多，于是NPG怒了，写了两篇专栏文章Points of View: Bar charts and box plots和Points of Significance: Visualizing samples with box plots并且发表了一篇BoxPlotR: a web tool for generation of box plots方便大家画boxplot，如此简单的web tool能够发Nature Methods，实在是让人羡慕妒忌恨啊。 Boxplot从1970年由John Tukey提示，到现在已经40多年了，他有很多的变种，比如violin plot和beanplot，violin plot和beanplot是很像的，都是把box换成density curve，beanplot另外把数据点在中间用线条表示出来，这个很容易加上去，正如我在violin plot中把数据点加进去一样。同样可以把数据点加进boxplot中，还有很多手法来展示boxplot，比如可以用缺口(notch)形式来画boxplot，可以把中间的宽度表示为median值的置信空间。boxplot的宽度可以用样本量来归一化，如果sample size足够大的话，$mean\pm errorbar$ 不会超出box，可以很清晰把这个信息也展示在boxplot中。 如果数据量比较少，可以用scatterplot+errorbar的形式展示数据，正如我在Phosphoproteome profile of human lung cancer cell line A549中所画的图7。
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno</a>
+      </h1>
+      <span class="post-date">Jan 14, 2014 &middot; 5 minute read &middot; <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseq">ChIPseq</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a>
+      </span>
+      
+      I used R package ChIPpeakAnno for annotating peaks, and found that it handle the DNA strand in the wrong way. Maybe the developers were from the computer science but not biology background. &gt; require(ChIPpeakAnno) &gt; packageVersion(&quot;ChIPpeakAnno&quot;) [1] '2.10.0' &gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528)) &gt; data(TSS.human.GRCh37) &gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37) &gt; ap RangedData with 1 row and 9 value columns across 1 space space ranges | peak strand | 1 ENSG00000001461 1 [24736757, 24737528] | 1 + feature start_position end_position insideFeature 1 ENSG00000001461 ENSG00000001461 24742284 24799466 upstream distancetoFeature shortestDistance fromOverlappingOrNearest 1 ENSG00000001461 -5527 4756 NearestStart In this example, I defined a peak ranging from chr1:24736757 to chr1:24737528 and annotated the peak using ChIPpeakAnno package.
+      <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/">Install Emacs on Mac</a>
+      </h1>
+      <span class="post-date">Sep 10, 2013 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
+      </span>
+      
+      package manager 之前一直用NetBSD的pkgsrc做为各种Unix-like系统的包管理系统，pkgsrc在自己内部解决依赖关系，这点对于生产环境来说，是很好的一个优点，我通常会在服务器里装一个pkgsrc，在用户目录下，维护一套UNIX软件。但是用在自己的机器上，内部解决软件依赖，就是个缺点，浪费编译时间和硬盘空间。 Mac上可用的包管理系统很多，Fink移植于Debian的apt，Gentoo的portage也支持OS X。OS X是基于BSD的系统，BSD有自己的一套包管理系统，如FreeBSD的ports和NetBSD的pkgsrc，MacPorts可以看作是这一系列中的一个，不过它并不是OS X原生的，它只是OpenDarwin的子项目，所以和pkgsrc一个样，也是内部解决依赖，真正为OS X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里已有的软件。 自从用了Homebrew之后，再也不用为系统里有两套perl和python而crazy了，之前通过pkgsrc装的软件全删掉，改Homebrew来安装和管理。 如果软件没有被pkgsrc收录，而想通过pkgsrc来管理的话，那就得自己写makefile，而homebrew，则可以自动帮你生成Formula，比如我要安装blat： brew create http://users.soe.ucsc.edu/~kent/src/blatSrc35.zip 当然有可能需要编辑一下： brew edit blat 大多数情况下，并不需要修改，创建了formula之后，就可以使用homebrew安装。 brew install blat Emacs 虽然Homebrew是为OS X设计的，但它毕竟不是苹果的东西，无法管理系统内置的程序，OS X自带Emacs，版本22，已经很老了，而且没有图形界面，为了方便管理和升级，只能把系统自带的删掉，用Homebrew来安装新版的Emacs-24.3，安装时使用参数&ndash;cocoa，使得emacs能够识别OS X的keybinding，创建链接到Applications下，这样可以在Applications中双击运行。 rm /usr/bin/emacs rm -rf /usr/share/emacs brew install --cocoa emacs ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/ site-lisp 在.emacs.d目录下新建site-lisp目录，用于放置各种第三方的包，在.emacs里加入： (let ((default-directory &quot;~/.emacs.d/site-lisp/&quot;)) (normal-top-level-add-subdirs-to-load-path)) 让emacs启动时，加载site-lisp及其子目录。 eshell PATH eshell是个非常美好的存在，在windows下安装Emacs，就拥有了一个小型的shell，非常方便，当然它并不是bash，如果在windows下使用会缺少很多bash内置程序和许多的unix命令行工具，幸好可以配置emacs调用cygwin的bash。 eshell并不使用.bash_profile中定义的PATH，好在eshell中内置addpath程序，可以非常方便地把路径加入到PATH中去。 ~ $ addpath /usr/bin/ /bin/ /usr/sbin/ /sbin/ ~ $ addpath -b /usr/local/bin /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin ~ $ echo $PATH /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin 不过这种方式，只是临时加路径而已。 要想永久性把改变PATH变量，还是需要把它加入到.emacs中去。 (setenv &quot;PATH&quot; (concat &quot;/usr/local/bin:&quot; (getenv &quot;PATH&quot;))) (setq exec-path (append exec-path '(&quot;/usr/local/bin&quot; &quot;/opt/bin&quot;))) color-theme 安装color-theme，放在.emacs.d/site-lisp下，在.emacs里加入： (require 'color-theme) (color-theme-initialize) (color-theme-robin-hood) 启动时加载color-theme，搞代码很伤眼啊 =,= Maxima Maxima是一个计算机代数运算系统，它是由MIT于1968至1982年间开发的Macsyma系统演变而来的。MIT于1982年将Macsyma源代码交与美国能源部（DOE），这部分代码后来被称作DOE Macsyma。DOE Macsyma的一个版本从1982年起由德克萨斯大学的William F.
+      <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/">Installing Hackintosh</a>
+      </h1>
+      <span class="post-date">Mar 15, 2012 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
+      </span>
+      
+      初中时在杂志上看到苹果的彩壳机，从此叔就开始成为了苹果的脑残粉，还在K6-2和win98那会，就在玩macintosh主题。 本科时，通过PearPC来虚拟PowerPC，硬是在ATHLON XP 1700+这个破CPU上破了OS X Jaguar，那个慢啊，是无法忍受的。 后来，有了一台powerbook，却拿它来装gentoo和netbsd。从那里候开始，基本上就只用Linux/BSD。 再后来，又有了一台macbook pro，除了出差，放在家里倒也没怎么用。囧rz&hellip; 在国内的工作环境，用linux与人格格不入。但windows搞开发又有不顺手的。各种编译环境搭建起来让人作呕，而且没有shell，用起来就是不够爽，虽然emacs自带eshell，但在windows下缺少各种命令行程序，也只能算廖胜于无。 在北京那会，只用linux，因为有需要的时候可以通过局域网运行windows程序。到了暨大，一直用win7，因为质谱相关的很多软件都只跑在winddows下，后来发现和我没啥关系，那些东西都在质谱房里搞。得益于机房里有一台机器跑CentOS，每天通过ssh，也免去了切换系统的麻烦，但是时间长了，我还是觉得诸多不便。 前两天，突发奇想，不如把办公室里的dell机器装个黑苹果。可以应付国内的办公需求，同时也是个Unix-like系统，各种爽。 装起来倒也顺利，只是网卡、显卡、声卡全不认。搞起来倒也不难，就是kext有点难找。这种文件相当于Linux的kernel module。搞驱动的时候，让我有种10年前玩redhat 7.2时的感觉。 照例，有图有真相。
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/">draw chinese character Jiong using ggplot2</a>
+      </h1>
+      <span class="post-date">Feb 17, 2012 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
+      </span>
+      
+      The Chinese character Jiong (囧) is now widely used for expressing ideas or feelings such as annoyance, shock, embarrassment, awkwardness, scorn. The function plot of y=1/(x^2-1) looks very similar of this symbol. I use ggplot2 to draw the symbol of Jiong. It looks like: The function line is very easy to draw, but the options to hone this graph need some tricky tips. The source code for generating this plot can be found in github.
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2012/02/violin-plot/">violin plot</a>
+      </h1>
+      <span class="post-date">Feb 7, 2012 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2012/02/violin-plot/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
+      </span>
+      
+      ggplot2 0.9.0版本将在3月1号发布，改动较大，最近bioc mailing list也有诸多讨论，因为它导致了某些包编译出错（估计是NAMESPACE引起的）。 按照hadley的说法是这是为了把他个人的项目变成一个社区项目。 大多数的改动对用户来说是invisible的，用roxygen2去注释函数，核心代码使用S3重写，分离出一些特性（scales包）等。 最明显的是现在画图速度变快了，不过我觉得最让人兴奋的是guide_legend()和guide_colorbar()两个函数，可以修改legend. 画图的话，加了四个函数geom_map(), geom_raster(), geom_dotplot()和geom_violin(). violin plot结合了box plot和kernel density estimate，有了它，box plot基本可以扔了。
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</a>
+      </h1>
+      <span class="post-date">Aug 16, 2011 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
+      </span>
+      
+      In order to provide an option to compare graphs produced by basic internal plot function and ggplot2, I have recreated the figures in the book, 25 Recipes for Getting Started with R, with ggplot2. The code used to create the images is in separate paragraphs, allowing easy comparison. 1.16 Creating a Scatter Plot plot(cars) ggplot(cars,aes(speed,dist))+geom_point() 1.17 Creating a Bar Chart heights &lt;- tapply(airquality$Temp, airquality$Month, mean) par(mfrow=c(1,2)) barplot(heights) barplot(heights, main=&quot;Mean Temp. by Month&quot;, names.arg=c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;), ylab=&quot;Temp (deg.
+      <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">the batman equation</a>
       </h1>
       <span class="post-date">Aug 13, 2011 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/#disqus_thread">Comments</a>
@@ -105,126 +225,6 @@
       </span>
       
       买了苹果机，一直放在家里没用，准备开会带去用，拿过来装几个软件。 校园网用锐捷是个比较讨厌的东西。当年在华农，光这认证就搞了很久。 现在开源的认证客户端多了，搞起来也方便了，现在在linux下用的xmuruijie，就比当年mystar好用。 估计xmuruijie也是可以在苹果机上用的，依赖python，搞不好还有些modules要装，懒得去弄，搜了一下，找到mentohust，当然需要改一下mac address，用万能的ifconfig搞定。 为了编译软件，必要先装xcode，这个大家伙，4G多，中午挂到吃晚饭才下完。 然后就可以装各种open source的软件。 mac上有fink支持debian一样的apt-get，还有原生的macport，gentoo的portage也支持，我选择使用netbsd的pkgsrc来安装各种开源软件。 以前用过比较长时间的netbsd，用着比较顺手。 苹果机很酷的界面，又能使用熟悉的命令行，实在是爽-,- 更多截屏，请移步：http://guangchuangyu.github.io/2007/06/screenshot/
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/">Phosphoproteome profile of human lung cancer cell line A549</a>
-      </h1>
-      <span class="post-date">Nov 23, 2010 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/proteomics">Proteomics</a><a class="label" href="http://guangchuangyu.github.io/categories/publication">Publication</a>
-      </span>
-      
-      As an in vitro model for type II human lung cancer, A549 cells resist cytotoxicity via phosphorylation of proteins as demonstrated by many studies. However, to date, no large-scale phosphoproteome investigation has been conducted on A549. Here, we performed a systematical analysis of the phosphoproteome of A549 by using mass spectrometry (MS)-based strategies. This investigation led to the identification of 337 phosphorylation sites on 181 phosphoproteins. Among them, 67 phosphoproteins and 230 phosphorylation sites identified appeared to be novel with no previous characterization in lung cancer.
-      <a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2010/07/xming-windows%E4%B8%8B%E8%BF%9C%E7%A8%8Blinux%E6%A1%8C%E9%9D%A2/">Xming-windows下远程linux桌面</a>
-      </h1>
-      <span class="post-date">Jul 5, 2010 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2010/07/xming-windows%E4%B8%8B%E8%BF%9C%E7%A8%8Blinux%E6%A1%8C%E9%9D%A2/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/windows">Windows</a><a class="label" href="http://guangchuangyu.github.io/categories/linux">Linux</a>
-      </span>
-      
-      机房放着台机架机，闲着也是耗电，平时偶尔用putty登上去，没有图形界面还是有些不方便。 搜了一下，发现好几个软件可做这样的事，Xming是开源的，所以选择使用Xming+putty来远程连linux的桌面。 试用了一下，果然不错。 需要修改/etc/ssh/sshd_config，添加： X11Forwrding yes 需要配置一下PuTTY，Connection-SSh-X11中选中Enable X11forwarding 其中X display location里填入localhost:0。 运行Xming，再用putty连到服务器上，运行程序，就OK了。就好像windows下的本地程序一般。整合性很好。 以后就可以不用重启了。直接在win7里远程用机房的linux。 那台机子，网络中心的人给装的CentOS，我已经很多年没用redhat系列的系统了，CentOS是redhat企业版的社区版本。 redhat系列用yum去安装软件，有些像debian的apt，我总觉得yum这名字好奇怪，查了一下，是yellow dog updater,modified的缩写，这样看来，这工具首先是出于黄狗系统中，黄狗系统是power构架上的Linux，也是redhat系列的，本科的时候，本来想在G3的机子上装这个，后来玩gentoo去了。 可能是因为CentOS是企业版的缘故，很多软件都没有源，这也是apt的共同缺点，遇到官方源里没有的软件，就得自己手工添加源，所以还是gentoo和BSD系列好，完全不需要知道软件在那里，通常都懒得弄，直接下源码编译，比如要装R的时候，发现一堆包没装，装完了gcc/g77/g++等编译器之后，再编辑还是出错，一堆libs没装，还好这些都能通过yum去装，如果依赖的包没有yum的源中，自己手工解决依赖关系，虽然也简单，但挺烦人的。这也是gentoo和BSD系列的好处之一，基于源码编译，装完系统之后，手工去编译一个软件，很少有依赖包需要安装，该有的开发库基本上系统都装好了。 CentOS源里的软件也比较老，装emacs，发现是老版本，还是gtk界面的，自己下cvs版本，编译。 .emacs里设置一下，也OK。 (set-default-font &quot;Monospace-14&quot;) 以前曾在redhat上装过apt，显然现在有yum就不需要了，用了BSD和gentoo之后，感觉还是不爽，没玩过把gentoo的portage移植过来，倒是玩过netbsd的pkgsrc装到redhat上，pkgsrc本身就支持其它的Unix和Linux系统，源生态，安装方便，相当推荐。 曾经还制作过eva和xlyrics的pkgsrc。
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/">GOSemSim an R package for measuring semantic similarity among GO terms and gene products</a>
-      </h1>
-      <span class="post-date">May 28, 2010 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/publication">Publication</a><a class="label" href="http://guangchuangyu.github.io/categories/gosemsim">GOSemSim</a>
-      </span>
-      
-      Abstract SUMMARY: The semantic comparisons of Gene Ontology (GO) annotations provide quantitative ways to compute similarities between genes and gene groups, and have became important basis for many bioinformatics analysis approaches. GOSemSim is an R package for semantic similarity computation among GO terms, sets of GO terms, gene products and gene clusters. Four information content (IC)- and a graph-based methods are implemented in the GOSemSim package, multiple species including human, rat, mouse, fly and yeast are also supported.
-      <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2008/09/%E9%80%9A%E8%BF%87%E5%B1%80%E5%9F%9F%E7%BD%91%E5%9C%A8linux%E4%B8%8B%E4%BD%BF%E7%94%A8windows%E7%9A%84%E7%A8%8B%E5%BA%8F/">通过局域网在linux下使用windows的程序</a>
-      </h1>
-      <span class="post-date">Sep 22, 2008 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2008/09/%E9%80%9A%E8%BF%87%E5%B1%80%E5%9F%9F%E7%BD%91%E5%9C%A8linux%E4%B8%8B%E4%BD%BF%E7%94%A8windows%E7%9A%84%E7%A8%8B%E5%BA%8F/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/linux">Linux</a><a class="label" href="http://guangchuangyu.github.io/categories/windows">Windows</a>
-      </span>
-      
-      用了好多年linux，现在用windows越来越少了，但是还是得用。没办法，上taobao买个东西，上网银都得用ie，有时候还得用office等其它一些软件。 实验室里有台机子是做文件服务的，装的是windows 2003 server。之前使用rdesktop远程桌面，最近发现配合seamlessrdp可以让rdesktop实现更好的效果，运行windows程序，就像linux中原生程序一样。。 下载 seamlessrdp.zip 解压丢在C盘。 在linux下运行这样的指令 rdesktop -A -s &ldquo;c:\seamlessrdp/seamlessrdpshell.exe C:\Program Files\Internet Explorer\iexplore.exe&rdquo; ip:3389 -u administrator -p password 就可以在linux下运行服务器端的ie了。windows下所有程序都没问题。 这个指令有点长，最好是写个shell脚本，每次运行实际上是进行一次远程连接，windows2003默认只能支持两个远程的连接，所以只能运行两个。正确的做法是运行explorer，然后在里面双击程序，这样可以运行N个程序。运行的程序跟linux下native的程序是一样的。但是读写都在远程机子上，最好架个samba，这样两个机器就可以互相读写文件。 ps: tsclient做为远程桌面客户端更强大点，不单支持RDP，还支持VNC,XDMCP。
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2008/08/gosemsim/">GOSemSim</a>
-      </h1>
-      <span class="post-date">Aug 11, 2008 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2008/08/gosemsim/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/gosemsim">GOSemSim</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a>
-      </span>
-      
-      第一次写软件包，计算基因和GO的语义相似性。 实现Wang的方法，基于GO的图结构。 以及四种基于信息含量的计算方法（Resnik, Jiang, Lin, Rel）。 可以从Bioconductor下载到。 http://bioconductor.org/packages/release/bioc/html/GOSemSim.html http://bioconductor.org/packages/devel/bioc/html/GOSemSim.html 支持human, rat, mouse, fly, yeast, zebrafish,worm, E coli, arabidopsis等物种。 下载量统计如下：
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2007/06/screenshot/">screenshot</a>
-      </h1>
-      <span class="post-date">Jun 16, 2007 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2007/06/screenshot/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/linux">Linux</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
-      </span>
-      
-      OS 9.2 xfce4.2 xfce4.4 qvwm icewm fluxbox wmaker 越来越喜欢windowmaker&hellip;&hellip;喜欢它最小化到图标 wmii 最后是wmii，全屏的感觉就是爽。
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2007/06/newton-raphson-method%E4%BC%B0%E7%AE%97%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%B9/">Newton-Raphson Method估算函数的根</a>
-      </h1>
-      <span class="post-date">Jun 2, 2007 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2007/06/newton-raphson-method%E4%BC%B0%E7%AE%97%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%B9/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/calculus">Calculus</a><a class="label" href="http://guangchuangyu.github.io/categories/programming">Programming</a><a class="label" href="http://guangchuangyu.github.io/categories/c">C</a>
-      </span>
-      
-      Newton-Raphson Method 曲线f(x)有根c,取曲线上一点$(x_1,f(x_1))$, 过此点的切线交x轴$x_2$,过曲线上$(x_2,f(x_2))$的切线交x轴$x_3$，如此反复得到一个序列 $x_1,x_2,\cdot \cdot \cdot,x_n$ 逼近c值. 过$(x_n,f(x_n))$的切线方程为 $y-f(x_n) = f'(x_n)\,(x-x_n)$,假设此方程与x轴的交点为$x_{n+1}$, 即有: $0 - f(x_n) = f'(x_n)(x_n+1 - x_n)$， 即$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ &lt;Eq. 1&gt;. 下面利用此法来求一个数的开方。 $f(x) = x^2 - a$ 有根$\sqrt{a}$, 由$f'(x_n) = 2x_n$, 代入式&lt;Eq. 1&gt;可得$x_{n+1} = (x_n + a/x_n)/2$; 当i -&gt; INF 时, $x_i$ -&gt; $\sqrt{a}$; C implementation #include int main(void){ int a,error; double x0,x1 = 1; do { printf(&quot;Input a positive integer: &quot;); scanf(&quot;%d&quot;,&amp;a); if
-      <a href="http://guangchuangyu.github.io/2007/06/newton-raphson-method%E4%BC%B0%E7%AE%97%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%B9/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">我制作的pkgsrc</a>
-      </h1>
-      <span class="post-date">May 16, 2007 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a>
-      </span>
-      
-      xlyrics: unix下的歌词秀软件 点此下载 EVA: KDE下的QQ客户端 点此下载 #cd /usr/pkgsrc/wip-cn #tar xjvf eva.tar.bz2 #cd eva #make install clean 就可以啦。在我的机子（NetBSD 3.0.1 macppc）上测试通过。。 更新到eva-20070327 参考资料：http://www.netbsd.org/docs/pkgsrc/
       
       
     </div>
@@ -258,12 +258,15 @@
         ><a href="/page/5/">5</a></li>
         
         <li
+        ><a href="/page/6/">6</a></li>
+        
+        <li
         >
         <a href="/page/5/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/5/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/6/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

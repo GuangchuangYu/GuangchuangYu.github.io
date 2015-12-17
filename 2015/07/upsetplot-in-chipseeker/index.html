@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>upsetplot in ChIPseeker &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>upsetplot in ChIPseeker</h1>
+    <span class="post-date">Jul 28, 2015 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/biology">Biology</a><a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a>
+    </span>
+    
+
+<p><a href="http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/">ChIPseeker</a>
+is an R package for ChIP peak annotation, comparison and visualization.</p>
+
+<p>We have implemented <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/">several visualization
+methods</a>,
+including
+<em><a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/">vennpie</a></em>
+that was designed for viewing annotation overlap as shown below:
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/10/2014-09-30-142735_471x303_scrot.png" alt="" /></p>
+
+<p>Not all overlap information can be demonstrated in vennpie.
+<a href="http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html">Upset</a>
+is an effective way to visualize sets and intersections. We import
+<em>upset</em> function from <a href="https://github.com/cran/UpSetR">UpSetR</a> package
+and implement <em>upsetplot</em> function, that can visualize ChIP annotation
+overlap directly with output of <em>annotatePeak</em>.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">library(ChIPseeker)
+peak_file &lt;- getSampleFiles()[[4]]
+x &lt;- annotatePeak(peak_file)
+upsetplot(x)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset.png" alt="" /></p>
+
+<p>We add a new parameter, <em>vennpie=FALSE</em>, in upsetplot. If vennpie=TRUE,
+a vennpie will be added as show below:</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset_vennpie.png" alt="" /></p>
+
+<p>Although upset contains more information, vennpie is more intuitive and
+the final figure is more compact. More information is available at the
+<a href="http://www.bioconductor.org/packages/3.2/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html">online
+vignette</a>.</p>
+
+<h3 id="reference:07e5a5bc7f123188a27a1c1e28238bcc">Reference</h3>
+
+<ol>
+<li>Alexander Lex, and Gehlenborg Nils. “Points of View: Sets and
+Intersections.” Nature Methods 11, no. 8 (August 2014): 779–779.
+doi:<a href="http://doi.org/10.1038/nmeth.3033">10.1038/nmeth.3033</a>.</li>
+<li>Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. “ChIPseeker: An
+R/Bioconductor Package for ChIP Peak Annotation, Comparison and
+Visualization.” Bioinformatics 31, no. 14 (July 15, 2015): 2382–83.
+doi:<a href="http://doi.org/10.1093/bioinformatics/btv145">10.1093/bioinformatics/btv145</a>.</li>
+<li>Conway Jake, and Gehlenborg Nils, &ldquo;UpSetR&rdquo;,
+<a href="https://github.com/cran/UpSetR">https://github.com/cran/UpSetR</a>.</li>
+</ol>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+
