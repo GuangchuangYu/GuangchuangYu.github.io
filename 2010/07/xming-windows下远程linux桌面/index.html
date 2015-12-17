@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Xming-windows下远程linux桌面 &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">Blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>Xming-windows下远程linux桌面</h1>
+    <span class="post-date">Jul 5, 2010 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2010/07/xming-windows%E4%B8%8B%E8%BF%9C%E7%A8%8Blinux%E6%A1%8C%E9%9D%A2/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/windows">Windows</a><a class="label" href="http://guangchuangyu.github.io/categories/linux">Linux</a>
+    </span>
+    <p>机房放着台机架机，闲着也是耗电，平时偶尔用putty登上去，没有图形界面还是有些不方便。</p>
+
+<p>搜了一下，发现好几个软件可做这样的事，Xming是开源的，所以选择使用Xming+putty来远程连linux的桌面。</p>
+
+<p>试用了一下，果然不错。</p>
+
+<p>需要修改/etc/ssh/sshd_config，添加：</p>
+
+<pre><code>X11Forwrding yes
+</code></pre>
+
+<p>需要配置一下PuTTY，<code>Connection-SSh-X11</code>中选中<code>Enable X11forwarding</code>
+其中<code>X display location</code>里填入<code>localhost:0</code>。</p>
+
+<p>运行Xming，再用putty连到服务器上，运行程序，就OK了。就好像windows下的本地程序一般。整合性很好。
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2010/07/putty.png" alt="" /></p>
+
+<p>以后就可以不用重启了。直接在win7里远程用机房的linux。
+那台机子，网络中心的人给装的CentOS，我已经很多年没用redhat系列的系统了，CentOS是redhat企业版的社区版本。</p>
+
+<p>redhat系列用yum去安装软件，有些像debian的apt，我总觉得yum这名字好奇怪，查了一下，是<code>yellow dog updater,modified</code>的缩写，这样看来，这工具首先是出于黄狗系统中，黄狗系统是power构架上的Linux，也是redhat系列的，本科的时候，本来想在G3的机子上装这个，后来玩gentoo去了。</p>
+
+<p>可能是因为CentOS是企业版的缘故，很多软件都没有源，这也是apt的共同缺点，遇到官方源里没有的软件，就得自己手工添加源，所以还是gentoo和BSD系列好，完全不需要知道软件在那里，通常都懒得弄，直接下源码编译，比如要装R的时候，发现一堆包没装，装完了gcc/g77/g++等编译器之后，再编辑还是出错，一堆libs没装，还好这些都能通过yum去装，如果依赖的包没有yum的源中，自己手工解决依赖关系，虽然也简单，但挺烦人的。这也是gentoo和BSD系列的好处之一，基于源码编译，装完系统之后，手工去编译一个软件，很少有依赖包需要安装，该有的开发库基本上系统都装好了。</p>
+
+<p>CentOS源里的软件也比较老，装emacs，发现是老版本，还是gtk界面的，自己下cvs版本，编译。
+<code>.emacs</code>里设置一下，也OK。 <code>(set-default-font &quot;Monospace-14&quot;)</code></p>
+
+<p>以前曾在redhat上装过apt，显然现在有yum就不需要了，用了BSD和gentoo之后，感觉还是不爽，没玩过把gentoo的portage移植过来，倒是玩过netbsd的pkgsrc装到redhat上，<a href="http://www.netbsd.org/docs/software/packages.html">pkgsrc</a>本身就支持其它的Unix和Linux系统，源生态，安装方便，相当推荐。</p>
+
+<p>曾经还制作过<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">eva和xlyrics的pkgsrc</a>。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+
