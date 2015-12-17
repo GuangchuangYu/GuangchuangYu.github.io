@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>ggtree with funny fonts &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>ggtree with funny fonts</h1>
+    <span class="post-date">Jan 1, 0001 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/1/01/ggtree-with-funny-fonts/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a><a class="label" href="http://guangchuangyu.github.io/categories/ggtree">ggtree</a>
+    </span>
+    <p><a href="http://cran.r-project.org/web/packages/showtext/index.html">showtext</a>
+is a neat solution to use various types of fonts in R graphs and make it
+easy to use funny fonts. With
+<a href="http://cran.r-project.org/web/packages/showtext/index.html">showtext</a>,
+we can draw phylogenetic tree with different types of fonts even with
+symbolic/icon fonts.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">require(showtext)
+
+font.add.google(&quot;Gochi Hand&quot;, &quot;gochi&quot;)
+font.add.google(&quot;Rock Salt&quot;, &quot;rock&quot;)
+
+link = &quot;http://img.dafont.com/dl/?f=wm_people_1&quot;;
+download.file(link, &quot;wmpeople1.zip&quot;, mode = &quot;wb&quot;);
+unzip(&quot;wmpeople1.zip&quot;);
+font.add(&quot;wmpeople1&quot;, &quot;wmpeople1.TTF&quot;);
+
+link = &quot;http://img.dafont.com/dl/?f=emoticons&quot;;
+download.file(link, &quot;emoticons.zip&quot;, mode = &quot;wb&quot;);
+unzip(&quot;emoticons.zip&quot;);
+font.add(&quot;emoticons&quot;, &quot;emoticons.ttf&quot;);
+
+
+showtext.auto()
+set.seed(2015-05-14)
+
+library(ggplot2)
+library(ggtree)
+
+tree &lt;- rtree(30)
+ggtree(tree, color=&quot;darkgreen&quot;) + geom_tiplab(family=&quot;gochi&quot;) + theme_classic() +
+    theme(axis.text.x=element_text(size=rel(4), family=&quot;emoticons&quot;, color=&quot;firebrick&quot;)) +
+        scale_y_continuous(breaks=seq(0, 30, 4), labels=letters[c(12:17, 20, 21)]) +
+            theme(axis.text.y=element_text(size=rel(4), family=&quot;wmpeople1&quot;, color=&quot;#FDAC4F&quot;)) +
+                annotate(&quot;text&quot;, x=2, y=18, label=&quot;Have fun with ggtree!&quot;,
+                         family=&quot;rock&quot;, angle=30, size=12, color=&quot;steelblue&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/f6217cb7815a824b0a273e6f5147f01a9ebb367a/Bioconductor/ggtree/ggtree_funny_font.png" alt="" /></p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">download.file(&quot;http://dl.dafont.com/dl/?f=people_freak&quot;, &quot;people_freak.zip&quot;, mode=&quot;wb&quot;)
+unzip(&quot;people_freak.zip&quot;)
+font.add(&quot;people_freak&quot;, &quot;People_freak.ttf&quot;)
+ggtree(rtree(10)) + geom_text(aes(label=node, color=isTip), family=&quot;people_freak&quot;, hjust=0) 
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/524ea41306f6d9a93251eaf9e193a264e5d4dbd4/Bioconductor/ggtree/ggtree_funny_font2.png" alt="" />
+Funny fonts can be downloaded from
+<a href="http://www.dafont.com/search.php?q=icon">1</a>,
+<a href="http://www.dafont.com/search.php?q=people">2</a> and
+<a href="http://www.fontspace.com/category/people">3</a>.</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

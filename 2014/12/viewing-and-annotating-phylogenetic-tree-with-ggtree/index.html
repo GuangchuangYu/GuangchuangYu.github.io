@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>viewing and annotating phylogenetic tree with ggtree &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>viewing and annotating phylogenetic tree with ggtree</h1>
+    <span class="post-date">Dec 21, 2014 &middot; 3 minute read &middot; <a href="http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/evolution">Evolution</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a><a class="label" href="http://guangchuangyu.github.io/categories/ggtree">ggtree</a>
+    </span>
+    <p>When I need to annotate nucleotide substitutions in the phylogenetic
+tree, I found that all the software are designed to display the tree but
+not annotating it. Some of them may support annotating the tree with
+specific data such as bootstrap values, but they are restricted to a few
+supported data types. It is hard/impossible to inject user specific
+data.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/2014-12-21-145753_579x436_scrot.png" alt="" />
+I decided to implement my own one by extending the ggplot2 package.
+There are other R packages that implemented tree viewer using ggplot2,
+including OutbreakTools, phyloseq and ggphylo, but all of them only
+create complex tree view function for their specific needs. They are
+just classical tree viewers that only viewing the tree or annotating a
+specific data type. The good parts of ggplot2 are not available in these
+packages. They lack of flexibilities of annotating phylogenetic tree by
+diverse user inputs. I develop ggtree, which is based on grammar of
+graphics and will takes all the good parts of ggplot2.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">nwk &lt;- system.file(&quot;extdata&quot;, &quot;sample.nwk&quot;, package = &quot;ggtree&quot;)
+library(ape)
+tree &lt;- read.tree(nwk)
+library(ggplot2)
+library(ggtree)
+ggplot(tree, aes(x, y)) + geom_tree() + theme_tree() + xlab(&quot;&quot;) + ylab(&quot;&quot;)
+</code></pre>
+
+<p>It extends ggplot2 to support tree objects and implements a geom_tree()
+layer to draw the tree.</p>
+
+<p>The ggtree package provides a function, ggtree, for shortcut of
+<code>ggplot()+geom_tree()+theme_tree()</code>.</p>
+
+<p>It supports several tree objects including phylo that defined in ape,
+phylo4 that defined in phylobase and jplace that defined within the
+ggtree package.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">p1 &lt;- ggtree(tree) + ggtitle(&quot;tree of phylo object&quot;)
+tr2 &lt;- as(tree, &quot;phylo4&quot;)
+p2 &lt;- ggtree(tr2) + ggtitle(&quot;tree of phylo4 object&quot;)
+jpf &lt;- system.file(&quot;extdata&quot;, &quot;sample.jplace&quot;, package=&quot;ggtree&quot;)
+jp &lt;- read.jplace(jpf)
+p3 &lt;- ggtree(jp) + ggtitle(&quot;tree of jplace object&quot;)
+library(gridExtra)
+grid.arrange(p1, p2, p3, ncol=3)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_objects.png" alt="" /></p>
+
+<p>With this implementation, it is possible to inject user input. But is it
+easy? The answer is yes and no. It may depends on user&rsquo;s ggplot2
+experiences. To place the input data at the correct position, you should
+know how the tree was layout. It may be easy for an experienced user,
+but hard for newbie. Most of us are impatient and reluctant to learn, so
+I should create a way that is easy to follow. It&rsquo;s not a good idea to
+implement unnecessary geom_XXX layer, for it violates the great idea of
+taking all the good parts of ggplot2, and it will violate the consistent
+function calls of <code>geom_XXX</code>. Thanks to my sleep disorder, I came out
+with an operator <strong><code>%&lt;+%</code></strong> for injecting input data to the tree view.
+After the injection, the data is visible to all the geom_XXX layers.</p>
+
+<pre><code>p &lt;- ggtree(tree)
+
+print(dd)
+taxa    place   value
+M   NA  55.9
+A   GZ  65.6
+C   GZ  59.3
+I   CZ  78.5
+E   GZ  62.9
+D   GZ  64.1
+J   CZ  62.3
+K   CZ  79.1
+B   GZ  89.0
+L   CZ  57.1
+G   HK  66.4
+H   HK  61.6
+F   HK  59.9
+</code></pre>
+
+<p>Suppose we have a tree view p, and input data dd, we can attach the data
+to the tree and add a layer of tip labels and colored by place.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">p &lt;- p %&lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
+print(p)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_place.png" alt="" /></p>
+
+<p>Once the data is attached, it is always attached, and we can add more
+layers easily.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
+  geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_place2.png" alt="" /></p>
+
+<p>The package is now available via github,
+<a href="https://github.com/GuangchuangYu/ggtree">https://github.com/GuangchuangYu/ggtree</a>.</p>
+
+<p>Suggestions, comments and feature request are all welcome. Let&rsquo;s make it
+an easy to use and feature-riched package for viewing and annotating
+phylogenetic trees.</p>
+
+<p>At last, wish you a merry christmas :)
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/IMG_5755.jpg" alt="" /></p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>ggtree annotate phylogenetic tree with local images &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>ggtree annotate phylogenetic tree with local images</h1>
+    <span class="post-date">Aug 1, 2015 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/evolution">Evolution</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/ggtree">ggtree</a>
+    </span>
+    <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/Screenshot%202015-08-01%2020.53.50.png" alt="" /></p>
+
+<p>In <a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>,
+we provide a function <em>annotation_image</em> for annotating phylogenetic
+tree with images.</p>
+
+<p>To demonstrate the usage, I created a tree view from a random tree as
+shown below:</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">set.seed(2015-08-01)
+p &lt;- ggtree(rtree(10)) + xlim(0, 5)+ ylim(0, 11)
+</code></pre>
+
+<p>We need a <em>data.frame</em> that contains information of taxa labels and
+image paths. Here I created such a <em>data.frame</em> containing image files
+downloaded from phylopic.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; img_info
+  V1                                           V2
+1 t1 25f165fa-f279-4f7c-9869-c55be251ffb8.512.png
+2 t2 5d7ab302-960b-4db7-9dfd-215175a55906.512.png
+3 t3 6fbe723c-3a6b-4d06-8680-bb2a52113df4.512.png
+4 t4 d83c02ca-76ed-436b-83ae-7f98d7297be9.512.png
+5 t5 ee764929-c865-44f6-b5db-b4e7d5693d1a.512.png
+</code></pre>
+
+<p>Annotating tree with images is simple in
+<a href="http://www.bioconductor.org/packages/ggtree">ggtree</a> by using
+<em>annotation_image</em> function.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">annotation_image(p, img_info)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p>By default, all the images will align to the right hand side. We can use
+<em>align=FALSE</em>, to disable it.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">annotation_image(p, img_info, align=FALSE)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-3-1.png" alt="" /></p>
+
+<p>We can change the type and size of lines, as demonstrated below:</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">annotation_image(p, img_info, linetype=&quot;dashed&quot;, linesize=0.2)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-4-1.png" alt="" /></p>
+
+<p>The width of the images were controlled by width parameter, and the
+height will automatically determined by image dimension.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">annotation_image(p, img_info, width = .2, linetype=&quot;dashed&quot;, linesize=0.2)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-5-1.png" alt="" /></p>
+
+<p>In the following example, we add tip labels to the tree.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">p &lt;- p+geom_tiplab(align=TRUE, linetype=&quot;dashed&quot;, linesize=.2)
+print(p)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-6-1.png" alt="" /></p>
+
+<p>If we also want to add the image and align them, we don&rsquo;t want to show
+the line added by <em>annotation_image</em> function. This can be achieved by
+setting <em>linetype=NULL</em>. By default the images and tip labels will be
+overlapped, we can move the images by <em>offset</em> parameter.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">p %&gt;% annotation_image(img_info, width=.2, linetype=NULL, offset=.3)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-7-1.png" alt="" /></p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

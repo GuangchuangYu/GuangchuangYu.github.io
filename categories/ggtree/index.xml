@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ggtree on G. Yu</title>
+    <link>http://guangchuangyu.github.io/categories/ggtree/</link>
+    <description>Recent content in Ggtree on G. Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Dec 2015 11:11:11 +0800</lastBuildDate>
+    <atom:link href="http://guangchuangyu.github.io/categories/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>use emoji font in R</title>
+      <link>http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/</link>
+      <pubDate>Wed, 16 Dec 2015 11:11:11 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/</guid>
+      <description>
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot 2015-12-16 10.55.49.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I have played with emoji in &lt;code&gt;R&lt;/code&gt; for a while. My solution of using it is different from what implemented in &lt;a href=&#34;https://github.com/dill/emoGG/&#34;&gt;emoGG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;emoGG&lt;/code&gt; is a good attemp to add &lt;code&gt;emoji&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt;. It render &lt;code&gt;emoji&lt;/code&gt; picture (png) and creat a layer, &lt;code&gt;geom_emoji&lt;/code&gt;, to add emoji.&lt;/p&gt;
+
+&lt;p&gt;In my opinion, &lt;code&gt;emoji&lt;/code&gt; should be treated as ordinary font in user interface, albeit it maynot be true internally.&lt;/p&gt;
+
+&lt;p&gt;It would be more flexible if we can use emoji as ordinary font and in this way user don&amp;rsquo;t need to learn extra stuff.&lt;/p&gt;
+
+&lt;p&gt;I implemented my solution of using &lt;code&gt;emoji&lt;/code&gt; in the R package &lt;a href=&#34;https://github.com/GuangchuangYu/emojifont&#34;&gt;emojifont&lt;/a&gt;. The package is very simple, pack some emoji fonts (currently only &lt;a href=&#34;https://github.com/MorbZ/OpenSansEmoji&#34;&gt;OpenSansEmoji.ttf&lt;/a&gt;) and use &lt;a href=&#34;https://github.com/yixuan/showtext&#34;&gt;showtext&lt;/a&gt; to render the fonts, then we can use the font in either base plot or ggplot2.&lt;/p&gt;
+
+&lt;h1 id=&#34;emojifont:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;emojifont&lt;/h1&gt;
+
+&lt;h2 id=&#34;installation:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;devtools::install_github(&amp;quot;GuangchuangYu/emojifont&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;load-emoji-font:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;load Emoji font&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(emojifont)
+## list available emoji fonts
+list.emojifonts()
+
+## [1] &amp;quot;OpenSansEmoji.ttf&amp;quot;
+
+## load selected emoji font
+load.emojifont(&#39;OpenSansEmoji.ttf&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;emoji-characters:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Emoji characters&lt;/h1&gt;
+
+&lt;p&gt;To use &lt;code&gt;emoji&lt;/code&gt;, we need to use their corresponding unicode. Emoji unicode can be found in &lt;a href=&#34;http://apps.timwhitlock.info/emoji/tables/unicode&#34;&gt;http://apps.timwhitlock.info/emoji/tables/unicode&lt;/a&gt;, or searched using &lt;a href=&#34;https://github.com/richfitz/remoji&#34;&gt;remoji&lt;/a&gt; package.&lt;/p&gt;
+
+&lt;h1 id=&#34;emoji-in-r-plot:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Emoji in R plot&lt;/h1&gt;
+
+&lt;h2 id=&#34;base-plot:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;base plot&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(remoji)
+set.seed(123)
+x &amp;lt;- rnorm(10)
+set.seed(321)
+y &amp;lt;- rnorm(10)
+plot(x, y, cex=0)
+text(x, y, labels=emoji(&#39;cow&#39;), cex=1.5, col=&#39;steelblue&#39;, family=&#39;OpenSansEmoji&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/base_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ggplot2:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;ggplot2&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;d &amp;lt;- data.frame(x=x, y=y,
+     label = sample(c(emoji(&#39;cow&#39;), emoji(&#39;camel&#39;)), 10, replace=TRUE),
+     type = sample(LETTERS[1:3], 10, replace=TRUE))
+require(ggplot2)
+ggplot(d, aes(x, y, color=type, label=label)) + 
+    geom_text(family=&amp;quot;OpenSansEmoji&amp;quot;, size=5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/ggplot_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can also use &lt;code&gt;emoji&lt;/code&gt; in title, legend or axis label.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;dd=data.frame(x=emoji(c(&amp;quot;satisfied&amp;quot;, &amp;quot;disapointed&amp;quot;)), y=c(50, 10))
+emoji_text=element_text(family=&amp;quot;OpenSansEmoji&amp;quot;, size=20)
+ggplot(dd, aes(x, y)) + geom_bar(stat=&#39;identity&#39;, aes(fill=x)) + 
+     ggtitle(paste(emoji(c(&amp;quot;+1&amp;quot;, &amp;quot;-1&amp;quot;)), collapse=&amp;quot; &amp;quot;))+ 
+        theme(axis.text.x = emoji_text, legend.text=emoji_text, title=emoji_text) + 
+            xlab(NULL)+ylab(NULL)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot 2015-12-16 11.10.51.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ggtree:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;ggtree&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggtree)
+require(colorspace)
+
+tree_text=paste0(
+    &amp;quot;(&amp;quot;,&amp;quot;(&amp;quot;,&amp;quot;(&amp;quot;,
+       &amp;quot;(&amp;quot;,
+            &amp;quot;(&amp;quot;,
+               emoji(&amp;quot;cow&amp;quot;), &amp;quot;,&amp;quot;,
+               &amp;quot;(&amp;quot;,
+                  emoji(&amp;quot;whale&amp;quot;),&amp;quot;,&amp;quot;,
+                  emoji(&amp;quot;dolphin&amp;quot;),
+               &amp;quot;)&amp;quot;,
+            &amp;quot;),&amp;quot;,
+            &amp;quot;(&amp;quot;,
+               emoji(&#39;pig2&#39;),&amp;quot;,&amp;quot;,
+               emoji(&#39;boar&#39;),
+            &amp;quot;)&amp;quot;,
+       &amp;quot;),&amp;quot;,
+       emoji(&amp;quot;camel&amp;quot;),
+    &amp;quot;),&amp;quot;, emoji(&amp;quot;fish&amp;quot;), &amp;quot;),&amp;quot;, 
+emoji(&amp;quot;seedling&amp;quot;), &amp;quot;);&amp;quot;)
+
+ggtree(read.tree(text=tree_text)) + xlim(NA, 7) +
+   geom_tiplab(family=&amp;quot;OpenSansEmoji&amp;quot;, size=10,
+               color=rainbow_hcl(8))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/ggtree_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;apple-color-emoji:eff1c6109e2664cf9357286de69e0f0b&#34;&gt;Apple Color Emoji&lt;/h1&gt;
+
+&lt;p&gt;Although &lt;code&gt;R&lt;/code&gt;&amp;rsquo;s graphical devices don&amp;rsquo;t support &lt;code&gt;AppleColorEmoji&lt;/code&gt; font, it&amp;rsquo;s still possible to use it. We can export the &lt;code&gt;plot&lt;/code&gt; to &lt;code&gt;svg&lt;/code&gt; file and render it in &lt;code&gt;Safari&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(gridSVG)
+p &amp;lt;-  ggtree(read.tree(text=tree_text), size=2) + geom_tiplab(size=20)
+p &amp;lt;- p %&amp;gt;% phylopic(&amp;quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&amp;quot;, color=&amp;quot;firebrick&amp;quot;, alpha = .3)
+p &amp;lt;- p + xlim(NA, 7) + ylim(NA, 8.5)
+p
+ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/inst/figures/apple_emoji.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>subsetting data in ggtree</title>
+      <link>http://guangchuangyu.github.io/2015/09/subsetting-data-in-ggtree/</link>
+      <pubDate>Thu, 24 Sep 2015 01:20:21 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/09/subsetting-data-in-ggtree/</guid>
+      <description>&lt;p&gt;Subsetting is commonly used in ggtree as we would like to for example
+separating internal nodes from tips. We may also want to display
+annotation to specific node(s)/tip(s).&lt;/p&gt;
+
+&lt;p&gt;Some software may stored clade information (e.g. bootstrap value) as
+internal node labels. Indeed we want to manipulate such information and
+taxa labels separately.&lt;/p&gt;
+
+&lt;p&gt;In current ggplot2 (version=1.0.1, access date:2015-09-23), it support
+&lt;em&gt;subset&lt;/em&gt;. For instance:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ggplot2)
+library(ggtree)
+tree=read.tree(text=&amp;quot;((A:2,B:2)95:2,(C:2,D:2)100:2);&amp;quot;)
+ggtree(tree) + geom_text(aes(label=label), subset=.(!isTip), hjust=-.2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But this feature was removed in github version of ggplot2 and will not
+be available in next release.&lt;/p&gt;
+
+&lt;p&gt;In github version of ggtree, we implemented geom_text2, geom_point2,
+and geom_segment2, that works exactly like geom_text, geom_point and
+geom_segment respectively with &lt;em&gt;subset&lt;/em&gt; supported. The syntax is
+slightly different.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;ggtree(tree) + geom_text2(aes(label=label, subset=!isTip), hjust=-.2) +
+        geom_point2(aes(subset=!isTip), color=&amp;quot;red&amp;quot;, size=3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/subsetting.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: The example was from the discussion of &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues/13&#34;&gt;github
+issue&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>comic phylogenetic tree with ggtree and comicR</title>
+      <link>http://guangchuangyu.github.io/2015/09/comic-phylogenetic-tree-with-ggtree-and-comicr/</link>
+      <pubDate>Tue, 08 Sep 2015 01:15:26 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/09/comic-phylogenetic-tree-with-ggtree-and-comicr/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;
+applies the concepts of grammar of graphic in phylogenetic tree
+presentation and make it easy to add multiple layers of text and even
+figures above a 🌲.&lt;/p&gt;
+
+&lt;p&gt;Here, I cartoonize a phylogenetic tree generated by
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;
+with &lt;a href=&#34;https://github.com/timelyportfolio/comicR&#34;&gt;comicR&lt;/a&gt;, which is a
+funny package to generate comic (xkcd-like) graph in R. Have fun with
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;
+and &lt;a href=&#34;https://github.com/timelyportfolio/comicR&#34;&gt;comicR&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(htmltools)
+library(XML)
+library(gridSVG)
+library(comicR)
+
+library(ggplot2)
+library(ggtree)
+
+p &amp;lt;- ggtree(rtree(30), layout=&amp;quot;fan&amp;quot;)  + 
+   geom_text(aes(label=label, angle=angle), size=5, color=&amp;quot;purple&amp;quot;, vjust=-0.3)
+
+
+p
+svg &amp;lt;- grid.export(name=&amp;quot;&amp;quot;)$svg
+tagList(
+      tags$div(
+        id = &amp;quot;ggtree_comic&amp;quot;,
+        tags$style(&amp;quot;#ggtree_comic text {font-family:Chalkduster;}&amp;quot;),
+        HTML(saveXML(svg)),
+        comicR(&amp;quot;#ggtree_comic&amp;quot;, ff=5)
+      )
+    ) %&amp;gt;% html_print
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/98dbdcdbbb0e7fdb174fc1f40c611aeba2ee2bc5/Bioconductor/ggtree/comicTree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>subview</title>
+      <link>http://guangchuangyu.github.io/2015/08/subview/</link>
+      <pubDate>Mon, 31 Aug 2015 03:17:48 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/08/subview/</guid>
+      <description>&lt;p&gt;I implemented a function, &lt;em&gt;subview&lt;/em&gt;, in
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;
+that make it easy to embed a subplot in ggplot.&lt;/p&gt;
+
+&lt;p&gt;An example is shown below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ggplot2)
+library(ggtree)
+
+dd &amp;lt;- data.frame(x=LETTERS[1:3], y=1:3)
+pie &amp;lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
+             geom_bar(stat=&amp;quot;identity&amp;quot;, width=1) + 
+                    coord_polar(theta=&amp;quot;y&amp;quot;) + theme_tree() + 
+                          xlab(NULL) + ylab(NULL) + 
+                               theme_transparent()
+
+x &amp;lt;- sample(2:9)
+y &amp;lt;- sample(2:9)
+width &amp;lt;- sample(seq(0.05, 0.15, length.out=length(x)))
+height &amp;lt;- width
+
+p &amp;lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
+print(p)
+for (i in seq_along(x)) {
+    p %&amp;lt;&amp;gt;% subview(pie, x[i], y[i], width[i], height[i])
+    print(p)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/subview.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With this function, we can plot a specific clade and add a subplot of
+the whole topology; we can also add relative statistic graph above the
+tree or to a specific node. It&amp;rsquo;s not specific to phylogenetic tree, it
+works with all ggplot objects as demonstrated in the example.&lt;/p&gt;
+
+&lt;p&gt;PS: &lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; is now
+presented in &lt;a href=&#34;https://cran.r-project.org/web/views/Phylogenetics.html&#34;&gt;CRAN Task View:
+Phylogenetics&lt;/a&gt;.
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/taskview_cran.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;AND get its first citation.
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/Screenshot%202015-08-04%2021.49.27.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ggtree annotate phylogenetic tree with local images</title>
+      <link>http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/</link>
+      <pubDate>Sat, 01 Aug 2015 12:52:34 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/Screenshot%202015-08-01%2020.53.50.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;,
+we provide a function &lt;em&gt;annotation_image&lt;/em&gt; for annotating phylogenetic
+tree with images.&lt;/p&gt;
+
+&lt;p&gt;To demonstrate the usage, I created a tree view from a random tree as
+shown below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;set.seed(2015-08-01)
+p &amp;lt;- ggtree(rtree(10)) + xlim(0, 5)+ ylim(0, 11)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We need a &lt;em&gt;data.frame&lt;/em&gt; that contains information of taxa labels and
+image paths. Here I created such a &lt;em&gt;data.frame&lt;/em&gt; containing image files
+downloaded from phylopic.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; img_info
+  V1                                           V2
+1 t1 25f165fa-f279-4f7c-9869-c55be251ffb8.512.png
+2 t2 5d7ab302-960b-4db7-9dfd-215175a55906.512.png
+3 t3 6fbe723c-3a6b-4d06-8680-bb2a52113df4.512.png
+4 t4 d83c02ca-76ed-436b-83ae-7f98d7297be9.512.png
+5 t5 ee764929-c865-44f6-b5db-b4e7d5693d1a.512.png
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Annotating tree with images is simple in
+&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; by using
+&lt;em&gt;annotation_image&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By default, all the images will align to the right hand side. We can use
+&lt;em&gt;align=FALSE&lt;/em&gt;, to disable it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info, align=FALSE)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can change the type and size of lines, as demonstrated below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info, linetype=&amp;quot;dashed&amp;quot;, linesize=0.2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The width of the images were controlled by width parameter, and the
+height will automatically determined by image dimension.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info, width = .2, linetype=&amp;quot;dashed&amp;quot;, linesize=0.2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the following example, we add tip labels to the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p &amp;lt;- p+geom_tiplab(align=TRUE, linetype=&amp;quot;dashed&amp;quot;, linesize=.2)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If we also want to add the image and align them, we don&amp;rsquo;t want to show
+the line added by &lt;em&gt;annotation_image&lt;/em&gt; function. This can be achieved by
+setting &lt;em&gt;linetype=NULL&lt;/em&gt;. By default the images and tip labels will be
+overlapped, we can move the images by &lt;em&gt;offset&lt;/em&gt; parameter.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p %&amp;gt;% annotation_image(img_info, width=.2, linetype=NULL, offset=.3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>flip and rotate branches in ggtree</title>
+      <link>http://guangchuangyu.github.io/2015/07/flip-and-rotate-branches-in-ggtree/</link>
+      <pubDate>Wed, 01 Jul 2015 02:51:34 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/07/flip-and-rotate-branches-in-ggtree/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;&lt;em&gt;flip&lt;/em&gt;&lt;/strong&gt; function is a feature request from ggtree user. It accepts a
+tree view and two node numbers and exchange the positions of the
+selected clades.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(ggtree)
+set.seed(2015-07-01)
+tr &amp;lt;- rtree(30)
+p &amp;lt;- ggtree(tr) + geom_text(aes(label=node))
+gridExtra::grid.arrange(p, flip(p, 38, 33), ncol=2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/flip_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s chainable and all possible position adjustment can be achieved via
+multiple flip operations.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;flip(p, 38, 33) %&amp;gt;% flip(53, 58) %&amp;gt;% flip(32, 51)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/flip_animation.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s tedious to rotate a clade by 180 degree with several flip
+operations, ggtree provides another function &lt;strong&gt;&lt;em&gt;rotate&lt;/em&gt;&lt;/strong&gt; that accepts a
+selected node and rotate that branch by 180 degree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;col = c(&amp;quot;black&amp;quot;, &amp;quot;firebrick&amp;quot;, &amp;quot;steelblue&amp;quot;)[groupClade(tr, c(33, 52))]
+gridExtra::grid.arrange(ggtree(tr, color=col), 
+                        ggtree(tr, color=col) %&amp;gt;% rotate(33) %&amp;gt;% rotate(52), 
+                        ncol=2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/45fc101df9b7c711643fdb641d76f6822ad031a8/Bioconductor/ggtree/rotate.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ggtree with funny fonts</title>
+      <link>http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/</link>
+      <pubDate>Fri, 12 Jun 2015 06:19:56 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://cran.r-project.org/web/packages/showtext/index.html&#34;&gt;showtext&lt;/a&gt;
+is a neat solution to use various types of fonts in R graphs and make it
+easy to use funny fonts. With
+&lt;a href=&#34;http://cran.r-project.org/web/packages/showtext/index.html&#34;&gt;showtext&lt;/a&gt;,
+we can draw phylogenetic tree with different types of fonts even with
+symbolic/icon fonts.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(showtext)
+
+font.add.google(&amp;quot;Gochi Hand&amp;quot;, &amp;quot;gochi&amp;quot;)
+font.add.google(&amp;quot;Rock Salt&amp;quot;, &amp;quot;rock&amp;quot;)
+
+link = &amp;quot;http://img.dafont.com/dl/?f=wm_people_1&amp;quot;;
+download.file(link, &amp;quot;wmpeople1.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;);
+unzip(&amp;quot;wmpeople1.zip&amp;quot;);
+font.add(&amp;quot;wmpeople1&amp;quot;, &amp;quot;wmpeople1.TTF&amp;quot;);
+
+link = &amp;quot;http://img.dafont.com/dl/?f=emoticons&amp;quot;;
+download.file(link, &amp;quot;emoticons.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;);
+unzip(&amp;quot;emoticons.zip&amp;quot;);
+font.add(&amp;quot;emoticons&amp;quot;, &amp;quot;emoticons.ttf&amp;quot;);
+
+
+showtext.auto()
+set.seed(2015-05-14)
+
+library(ggplot2)
+library(ggtree)
+
+tree &amp;lt;- rtree(30)
+ggtree(tree, color=&amp;quot;darkgreen&amp;quot;) + geom_tiplab(family=&amp;quot;gochi&amp;quot;) + theme_classic() +
+    theme(axis.text.x=element_text(size=rel(4), family=&amp;quot;emoticons&amp;quot;, color=&amp;quot;firebrick&amp;quot;)) +
+        scale_y_continuous(breaks=seq(0, 30, 4), labels=letters[c(12:17, 20, 21)]) +
+            theme(axis.text.y=element_text(size=rel(4), family=&amp;quot;wmpeople1&amp;quot;, color=&amp;quot;#FDAC4F&amp;quot;)) +
+                annotate(&amp;quot;text&amp;quot;, x=2, y=18, label=&amp;quot;Have fun with ggtree!&amp;quot;,
+                         family=&amp;quot;rock&amp;quot;, angle=30, size=12, color=&amp;quot;steelblue&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/f6217cb7815a824b0a273e6f5147f01a9ebb367a/Bioconductor/ggtree/ggtree_funny_font.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;download.file(&amp;quot;http://dl.dafont.com/dl/?f=people_freak&amp;quot;, &amp;quot;people_freak.zip&amp;quot;, mode=&amp;quot;wb&amp;quot;)
+unzip(&amp;quot;people_freak.zip&amp;quot;)
+font.add(&amp;quot;people_freak&amp;quot;, &amp;quot;People_freak.ttf&amp;quot;)
+ggtree(rtree(10)) + geom_text(aes(label=node, color=isTip), family=&amp;quot;people_freak&amp;quot;, hjust=0) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/524ea41306f6d9a93251eaf9e193a264e5d4dbd4/Bioconductor/ggtree/ggtree_funny_font2.png&#34; alt=&#34;&#34; /&gt;
+Funny fonts can be downloaded from
+&lt;a href=&#34;http://www.dafont.com/search.php?q=icon&#34;&gt;1&lt;/a&gt;,
+&lt;a href=&#34;http://www.dafont.com/search.php?q=people&#34;&gt;2&lt;/a&gt; and
+&lt;a href=&#34;http://www.fontspace.com/category/people&#34;&gt;3&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ggtree updating a tree view using %&lt;% operator</title>
+      <link>http://guangchuangyu.github.io/2015/02/ggtree-updating-a-tree-view-using--operator/</link>
+      <pubDate>Tue, 10 Feb 2015 02:58:23 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/02/ggtree-updating-a-tree-view-using--operator/</guid>
+      <description>&lt;p&gt;I am very exciting that I have received very positive feedback from
+&lt;a href=&#34;https://twitter.com/AhmedMoustafa&#34;&gt;Ahmed Moustafa&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/sdwfrost&#34;&gt;Simon
+Frost&lt;/a&gt;.
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.27.png&#34; alt=&#34;&#34; /&gt;
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.07.png&#34; alt=&#34;&#34; /&gt;
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34;&gt;ggtree&lt;/a&gt; now has equipped with
+a lot of new features. This time, I would like to introduce the replace
+operator, &lt;code&gt;%&amp;lt;%&lt;/code&gt;. Suppose we have build a tree view using ggtree with
+multiple layers, we don&amp;rsquo;t need to run the code again to build a new tree
+view with another tree. In
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34;&gt;ggtree&lt;/a&gt;, we provides an
+operator, &lt;code&gt;%&amp;lt;%&lt;/code&gt;, for updating tree view.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ggplot2)
+library(ggtree)
+ggtree(rtree(15)) %&amp;lt;% rtree(30)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.22.07.png&#34; alt=&#34;&#34; /&gt;
+It supports different layout.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;ggtree(rtree(15), layout=&amp;quot;unrooted&amp;quot;, ladderize=FALSE) %&amp;lt;% rtree(45)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.23.48.png&#34; alt=&#34;&#34; /&gt;
+It is chainable.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;ggtree(rtree(15), layout=&amp;quot;cladogram&amp;quot;, ladderize=FALSE) %&amp;lt;% 
+    rtree(30) %&amp;lt;% 
+       rtree(45)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.23.14.png&#34; alt=&#34;&#34; /&gt;
+It also supports multiple layers.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;(ggtree(rtree(15), layout=&amp;quot;fan&amp;quot;) + 
+    geom_point(aes(shape=isTip, color=isTip))) %&amp;lt;% 
+      rtree(40)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.25.31.png&#34; alt=&#34;&#34; /&gt;
+In the final example, we parse rst file from BaseML output and annotate
+the tree with marginal_AA_subs.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;rstfile &amp;lt;- system.file(&amp;quot;extdata/PAML_Baseml&amp;quot;, &amp;quot;rst&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+tipfas &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;pa.fas&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+rst &amp;lt;- read.paml_rst(rstfile, tipfas)
+
+p &amp;lt;- plot(rst, annotation=&amp;quot;marginal_AA_subs&amp;quot;, annotation.color=&amp;quot;steelblue&amp;quot;)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.51.17.png&#34; alt=&#34;&#34; /&gt;
+We have ancestral sequences inferred from CodeML with the same tree. We
+can use this new data to update the tree view.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;rstfile &amp;lt;- system.file(&amp;quot;extdata/PAML_Codeml&amp;quot;, &amp;quot;rst&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+rst &amp;lt;- read.paml_rst(rstfile, tipfas)
+p %&amp;lt;% rst
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.53.41.png&#34; alt=&#34;&#34; /&gt;
+In these two figures, we can found that they have different evolution
+distances, and substitutions inferred from BASEML and CODEML are
+slightly different.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ggtree in Bioconductor 3.1</title>
+      <link>http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/</link>
+      <pubDate>Mon, 19 Jan 2015 03:50:23 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/</guid>
+      <description>&lt;p&gt;I am very glad that &lt;a href=&#34;http://guangchuangyu.github.io/2014/12/ggtree/&#34;&gt;ggtree&lt;/a&gt; is now
+available via Bioconductor. This is my 6th Bioconductor package.
+&lt;a href=&#34;http://guangchuangyu.github.io/2014/12/ggtree/&#34;&gt;ggtree&lt;/a&gt; now supports parsing output
+files from BEAST, PAML, HYPHY, EPA and PPLACER and can annotate
+phylogenetic tree directly using plot methods. Now you can use the
+following
+&lt;a href=&#34;http://guangchuangyu.github.io/2014/12/ggtree/&#34;&gt;command&lt;/a&gt; to
+install ggtree:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;install.packages(&amp;quot;ggtree&amp;quot;,
+                 repos = &amp;quot;http://www.bioconductor.org/packages/devel/bioc&amp;quot;,
+                 type  = &amp;quot;source&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Find out more at
+&lt;a href=&#34;http://www.bioconductor.org/packages/3.1/bioc/html/ggtree.html&#34;&gt;http://www.bioconductor.org/packages/3.1/bioc/html/ggtree.html&lt;/a&gt; and
+check out the vignette,
+&lt;a href=&#34;http://www.bioconductor.org/packages/3.1/bioc/vignettes/ggtree/inst/doc/ggtree.html&#34;&gt;http://www.bioconductor.org/packages/3.1/bioc/vignettes/ggtree/inst/doc/ggtree.html&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>viewing and annotating phylogenetic tree with ggtree</title>
+      <link>http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/</link>
+      <pubDate>Sun, 21 Dec 2014 08:00:08 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/</guid>
+      <description>&lt;p&gt;When I need to annotate nucleotide substitutions in the phylogenetic
+tree, I found that all the software are designed to display the tree but
+not annotating it. Some of them may support annotating the tree with
+specific data such as bootstrap values, but they are restricted to a few
+supported data types. It is hard/impossible to inject user specific
+data.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;
+I decided to implement my own one by extending the ggplot2 package.
+There are other R packages that implemented tree viewer using ggplot2,
+including OutbreakTools, phyloseq and ggphylo, but all of them only
+create complex tree view function for their specific needs. They are
+just classical tree viewers that only viewing the tree or annotating a
+specific data type. The good parts of ggplot2 are not available in these
+packages. They lack of flexibilities of annotating phylogenetic tree by
+diverse user inputs. I develop ggtree, which is based on grammar of
+graphics and will takes all the good parts of ggplot2.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;nwk &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.nwk&amp;quot;, package = &amp;quot;ggtree&amp;quot;)
+library(ape)
+tree &amp;lt;- read.tree(nwk)
+library(ggplot2)
+library(ggtree)
+ggplot(tree, aes(x, y)) + geom_tree() + theme_tree() + xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It extends ggplot2 to support tree objects and implements a geom_tree()
+layer to draw the tree.&lt;/p&gt;
+
+&lt;p&gt;The ggtree package provides a function, ggtree, for shortcut of
+&lt;code&gt;ggplot()+geom_tree()+theme_tree()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It supports several tree objects including phylo that defined in ape,
+phylo4 that defined in phylobase and jplace that defined within the
+ggtree package.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p1 &amp;lt;- ggtree(tree) + ggtitle(&amp;quot;tree of phylo object&amp;quot;)
+tr2 &amp;lt;- as(tree, &amp;quot;phylo4&amp;quot;)
+p2 &amp;lt;- ggtree(tr2) + ggtitle(&amp;quot;tree of phylo4 object&amp;quot;)
+jpf &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.jplace&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+jp &amp;lt;- read.jplace(jpf)
+p3 &amp;lt;- ggtree(jp) + ggtitle(&amp;quot;tree of jplace object&amp;quot;)
+library(gridExtra)
+grid.arrange(p1, p2, p3, ncol=3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_objects.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With this implementation, it is possible to inject user input. But is it
+easy? The answer is yes and no. It may depends on user&amp;rsquo;s ggplot2
+experiences. To place the input data at the correct position, you should
+know how the tree was layout. It may be easy for an experienced user,
+but hard for newbie. Most of us are impatient and reluctant to learn, so
+I should create a way that is easy to follow. It&amp;rsquo;s not a good idea to
+implement unnecessary geom_XXX layer, for it violates the great idea of
+taking all the good parts of ggplot2, and it will violate the consistent
+function calls of &lt;code&gt;geom_XXX&lt;/code&gt;. Thanks to my sleep disorder, I came out
+with an operator &lt;strong&gt;&lt;code&gt;%&amp;lt;+%&lt;/code&gt;&lt;/strong&gt; for injecting input data to the tree view.
+After the injection, the data is visible to all the geom_XXX layers.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p &amp;lt;- ggtree(tree)
+
+print(dd)
+taxa    place   value
+M   NA  55.9
+A   GZ  65.6
+C   GZ  59.3
+I   CZ  78.5
+E   GZ  62.9
+D   GZ  64.1
+J   CZ  62.3
+K   CZ  79.1
+B   GZ  89.0
+L   CZ  57.1
+G   HK  66.4
+H   HK  61.6
+F   HK  59.9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Suppose we have a tree view p, and input data dd, we can attach the data
+to the tree and add a layer of tip labels and colored by place.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p &amp;lt;- p %&amp;lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_place.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the data is attached, it is always attached, and we can add more
+layers easily.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
+  geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_place2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The package is now available via github,
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34;&gt;https://github.com/GuangchuangYu/ggtree&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Suggestions, comments and feature request are all welcome. Let&amp;rsquo;s make it
+an easy to use and feature-riched package for viewing and annotating
+phylogenetic trees.&lt;/p&gt;
+
+&lt;p&gt;At last, wish you a merry christmas :)
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
