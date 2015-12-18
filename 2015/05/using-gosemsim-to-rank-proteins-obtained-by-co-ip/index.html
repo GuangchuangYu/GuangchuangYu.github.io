@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>ggtree with funny fonts &middot; G. Yu</title>
+  <title>using GOSemSim to rank proteins obtained by co-IP &middot; G. Yu</title>
 
   
   <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
@@ -77,63 +77,49 @@
 
 <div class="content container">
   <div class="post">
-    <h1>ggtree with funny fonts</h1>
-    <span class="post-date">Jan 1, 0001 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/1/01/ggtree-with-funny-fonts/#disqus_thread">Comments</a>
+    <h1>using GOSemSim to rank proteins obtained by co-IP</h1>
+    <span class="post-date">May 4, 2015 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2015/05/using-gosemsim-to-rank-proteins-obtained-by-co-ip/#disqus_thread">Comments</a>
     
     <br/>
-    <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a><a class="label" href="http://guangchuangyu.github.io/categories/ggtree">ggtree</a>
+    <a class="label" href="http://guangchuangyu.github.io/categories/proteomics">Proteomics</a><a class="label" href="http://guangchuangyu.github.io/categories/publication">Publication</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/gosemsim">GOSemSim</a>
     </span>
-    <p><a href="http://cran.r-project.org/web/packages/showtext/index.html">showtext</a>
-is a neat solution to use various types of fonts in R graphs and make it
-easy to use funny fonts. With
-<a href="http://cran.r-project.org/web/packages/showtext/index.html">showtext</a>,
-we can draw phylogenetic tree with different types of fonts even with
-symbolic/icon fonts.</p>
-
-<pre><code class="language-lang=&quot;rsplus&quot;">require(showtext)
-
-font.add.google(&quot;Gochi Hand&quot;, &quot;gochi&quot;)
-font.add.google(&quot;Rock Salt&quot;, &quot;rock&quot;)
-
-link = &quot;http://img.dafont.com/dl/?f=wm_people_1&quot;;
-download.file(link, &quot;wmpeople1.zip&quot;, mode = &quot;wb&quot;);
-unzip(&quot;wmpeople1.zip&quot;);
-font.add(&quot;wmpeople1&quot;, &quot;wmpeople1.TTF&quot;);
-
-link = &quot;http://img.dafont.com/dl/?f=emoticons&quot;;
-download.file(link, &quot;emoticons.zip&quot;, mode = &quot;wb&quot;);
-unzip(&quot;emoticons.zip&quot;);
-font.add(&quot;emoticons&quot;, &quot;emoticons.ttf&quot;);
-
-
-showtext.auto()
-set.seed(2015-05-14)
-
-library(ggplot2)
-library(ggtree)
-
-tree &lt;- rtree(30)
-ggtree(tree, color=&quot;darkgreen&quot;) + geom_tiplab(family=&quot;gochi&quot;) + theme_classic() +
-    theme(axis.text.x=element_text(size=rel(4), family=&quot;emoticons&quot;, color=&quot;firebrick&quot;)) +
-        scale_y_continuous(breaks=seq(0, 30, 4), labels=letters[c(12:17, 20, 21)]) +
-            theme(axis.text.y=element_text(size=rel(4), family=&quot;wmpeople1&quot;, color=&quot;#FDAC4F&quot;)) +
-                annotate(&quot;text&quot;, x=2, y=18, label=&quot;Have fun with ggtree!&quot;,
-                         family=&quot;rock&quot;, angle=30, size=12, color=&quot;steelblue&quot;)
-</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/f6217cb7815a824b0a273e6f5147f01a9ebb367a/Bioconductor/ggtree/ggtree_funny_font.png" alt="" /></p>
-
-<pre><code class="language-lang=&quot;rsplus&quot;">download.file(&quot;http://dl.dafont.com/dl/?f=people_freak&quot;, &quot;people_freak.zip&quot;, mode=&quot;wb&quot;)
-unzip(&quot;people_freak.zip&quot;)
-font.add(&quot;people_freak&quot;, &quot;People_freak.ttf&quot;)
-ggtree(rtree(10)) + geom_text(aes(label=node, color=isTip), family=&quot;people_freak&quot;, hjust=0) 
-</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/524ea41306f6d9a93251eaf9e193a264e5d4dbd4/Bioconductor/ggtree/ggtree_funny_font2.png" alt="" />
-Funny fonts can be downloaded from
-<a href="http://www.dafont.com/search.php?q=icon">1</a>,
-<a href="http://www.dafont.com/search.php?q=people">2</a> and
-<a href="http://www.fontspace.com/category/people">3</a>.</p>
+    <p>Co-IP is usually used to identified interactions among specific
+proteins. It is widely used in detecting protein complex. Unfortunately,
+an identified protein may not be an interactor, and sometimes can be a
+background contaminant. Ranking proteins can help us to focus a study on
+a few high quality candidates for subsequent interaction investigation.
+My R package <a href="https://github.com/GuangchuangYu/GOSemSim">GOSemSim</a> has
+been used in many studies to investigate protein protein interaction,
+see <a href="http://pubs.rsc.org/en/content/articlehtml/2014/mb/c3mb70486f">1</a>,
+<a href="http://www.sciencedirect.com/science/article/pii/S1874391915000937">2</a>,
+<a href="http://www.sciencedirect.com/science/article/pii/S1476927115000493">3</a>,
+<a href="http://www.mcponline.org/content/13/5/1318.short">4</a> and
+<a href="http://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=9484177541993722322,16048119560581430155,18126401808149291947">more</a>.
+In the study, <a href="http://www.sciencedirect.com/science/article/pii/S1874391912007567">Proteomic investigation of the interactome of FMNL1 in
+hematopoietic cells unveils a role in calcium-dependent membrane
+plasticity</a>,
+we investigate the interactors of FMNL1 by co-IP followed by LC-MS/MS
+analysis. In this study, we defined functional similarity as the
+geometric mean of semantic similarities in molecular function and
+cellular component. Functional similarity is designed for measuring the
+strength of the relationship between each protein and its partners by
+considering function and location of proteins. The similarities were
+calculated through <a href="https://github.com/GuangchuangYu/GOSemSim">GOSemSim</a>
+package. The distributions of the functional similarities were
+demonstrated in the following figure.
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screen-Shot-2014-12-16-at-12.05.58-am.png" alt="" />
+We used the average functional similarities between the protein and its
+interaction partners to rank the protein. Proteins, which have strong
+relationship in function and location among the proteins within the
+interactome, were essential for the interactome to exert their
+functions. AHNAK1 has strong spatial and temporal interaction with other
+proteins and was selected for functional study. AHNAK1 had not been
+identified as an interaction partner of FMNL1, and we confirmed that it
+interacts at its C-terminus with N-terminal region of FMNL1. Previous
+study had reported AHNAK1 is calcium-dependent, and our study found that
+FMNL1 enhances ionophore-mediated calcium influx by inducing
+translocation of AHNAK1. This point to a new function of FMNL1 as a
+modulator in calcium-dependent cytoskeletal membrane processes.</p>
 
   </div>
   <div id="disqus_thread"></div>
