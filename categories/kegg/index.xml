@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kegg on G. Yu</title>
+    <link>http://guangchuangyu.github.io/categories/kegg/</link>
+    <description>Recent content in Kegg on G. Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Feb 2015 12:38:27 +0800</lastBuildDate>
+    <atom:link href="http://guangchuangyu.github.io/categories/kegg/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>KEGG enrichment analysis with latest online data using clusterProfiler</title>
+      <link>http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/</link>
+      <pubDate>Sun, 01 Feb 2015 12:38:27 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/</guid>
+      <description>
+
+&lt;p&gt;&lt;em&gt;KEGG.db&lt;/em&gt; is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological
+databases&lt;/a&gt;&amp;rsquo;,
+there is a problem that many out of date biological databases often
+don&amp;rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+&lt;a href=&#34;http://wego.genomics.org.cn/cgi-bin/wego/index.pl&#34;&gt;WEGO&lt;/a&gt; web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with &lt;a href=&#34;https://scholar.google.com.hk/scholar?as_ylo=2015&amp;amp;hl=en&amp;amp;as_sdt=0,5&amp;amp;sciodt=0,5&amp;amp;cites=13025429171853466135&amp;amp;scipsc=&#34;&gt;many people using
+it&lt;/a&gt;.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue. Now &lt;em&gt;enrichKEGG&lt;/em&gt;
+function is reloaded with a new parameter &lt;em&gt;use_internal_data&lt;/em&gt;. This
+parameter is by default setting to FALSE, and &lt;em&gt;enrichKEGG&lt;/em&gt; function will
+download the latest KEGG data for enrichment analysis. If the parameter
+&lt;em&gt;use_internal_data&lt;/em&gt; is explicitly setting to TRUE, it will use the
+&lt;em&gt;KEGG.db&lt;/em&gt; which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+&lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt; Now the &lt;em&gt;organism&lt;/em&gt;
+parameter in &lt;em&gt;enrichKEGG&lt;/em&gt; should be abbreviation of academic name, for
+example &amp;lsquo;hsa&amp;rsquo; for human and &amp;lsquo;mmu&amp;rsquo; for mouse. It accepts any species
+listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;. In the
+current release version of
+&lt;a href=&#34;http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+(in Bioconductor 3.0), &lt;em&gt;enrichKEGG&lt;/em&gt; supports about 20 species, and the
+&lt;em&gt;organism&lt;/em&gt; parameter accept common name of species, for instance &amp;ldquo;human&amp;rdquo;
+and &amp;ldquo;mouse&amp;rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.
+For other species, common name is not supported, since I don&amp;rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-1-using-online-kegg-annotation:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(DOSE)
+data(geneList)
+de &amp;lt;- names(geneList)[geneList &amp;gt; 1]
+
+library(clusterProfiler)
+kk &amp;lt;- enrichKEGG(de, organism=&amp;quot;hsa&amp;quot;, pvalueCutoff=0.05, pAdjustMethod=&amp;quot;BH&amp;quot;, 
+                 qvalueCutoff=0.1, readable=TRUE)
+head(summary(kk))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; head(summary(kk))
+               ID                            Description GeneRatio  BgRatio
+hsa04110 hsa04110                             Cell cycle    31/247 124/6861
+hsa03030 hsa03030                        DNA replication     9/247  36/6861
+hsa04060 hsa04060 Cytokine-cytokine receptor interaction    25/247 265/6861
+hsa04114 hsa04114                         Oocyte meiosis    14/247 113/6861
+hsa04115 hsa04115                  p53 signaling pathway    10/247  68/6861
+hsa04062 hsa04062            Chemokine signaling pathway    18/247 189/6861
+               pvalue     p.adjust       qvalue
+hsa04110 2.280256e-18 9.349050e-17 5.280593e-17
+hsa03030 3.527197e-06 7.230753e-05 4.084123e-05
+hsa04060 8.404037e-06 1.148552e-04 6.487326e-05
+hsa04114 4.827484e-05 4.948171e-04 2.794859e-04
+hsa04115 1.406946e-04 9.801620e-04 5.536217e-04
+hsa04062 1.434383e-04 9.801620e-04 5.536217e-04
+                                                                                                                                                                              geneID
+hsa04110 CDC45/CDC20/CCNB2/CCNA2/CDK1/MAD2L1/TTK/CHEK1/CCNB1/MCM5/PTTG1/MCM2/CDC25A/CDC6/PLK1/BUB1B/ESPL1/CCNE1/ORC6/ORC1/CCNE2/MCM6/MCM4/DBF4/SKP2/CDC25B/BUB1/MYC/PCNA/E2F1/CDKN2A
+hsa03030                                                                                                                            MCM5/MCM2/MCM6/MCM4/FEN1/RFC4/PCNA/RNASEH2A/DNA2
+hsa04060                           CXCL10/CXCL13/CXCL11/CXCL9/CCL18/IL1R2/CCL8/CXCL3/CCL20/IL12RB2/CXCL8/TNFRSF11A/CCL5/CXCR6/IL2RA/CCR1/CCL2/IL2RG/CCL4/CCR8/CCR7/GDF5/IL24/LTB/IL7
+hsa04114                                                                                          CDC20/CCNB2/CDK1/MAD2L1/CALML5/AURKA/CCNB1/PTTG1/PLK1/ESPL1/CCNE1/CCNE2/BUB1/FBXO5
+hsa04115                                                                                                               CCNB2/RRM2/CDK1/CHEK1/CCNB1/GTSE1/CCNE1/CCNE2/SERPINB5/CDKN2A
+hsa04062                                                                       CXCL10/CXCL13/CXCL11/CXCL9/CCL18/CCL8/CXCL3/CCL20/CXCL8/CCL5/CXCR6/CCR1/STAT1/CCL2/CCL4/HCK/CCR8/CCR7
+         Count
+hsa04110    31
+hsa03030     9
+hsa04060    25
+hsa04114    14
+hsa04115    10
+hsa04062    18
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the KEGG.db, there are only 5894 human genes annotated. With current
+online data, the number of annotated gene increase to 6861 as shown
+above and of course, p-values changed. User should pay attention to
+another issue that &lt;em&gt;readable&lt;/em&gt; parameter is only available for those
+species that has an annotation db. For example, for human we use
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html&#34;&gt;org.Hs.eg.db&lt;/a&gt;
+for mapping gene ID to Symbol.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
+
+&lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34;&gt;Streptococcus pneumoniae
+D39&lt;/a&gt;
+to demonstrate using &lt;em&gt;enrichKEGG&lt;/em&gt; with species that are not supported
+previously.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; gene
+ [1] &amp;quot;SPD_0065&amp;quot; &amp;quot;SPD_0071&amp;quot; &amp;quot;SPD_0293&amp;quot; &amp;quot;SPD_0295&amp;quot; &amp;quot;SPD_0296&amp;quot; &amp;quot;SPD_0297&amp;quot;
+ [7] &amp;quot;SPD_0327&amp;quot; &amp;quot;SPD_0426&amp;quot; &amp;quot;SPD_0427&amp;quot; &amp;quot;SPD_0428&amp;quot; &amp;quot;SPD_0559&amp;quot; &amp;quot;SPD_0560&amp;quot;
+[13] &amp;quot;SPD_0561&amp;quot; &amp;quot;SPD_0562&amp;quot; &amp;quot;SPD_0580&amp;quot; &amp;quot;SPD_0789&amp;quot; &amp;quot;SPD_1046&amp;quot; &amp;quot;SPD_1047&amp;quot;
+[19] &amp;quot;SPD_1048&amp;quot; &amp;quot;SPD_1050&amp;quot; &amp;quot;SPD_1051&amp;quot; &amp;quot;SPD_1052&amp;quot; &amp;quot;SPD_1053&amp;quot; &amp;quot;SPD_1057&amp;quot;
+[25] &amp;quot;SPD_1326&amp;quot; &amp;quot;SPD_1432&amp;quot; &amp;quot;SPD_1534&amp;quot; &amp;quot;SPD_1582&amp;quot; &amp;quot;SPD_1612&amp;quot; &amp;quot;SPD_1613&amp;quot;
+[31] &amp;quot;SPD_1633&amp;quot; &amp;quot;SPD_1634&amp;quot; &amp;quot;SPD_1648&amp;quot; &amp;quot;SPD_1678&amp;quot; &amp;quot;SPD_1919&amp;quot;
+&amp;gt; spdKEGG = enrichKEGG(gene, organism=&amp;quot;spd&amp;quot;)
+&amp;gt; summary(spdKEGG)
+               ID                                 Description GeneRatio BgRatio
+spd00052 spd00052                        Galactose metabolism     35/35  35/752
+spd02060 spd02060             Phosphotransferase system (PTS)     12/35  47/752
+spd01100 spd01100                          Metabolic pathways     28/35 341/752
+spd00520 spd00520 Amino sugar and nucleotide sugar metabolism      9/35  43/752
+               pvalue     p.adjust       qvalue
+spd00052 4.961477e-61 2.480739e-60 5.222608e-61
+spd02060 2.470177e-07 6.175443e-07 1.300093e-07
+spd01100 1.958319e-05 3.263866e-05 6.871296e-06
+spd00520 6.534975e-05 8.168718e-05 1.719730e-05
+                                                                                                                                                                                                                                                                                                                             geneID
+spd00052 SPD_0065/SPD_0071/SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0327/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1678/SPD_1919
+spd02060                                                                                                                                                                                                                SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0426/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_1047/SPD_1048/SPD_1057
+spd01100                                                                SPD_0071/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+spd00520                                                                                                                                                                                                                                           SPD_0580/SPD_1326/SPD_1432/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+         Count
+spd00052    35
+spd02060    12
+spd01100    28
+spd00520     9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;summary:68582cae05851901beab2a74a03ade4b&#34;&gt;Summary&lt;/h3&gt;
+
+&lt;p&gt;To summarize,
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+supports downloading the latest KEGG annotation for enrichment analysis
+and it supports all species that have KEGG annotation available in KEGG
+database.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

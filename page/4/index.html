@@ -81,6 +81,126 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">proper use of GOSemSim</a>
+      </h1>
+      <span class="post-date">Nov 23, 2014 &middot; 13 minute read &middot; <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/research">Research</a><a class="label" href="http://guangchuangyu.github.io/categories/gosemsim">GOSemSim</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a>
+      </span>
+      
+      One day, I am looking for R packages that can analyze PPI and after searching, I found the ppiPre package in CRAN. The function of this package is not impressive, and I already knew some related works, including http://intscore.molgen.mpg.de/. The authors of this webserver contacted me for the usages of GOSemSim when they developing it. What makes me curious is that the ppiPre package can calculate GO semantic similarity and supports 20 species exactly like GOSemSim.
+      <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/11/hello-yosemite/">hello yosemite</a>
+      </h1>
+      <span class="post-date">Nov 14, 2014 &middot; 3 minute read &middot; <a href="http://guangchuangyu.github.io/2014/11/hello-yosemite/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
+      </span>
+      
+      Installing OS is painful, you need to re-install all the software and configure them to the way you want. We don&rsquo;t want to wast time in doing this. To prevent doing this dirty job, we perform an upgrade install instead of clean install. We all have experience of upgrading Windows sucks, same as OS X. All the issues you have in old system will be remained, and sometimes new issues will be introduced in the process of upgrading.
+      <a href="http://guangchuangyu.github.io/2014/11/hello-yosemite/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/">multiple annotation in ChIPseeker</a>
+      </h1>
+      <span class="post-date">Oct 1, 2014 &middot; 3 minute read &middot; <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a>
+      </span>
+      
+      Nearest gene annotation Almost all annotation software calculate the distance of a peak to the nearest TSS and assign the peak to that gene. This can be misleading, as binding sites might be located between two start sites of different genes or hit different genes which have the same TSS location in the genome. The function annotatePeak provides option to assign genes with a max distance cutoff and all genes within this distance were reported for each peak.
+      <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/">why clusterProfiler fails</a>
+      </h1>
+      <span class="post-date">Aug 7, 2014 &middot; 4 minute read &middot; <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a>
+      </span>
+      
+      Recently, there are some comments said that sometimes clusterProfiler failed in KEGG enrichment analysis. kaji331 compared cluserProfiler with GeneAnswers and found that clusterProfiler gives larger p values. The result forces me to test it. it eventually came out that he passed the input gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input require(GeneAnswers) data('humanGeneInput') y &lt;- geneAnswersBuilder(humanGeneInput, 'org.Hs.eg.db', categoryType='KEGG', testType='hyperG', pvalueT=0.1, geneExpressionProfile=humanExpr, verbose=FALSE) yy &lt;- y@enrichmentInfo require(clusterProfiler) x &lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, qvalueCutoff=0.2, minGSSize=1) xx &lt;- summary(x) id &lt;- sub(&quot;hsa&quot;, &quot;&quot;, xx$ID) idx &lt;- id %in% rownames(yy) p.clusterProfiler &lt;- xx$pvalue[idx] p.GeneAnswers &lt;- yy[id[idx],]$&quot;p value&quot; &gt; cor(p.clusterProfiler, p.GeneAnswers) [1] 0.9996165 &gt; p.clusterProfiler - p.GeneAnswers [1] 1.029789e-04 -3.588252e-05 -4.623010e-05 1.079117e-04 -1.075746e-04 [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04 7.588155e-04 [11] -3.702141e-04 2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04 [16] -5.560738e-04 -5.884079e-04 2.011138e-03 Here, I used the dataset, humanGeneInput, provided by GeneAnswers.
+      <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/">enrichment map</a>
+      </h1>
+      <span class="post-date">Aug 3, 2014 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/enrichment">Enrichment</a>
+      </span>
+      
+      In PLOB&rsquo;s QQ group, someone asked how to change the color of enrichment map in Cytoscape. I am very curious how enrichment map can helps to interpret enrichment results. It took me 2 hours to implement it using R and I am surprised that the enrichment map is better than anticipated. Now in the development version of clusterProfiler, DOSE, and ReactomePA, you can use enrichmap function to generate the enrichment map of enrichment results obtained by hypergeometric test or gene set enrichment analysis.
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/">use linux desktop again</a>
+      </h1>
+      <span class="post-date">Jun 1, 2014 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/linux">Linux</a>
+      </span>
+      
+      上个月写了《使用ggplot画图》一文，图片太多，一下子把博客的12G流量给用光了，月中博客就被停了，小伙伴们太给力了，blog不能访问，真是件不爽的事情。 言归正传，从2002年使用redhat 7.1开始，就没中止过使用linux，为什么要说again呢，因为在过去几年的工作时间里，使用的是OS X和win7做为桌面的，linux只在服务器端使用。自从用了OS X之后，就不想再用linux当桌面了，OS X绝对是节省生命的系统，本身是unix-like系统，对各种桌面软件支持又好，特别是中华大地，linux还是小众，用来当桌面实在是各种坑。 不过现在又回到学生时代了，所以还得继续学生屌丝的折腾，本科时从redhat,debian到gentoo，硕士时实验室的机器用ubuntu，而笔记本用NetBSD。这么多年的使用，该有的坑都填了，但是时代在发展，新坑还是不断有的，使用百度云来同步化文献库，就是最近的新坑，装上linux之后，发现度娘没有客户端，首先想到的当然是wine，wine出来的偶尔能行，时常崩溃，跟它死磕我也会崩溃，github上寻找开源实现，各种功能缺失和限制，那就只能虚拟机了，把home目录做为共享盘，挂到虚拟机中，但是度娘一直都是占100% CPU，然后数据无法同步，只有两个原因，不是硬盘就是网络，感觉好像我一个分区800G太大了，但在虚拟中对硬盘读写正常，网络因为使用NAT，虚拟成内网，有可能是这个原因，于是换成bridge，把虚拟机当成现实网络中的另一台主机，但度娘依然只占CPU，不干活。那只能还是硬盘问题，最后问题解决了，通过在linux中提供samba服务，然后在虚拟机中通过网上邻居把共享目录映射成网络驱动器，这时候度娘终于肯干活了。都不知道是virtualbox的驱动有问题，还是度娘太挑，这太TM坑了。 不想自己太geek，假装我在用windows 7，不过我还是喜欢当年的windows 2000的主题，可惜qvwm已经很久不更新了，现在想编译成功已经非常困难了。 假装了一星期，我就觉得用着很不爽，屏幕太小，又老用鼠标，手臂不舒服，于是想起了当年的wmii，这次我装的是wmii的增强版i3-wm，有了tab这些元素，用着更舒服一点，于是窗口都全屏了，这样小屏幕也还凑合了。最主要的是提高效率，减少鼠标操作，我现在把鼠标放在左上角，因为使用频率非常少，偶尔要用，就用左手搞一下。告别鼠标手，这酸爽，谁用谁知道！有了OS X之后，linux桌面依然有吸引我的地方，最主要的就是tiling windows，另外fcitx的五笔是我最喜欢的输入法。 小屏毕竟还是不爽，准备把宿舍的显示器搬去实验室用了，囧rz&hellip; 搬来显示器之后，无比爽。
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/">Use ggplot2</a>
+      </h1>
+      <span class="post-date">May 11, 2014 &middot; 5 minute read &middot; <a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
+      </span>
+      
+      Why use ggplot2 ggplot2是我见过最human friendly的画图软件，这得益于Leland Wilkinson在他的著作《The Grammar of Graphics》中提出了一套图形语法，把图形元素抽象成可以自由组合的成分，Hadley Wickham把这套想法在R中实现。 为什么要学习ggplot2，可以参考ggplot2: 数据分析与图形艺术的序言（btw: 在序言的最后，我被致谢了）。 Hadley Wickham也给出一堆理由让我们说服自己，我想再补充一点，Hadley Wickham是学医出身的，做为学生物出身的人有什么理由不支持呢:) ggplot2基本要素 数据（Data）和映射（Mapping） 几何对象（Geometric） 标尺（Scale） 统计变换（Statistics） 坐标系统（Coordinante） 图层（Layer） 分面（Facet） 主题（Theme） 这里将从这些基本要素对ggplot2进行介绍。 数据（Data）和映射（Mapping) 下面以一份钻石的数据为例，这份数据非常大，随机取一个子集来画图。 require(ggplot2) data(diamonds) set.seed(42) small &lt;- diamonds[sample(nrow(diamonds), 1000), ] head(small) ## carat cut color clarity depth table price x y z ## 49345 0.71 Very Good H SI1 62.5 60 2096 5.68 5.75 3.57 ## 50545 0.79 Premium H SI1 61.8 59 2275 5.97 5.91 3.67 ## 15434 1.03 Ideal F SI1 62.4 57 6178 6.48 6.44 4.03 ## 44792 0.50 Ideal E VS2 62.2 54 1624 5.08 5.11 3.17 ## 34614 0.27 Ideal E VS1 61.6 56 470 4.14 4.17 2.56 ## 27998 0.30 Premium E VS2 61.7 58 658 4.32 4.34 2.67 summary(small) ## carat cut color clarity depth ## Min.
+      <a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/">更改百度云同步盘路径</a>
+      </h1>
+      <span class="post-date">May 5, 2014 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a><a class="label" href="http://guangchuangyu.github.io/categories/software">Software</a>
+      </span>
+      
+      从2007年写了第一篇文章之后，我发现管理文献真不是人干的，一直以来使用Zotero来管理文献，自从有了dropbox之后，就想把文献库放在dropbox上，一来有个云备份，不怕硬盘坏，二来嘛，实验室电脑和个人电脑可以实时同步化，无奈dropbox空间太小，而我的zotero早已超过10G，因为电子书也放在里面，只能做罢。 度娘出手还是很大方的，我现在的网盘已经有3T，包括之前在推广阶段用1元买的1T。 于是我要把zotero放在度娘的网盘里，有可能是因为我用英文版，firefox不认中文路径。 第一反应就是给个英文路径的软链接，OS X自带的Terminal和iTerm都不支持我输入中文，只能在Emacs里跑eshell来搞。事实证明软链接是不行的，会被还原回实际路径，依然是中文。 那么就用硬链接，但是系统不干，真是邪门，搜索一下发现这是OS X的问题，在stackoverflow上还有人提供了一段C代码来做硬链接，不过我编译后运行依然是失败，无法创建硬链接。 于是只能土办法了，软件的路径并不是死的，那么总得有个配置文件来定位，通过修改配置文件总应该可以的吧。于是在下面的路径下，找到了macosnetdisk.plist user_workpath /Volumes/DATA/Users/ygc/百度云同步盘 把百度云同步盘换成个英文文件夹，整个世界清静了，firefox终于找到了它的好基友zotero。 TIPS：有了度娘网盘，再也不用担心下载问题了，找个BT种子，让度娘下载，速度极快，因为通常的东西度娘的网盘上是有的，它做的不过是链接一份给你而已，越多的人保留同一份东西，度娘就越省空间。度娘同步到电脑上速度也是极快的，秒杀其它下载工具。
+      
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/">visualization methods in ChIPseeker</a>
       </h1>
       <span class="post-date">Apr 30, 2014 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/#disqus_thread">Comments</a>
@@ -106,126 +226,6 @@
       
       ChIPpeakAnno WAS the only R package for ChIP peak annotation. I used it for annotating peak in my recent study. I found it does not consider the strand information of genes. I reported the bug to the authors, but they are reluctant to change. So I decided to develop my own package, ChIPseeker, and it&rsquo;s now available in Bioconductor. &gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene) &gt; txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene &gt; require(ChIPseeker) &gt; peakfile = getSampleFiles()[[4]] &gt; peakfile [1] &quot;/usr/local/Cellar/r/3.1.0/R.framework/Versions/3.1/Resources/library/ChIPseeker/extdata//GEO_sample_data/GSM1295076_CBX6_BF_ChipSeq_mergedReps_peaks.bed.gz&quot; &gt; peakAnno &lt;- annotatePeak(peakfile, tssRegion=c(-3000, 1000), TxDb=txdb, annoDb=&quot;org.Hs.eg.db&quot;) &gt;&gt; loading peak file...
       <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2014/03/boxplot/">boxplot</a>
-      </h1>
-      <span class="post-date">Mar 4, 2014 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2014/03/boxplot/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a>
-      </span>
-      
-      生物坑很多人画图只会直方图，统计只会T检验，在暨大见过太多的学生连T检验都不会，分不清SEM和SD的差别，也不清楚T检验那几个简单参数的含义。我写统计笔记也是因为不想重复性地跟学生讲解T检验。 Barplot和T test一样普遍而流行，barplot适合于表示计数数据和比例，显示比例也可以用pie plot，但直方图比饼图要好，因为人类的眼睛适合于比较高度，而不是弧度。 多半时候生物学数据并非简单的计数数据，对于测量数据，在展示数据分布时，很多人会使用他们熟悉的barplot，用高度来表示mean，然后再加上errorbar，这样展示数据，信息量是非常低的，使用boxplot能够提供更多的数据分布信息，能更好地展现数据，但可能很多人只会在excel里画barplot，Nature Methods 2013年的文章中有100个barplot图，而只有20个boxplot图，从这里就可以看出来，用boxplot的人远远没有barplot多，于是NPG怒了，写了两篇专栏文章Points of View: Bar charts and box plots和Points of Significance: Visualizing samples with box plots并且发表了一篇BoxPlotR: a web tool for generation of box plots方便大家画boxplot，如此简单的web tool能够发Nature Methods，实在是让人羡慕妒忌恨啊。 Boxplot从1970年由John Tukey提示，到现在已经40多年了，他有很多的变种，比如violin plot和beanplot，violin plot和beanplot是很像的，都是把box换成density curve，beanplot另外把数据点在中间用线条表示出来，这个很容易加上去，正如我在violin plot中把数据点加进去一样。同样可以把数据点加进boxplot中，还有很多手法来展示boxplot，比如可以用缺口(notch)形式来画boxplot，可以把中间的宽度表示为median值的置信空间。boxplot的宽度可以用样本量来归一化，如果sample size足够大的话，$mean\pm errorbar$ 不会超出box，可以很清晰把这个信息也展示在boxplot中。 如果数据量比较少，可以用scatterplot+errorbar的形式展示数据，正如我在Phosphoproteome profile of human lung cancer cell line A549中所画的图7。
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno</a>
-      </h1>
-      <span class="post-date">Jan 14, 2014 &middot; 5 minute read &middot; <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseq">ChIPseq</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a>
-      </span>
-      
-      I used R package ChIPpeakAnno for annotating peaks, and found that it handle the DNA strand in the wrong way. Maybe the developers were from the computer science but not biology background. &gt; require(ChIPpeakAnno) &gt; packageVersion(&quot;ChIPpeakAnno&quot;) [1] '2.10.0' &gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528)) &gt; data(TSS.human.GRCh37) &gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37) &gt; ap RangedData with 1 row and 9 value columns across 1 space space ranges | peak strand | 1 ENSG00000001461 1 [24736757, 24737528] | 1 + feature start_position end_position insideFeature 1 ENSG00000001461 ENSG00000001461 24742284 24799466 upstream distancetoFeature shortestDistance fromOverlappingOrNearest 1 ENSG00000001461 -5527 4756 NearestStart In this example, I defined a peak ranging from chr1:24736757 to chr1:24737528 and annotated the peak using ChIPpeakAnno package.
-      <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/">Install Emacs on Mac</a>
-      </h1>
-      <span class="post-date">Sep 10, 2013 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
-      </span>
-      
-      package manager 之前一直用NetBSD的pkgsrc做为各种Unix-like系统的包管理系统，pkgsrc在自己内部解决依赖关系，这点对于生产环境来说，是很好的一个优点，我通常会在服务器里装一个pkgsrc，在用户目录下，维护一套UNIX软件。但是用在自己的机器上，内部解决软件依赖，就是个缺点，浪费编译时间和硬盘空间。 Mac上可用的包管理系统很多，Fink移植于Debian的apt，Gentoo的portage也支持OS X。OS X是基于BSD的系统，BSD有自己的一套包管理系统，如FreeBSD的ports和NetBSD的pkgsrc，MacPorts可以看作是这一系列中的一个，不过它并不是OS X原生的，它只是OpenDarwin的子项目，所以和pkgsrc一个样，也是内部解决依赖，真正为OS X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里已有的软件。 自从用了Homebrew之后，再也不用为系统里有两套perl和python而crazy了，之前通过pkgsrc装的软件全删掉，改Homebrew来安装和管理。 如果软件没有被pkgsrc收录，而想通过pkgsrc来管理的话，那就得自己写makefile，而homebrew，则可以自动帮你生成Formula，比如我要安装blat： brew create http://users.soe.ucsc.edu/~kent/src/blatSrc35.zip 当然有可能需要编辑一下： brew edit blat 大多数情况下，并不需要修改，创建了formula之后，就可以使用homebrew安装。 brew install blat Emacs 虽然Homebrew是为OS X设计的，但它毕竟不是苹果的东西，无法管理系统内置的程序，OS X自带Emacs，版本22，已经很老了，而且没有图形界面，为了方便管理和升级，只能把系统自带的删掉，用Homebrew来安装新版的Emacs-24.3，安装时使用参数&ndash;cocoa，使得emacs能够识别OS X的keybinding，创建链接到Applications下，这样可以在Applications中双击运行。 rm /usr/bin/emacs rm -rf /usr/share/emacs brew install --cocoa emacs ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/ site-lisp 在.emacs.d目录下新建site-lisp目录，用于放置各种第三方的包，在.emacs里加入： (let ((default-directory &quot;~/.emacs.d/site-lisp/&quot;)) (normal-top-level-add-subdirs-to-load-path)) 让emacs启动时，加载site-lisp及其子目录。 eshell PATH eshell是个非常美好的存在，在windows下安装Emacs，就拥有了一个小型的shell，非常方便，当然它并不是bash，如果在windows下使用会缺少很多bash内置程序和许多的unix命令行工具，幸好可以配置emacs调用cygwin的bash。 eshell并不使用.bash_profile中定义的PATH，好在eshell中内置addpath程序，可以非常方便地把路径加入到PATH中去。 ~ $ addpath /usr/bin/ /bin/ /usr/sbin/ /sbin/ ~ $ addpath -b /usr/local/bin /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin ~ $ echo $PATH /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin 不过这种方式，只是临时加路径而已。 要想永久性把改变PATH变量，还是需要把它加入到.emacs中去。 (setenv &quot;PATH&quot; (concat &quot;/usr/local/bin:&quot; (getenv &quot;PATH&quot;))) (setq exec-path (append exec-path '(&quot;/usr/local/bin&quot; &quot;/opt/bin&quot;))) color-theme 安装color-theme，放在.emacs.d/site-lisp下，在.emacs里加入： (require 'color-theme) (color-theme-initialize) (color-theme-robin-hood) 启动时加载color-theme，搞代码很伤眼啊 =,= Maxima Maxima是一个计算机代数运算系统，它是由MIT于1968至1982年间开发的Macsyma系统演变而来的。MIT于1982年将Macsyma源代码交与美国能源部（DOE），这部分代码后来被称作DOE Macsyma。DOE Macsyma的一个版本从1982年起由德克萨斯大学的William F.
-      <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/">Installing Hackintosh</a>
-      </h1>
-      <span class="post-date">Mar 15, 2012 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
-      </span>
-      
-      初中时在杂志上看到苹果的彩壳机，从此叔就开始成为了苹果的脑残粉，还在K6-2和win98那会，就在玩macintosh主题。 本科时，通过PearPC来虚拟PowerPC，硬是在ATHLON XP 1700+这个破CPU上破了OS X Jaguar，那个慢啊，是无法忍受的。 后来，有了一台powerbook，却拿它来装gentoo和netbsd。从那里候开始，基本上就只用Linux/BSD。 再后来，又有了一台macbook pro，除了出差，放在家里倒也没怎么用。囧rz&hellip; 在国内的工作环境，用linux与人格格不入。但windows搞开发又有不顺手的。各种编译环境搭建起来让人作呕，而且没有shell，用起来就是不够爽，虽然emacs自带eshell，但在windows下缺少各种命令行程序，也只能算廖胜于无。 在北京那会，只用linux，因为有需要的时候可以通过局域网运行windows程序。到了暨大，一直用win7，因为质谱相关的很多软件都只跑在winddows下，后来发现和我没啥关系，那些东西都在质谱房里搞。得益于机房里有一台机器跑CentOS，每天通过ssh，也免去了切换系统的麻烦，但是时间长了，我还是觉得诸多不便。 前两天，突发奇想，不如把办公室里的dell机器装个黑苹果。可以应付国内的办公需求，同时也是个Unix-like系统，各种爽。 装起来倒也顺利，只是网卡、显卡、声卡全不认。搞起来倒也不难，就是kext有点难找。这种文件相当于Linux的kernel module。搞驱动的时候，让我有种10年前玩redhat 7.2时的感觉。 照例，有图有真相。
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/">draw chinese character Jiong using ggplot2</a>
-      </h1>
-      <span class="post-date">Feb 17, 2012 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
-      </span>
-      
-      The Chinese character Jiong (囧) is now widely used for expressing ideas or feelings such as annoyance, shock, embarrassment, awkwardness, scorn. The function plot of y=1/(x^2-1) looks very similar of this symbol. I use ggplot2 to draw the symbol of Jiong. It looks like: The function line is very easy to draw, but the options to hone this graph need some tricky tips. The source code for generating this plot can be found in github.
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2012/02/violin-plot/">violin plot</a>
-      </h1>
-      <span class="post-date">Feb 7, 2012 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2012/02/violin-plot/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
-      </span>
-      
-      ggplot2 0.9.0版本将在3月1号发布，改动较大，最近bioc mailing list也有诸多讨论，因为它导致了某些包编译出错（估计是NAMESPACE引起的）。 按照hadley的说法是这是为了把他个人的项目变成一个社区项目。 大多数的改动对用户来说是invisible的，用roxygen2去注释函数，核心代码使用S3重写，分离出一些特性（scales包）等。 最明显的是现在画图速度变快了，不过我觉得最让人兴奋的是guide_legend()和guide_colorbar()两个函数，可以修改legend. 画图的话，加了四个函数geom_map(), geom_raster(), geom_dotplot()和geom_violin(). violin plot结合了box plot和kernel density estimate，有了它，box plot基本可以扔了。
-      
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</a>
-      </h1>
-      <span class="post-date">Aug 16, 2011 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
-      </span>
-      
-      In order to provide an option to compare graphs produced by basic internal plot function and ggplot2, I have recreated the figures in the book, 25 Recipes for Getting Started with R, with ggplot2. The code used to create the images is in separate paragraphs, allowing easy comparison. 1.16 Creating a Scatter Plot plot(cars) ggplot(cars,aes(speed,dist))+geom_point() 1.17 Creating a Bar Chart heights &lt;- tapply(airquality$Temp, airquality$Month, mean) par(mfrow=c(1,2)) barplot(heights) barplot(heights, main=&quot;Mean Temp. by Month&quot;, names.arg=c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;), ylab=&quot;Temp (deg.
-      <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">the batman equation</a>
-      </h1>
-      <span class="post-date">Aug 13, 2011 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/mathematics">Mathematics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
-      </span>
-      
-      HardOCP has an image with an equation which apparently draws the Batman logo. $((\frac{x}{7})^2 \cdot \sqrt{\frac{||x|-3|}{(|x|-3)}}+ (\frac{y}{3})^2 \cdot \sqrt{\frac{|y+3 \cdot \frac{\sqrt{33}}{7}|}{y+3 \cdot \frac{\sqrt{33}}{7}}}-1) \cdot (|\frac{x}{2}|-((3 \cdot \frac{\sqrt{33}-7)}{112}) \cdot x^2-3+\sqrt{1-(||x|-2|-1)^2}-y) \cdot (9 \cdot \sqrt{\frac{|(|x|-1) \cdot (|x|-0.75)|}{((1-|x|)*(|x|-0.75))}}-8 \cdot |x|-y) \cdot (3 \cdot |x|+0.75 \cdot \sqrt{\frac{|(|x|-0.75) \cdot (|x|-0.5)|}{((0.75-|x|) \cdot (|x|-0.5))}}-y) \cdot (2.25 \cdot \sqrt{\frac{|(x-0.5) \cdot (x+0.5)|}{((0.5-x) \cdot (0.5+x))}}-y) \cdot (\frac{6 \cdot \sqrt{10}}{7}+(1.5-0.5 \cdot |x|) \cdot \sqrt{\frac{||x|-1|}{|x|-1}}-(\frac{6 \cdot \sqrt{10}}{14}) \cdot \sqrt{4-(|x|-1)^2}-y) =0$ This function is very delightful for drawing such a graph, but write it down in latex is very tedious.
-      <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">Read On &rarr;</a>
       
     </div>
     
@@ -261,12 +261,15 @@
         ><a href="/page/6/">6</a></li>
         
         <li
+        ><a href="/page/7/">7</a></li>
+        
+        <li
         >
         <a href="/page/5/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
         </li>
         
         <li>
-            <a href="/page/6/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+            <a href="/page/7/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
         </li>
         
     </ul>

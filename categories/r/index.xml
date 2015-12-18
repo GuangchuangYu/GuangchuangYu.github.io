@@ -197,6 +197,229 @@ great environment for phylogenetics.&lt;/p&gt;
     </item>
     
     <item>
+      <title>Comparison of clusterProfiler and GSEA-P</title>
+      <link>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</link>
+      <pubDate>Mon, 02 Nov 2015 11:50:29 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</guid>
+      <description>
+
+&lt;p&gt;Thanks &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; for raising &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/31&#34;&gt;the
+issue&lt;/a&gt; to me
+and his efforts in benchmarking
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;He pointed out two issues:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;outputs from gseGO and GSEA-P are poorly overlap.&lt;/li&gt;
+&lt;li&gt;pvalues from gseGO are generally smaller and don&amp;rsquo;t show a lot of
+variation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.&lt;/p&gt;
+
+&lt;p&gt;First of all, the gene set collections are very different. The GMT file
+used in his test is &lt;em&gt;c5.cc.v5.0.symbols.gmt&lt;/em&gt;, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.&lt;/p&gt;
+
+&lt;p&gt;For instance, with his gene list as input, clusterProfiler annotates 195
+genes as ribosome, while GSEA-P (using c5.cc.v5.0.symbols.gmt) only
+annotates 38 genes.&lt;/p&gt;
+
+&lt;p&gt;As the gene set collections is so different, I don&amp;rsquo;t believe the
+comparison can produce any valuable results.&lt;/p&gt;
+
+&lt;p&gt;The first step should be extending clusterProfiler to support using GMT
+file as gene set annotation, thereafter we can use identical input (both
+gene list and gene sets) and then benchmarking will be valuable for
+detecting issues that exclusively attributed to the implementation of
+GSEA algorithm.&lt;/p&gt;
+
+&lt;h3 id=&#34;clusterprofiler-supports-gmt-file:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler supports GMT file&lt;/h3&gt;
+
+&lt;p&gt;Currently clusterProfiler supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;user&amp;rsquo;s own
+annotations&lt;/a&gt;
+via &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; functions which require users provide their
+own annotation in a &lt;em&gt;data.frame&lt;/em&gt;. This is a general interface for using
+user&amp;rsquo;s own annotation.&lt;/p&gt;
+
+&lt;p&gt;To support GMT file, we only need a function, &lt;em&gt;read.gmt&lt;/em&gt;, to parse GMT
+file and output a &lt;em&gt;data.frame&lt;/em&gt; that is suitable for &lt;em&gt;enricher&lt;/em&gt; and
+&lt;em&gt;GSEA&lt;/em&gt;. Now this function is available in devel branch (in BioC 3.3 or
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;github&lt;/a&gt;) of
+clusterProfiler.&lt;/p&gt;
+
+&lt;p&gt;As &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; used &lt;em&gt;c5.cc&lt;/em&gt;, I also use it for
+further comparison. I have packed the file into clusterProfiler, so that
+users can use it for testing/practice.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; gmtfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;c5.cc.v5.0.entrez.gmt&amp;quot;, 
+                         package=&amp;quot;clusterProfiler&amp;quot;)
+## only 207K.
+## It&#39;s indeed a tiny subset of CC.
+&amp;gt; file.size(gmtfile)/1000
+[1] 207.608
+&amp;gt; c5 &amp;lt;- read.gmt(gmtfile)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;hypergeometric-test-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;hypergeometric test with GMT annotation&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; require(clusterProfiler)
+&amp;gt; data(geneList, package=&amp;quot;DOSE&amp;quot;)
+&amp;gt; de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+&amp;gt; head(de)
+[1] &amp;quot;4312&amp;quot;  &amp;quot;8318&amp;quot;  &amp;quot;10874&amp;quot; &amp;quot;55143&amp;quot; &amp;quot;55388&amp;quot; &amp;quot;991&amp;quot;  
+&amp;gt; x &amp;lt;- enricher(de, TERM2GENE=c5)
+## omit some columns to make it more readable
+&amp;gt; head(summary(x)[, c(1, 3:7)], 3)
+                                               ID GeneRatio  BgRatio
+SPINDLE                                   SPINDLE     11/82  39/5270
+MICROTUBULE_CYTOSKELETON MICROTUBULE_CYTOSKELETON     16/82 152/5270
+CYTOSKELETAL_PART               CYTOSKELETAL_PART     15/82 235/5270
+                               pvalue     p.adjust       qvalue
+SPINDLE                  7.667674e-12 6.594200e-10 5.327016e-10
+MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
+CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;gene-set-enrichment-analysis-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;gene set enrichment analysis with GMT annotation&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; y &amp;lt;- GSEA(geneList, TERM2GENE=c5)
+&amp;gt; head(summary(y)[, -c(1,2)], 2)
+                          setSize enrichmentScore       NES      pvalue
+EXTRACELLULAR_REGION          401      -0.3860230 -1.694322 0.001237624
+EXTRACELLULAR_REGION_PART     310      -0.4101043 -1.765775 0.001269036
+                            p.adjust    qvalues
+EXTRACELLULAR_REGION      0.03047874 0.02316228
+EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;comparison-of-clusterprofiler-and-gsea-p:140b254f6d6e22f5c796e058ac8120af&#34;&gt;Comparison of clusterProfiler and GSEA-P&lt;/h3&gt;
+
+&lt;p&gt;Now with &lt;em&gt;read.gmt&lt;/em&gt;, we can compare clusterProfiler and GSEA-P with the
+same input.&lt;/p&gt;
+
+&lt;p&gt;First of all, I export &lt;em&gt;geneList&lt;/em&gt; to a &lt;em&gt;rnk&lt;/em&gt; file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(geneList, package=&amp;quot;DOSE&amp;quot;)
+d=data.frame(gene=names(geneList), FC=geneList)
+write.table(d, row.names=F,col.names=F, quote=F, file=&amp;quot;geneList.rnk&amp;quot;, sep=&amp;quot;\t&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And run GSEA-P with the following parameters:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;producer_class  xtools.gsea.GseaPreranked
+producer_timestamp  1445941169480
+param   collapse    false
+param   plot_top_x  20
+param   rnk /Users/guangchuangyu/Downloads/geneList.rnk
+param   norm    meandiv
+param   scoring_scheme  weighted
+param   make_sets   true
+param   mode    Max_probe
+param   gmx /Users/guangchuangyu/Downloads/c5.cc.v5.0.entrez.gmt
+param   gui false
+param   rpt_label   my_analysis
+param   help    false
+param   out /Users/guangchuangyu/gsea_home/output/oct27
+param   include_only_symbols    true
+param   set_min 15
+param   nperm   1000
+param   rnd_seed    timestamp
+param   zip_report  false
+param   set_max 500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Re-run clusterProfiler::GSEA with pvalueCutoff=1.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;g &amp;lt;- read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+xx &amp;lt;- GSEA(geneList, TERM2GENE=c5, nPerm=1000, pvalueCutoff=1)
+gy = merge(g, summary(xx), by.x=&amp;quot;NAME&amp;quot;, by.y=&amp;quot;ID&amp;quot;)
+ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10757414/e8d4f490-7ce5-11e5-9027-1dbe81e66329.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now the comparison tells! clusterProfiler indeed produce smaller
+pvalues. As I said in &lt;a href=&#34;http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/&#34;&gt;why clusterProfiler
+fails&lt;/a&gt;, in
+general software produce more conservative result is more trustable.
+This is indeed an issue I couldn&amp;rsquo;t omit.&lt;/p&gt;
+
+&lt;p&gt;This issue is attributed to DOSE package, which serves as a backend of
+both clusterProfiler and ReactomePA.&lt;/p&gt;
+
+&lt;p&gt;In DOSE, we calculate the pvalue in the following way:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;For each geneList, we calculate the observed ES, and then perform
+permutation to generate a null ES distribution. pvalue = (sum(ES &amp;gt;=
+permES)+1)/(nPerm+1), for greater side as an example, is calculated.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;fixed-bug-of-dose:140b254f6d6e22f5c796e058ac8120af&#34;&gt;fixed bug of DOSE&lt;/h3&gt;
+
+&lt;p&gt;Eventually I figured out that the way we calculate pvalue is not
+correct. As presented in
+&lt;a href=&#34;http://www.pnas.org/content/102/43/15545.abstract&#34;&gt;Subramaniam&lt;/a&gt; &lt;em&gt;et
+al&lt;/em&gt;, the distribution of ES is bimodal. Positive and negative ES values
+should be separated when calculating pvalues.&lt;/p&gt;
+
+&lt;p&gt;After I changed the &lt;a href=&#34;https://github.com/GuangchuangYu/DOSE/commit/12a35b7ff31d3dfd51d81d0f6a6e1afaa24a9823&#34;&gt;source
+code&lt;/a&gt;,
+the pvalues generated by clusterProfiler::GSEA and GSEA-P are almost
+identical.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10787607/34fd8716-7dad-11e5-9f43-6433b574b77b.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This bug was fixed in both release (&amp;gt;=2.8.1) and devel (&amp;gt;=2.9.1)
+branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.&lt;/p&gt;
+
+&lt;h3 id=&#34;other-concerns:140b254f6d6e22f5c796e058ac8120af&#34;&gt;other concerns&lt;/h3&gt;
+
+&lt;p&gt;There are other differences between clusterProfiler and GSEA-P.&lt;/p&gt;
+
+&lt;h4 id=&#34;clusterprofiler-never-produce-pvalue-0:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler never produce pvalue=0&lt;/h4&gt;
+
+&lt;p&gt;For calculating pvalues, GSEA-P may produce pvalue=0, while
+clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
+both numerator and demoninator. Some software may not accept pvalue=0,
+for example if you want to use topGO to visualize enrichment with GO
+topology, the result can&amp;rsquo;t contain any pvalue=0.&lt;/p&gt;
+
+&lt;h4 id=&#34;clusterprofiler-test-whole-gene-set-collections:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler test whole gene set collections&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; g=read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+&amp;gt; dim(g)
+[1] 56 12
+&amp;gt; yy = summary(xx)
+&amp;gt; yy = yy[with(yy, setSize &amp;gt;= 15 &amp;amp; setSize &amp;lt;=500),]
+&amp;gt; dim(yy)
+[1] 152   8
+&amp;gt; all(g$NAME %in% yy$ID)
+[1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GSEA-P didn&amp;rsquo;t filter result by pvalues, as it reported pvalues ranging
+from 0 to 1.&lt;/p&gt;
+
+&lt;p&gt;We cut our result by setSize in [15, 500] as default parameter of
+GSEA-P.&lt;/p&gt;
+
+&lt;p&gt;clusterProfiler tests all the gene sets while GSEA-P only tests a
+subset.&lt;/p&gt;
+
+&lt;p&gt;If I have some free time, I will figure out how they select gene sets to
+test. If it&amp;rsquo;s reasonable, we can add a parameter for clusterProfiler
+users to switch between two modes (full sets or subset). This is still
+an open issue/question. If you have any idea, don&amp;rsquo;t hesitate to let me
+know. :)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>BioC 3.2: NEWS of my BioC packages</title>
       <link>http://guangchuangyu.github.io/2015/10/bioc-3.2-news-of-my-bioc-packages/</link>
       <pubDate>Thu, 15 Oct 2015 16:13:57 +0800</pubDate>
@@ -890,235 +1113,44 @@ gridExtra::grid.arrange(ggtree(tr, color=col),
     </item>
     
     <item>
-      <title>ggtree with funny fonts</title>
-      <link>http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/</link>
-      <pubDate>Fri, 12 Jun 2015 06:19:56 +0800</pubDate>
+      <title>dotplot for enrichment result</title>
+      <link>http://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result/</link>
+      <pubDate>Tue, 23 Jun 2015 05:37:09 +0800</pubDate>
       
-      <guid>http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://cran.r-project.org/web/packages/showtext/index.html&#34;&gt;showtext&lt;/a&gt;
-is a neat solution to use various types of fonts in R graphs and make it
-easy to use funny fonts. With
-&lt;a href=&#34;http://cran.r-project.org/web/packages/showtext/index.html&#34;&gt;showtext&lt;/a&gt;,
-we can draw phylogenetic tree with different types of fonts even with
-symbolic/icon fonts.&lt;/p&gt;
+      <guid>http://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result/</guid>
+      <description>&lt;p&gt;This is a &lt;a href=&#34;http://guangchuangyu.github.io//2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;feature
+request&lt;/a&gt;
+from
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+user. It&amp;rsquo;s similar to what I implemented in
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+for comparing biological themes. For comparing different enrichment
+results, the x-axis represent different gene clusters while for a single
+enrichment result, the x-axis can be gene count or gene ratio. This is
+actually similar to traditional barplot, with dot position as bar height
+and dot color as bar color. But dotplot can represent one more feature
+nicely by dot size and it can be a good alternative to barplot.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(showtext)
-
-font.add.google(&amp;quot;Gochi Hand&amp;quot;, &amp;quot;gochi&amp;quot;)
-font.add.google(&amp;quot;Rock Salt&amp;quot;, &amp;quot;rock&amp;quot;)
-
-link = &amp;quot;http://img.dafont.com/dl/?f=wm_people_1&amp;quot;;
-download.file(link, &amp;quot;wmpeople1.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;);
-unzip(&amp;quot;wmpeople1.zip&amp;quot;);
-font.add(&amp;quot;wmpeople1&amp;quot;, &amp;quot;wmpeople1.TTF&amp;quot;);
-
-link = &amp;quot;http://img.dafont.com/dl/?f=emoticons&amp;quot;;
-download.file(link, &amp;quot;emoticons.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;);
-unzip(&amp;quot;emoticons.zip&amp;quot;);
-font.add(&amp;quot;emoticons&amp;quot;, &amp;quot;emoticons.ttf&amp;quot;);
-
-
-showtext.auto()
-set.seed(2015-05-14)
-
-library(ggplot2)
-library(ggtree)
-
-tree &amp;lt;- rtree(30)
-ggtree(tree, color=&amp;quot;darkgreen&amp;quot;) + geom_tiplab(family=&amp;quot;gochi&amp;quot;) + theme_classic() +
-    theme(axis.text.x=element_text(size=rel(4), family=&amp;quot;emoticons&amp;quot;, color=&amp;quot;firebrick&amp;quot;)) +
-        scale_y_continuous(breaks=seq(0, 30, 4), labels=letters[c(12:17, 20, 21)]) +
-            theme(axis.text.y=element_text(size=rel(4), family=&amp;quot;wmpeople1&amp;quot;, color=&amp;quot;#FDAC4F&amp;quot;)) +
-                annotate(&amp;quot;text&amp;quot;, x=2, y=18, label=&amp;quot;Have fun with ggtree!&amp;quot;,
-                         family=&amp;quot;rock&amp;quot;, angle=30, size=12, color=&amp;quot;steelblue&amp;quot;)
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(DOSE)
+deg = names(geneList)[abs(geneList) &amp;gt; 1]
+do = enrichDO(deg)
+dotplot(do, showCategory=20)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/f6217cb7815a824b0a273e6f5147f01a9ebb367a/Bioconductor/ggtree/ggtree_funny_font.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/dotplot_geneRatio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;download.file(&amp;quot;http://dl.dafont.com/dl/?f=people_freak&amp;quot;, &amp;quot;people_freak.zip&amp;quot;, mode=&amp;quot;wb&amp;quot;)
-unzip(&amp;quot;people_freak.zip&amp;quot;)
-font.add(&amp;quot;people_freak&amp;quot;, &amp;quot;People_freak.ttf&amp;quot;)
-ggtree(rtree(10)) + geom_text(aes(label=node, color=isTip), family=&amp;quot;people_freak&amp;quot;, hjust=0) 
+&lt;p&gt;We can set the x-axis to use gene count and dot color by one of
+&amp;lsquo;pvalue&amp;rsquo;, &amp;lsquo;p.adjust&amp;rsquo; or &amp;lsquo;qvalue&amp;rsquo;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;dotplot(do, x=&amp;quot;count&amp;quot;, showCategory=20, colorBy=&amp;quot;qvalue&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/524ea41306f6d9a93251eaf9e193a264e5d4dbd4/Bioconductor/ggtree/ggtree_funny_font2.png&#34; alt=&#34;&#34; /&gt;
-Funny fonts can be downloaded from
-&lt;a href=&#34;http://www.dafont.com/search.php?q=icon&#34;&gt;1&lt;/a&gt;,
-&lt;a href=&#34;http://www.dafont.com/search.php?q=people&#34;&gt;2&lt;/a&gt; and
-&lt;a href=&#34;http://www.fontspace.com/category/people&#34;&gt;3&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>BMC favors source code plagiarism</title>
-      <link>http://guangchuangyu.github.io/2015/05/bmc-favors-source-code-plagiarism/</link>
-      <pubDate>Wed, 27 May 2015 13:38:44 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/05/bmc-favors-source-code-plagiarism/</guid>
-      <description>&lt;p&gt;I found source code plagiarism a year ago and reported this case to &lt;a href=&#34;http://www.biomedcentral.com/bmcsystbiol&#34;&gt;BMC
-Systems Biology&lt;/a&gt;:
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/0f22f6ad87427adb59941160130b016ee1e41004/2015/plagiarism/Screenshot%202015-05-27%2019.56.58.png&#34; alt=&#34;&#34; /&gt;
-I listed source code of many functions that are exactly copied from
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/GOSemSim.html&#34;&gt;GOSemSim&lt;/a&gt;
-with only function name changed in my email. The detail of source code
-plagiarism can also be found at &lt;strong&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/&#34;&gt;Proper use of
-GOSemSim&lt;/a&gt;&lt;/strong&gt;. I got
-reply from the Editor 3 days after (see
-&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/0f22f6ad87427adb59941160130b016ee1e41004/2015/plagiarism/Screenshot%202015-05-27%2019.58.16.png&#34;&gt;screenshot&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/dotplot_count.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-&lt;p&gt;MS: 1069569029107167
-Research
-ppiPre: predicting protein-protein interactions by combining heterogeneous features
-BMC Systems Biology 2013, 7:S8&lt;/p&gt;
-
-&lt;p&gt;Dear Dr Yu,&lt;/p&gt;
-
-&lt;p&gt;Thank you for your message and bringing this to our attention. Firstly I would like to assure you that we do take cases of plagiarism very seriously. We are members of the Committee on Publication Ethics (&lt;a href=&#34;http://publicationethics.org&#34;&gt;http://publicationethics.org&lt;/a&gt;) follow their guidelines for circumstances such as this.&lt;/p&gt;
-
-&lt;p&gt;As a first step we will be investigating the overlap between this publication in BMC Systems Biology and your previously published work, to establish the extent of the duplication.&lt;/p&gt;
-
-&lt;p&gt;Could I just check, have you compared all the code in the ppiPRE article for similarity with your own code? That is, is there any possibility that more of your code has been duplicated without attribution? We will of course have to examine the code for unattributed use of other authors code in addition to your own&lt;/p&gt;
-
-&lt;p&gt;Please do let us know if there are more relevant details you are aware of. We will be in contact again in due course as our investigations proceed, but do not hesitate to contact me in the meantime if you would like an update&lt;/p&gt;
-
-&lt;p&gt;Best wishes,
-Tim&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The editor assured me that they &amp;lsquo;&lt;strong&gt;do take cases of plagiarism very
-seriously&lt;/strong&gt;&amp;rsquo; and will investigate the overlap. I was waiting for their
-update. But 5 months passed, I never receive any reply from them even I
-sent several emails to ask for updates. I have no idea how long their
-&amp;lsquo;&lt;strong&gt;due course&lt;/strong&gt;&amp;rsquo; is. As I did not receive any reply, I wrote a blog post
-(see &lt;a href=&#34;http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/&#34;&gt;Proper use of
-GOSemSim&lt;/a&gt;) to bring
-this to the R community and CRAN did remove the ppiPre package at that
-time. I told the Editor that this package had been removed from CRAN and
-again asked for update. This time, he did reply me (see
-&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/plagiarism/Screenshot%202015-05-27%2020.11.54.png&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;MS: 1069569029107167
-Research
-ppiPre: predicting protein-protein interactions by combining heterogeneous features
-BMC Systems Biology 2013, 7:S8&lt;/p&gt;
-
-&lt;p&gt;Dear Guangchuang,&lt;/p&gt;
-
-&lt;p&gt;Thank you for your message and my apologies for the delay in this investigation. We had been trying to identify if any other code had also been plagiarised in the publication, although we did not find any evidence of this. Thank you also for drawing our attention to the removal of ppiPre from CRAN. We will be in touch with the article authors and will let you know when there is a further update.&lt;/p&gt;
-
-&lt;p&gt;Regards,
-Tim&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;As we can find in the editor&amp;rsquo;s email, &amp;lsquo;&lt;strong&gt;We will be in touch with the
-article authors&lt;/strong&gt;&amp;rsquo;, they never contact the authors after 5 months passed
-from my report. In the following 2 months, I never receive any reply
-again. I was angry and sent an email to several Editors of BMC to
-complain that they are ruinning the reputation of BMC. Then again as
-expected, I got email (see
-&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/plagiarism/Screenshot%202015-05-27%2020.33.30.png&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Dear Guangchuang,&lt;/p&gt;
-
-&lt;p&gt;We are continuing to pursue this case. As you will understand, as well as the clear evidence of plagiarism of your code, we are concerned about possible unacknowledged reuse of other code as well. We have been trying to contact the authors for a full explanation, as this will affect how we can address the issue. Until very recently we had not been successful in contacting them, although they have very recently got back to us  and have said that they are considering their response, so we expect an update soon. From our perspective it is highly preferable for the authors to come clean about the issues and for any correction or retraction notice to come from them rather than from the editors, and for this reason it is often a drawn out process.&lt;/p&gt;
-
-&lt;p&gt;Thank you for your patience, and I can again assure you that this will be addressed formally in due course.&lt;/p&gt;
-
-&lt;p&gt;Yours sincerely,
-Tim&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I am very happy to see this as the editor told me they have contacted
-the authors and will have an update soon. I wait another 3 months
-without any update as usual. I asked for update again and this time they
-did give me an update (see
-&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/plagiarism/Screenshot%202015-04-23%2021.31.55.png&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Dear Guangchuang,&lt;/p&gt;
-
-&lt;p&gt;Looking back through my emails, I did receive a response back from the authors previously. They in turn said that the email address I had originally been trying to contact them with earlier last year was no longer in use, so they only received my emails when I found an additional alternative email address for the authors in my more recent emails.&lt;/p&gt;
-
-&lt;p&gt;Their explanation for the use of your code was that as the similarity measures were not their main focus of their study they had intended to either implement existing methods themselves or as in the case of GoSemSim, import the packages. However they had some problems with this and instead utilised the source code directly. Their rationale was that as the code was GPL licenced that this was acceptable, without realising that it was also required to cite the original source.&lt;/p&gt;
-
-&lt;p&gt;They say they have now created an updated version which they say has the following changes:&lt;/p&gt;
-
-&lt;p&gt;(1) ppiPre imports GOSemSim.
-(2) ppiPre calls function geneSim() exported by GOSemSim to calculate Wang’s measure, instead of deriving code from GOSemSim directly.
-(3) Several internal functions of ppiPre (TCSSGetAncestors, GetOntology, GetGOParents, GetLatestCommonAncestor, TCSSCompute_ICA) are derived from GOSemSim since GOSemSim don’t export them. In source code (.R) and manuals (.RD), acknowledgement has been added including the information of author and publication of GOSemSim.
-(4) The author of GOSemSim (Guangchuang Yu) has been added in the ‘Author’ filed as contributor, as required by CRAN Repository Policy.
-(5) All the information content data in \data directory of ppiPre have been removed. ppiPre directly obtained data from GOSemSim.&lt;/p&gt;
-
-&lt;p&gt;This version has been available in SourceForge (&lt;a href=&#34;https://sourceforge.net/p/ppipre/&#34;&gt;https://sourceforge.net/p/ppipre/&lt;/a&gt;). And we are submitting ppiPre to CRAN. We will notify you after ppiPre is available on CRAN.&lt;/p&gt;
-
-&lt;p&gt;They also apologise for failing to cite you correctly and have asked if they may submit a correction to their article to rectify this. This would be within our policy if this sounds acceptable to you. Please let me know if you would need more details or if you need to get in touch with the authors&lt;/p&gt;
-
-&lt;p&gt;Best wishes,
-Tim&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;After the changes, ppiPre is back to CRAN. Now in CRAN, what we can find
-is that ppiPre use source code from GOSemSim properly with
-acknowledgement. They removed all previous source tarball so that their
-source code plagiarism was gone. Fortunately, github recorded all the
-&lt;a href=&#34;https://github.com/cran/ppiPre/commit/c267700ca09a599dab77326959a0aa6a2980ceed&#34;&gt;changes&lt;/a&gt;.
-The editor delay the processing to give the authors enough time to
-remove their bad records. I think CRAN shouldn&amp;rsquo;t accept re-submitted
-package if it was removed for plagiarism issue. In the email, the editor
-not only conveyed explanation from the author, but also have expressed
-their opinion: &amp;lsquo;&lt;strong&gt;They also apologise for failing to cite you correctly
-and have asked if they may submit a correction to their article to
-rectify this. This would be within our policy if this sounds acceptable
-to you&lt;/strong&gt;&amp;rsquo;. This is why I think BMC do favor source code plagiarism.
-Their judgement/opinion is not fair! I can&amp;rsquo;t accept their explanation
-and replied to the editor (see
-&lt;a href=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/plagiarism/Screenshot%202015-04-23%2021.45.33.png&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Dear Prof. Sands,&lt;/p&gt;
-
-&lt;p&gt;Thanks for your email. That makes it more clear.&lt;/p&gt;
-
-&lt;p&gt;I can&amp;rsquo;t accept their explanation.&lt;/p&gt;
-
-&lt;p&gt;The ppiPre is a die package, they didn&amp;rsquo;t update any source code or IC data after publication, with the fact that annotation packages for calculating IC data have updated several times. The recent changes were forced by my report of plagiarism.&lt;/p&gt;
-
-&lt;p&gt;The recent update follows the requirement of GPL license which requires the derivative work also GPL licensed and acknowledge original works. That&amp;rsquo;s good, but remember it was forced to happen after my report of source code plagiarism.&lt;/p&gt;
-
-&lt;p&gt;In the version they published the paper, it is indeed source codes copied without any acknowledgement and the proportion is very large (about &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; of ppiPre was copied from GOSemSim).&lt;/p&gt;
-
-&lt;p&gt;In their explanation, the author claimed that similarity measures were not their main focus. Can I ask what&amp;rsquo;s their main focus? SVM for protein-pretein interaction prediction as indicated in the title of the paper and in the package name? The SVM in that package is less than 80 lines, &lt;a href=&#34;https://github.com/cran/ppiPre/blob/master/R/SVMPredict.r&#34;&gt;https://github.com/cran/ppiPre/blob/master/R/SVMPredict.r&lt;/a&gt; with more than half in calling similarity measures, and several empty lines, paramter checking and preparing input and output. They did nothing in svm; they just call e1071::svm in line 28 and and e1071::predict in line 16 with default parameters (users even don&amp;rsquo;t have chance to change kernel function in their package). If that&amp;rsquo;s their main focus, what&amp;rsquo;s their contribution of their paper? In the Method session, their only use a small paragraph, Prediction framework, that only mention they used svm for prediction but with many paragraphs emphasizing they have implemented many GO semantic similarity measures. They call svm implemented in e1071 package to train features calculated by source codes from GOSemSim. How do they explain this?  I do have no idea of their so call main focus.&lt;/p&gt;
-
-&lt;p&gt;They also mentioned that they had problems in importing GOSemSim. This is also un-acceptable. As they copied most of the functions without any change, it is easy to import these functions using GOSemSim:::un-exported_function if the function is not exported. If they don&amp;rsquo;t know this feature and did not google search how to do it. They should contact me for help or ask for my permission of re-using my codes. But they didn&amp;rsquo;t. They may believe they can use my source code freely as it is GPL licensed, they should know that open source license also have requirement of acknowledgement. Even that&amp;rsquo;s due to their ignorance, why they only change the function names to pretend that&amp;rsquo;s their own functions? If these are not their main focus, why more than half of the text in the paper explaining the calculation of these algorithms and claim they were implemented in their package?&lt;/p&gt;
-
-&lt;p&gt;If they are not intended to do this, they will have acknowledgement in their source code, they will have citation in their paper and they will not just change function name that was copied without other changes. They intended to do so to cheat editor, reviewers and readers.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;(2) ppiPre calls function geneSim() exported by GOSemSim to calculate Wang’s measure, instead of deriving code from GOSemSim directly.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Besides, most of the source code is not &amp;lsquo;derived&amp;rsquo; but copied from GOSemSim with only function name changed which can still be detected in the updated version, &lt;a href=&#34;https://github.com/cran/ppiPre/blob/master/R/GOKEGGSims.r&#34;&gt;https://github.com/cran/ppiPre/blob/master/R/GOKEGGSims.r&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Best Regards,
-Guangchuang&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;AND again, the editor just ignore my email!&lt;/strong&gt; 1 year passed and the
-case is very clear that they copied my source code and intended to
-pretend that&amp;rsquo;s their original work and use it to publish a paper. That&amp;rsquo;s
-definitely plagiarism. The editor replied me very quickly at the
-beginning and assured me that BMC do take cases like this seriously. I
-don&amp;rsquo;t know what happened after they contacted the authors. The editor
-always ignore my email except I put some pressure to them, they delay
-the process and try to persuade me that this is due to the author&amp;rsquo;s
-ignorance of open source license and an apology from the author is
-enough to solve this issue. If you see this post, you are welcome to
-comment and please help share it to social media. This will helps to
-give BMC some pressure and I will contact COPE if they won&amp;rsquo;t addressing
-this.&lt;/p&gt;
+&lt;p&gt;The dotplot function is also available in
+&lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+and
+&lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>why clusterProfiler fails &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>why clusterProfiler fails</h1>
+    <span class="post-date">Aug 7, 2014 &middot; 4 minute read &middot; <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a>
+    </span>
+    <p>Recently, there are some
+<a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">comments</a>
+said that sometimes clusterProfiler failed in KEGG enrichment analysis.</p>
+
+<p><a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">kaji331</a>
+compared cluserProfiler with GeneAnswers and found that clusterProfiler
+gives larger p values. The result forces me to test it.</p>
+
+<blockquote>
+<p>it eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used
+an old version of clusterProfiler which didn&rsquo;t use <em>as.character</em> to
+coerce the input</p>
+</blockquote>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">require(GeneAnswers)
+data('humanGeneInput')
+y &lt;- geneAnswersBuilder(humanGeneInput, 'org.Hs.eg.db', 
+                        categoryType='KEGG', testType='hyperG', 
+                        pvalueT=0.1, geneExpressionProfile=humanExpr, 
+                        verbose=FALSE)
+yy &lt;- y@enrichmentInfo
+
+require(clusterProfiler)
+x &lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, 
+                qvalueCutoff=0.2, minGSSize=1)
+xx &lt;- summary(x)
+
+id &lt;- sub(&quot;hsa&quot;, &quot;&quot;, xx$ID)
+idx &lt;- id %in% rownames(yy)
+
+p.clusterProfiler &lt;- xx$pvalue[idx]
+p.GeneAnswers &lt;- yy[id[idx],]$&quot;p value&quot;
+&gt; cor(p.clusterProfiler, p.GeneAnswers)
+[1] 0.9996165
+&gt; p.clusterProfiler - p.GeneAnswers
+ [1]  1.029789e-04 -3.588252e-05 -4.623010e-05  1.079117e-04 -1.075746e-04
+ [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04  7.588155e-04
+[11] -3.702141e-04  2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04
+[16] -5.560738e-04 -5.884079e-04  2.011138e-03
+</code></pre>
+
+<p>Here, I used the dataset, humanGeneInput, provided by GeneAnswers. There
+are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
+have p values below 0.1 by clusterProfiler. 18 of them are the same and
+p values are highly correlated with very small differences. <a href="http://guangchuangyu.github.io/2012/04/enrichment-analysis/">Enrichment
+analyses</a> are tested by
+geometric model, I believe all packages do it in the same way. The
+difference should be attributed to annotation file and I found
+background ratio are different.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; xx[1,]
+               ID Description GeneRatio  BgRatio     pvalue   p.adjust
+hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
+             qvalue                      geneID Count
+hsa04110 0.01683117 894/595/4175/6502/4173/9134     6
+&gt; yy[1,]
+      genes in Category percent in the observed List percent in the genome
+04110                 6                    0.1176471            0.02112436
+      fold of overrepresents odds ratio      p value
+04110                5.56926   6.441808 0.0006512612
+
+
+&gt; allEG = unique(unlist(as.list(org.Hs.egPATH2EG)))
+&gt; length(get(&quot;04110&quot;, org.Hs.egPATH2EG))
+[1] 124
+&gt; length(allEG)
+[1] 5870
+&gt; length(get(&quot;04110&quot;, org.Hs.egPATH2EG))/length(allEG)
+[1] 0.02112436
+</code></pre>
+
+<p>In the above example, the BgRatio of clusterProfiler is <sup>128</sup>&frasl;<sub>5894</sub>,
+slightly larger than 0.02112436 calculated by GeneAnswers. This is why
+clusterProfiler gives a p value larger than GeneAnswers (In this
+particular pathway of this particular example, clusterProfiler not
+always produce larger p values). The annotation file used by
+clusterProfiler is KEGG.db, while GeneAnswers uses org.Hs.eg.db. This is
+the reason of the difference and it&rsquo;s not a big deal.</p>
+
+<p>It&rsquo;s not a good idea to give the background ratio in decimal format as
+GeneAnswers does. We have no idea of the number of total genes in
+background with ratio like 0.02112436. Some software packages may use
+the gene number of the whole genome as background. If the total gene
+number is setting to 18000, the background ratio turn out to be
+<sup>124</sup>&frasl;<sub>18000</sub>=0.006888889. With 0.006888889, it&rsquo;s hard to detect the
+background gene number was set to a larger number. In this scenario, all
+the p values will become very small, and many false positive were
+reported.</p>
+
+<p>clusterProfiler and GeneAnswers estimate the total genes in the right
+way, but there are many packages may setting it to all the genes, no
+matter they have annotation or not. For instance, some software may
+setting the background to 20,000 when testing human genes.</p>
+
+<p>I still remember in 2007, I used princeton&rsquo;s web server,
+<a href="http://go.princeton.edu/cgi-bin/GOTermFinder">http://go.princeton.edu/cgi-bin/GOTermFinder</a>, to test GO enrichment. I
+found the background gene number was set to a very large number and all
+the p values were extremely small. When writing this blog post, I submit
+a job to this web server and found the gene number of human is setting
+to 45758. After I found this, I never use this web server again. The
+result is extremely &ldquo;significant&rdquo;! The web sever has an option, &ldquo;Enter
+the number of products estimated for your organism&rdquo;. This is ridiculous.
+It&rsquo;s hard to estimate for ordinary users and it is impossible to
+estimate it correctly since we don&rsquo;t know the annotation file in used.
+The default number, 45758 for human, is too large, result in many false
+positive.</p>
+
+<p>Input a gene list as background is useful, for instance we may use all
+genes that are detected in microarray experiment or all proteins
+identified by MS as background. This is an effective way to eliminate
+bias of using the whole genome. Use the whole genome is not mean to use
+the total number of gene in the genome as background. By default, KEGG
+enrichment analyses of clusterProfiler and GeneAnswers are using the
+whole genome, that is about 5900 genes for human, which are all genes
+have pathway annotation in the whole genome. Others without annotation
+are abandoned. This itself is a bias actually, but it&rsquo;s the realistic.
+If we include all genes no matter they have annotation or not, and
+setting 20000 or even more as background of human genes, definitely we
+will get significant result! But it is man-made significant.</p>
+
+<p>As I replied to
+<a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">kaji331</a>,
+if p values obtained by different software are different, trust the one
+produce larger p values. Many user will choose a software give a more
+&ldquo;significant&rdquo; result, but trust me, you are making type I error.
+Conservatively, always choose the one give you larger p-values if you
+know nothing about the calculation. Software that never &ldquo;fail&rdquo; is
+untrustable.</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

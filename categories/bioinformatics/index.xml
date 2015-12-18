@@ -614,6 +614,144 @@ umls:C0003873      0        0       0
     </item>
     
     <item>
+      <title>why clusterProfiler fails</title>
+      <link>http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/</link>
+      <pubDate>Thu, 07 Aug 2014 05:46:35 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/</guid>
+      <description>&lt;p&gt;Recently, there are some
+&lt;a href=&#34;http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/&#34;&gt;comments&lt;/a&gt;
+said that sometimes clusterProfiler failed in KEGG enrichment analysis.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;
+compared cluserProfiler with GeneAnswers and found that clusterProfiler
+gives larger p values. The result forces me to test it.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;it eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used
+an old version of clusterProfiler which didn&amp;rsquo;t use &lt;em&gt;as.character&lt;/em&gt; to
+coerce the input&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(GeneAnswers)
+data(&#39;humanGeneInput&#39;)
+y &amp;lt;- geneAnswersBuilder(humanGeneInput, &#39;org.Hs.eg.db&#39;, 
+                        categoryType=&#39;KEGG&#39;, testType=&#39;hyperG&#39;, 
+                        pvalueT=0.1, geneExpressionProfile=humanExpr, 
+                        verbose=FALSE)
+yy &amp;lt;- y@enrichmentInfo
+
+require(clusterProfiler)
+x &amp;lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, 
+                qvalueCutoff=0.2, minGSSize=1)
+xx &amp;lt;- summary(x)
+
+id &amp;lt;- sub(&amp;quot;hsa&amp;quot;, &amp;quot;&amp;quot;, xx$ID)
+idx &amp;lt;- id %in% rownames(yy)
+
+p.clusterProfiler &amp;lt;- xx$pvalue[idx]
+p.GeneAnswers &amp;lt;- yy[id[idx],]$&amp;quot;p value&amp;quot;
+&amp;gt; cor(p.clusterProfiler, p.GeneAnswers)
+[1] 0.9996165
+&amp;gt; p.clusterProfiler - p.GeneAnswers
+ [1]  1.029789e-04 -3.588252e-05 -4.623010e-05  1.079117e-04 -1.075746e-04
+ [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04  7.588155e-04
+[11] -3.702141e-04  2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04
+[16] -5.560738e-04 -5.884079e-04  2.011138e-03
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, I used the dataset, humanGeneInput, provided by GeneAnswers. There
+are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
+have p values below 0.1 by clusterProfiler. 18 of them are the same and
+p values are highly correlated with very small differences. &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34;&gt;Enrichment
+analyses&lt;/a&gt; are tested by
+geometric model, I believe all packages do it in the same way. The
+difference should be attributed to annotation file and I found
+background ratio are different.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; xx[1,]
+               ID Description GeneRatio  BgRatio     pvalue   p.adjust
+hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
+             qvalue                      geneID Count
+hsa04110 0.01683117 894/595/4175/6502/4173/9134     6
+&amp;gt; yy[1,]
+      genes in Category percent in the observed List percent in the genome
+04110                 6                    0.1176471            0.02112436
+      fold of overrepresents odds ratio      p value
+04110                5.56926   6.441808 0.0006512612
+
+
+&amp;gt; allEG = unique(unlist(as.list(org.Hs.egPATH2EG)))
+&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))
+[1] 124
+&amp;gt; length(allEG)
+[1] 5870
+&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))/length(allEG)
+[1] 0.02112436
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the above example, the BgRatio of clusterProfiler is &lt;sup&gt;128&lt;/sup&gt;&amp;frasl;&lt;sub&gt;5894&lt;/sub&gt;,
+slightly larger than 0.02112436 calculated by GeneAnswers. This is why
+clusterProfiler gives a p value larger than GeneAnswers (In this
+particular pathway of this particular example, clusterProfiler not
+always produce larger p values). The annotation file used by
+clusterProfiler is KEGG.db, while GeneAnswers uses org.Hs.eg.db. This is
+the reason of the difference and it&amp;rsquo;s not a big deal.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s not a good idea to give the background ratio in decimal format as
+GeneAnswers does. We have no idea of the number of total genes in
+background with ratio like 0.02112436. Some software packages may use
+the gene number of the whole genome as background. If the total gene
+number is setting to 18000, the background ratio turn out to be
+&lt;sup&gt;124&lt;/sup&gt;&amp;frasl;&lt;sub&gt;18000&lt;/sub&gt;=0.006888889. With 0.006888889, it&amp;rsquo;s hard to detect the
+background gene number was set to a larger number. In this scenario, all
+the p values will become very small, and many false positive were
+reported.&lt;/p&gt;
+
+&lt;p&gt;clusterProfiler and GeneAnswers estimate the total genes in the right
+way, but there are many packages may setting it to all the genes, no
+matter they have annotation or not. For instance, some software may
+setting the background to 20,000 when testing human genes.&lt;/p&gt;
+
+&lt;p&gt;I still remember in 2007, I used princeton&amp;rsquo;s web server,
+&lt;a href=&#34;http://go.princeton.edu/cgi-bin/GOTermFinder&#34;&gt;http://go.princeton.edu/cgi-bin/GOTermFinder&lt;/a&gt;, to test GO enrichment. I
+found the background gene number was set to a very large number and all
+the p values were extremely small. When writing this blog post, I submit
+a job to this web server and found the gene number of human is setting
+to 45758. After I found this, I never use this web server again. The
+result is extremely &amp;ldquo;significant&amp;rdquo;! The web sever has an option, &amp;ldquo;Enter
+the number of products estimated for your organism&amp;rdquo;. This is ridiculous.
+It&amp;rsquo;s hard to estimate for ordinary users and it is impossible to
+estimate it correctly since we don&amp;rsquo;t know the annotation file in used.
+The default number, 45758 for human, is too large, result in many false
+positive.&lt;/p&gt;
+
+&lt;p&gt;Input a gene list as background is useful, for instance we may use all
+genes that are detected in microarray experiment or all proteins
+identified by MS as background. This is an effective way to eliminate
+bias of using the whole genome. Use the whole genome is not mean to use
+the total number of gene in the genome as background. By default, KEGG
+enrichment analyses of clusterProfiler and GeneAnswers are using the
+whole genome, that is about 5900 genes for human, which are all genes
+have pathway annotation in the whole genome. Others without annotation
+are abandoned. This itself is a bias actually, but it&amp;rsquo;s the realistic.
+If we include all genes no matter they have annotation or not, and
+setting 20000 or even more as background of human genes, definitely we
+will get significant result! But it is man-made significant.&lt;/p&gt;
+
+&lt;p&gt;As I replied to
+&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;,
+if p values obtained by different software are different, trust the one
+produce larger p values. Many user will choose a software give a more
+&amp;ldquo;significant&amp;rdquo; result, but trust me, you are making type I error.
+Conservatively, always choose the one give you larger p-values if you
+know nothing about the calculation. Software that never &amp;ldquo;fail&amp;rdquo; is
+untrustable.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Phosphoproteome profile of human lung cancer cell line A549</title>
       <link>http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/</link>
       <pubDate>Tue, 23 Nov 2010 02:22:22 +0800</pubDate>

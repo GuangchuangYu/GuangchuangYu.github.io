@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Enrichment on G. Yu</title>
+    <link>http://guangchuangyu.github.io/categories/enrichment/</link>
+    <description>Recent content in Enrichment on G. Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Oct 2015 09:37:11 +0800</lastBuildDate>
+    <atom:link href="http://guangchuangyu.github.io/categories/enrichment/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>use simplify to remove redundancy of enriched GO terms</title>
+      <link>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</link>
+      <pubDate>Wed, 21 Oct 2015 09:37:11 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</guid>
+      <description>&lt;p&gt;To simplify enriched GO result, we can use slim version of GO and use
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;enricher&lt;/a&gt;&lt;/em&gt;
+function to analyze.&lt;/p&gt;
+
+&lt;p&gt;Another strategy is to use
+&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
+users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
+output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(clusterProfiler)
+data(geneList, package=&amp;quot;DOSE&amp;quot;)
+de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+bp &amp;lt;- enrichGO(de, ont=&amp;quot;BP&amp;quot;)
+enrichMap(bp)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;enrichMap&lt;/em&gt; doesn&amp;rsquo;t display the whole picture as we use the default
+value &lt;em&gt;n=50&lt;/em&gt; to only show 50 highly significant terms. In the
+&lt;em&gt;enrichMap&lt;/em&gt;, we can found that there are many redundant terms form a
+highly condense network.&lt;/p&gt;
+
+&lt;p&gt;Now with the &lt;em&gt;simplify&lt;/em&gt; method, we can remove redundant terms.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;bp2 &amp;lt;- simplify(bp, cutoff=0.7, by=&amp;quot;p.adjust&amp;quot;, select_fun=min)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;em&gt;simplify&lt;/em&gt; method apply &lt;em&gt;&amp;lsquo;select_fun&amp;rsquo;&lt;/em&gt; (which can be a user defined
+function) to feature &amp;lsquo;&lt;em&gt;by&lt;/em&gt;&amp;rsquo; to select one representative terms from
+redundant terms (which have similarity higher than &amp;lsquo;&lt;em&gt;cutoff&lt;/em&gt;&amp;rsquo;).
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The simplified version of enriched result is more clear and give us a
+more comprehensive view of the whole story.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;enrichGO&lt;/em&gt; test the whole GO corpus and enriched result may contains
+very general terms.
+&lt;em&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/em&gt;
+contains a &lt;em&gt;dropGO&lt;/em&gt; function to remove specific GO terms or GO level,
+see &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/26&#34;&gt;the
+issue&lt;/a&gt;. With
+&lt;em&gt;simplify&lt;/em&gt; and &lt;em&gt;dropGO&lt;/em&gt;, enriched result can be more specific and more
+easy to interpret. Both of these functions work fine with outputs
+obtained from both &lt;em&gt;enrichGO&lt;/em&gt; and &lt;em&gt;compareCluster&lt;/em&gt;.🍻&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>functional enrichment for GTEx paper</title>
+      <link>http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/</link>
+      <pubDate>Thu, 13 Aug 2015 05:44:27 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/</guid>
+      <description>&lt;p&gt;The ENCODE consortium has recently published &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pubmed/25954002&#34;&gt;a great
+paper&lt;/a&gt; on Gene Expression
+from the GTEx dataset. A criticism raised on
+&lt;a href=&#34;https://pubpeer.com/publications/EB99BD086B27075CFF5278F1CEAA57&#34;&gt;pubpeer&lt;/a&gt;
+is that the gene ontology enrichment analysis was done with DAVID which
+has not been updated in the last five years.&lt;/p&gt;
+
+&lt;p&gt;The result is shown below:
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/Screenshot%202015-07-15%2019.49.01.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It would be interest to see if results change by using
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+to reproduce GO &amp;amp; KEGG analyses.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/BP_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For GO (BP) analysis: 1. clusterProfiler (194) annotate more genes than
+DAVID (168). 2. DAVID enriches 14 BP terms while clusterProfiler
+enriches 222 BP terms. 3. All enriched terms reported in DAVID were also
+reported by clusterProfiler. 4. The result is consistent that the
+enriched terms are related to translation and protein biosynthesis with
+many detail and informative terms reported only by
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/KEGG_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For KEGG analysis: 1. DAVID annotates 5085 genes in background while
+clusterProfiler use &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;latest online
+version&lt;/a&gt;
+that annotates 6895 genes. 2. DAVID only annotate 83 genes, while
+clusterProfiler can annotate 104 genes of the gene list with 212 genes
+in total. 3. DAVID only enrich 1 KEGG terms, while clusterProfiler
+enriches 9 KEGG terms. 4. The enriched term reported in DAVID is also
+reported by clusterProfiler.&lt;/p&gt;
+
+&lt;p&gt;It would also be interest to see whether these genes are related to
+specific diseases/pathways and I run
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;
+to analyze them.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/DO_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I found that cancer and disease of cellular proliferation terms
+enriched.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ReactomePA/reactome_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;,
+I found 3 cluster of pathways. Two are consistent with GO/KEGG/DO
+enrichment result that is translation related with more clear evidence
+of high splicing variability. Another cluster of pathways related to
+immune response which is not discovered by other ontology/pathway. These
+immune-related pathways did not reported in the paper but apparently
+immune responses are related to high splicing variability.&lt;/p&gt;
+
+&lt;p&gt;For more detail please refer to github repository,
+&lt;a href=&#34;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&#34;&gt;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&lt;/a&gt;,
+which contains rmarkdown source file to reproduce the results. You can
+try &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;other annotation data and also GSEA to explore
+GTEx&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DAVID functional analysis with clusterProfiler</title>
+      <link>http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/</link>
+      <pubDate>Mon, 16 Mar 2015 06:33:34 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; was
+used to visualize &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt;
+results in a paper published in &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3907017/&#34;&gt;BMC
+Genomics&lt;/a&gt;.
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;
+Some users told me that they may want to use DAVID at some
+circumstances. I think it maybe a good idea to make clusterProfiler
+supports DAVID, so that
+&lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt; users can use
+visualization functions provided by
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(DOSE)
+require(clusterProfiler)
+data(geneList)
+gene = names(geneList)[abs(geneList) &amp;gt; 2]
+david = enrichDAVID(gene = gene, idType=&amp;quot;ENTREZ_GENE_ID&amp;quot;, 
+                    listType=&amp;quot;Gene&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; summary(david)
+               ID            Description GeneRatio  BgRatio       pvalue
+hsa04110 hsa04110             Cell cycle     11/68 125/5085 4.254437e-06
+hsa04114 hsa04114         Oocyte meiosis     10/68 110/5085 1.119764e-05
+hsa03320 hsa03320 PPAR signaling pathway      7/68  69/5085 2.606715e-04
+             p.adjust qvalue                                             geneID
+hsa04110 0.0003998379     NA 9133/4174/890/991/1111/891/7272/8318/4085/983/9232
+hsa04114 0.0005261534     NA    9133/5241/51806/3708/991/891/4085/983/9232/6790
+hsa03320 0.0081354974     NA                 4312/2167/5346/5105/3158/9370/9415
+         Count
+hsa04110    11
+hsa04114    10
+hsa03320     7
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are only 5085 human genes annotated by KEGG, this is due to
+out-of-date DAVID data.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;barplot(david)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.10.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;cnetplot(david, foldChange=geneList)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.45.png&#34; alt=&#34;&#34; /&gt;
+With enrichDAVID, compare DAVID functional profiles among different gene
+clusters is also supported.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(gcSample)
+x=compareCluster(gcSample, fun=&amp;quot;enrichDAVID&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
+plot(x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/compareCluster_david.png&#34; alt=&#34;&#34; /&gt;
+As I pointed out in &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG enrichment analysis with latest online data
+using
+clusterProfiler&lt;/a&gt;,
+there are many webservers using out of date data. This may leads to
+different interpretation of biological results. DAVID&amp;rsquo;s data is also out
+of date. DAVID stopped updating database since 2010. This is why I love
+Bioconductor, almost all the annotation packages are maintained by
+Bioconductor core team and will be updated biannual. enrichGO and
+enrichKEGG is more reliable with more updated data than many other
+tools.
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>enrichment map</title>
+      <link>http://guangchuangyu.github.io/2014/08/enrichment-map/</link>
+      <pubDate>Sun, 03 Aug 2014 12:48:15 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2014/08/enrichment-map/</guid>
+      <description>&lt;p&gt;In &lt;a href=&#34;http://www.plob.org/&#34;&gt;PLOB&lt;/a&gt;&amp;rsquo;s QQ group, someone asked how to change
+the color of enrichment map in &lt;a href=&#34;http://cytoscape.org/&#34;&gt;Cytoscape&lt;/a&gt;. I am
+very curious how enrichment map can helps to interpret enrichment
+results. It took me 2 hours to implement it using R and I am surprised
+that the enrichment map is better than anticipated.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/08/Screenshot-2014-07-30-22.20.07.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now in the development version of
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;,
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;, and
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;,
+you can use &lt;strong&gt;&lt;em&gt;enrichmap&lt;/em&gt;&lt;/strong&gt; function to generate the enrichment map of
+enrichment results obtained by &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34;&gt;hypergeometric
+test&lt;/a&gt; or gene set
+enrichment analysis.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

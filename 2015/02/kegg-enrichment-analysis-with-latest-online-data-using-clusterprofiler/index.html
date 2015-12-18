@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>KEGG enrichment analysis with latest online data using clusterProfiler &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>KEGG enrichment analysis with latest online data using clusterProfiler</h1>
+    <span class="post-date">Feb 1, 2015 &middot; 4 minute read &middot; <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/#disqus_thread">Comments</a>
+    
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/kegg">KEGG</a>
+    </span>
+    
+
+<p><em>KEGG.db</em> is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &lsquo;<a href="http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases">Are there too many biological
+databases</a>&rsquo;,
+there is a problem that many out of date biological databases often
+don&rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+<a href="http://wego.genomics.org.cn/cgi-bin/wego/index.pl">WEGO</a> web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with <a href="https://scholar.google.com.hk/scholar?as_ylo=2015&amp;hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&amp;cites=13025429171853466135&amp;scipsc=">many people using
+it</a>.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue. Now <em>enrichKEGG</em>
+function is reloaded with a new parameter <em>use_internal_data</em>. This
+parameter is by default setting to FALSE, and <em>enrichKEGG</em> function will
+download the latest KEGG data for enrichment analysis. If the parameter
+<em>use_internal_data</em> is explicitly setting to TRUE, it will use the
+<em>KEGG.db</em> which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+<a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a> Now the <em>organism</em>
+parameter in <em>enrichKEGG</em> should be abbreviation of academic name, for
+example &lsquo;hsa&rsquo; for human and &lsquo;mmu&rsquo; for mouse. It accepts any species
+listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a>. In the
+current release version of
+<a href="http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html">clusterProfiler</a>
+(in Bioconductor 3.0), <em>enrichKEGG</em> supports about 20 species, and the
+<em>organism</em> parameter accept common name of species, for instance &ldquo;human&rdquo;
+and &ldquo;mouse&rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+<a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">clusterProfiler</a>.
+For other species, common name is not supported, since I don&rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.</p>
+
+<h3 id="example-1-using-online-kegg-annotation:68582cae05851901beab2a74a03ade4b">Example 1: Using online KEGG annotation</h3>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">library(DOSE)
+data(geneList)
+de &lt;- names(geneList)[geneList &gt; 1]
+
+library(clusterProfiler)
+kk &lt;- enrichKEGG(de, organism=&quot;hsa&quot;, pvalueCutoff=0.05, pAdjustMethod=&quot;BH&quot;, 
+                 qvalueCutoff=0.1, readable=TRUE)
+head(summary(kk))
+</code></pre>
+
+<pre><code>&gt; head(summary(kk))
+               ID                            Description GeneRatio  BgRatio
+hsa04110 hsa04110                             Cell cycle    31/247 124/6861
+hsa03030 hsa03030                        DNA replication     9/247  36/6861
+hsa04060 hsa04060 Cytokine-cytokine receptor interaction    25/247 265/6861
+hsa04114 hsa04114                         Oocyte meiosis    14/247 113/6861
+hsa04115 hsa04115                  p53 signaling pathway    10/247  68/6861
+hsa04062 hsa04062            Chemokine signaling pathway    18/247 189/6861
+               pvalue     p.adjust       qvalue
+hsa04110 2.280256e-18 9.349050e-17 5.280593e-17
+hsa03030 3.527197e-06 7.230753e-05 4.084123e-05
+hsa04060 8.404037e-06 1.148552e-04 6.487326e-05
+hsa04114 4.827484e-05 4.948171e-04 2.794859e-04
+hsa04115 1.406946e-04 9.801620e-04 5.536217e-04
+hsa04062 1.434383e-04 9.801620e-04 5.536217e-04
+                                                                                                                                                                              geneID
+hsa04110 CDC45/CDC20/CCNB2/CCNA2/CDK1/MAD2L1/TTK/CHEK1/CCNB1/MCM5/PTTG1/MCM2/CDC25A/CDC6/PLK1/BUB1B/ESPL1/CCNE1/ORC6/ORC1/CCNE2/MCM6/MCM4/DBF4/SKP2/CDC25B/BUB1/MYC/PCNA/E2F1/CDKN2A
+hsa03030                                                                                                                            MCM5/MCM2/MCM6/MCM4/FEN1/RFC4/PCNA/RNASEH2A/DNA2
+hsa04060                           CXCL10/CXCL13/CXCL11/CXCL9/CCL18/IL1R2/CCL8/CXCL3/CCL20/IL12RB2/CXCL8/TNFRSF11A/CCL5/CXCR6/IL2RA/CCR1/CCL2/IL2RG/CCL4/CCR8/CCR7/GDF5/IL24/LTB/IL7
+hsa04114                                                                                          CDC20/CCNB2/CDK1/MAD2L1/CALML5/AURKA/CCNB1/PTTG1/PLK1/ESPL1/CCNE1/CCNE2/BUB1/FBXO5
+hsa04115                                                                                                               CCNB2/RRM2/CDK1/CHEK1/CCNB1/GTSE1/CCNE1/CCNE2/SERPINB5/CDKN2A
+hsa04062                                                                       CXCL10/CXCL13/CXCL11/CXCL9/CCL18/CCL8/CXCL3/CCL20/CXCL8/CCL5/CXCR6/CCR1/STAT1/CCL2/CCL4/HCK/CCR8/CCR7
+         Count
+hsa04110    31
+hsa03030     9
+hsa04060    25
+hsa04114    14
+hsa04115    10
+hsa04062    18
+&gt;
+</code></pre>
+
+<p>In the KEGG.db, there are only 5894 human genes annotated. With current
+online data, the number of annotated gene increase to 6861 as shown
+above and of course, p-values changed. User should pay attention to
+another issue that <em>readable</em> parameter is only available for those
+species that has an annotation db. For example, for human we use
+<a href="http://www.bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html">org.Hs.eg.db</a>
+for mapping gene ID to Symbol.</p>
+
+<h3 id="example-2-enrichment-analysis-of-species-which-are-not-previously-supported:68582cae05851901beab2a74a03ade4b">Example 2: enrichment analysis of species which are not previously supported</h3>
+
+<p>Here, I use a gene list of <a href="http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;org=spd">Streptococcus pneumoniae
+D39</a>
+to demonstrate using <em>enrichKEGG</em> with species that are not supported
+previously.</p>
+
+<pre><code class="language-lang=&quot;rsplus&quot;">&gt; gene
+ [1] &quot;SPD_0065&quot; &quot;SPD_0071&quot; &quot;SPD_0293&quot; &quot;SPD_0295&quot; &quot;SPD_0296&quot; &quot;SPD_0297&quot;
+ [7] &quot;SPD_0327&quot; &quot;SPD_0426&quot; &quot;SPD_0427&quot; &quot;SPD_0428&quot; &quot;SPD_0559&quot; &quot;SPD_0560&quot;
+[13] &quot;SPD_0561&quot; &quot;SPD_0562&quot; &quot;SPD_0580&quot; &quot;SPD_0789&quot; &quot;SPD_1046&quot; &quot;SPD_1047&quot;
+[19] &quot;SPD_1048&quot; &quot;SPD_1050&quot; &quot;SPD_1051&quot; &quot;SPD_1052&quot; &quot;SPD_1053&quot; &quot;SPD_1057&quot;
+[25] &quot;SPD_1326&quot; &quot;SPD_1432&quot; &quot;SPD_1534&quot; &quot;SPD_1582&quot; &quot;SPD_1612&quot; &quot;SPD_1613&quot;
+[31] &quot;SPD_1633&quot; &quot;SPD_1634&quot; &quot;SPD_1648&quot; &quot;SPD_1678&quot; &quot;SPD_1919&quot;
+&gt; spdKEGG = enrichKEGG(gene, organism=&quot;spd&quot;)
+&gt; summary(spdKEGG)
+               ID                                 Description GeneRatio BgRatio
+spd00052 spd00052                        Galactose metabolism     35/35  35/752
+spd02060 spd02060             Phosphotransferase system (PTS)     12/35  47/752
+spd01100 spd01100                          Metabolic pathways     28/35 341/752
+spd00520 spd00520 Amino sugar and nucleotide sugar metabolism      9/35  43/752
+               pvalue     p.adjust       qvalue
+spd00052 4.961477e-61 2.480739e-60 5.222608e-61
+spd02060 2.470177e-07 6.175443e-07 1.300093e-07
+spd01100 1.958319e-05 3.263866e-05 6.871296e-06
+spd00520 6.534975e-05 8.168718e-05 1.719730e-05
+                                                                                                                                                                                                                                                                                                                             geneID
+spd00052 SPD_0065/SPD_0071/SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0327/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1678/SPD_1919
+spd02060                                                                                                                                                                                                                SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0426/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_1047/SPD_1048/SPD_1057
+spd01100                                                                SPD_0071/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+spd00520                                                                                                                                                                                                                                           SPD_0580/SPD_1326/SPD_1432/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+         Count
+spd00052    35
+spd02060    12
+spd01100    28
+spd00520     9
+</code></pre>
+
+<h3 id="summary:68582cae05851901beab2a74a03ade4b">Summary</h3>
+
+<p>To summarize,
+<a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">clusterProfiler</a>
+supports downloading the latest KEGG annotation for enrichment analysis
+and it supports all species that have KEGG annotation available in KEGG
+database.</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+</body>
+</html>
+

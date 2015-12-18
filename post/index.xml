@@ -344,6 +344,286 @@ View嘛，还得靠BTT：
     </item>
     
     <item>
+      <title>Comparison of clusterProfiler and GSEA-P</title>
+      <link>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</link>
+      <pubDate>Mon, 02 Nov 2015 11:50:29 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</guid>
+      <description>
+
+&lt;p&gt;Thanks &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; for raising &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/31&#34;&gt;the
+issue&lt;/a&gt; to me
+and his efforts in benchmarking
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;He pointed out two issues:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;outputs from gseGO and GSEA-P are poorly overlap.&lt;/li&gt;
+&lt;li&gt;pvalues from gseGO are generally smaller and don&amp;rsquo;t show a lot of
+variation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.&lt;/p&gt;
+
+&lt;p&gt;First of all, the gene set collections are very different. The GMT file
+used in his test is &lt;em&gt;c5.cc.v5.0.symbols.gmt&lt;/em&gt;, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.&lt;/p&gt;
+
+&lt;p&gt;For instance, with his gene list as input, clusterProfiler annotates 195
+genes as ribosome, while GSEA-P (using c5.cc.v5.0.symbols.gmt) only
+annotates 38 genes.&lt;/p&gt;
+
+&lt;p&gt;As the gene set collections is so different, I don&amp;rsquo;t believe the
+comparison can produce any valuable results.&lt;/p&gt;
+
+&lt;p&gt;The first step should be extending clusterProfiler to support using GMT
+file as gene set annotation, thereafter we can use identical input (both
+gene list and gene sets) and then benchmarking will be valuable for
+detecting issues that exclusively attributed to the implementation of
+GSEA algorithm.&lt;/p&gt;
+
+&lt;h3 id=&#34;clusterprofiler-supports-gmt-file:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler supports GMT file&lt;/h3&gt;
+
+&lt;p&gt;Currently clusterProfiler supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;user&amp;rsquo;s own
+annotations&lt;/a&gt;
+via &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; functions which require users provide their
+own annotation in a &lt;em&gt;data.frame&lt;/em&gt;. This is a general interface for using
+user&amp;rsquo;s own annotation.&lt;/p&gt;
+
+&lt;p&gt;To support GMT file, we only need a function, &lt;em&gt;read.gmt&lt;/em&gt;, to parse GMT
+file and output a &lt;em&gt;data.frame&lt;/em&gt; that is suitable for &lt;em&gt;enricher&lt;/em&gt; and
+&lt;em&gt;GSEA&lt;/em&gt;. Now this function is available in devel branch (in BioC 3.3 or
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;github&lt;/a&gt;) of
+clusterProfiler.&lt;/p&gt;
+
+&lt;p&gt;As &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; used &lt;em&gt;c5.cc&lt;/em&gt;, I also use it for
+further comparison. I have packed the file into clusterProfiler, so that
+users can use it for testing/practice.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; gmtfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;c5.cc.v5.0.entrez.gmt&amp;quot;, 
+                         package=&amp;quot;clusterProfiler&amp;quot;)
+## only 207K.
+## It&#39;s indeed a tiny subset of CC.
+&amp;gt; file.size(gmtfile)/1000
+[1] 207.608
+&amp;gt; c5 &amp;lt;- read.gmt(gmtfile)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;hypergeometric-test-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;hypergeometric test with GMT annotation&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; require(clusterProfiler)
+&amp;gt; data(geneList, package=&amp;quot;DOSE&amp;quot;)
+&amp;gt; de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+&amp;gt; head(de)
+[1] &amp;quot;4312&amp;quot;  &amp;quot;8318&amp;quot;  &amp;quot;10874&amp;quot; &amp;quot;55143&amp;quot; &amp;quot;55388&amp;quot; &amp;quot;991&amp;quot;  
+&amp;gt; x &amp;lt;- enricher(de, TERM2GENE=c5)
+## omit some columns to make it more readable
+&amp;gt; head(summary(x)[, c(1, 3:7)], 3)
+                                               ID GeneRatio  BgRatio
+SPINDLE                                   SPINDLE     11/82  39/5270
+MICROTUBULE_CYTOSKELETON MICROTUBULE_CYTOSKELETON     16/82 152/5270
+CYTOSKELETAL_PART               CYTOSKELETAL_PART     15/82 235/5270
+                               pvalue     p.adjust       qvalue
+SPINDLE                  7.667674e-12 6.594200e-10 5.327016e-10
+MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
+CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;gene-set-enrichment-analysis-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;gene set enrichment analysis with GMT annotation&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; y &amp;lt;- GSEA(geneList, TERM2GENE=c5)
+&amp;gt; head(summary(y)[, -c(1,2)], 2)
+                          setSize enrichmentScore       NES      pvalue
+EXTRACELLULAR_REGION          401      -0.3860230 -1.694322 0.001237624
+EXTRACELLULAR_REGION_PART     310      -0.4101043 -1.765775 0.001269036
+                            p.adjust    qvalues
+EXTRACELLULAR_REGION      0.03047874 0.02316228
+EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;comparison-of-clusterprofiler-and-gsea-p:140b254f6d6e22f5c796e058ac8120af&#34;&gt;Comparison of clusterProfiler and GSEA-P&lt;/h3&gt;
+
+&lt;p&gt;Now with &lt;em&gt;read.gmt&lt;/em&gt;, we can compare clusterProfiler and GSEA-P with the
+same input.&lt;/p&gt;
+
+&lt;p&gt;First of all, I export &lt;em&gt;geneList&lt;/em&gt; to a &lt;em&gt;rnk&lt;/em&gt; file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(geneList, package=&amp;quot;DOSE&amp;quot;)
+d=data.frame(gene=names(geneList), FC=geneList)
+write.table(d, row.names=F,col.names=F, quote=F, file=&amp;quot;geneList.rnk&amp;quot;, sep=&amp;quot;\t&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And run GSEA-P with the following parameters:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;producer_class  xtools.gsea.GseaPreranked
+producer_timestamp  1445941169480
+param   collapse    false
+param   plot_top_x  20
+param   rnk /Users/guangchuangyu/Downloads/geneList.rnk
+param   norm    meandiv
+param   scoring_scheme  weighted
+param   make_sets   true
+param   mode    Max_probe
+param   gmx /Users/guangchuangyu/Downloads/c5.cc.v5.0.entrez.gmt
+param   gui false
+param   rpt_label   my_analysis
+param   help    false
+param   out /Users/guangchuangyu/gsea_home/output/oct27
+param   include_only_symbols    true
+param   set_min 15
+param   nperm   1000
+param   rnd_seed    timestamp
+param   zip_report  false
+param   set_max 500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Re-run clusterProfiler::GSEA with pvalueCutoff=1.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;g &amp;lt;- read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+xx &amp;lt;- GSEA(geneList, TERM2GENE=c5, nPerm=1000, pvalueCutoff=1)
+gy = merge(g, summary(xx), by.x=&amp;quot;NAME&amp;quot;, by.y=&amp;quot;ID&amp;quot;)
+ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10757414/e8d4f490-7ce5-11e5-9027-1dbe81e66329.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now the comparison tells! clusterProfiler indeed produce smaller
+pvalues. As I said in &lt;a href=&#34;http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/&#34;&gt;why clusterProfiler
+fails&lt;/a&gt;, in
+general software produce more conservative result is more trustable.
+This is indeed an issue I couldn&amp;rsquo;t omit.&lt;/p&gt;
+
+&lt;p&gt;This issue is attributed to DOSE package, which serves as a backend of
+both clusterProfiler and ReactomePA.&lt;/p&gt;
+
+&lt;p&gt;In DOSE, we calculate the pvalue in the following way:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;For each geneList, we calculate the observed ES, and then perform
+permutation to generate a null ES distribution. pvalue = (sum(ES &amp;gt;=
+permES)+1)/(nPerm+1), for greater side as an example, is calculated.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;fixed-bug-of-dose:140b254f6d6e22f5c796e058ac8120af&#34;&gt;fixed bug of DOSE&lt;/h3&gt;
+
+&lt;p&gt;Eventually I figured out that the way we calculate pvalue is not
+correct. As presented in
+&lt;a href=&#34;http://www.pnas.org/content/102/43/15545.abstract&#34;&gt;Subramaniam&lt;/a&gt; &lt;em&gt;et
+al&lt;/em&gt;, the distribution of ES is bimodal. Positive and negative ES values
+should be separated when calculating pvalues.&lt;/p&gt;
+
+&lt;p&gt;After I changed the &lt;a href=&#34;https://github.com/GuangchuangYu/DOSE/commit/12a35b7ff31d3dfd51d81d0f6a6e1afaa24a9823&#34;&gt;source
+code&lt;/a&gt;,
+the pvalues generated by clusterProfiler::GSEA and GSEA-P are almost
+identical.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10787607/34fd8716-7dad-11e5-9f43-6433b574b77b.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This bug was fixed in both release (&amp;gt;=2.8.1) and devel (&amp;gt;=2.9.1)
+branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.&lt;/p&gt;
+
+&lt;h3 id=&#34;other-concerns:140b254f6d6e22f5c796e058ac8120af&#34;&gt;other concerns&lt;/h3&gt;
+
+&lt;p&gt;There are other differences between clusterProfiler and GSEA-P.&lt;/p&gt;
+
+&lt;h4 id=&#34;clusterprofiler-never-produce-pvalue-0:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler never produce pvalue=0&lt;/h4&gt;
+
+&lt;p&gt;For calculating pvalues, GSEA-P may produce pvalue=0, while
+clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
+both numerator and demoninator. Some software may not accept pvalue=0,
+for example if you want to use topGO to visualize enrichment with GO
+topology, the result can&amp;rsquo;t contain any pvalue=0.&lt;/p&gt;
+
+&lt;h4 id=&#34;clusterprofiler-test-whole-gene-set-collections:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler test whole gene set collections&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; g=read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+&amp;gt; dim(g)
+[1] 56 12
+&amp;gt; yy = summary(xx)
+&amp;gt; yy = yy[with(yy, setSize &amp;gt;= 15 &amp;amp; setSize &amp;lt;=500),]
+&amp;gt; dim(yy)
+[1] 152   8
+&amp;gt; all(g$NAME %in% yy$ID)
+[1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GSEA-P didn&amp;rsquo;t filter result by pvalues, as it reported pvalues ranging
+from 0 to 1.&lt;/p&gt;
+
+&lt;p&gt;We cut our result by setSize in [15, 500] as default parameter of
+GSEA-P.&lt;/p&gt;
+
+&lt;p&gt;clusterProfiler tests all the gene sets while GSEA-P only tests a
+subset.&lt;/p&gt;
+
+&lt;p&gt;If I have some free time, I will figure out how they select gene sets to
+test. If it&amp;rsquo;s reasonable, we can add a parameter for clusterProfiler
+users to switch between two modes (full sets or subset). This is still
+an open issue/question. If you have any idea, don&amp;rsquo;t hesitate to let me
+know. :)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>use simplify to remove redundancy of enriched GO terms</title>
+      <link>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</link>
+      <pubDate>Wed, 21 Oct 2015 09:37:11 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</guid>
+      <description>&lt;p&gt;To simplify enriched GO result, we can use slim version of GO and use
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;enricher&lt;/a&gt;&lt;/em&gt;
+function to analyze.&lt;/p&gt;
+
+&lt;p&gt;Another strategy is to use
+&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
+users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
+output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(clusterProfiler)
+data(geneList, package=&amp;quot;DOSE&amp;quot;)
+de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+bp &amp;lt;- enrichGO(de, ont=&amp;quot;BP&amp;quot;)
+enrichMap(bp)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;enrichMap&lt;/em&gt; doesn&amp;rsquo;t display the whole picture as we use the default
+value &lt;em&gt;n=50&lt;/em&gt; to only show 50 highly significant terms. In the
+&lt;em&gt;enrichMap&lt;/em&gt;, we can found that there are many redundant terms form a
+highly condense network.&lt;/p&gt;
+
+&lt;p&gt;Now with the &lt;em&gt;simplify&lt;/em&gt; method, we can remove redundant terms.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;bp2 &amp;lt;- simplify(bp, cutoff=0.7, by=&amp;quot;p.adjust&amp;quot;, select_fun=min)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;em&gt;simplify&lt;/em&gt; method apply &lt;em&gt;&amp;lsquo;select_fun&amp;rsquo;&lt;/em&gt; (which can be a user defined
+function) to feature &amp;lsquo;&lt;em&gt;by&lt;/em&gt;&amp;rsquo; to select one representative terms from
+redundant terms (which have similarity higher than &amp;lsquo;&lt;em&gt;cutoff&lt;/em&gt;&amp;rsquo;).
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The simplified version of enriched result is more clear and give us a
+more comprehensive view of the whole story.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;enrichGO&lt;/em&gt; test the whole GO corpus and enriched result may contains
+very general terms.
+&lt;em&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/em&gt;
+contains a &lt;em&gt;dropGO&lt;/em&gt; function to remove specific GO terms or GO level,
+see &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/26&#34;&gt;the
+issue&lt;/a&gt;. With
+&lt;em&gt;simplify&lt;/em&gt; and &lt;em&gt;dropGO&lt;/em&gt;, enriched result can be more specific and more
+easy to interpret. Both of these functions work fine with outputs
+obtained from both &lt;em&gt;enrichGO&lt;/em&gt; and &lt;em&gt;compareCluster&lt;/em&gt;.🍻&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>BioC 3.2: NEWS of my BioC packages</title>
       <link>http://guangchuangyu.github.io/2015/10/bioc-3.2-news-of-my-bioc-packages/</link>
       <pubDate>Thu, 15 Oct 2015 16:13:57 +0800</pubDate>
@@ -766,6 +1046,76 @@ version 1.1.2, access date 21 Aug, 2015&lt;/p&gt;
     </item>
     
     <item>
+      <title>functional enrichment for GTEx paper</title>
+      <link>http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/</link>
+      <pubDate>Thu, 13 Aug 2015 05:44:27 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/</guid>
+      <description>&lt;p&gt;The ENCODE consortium has recently published &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pubmed/25954002&#34;&gt;a great
+paper&lt;/a&gt; on Gene Expression
+from the GTEx dataset. A criticism raised on
+&lt;a href=&#34;https://pubpeer.com/publications/EB99BD086B27075CFF5278F1CEAA57&#34;&gt;pubpeer&lt;/a&gt;
+is that the gene ontology enrichment analysis was done with DAVID which
+has not been updated in the last five years.&lt;/p&gt;
+
+&lt;p&gt;The result is shown below:
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/Screenshot%202015-07-15%2019.49.01.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It would be interest to see if results change by using
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+to reproduce GO &amp;amp; KEGG analyses.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/BP_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For GO (BP) analysis: 1. clusterProfiler (194) annotate more genes than
+DAVID (168). 2. DAVID enriches 14 BP terms while clusterProfiler
+enriches 222 BP terms. 3. All enriched terms reported in DAVID were also
+reported by clusterProfiler. 4. The result is consistent that the
+enriched terms are related to translation and protein biosynthesis with
+many detail and informative terms reported only by
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/KEGG_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For KEGG analysis: 1. DAVID annotates 5085 genes in background while
+clusterProfiler use &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;latest online
+version&lt;/a&gt;
+that annotates 6895 genes. 2. DAVID only annotate 83 genes, while
+clusterProfiler can annotate 104 genes of the gene list with 212 genes
+in total. 3. DAVID only enrich 1 KEGG terms, while clusterProfiler
+enriches 9 KEGG terms. 4. The enriched term reported in DAVID is also
+reported by clusterProfiler.&lt;/p&gt;
+
+&lt;p&gt;It would also be interest to see whether these genes are related to
+specific diseases/pathways and I run
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;
+to analyze them.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/DO_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I found that cancer and disease of cellular proliferation terms
+enriched.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ReactomePA/reactome_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;,
+I found 3 cluster of pathways. Two are consistent with GO/KEGG/DO
+enrichment result that is translation related with more clear evidence
+of high splicing variability. Another cluster of pathways related to
+immune response which is not discovered by other ontology/pathway. These
+immune-related pathways did not reported in the paper but apparently
+immune responses are related to high splicing variability.&lt;/p&gt;
+
+&lt;p&gt;For more detail please refer to github repository,
+&lt;a href=&#34;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&#34;&gt;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&lt;/a&gt;,
+which contains rmarkdown source file to reproduce the results. You can
+try &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;other annotation data and also GSEA to explore
+GTEx&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>parsing BED coordinates</title>
       <link>http://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/</link>
       <pubDate>Fri, 07 Aug 2015 03:03:08 +0800</pubDate>
@@ -892,147 +1242,6 @@ overlapped, we can move the images by &lt;em&gt;offset&lt;/em&gt; parameter.&lt;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>upsetplot in ChIPseeker</title>
-      <link>http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</link>
-      <pubDate>Tue, 28 Jul 2015 06:45:01 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/&#34;&gt;ChIPseeker&lt;/a&gt;
-is an R package for ChIP peak annotation, comparison and visualization.&lt;/p&gt;
-
-&lt;p&gt;We have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;several visualization
-methods&lt;/a&gt;,
-including
-&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34;&gt;vennpie&lt;/a&gt;&lt;/em&gt;
-that was designed for viewing annotation overlap as shown below:
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Not all overlap information can be demonstrated in vennpie.
-&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html&#34;&gt;Upset&lt;/a&gt;
-is an effective way to visualize sets and intersections. We import
-&lt;em&gt;upset&lt;/em&gt; function from &lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;UpSetR&lt;/a&gt; package
-and implement &lt;em&gt;upsetplot&lt;/em&gt; function, that can visualize ChIP annotation
-overlap directly with output of &lt;em&gt;annotatePeak&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ChIPseeker)
-peak_file &amp;lt;- getSampleFiles()[[4]]
-x &amp;lt;- annotatePeak(peak_file)
-upsetplot(x)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We add a new parameter, &lt;em&gt;vennpie=FALSE&lt;/em&gt;, in upsetplot. If vennpie=TRUE,
-a vennpie will be added as show below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset_vennpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Although upset contains more information, vennpie is more intuitive and
-the final figure is more compact. More information is available at the
-&lt;a href=&#34;http://www.bioconductor.org/packages/3.2/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html&#34;&gt;online
-vignette&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;reference:07e5a5bc7f123188a27a1c1e28238bcc&#34;&gt;Reference&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Alexander Lex, and Gehlenborg Nils. “Points of View: Sets and
-Intersections.” Nature Methods 11, no. 8 (August 2014): 779–779.
-doi:&lt;a href=&#34;http://doi.org/10.1038/nmeth.3033&#34;&gt;10.1038/nmeth.3033&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. “ChIPseeker: An
-R/Bioconductor Package for ChIP Peak Annotation, Comparison and
-Visualization.” Bioinformatics 31, no. 14 (July 15, 2015): 2382–83.
-doi:&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Conway Jake, and Gehlenborg Nils, &amp;ldquo;UpSetR&amp;rdquo;,
-&lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;https://github.com/cran/UpSetR&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization</title>
-      <link>http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/</link>
-      <pubDate>Mon, 13 Jul 2015 08:14:50 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/</guid>
-      <description>&lt;p&gt;My R/Bioconductor package,
-&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;, published
-in
-&lt;a href=&#34;http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btv145&#34;&gt;Bioinformatics&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt; had been
-cited by &lt;a href=&#34;http://www.biomedcentral.com/1471-2164/16/292&#34;&gt;http://www.biomedcentral.com/1471-2164/16/292&lt;/a&gt; and
-&lt;a href=&#34;http://www.jbc.org/content/early/2015/06/18/jbc.M115.668558.short&#34;&gt;http://www.jbc.org/content/early/2015/06/18/jbc.M115.668558.short&lt;/a&gt;, and
-was used (not cited) in
-&lt;a href=&#34;http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract&#34;&gt;http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract&lt;/a&gt;
-and
-&lt;a href=&#34;http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract&#34;&gt;http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ChIPseeker/bioinfo_2015.png&#34; alt=&#34;&#34; /&gt;
-&lt;strong&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation,
-comparison and visualization&lt;/strong&gt; &lt;strong&gt;G Yu&lt;/strong&gt;, LG Wang, QY He.
-&lt;strong&gt;Bioinformatics&lt;/strong&gt; 2015, 31(14):2382-2383 DOI:
-&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt; ChIPseeker is an R package for annotating ChIP-seq data
-analysis. It supports annotating ChIP peaks and provides functions to
-visualize ChIP peaks coverage over chromosomes and profiles of peaks
-binding to TSS regions. Comparison of ChIP peak profiles and annotation
-are also supported. Moreover, it supports evaluating significant overlap
-among ChIP-seq datasets. Currently, ChIPseeker contains 15 000 bed file
-information from GEO database. These datasets can be downloaded and
-compare with user’s own data to explore significant overlap datasets for
-inferring co-regulation or transcription factor complex for further
-investigation. &lt;strong&gt;Availability and implementation:&lt;/strong&gt; ChIPseeker is
-released under Artistic-2.0 License. The source code and documents are
-freely available through Bioconductor
-(&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34;&gt;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&lt;/a&gt;).&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>flip and rotate branches in ggtree</title>
-      <link>http://guangchuangyu.github.io/2015/07/flip-and-rotate-branches-in-ggtree/</link>
-      <pubDate>Wed, 01 Jul 2015 02:51:34 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/07/flip-and-rotate-branches-in-ggtree/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;&lt;em&gt;flip&lt;/em&gt;&lt;/strong&gt; function is a feature request from ggtree user. It accepts a
-tree view and two node numbers and exchange the positions of the
-selected clades.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(ggtree)
-set.seed(2015-07-01)
-tr &amp;lt;- rtree(30)
-p &amp;lt;- ggtree(tr) + geom_text(aes(label=node))
-gridExtra::grid.arrange(p, flip(p, 38, 33), ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/flip_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It&amp;rsquo;s chainable and all possible position adjustment can be achieved via
-multiple flip operations.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;flip(p, 38, 33) %&amp;gt;% flip(53, 58) %&amp;gt;% flip(32, 51)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/flip_animation.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It&amp;rsquo;s tedious to rotate a clade by 180 degree with several flip
-operations, ggtree provides another function &lt;strong&gt;&lt;em&gt;rotate&lt;/em&gt;&lt;/strong&gt; that accepts a
-selected node and rotate that branch by 180 degree.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;col = c(&amp;quot;black&amp;quot;, &amp;quot;firebrick&amp;quot;, &amp;quot;steelblue&amp;quot;)[groupClade(tr, c(33, 52))]
-gridExtra::grid.arrange(ggtree(tr, color=col), 
-                        ggtree(tr, color=col) %&amp;gt;% rotate(33) %&amp;gt;% rotate(52), 
-                        ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/45fc101df9b7c711643fdb641d76f6822ad031a8/Bioconductor/ggtree/rotate.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     

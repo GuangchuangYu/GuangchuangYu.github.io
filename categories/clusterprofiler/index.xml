@@ -6,8 +6,288 @@
     <description>Recent content in Clusterprofiler on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 21 Aug 2015 03:22:21 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 Nov 2015 11:50:29 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/categories/clusterprofiler/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Comparison of clusterProfiler and GSEA-P</title>
+      <link>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</link>
+      <pubDate>Mon, 02 Nov 2015 11:50:29 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</guid>
+      <description>
+
+&lt;p&gt;Thanks &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; for raising &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/31&#34;&gt;the
+issue&lt;/a&gt; to me
+and his efforts in benchmarking
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;He pointed out two issues:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;outputs from gseGO and GSEA-P are poorly overlap.&lt;/li&gt;
+&lt;li&gt;pvalues from gseGO are generally smaller and don&amp;rsquo;t show a lot of
+variation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.&lt;/p&gt;
+
+&lt;p&gt;First of all, the gene set collections are very different. The GMT file
+used in his test is &lt;em&gt;c5.cc.v5.0.symbols.gmt&lt;/em&gt;, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.&lt;/p&gt;
+
+&lt;p&gt;For instance, with his gene list as input, clusterProfiler annotates 195
+genes as ribosome, while GSEA-P (using c5.cc.v5.0.symbols.gmt) only
+annotates 38 genes.&lt;/p&gt;
+
+&lt;p&gt;As the gene set collections is so different, I don&amp;rsquo;t believe the
+comparison can produce any valuable results.&lt;/p&gt;
+
+&lt;p&gt;The first step should be extending clusterProfiler to support using GMT
+file as gene set annotation, thereafter we can use identical input (both
+gene list and gene sets) and then benchmarking will be valuable for
+detecting issues that exclusively attributed to the implementation of
+GSEA algorithm.&lt;/p&gt;
+
+&lt;h3 id=&#34;clusterprofiler-supports-gmt-file:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler supports GMT file&lt;/h3&gt;
+
+&lt;p&gt;Currently clusterProfiler supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;user&amp;rsquo;s own
+annotations&lt;/a&gt;
+via &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; functions which require users provide their
+own annotation in a &lt;em&gt;data.frame&lt;/em&gt;. This is a general interface for using
+user&amp;rsquo;s own annotation.&lt;/p&gt;
+
+&lt;p&gt;To support GMT file, we only need a function, &lt;em&gt;read.gmt&lt;/em&gt;, to parse GMT
+file and output a &lt;em&gt;data.frame&lt;/em&gt; that is suitable for &lt;em&gt;enricher&lt;/em&gt; and
+&lt;em&gt;GSEA&lt;/em&gt;. Now this function is available in devel branch (in BioC 3.3 or
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;github&lt;/a&gt;) of
+clusterProfiler.&lt;/p&gt;
+
+&lt;p&gt;As &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; used &lt;em&gt;c5.cc&lt;/em&gt;, I also use it for
+further comparison. I have packed the file into clusterProfiler, so that
+users can use it for testing/practice.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; gmtfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;c5.cc.v5.0.entrez.gmt&amp;quot;, 
+                         package=&amp;quot;clusterProfiler&amp;quot;)
+## only 207K.
+## It&#39;s indeed a tiny subset of CC.
+&amp;gt; file.size(gmtfile)/1000
+[1] 207.608
+&amp;gt; c5 &amp;lt;- read.gmt(gmtfile)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;hypergeometric-test-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;hypergeometric test with GMT annotation&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; require(clusterProfiler)
+&amp;gt; data(geneList, package=&amp;quot;DOSE&amp;quot;)
+&amp;gt; de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+&amp;gt; head(de)
+[1] &amp;quot;4312&amp;quot;  &amp;quot;8318&amp;quot;  &amp;quot;10874&amp;quot; &amp;quot;55143&amp;quot; &amp;quot;55388&amp;quot; &amp;quot;991&amp;quot;  
+&amp;gt; x &amp;lt;- enricher(de, TERM2GENE=c5)
+## omit some columns to make it more readable
+&amp;gt; head(summary(x)[, c(1, 3:7)], 3)
+                                               ID GeneRatio  BgRatio
+SPINDLE                                   SPINDLE     11/82  39/5270
+MICROTUBULE_CYTOSKELETON MICROTUBULE_CYTOSKELETON     16/82 152/5270
+CYTOSKELETAL_PART               CYTOSKELETAL_PART     15/82 235/5270
+                               pvalue     p.adjust       qvalue
+SPINDLE                  7.667674e-12 6.594200e-10 5.327016e-10
+MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
+CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;gene-set-enrichment-analysis-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;gene set enrichment analysis with GMT annotation&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; y &amp;lt;- GSEA(geneList, TERM2GENE=c5)
+&amp;gt; head(summary(y)[, -c(1,2)], 2)
+                          setSize enrichmentScore       NES      pvalue
+EXTRACELLULAR_REGION          401      -0.3860230 -1.694322 0.001237624
+EXTRACELLULAR_REGION_PART     310      -0.4101043 -1.765775 0.001269036
+                            p.adjust    qvalues
+EXTRACELLULAR_REGION      0.03047874 0.02316228
+EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;comparison-of-clusterprofiler-and-gsea-p:140b254f6d6e22f5c796e058ac8120af&#34;&gt;Comparison of clusterProfiler and GSEA-P&lt;/h3&gt;
+
+&lt;p&gt;Now with &lt;em&gt;read.gmt&lt;/em&gt;, we can compare clusterProfiler and GSEA-P with the
+same input.&lt;/p&gt;
+
+&lt;p&gt;First of all, I export &lt;em&gt;geneList&lt;/em&gt; to a &lt;em&gt;rnk&lt;/em&gt; file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(geneList, package=&amp;quot;DOSE&amp;quot;)
+d=data.frame(gene=names(geneList), FC=geneList)
+write.table(d, row.names=F,col.names=F, quote=F, file=&amp;quot;geneList.rnk&amp;quot;, sep=&amp;quot;\t&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And run GSEA-P with the following parameters:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;producer_class  xtools.gsea.GseaPreranked
+producer_timestamp  1445941169480
+param   collapse    false
+param   plot_top_x  20
+param   rnk /Users/guangchuangyu/Downloads/geneList.rnk
+param   norm    meandiv
+param   scoring_scheme  weighted
+param   make_sets   true
+param   mode    Max_probe
+param   gmx /Users/guangchuangyu/Downloads/c5.cc.v5.0.entrez.gmt
+param   gui false
+param   rpt_label   my_analysis
+param   help    false
+param   out /Users/guangchuangyu/gsea_home/output/oct27
+param   include_only_symbols    true
+param   set_min 15
+param   nperm   1000
+param   rnd_seed    timestamp
+param   zip_report  false
+param   set_max 500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Re-run clusterProfiler::GSEA with pvalueCutoff=1.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;g &amp;lt;- read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+xx &amp;lt;- GSEA(geneList, TERM2GENE=c5, nPerm=1000, pvalueCutoff=1)
+gy = merge(g, summary(xx), by.x=&amp;quot;NAME&amp;quot;, by.y=&amp;quot;ID&amp;quot;)
+ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10757414/e8d4f490-7ce5-11e5-9027-1dbe81e66329.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now the comparison tells! clusterProfiler indeed produce smaller
+pvalues. As I said in &lt;a href=&#34;http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/&#34;&gt;why clusterProfiler
+fails&lt;/a&gt;, in
+general software produce more conservative result is more trustable.
+This is indeed an issue I couldn&amp;rsquo;t omit.&lt;/p&gt;
+
+&lt;p&gt;This issue is attributed to DOSE package, which serves as a backend of
+both clusterProfiler and ReactomePA.&lt;/p&gt;
+
+&lt;p&gt;In DOSE, we calculate the pvalue in the following way:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;For each geneList, we calculate the observed ES, and then perform
+permutation to generate a null ES distribution. pvalue = (sum(ES &amp;gt;=
+permES)+1)/(nPerm+1), for greater side as an example, is calculated.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;fixed-bug-of-dose:140b254f6d6e22f5c796e058ac8120af&#34;&gt;fixed bug of DOSE&lt;/h3&gt;
+
+&lt;p&gt;Eventually I figured out that the way we calculate pvalue is not
+correct. As presented in
+&lt;a href=&#34;http://www.pnas.org/content/102/43/15545.abstract&#34;&gt;Subramaniam&lt;/a&gt; &lt;em&gt;et
+al&lt;/em&gt;, the distribution of ES is bimodal. Positive and negative ES values
+should be separated when calculating pvalues.&lt;/p&gt;
+
+&lt;p&gt;After I changed the &lt;a href=&#34;https://github.com/GuangchuangYu/DOSE/commit/12a35b7ff31d3dfd51d81d0f6a6e1afaa24a9823&#34;&gt;source
+code&lt;/a&gt;,
+the pvalues generated by clusterProfiler::GSEA and GSEA-P are almost
+identical.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10787607/34fd8716-7dad-11e5-9f43-6433b574b77b.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This bug was fixed in both release (&amp;gt;=2.8.1) and devel (&amp;gt;=2.9.1)
+branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.&lt;/p&gt;
+
+&lt;h3 id=&#34;other-concerns:140b254f6d6e22f5c796e058ac8120af&#34;&gt;other concerns&lt;/h3&gt;
+
+&lt;p&gt;There are other differences between clusterProfiler and GSEA-P.&lt;/p&gt;
+
+&lt;h4 id=&#34;clusterprofiler-never-produce-pvalue-0:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler never produce pvalue=0&lt;/h4&gt;
+
+&lt;p&gt;For calculating pvalues, GSEA-P may produce pvalue=0, while
+clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
+both numerator and demoninator. Some software may not accept pvalue=0,
+for example if you want to use topGO to visualize enrichment with GO
+topology, the result can&amp;rsquo;t contain any pvalue=0.&lt;/p&gt;
+
+&lt;h4 id=&#34;clusterprofiler-test-whole-gene-set-collections:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler test whole gene set collections&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; g=read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+&amp;gt; dim(g)
+[1] 56 12
+&amp;gt; yy = summary(xx)
+&amp;gt; yy = yy[with(yy, setSize &amp;gt;= 15 &amp;amp; setSize &amp;lt;=500),]
+&amp;gt; dim(yy)
+[1] 152   8
+&amp;gt; all(g$NAME %in% yy$ID)
+[1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GSEA-P didn&amp;rsquo;t filter result by pvalues, as it reported pvalues ranging
+from 0 to 1.&lt;/p&gt;
+
+&lt;p&gt;We cut our result by setSize in [15, 500] as default parameter of
+GSEA-P.&lt;/p&gt;
+
+&lt;p&gt;clusterProfiler tests all the gene sets while GSEA-P only tests a
+subset.&lt;/p&gt;
+
+&lt;p&gt;If I have some free time, I will figure out how they select gene sets to
+test. If it&amp;rsquo;s reasonable, we can add a parameter for clusterProfiler
+users to switch between two modes (full sets or subset). This is still
+an open issue/question. If you have any idea, don&amp;rsquo;t hesitate to let me
+know. :)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>use simplify to remove redundancy of enriched GO terms</title>
+      <link>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</link>
+      <pubDate>Wed, 21 Oct 2015 09:37:11 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</guid>
+      <description>&lt;p&gt;To simplify enriched GO result, we can use slim version of GO and use
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;enricher&lt;/a&gt;&lt;/em&gt;
+function to analyze.&lt;/p&gt;
+
+&lt;p&gt;Another strategy is to use
+&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
+users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
+output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(clusterProfiler)
+data(geneList, package=&amp;quot;DOSE&amp;quot;)
+de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+bp &amp;lt;- enrichGO(de, ont=&amp;quot;BP&amp;quot;)
+enrichMap(bp)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;enrichMap&lt;/em&gt; doesn&amp;rsquo;t display the whole picture as we use the default
+value &lt;em&gt;n=50&lt;/em&gt; to only show 50 highly significant terms. In the
+&lt;em&gt;enrichMap&lt;/em&gt;, we can found that there are many redundant terms form a
+highly condense network.&lt;/p&gt;
+
+&lt;p&gt;Now with the &lt;em&gt;simplify&lt;/em&gt; method, we can remove redundant terms.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;bp2 &amp;lt;- simplify(bp, cutoff=0.7, by=&amp;quot;p.adjust&amp;quot;, select_fun=min)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;em&gt;simplify&lt;/em&gt; method apply &lt;em&gt;&amp;lsquo;select_fun&amp;rsquo;&lt;/em&gt; (which can be a user defined
+function) to feature &amp;lsquo;&lt;em&gt;by&lt;/em&gt;&amp;rsquo; to select one representative terms from
+redundant terms (which have similarity higher than &amp;lsquo;&lt;em&gt;cutoff&lt;/em&gt;&amp;rsquo;).
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The simplified version of enriched result is more clear and give us a
+more comprehensive view of the whole story.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;enrichGO&lt;/em&gt; test the whole GO corpus and enriched result may contains
+very general terms.
+&lt;em&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/em&gt;
+contains a &lt;em&gt;dropGO&lt;/em&gt; function to remove specific GO terms or GO level,
+see &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/26&#34;&gt;the
+issue&lt;/a&gt;. With
+&lt;em&gt;simplify&lt;/em&gt; and &lt;em&gt;dropGO&lt;/em&gt;, enriched result can be more specific and more
+easy to interpret. Both of these functions work fine with outputs
+obtained from both &lt;em&gt;enrichGO&lt;/em&gt; and &lt;em&gt;compareCluster&lt;/em&gt;.🍻&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>functional enrichment analysis with NGS data</title>
@@ -80,6 +360,118 @@ to retrieve 5 genes flanking of each enhancer followed by GO analysis.&lt;/p&gt;
 
 &lt;p&gt;seq2pathway, &lt;a href=&#34;https://github.com/Bioconductor-mirror/seq2pathway&#34;&gt;https://github.com/Bioconductor-mirror/seq2pathway&lt;/a&gt;,
 version 1.1.2, access date 21 Aug, 2015&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>functional enrichment for GTEx paper</title>
+      <link>http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/</link>
+      <pubDate>Thu, 13 Aug 2015 05:44:27 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/</guid>
+      <description>&lt;p&gt;The ENCODE consortium has recently published &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pubmed/25954002&#34;&gt;a great
+paper&lt;/a&gt; on Gene Expression
+from the GTEx dataset. A criticism raised on
+&lt;a href=&#34;https://pubpeer.com/publications/EB99BD086B27075CFF5278F1CEAA57&#34;&gt;pubpeer&lt;/a&gt;
+is that the gene ontology enrichment analysis was done with DAVID which
+has not been updated in the last five years.&lt;/p&gt;
+
+&lt;p&gt;The result is shown below:
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/Screenshot%202015-07-15%2019.49.01.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It would be interest to see if results change by using
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+to reproduce GO &amp;amp; KEGG analyses.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/BP_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For GO (BP) analysis: 1. clusterProfiler (194) annotate more genes than
+DAVID (168). 2. DAVID enriches 14 BP terms while clusterProfiler
+enriches 222 BP terms. 3. All enriched terms reported in DAVID were also
+reported by clusterProfiler. 4. The result is consistent that the
+enriched terms are related to translation and protein biosynthesis with
+many detail and informative terms reported only by
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/KEGG_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For KEGG analysis: 1. DAVID annotates 5085 genes in background while
+clusterProfiler use &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;latest online
+version&lt;/a&gt;
+that annotates 6895 genes. 2. DAVID only annotate 83 genes, while
+clusterProfiler can annotate 104 genes of the gene list with 212 genes
+in total. 3. DAVID only enrich 1 KEGG terms, while clusterProfiler
+enriches 9 KEGG terms. 4. The enriched term reported in DAVID is also
+reported by clusterProfiler.&lt;/p&gt;
+
+&lt;p&gt;It would also be interest to see whether these genes are related to
+specific diseases/pathways and I run
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;
+to analyze them.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/DO_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I found that cancer and disease of cellular proliferation terms
+enriched.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ReactomePA/reactome_GTEx.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;,
+I found 3 cluster of pathways. Two are consistent with GO/KEGG/DO
+enrichment result that is translation related with more clear evidence
+of high splicing variability. Another cluster of pathways related to
+immune response which is not discovered by other ontology/pathway. These
+immune-related pathways did not reported in the paper but apparently
+immune responses are related to high splicing variability.&lt;/p&gt;
+
+&lt;p&gt;For more detail please refer to github repository,
+&lt;a href=&#34;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&#34;&gt;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&lt;/a&gt;,
+which contains rmarkdown source file to reproduce the results. You can
+try &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;other annotation data and also GSEA to explore
+GTEx&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>dotplot for enrichment result</title>
+      <link>http://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result/</link>
+      <pubDate>Tue, 23 Jun 2015 05:37:09 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result/</guid>
+      <description>&lt;p&gt;This is a &lt;a href=&#34;http://guangchuangyu.github.io//2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;feature
+request&lt;/a&gt;
+from
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+user. It&amp;rsquo;s similar to what I implemented in
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+for comparing biological themes. For comparing different enrichment
+results, the x-axis represent different gene clusters while for a single
+enrichment result, the x-axis can be gene count or gene ratio. This is
+actually similar to traditional barplot, with dot position as bar height
+and dot color as bar color. But dotplot can represent one more feature
+nicely by dot size and it can be a good alternative to barplot.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(DOSE)
+deg = names(geneList)[abs(geneList) &amp;gt; 1]
+do = enrichDO(deg)
+dotplot(do, showCategory=20)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/dotplot_geneRatio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can set the x-axis to use gene count and dot color by one of
+&amp;lsquo;pvalue&amp;rsquo;, &amp;lsquo;p.adjust&amp;rsquo; or &amp;lsquo;qvalue&amp;rsquo;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;dotplot(do, x=&amp;quot;count&amp;quot;, showCategory=20, colorBy=&amp;quot;qvalue&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/dotplot_count.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The dotplot function is also available in
+&lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+and
+&lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
@@ -213,6 +605,416 @@ umls:C0003873      0        0       0
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/DisGeNET_gseaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DAVID functional analysis with clusterProfiler</title>
+      <link>http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/</link>
+      <pubDate>Mon, 16 Mar 2015 06:33:34 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; was
+used to visualize &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt;
+results in a paper published in &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3907017/&#34;&gt;BMC
+Genomics&lt;/a&gt;.
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;
+Some users told me that they may want to use DAVID at some
+circumstances. I think it maybe a good idea to make clusterProfiler
+supports DAVID, so that
+&lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt; users can use
+visualization functions provided by
+&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(DOSE)
+require(clusterProfiler)
+data(geneList)
+gene = names(geneList)[abs(geneList) &amp;gt; 2]
+david = enrichDAVID(gene = gene, idType=&amp;quot;ENTREZ_GENE_ID&amp;quot;, 
+                    listType=&amp;quot;Gene&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; summary(david)
+               ID            Description GeneRatio  BgRatio       pvalue
+hsa04110 hsa04110             Cell cycle     11/68 125/5085 4.254437e-06
+hsa04114 hsa04114         Oocyte meiosis     10/68 110/5085 1.119764e-05
+hsa03320 hsa03320 PPAR signaling pathway      7/68  69/5085 2.606715e-04
+             p.adjust qvalue                                             geneID
+hsa04110 0.0003998379     NA 9133/4174/890/991/1111/891/7272/8318/4085/983/9232
+hsa04114 0.0005261534     NA    9133/5241/51806/3708/991/891/4085/983/9232/6790
+hsa03320 0.0081354974     NA                 4312/2167/5346/5105/3158/9370/9415
+         Count
+hsa04110    11
+hsa04114    10
+hsa03320     7
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are only 5085 human genes annotated by KEGG, this is due to
+out-of-date DAVID data.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;barplot(david)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.10.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;cnetplot(david, foldChange=geneList)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.45.png&#34; alt=&#34;&#34; /&gt;
+With enrichDAVID, compare DAVID functional profiles among different gene
+clusters is also supported.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(gcSample)
+x=compareCluster(gcSample, fun=&amp;quot;enrichDAVID&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
+plot(x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/compareCluster_david.png&#34; alt=&#34;&#34; /&gt;
+As I pointed out in &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG enrichment analysis with latest online data
+using
+clusterProfiler&lt;/a&gt;,
+there are many webservers using out of date data. This may leads to
+different interpretation of biological results. DAVID&amp;rsquo;s data is also out
+of date. DAVID stopped updating database since 2010. This is why I love
+Bioconductor, almost all the annotation packages are maintained by
+Bioconductor core team and will be updated biannual. enrichGO and
+enrichKEGG is more reliable with more updated data than many other
+tools.
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>KEGG enrichment analysis with latest online data using clusterProfiler</title>
+      <link>http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/</link>
+      <pubDate>Sun, 01 Feb 2015 12:38:27 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/</guid>
+      <description>
+
+&lt;p&gt;&lt;em&gt;KEGG.db&lt;/em&gt; is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological
+databases&lt;/a&gt;&amp;rsquo;,
+there is a problem that many out of date biological databases often
+don&amp;rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+&lt;a href=&#34;http://wego.genomics.org.cn/cgi-bin/wego/index.pl&#34;&gt;WEGO&lt;/a&gt; web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with &lt;a href=&#34;https://scholar.google.com.hk/scholar?as_ylo=2015&amp;amp;hl=en&amp;amp;as_sdt=0,5&amp;amp;sciodt=0,5&amp;amp;cites=13025429171853466135&amp;amp;scipsc=&#34;&gt;many people using
+it&lt;/a&gt;.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue. Now &lt;em&gt;enrichKEGG&lt;/em&gt;
+function is reloaded with a new parameter &lt;em&gt;use_internal_data&lt;/em&gt;. This
+parameter is by default setting to FALSE, and &lt;em&gt;enrichKEGG&lt;/em&gt; function will
+download the latest KEGG data for enrichment analysis. If the parameter
+&lt;em&gt;use_internal_data&lt;/em&gt; is explicitly setting to TRUE, it will use the
+&lt;em&gt;KEGG.db&lt;/em&gt; which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+&lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt; Now the &lt;em&gt;organism&lt;/em&gt;
+parameter in &lt;em&gt;enrichKEGG&lt;/em&gt; should be abbreviation of academic name, for
+example &amp;lsquo;hsa&amp;rsquo; for human and &amp;lsquo;mmu&amp;rsquo; for mouse. It accepts any species
+listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;. In the
+current release version of
+&lt;a href=&#34;http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+(in Bioconductor 3.0), &lt;em&gt;enrichKEGG&lt;/em&gt; supports about 20 species, and the
+&lt;em&gt;organism&lt;/em&gt; parameter accept common name of species, for instance &amp;ldquo;human&amp;rdquo;
+and &amp;ldquo;mouse&amp;rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.
+For other species, common name is not supported, since I don&amp;rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-1-using-online-kegg-annotation:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(DOSE)
+data(geneList)
+de &amp;lt;- names(geneList)[geneList &amp;gt; 1]
+
+library(clusterProfiler)
+kk &amp;lt;- enrichKEGG(de, organism=&amp;quot;hsa&amp;quot;, pvalueCutoff=0.05, pAdjustMethod=&amp;quot;BH&amp;quot;, 
+                 qvalueCutoff=0.1, readable=TRUE)
+head(summary(kk))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; head(summary(kk))
+               ID                            Description GeneRatio  BgRatio
+hsa04110 hsa04110                             Cell cycle    31/247 124/6861
+hsa03030 hsa03030                        DNA replication     9/247  36/6861
+hsa04060 hsa04060 Cytokine-cytokine receptor interaction    25/247 265/6861
+hsa04114 hsa04114                         Oocyte meiosis    14/247 113/6861
+hsa04115 hsa04115                  p53 signaling pathway    10/247  68/6861
+hsa04062 hsa04062            Chemokine signaling pathway    18/247 189/6861
+               pvalue     p.adjust       qvalue
+hsa04110 2.280256e-18 9.349050e-17 5.280593e-17
+hsa03030 3.527197e-06 7.230753e-05 4.084123e-05
+hsa04060 8.404037e-06 1.148552e-04 6.487326e-05
+hsa04114 4.827484e-05 4.948171e-04 2.794859e-04
+hsa04115 1.406946e-04 9.801620e-04 5.536217e-04
+hsa04062 1.434383e-04 9.801620e-04 5.536217e-04
+                                                                                                                                                                              geneID
+hsa04110 CDC45/CDC20/CCNB2/CCNA2/CDK1/MAD2L1/TTK/CHEK1/CCNB1/MCM5/PTTG1/MCM2/CDC25A/CDC6/PLK1/BUB1B/ESPL1/CCNE1/ORC6/ORC1/CCNE2/MCM6/MCM4/DBF4/SKP2/CDC25B/BUB1/MYC/PCNA/E2F1/CDKN2A
+hsa03030                                                                                                                            MCM5/MCM2/MCM6/MCM4/FEN1/RFC4/PCNA/RNASEH2A/DNA2
+hsa04060                           CXCL10/CXCL13/CXCL11/CXCL9/CCL18/IL1R2/CCL8/CXCL3/CCL20/IL12RB2/CXCL8/TNFRSF11A/CCL5/CXCR6/IL2RA/CCR1/CCL2/IL2RG/CCL4/CCR8/CCR7/GDF5/IL24/LTB/IL7
+hsa04114                                                                                          CDC20/CCNB2/CDK1/MAD2L1/CALML5/AURKA/CCNB1/PTTG1/PLK1/ESPL1/CCNE1/CCNE2/BUB1/FBXO5
+hsa04115                                                                                                               CCNB2/RRM2/CDK1/CHEK1/CCNB1/GTSE1/CCNE1/CCNE2/SERPINB5/CDKN2A
+hsa04062                                                                       CXCL10/CXCL13/CXCL11/CXCL9/CCL18/CCL8/CXCL3/CCL20/CXCL8/CCL5/CXCR6/CCR1/STAT1/CCL2/CCL4/HCK/CCR8/CCR7
+         Count
+hsa04110    31
+hsa03030     9
+hsa04060    25
+hsa04114    14
+hsa04115    10
+hsa04062    18
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the KEGG.db, there are only 5894 human genes annotated. With current
+online data, the number of annotated gene increase to 6861 as shown
+above and of course, p-values changed. User should pay attention to
+another issue that &lt;em&gt;readable&lt;/em&gt; parameter is only available for those
+species that has an annotation db. For example, for human we use
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html&#34;&gt;org.Hs.eg.db&lt;/a&gt;
+for mapping gene ID to Symbol.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
+
+&lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34;&gt;Streptococcus pneumoniae
+D39&lt;/a&gt;
+to demonstrate using &lt;em&gt;enrichKEGG&lt;/em&gt; with species that are not supported
+previously.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; gene
+ [1] &amp;quot;SPD_0065&amp;quot; &amp;quot;SPD_0071&amp;quot; &amp;quot;SPD_0293&amp;quot; &amp;quot;SPD_0295&amp;quot; &amp;quot;SPD_0296&amp;quot; &amp;quot;SPD_0297&amp;quot;
+ [7] &amp;quot;SPD_0327&amp;quot; &amp;quot;SPD_0426&amp;quot; &amp;quot;SPD_0427&amp;quot; &amp;quot;SPD_0428&amp;quot; &amp;quot;SPD_0559&amp;quot; &amp;quot;SPD_0560&amp;quot;
+[13] &amp;quot;SPD_0561&amp;quot; &amp;quot;SPD_0562&amp;quot; &amp;quot;SPD_0580&amp;quot; &amp;quot;SPD_0789&amp;quot; &amp;quot;SPD_1046&amp;quot; &amp;quot;SPD_1047&amp;quot;
+[19] &amp;quot;SPD_1048&amp;quot; &amp;quot;SPD_1050&amp;quot; &amp;quot;SPD_1051&amp;quot; &amp;quot;SPD_1052&amp;quot; &amp;quot;SPD_1053&amp;quot; &amp;quot;SPD_1057&amp;quot;
+[25] &amp;quot;SPD_1326&amp;quot; &amp;quot;SPD_1432&amp;quot; &amp;quot;SPD_1534&amp;quot; &amp;quot;SPD_1582&amp;quot; &amp;quot;SPD_1612&amp;quot; &amp;quot;SPD_1613&amp;quot;
+[31] &amp;quot;SPD_1633&amp;quot; &amp;quot;SPD_1634&amp;quot; &amp;quot;SPD_1648&amp;quot; &amp;quot;SPD_1678&amp;quot; &amp;quot;SPD_1919&amp;quot;
+&amp;gt; spdKEGG = enrichKEGG(gene, organism=&amp;quot;spd&amp;quot;)
+&amp;gt; summary(spdKEGG)
+               ID                                 Description GeneRatio BgRatio
+spd00052 spd00052                        Galactose metabolism     35/35  35/752
+spd02060 spd02060             Phosphotransferase system (PTS)     12/35  47/752
+spd01100 spd01100                          Metabolic pathways     28/35 341/752
+spd00520 spd00520 Amino sugar and nucleotide sugar metabolism      9/35  43/752
+               pvalue     p.adjust       qvalue
+spd00052 4.961477e-61 2.480739e-60 5.222608e-61
+spd02060 2.470177e-07 6.175443e-07 1.300093e-07
+spd01100 1.958319e-05 3.263866e-05 6.871296e-06
+spd00520 6.534975e-05 8.168718e-05 1.719730e-05
+                                                                                                                                                                                                                                                                                                                             geneID
+spd00052 SPD_0065/SPD_0071/SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0327/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1678/SPD_1919
+spd02060                                                                                                                                                                                                                SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0426/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_1047/SPD_1048/SPD_1057
+spd01100                                                                SPD_0071/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+spd00520                                                                                                                                                                                                                                           SPD_0580/SPD_1326/SPD_1432/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+         Count
+spd00052    35
+spd02060    12
+spd01100    28
+spd00520     9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;summary:68582cae05851901beab2a74a03ade4b&#34;&gt;Summary&lt;/h3&gt;
+
+&lt;p&gt;To summarize,
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+supports downloading the latest KEGG annotation for enrichment analysis
+and it supports all species that have KEGG annotation available in KEGG
+database.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>why clusterProfiler fails</title>
+      <link>http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/</link>
+      <pubDate>Thu, 07 Aug 2014 05:46:35 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/</guid>
+      <description>&lt;p&gt;Recently, there are some
+&lt;a href=&#34;http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/&#34;&gt;comments&lt;/a&gt;
+said that sometimes clusterProfiler failed in KEGG enrichment analysis.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;
+compared cluserProfiler with GeneAnswers and found that clusterProfiler
+gives larger p values. The result forces me to test it.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;it eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used
+an old version of clusterProfiler which didn&amp;rsquo;t use &lt;em&gt;as.character&lt;/em&gt; to
+coerce the input&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(GeneAnswers)
+data(&#39;humanGeneInput&#39;)
+y &amp;lt;- geneAnswersBuilder(humanGeneInput, &#39;org.Hs.eg.db&#39;, 
+                        categoryType=&#39;KEGG&#39;, testType=&#39;hyperG&#39;, 
+                        pvalueT=0.1, geneExpressionProfile=humanExpr, 
+                        verbose=FALSE)
+yy &amp;lt;- y@enrichmentInfo
+
+require(clusterProfiler)
+x &amp;lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, 
+                qvalueCutoff=0.2, minGSSize=1)
+xx &amp;lt;- summary(x)
+
+id &amp;lt;- sub(&amp;quot;hsa&amp;quot;, &amp;quot;&amp;quot;, xx$ID)
+idx &amp;lt;- id %in% rownames(yy)
+
+p.clusterProfiler &amp;lt;- xx$pvalue[idx]
+p.GeneAnswers &amp;lt;- yy[id[idx],]$&amp;quot;p value&amp;quot;
+&amp;gt; cor(p.clusterProfiler, p.GeneAnswers)
+[1] 0.9996165
+&amp;gt; p.clusterProfiler - p.GeneAnswers
+ [1]  1.029789e-04 -3.588252e-05 -4.623010e-05  1.079117e-04 -1.075746e-04
+ [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04  7.588155e-04
+[11] -3.702141e-04  2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04
+[16] -5.560738e-04 -5.884079e-04  2.011138e-03
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, I used the dataset, humanGeneInput, provided by GeneAnswers. There
+are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
+have p values below 0.1 by clusterProfiler. 18 of them are the same and
+p values are highly correlated with very small differences. &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34;&gt;Enrichment
+analyses&lt;/a&gt; are tested by
+geometric model, I believe all packages do it in the same way. The
+difference should be attributed to annotation file and I found
+background ratio are different.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; xx[1,]
+               ID Description GeneRatio  BgRatio     pvalue   p.adjust
+hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
+             qvalue                      geneID Count
+hsa04110 0.01683117 894/595/4175/6502/4173/9134     6
+&amp;gt; yy[1,]
+      genes in Category percent in the observed List percent in the genome
+04110                 6                    0.1176471            0.02112436
+      fold of overrepresents odds ratio      p value
+04110                5.56926   6.441808 0.0006512612
+
+
+&amp;gt; allEG = unique(unlist(as.list(org.Hs.egPATH2EG)))
+&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))
+[1] 124
+&amp;gt; length(allEG)
+[1] 5870
+&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))/length(allEG)
+[1] 0.02112436
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the above example, the BgRatio of clusterProfiler is &lt;sup&gt;128&lt;/sup&gt;&amp;frasl;&lt;sub&gt;5894&lt;/sub&gt;,
+slightly larger than 0.02112436 calculated by GeneAnswers. This is why
+clusterProfiler gives a p value larger than GeneAnswers (In this
+particular pathway of this particular example, clusterProfiler not
+always produce larger p values). The annotation file used by
+clusterProfiler is KEGG.db, while GeneAnswers uses org.Hs.eg.db. This is
+the reason of the difference and it&amp;rsquo;s not a big deal.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s not a good idea to give the background ratio in decimal format as
+GeneAnswers does. We have no idea of the number of total genes in
+background with ratio like 0.02112436. Some software packages may use
+the gene number of the whole genome as background. If the total gene
+number is setting to 18000, the background ratio turn out to be
+&lt;sup&gt;124&lt;/sup&gt;&amp;frasl;&lt;sub&gt;18000&lt;/sub&gt;=0.006888889. With 0.006888889, it&amp;rsquo;s hard to detect the
+background gene number was set to a larger number. In this scenario, all
+the p values will become very small, and many false positive were
+reported.&lt;/p&gt;
+
+&lt;p&gt;clusterProfiler and GeneAnswers estimate the total genes in the right
+way, but there are many packages may setting it to all the genes, no
+matter they have annotation or not. For instance, some software may
+setting the background to 20,000 when testing human genes.&lt;/p&gt;
+
+&lt;p&gt;I still remember in 2007, I used princeton&amp;rsquo;s web server,
+&lt;a href=&#34;http://go.princeton.edu/cgi-bin/GOTermFinder&#34;&gt;http://go.princeton.edu/cgi-bin/GOTermFinder&lt;/a&gt;, to test GO enrichment. I
+found the background gene number was set to a very large number and all
+the p values were extremely small. When writing this blog post, I submit
+a job to this web server and found the gene number of human is setting
+to 45758. After I found this, I never use this web server again. The
+result is extremely &amp;ldquo;significant&amp;rdquo;! The web sever has an option, &amp;ldquo;Enter
+the number of products estimated for your organism&amp;rdquo;. This is ridiculous.
+It&amp;rsquo;s hard to estimate for ordinary users and it is impossible to
+estimate it correctly since we don&amp;rsquo;t know the annotation file in used.
+The default number, 45758 for human, is too large, result in many false
+positive.&lt;/p&gt;
+
+&lt;p&gt;Input a gene list as background is useful, for instance we may use all
+genes that are detected in microarray experiment or all proteins
+identified by MS as background. This is an effective way to eliminate
+bias of using the whole genome. Use the whole genome is not mean to use
+the total number of gene in the genome as background. By default, KEGG
+enrichment analyses of clusterProfiler and GeneAnswers are using the
+whole genome, that is about 5900 genes for human, which are all genes
+have pathway annotation in the whole genome. Others without annotation
+are abandoned. This itself is a bias actually, but it&amp;rsquo;s the realistic.
+If we include all genes no matter they have annotation or not, and
+setting 20000 or even more as background of human genes, definitely we
+will get significant result! But it is man-made significant.&lt;/p&gt;
+
+&lt;p&gt;As I replied to
+&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;,
+if p values obtained by different software are different, trust the one
+produce larger p values. Many user will choose a software give a more
+&amp;ldquo;significant&amp;rdquo; result, but trust me, you are making type I error.
+Conservatively, always choose the one give you larger p-values if you
+know nothing about the calculation. Software that never &amp;ldquo;fail&amp;rdquo; is
+untrustable.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>enrichment map</title>
+      <link>http://guangchuangyu.github.io/2014/08/enrichment-map/</link>
+      <pubDate>Sun, 03 Aug 2014 12:48:15 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2014/08/enrichment-map/</guid>
+      <description>&lt;p&gt;In &lt;a href=&#34;http://www.plob.org/&#34;&gt;PLOB&lt;/a&gt;&amp;rsquo;s QQ group, someone asked how to change
+the color of enrichment map in &lt;a href=&#34;http://cytoscape.org/&#34;&gt;Cytoscape&lt;/a&gt;. I am
+very curious how enrichment map can helps to interpret enrichment
+results. It took me 2 hours to implement it using R and I am surprised
+that the enrichment map is better than anticipated.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/08/Screenshot-2014-07-30-22.20.07.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now in the development version of
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;,
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;, and
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;,
+you can use &lt;strong&gt;&lt;em&gt;enrichmap&lt;/em&gt;&lt;/strong&gt; function to generate the enrichment map of
+enrichment results obtained by &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34;&gt;hypergeometric
+test&lt;/a&gt; or gene set
+enrichment analysis.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</title>
+      <link>http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/</link>
+      <pubDate>Mon, 07 May 2012 03:04:46 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/</guid>
+      <description>&lt;p&gt;Increasing quantitative data generated from transcriptomics and
+proteomics require integrative strategies for analysis. Here, we present
+an R package, clusterProfiler that automates the process of
+biological-term classification and the enrichment analysis of gene
+clusters. The analysis module and visualization module were combined
+into a reusable workflow. Currently, clusterProfiler supports three
+species, including humans, mice, and yeast. Methods provided in this
+package can be easily extended to other species and ontologies. The
+clusterProfiler package is released under Artistic-2.0 License within
+Bioconductor project. The source code and vignette are freely available
+at
+&lt;a href=&#34;http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Yu, Guangchuang, Li-Gen Wang, Yanyan Han, and Qing-Yu He.
+&lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: An R Package for Comparing Biological Themes Among
+Gene
+Clusters&lt;/a&gt;.
+OMICS: A Journal of Integrative Biology 16, no. 5 (May 2012): 284–287.&lt;/p&gt;
 </description>
     </item>
     
