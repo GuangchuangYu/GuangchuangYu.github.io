@@ -88,10 +88,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioc">BioC</a><a class="label" href="http://guangchuangyu.github.io/categories/ggtree">ggtree</a>
       </span>
+
+
       
       I am very glad that ggtree is now available via Bioconductor. This is my 6th Bioconductor package. ggtree now supports parsing output files from BEAST, PAML, HYPHY, EPA and PPLACER and can annotate phylogenetic tree directly using plot methods. Now you can use the following command to install ggtree: install.packages(&quot;ggtree&quot;, repos = &quot;http://www.bioconductor.org/packages/devel/bioc&quot;, type = &quot;source&quot;) Find out more at http://www.bioconductor.org/packages/3.1/bioc/html/ggtree.html and check out the vignette, http://www.bioconductor.org/packages/3.1/bioc/vignettes/ggtree/inst/doc/ggtree.html
       
       
+
     </div>
     
     <div class="post">
@@ -103,10 +106,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/evolution">Evolution</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/ggtree">ggtree</a>
       </span>
+
+
       
       When I need to annotate nucleotide substitutions in the phylogenetic tree, I found that all the software are designed to display the tree but not annotating it. Some of them may support annotating the tree with specific data such as bootstrap values, but they are restricted to a few supported data types. It is hard/impossible to inject user specific data. I decided to implement my own one by extending the ggplot2 package.
       <a href="http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/">Read On &rarr;</a>
       
+
     </div>
     
     <div class="post">
@@ -118,10 +124,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/research">Research</a><a class="label" href="http://guangchuangyu.github.io/categories/gosemsim">GOSemSim</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a>
       </span>
+
+
       
       One day, I am looking for R packages that can analyze PPI and after searching, I found the ppiPre package in CRAN. The function of this package is not impressive, and I already knew some related works, including http://intscore.molgen.mpg.de/. The authors of this webserver contacted me for the usages of GOSemSim when they developing it. What makes me curious is that the ppiPre package can calculate GO semantic similarity and supports 20 species exactly like GOSemSim.
       <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">Read On &rarr;</a>
       
+
     </div>
     
     <div class="post">
@@ -133,10 +142,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
       </span>
+
+
       
       Installing OS is painful, you need to re-install all the software and configure them to the way you want. We don&rsquo;t want to wast time in doing this. To prevent doing this dirty job, we perform an upgrade install instead of clean install. We all have experience of upgrading Windows sucks, same as OS X. All the issues you have in old system will be remained, and sometimes new issues will be introduced in the process of upgrading.
       <a href="http://guangchuangyu.github.io/2014/11/hello-yosemite/">Read On &rarr;</a>
       
+
     </div>
     
     <div class="post">
@@ -148,10 +160,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/genomics">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/chipseeker">ChIPseeker</a>
       </span>
+
+
       
       Nearest gene annotation Almost all annotation software calculate the distance of a peak to the nearest TSS and assign the peak to that gene. This can be misleading, as binding sites might be located between two start sites of different genes or hit different genes which have the same TSS location in the genome. The function annotatePeak provides option to assign genes with a max distance cutoff and all genes within this distance were reported for each peak.
       <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/">Read On &rarr;</a>
       
+
     </div>
     
     <div class="post">
@@ -163,10 +178,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a>
       </span>
+
+
       
       Recently, there are some comments said that sometimes clusterProfiler failed in KEGG enrichment analysis. kaji331 compared cluserProfiler with GeneAnswers and found that clusterProfiler gives larger p values. The result forces me to test it. it eventually came out that he passed the input gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input require(GeneAnswers) data('humanGeneInput') y &lt;- geneAnswersBuilder(humanGeneInput, 'org.Hs.eg.db', categoryType='KEGG', testType='hyperG', pvalueT=0.1, geneExpressionProfile=humanExpr, verbose=FALSE) yy &lt;- y@enrichmentInfo require(clusterProfiler) x &lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, qvalueCutoff=0.2, minGSSize=1) xx &lt;- summary(x) id &lt;- sub(&quot;hsa&quot;, &quot;&quot;, xx$ID) idx &lt;- id %in% rownames(yy) p.clusterProfiler &lt;- xx$pvalue[idx] p.GeneAnswers &lt;- yy[id[idx],]$&quot;p value&quot; &gt; cor(p.clusterProfiler, p.GeneAnswers) [1] 0.9996165 &gt; p.clusterProfiler - p.GeneAnswers [1] 1.029789e-04 -3.588252e-05 -4.623010e-05 1.079117e-04 -1.075746e-04 [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04 7.588155e-04 [11] -3.702141e-04 2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04 [16] -5.560738e-04 -5.884079e-04 2.011138e-03 Here, I used the dataset, humanGeneInput, provided by GeneAnswers.
       <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/">Read On &rarr;</a>
       
+
     </div>
     
     <div class="post">
@@ -178,10 +196,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/enrichment">Enrichment</a>
       </span>
+
+
       
       In PLOB&rsquo;s QQ group, someone asked how to change the color of enrichment map in Cytoscape. I am very curious how enrichment map can helps to interpret enrichment results. It took me 2 hours to implement it using R and I am surprised that the enrichment map is better than anticipated. Now in the development version of clusterProfiler, DOSE, and ReactomePA, you can use enrichmap function to generate the enrichment map of enrichment results obtained by hypergeometric test or gene set enrichment analysis.
       
       
+
     </div>
     
     <div class="post">
@@ -193,10 +214,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/linux">Linux</a>
       </span>
+
+
       
       上个月写了《使用ggplot画图》一文，图片太多，一下子把博客的12G流量给用光了，月中博客就被停了，小伙伴们太给力了，blog不能访问，真是件不爽的事情。 言归正传，从2002年使用redhat 7.1开始，就没中止过使用linux，为什么要说again呢，因为在过去几年的工作时间里，使用的是OS X和win7做为桌面的，linux只在服务器端使用。自从用了OS X之后，就不想再用linux当桌面了，OS X绝对是节省生命的系统，本身是unix-like系统，对各种桌面软件支持又好，特别是中华大地，linux还是小众，用来当桌面实在是各种坑。 不过现在又回到学生时代了，所以还得继续学生屌丝的折腾，本科时从redhat,debian到gentoo，硕士时实验室的机器用ubuntu，而笔记本用NetBSD。这么多年的使用，该有的坑都填了，但是时代在发展，新坑还是不断有的，使用百度云来同步化文献库，就是最近的新坑，装上linux之后，发现度娘没有客户端，首先想到的当然是wine，wine出来的偶尔能行，时常崩溃，跟它死磕我也会崩溃，github上寻找开源实现，各种功能缺失和限制，那就只能虚拟机了，把home目录做为共享盘，挂到虚拟机中，但是度娘一直都是占100% CPU，然后数据无法同步，只有两个原因，不是硬盘就是网络，感觉好像我一个分区800G太大了，但在虚拟中对硬盘读写正常，网络因为使用NAT，虚拟成内网，有可能是这个原因，于是换成bridge，把虚拟机当成现实网络中的另一台主机，但度娘依然只占CPU，不干活。那只能还是硬盘问题，最后问题解决了，通过在linux中提供samba服务，然后在虚拟机中通过网上邻居把共享目录映射成网络驱动器，这时候度娘终于肯干活了。都不知道是virtualbox的驱动有问题，还是度娘太挑，这太TM坑了。 不想自己太geek，假装我在用windows 7，不过我还是喜欢当年的windows 2000的主题，可惜qvwm已经很久不更新了，现在想编译成功已经非常困难了。 假装了一星期，我就觉得用着很不爽，屏幕太小，又老用鼠标，手臂不舒服，于是想起了当年的wmii，这次我装的是wmii的增强版i3-wm，有了tab这些元素，用着更舒服一点，于是窗口都全屏了，这样小屏幕也还凑合了。最主要的是提高效率，减少鼠标操作，我现在把鼠标放在左上角，因为使用频率非常少，偶尔要用，就用左手搞一下。告别鼠标手，这酸爽，谁用谁知道！有了OS X之后，linux桌面依然有吸引我的地方，最主要的就是tiling windows，另外fcitx的五笔是我最喜欢的输入法。 小屏毕竟还是不爽，准备把宿舍的显示器搬去实验室用了，囧rz&hellip; 搬来显示器之后，无比爽。
       
       
+
     </div>
     
     <div class="post">
@@ -208,10 +232,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
       </span>
+
+
       
       Why use ggplot2 ggplot2是我见过最human friendly的画图软件，这得益于Leland Wilkinson在他的著作《The Grammar of Graphics》中提出了一套图形语法，把图形元素抽象成可以自由组合的成分，Hadley Wickham把这套想法在R中实现。 为什么要学习ggplot2，可以参考ggplot2: 数据分析与图形艺术的序言（btw: 在序言的最后，我被致谢了）。 Hadley Wickham也给出一堆理由让我们说服自己，我想再补充一点，Hadley Wickham是学医出身的，做为学生物出身的人有什么理由不支持呢:) ggplot2基本要素 数据（Data）和映射（Mapping） 几何对象（Geometric） 标尺（Scale） 统计变换（Statistics） 坐标系统（Coordinante） 图层（Layer） 分面（Facet） 主题（Theme） 这里将从这些基本要素对ggplot2进行介绍。 数据（Data）和映射（Mapping) 下面以一份钻石的数据为例，这份数据非常大，随机取一个子集来画图。 require(ggplot2) data(diamonds) set.seed(42) small &lt;- diamonds[sample(nrow(diamonds), 1000), ] head(small) ## carat cut color clarity depth table price x y z ## 49345 0.71 Very Good H SI1 62.5 60 2096 5.68 5.75 3.57 ## 50545 0.79 Premium H SI1 61.8 59 2275 5.97 5.91 3.67 ## 15434 1.03 Ideal F SI1 62.4 57 6178 6.48 6.44 4.03 ## 44792 0.50 Ideal E VS2 62.2 54 1624 5.08 5.11 3.17 ## 34614 0.27 Ideal E VS1 61.6 56 470 4.14 4.17 2.56 ## 27998 0.30 Premium E VS2 61.7 58 658 4.32 4.34 2.67 summary(small) ## carat cut color clarity depth ## Min.
       <a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/">Read On &rarr;</a>
       
+
     </div>
     
     <div class="post">
@@ -223,10 +250,13 @@
       <br/>
       <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a><a class="label" href="http://guangchuangyu.github.io/categories/software">Software</a>
       </span>
+
+
       
       从2007年写了第一篇文章之后，我发现管理文献真不是人干的，一直以来使用Zotero来管理文献，自从有了dropbox之后，就想把文献库放在dropbox上，一来有个云备份，不怕硬盘坏，二来嘛，实验室电脑和个人电脑可以实时同步化，无奈dropbox空间太小，而我的zotero早已超过10G，因为电子书也放在里面，只能做罢。 度娘出手还是很大方的，我现在的网盘已经有3T，包括之前在推广阶段用1元买的1T。 于是我要把zotero放在度娘的网盘里，有可能是因为我用英文版，firefox不认中文路径。 第一反应就是给个英文路径的软链接，OS X自带的Terminal和iTerm都不支持我输入中文，只能在Emacs里跑eshell来搞。事实证明软链接是不行的，会被还原回实际路径，依然是中文。 那么就用硬链接，但是系统不干，真是邪门，搜索一下发现这是OS X的问题，在stackoverflow上还有人提供了一段C代码来做硬链接，不过我编译后运行依然是失败，无法创建硬链接。 于是只能土办法了，软件的路径并不是死的，那么总得有个配置文件来定位，通过修改配置文件总应该可以的吧。于是在下面的路径下，找到了macosnetdisk.plist user_workpath /Volumes/DATA/Users/ygc/百度云同步盘 把百度云同步盘换成个英文文件夹，整个世界清静了，firefox终于找到了它的好基友zotero。 TIPS：有了度娘网盘，再也不用担心下载问题了，找个BT种子，让度娘下载，速度极快，因为通常的东西度娘的网盘上是有的，它做的不过是链接一份给你而已，越多的人保留同一份东西，度娘就越省空间。度娘同步到电脑上速度也是极快的，秒杀其它下载工具。
       
       
+
     </div>
     
     
@@ -277,6 +307,7 @@
         
     </ul>
     
+
   </div>
 </div>
 
@@ -311,6 +342,9 @@ MathJax.Hub.Config({
   }
 });
 </script>
+
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "d135f460-3fc5-4802-8169-bd08e4734a09", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 
 
 
