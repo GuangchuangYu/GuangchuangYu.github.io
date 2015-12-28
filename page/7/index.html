@@ -81,6 +81,42 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/">GOSemSim an R package for measuring semantic similarity among GO terms and gene products</a>
+      </h1>
+      <span class="post-date">May 28, 2010 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/publication">Publication</a><a class="label" href="http://guangchuangyu.github.io/categories/gosemsim">GOSemSim</a>
+      </span>
+
+
+      
+      Abstract SUMMARY: The semantic comparisons of Gene Ontology (GO) annotations provide quantitative ways to compute similarities between genes and gene groups, and have became important basis for many bioinformatics analysis approaches. GOSemSim is an R package for semantic similarity computation among GO terms, sets of GO terms, gene products and gene clusters. Four information content (IC)- and a graph-based methods are implemented in the GOSemSim package, multiple species including human, rat, mouse, fly and yeast are also supported.
+      <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/">Read On &rarr;</a>
+      
+
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2009/07/bootstrap-method/">Bootstrap Method</a>
+      </h1>
+      <span class="post-date">Jul 31, 2009 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2009/07/bootstrap-method/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/statistics">statistics</a>
+      </span>
+
+
+      
+      bootstrap是对观测数据集进行有放回（replacement）的随机抽样，以评估总体的各项统计指标。可以用于假设检验、参数估计。好处是并不要求大样本，也不要求正态数据，并且对于不同的统计指标使用的是同样的计算方法。结果也更为可靠，坏处是计算量大。 统计推断(statistical inference)是基于样本统计值的抽样分布来计算的，抽样分布需要从总体中许多的样本来计算，在只有一个样本的情况下，bootstrap对这一随机样本进行有放回的重复抽样，每一个重抽样本与原始随机样本一样大，每次计算相应的抽样的统计值，重复了N次之后，就可以计算统计值的bootstrap分布。 下面做一个小小的试验： a &lt;- c(seq(1:10), rnorm(50)) #创建一个样本，60个数据，非正态分布的，如下图 b &lt;- rep(0, 1000) for (i in 1:1000) { b[i] &lt;- mean(sample(a, replace=TRUE)) } 对它进行1000次有放回重复抽样，计算均值，均值分布的柱状图和qq图如下： 分布是正态的。 &gt; mean(a) #样本均值 [1] 0.947186 &gt; mean(b) #重抽样1000个样本均值的均值 [1] 0.9358049 &gt; sd(b) [1] 0.3245479 &gt; sd(a)/sqrt(60) [1] 0.3318863 由bootstrap方法得到的标准误是0.325，而由原先随机样本所估算的是0.332，两者是相当接近的。由此可见呢，bootstrap方法与理论上的从总体中抽样所得到的样本分布是一致的，这样子就可以基于一个样本来计算样本的分布，而不是要从总体中抽N个样本。 还用上面的例子，使用样本均值$ \bar{x}$去估算总体的均值$ \mu$，虽然我们的样本不是正态的，但如果bootstrap distribution是正态的话，就可以使用类似于单样本t置信区间（要求样本是正态的）的公式:$ \bar{x} \pm t \cdot SE = \bar{x} \pm t \cdot \frac{s}{\sqrt{n}}$ 相应的bootstrap t置信区间是：$ statistic \pm t \cdot SE_{boot}$ 上面例子，总体均值$ \mu$ 95%的置信度，就会落在：$ mean(a) \pm 2.009 \cdot sd(b)$ 可以使用它，计算所有统计指标的置信区间。 用于层次聚类分析的一个例子，使用Pvclust这个包，用于层次聚类，并通过multiscale bootstrap resampling给出相应的p-value用于评估聚类结果的不确定性。提供了两种p-values，AU（approximately unbiased p-value, 通过multiscale bootstrap resampling计算）和BP（bootstrap probability, 通过normal bootstrap resampling计算），AU比BP较为unbiased。 Pvclust使用*hclust*（来自于stats包）进行层次聚类，并自动计算所有的子类的p-value。 library(pvclust) # loads package a &lt;- matrix(rnorm(1000), 100, 10, dimnames=list(paste(&quot;g&quot;, 1:100, sep=&quot;&quot;), paste(&quot;t&quot;,1:10, sep=&quot;&quot;))) # creats sample data at &lt;- t(a) # transposes of a cl &lt;- pvclust(at, nboot=1000) #performs hierarchical cluster analysis with multiscale bootstrap with 1000 repetitions.
+      <a href="http://guangchuangyu.github.io/2009/07/bootstrap-method/">Read On &rarr;</a>
+      
+
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="http://guangchuangyu.github.io/2008/09/%E9%80%9A%E8%BF%87%E5%B1%80%E5%9F%9F%E7%BD%91%E5%9C%A8linux%E4%B8%8B%E4%BD%BF%E7%94%A8windows%E7%9A%84%E7%A8%8B%E5%BA%8F/">通过局域网在linux下使用windows的程序</a>
       </h1>
       <span class="post-date">Sep 22, 2008 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2008/09/%E9%80%9A%E8%BF%87%E5%B1%80%E5%9F%9F%E7%BD%91%E5%9C%A8linux%E4%B8%8B%E4%BD%BF%E7%94%A8windows%E7%9A%84%E7%A8%8B%E5%BA%8F/#disqus_thread">Comments</a>
@@ -219,42 +255,6 @@
       
       三维绘图可以分为两大类型：矩阵型和曲面型。 矩阵型 通常是声明一个矩阵，以矩阵的长宽为x,y范围，以矩阵里面的数值为高z， 使用plot3d(t1,t2,Z,alpha=a,theta=b) t1:y轴方向的范围 t2:x轴方向的范围 Z:矩阵 alpha theta参数用于指定角度，让图绘出来以某个特定的角度呈现出来。(optional) -&gt;clear -&gt;A=[1 2 5 4 3;0 3 2 8 6;2 4 6 7 5;2 3 4 3 1]; -&gt;t1=1:4; -&gt;t2=1:5; //plot3d1与plot3d语法类似，能够嵌入多种颜色 -&gt;plot3d(t1,t2,A,alpha=45,theta=45); mesh不需要边界声明， -&gt;mesh(A); 曲面型 则是先声明一个连续函数，再选取x,y范围来绘图。 fplot3d()指令用来绘制连续函数。 用fplot3d之前，用deff或function声明函数z,然后再声明函数范围x,y. -&gt;deff('z=f(x,y)','z=x\*y'); -&gt;x=-10:8; -&gt;y=-6:12; -&gt;fplot3d(x,y,f); 柱状图 -&gt;A=[1 3 5 7;2 6 10 14]; //声明一个矩阵 -&gt;hist3d(A); 空间立体曲线图 param3d绘制的是线，而非面。 param3d(xf,yf,zf); xf:x方向的函数 yf:y方向的函数 zf:z方向的函数 -&gt;t=linspace(-%pi,%pi); -&gt;param3d(sin(t),cos(t),t);
       
-      
-
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/">qvwm窗口管理器的windows2000主题</a>
-      </h1>
-      <span class="post-date">Jun 24, 2006 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a>
-      </span>
-
-
-      
-      qvwm is a window manager for the X Window system which provides a user experience very close to Windows 95&frasl;98. It is small and extremely fast. 可从其主页上看到它的介绍及下载源码。 这是我做的一个windows2000的主题。。 点击下载
-      
-      
-
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/">安装os9和netbsd双系统</a>
-      </h1>
-      <span class="post-date">Jun 14, 2006 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a><a class="label" href="http://guangchuangyu.github.io/categories/powerbook">Powerbook</a>
-      </span>
-
-
-      
-      1 分区 用MacOS X 10.2 的光盘启动，运行Disk Utility，选择“Install Mac OS 9 Disk Drivers”不然分区将不能在OS9中使用，我一共分了5个分区，12G,10G,512M,20G,13.4G。其中12Ｇ装OS9系统，10Ｇ装netbsd系统，512Ｍ为swap分区，20Ｇ为home 分区，最后一个为fat32格式，为两个系统所共享。 2 安装os9 开机放入os9安装光盘，按住Ｃ键，由光盘启动进入os9，在光盘根目录下点安装系统。指定第一个分区，选择安装的软件，十来分钟，便装完了。重新启动，将netbsd的启动程序ofwboot.xcf放在os9的根目录下。 3 安装netbsd 开机按住command+option+o+f进入open firmware。open firmware启动命令的语法是 boot boot-device [boot-file] [-as] 加-a会问你下个载入的文件，比如引导程序问你内核在那或内核会问你根分区在那。键入命令 boot cd:,\\ofwboot.xcf netbsd.macppc 引导netbsd安装光盘， 进入sysinst主菜单。 .***********************************************. * NetBSD-3.0 Install System * * * *&gt;a: Install NetBSD to hard disk * * b: Upgrade NetBSD on a hard disk * * c: Re-install sets or install additional sets * * d: Reboot the computer * * e: Utility menu * * x: Exit Install System * .***********************************************.
-      <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/">Read On &rarr;</a>
       
 
     </div>

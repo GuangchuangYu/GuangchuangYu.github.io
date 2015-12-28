@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>clusterProfiler in Bioconductor 2.8 &middot; G. Yu</title>
+  <title>Bootstrap Method &middot; G. Yu</title>
 
   
   <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
@@ -77,41 +77,96 @@
 
 <div class="content container">
   <div class="post">
-    <h1>clusterProfiler in Bioconductor 2.8</h1>
-    <span class="post-date">Mar 27, 2011 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2011/03/clusterprofiler-in-bioconductor-2.8/#disqus_thread">Comments</a>
+    <h1>Bootstrap Method</h1>
+    <span class="post-date">Jul 31, 2009 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2009/07/bootstrap-method/#disqus_thread">Comments</a>
     
 
     <br/>
-    <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/enrichment">Enrichment</a>
+    <a class="label" href="http://guangchuangyu.github.io/categories/statistics">statistics</a>
     </span>
 <span class='st_twitter_hcount' displayText='Tweet'></span>
 <span class='st_facebook_hcount' displayText='Facebook'></span>
 <span class='st_sina_hcount' displayText='Sina'></span>
 <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
 <br/>
-    <p>In recently years, high-throughput experimental techniques such as
-microarray and mass spectrometry can identify many lists of genes and
-gene products. The most widely used strategy for high-throughput data
-analysis is to identify different gene clusters based on their
-expression profiles. Another commonly used approach is to annotate these
-genes to biological knowledge, such as Gene Ontology (GO) and Kyoto
-Encyclopedia of Genes and Genomes (KEGG), and identify the statistically
-significantly enriched categories. These two different strategies were
-implemented in many bioconductor packages, such as <em>Mfuzz</em> and <em>BHC</em> for
-clustering analysis and <em>GOstats</em> for GO enrichment analysis.</p>
+    
 
-<p>After clustering analysis, researchers not only want to determine
-whether there is a common theme to a particular gene cluster, but also
-would like to compare the biological themes among gene clusters, which
-have different expression profiles.</p>
+<p><a href="http://en.wikipedia.org/wiki/Bootstrapping_(statistics)">bootstrap</a>是对观测数据集进行有放回（replacement）的随机抽样，以评估总体的各项统计指标。可以用于假设检验、参数估计。好处是并不要求大样本，也不要求正态数据，并且对于不同的统计指标使用的是同样的计算方法。结果也更为可靠，坏处是计算量大。</p>
 
-<p>There is no existing tools to bridge this gap, and I have designed an R
-package
-<em><a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">clusterProfiler</a></em>,
-for comparing functional profiles among gene clusters.</p>
+<p>统计推断(statistical
+inference)是基于样本统计值的抽样分布来计算的，抽样分布需要从总体中许多的样本来计算，在只有一个样本的情况下，bootstrap对这一随机样本进行有放回的重复抽样，每一个重抽样本与原始随机样本一样大，每次计算相应的抽样的统计值，重复了N次之后，就可以计算统计值的bootstrap分布。</p>
 
-<p>For any further details, please refer to:
-<a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html</a></p>
+<p>下面做一个小小的试验：</p>
+
+<pre><code>a &lt;- c(seq(1:10), rnorm(50))  
+</code></pre>
+
+<p>#创建一个样本，60个数据，非正态分布的，如下图</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2009/07/sample_a.png" alt="" title="sample_a" /></p>
+
+<pre><code>b &lt;- rep(0, 1000)
+for (i in 1:1000) {
+    b[i] &lt;- mean(sample(a, replace=TRUE))
+}
+</code></pre>
+
+<p>对它进行1000次有放回重复抽样，计算均值，均值分布的柱状图和qq图如下：</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2009/07/hist_qq.png" alt="" /></p>
+
+<p>分布是正态的。</p>
+
+<pre><code>&gt; mean(a)    #样本均值
+[1] 0.947186
+&gt; mean(b)   #重抽样1000个样本均值的均值
+[1] 0.9358049
+&gt; sd(b)
+[1] 0.3245479
+&gt; sd(a)/sqrt(60)
+[1] 0.3318863
+</code></pre>
+
+<p>由bootstrap方法得到的标准误是0.325，而由原先随机样本所估算的是0.332，两者是相当接近的。由此可见呢，bootstrap方法与理论上的从总体中抽样所得到的样本分布是一致的，这样子就可以基于一个样本来计算样本的分布，而不是要从总体中抽N个样本。</p>
+
+<p>还用上面的例子，使用样本均值$ \bar{x}$去估算总体的均值$
+\mu$，虽然我们的样本不是正态的，但如果bootstrap
+distribution是正态的话，就可以使用类似于单样本t置信区间（要求样本是正态的）的公式:$
+\bar{x} \pm t \cdot SE = \bar{x} \pm t \cdot
+\frac{s}{\sqrt{n}}$ 相应的bootstrap t置信区间是：$ statistic
+\pm t \cdot SE_{boot}$ 上面例子，总体均值$ \mu$
+95%的置信度，就会落在：$ mean(a) \pm 2.009 \cdot sd(b)$
+可以使用它，计算所有统计指标的置信区间。</p>
+
+<p>用于层次聚类分析的一个例子，使用Pvclust这个包，用于层次聚类，并通过multiscale
+bootstrap
+resampling给出相应的<em>p</em>-value用于评估聚类结果的不确定性。提供了两种<em>p</em>-values，AU（approximately
+unbiased p-value, 通过multiscale bootstrap
+resampling计算）和BP（bootstrap probability, 通过normal bootstrap
+resampling计算），AU比BP较为unbiased。
+Pvclust使用*hclust*（来自于stats包）进行层次聚类，并自动计算所有的子类的<em>p</em>-value。</p>
+
+<pre><code>library(pvclust)  # loads package
+a &lt;- matrix(rnorm(1000), 100, 10, dimnames=list(paste(&quot;g&quot;, 1:100, sep=&quot;&quot;), paste(&quot;t&quot;,1:10, sep=&quot;&quot;)))  # creats sample data
+at &lt;- t(a)  # transposes of a
+cl &lt;- pvclust(at, nboot=1000)  #performs hierarchical cluster analysis with multiscale bootstrap with 1000 repetitions.
+pvrect(cl, alpha=0.95)  #highlights with red rectangles all clusters in the dendrogram which have an AU value above 95%, AU p-value &gt; 0.95, the hypothesis that &quot;the cluster does not exist&quot; is rejected with significance level 0.05;
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2009/07/pvclust_test.png" alt="" /></p>
+
+<pre><code>#pick significant clusters.
+clsig &lt;- pvpick(cl, alpha=0.95, pv=&quot;au&quot;, type=&quot;geq&quot;, max.only=TRUE)  
+</code></pre>
+
+<h3 id="reference:5129f3fc49180ee68d0efdb6ded483c8">Reference</h3>
+
+<p>1.  Moore, D.S., McCabe, G.P. &amp; Craig, B. Introduction to the Practice
+of Statistics w/CD-ROM.  (W. H. Freeman: 2007).</p>
+
+<p>2.  Suzuki, R. (2006). Pvclust: an R package for assessing the uncertainty in hierarchical clustering, Bioinformatics, 22(12), 1540-1542
+DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btl117">10.1093/bioinformatics/btl117</a></p>
 
 <span class='st_twitter_hcount' displayText='Tweet'></span>
 <span class='st_facebook_hcount' displayText='Facebook'></span>
