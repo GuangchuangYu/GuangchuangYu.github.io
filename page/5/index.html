@@ -81,6 +81,24 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/">更改百度云同步盘路径</a>
+      </h1>
+      <span class="post-date">May 5, 2014 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a><a class="label" href="http://guangchuangyu.github.io/categories/software">Software</a>
+      </span>
+
+
+      
+      从2007年写了第一篇文章之后，我发现管理文献真不是人干的，一直以来使用Zotero来管理文献，自从有了dropbox之后，就想把文献库放在dropbox上，一来有个云备份，不怕硬盘坏，二来嘛，实验室电脑和个人电脑可以实时同步化，无奈dropbox空间太小，而我的zotero早已超过10G，因为电子书也放在里面，只能做罢。 度娘出手还是很大方的，我现在的网盘已经有3T，包括之前在推广阶段用1元买的1T。 于是我要把zotero放在度娘的网盘里，有可能是因为我用英文版，firefox不认中文路径。 第一反应就是给个英文路径的软链接，OS X自带的Terminal和iTerm都不支持我输入中文，只能在Emacs里跑eshell来搞。事实证明软链接是不行的，会被还原回实际路径，依然是中文。 那么就用硬链接，但是系统不干，真是邪门，搜索一下发现这是OS X的问题，在stackoverflow上还有人提供了一段C代码来做硬链接，不过我编译后运行依然是失败，无法创建硬链接。 于是只能土办法了，软件的路径并不是死的，那么总得有个配置文件来定位，通过修改配置文件总应该可以的吧。于是在下面的路径下，找到了macosnetdisk.plist user_workpath /Volumes/DATA/Users/ygc/百度云同步盘 把百度云同步盘换成个英文文件夹，整个世界清静了，firefox终于找到了它的好基友zotero。 TIPS：有了度娘网盘，再也不用担心下载问题了，找个BT种子，让度娘下载，速度极快，因为通常的东西度娘的网盘上是有的，它做的不过是链接一份给你而已，越多的人保留同一份东西，度娘就越省空间。度娘同步到电脑上速度也是极快的，秒杀其它下载工具。
+      
+      
+
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/">visualization methods in ChIPseeker</a>
       </h1>
       <span class="post-date">Apr 30, 2014 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/#disqus_thread">Comments</a>
@@ -237,24 +255,6 @@
       
       支持向量机(Support Vector Machines, SVM)最初由Vladimir Vapnik于1997年提出，SVM最简单的形式就是找出一下区分界限（descision boundary），也称之为超平面(hyperplane)，使得离它最近的点（称之为support vectors）与之间隔最大。 这和logistic regression有些相似，区别在于logistic regression要求所有的点尽可能地远离中间那条线，而SVM是要求最接近中间线的点尽可能地远离中间线。也就是说SVM的主要目标是区分那些最难区分的点。 SVM对于hyperplane的定义，在形式上和logistic regression一样,logistic regression的decision boundary由$\theta^TX=0$确定,SVM则用$w^TX+b=0$表示,其中b相当于logistic regression中的$\theta_0$，从形式上看，两者并无区别，当然如前面所说，两者的目标不一样，logistic regression着眼于全局，SVM着眼于support vectors。有监督算法都有label变量y，logistic regression取值是{0,1}，而SVM为了计算距离方便，取值为{-1,1}。 那么SVM的问题就变成为，确定参数w和b，以满足： $w^T x_i + b \ge +1$ when $y_i = +1$ $w^T x_i + b \le +1$ when $ y_i = -1$ 对于上图中最简单的例子，中间线可以由Ax+By+c=0表示，图上一个$(x_0, y_0)$的点到中间线的距离为$\frac{|Ax_0+By_0+c|}{\sqrt{A^2+B^2}}$。 对于更高维的空间，点到hyperplane上的距离也是一样计算，定义为： $\frac{|w^Tx+b|}{||w||}=\frac{1}{||w||}$。 要距离最大，也就是求||w||的最小值。 那么问题就相当于在给定条件g(x): $y_i(w^Tx_i)-b \ge 1$下，求f(x): $\frac{1}{2}||w||^2$的最大值。 这是一个限定条件下的优化问题，可以通过Lagrange multiplier解决。 这里，拉格朗日公式为： $L=\frac{1}{2}||w||^2-\sum{\alpha_i[y_i(w^Tx_i+b)-1]}$ 通过对拉格朗日公式的分析，问题变为： 给定$\alpha \ge 0$ $\sum{\alpha_iy_i} = 0$ 求$\sum{\alpha_i} - \frac{1}{2}\sum{\alpha_i\alpha_jy_iy_jx_ix_j}$的最大值。 对于$\alpha$值，通常训练算法还通过C参数进行限制$C \ge \alpha \ge 0$，这个参数相当于logistic regression里的$\lambda$参数，对outlier数据点的penalty。
       <a href="http://guangchuangyu.github.io/2012/04/support-vector-machine/">Read On &rarr;</a>
-      
-
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/">Installing Hackintosh</a>
-      </h1>
-      <span class="post-date">Mar 15, 2012 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/mac-os">Mac OS</a>
-      </span>
-
-
-      
-      初中时在杂志上看到苹果的彩壳机，从此叔就开始成为了苹果的脑残粉，还在K6-2和win98那会，就在玩macintosh主题。 本科时，通过PearPC来虚拟PowerPC，硬是在ATHLON XP 1700+这个破CPU上破了OS X Jaguar，那个慢啊，是无法忍受的。 后来，有了一台powerbook，却拿它来装gentoo和netbsd。从那里候开始，基本上就只用Linux/BSD。 再后来，又有了一台macbook pro，除了出差，放在家里倒也没怎么用。囧rz&hellip; 在国内的工作环境，用linux与人格格不入。但windows搞开发又有不顺手的。各种编译环境搭建起来让人作呕，而且没有shell，用起来就是不够爽，虽然emacs自带eshell，但在windows下缺少各种命令行程序，也只能算廖胜于无。 在北京那会，只用linux，因为有需要的时候可以通过局域网运行windows程序。到了暨大，一直用win7，因为质谱相关的很多软件都只跑在winddows下，后来发现和我没啥关系，那些东西都在质谱房里搞。得益于机房里有一台机器跑CentOS，每天通过ssh，也免去了切换系统的麻烦，但是时间长了，我还是觉得诸多不便。 前两天，突发奇想，不如把办公室里的dell机器装个黑苹果。可以应付国内的办公需求，同时也是个Unix-like系统，各种爽。 装起来倒也顺利，只是网卡、显卡、声卡全不认。搞起来倒也不难，就是kext有点难找。这种文件相当于Linux的kernel module。搞驱动的时候，让我有种10年前玩redhat 7.2时的感觉。 照例，有图有真相。
-      
       
 
     </div>
