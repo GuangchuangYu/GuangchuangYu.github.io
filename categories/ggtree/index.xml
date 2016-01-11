@@ -6,8 +6,135 @@
     <description>Recent content in Ggtree on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Dec 2015 14:11:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 11 Jan 2016 19:36:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/categories/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Annotate a phylogenetic with insets</title>
+      <link>http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-with-insets/</link>
+      <pubDate>Mon, 11 Jan 2016 19:36:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-with-insets/</guid>
+      <description>
+
+&lt;p&gt;&lt;code&gt;ggtree&lt;/code&gt; implemented a function, &lt;code&gt;subview&lt;/code&gt;, that can add subplots on a
+ggplot2 object. It had successful applied to &lt;a href=&#34;http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396&#34;&gt;plot pie graphs on
+map&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(2016-01-04)
+tr &amp;lt;- rtree(30)
+tr &amp;lt;- groupClade(tr, node=45)
+p &amp;lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
+cpos &amp;lt;- get_clade_position(p, node=45)
+p1 &amp;lt;- p + geom_hilight(node=45)
+p2 &amp;lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
+with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
+ To make it more easy to use subview function for annotating taxa with
+subplots, &lt;em&gt;ggtree&lt;/em&gt; provides a function, &lt;code&gt;inset&lt;/code&gt;, for adding subplots to
+a phylogenetic tree. The input is a tree graphic object and a named list
+of ggplot graphic objects (can be any kind of charts), these objects
+should named by node numbers. To facilitate adding bar and pie charts
+(e.g. summarized stats of results from ancestral reconstruction) to
+phylogenetic tree, &lt;em&gt;ggtree&lt;/em&gt; provides &lt;code&gt;nodepie&lt;/code&gt; and &lt;code&gt;nodebar&lt;/code&gt; functions
+to create a list of pie or bar charts.&lt;/p&gt;
+
+&lt;h2 id=&#34;annotate-with-bar-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with bar charts&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
+tr &amp;lt;- rtree(15)
+p &amp;lt;- ggtree(tr)
+
+a &amp;lt;- runif(14, 0, 0.33)
+b &amp;lt;- runif(14, 0, 0.33)
+c &amp;lt;- runif(14, 0, 0.33)
+d &amp;lt;- 1 - a - b - c
+dat &amp;lt;- data.frame(a=a, b=b, c=c, d=d)
+## input data should have a column of `node` that store the node number
+dat$node &amp;lt;- 15+1:14
+
+## cols parameter indicate which columns store stats (a, b, c and d in this example)
+bars &amp;lt;- nodebar(dat, cols=1:4)
+
+inset(p, bars)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
+ The sizes of the insets can be ajusted by the paramter &lt;em&gt;width&lt;/em&gt; and
+&lt;em&gt;height&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;inset(p, bars, width=.03, height=.06)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
+ Users can set the color via the parameter &lt;em&gt;color&lt;/em&gt;. The &lt;em&gt;x&lt;/em&gt; position can
+be one of &amp;lsquo;node&amp;rsquo; or &amp;lsquo;branch&amp;rsquo; and can be adjusted by the parameter
+&lt;em&gt;hjust&lt;/em&gt; and &lt;em&gt;vjust&lt;/em&gt; for horizontal and vertical adjustment respecitvely.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bars2 &amp;lt;- nodebar(dat, cols=1:4, position=&#39;dodge&#39;,
+                 color=c(a=&#39;blue&#39;, b=&#39;red&#39;, c=&#39;green&#39;, d=&#39;cyan&#39;))
+p2 &amp;lt;- inset(p, bars2, x=&#39;branch&#39;, width=.03, vjust=-.3)
+print(p2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;annotate-with-pie-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with pie charts&lt;/h2&gt;
+
+&lt;p&gt;Similarly, users can use &lt;code&gt;nodepie&lt;/code&gt; function to generate a list of pie
+charts and place these charts to annotate corresponding nodes. Both
+&lt;code&gt;nodebar&lt;/code&gt; and &lt;code&gt;nodepie&lt;/code&gt; accepts parameter &lt;em&gt;alpha&lt;/em&gt; to allow transparency.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pies &amp;lt;- nodepie(dat, cols=1:4, alpha=.6)
+inset(p, pies)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;inset(p, pies, hjust=-.06)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;annotate-with-other-types-of-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with other types of charts&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code&gt;inset&lt;/code&gt; function accepts a list of ggplot graphic objects and these
+input objects are not restricted to pie or bar charts. They can be any
+kinds of charts and hybrid of these charts.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pies_and_bars &amp;lt;- bars2
+pies_and_bars[9:14] &amp;lt;- pies[9:14]
+inset(p, pies_and_bars)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d &amp;lt;- lapply(1:15, rnorm, n=100)
+ylim &amp;lt;- range(unlist(d))
+bx &amp;lt;- lapply(d, function(y) {
+    dd &amp;lt;- data.frame(y=y)
+    ggplot(dd, aes(x=1, y=y))+geom_boxplot() + ylim(ylim) + theme_inset()
+})
+names(bx) &amp;lt;- 1:15
+inset(p, bx, width=.03, height=.1, hjust=-.05)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-9-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After annotating with insets, users can further annotate the tree with
+another layer of insets.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p2 &amp;lt;- inset(p, bars2, x=&#39;branch&#39;, width=.03, vjust=-.4)
+p2 &amp;lt;- inset(p2, pies, x=&#39;branch&#39;, vjust=.4)
+bx2 &amp;lt;- lapply(bx, function(g) g+coord_flip())
+inset(p2, bx2, width=.2, height=.03, vjust=.04, hjust=p2$data$x[1:15]-4) + xlim(NA, 4.5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-10-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>News of ggtree</title>

@@ -6,13 +6,140 @@
     <description>Recent content on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 Jan 2016 11:24:21 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 11 Jan 2016 19:36:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Annotate a phylogenetic with insets</title>
+      <link>http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-with-insets/</link>
+      <pubDate>Mon, 11 Jan 2016 19:36:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-with-insets/</guid>
+      <description>
+
+&lt;p&gt;&lt;code&gt;ggtree&lt;/code&gt; implemented a function, &lt;code&gt;subview&lt;/code&gt;, that can add subplots on a
+ggplot2 object. It had successful applied to &lt;a href=&#34;http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396&#34;&gt;plot pie graphs on
+map&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(2016-01-04)
+tr &amp;lt;- rtree(30)
+tr &amp;lt;- groupClade(tr, node=45)
+p &amp;lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
+cpos &amp;lt;- get_clade_position(p, node=45)
+p1 &amp;lt;- p + geom_hilight(node=45)
+p2 &amp;lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
+with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
+ To make it more easy to use subview function for annotating taxa with
+subplots, &lt;em&gt;ggtree&lt;/em&gt; provides a function, &lt;code&gt;inset&lt;/code&gt;, for adding subplots to
+a phylogenetic tree. The input is a tree graphic object and a named list
+of ggplot graphic objects (can be any kind of charts), these objects
+should named by node numbers. To facilitate adding bar and pie charts
+(e.g. summarized stats of results from ancestral reconstruction) to
+phylogenetic tree, &lt;em&gt;ggtree&lt;/em&gt; provides &lt;code&gt;nodepie&lt;/code&gt; and &lt;code&gt;nodebar&lt;/code&gt; functions
+to create a list of pie or bar charts.&lt;/p&gt;
+
+&lt;h2 id=&#34;annotate-with-bar-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with bar charts&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
+tr &amp;lt;- rtree(15)
+p &amp;lt;- ggtree(tr)
+
+a &amp;lt;- runif(14, 0, 0.33)
+b &amp;lt;- runif(14, 0, 0.33)
+c &amp;lt;- runif(14, 0, 0.33)
+d &amp;lt;- 1 - a - b - c
+dat &amp;lt;- data.frame(a=a, b=b, c=c, d=d)
+## input data should have a column of `node` that store the node number
+dat$node &amp;lt;- 15+1:14
+
+## cols parameter indicate which columns store stats (a, b, c and d in this example)
+bars &amp;lt;- nodebar(dat, cols=1:4)
+
+inset(p, bars)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
+ The sizes of the insets can be ajusted by the paramter &lt;em&gt;width&lt;/em&gt; and
+&lt;em&gt;height&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;inset(p, bars, width=.03, height=.06)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
+ Users can set the color via the parameter &lt;em&gt;color&lt;/em&gt;. The &lt;em&gt;x&lt;/em&gt; position can
+be one of &amp;lsquo;node&amp;rsquo; or &amp;lsquo;branch&amp;rsquo; and can be adjusted by the parameter
+&lt;em&gt;hjust&lt;/em&gt; and &lt;em&gt;vjust&lt;/em&gt; for horizontal and vertical adjustment respecitvely.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bars2 &amp;lt;- nodebar(dat, cols=1:4, position=&#39;dodge&#39;,
+                 color=c(a=&#39;blue&#39;, b=&#39;red&#39;, c=&#39;green&#39;, d=&#39;cyan&#39;))
+p2 &amp;lt;- inset(p, bars2, x=&#39;branch&#39;, width=.03, vjust=-.3)
+print(p2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;annotate-with-pie-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with pie charts&lt;/h2&gt;
+
+&lt;p&gt;Similarly, users can use &lt;code&gt;nodepie&lt;/code&gt; function to generate a list of pie
+charts and place these charts to annotate corresponding nodes. Both
+&lt;code&gt;nodebar&lt;/code&gt; and &lt;code&gt;nodepie&lt;/code&gt; accepts parameter &lt;em&gt;alpha&lt;/em&gt; to allow transparency.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pies &amp;lt;- nodepie(dat, cols=1:4, alpha=.6)
+inset(p, pies)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;inset(p, pies, hjust=-.06)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;annotate-with-other-types-of-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with other types of charts&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code&gt;inset&lt;/code&gt; function accepts a list of ggplot graphic objects and these
+input objects are not restricted to pie or bar charts. They can be any
+kinds of charts and hybrid of these charts.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pies_and_bars &amp;lt;- bars2
+pies_and_bars[9:14] &amp;lt;- pies[9:14]
+inset(p, pies_and_bars)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d &amp;lt;- lapply(1:15, rnorm, n=100)
+ylim &amp;lt;- range(unlist(d))
+bx &amp;lt;- lapply(d, function(y) {
+    dd &amp;lt;- data.frame(y=y)
+    ggplot(dd, aes(x=1, y=y))+geom_boxplot() + ylim(ylim) + theme_inset()
+})
+names(bx) &amp;lt;- 1:15
+inset(p, bx, width=.03, height=.1, hjust=-.05)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-9-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After annotating with insets, users can further annotate the tree with
+another layer of insets.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p2 &amp;lt;- inset(p, bars2, x=&#39;branch&#39;, width=.03, vjust=-.4)
+p2 &amp;lt;- inset(p2, pies, x=&#39;branch&#39;, vjust=.4)
+bx2 &amp;lt;- lapply(bx, function(g) g+coord_flip())
+inset(p2, bx2, width=.2, height=.03, vjust=.04, hjust=p2$data$x[1:15]-4) + xlim(NA, 4.5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-10-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>douban</title>
       <link>http://guangchuangyu.github.io/douban/</link>
-      <pubDate>Mon, 11 Jan 2016 11:24:21 +0800</pubDate>
+      <pubDate>Mon, 11 Jan 2016 14:27:01 +0800</pubDate>
       
       <guid>http://guangchuangyu.github.io/douban/</guid>
       <description>
@@ -22,57 +149,57 @@
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s22786590.jpg alt=http://book.douban.com/subject/10443580/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10443580/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s22786590.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s26263898.jpg alt=http://book.douban.com/subject/20520858/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/20520858/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s26263898.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s4083149.jpg alt=http://book.douban.com/subject/1082406/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1082406/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s4083149.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s4254781.jpg alt=http://book.douban.com/subject/3564481/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/3564481/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s4254781.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s2361543.jpg alt=http://book.douban.com/subject/2044074/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2044074/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s2361543.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s24970409.jpg alt=http://book.douban.com/subject/10831542/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10831542/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s24970409.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s4536714.jpg alt=http://book.douban.com/subject/5363254/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/5363254/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s4536714.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s10490282.jpg alt=http://book.douban.com/subject/10946773/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10946773/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s10490282.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s3958384.jpg alt=http://book.douban.com/subject/4006583/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/4006583/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s3958384.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s28353287.jpg alt=http://book.douban.com/subject/17253789/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/17253789/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s28353287.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s1681741.jpg alt=http://book.douban.com/subject/1610337/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1610337/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s1681741.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s10013166.jpg alt=http://book.douban.com/subject/1504092/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1504092/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s10013166.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s27122330.jpg alt=http://book.douban.com/subject/10342384/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10342384/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s27122330.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s8818815.jpg alt=http://book.douban.com/subject/10342385/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10342385/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s8818815.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s3011092.jpg alt=http://book.douban.com/subject/2197140/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2197140/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s3011092.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s4274252.jpg alt=http://book.douban.com/subject/2696036/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2696036/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s4274252.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s28372050.jpg alt=http://book.douban.com/subject/24527091/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/24527091/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s28372050.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s3993878.jpg alt=http://book.douban.com/subject/3369793/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/3369793/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s3993878.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s8903919.jpg alt=http://book.douban.com/subject/6120501/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/6120501/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s8903919.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s3971498.jpg alt=http://book.douban.com/subject/4010125/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/4010125/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s3971498.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 
@@ -81,57 +208,57 @@
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s3605015.jpg alt=http://book.douban.com/subject/3413358/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/3413358/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s3605015.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s28019031.jpg alt=http://book.douban.com/subject/24807528/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/24807528/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s28019031.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s8978030.jpg alt=http://book.douban.com/subject/1765938/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1765938/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s8978030.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s27398143.jpg alt=http://book.douban.com/subject/25955618/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/25955618/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s27398143.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s8897784.jpg alt=http://book.douban.com/subject/1906032/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1906032/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s8897784.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s4243234.jpg alt=http://book.douban.com/subject/1499272/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1499272/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s4243234.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s8002937.jpg alt=http://book.douban.com/subject/4002425/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/4002425/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s8002937.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s25971823.jpg alt=http://book.douban.com/subject/20556741/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/20556741/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s25971823.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s7538994.jpg alt=http://book.douban.com/subject/4591254/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/4591254/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s7538994.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s6382631.jpg alt=http://book.douban.com/subject/6424904/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/6424904/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s6382631.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s7091181.jpg alt=http://book.douban.com/subject/7963217/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/7963217/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s7091181.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s6384944.jpg alt=http://book.douban.com/subject/6082808/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/6082808/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s6384944.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s4211696.jpg alt=http://book.douban.com/subject/4328199/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/4328199/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s4211696.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s9044501.jpg alt=http://book.douban.com/subject/10592974/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10592974/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s9044501.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s3259735.jpg alt=http://book.douban.com/subject/1781318/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1781318/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s3259735.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s1548491.jpg alt=http://book.douban.com/subject/1434669/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1434669/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s1548491.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s10443557.jpg alt=http://book.douban.com/subject/10484071/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10484071/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s10443557.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s22705757.jpg alt=http://book.douban.com/subject/7906768/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/7906768/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s22705757.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s27376766.jpg alt=http://book.douban.com/subject/4721428/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/4721428/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s27376766.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s7036755.jpg alt=http://book.douban.com/subject/6971116/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/6971116/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s7036755.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 
@@ -140,57 +267,57 @@
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s27158379.jpg alt=http://book.douban.com/subject/10242238/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/10242238/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s27158379.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s2678184.jpg alt=http://book.douban.com/subject/1686153/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1686153/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s2678184.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s26861889.jpg alt=http://book.douban.com/subject/24873557/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/24873557/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s26861889.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s4604100.jpg alt=http://book.douban.com/subject/4760261/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/4760261/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s4604100.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s3980210.jpg alt=http://book.douban.com/subject/2852029/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2852029/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s3980210.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s11297103.jpg alt=http://book.douban.com/subject/2874525/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2874525/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s11297103.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s4062114.jpg alt=http://book.douban.com/subject/2872596/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2872596/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s4062114.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s8945395.jpg alt=http://book.douban.com/subject/1906033/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1906033/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s8945395.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s4205295.jpg alt=http://book.douban.com/subject/2851928/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2851928/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s4205295.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s1456760.jpg alt=http://book.douban.com/subject/1439742/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1439742/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s1456760.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s1477328.jpg alt=http://book.douban.com/subject/1459599/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1459599/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s1477328.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s18641826.jpg alt=http://book.douban.com/subject/2871612/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2871612/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s18641826.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s6788468.jpg alt=http://book.douban.com/subject/2245933/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2245933/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s6788468.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s3972460.jpg alt=http://book.douban.com/subject/3998727/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/3998727/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s3972460.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s1972682.jpg alt=http://book.douban.com/subject/1535861/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1535861/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s1972682.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;table border=&#34;0&#34; cellpadding=&#34;5&#34; cellspacing=&#34;5&#34; width=&#34;100%&#34;&gt;
 &lt;tr&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s4658847.jpg alt=http://book.douban.com/subject/2872206/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2872206/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s4658847.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s4632689.jpg alt=http://book.douban.com/subject/5975393/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/5975393/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s4632689.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s27291003.jpg alt=http://book.douban.com/subject/1425950/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/1425950/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s27291003.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img3.doubanio.com/mpic/s5966390.jpg alt=http://book.douban.com/subject/3309541/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/3309541/&#34;&gt;&lt;img src=https://img3.doubanio.com/mpic/s5966390.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;td width=&#34;20%&#34;&gt;
-&lt;img src=https://img1.doubanio.com/mpic/s10304097.jpg alt=http://book.douban.com/subject/2269050/ /&gt;&lt;/td&gt;
+&lt;a href=&#34;http://book.douban.com/subject/2269050/&#34;&gt;&lt;img src=https://img1.doubanio.com/mpic/s10304097.jpg alt= &#34;&#34; /&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
 </description>
@@ -1697,58 +1824,6 @@ tagList(
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/98dbdcdbbb0e7fdb174fc1f40c611aeba2ee2bc5/Bioconductor/ggtree/comicTree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>subview</title>
-      <link>http://guangchuangyu.github.io/2015/08/subview/</link>
-      <pubDate>Mon, 31 Aug 2015 03:17:48 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/08/subview/</guid>
-      <description>&lt;p&gt;I implemented a function, &lt;em&gt;subview&lt;/em&gt;, in
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;
-that make it easy to embed a subplot in ggplot.&lt;/p&gt;
-
-&lt;p&gt;An example is shown below:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ggplot2)
-library(ggtree)
-
-dd &amp;lt;- data.frame(x=LETTERS[1:3], y=1:3)
-pie &amp;lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
-             geom_bar(stat=&amp;quot;identity&amp;quot;, width=1) + 
-                    coord_polar(theta=&amp;quot;y&amp;quot;) + theme_tree() + 
-                          xlab(NULL) + ylab(NULL) + 
-                               theme_transparent()
-
-x &amp;lt;- sample(2:9)
-y &amp;lt;- sample(2:9)
-width &amp;lt;- sample(seq(0.05, 0.15, length.out=length(x)))
-height &amp;lt;- width
-
-p &amp;lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
-print(p)
-for (i in seq_along(x)) {
-    p %&amp;lt;&amp;gt;% subview(pie, x[i], y[i], width[i], height[i])
-    print(p)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/subview.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;With this function, we can plot a specific clade and add a subplot of
-the whole topology; we can also add relative statistic graph above the
-tree or to a specific node. It&amp;rsquo;s not specific to phylogenetic tree, it
-works with all ggplot objects as demonstrated in the example.&lt;/p&gt;
-
-&lt;p&gt;PS: &lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; is now
-presented in &lt;a href=&#34;https://cran.r-project.org/web/views/Phylogenetics.html&#34;&gt;CRAN Task View:
-Phylogenetics&lt;/a&gt;.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/taskview_cran.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;AND get its first citation.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/Screenshot%202015-08-04%2021.49.27.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     

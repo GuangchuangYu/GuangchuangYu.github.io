@@ -83,6 +83,24 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/">Edit partition table in NetBSD/macppc</a>
+      </h1>
+      <span class="post-date">May 14, 2007 &middot; 4 minute read &middot; <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/bsd">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/powerbook">Powerbook</a>
+      </span>
+
+
+      
+      #disklabel wd0 可以看到原始分区如下: 7 partitions: # size offset fstype [fsize bsize cpg/sgs] a: 20971520 25167648 4.2BSD 0 0 0 # (Cyl. 24967*- 45772*) b: 1048576 46139168 swap # (Cyl. 45772*- 46813*) c: 117210240 0 unused 0 0 # (Cyl. 0 - 116279) d: 25165824 1824 HFS # (Cyl. 1*- 24967*) e: 28079456 89130784 HFS # (Cyl. 88423*- 116279) g: 41943040 47187744 4.2BSD 0 0 0 # (Cyl. 46813*- 88423*) a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbsd下的/home分区。 原本是两系统，os9.2一直都很少用，所以想删了，腾出空间来放数据。因为wd0d和wd0e不在连续的柱面上，所以无法将它们合并。 新的分区方案如下：wd0d删了，分成两个，一个15M(需要一个HFS类型的分区来放置ofwboot.xcf，因为openfirmwire不支持从netbsd分区里加载loader),剩下的作为/home分区。把原来的/home分区(wd0g)和共享数据的分区(wd0e)合并为一个分区，用于放置数据。 1.
+      <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/">Read On &rarr;</a>
+      
+
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="http://guangchuangyu.github.io/2007/05/pkgsrc-tips/">pkgsrc tips</a>
       </h1>
       <span class="post-date">May 14, 2007 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2007/05/pkgsrc-tips/#disqus_thread">Comments</a>
