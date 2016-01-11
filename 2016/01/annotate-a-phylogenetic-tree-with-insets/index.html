@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Annotate a phylogenetic tree with insets &middot; G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight/zenburn.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://guangchuangyu.github.io/touch-icon-144-precomposed.png">
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body class="theme-base-0d">
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+         <img src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=200"
+             alt="gravatar" title="G. Yu">
+	
+       
+      <h1>G. Yu</h1>
+      <p class="lead">Bioinformatician</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/">HOME</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/link/">Link</a></li>
+      
+      <li class="sidebar-nav-item"><a href="http://guangchuangyu.github.io/douban/">douban</a></li>
+      
+      <li><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/GuangchuangYu"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      <a href="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook-square fa-3x"></i></a>
+      <a href="https://twitter.com/guangchuangyu"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="http://guangchuangyu.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2016 <a href="http://guangchuangyu.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>Annotate a phylogenetic tree with insets</h1>
+    <span class="post-date">Jan 11, 2016 &middot; 3 minute read &middot; <a href="http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/#disqus_thread">Comments</a>
+    
+
+    <br/>
+    <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/ggtree">ggtree</a>
+    </span>
+<span class='st_twitter_hcount' displayText='Tweet'></span>
+<span class='st_facebook_hcount' displayText='Facebook'></span>
+<span class='st_sina_hcount' displayText='Sina'></span>
+<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+<br/>
+    
+
+<p><code>ggtree</code> implemented a function, <code>subview</code>, that can add subplots on a
+ggplot2 object. It had successful applied to <a href="http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396">plot pie graphs on
+map</a>.</p>
+
+<pre><code>set.seed(2016-01-04)
+tr &lt;- rtree(30)
+tr &lt;- groupClade(tr, node=45)
+p &lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
+cpos &lt;- get_clade_position(p, node=45)
+p1 &lt;- p + geom_hilight(node=45)
+p2 &lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
+with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt="" /><br />
+ To make it more easy to use subview function for annotating taxa with
+subplots, <em>ggtree</em> provides a function, <code>inset</code>, for adding subplots to
+a phylogenetic tree. The input is a tree graphic object and a named list
+of ggplot graphic objects (can be any kind of charts), these objects
+should named by node numbers. To facilitate adding bar and pie charts
+(e.g. summarized stats of results from ancestral reconstruction) to
+phylogenetic tree, <em>ggtree</em> provides <code>nodepie</code> and <code>nodebar</code> functions
+to create a list of pie or bar charts.</p>
+
+<h2 id="annotate-with-bar-charts:94c165ad3f1a57afa6b70fe6932c98e6">Annotate with bar charts</h2>
+
+<pre><code>set.seed(2015-12-31)
+tr &lt;- rtree(15)
+p &lt;- ggtree(tr)
+
+a &lt;- runif(14, 0, 0.33)
+b &lt;- runif(14, 0, 0.33)
+c &lt;- runif(14, 0, 0.33)
+d &lt;- 1 - a - b - c
+dat &lt;- data.frame(a=a, b=b, c=c, d=d)
+## input data should have a column of `node` that store the node number
+dat$node &lt;- 15+1:14
+
+## cols parameter indicate which columns store stats (a, b, c and d in this example)
+bars &lt;- nodebar(dat, cols=1:4)
+
+inset(p, bars)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-3-1.png" alt="" /><br />
+ The sizes of the insets can be ajusted by the paramter <em>width</em> and
+<em>height</em>.</p>
+
+<pre><code>inset(p, bars, width=.03, height=.06)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-4-1.png" alt="" /><br />
+ Users can set the color via the parameter <em>color</em>. The <em>x</em> position can
+be one of &lsquo;node&rsquo; or &lsquo;branch&rsquo; and can be adjusted by the parameter
+<em>hjust</em> and <em>vjust</em> for horizontal and vertical adjustment respecitvely.</p>
+
+<pre><code>bars2 &lt;- nodebar(dat, cols=1:4, position='dodge',
+                 color=c(a='blue', b='red', c='green', d='cyan'))
+p2 &lt;- inset(p, bars2, x='branch', width=.03, vjust=-.3)
+print(p2)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-5-1.png" alt="" /></p>
+
+<h2 id="annotate-with-pie-charts:94c165ad3f1a57afa6b70fe6932c98e6">Annotate with pie charts</h2>
+
+<p>Similarly, users can use <code>nodepie</code> function to generate a list of pie
+charts and place these charts to annotate corresponding nodes. Both
+<code>nodebar</code> and <code>nodepie</code> accepts parameter <em>alpha</em> to allow transparency.</p>
+
+<pre><code>pies &lt;- nodepie(dat, cols=1:4, alpha=.6)
+inset(p, pies)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-6-1.png" alt="" /></p>
+
+<pre><code>inset(p, pies, hjust=-.06)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-7-1.png" alt="" /></p>
+
+<h2 id="annotate-with-other-types-of-charts:94c165ad3f1a57afa6b70fe6932c98e6">Annotate with other types of charts</h2>
+
+<p>The <code>inset</code> function accepts a list of ggplot graphic objects and these
+input objects are not restricted to pie or bar charts. They can be any
+kinds of charts and hybrid of these charts.</p>
+
+<pre><code>pies_and_bars &lt;- bars2
+pies_and_bars[9:14] &lt;- pies[9:14]
+inset(p, pies_and_bars)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-8-1.png" alt="" /></p>
+
+<pre><code>d &lt;- lapply(1:15, rnorm, n=100)
+ylim &lt;- range(unlist(d))
+bx &lt;- lapply(d, function(y) {
+    dd &lt;- data.frame(y=y)
+    ggplot(dd, aes(x=1, y=y))+geom_boxplot() + ylim(ylim) + theme_inset()
+})
+names(bx) &lt;- 1:15
+inset(p, bx, width=.03, height=.1, hjust=-.05)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-9-1.png" alt="" /></p>
+
+<p>After annotating with insets, users can further annotate the tree with
+another layer of insets.</p>
+
+<pre><code>p2 &lt;- inset(p, bars2, x='branch', width=.03, vjust=-.4)
+p2 &lt;- inset(p2, pies, x='branch', vjust=.4)
+bx2 &lt;- lapply(bx, function(g) g+coord_flip())
+inset(p2, bx2, width=.2, height=.03, vjust=.04, hjust=p2$data$x[1:15]-4) + xlim(NA, 4.5)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-10-1.png" alt="" /></p>
+
+<span class='st_twitter_hcount' displayText='Tweet'></span>
+<span class='st_facebook_hcount' displayText='Facebook'></span>
+<span class='st_sina_hcount' displayText='Sina'></span>
+<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "gcyu";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "gcyu";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="http://guangchuangyu.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "d135f460-3fc5-4802-8169-bd08e4734a09", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+
+
+</body>
+</html>
+
