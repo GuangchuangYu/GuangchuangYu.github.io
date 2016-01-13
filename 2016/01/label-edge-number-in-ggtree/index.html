@@ -93,8 +93,7 @@
 <br/>
     <p>This is a question from <code>ggtree</code> user. In <code>ape</code> and <code>phytools</code>, it&rsquo;s easy to label edge using the <code>edgelabels</code> function.</p>
 
-<pre><code>library(ggtree)
-set.seed(1)
+<pre><code>set.seed(1)
 tr = rtree(30)
 library(ape)
 plot(tr, main=&quot;ape&quot;)
@@ -107,7 +106,8 @@ edgelabels()
 
 <p>To label the edge number, we can also attach the edge number to node and then label it as a node attribute.</p>
 
-<pre><code>p = ggtree(tr, ladderize=F) + geom_tiplab() + ggtitle(&quot;ggtree&quot;)
+<pre><code>library(ggtree)
+p = ggtree(tr, ladderize=F) + geom_tiplab() + ggtitle(&quot;ggtree&quot;)
 edge=data.frame(tr$edge, edge_num=1:nrow(tr$edge))
 colnames(edge)=c(&quot;parent&quot;, &quot;node&quot;, &quot;edge_num&quot;)
 p %&lt;+% edge + geom_label(aes(x=branch, label=edge_num))
