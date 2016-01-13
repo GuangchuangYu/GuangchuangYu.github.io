@@ -6,8 +6,40 @@
     <description>Recent content in R on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 Jan 2016 19:36:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 13 Jan 2016 11:00:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>label edge number in ggtree</title>
+      <link>http://guangchuangyu.github.io/2016/01/label-edge-number-in-ggtree/</link>
+      <pubDate>Wed, 13 Jan 2016 11:00:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/01/label-edge-number-in-ggtree/</guid>
+      <description>&lt;p&gt;This is a question from &lt;code&gt;ggtree&lt;/code&gt; user. In &lt;code&gt;ape&lt;/code&gt; and &lt;code&gt;phytools&lt;/code&gt;, it&amp;rsquo;s easy to label edge using the &lt;code&gt;edgelabels&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+set.seed(1)
+tr = rtree(30)
+library(ape)
+plot(tr, main=&amp;quot;ape&amp;quot;)
+edgelabels()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-edgelabel_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I don&amp;rsquo;t see any necessity to label the edge numbers, as they are meaningless. The number is labeled as the row index of &lt;code&gt;tr$edge&lt;/code&gt;, and edge can be uniquely mapped to child node. If we need to related something to edges, we can relate them to corresponding child node. Node is a central hub in tree annotation with &lt;code&gt;ggtree&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To label the edge number, we can also attach the edge number to node and then label it as a node attribute.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p = ggtree(tr, ladderize=F) + geom_tiplab() + ggtitle(&amp;quot;ggtree&amp;quot;)
+edge=data.frame(tr$edge, edge_num=1:nrow(tr$edge))
+colnames(edge)=c(&amp;quot;parent&amp;quot;, &amp;quot;node&amp;quot;, &amp;quot;edge_num&amp;quot;)
+p %&amp;lt;+% edge + geom_label(aes(x=branch, label=edge_num))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-edgelabel_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Annotate a phylogenetic tree with insets</title>
@@ -1631,65 +1663,6 @@ overlapped, we can move the images by &lt;em&gt;offset&lt;/em&gt; parameter.&lt;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>upsetplot in ChIPseeker</title>
-      <link>http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</link>
-      <pubDate>Tue, 28 Jul 2015 06:45:01 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/&#34;&gt;ChIPseeker&lt;/a&gt;
-is an R package for ChIP peak annotation, comparison and visualization.&lt;/p&gt;
-
-&lt;p&gt;We have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;several visualization
-methods&lt;/a&gt;,
-including
-&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34;&gt;vennpie&lt;/a&gt;&lt;/em&gt;
-that was designed for viewing annotation overlap as shown below:
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Not all overlap information can be demonstrated in vennpie.
-&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html&#34;&gt;Upset&lt;/a&gt;
-is an effective way to visualize sets and intersections. We import
-&lt;em&gt;upset&lt;/em&gt; function from &lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;UpSetR&lt;/a&gt; package
-and implement &lt;em&gt;upsetplot&lt;/em&gt; function, that can visualize ChIP annotation
-overlap directly with output of &lt;em&gt;annotatePeak&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ChIPseeker)
-peak_file &amp;lt;- getSampleFiles()[[4]]
-x &amp;lt;- annotatePeak(peak_file)
-upsetplot(x)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We add a new parameter, &lt;em&gt;vennpie=FALSE&lt;/em&gt;, in upsetplot. If vennpie=TRUE,
-a vennpie will be added as show below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/5191b774b2bc432599c9e707c86da9c059589798/Bioconductor/ChIPseeker/upset_vennpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Although upset contains more information, vennpie is more intuitive and
-the final figure is more compact. More information is available at the
-&lt;a href=&#34;http://www.bioconductor.org/packages/3.2/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html&#34;&gt;online
-vignette&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;reference:07e5a5bc7f123188a27a1c1e28238bcc&#34;&gt;Reference&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Alexander Lex, and Gehlenborg Nils. “Points of View: Sets and
-Intersections.” Nature Methods 11, no. 8 (August 2014): 779–779.
-doi:&lt;a href=&#34;http://doi.org/10.1038/nmeth.3033&#34;&gt;10.1038/nmeth.3033&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. “ChIPseeker: An
-R/Bioconductor Package for ChIP Peak Annotation, Comparison and
-Visualization.” Bioinformatics 31, no. 14 (July 15, 2015): 2382–83.
-doi:&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Conway Jake, and Gehlenborg Nils, &amp;ldquo;UpSetR&amp;rdquo;,
-&lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;https://github.com/cran/UpSetR&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
 </description>
     </item>
     

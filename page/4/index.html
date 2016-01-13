@@ -83,6 +83,24 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/">DAVID functional analysis with clusterProfiler</a>
+      </h1>
+      <span class="post-date">Mar 16, 2015 &middot; 2 minute read &middot; <a href="http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/#disqus_thread">Comments</a>
+      
+      <br/>
+      <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/david">DAVID</a><a class="label" href="http://guangchuangyu.github.io/categories/enrichment">Enrichment</a>
+      </span>
+
+
+      
+      clusterProfiler was used to visualize DAVID results in a paper published in BMC Genomics. Some users told me that they may want to use DAVID at some circumstances. I think it maybe a good idea to make clusterProfiler supports DAVID, so that DAVID users can use visualization functions provided by clusterProfiler. require(DOSE) require(clusterProfiler) data(geneList) gene = names(geneList)[abs(geneList) &gt; 2] david = enrichDAVID(gene = gene, idType=&quot;ENTREZ_GENE_ID&quot;, listType=&quot;Gene&quot;, annotation=&quot;KEGG_PATHWAY&quot;) &gt; summary(david) ID Description GeneRatio BgRatio pvalue hsa04110 hsa04110 Cell cycle 11/68 125/5085 4.254437e-06 hsa04114 hsa04114 Oocyte meiosis 10/68 110/5085 1.119764e-05 hsa03320 hsa03320 PPAR signaling pathway 7/68 69/5085 2.606715e-04 p.adjust qvalue geneID hsa04110 0.0003998379 NA 9133/4174/890/991/1111/891/7272/8318/4085/983/9232 hsa04114 0.0005261534 NA 9133/5241/51806/3708/991/891/4085/983/9232/6790 hsa03320 0.0081354974 NA 4312/2167/5346/5105/3158/9370/9415 Count hsa04110 11 hsa04114 10 hsa03320 7 There are only 5085 human genes annotated by KEGG, this is due to out-of-date DAVID data.
+      <a href="http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/">Read On &rarr;</a>
+      
+
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="http://guangchuangyu.github.io/2015/03/dose-an-r/bioconductor-package-for-disease-ontology-semantic-and-enrichment-analysis/">DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis</a>
       </h1>
       <span class="post-date">Mar 1, 2015 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2015/03/dose-an-r/bioconductor-package-for-disease-ontology-semantic-and-enrichment-analysis/#disqus_thread">Comments</a>
@@ -239,24 +257,6 @@
       
       Recently, there are some comments said that sometimes clusterProfiler failed in KEGG enrichment analysis. kaji331 compared cluserProfiler with GeneAnswers and found that clusterProfiler gives larger p values. The result forces me to test it. it eventually came out that he passed the input gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input require(GeneAnswers) data('humanGeneInput') y &lt;- geneAnswersBuilder(humanGeneInput, 'org.Hs.eg.db', categoryType='KEGG', testType='hyperG', pvalueT=0.1, geneExpressionProfile=humanExpr, verbose=FALSE) yy &lt;- y@enrichmentInfo require(clusterProfiler) x &lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, qvalueCutoff=0.2, minGSSize=1) xx &lt;- summary(x) id &lt;- sub(&quot;hsa&quot;, &quot;&quot;, xx$ID) idx &lt;- id %in% rownames(yy) p.clusterProfiler &lt;- xx$pvalue[idx] p.GeneAnswers &lt;- yy[id[idx],]$&quot;p value&quot; &gt; cor(p.clusterProfiler, p.GeneAnswers) [1] 0.9996165 &gt; p.clusterProfiler - p.GeneAnswers [1] 1.029789e-04 -3.588252e-05 -4.623010e-05 1.079117e-04 -1.075746e-04 [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04 7.588155e-04 [11] -3.702141e-04 2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04 [16] -5.560738e-04 -5.884079e-04 2.011138e-03 Here, I used the dataset, humanGeneInput, provided by GeneAnswers.
       <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/">Read On &rarr;</a>
-      
-
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/">enrichment map</a>
-      </h1>
-      <span class="post-date">Aug 3, 2014 &middot; 1 minute read &middot; <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/#disqus_thread">Comments</a>
-      
-      <br/>
-      <a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler">clusterProfiler</a><a class="label" href="http://guangchuangyu.github.io/categories/enrichment">Enrichment</a>
-      </span>
-
-
-      
-      In PLOB&rsquo;s QQ group, someone asked how to change the color of enrichment map in Cytoscape. I am very curious how enrichment map can helps to interpret enrichment results. It took me 2 hours to implement it using R and I am surprised that the enrichment map is better than anticipated. Now in the development version of clusterProfiler, DOSE, and ReactomePA, you can use enrichmap function to generate the enrichment map of enrichment results obtained by hypergeometric test or gene set enrichment analysis.
-      
       
 
     </div>
