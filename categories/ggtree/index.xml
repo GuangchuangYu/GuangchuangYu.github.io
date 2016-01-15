@@ -6,8 +6,51 @@
     <description>Recent content in Ggtree on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Jan 2016 11:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 15 Jan 2016 13:19:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/categories/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ggtree supports phylip tree format</title>
+      <link>http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/</link>
+      <pubDate>Fri, 15 Jan 2016 13:19:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/</guid>
+      <description>&lt;p&gt;Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;ggtree&lt;/code&gt;, we can use &lt;code&gt;read.phylip()&lt;/code&gt; function to parse the file and use &lt;code&gt;ggtree()&lt;/code&gt; to visualize the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+phyfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.phy&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+phylip &amp;lt;- read.phylip(phyfile)
+phylip
+
+## &#39;phylip&#39; S4 object that stored information of
+##   &#39;/Users/guangchuangyu/Library/R/3.2/library/ggtree/extdata/sample.phy&#39;.
+## 
+## ...@ tree: 
+## Phylogenetic tree with 15 tips and 13 internal nodes.
+## 
+## Tip labels:
+##  K, N, D, L, J, G, ...
+## 
+## Unrooted; no branch lengths.
+## 
+## with sequence alignment available (15 sequences of length 2148)
+
+ggtree(phylip) + geom_tiplab()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can view the sequence alignment with the tree via &lt;code&gt;msaplot()&lt;/code&gt;
+function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msaplot(phylip, offset=1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>label edge number in ggtree</title>
@@ -1024,121 +1067,6 @@ install ggtree:&lt;/p&gt;
 &lt;a href=&#34;http://www.bioconductor.org/packages/3.1/bioc/html/ggtree.html&#34;&gt;http://www.bioconductor.org/packages/3.1/bioc/html/ggtree.html&lt;/a&gt; and
 check out the vignette,
 &lt;a href=&#34;http://www.bioconductor.org/packages/3.1/bioc/vignettes/ggtree/inst/doc/ggtree.html&#34;&gt;http://www.bioconductor.org/packages/3.1/bioc/vignettes/ggtree/inst/doc/ggtree.html&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>viewing and annotating phylogenetic tree with ggtree</title>
-      <link>http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/</link>
-      <pubDate>Sun, 21 Dec 2014 08:00:08 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/</guid>
-      <description>&lt;p&gt;When I need to annotate nucleotide substitutions in the phylogenetic
-tree, I found that all the software are designed to display the tree but
-not annotating it. Some of them may support annotating the tree with
-specific data such as bootstrap values, but they are restricted to a few
-supported data types. It is hard/impossible to inject user specific
-data.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;
-I decided to implement my own one by extending the ggplot2 package.
-There are other R packages that implemented tree viewer using ggplot2,
-including OutbreakTools, phyloseq and ggphylo, but all of them only
-create complex tree view function for their specific needs. They are
-just classical tree viewers that only viewing the tree or annotating a
-specific data type. The good parts of ggplot2 are not available in these
-packages. They lack of flexibilities of annotating phylogenetic tree by
-diverse user inputs. I develop ggtree, which is based on grammar of
-graphics and will takes all the good parts of ggplot2.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;nwk &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.nwk&amp;quot;, package = &amp;quot;ggtree&amp;quot;)
-library(ape)
-tree &amp;lt;- read.tree(nwk)
-library(ggplot2)
-library(ggtree)
-ggplot(tree, aes(x, y)) + geom_tree() + theme_tree() + xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It extends ggplot2 to support tree objects and implements a geom_tree()
-layer to draw the tree.&lt;/p&gt;
-
-&lt;p&gt;The ggtree package provides a function, ggtree, for shortcut of
-&lt;code&gt;ggplot()+geom_tree()+theme_tree()&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;It supports several tree objects including phylo that defined in ape,
-phylo4 that defined in phylobase and jplace that defined within the
-ggtree package.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p1 &amp;lt;- ggtree(tree) + ggtitle(&amp;quot;tree of phylo object&amp;quot;)
-tr2 &amp;lt;- as(tree, &amp;quot;phylo4&amp;quot;)
-p2 &amp;lt;- ggtree(tr2) + ggtitle(&amp;quot;tree of phylo4 object&amp;quot;)
-jpf &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.jplace&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
-jp &amp;lt;- read.jplace(jpf)
-p3 &amp;lt;- ggtree(jp) + ggtitle(&amp;quot;tree of jplace object&amp;quot;)
-library(gridExtra)
-grid.arrange(p1, p2, p3, ncol=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_objects.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;With this implementation, it is possible to inject user input. But is it
-easy? The answer is yes and no. It may depends on user&amp;rsquo;s ggplot2
-experiences. To place the input data at the correct position, you should
-know how the tree was layout. It may be easy for an experienced user,
-but hard for newbie. Most of us are impatient and reluctant to learn, so
-I should create a way that is easy to follow. It&amp;rsquo;s not a good idea to
-implement unnecessary geom_XXX layer, for it violates the great idea of
-taking all the good parts of ggplot2, and it will violate the consistent
-function calls of &lt;code&gt;geom_XXX&lt;/code&gt;. Thanks to my sleep disorder, I came out
-with an operator &lt;strong&gt;&lt;code&gt;%&amp;lt;+%&lt;/code&gt;&lt;/strong&gt; for injecting input data to the tree view.
-After the injection, the data is visible to all the geom_XXX layers.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p &amp;lt;- ggtree(tree)
-
-print(dd)
-taxa    place   value
-M   NA  55.9
-A   GZ  65.6
-C   GZ  59.3
-I   CZ  78.5
-E   GZ  62.9
-D   GZ  64.1
-J   CZ  62.3
-K   CZ  79.1
-B   GZ  89.0
-L   CZ  57.1
-G   HK  66.4
-H   HK  61.6
-F   HK  59.9
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Suppose we have a tree view p, and input data dd, we can attach the data
-to the tree and add a layer of tip labels and colored by place.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p &amp;lt;- p %&amp;lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
-print(p)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_place.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Once the data is attached, it is always attached, and we can add more
-layers easily.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
-  geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/tree_place2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The package is now available via github,
-&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34;&gt;https://github.com/GuangchuangYu/ggtree&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Suggestions, comments and feature request are all welcome. Let&amp;rsquo;s make it
-an easy to use and feature-riched package for viewing and annotating
-phylogenetic trees.&lt;/p&gt;
-
-&lt;p&gt;At last, wish you a merry christmas :)
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     

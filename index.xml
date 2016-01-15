@@ -6,8 +6,51 @@
     <description>Recent content on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Jan 2016 11:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 15 Jan 2016 13:19:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ggtree supports phylip tree format</title>
+      <link>http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/</link>
+      <pubDate>Fri, 15 Jan 2016 13:19:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/</guid>
+      <description>&lt;p&gt;Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;ggtree&lt;/code&gt;, we can use &lt;code&gt;read.phylip()&lt;/code&gt; function to parse the file and use &lt;code&gt;ggtree()&lt;/code&gt; to visualize the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+phyfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.phy&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+phylip &amp;lt;- read.phylip(phyfile)
+phylip
+
+## &#39;phylip&#39; S4 object that stored information of
+##   &#39;/Users/guangchuangyu/Library/R/3.2/library/ggtree/extdata/sample.phy&#39;.
+## 
+## ...@ tree: 
+## Phylogenetic tree with 15 tips and 13 internal nodes.
+## 
+## Tip labels:
+##  K, N, D, L, J, G, ...
+## 
+## Unrooted; no branch lengths.
+## 
+## with sequence alignment available (15 sequences of length 2148)
+
+ggtree(phylip) + geom_tiplab()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can view the sequence alignment with the tree via &lt;code&gt;msaplot()&lt;/code&gt;
+function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msaplot(phylip, offset=1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>label edge number in ggtree</title>
@@ -616,7 +659,7 @@ head(summary(ego), n=3)
 ## GO:0005876    11
 ## GO:0000793    17
 
-head(summary(ego), n=3)
+head(summary(ego2), n=3)
 
 ##                    ID          Description GeneRatio   BgRatio
 ## GO:0005819 GO:0005819              spindle    24/197 222/11632
@@ -670,11 +713,7 @@ post&lt;/a&gt;.&lt;/p&gt;
 ## Build GO DAG topology .......... ( 335 GO terms and 667 relations. )
 ## 
 ## Annotating nodes ............... ( 11632 genes annotated to the GO terms. )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;## $dag
+## $dag
 ## A graphNEL graph with directed edges
 ## Number of Nodes = 29 
 ## Number of Edges = 50 
@@ -682,6 +721,8 @@ post&lt;/a&gt;.&lt;/p&gt;
 ## $complete.dag
 ## [1] &amp;quot;A graph with 29 nodes.&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;gene-set-enrichment-analysis:bdc631894cab1e81ad84e5406d79b479&#34;&gt;Gene Set Enrichment Analysis&lt;/h2&gt;
 
@@ -1768,48 +1809,6 @@ peak annotation, comparison and
 visualization&lt;/a&gt;.
 Bioinformatics. 2015, 31(14):2382-2383.
 PMID:&lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pubmed/25765347&#34;&gt;25765347&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>subsetting data in ggtree</title>
-      <link>http://guangchuangyu.github.io/2015/09/subsetting-data-in-ggtree/</link>
-      <pubDate>Thu, 24 Sep 2015 01:20:21 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/09/subsetting-data-in-ggtree/</guid>
-      <description>&lt;p&gt;Subsetting is commonly used in ggtree as we would like to for example
-separating internal nodes from tips. We may also want to display
-annotation to specific node(s)/tip(s).&lt;/p&gt;
-
-&lt;p&gt;Some software may stored clade information (e.g. bootstrap value) as
-internal node labels. Indeed we want to manipulate such information and
-taxa labels separately.&lt;/p&gt;
-
-&lt;p&gt;In current ggplot2 (version=1.0.1, access date:2015-09-23), it support
-&lt;em&gt;subset&lt;/em&gt;. For instance:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(ggplot2)
-library(ggtree)
-tree=read.tree(text=&amp;quot;((A:2,B:2)95:2,(C:2,D:2)100:2);&amp;quot;)
-ggtree(tree) + geom_text(aes(label=label), subset=.(!isTip), hjust=-.2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;But this feature was removed in github version of ggplot2 and will not
-be available in next release.&lt;/p&gt;
-
-&lt;p&gt;In github version of ggtree, we implemented geom_text2, geom_point2,
-and geom_segment2, that works exactly like geom_text, geom_point and
-geom_segment respectively with &lt;em&gt;subset&lt;/em&gt; supported. The syntax is
-slightly different.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;ggtree(tree) + geom_text2(aes(label=label, subset=!isTip), hjust=-.2) +
-        geom_point2(aes(subset=!isTip), color=&amp;quot;red&amp;quot;, size=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/subsetting.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Note: The example was from the discussion of &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues/13&#34;&gt;github
-issue&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

@@ -6,8 +6,51 @@
     <description>Recent content in R on G. Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Jan 2016 11:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 15 Jan 2016 13:19:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ggtree supports phylip tree format</title>
+      <link>http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/</link>
+      <pubDate>Fri, 15 Jan 2016 13:19:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/</guid>
+      <description>&lt;p&gt;Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;ggtree&lt;/code&gt;, we can use &lt;code&gt;read.phylip()&lt;/code&gt; function to parse the file and use &lt;code&gt;ggtree()&lt;/code&gt; to visualize the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+phyfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.phy&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+phylip &amp;lt;- read.phylip(phyfile)
+phylip
+
+## &#39;phylip&#39; S4 object that stored information of
+##   &#39;/Users/guangchuangyu/Library/R/3.2/library/ggtree/extdata/sample.phy&#39;.
+## 
+## ...@ tree: 
+## Phylogenetic tree with 15 tips and 13 internal nodes.
+## 
+## Tip labels:
+##  K, N, D, L, J, G, ...
+## 
+## Unrooted; no branch lengths.
+## 
+## with sequence alignment available (15 sequences of length 2148)
+
+ggtree(phylip) + geom_tiplab()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can view the sequence alignment with the tree via &lt;code&gt;msaplot()&lt;/code&gt;
+function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msaplot(phylip, offset=1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>label edge number in ggtree</title>
@@ -429,7 +472,7 @@ head(summary(ego), n=3)
 ## GO:0005876    11
 ## GO:0000793    17
 
-head(summary(ego), n=3)
+head(summary(ego2), n=3)
 
 ##                    ID          Description GeneRatio   BgRatio
 ## GO:0005819 GO:0005819              spindle    24/197 222/11632
@@ -483,11 +526,7 @@ post&lt;/a&gt;.&lt;/p&gt;
 ## Build GO DAG topology .......... ( 335 GO terms and 667 relations. )
 ## 
 ## Annotating nodes ............... ( 11632 genes annotated to the GO terms. )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;## $dag
+## $dag
 ## A graphNEL graph with directed edges
 ## Number of Nodes = 29 
 ## Number of Edges = 50 
@@ -495,6 +534,8 @@ post&lt;/a&gt;.&lt;/p&gt;
 ## $complete.dag
 ## [1] &amp;quot;A graph with 29 nodes.&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-7-4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;gene-set-enrichment-analysis:bdc631894cab1e81ad84e5406d79b479&#34;&gt;Gene Set Enrichment Analysis&lt;/h2&gt;
 
@@ -1579,90 +1620,6 @@ only HOMER consider this issue. After I figure this out, I have updated
 &lt;p&gt;Please bare in mind that chromStart in
 &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt; has +1bp
 shift compare to the number recorded in BED file.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ggtree annotate phylogenetic tree with local images</title>
-      <link>http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/</link>
-      <pubDate>Sat, 01 Aug 2015 12:52:34 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/Screenshot%202015-08-01%2020.53.50.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;,
-we provide a function &lt;em&gt;annotation_image&lt;/em&gt; for annotating phylogenetic
-tree with images.&lt;/p&gt;
-
-&lt;p&gt;To demonstrate the usage, I created a tree view from a random tree as
-shown below:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;set.seed(2015-08-01)
-p &amp;lt;- ggtree(rtree(10)) + xlim(0, 5)+ ylim(0, 11)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We need a &lt;em&gt;data.frame&lt;/em&gt; that contains information of taxa labels and
-image paths. Here I created such a &lt;em&gt;data.frame&lt;/em&gt; containing image files
-downloaded from phylopic.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; img_info
-  V1                                           V2
-1 t1 25f165fa-f279-4f7c-9869-c55be251ffb8.512.png
-2 t2 5d7ab302-960b-4db7-9dfd-215175a55906.512.png
-3 t3 6fbe723c-3a6b-4d06-8680-bb2a52113df4.512.png
-4 t4 d83c02ca-76ed-436b-83ae-7f98d7297be9.512.png
-5 t5 ee764929-c865-44f6-b5db-b4e7d5693d1a.512.png
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Annotating tree with images is simple in
-&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; by using
-&lt;em&gt;annotation_image&lt;/em&gt; function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;By default, all the images will align to the right hand side. We can use
-&lt;em&gt;align=FALSE&lt;/em&gt;, to disable it.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info, align=FALSE)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We can change the type and size of lines, as demonstrated below:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info, linetype=&amp;quot;dashed&amp;quot;, linesize=0.2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The width of the images were controlled by width parameter, and the
-height will automatically determined by image dimension.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;annotation_image(p, img_info, width = .2, linetype=&amp;quot;dashed&amp;quot;, linesize=0.2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In the following example, we add tip labels to the tree.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p &amp;lt;- p+geom_tiplab(align=TRUE, linetype=&amp;quot;dashed&amp;quot;, linesize=.2)
-print(p)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we also want to add the image and align them, we don&amp;rsquo;t want to show
-the line added by &lt;em&gt;annotation_image&lt;/em&gt; function. This can be achieved by
-setting &lt;em&gt;linetype=NULL&lt;/em&gt;. By default the images and tip labels will be
-overlapped, we can move the images by &lt;em&gt;offset&lt;/em&gt; parameter.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p %&amp;gt;% annotation_image(img_info, width=.2, linetype=NULL, offset=.3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/annotation_image/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
