@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <title>G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-octopress.css">
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  
+
+  
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+  
+
+  <link href="http://guangchuangyu.github.io/index.xml" rel="alternate" type="application/rss+xml" title="G. Yu" />
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <meta name="author" content="Guangchuang Yu">
+
+  
+  <meta name="generator" content="Hugo 0.15" />
+
+  
+  
+
+</head>
+<body class="theme-base-0d">
+
+
+<header role="banner"><hgroup>
+  
+  <h1><a href="http://guangchuangyu.github.io/">G. Yu</a></h1>
+    <h2>Bioinformatician</h2>
+</hgroup></header>
+
+
+<nav role="navigation">
+
+
+<ul class="main-navigation">
+  
+  
+    
+      <li><a href="http://guangchuangyu.github.io/resume" target="_blank" title="Resume">Resume</a></li>
+    
+  
+    
+      <li><a href="http://guangchuangyu.github.io/link/" target="_blank" title="Link">Link</a></li>
+    
+  
+    
+      <li><a href="http://guangchuangyu.github.io/douban/" target="_blank" title="douban">douban</a></li>
+    
+  
+</ul>
+
+
+<ul class="subscription">
+  <a href="http://guangchuangyu.github.io/index.xml" target="_blank" type="application/rss+xml" title="RSS"><i class="fa fa-rss-square fa-lg"></i></a>
+
+  
+  
+
+</ul>
+
+
+</nav>
+
+
+
+<div id="main">
+ <div id="content">
+  <div class="blog-index">
+    
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2012/04/support-vector-machine/">Support Vector Machine</a>
+        </h1>
+        <p class="meta">Apr 12, 2012 - 1 minute read -  <a href="http://guangchuangyu.github.io/2012/04/support-vector-machine/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/machine-learning/">Machine Learning</a>
+        </p>
+
+      </header>
+
+        
+          <p>支持向量机(Support Vector Machines, SVM)最初由Vladimir Vapnik于1997年提出，SVM最简单的形式就是找出一下区分界限（descision boundary），也称之为超平面(hyperplane)，使得离它最近的点（称之为support vectors）与之间隔最大。 这和logistic regression有些相似，区别在于logistic regression要求所有的点尽可能地远离中间那条线，而SVM是要求最接近中间线的点尽可能地远离中间线。也就是说SVM的主要目标是区分那些最难区分的点。 SVM对于hyperplane的定义，在形式上和logistic regression一样,logistic regression的decision boundary由$\theta^TX=0$确定,SVM则用$w^TX+b=0$表示,其中b相当于logistic regression中的$\theta_0$，从形式上看，两者并无区别，当然如前面所说，两者的目标不一样，logistic regression着眼于全局，SVM着眼于support vectors。有监督算法都有label变量y，logistic regression取值是{0,1}，而SVM为了计算距离方便，取值为{-1,1}。 那么SVM的问题就变成为，确定参数w和b，以满足： $w^T x_i + b \ge +1$ when $y_i = +1$ $w^T x_i + b \le +1$ when $ y_i = -1$ 对于上图中最简单的例子，中间线可以由Ax+By+c=0表示，图上一个$(x_0, y_0)$的点到中间线的距离为$\frac{|Ax_0+By_0+c|}{\sqrt{A^2+B^2}}$。 对于更高维的空间，点到hyperplane上的距离也是一样计算，定义为： $\frac{|w^Tx+b|}{||w||}=\frac{1}{||w||}$。 要距离最大，也就是求||w||的最小值。 那么问题就相当于在给定条件g(x): $y_i(w^Tx_i)-b \ge 1$下，求f(x): $\frac{1}{2}||w||^2$的最大值。 这是一个限定条件下的优化问题，可以通过Lagrange multiplier解决。 这里，拉格朗日公式为： $L=\frac{1}{2}||w||^2-\sum{\alpha_i[y_i(w^Tx_i+b)-1]}$ 通过对拉格朗日公式的分析，问题变为： 给定$\alpha \ge 0$ $\sum{\alpha_iy_i} = 0$ 求$\sum{\alpha_i} - \frac{1}{2}\sum{\alpha_i\alpha_jy_iy_jx_ix_j}$的最大值。 对于$\alpha$值，通常训练算法还通过C参数进行限制$C \ge \alpha \ge 0$，这个参数相当于logistic regression里的$\lambda$参数，对outlier数据点的penalty。</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2012/04/support-vector-machine/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/">Installing Hackintosh</a>
+        </h1>
+        <p class="meta">Mar 15, 2012 - 1 minute read -  <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a>
+        </p>
+
+      </header>
+
+        
+          <p>初中时在杂志上看到苹果的彩壳机，从此叔就开始成为了苹果的脑残粉，还在K6-2和win98那会，就在玩macintosh主题。 本科时，通过PearPC来虚拟PowerPC，硬是在ATHLON XP 1700+这个破CPU上破了OS X Jaguar，那个慢啊，是无法忍受的。 后来，有了一台powerbook，却拿它来装gentoo和netbsd。从那里候开始，基本上就只用Linux/BSD。 再后来，又有了一台macbook pro，除了出差，放在家里倒也没怎么用。囧rz&hellip; 在国内的工作环境，用linux与人格格不入。但windows搞开发又有不顺手的。各种编译环境搭建起来让人作呕，而且没有shell，用起来就是不够爽，虽然emacs自带eshell，但在windows下缺少各种命令行程序，也只能算廖胜于无。 在北京那会，只用linux，因为有需要的时候可以通过局域网运行windows程序。到了暨大，一直用win7，因为质谱相关的很多软件都只跑在winddows下，后来发现和我没啥关系，那些东西都在质谱房里搞。得益于机房里有一台机器跑CentOS，每天通过ssh，也免去了切换系统的麻烦，但是时间长了，我还是觉得诸多不便。 前两天，突发奇想，不如把办公室里的dell机器装个黑苹果。可以应付国内的办公需求，同时也是个Unix-like系统，各种爽。 装起来倒也顺利，只是网卡、显卡、声卡全不认。搞起来倒也不难，就是kext有点难找。这种文件相当于Linux的kernel module。搞驱动的时候，让我有种10年前玩redhat 7.2时的感觉。 照例，有图有真相。</p>
+
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/">draw chinese character Jiong using ggplot2</a>
+        </h1>
+        <p class="meta">Feb 17, 2012 - 1 minute read -  <a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2/">ggplot2</a>
+        </p>
+
+      </header>
+
+        
+          <p>The Chinese character Jiong (囧) is now widely used for expressing ideas or feelings such as annoyance, shock, embarrassment, awkwardness, scorn. The function plot of y=1/(x^2-1) looks very similar of this symbol. I use ggplot2 to draw the symbol of Jiong. It looks like: The function line is very easy to draw, but the options to hone this graph need some tricky tips. The source code for generating this plot can be found in github.</p>
+
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2012/02/violin-plot/">violin plot</a>
+        </h1>
+        <p class="meta">Feb 7, 2012 - 1 minute read -  <a href="http://guangchuangyu.github.io/2012/02/violin-plot/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2/">ggplot2</a>
+        </p>
+
+      </header>
+
+        
+          <p>ggplot2 0.9.0版本将在3月1号发布，改动较大，最近bioc mailing list也有诸多讨论，因为它导致了某些包编译出错（估计是NAMESPACE引起的）。 按照hadley的说法是这是为了把他个人的项目变成一个社区项目。 大多数的改动对用户来说是invisible的，用roxygen2去注释函数，核心代码使用S3重写，分离出一些特性（scales包）等。 最明显的是现在画图速度变快了，不过我觉得最让人兴奋的是guide_legend()和guide_colorbar()两个函数，可以修改legend. 画图的话，加了四个函数geom_map(), geom_raster(), geom_dotplot()和geom_violin(). violin plot结合了box plot和kernel density estimate，有了它，box plot基本可以扔了。</p>
+
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</a>
+        </h1>
+        <p class="meta">Aug 16, 2011 - 2 minute read -  <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2/">ggplot2</a>
+        </p>
+
+      </header>
+
+        
+          <p>In order to provide an option to compare graphs produced by basic internal plot function and ggplot2, I have recreated the figures in the book, 25 Recipes for Getting Started with R, with ggplot2. The code used to create the images is in separate paragraphs, allowing easy comparison. 1.16 Creating a Scatter Plot plot(cars) ggplot(cars,aes(speed,dist))+geom_point() 1.17 Creating a Bar Chart heights &lt;- tapply(airquality$Temp, airquality$Month, mean) par(mfrow=c(1,2)) barplot(heights) barplot(heights, main=&quot;Mean Temp. by Month&quot;, names.arg=c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;), ylab=&quot;Temp (deg.</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">the batman equation</a>
+        </h1>
+        <p class="meta">Aug 13, 2011 - 2 minute read -  <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/mathematics/">Mathematics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/ggplot2/">ggplot2</a>
+        </p>
+
+      </header>
+
+        
+          <p>HardOCP has an image with an equation which apparently draws the Batman logo. $((\frac{x}{7})^2 \cdot \sqrt{\frac{||x|-3|}{(|x|-3)}}+ (\frac{y}{3})^2 \cdot \sqrt{\frac{|y+3 \cdot \frac{\sqrt{33}}{7}|}{y+3 \cdot \frac{\sqrt{33}}{7}}}-1) \cdot (|\frac{x}{2}|-((3 \cdot \frac{\sqrt{33}-7)}{112}) \cdot x^2-3+\sqrt{1-(||x|-2|-1)^2}-y) \cdot (9 \cdot \sqrt{\frac{|(|x|-1) \cdot (|x|-0.75)|}{((1-|x|)*(|x|-0.75))}}-8 \cdot |x|-y) \cdot (3 \cdot |x|+0.75 \cdot \sqrt{\frac{|(|x|-0.75) \cdot (|x|-0.5)|}{((0.75-|x|) \cdot (|x|-0.5))}}-y) \cdot (2.25 \cdot \sqrt{\frac{|(x-0.5) \cdot (x+0.5)|}{((0.5-x) \cdot (0.5+x))}}-y) \cdot (\frac{6 \cdot \sqrt{10}}{7}+(1.5-0.5 \cdot |x|) \cdot \sqrt{\frac{||x|-1|}{|x|-1}}-(\frac{6 \cdot \sqrt{10}}{14}) \cdot \sqrt{4-(|x|-1)^2}-y) =0$ This function is very delightful for drawing such a graph, but write it down in latex is very tedious.</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    
+    
+
+
+
+
+
+
+<div class="pagination">
+
+    
+        
+        
+        
+        <a href="/" aria-label="First" class="label-pagination"><i class="fa fa-angle-double-left fa-lg"></i></a>
+    
+
+    
+    
+        <a href="/page/9/" aria-label="Previous" class="label-pagination"><i class="fa fa-angle-left fa-lg"></i></a>
+    
+
+    
+        <a href="/" class="label-pagination">1</a>
+    
+        <a href="/page/2/" class="label-pagination">2</a>
+    
+        <a href="/page/3/" class="label-pagination">3</a>
+    
+        <a href="/page/4/" class="label-pagination">4</a>
+    
+        <a href="/page/5/" class="label-pagination">5</a>
+    
+        <a href="/page/6/" class="label-pagination">6</a>
+    
+        <a href="/page/7/" class="label-pagination">7</a>
+    
+        <a href="/page/8/" class="label-pagination">8</a>
+    
+        <a href="/page/9/" class="label-pagination">9</a>
+    
+        <a href="/page/10/" class="label-pagination">10</a>
+    
+        <a href="/page/11/" class="label-pagination">11</a>
+    
+        <a href="/page/12/" class="label-pagination">12</a>
+    
+        <a href="/page/13/" class="label-pagination">13</a>
+    
+        <a href="/page/14/" class="label-pagination">14</a>
+    
+
+    
+    
+        <a href="/page/11/" aria-label="Next" class="label-pagination"><i class="fa fa-angle-right fa-lg"></i></a>
+     
+    
+    
+    
+        <a href="/page/14/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+    
+
+</div>
+
+
+   
+
+  </div>
+
+  
+
+
+<aside class="sidebar thirds">
+  <section class="first odd">
+    <h1>Header in sidebar</h1>
+    <p>This is the rest of the sidebar - here's a link to <a target="_blank" href="http://google.com" title="Google">Google</a>.</p>
+    <p>If links are set in config file, there will be links to keybase/github/twitter/linkedin etc.</p>
+
+    
+  </section>
+
+  
+
+
+
+  <ul class="sidebar-nav">
+    <li class="sidebar-nav-item">
+    <a target="_blank" href="https://github.com/GuangchuangYu" title="https://github.com/GuangchuangYu"><i class="fa fa-github fa-3x"></i></a>
+    
+    
+    
+    
+    <a target="_blank" href="https://www.facebook.com/guangchuang.yu" title="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook fa-3x"></i></a>
+    <a target="_blank" href="https://twitter.com/guangchuangyu" title="https://twitter.com/guangchuangyu"><i class="fa fa-twitter fa-3x"></i></a>
+    
+     
+
+    
+    
+    </li>
+  </ul>
+
+  
+  <section class="even">
+    <h1>Recent Posts</h1>
+
+    
+    <ul id="recent_posts">
+      
+      
+        
+      
+      
+      <li class="post">
+        <a href="/2016/02/reactomepa-an-r/bioconductor-package-for-reactome-pathway-analysis-and-visualization/">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a>
+      </li>
+      
+      <li class="post">
+        <a href="/2016/01/ggtree-supports-phylip-tree-format/">ggtree supports phylip tree format</a>
+      </li>
+      
+      <li class="post">
+        <a href="/2016/01/label-edge-number-in-ggtree/">label edge number in ggtree</a>
+      </li>
+      
+      <li class="post">
+        <a href="/2016/01/annotate-a-phylogenetic-tree-with-insets/">Annotate a phylogenetic tree with insets</a>
+      </li>
+      
+      <li class="post">
+        <a href="/douban/">douban</a>
+      </li>
+      
+    </ul>
+  </section>
+
+</aside>
+    
+ </div>
+</div>
+
+
+
+
+<footer role="contentinfo">
+  <p>Copyright &copy; 2016 Guangchuang Yu - <a href="http://guangchuangyu.github.io/license/">License</a> - 
+  <span class="credit">Powered by <a target="_blank" href="https://gohugo.io">Hugo</a> and <a target="_blank" href="https://github.com/parsiya/hugo-octopress/">Hugo-Octopress</a> theme.
+</p>
+
+</footer>
+
+
+</body>
+</html>   

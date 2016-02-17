@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <title>G. Yu</title>
+
+  
+  <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-octopress.css">
+
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  
+
+  
+  <link href="http://guangchuangyu.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+  
+
+  <link href="http://guangchuangyu.github.io/index.xml" rel="alternate" type="application/rss+xml" title="G. Yu" />
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <meta name="author" content="Guangchuang Yu">
+
+  
+  <meta name="generator" content="Hugo 0.15" />
+
+  
+  
+
+</head>
+<body class="theme-base-0d">
+
+
+<header role="banner"><hgroup>
+  
+  <h1><a href="http://guangchuangyu.github.io/">G. Yu</a></h1>
+    <h2>Bioinformatician</h2>
+</hgroup></header>
+
+
+<nav role="navigation">
+
+
+<ul class="main-navigation">
+  
+  
+    
+      <li><a href="http://guangchuangyu.github.io/resume" target="_blank" title="Resume">Resume</a></li>
+    
+  
+    
+      <li><a href="http://guangchuangyu.github.io/link/" target="_blank" title="Link">Link</a></li>
+    
+  
+    
+      <li><a href="http://guangchuangyu.github.io/douban/" target="_blank" title="douban">douban</a></li>
+    
+  
+</ul>
+
+
+<ul class="subscription">
+  <a href="http://guangchuangyu.github.io/index.xml" target="_blank" type="application/rss+xml" title="RSS"><i class="fa fa-rss-square fa-lg"></i></a>
+
+  
+  
+
+</ul>
+
+
+</nav>
+
+
+
+<div id="main">
+ <div id="content">
+  <div class="blog-index">
+    
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">我制作的pkgsrc</a>
+        </h1>
+        <p class="meta">May 16, 2007 - 1 minute read -  <a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/bsd/">BSD</a>
+        </p>
+
+      </header>
+
+        
+          <p>xlyrics: unix下的歌词秀软件 点此下载 EVA: KDE下的QQ客户端 点此下载 #cd /usr/pkgsrc/wip-cn #tar xjvf eva.tar.bz2 #cd eva #make install clean 就可以啦。在我的机子（NetBSD 3.0.1 macppc）上测试通过。。 更新到eva-20070327 参考资料：http://www.netbsd.org/docs/pkgsrc/</p>
+
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/">Edit partition table in NetBSD/macppc</a>
+        </h1>
+        <p class="meta">May 14, 2007 - 4 minute read -  <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/bsd/">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/powerbook/">Powerbook</a>
+        </p>
+
+      </header>
+
+        
+          <p>#disklabel wd0 可以看到原始分区如下: 7 partitions: # size offset fstype [fsize bsize cpg/sgs] a: 20971520 25167648 4.2BSD 0 0 0 # (Cyl. 24967*- 45772*) b: 1048576 46139168 swap # (Cyl. 45772*- 46813*) c: 117210240 0 unused 0 0 # (Cyl. 0 - 116279) d: 25165824 1824 HFS # (Cyl. 1*- 24967*) e: 28079456 89130784 HFS # (Cyl. 88423*- 116279) g: 41943040 47187744 4.2BSD 0 0 0 # (Cyl. 46813*- 88423*) a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbsd下的/home分区。 原本是两系统，os9.2一直都很少用，所以想删了，腾出空间来放数据。因为wd0d和wd0e不在连续的柱面上，所以无法将它们合并。 新的分区方案如下：wd0d删了，分成两个，一个15M(需要一个HFS类型的分区来放置ofwboot.xcf，因为openfirmwire不支持从netbsd分区里加载loader),剩下的作为/home分区。把原来的/home分区(wd0g)和共享数据的分区(wd0e)合并为一个分区，用于放置数据。 1.</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2007/05/pkgsrc-tips/">pkgsrc tips</a>
+        </h1>
+        <p class="meta">May 14, 2007 - 1 minute read -  <a href="http://guangchuangyu.github.io/2007/05/pkgsrc-tips/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/bsd/">BSD</a>
+        </p>
+
+      </header>
+
+        
+          <p>1.cpuflags devel/cpuflags:Determine compiler flags to best target current cpu #cd /usr/pkgsrc/devel/cpuflags #make install 然后在/etc/mk.conf中加入: .sinclude &quot;/usr/pkg/share/mk/cpuflags.mk&quot; .sinclude &quot;/usr/pkg/share/mk/optimize_gcc.mk&quot; 这样make时便能够根据cpuflags进行优化编译了。 2.pkgclean pkgtools/pkgclean:Quickly clean up all work directories in pkgsrc #cd /usr/pkgsrc/pkgtools/pkgclean #make install 运行pkgclean快速清除所有work 3.FETCH_CMD 在/etc/mk.conf中加入： FETCH_CMD=/usr/pkg/bin/wget -cT 20 使用wget来下载源码包。 -c 为断点续传，T 20为20秒没响应则断开重连。 4.pkg_tarup pkgtools/pkg_tarup:Generates binary package(s) from installed pkg(s) #cd /usr/pkgsrc/pkgtools/pkg_tarup #make install 运行pkg_tarup pkg_name将生成pkg_name的相应二进制包。 运行pkg_tarup_all将把所有通过pkgsrc安装的软件都生成二进制包。 待续&hellip;</p>
+
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2007/05/scilab%E4%B8%89%E7%BB%B4%E5%B9%B3%E9%9D%A2%E7%BB%98%E5%9B%BE/">scilab三维平面绘图</a>
+        </h1>
+        <p class="meta">May 3, 2007 - 1 minute read -  <a href="http://guangchuangyu.github.io/2007/05/scilab%E4%B8%89%E7%BB%B4%E5%B9%B3%E9%9D%A2%E7%BB%98%E5%9B%BE/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/software/">Software</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a>
+        </p>
+
+      </header>
+
+        
+          <p>三维绘图可以分为两大类型：矩阵型和曲面型。 矩阵型 通常是声明一个矩阵，以矩阵的长宽为x,y范围，以矩阵里面的数值为高z， 使用plot3d(t1,t2,Z,alpha=a,theta=b) t1:y轴方向的范围 t2:x轴方向的范围 Z:矩阵 alpha theta参数用于指定角度，让图绘出来以某个特定的角度呈现出来。(optional) -&gt;clear -&gt;A=[1 2 5 4 3;0 3 2 8 6;2 4 6 7 5;2 3 4 3 1]; -&gt;t1=1:4; -&gt;t2=1:5; //plot3d1与plot3d语法类似，能够嵌入多种颜色 -&gt;plot3d(t1,t2,A,alpha=45,theta=45); mesh不需要边界声明， -&gt;mesh(A); 曲面型 则是先声明一个连续函数，再选取x,y范围来绘图。 fplot3d()指令用来绘制连续函数。 用fplot3d之前，用deff或function声明函数z,然后再声明函数范围x,y. -&gt;deff('z=f(x,y)','z=x\*y'); -&gt;x=-10:8; -&gt;y=-6:12; -&gt;fplot3d(x,y,f); 柱状图 -&gt;A=[1 3 5 7;2 6 10 14]; //声明一个矩阵 -&gt;hist3d(A); 空间立体曲线图 param3d绘制的是线，而非面。 param3d(xf,yf,zf); xf:x方向的函数 yf:y方向的函数 zf:z方向的函数 -&gt;t=linspace(-%pi,%pi); -&gt;param3d(sin(t),cos(t),t);</p>
+
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/">qvwm窗口管理器的windows2000主题</a>
+        </h1>
+        <p class="meta">Jun 24, 2006 - 1 minute read -  <a href="http://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/bsd/">BSD</a>
+        </p>
+
+      </header>
+
+        
+          <p>qvwm is a window manager for the X Window system which provides a user experience very close to Windows 95&frasl;98. It is small and extremely fast. 可从其主页上看到它的介绍及下载源码。 这是我做的一个windows2000的主题。。 点击下载</p>
+
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/">安装os9和netbsd双系统</a>
+        </h1>
+        <p class="meta">Jun 14, 2006 - 1 minute read -  <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/bsd/">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a><a class="label" href="http://guangchuangyu.github.io/categories/powerbook/">Powerbook</a>
+        </p>
+
+      </header>
+
+        
+          <p>1 分区 用MacOS X 10.2 的光盘启动，运行Disk Utility，选择“Install Mac OS 9 Disk Drivers”不然分区将不能在OS9中使用，我一共分了5个分区，12G,10G,512M,20G,13.4G。其中12Ｇ装OS9系统，10Ｇ装netbsd系统，512Ｍ为swap分区，20Ｇ为home 分区，最后一个为fat32格式，为两个系统所共享。 2 安装os9 开机放入os9安装光盘，按住Ｃ键，由光盘启动进入os9，在光盘根目录下点安装系统。指定第一个分区，选择安装的软件，十来分钟，便装完了。重新启动，将netbsd的启动程序ofwboot.xcf放在os9的根目录下。 3 安装netbsd 开机按住command+option+o+f进入open firmware。open firmware启动命令的语法是 boot boot-device [boot-file] [-as] 加-a会问你下个载入的文件，比如引导程序问你内核在那或内核会问你根分区在那。键入命令 boot cd:,\\ofwboot.xcf netbsd.macppc 引导netbsd安装光盘， 进入sysinst主菜单。 .***********************************************. * NetBSD-3.0 Install System * * * *&gt;a: Install NetBSD to hard disk * * b: Upgrade NetBSD on a hard disk * * c: Re-install sets or install additional sets * * d: Reboot the computer * * e: Utility menu * * x: Exit Install System * .***********************************************.</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    
+    
+
+
+
+
+
+
+<div class="pagination">
+
+    
+        
+        
+        
+        <a href="/" aria-label="First" class="label-pagination"><i class="fa fa-angle-double-left fa-lg"></i></a>
+    
+
+    
+    
+        <a href="/page/12/" aria-label="Previous" class="label-pagination"><i class="fa fa-angle-left fa-lg"></i></a>
+    
+
+    
+        <a href="/" class="label-pagination">1</a>
+    
+        <a href="/page/2/" class="label-pagination">2</a>
+    
+        <a href="/page/3/" class="label-pagination">3</a>
+    
+        <a href="/page/4/" class="label-pagination">4</a>
+    
+        <a href="/page/5/" class="label-pagination">5</a>
+    
+        <a href="/page/6/" class="label-pagination">6</a>
+    
+        <a href="/page/7/" class="label-pagination">7</a>
+    
+        <a href="/page/8/" class="label-pagination">8</a>
+    
+        <a href="/page/9/" class="label-pagination">9</a>
+    
+        <a href="/page/10/" class="label-pagination">10</a>
+    
+        <a href="/page/11/" class="label-pagination">11</a>
+    
+        <a href="/page/12/" class="label-pagination">12</a>
+    
+        <a href="/page/13/" class="label-pagination">13</a>
+    
+        <a href="/page/14/" class="label-pagination">14</a>
+    
+
+    
+    
+        <a href="/page/14/" aria-label="Next" class="label-pagination"><i class="fa fa-angle-right fa-lg"></i></a>
+     
+    
+    
+    
+        <a href="/page/14/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+    
+
+</div>
+
+
+   
+
+  </div>
+
+  
+
+
+<aside class="sidebar thirds">
+  <section class="first odd">
+    <h1>Header in sidebar</h1>
+    <p>This is the rest of the sidebar - here's a link to <a target="_blank" href="http://google.com" title="Google">Google</a>.</p>
+    <p>If links are set in config file, there will be links to keybase/github/twitter/linkedin etc.</p>
+
+    
+  </section>
+
+  
+
+
+
+  <ul class="sidebar-nav">
+    <li class="sidebar-nav-item">
+    <a target="_blank" href="https://github.com/GuangchuangYu" title="https://github.com/GuangchuangYu"><i class="fa fa-github fa-3x"></i></a>
+    
+    
+    
+    
+    <a target="_blank" href="https://www.facebook.com/guangchuang.yu" title="https://www.facebook.com/guangchuang.yu"><i class="fa fa-facebook fa-3x"></i></a>
+    <a target="_blank" href="https://twitter.com/guangchuangyu" title="https://twitter.com/guangchuangyu"><i class="fa fa-twitter fa-3x"></i></a>
+    
+     
+
+    
+    
+    </li>
+  </ul>
+
+  
+  <section class="even">
+    <h1>Recent Posts</h1>
+
+    
+    <ul id="recent_posts">
+      
+      
+        
+      
+      
+      <li class="post">
+        <a href="/2016/02/reactomepa-an-r/bioconductor-package-for-reactome-pathway-analysis-and-visualization/">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a>
+      </li>
+      
+      <li class="post">
+        <a href="/2016/01/ggtree-supports-phylip-tree-format/">ggtree supports phylip tree format</a>
+      </li>
+      
+      <li class="post">
+        <a href="/2016/01/label-edge-number-in-ggtree/">label edge number in ggtree</a>
+      </li>
+      
+      <li class="post">
+        <a href="/2016/01/annotate-a-phylogenetic-tree-with-insets/">Annotate a phylogenetic tree with insets</a>
+      </li>
+      
+      <li class="post">
+        <a href="/douban/">douban</a>
+      </li>
+      
+    </ul>
+  </section>
+
+</aside>
+    
+ </div>
+</div>
+
+
+
+
+<footer role="contentinfo">
+  <p>Copyright &copy; 2016 Guangchuang Yu - <a href="http://guangchuangyu.github.io/license/">License</a> - 
+  <span class="credit">Powered by <a target="_blank" href="https://gohugo.io">Hugo</a> and <a target="_blank" href="https://github.com/parsiya/hugo-octopress/">Hugo-Octopress</a> theme.
+</p>
+
+</footer>
+
+
+</body>
+</html>   
