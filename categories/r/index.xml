@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R on G. Yu</title>
+    <title>R on Guangchuang Yu</title>
     <link>http://guangchuangyu.github.io/categories/r/</link>
-    <description>Recent content in R on G. Yu</description>
+    <description>Recent content in R on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 16 Feb 2016 13:10:21 +0800</lastBuildDate>
@@ -1180,6 +1180,63 @@ know. :)&lt;/p&gt;
     </item>
     
     <item>
+      <title>use simplify to remove redundancy of enriched GO terms</title>
+      <link>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</link>
+      <pubDate>Wed, 21 Oct 2015 09:37:11 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</guid>
+      <description>&lt;p&gt;To simplify enriched GO result, we can use slim version of GO and use
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;enricher&lt;/a&gt;&lt;/em&gt;
+function to analyze.&lt;/p&gt;
+
+&lt;p&gt;Another strategy is to use
+&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
+users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
+output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(clusterProfiler)
+data(geneList, package=&amp;quot;DOSE&amp;quot;)
+de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+bp &amp;lt;- enrichGO(de, ont=&amp;quot;BP&amp;quot;)
+enrichMap(bp)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;enrichMap&lt;/em&gt; doesn&amp;rsquo;t display the whole picture as we use the default
+value &lt;em&gt;n=50&lt;/em&gt; to only show 50 highly significant terms. In the
+&lt;em&gt;enrichMap&lt;/em&gt;, we can found that there are many redundant terms form a
+highly condense network.&lt;/p&gt;
+
+&lt;p&gt;Now with the &lt;em&gt;simplify&lt;/em&gt; method, we can remove redundant terms.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;bp2 &amp;lt;- simplify(bp, cutoff=0.7, by=&amp;quot;p.adjust&amp;quot;, select_fun=min)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;em&gt;simplify&lt;/em&gt; method apply &lt;em&gt;&amp;lsquo;select_fun&amp;rsquo;&lt;/em&gt; (which can be a user defined
+function) to feature &amp;lsquo;&lt;em&gt;by&lt;/em&gt;&amp;rsquo; to select one representative terms from
+redundant terms (which have similarity higher than &amp;lsquo;&lt;em&gt;cutoff&lt;/em&gt;&amp;rsquo;).
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/clusterProfiler/bp2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The simplified version of enriched result is more clear and give us a
+more comprehensive view of the whole story.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;enrichGO&lt;/em&gt; test the whole GO corpus and enriched result may contains
+very general terms.
+&lt;em&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/em&gt;
+contains a &lt;em&gt;dropGO&lt;/em&gt; function to remove specific GO terms or GO level,
+see &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/26&#34;&gt;the
+issue&lt;/a&gt;. With
+&lt;em&gt;simplify&lt;/em&gt; and &lt;em&gt;dropGO&lt;/em&gt;, enriched result can be more specific and more
+easy to interpret. Both of these functions work fine with outputs
+obtained from both &lt;em&gt;enrichGO&lt;/em&gt; and &lt;em&gt;compareCluster&lt;/em&gt;.🍻&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>BioC 3.2: NEWS of my BioC packages</title>
       <link>http://guangchuangyu.github.io/2015/10/bioc-3.2-news-of-my-bioc-packages/</link>
       <pubDate>Thu, 15 Oct 2015 16:13:57 +0800</pubDate>
@@ -1524,80 +1581,6 @@ Phylogenetics&lt;/a&gt;.
 
 &lt;p&gt;AND get its first citation.
 &lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ggtree/Screenshot%202015-08-04%2021.49.27.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>functional enrichment analysis with NGS data</title>
-      <link>http://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/</link>
-      <pubDate>Fri, 21 Aug 2015 03:22:21 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/</guid>
-      <description>
-
-&lt;p&gt;I found a Bioconductor package,
-&lt;a href=&#34;http://www.bioconductor.org/packages/seq2pathway/&#34;&gt;seq2pathway&lt;/a&gt;, that
-can apply functional analysis to NGS data. It consists of two
-components, &lt;em&gt;seq2gene&lt;/em&gt; and &lt;em&gt;gene2pathway&lt;/em&gt;. &lt;em&gt;seq2gene&lt;/em&gt; converts genomic
-coordination to genes while &lt;em&gt;gene2pathway&lt;/em&gt; performs functional analysis
-at gene level.&lt;/p&gt;
-
-&lt;p&gt;I think it would be interesting to incorporate &lt;em&gt;seq2gene&lt;/em&gt; with
-clusterProfiler. But it fail to run due to it call absolute path of
-python installed in the author&amp;rsquo;s computer.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/emotion_icons/surprise.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;THIS should never be happened in a Bioconductor package since
-Bioconductor requires every package to have a least one vignette and
-runnable examples in man files. It turns out that there is no runnable
-example in either the vignette or man files. This package was compiled
-successfully in all platforms but it actually can only be run in windows
-platform with python installed exactly in the same path of the author. I
-don&amp;rsquo;t know why Bioconductor core team didn&amp;rsquo;t detect this issue when
-reviewing this package and why reviewers of
-&lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/early/2015/05/27/bioinformatics.btv289.full&#34;&gt;Bioinformatics&lt;/a&gt;
-didn&amp;rsquo;t test the package.&lt;/p&gt;
-
-&lt;p&gt;I modified &amp;lsquo;C:/Python27/python&amp;rsquo;, to &amp;lsquo;python&amp;rsquo;. But it still throw error:
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/others/Screenshot%202015-08-20%2015.51.48.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is due to the author used &amp;lsquo;\\&amp;rsquo; as folder separator which is
-Windows platform specific.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;command &amp;lt;- paste(&amp;quot;C:/Python27/python &amp;quot;, tempdir(),&amp;quot;\\&amp;quot;,name,sep=&amp;quot;&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AND I found that there are many &amp;lsquo;\\&amp;rsquo; in the source code.&lt;/p&gt;
-
-&lt;p&gt;So I gave up to try this package and reinvented the wheel.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/d71871092d85a7f557ae85f529a0b73d6eeda5c9/MISC/evolution_of_the_wheel_by_echoes93-d4owse1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It&amp;rsquo;s not difficult to implement a &lt;em&gt;seq2gene&lt;/em&gt; function using internal
-functions already available in my package
-&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;. It only
-took me half hour and was available since version 1.5.5.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/ChIPseeker/Screenshot%202015-08-21%2011.08.46.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;seq2gene&lt;/em&gt; provided by
-&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt; considers
-host gene (exon/intron), promoter region and flanking gene from
-intergenomic region.&lt;/p&gt;
-
-&lt;p&gt;With &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;, user
-can annotates genomic coordination by nearest gene, host gene, flanking
-genes or consider all of them by &lt;em&gt;seq2gene&lt;/em&gt; and performs
-GO/KEGG/DO/Reactome analysis with
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;
-at gene level. A scenario can be found in &lt;a href=&#34;https://support.bioconductor.org/p/70227/&#34;&gt;Bioconductor support
-site&lt;/a&gt;, that used ChIPseeker
-to retrieve 5 genes flanking of each enhancer followed by GO analysis.&lt;/p&gt;
-
-&lt;h4 id=&#34;note:75af011bb7320f82b9ebbcc91c00fbfe&#34;&gt;Note:&lt;/h4&gt;
-
-&lt;p&gt;seq2pathway, &lt;a href=&#34;https://github.com/Bioconductor-mirror/seq2pathway&#34;&gt;https://github.com/Bioconductor-mirror/seq2pathway&lt;/a&gt;,
-version 1.1.2, access date 21 Aug, 2015&lt;/p&gt;
 </description>
     </item>
     

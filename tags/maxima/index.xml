@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Maxima on Guangchuang Yu</title>
+    <link>http://guangchuangyu.github.io/tags/maxima/</link>
+    <description>Recent content in Maxima on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 May 2005 08:15:00 +0800</lastBuildDate>
+    <atom:link href="http://guangchuangyu.github.io/tags/maxima/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>在emacs里使用maxima</title>
+      <link>http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/</link>
+      <pubDate>Sat, 28 May 2005 08:15:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/</guid>
+      <description>
+
+&lt;h2 id=&#34;下载imaxima:e6dedd294f68f0284e7032ee31b772ce&#34;&gt;下载imaxima   &lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz&#34;&gt;http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;./configure
+make
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进行安装。
+默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lisp&#34;&gt;(load &amp;quot;imaxima&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。
+&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2005/05/070902122953.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;需要breqn094包，可从&lt;a href=&#34;ftp://ftp.ams.org/pub/tex/breqn.zip&#34;&gt;ftp://ftp.ams.org/pub/tex/breqn.zip&lt;/a&gt;下载，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /usr/share/texmf/tex/latex/
+sudo unzip ~/Downloads/breqn.zip
+sudo texhash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新启动emacs，运行maxima，就可以正常使用了。&lt;/p&gt;
+
+&lt;h2 id=&#34;https-raw-githubusercontent-com-guangchuangyu-ygc-name-master-2005-05-070902123015-png:e6dedd294f68f0284e7032ee31b772ce&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2005/05/070902123015.png&#34; alt=&#34;&#34; /&gt;&lt;/h2&gt;
+
+&lt;p&gt;原来我在05年就在用imaxima模式了，当年机器性能差，为了跑快点，很多软件我都尽量不使用gtk2界面，而编译成gtk界面。土灰的界面多么怀旧啊。&lt;/p&gt;
+
+&lt;p&gt;安装过程还是一样，不过原来的链接早已失效。
+imaxima的homepage改为&lt;a href=&#34;https://sites.google.com/site/imaximaimath&#34;&gt;https://sites.google.com/site/imaximaimath&lt;/a&gt;，现在已经不需要下载imaxima了，因为它已经被整合进maxima中，会随着maxima被安装到系统中，把目录加载到.emacs中即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lisp&#34;&gt;(push &amp;quot;/usr/local/share/maxima/5.28.0/emacs/&amp;quot; load-path)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;MacTeX太大，我使用&lt;a href=&#34;http://tug.org/mactex/morepackages.html&#34;&gt;BasicTeX&lt;/a&gt;，为了正常显示数学符号，同样需要安装breqn，这个sty文件现已整合到&lt;a href=&#34;http://www.ctan.org/tex-archive/macros/latex/contrib/mh/&#34;&gt;mh包&lt;/a&gt;中。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd /usr/local/texlive/2013basic/texmf-local
+sudo unzip ~/Downloads/mh.zip
+sudo texhash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;texhash让TeX知道mh包的安装。&lt;/p&gt;
+
+&lt;p&gt;最后是让Emacs知道加载什么文件来执行，比如执行imaxima时要加载imaxima.el文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lisp&#34;&gt;(autoload &#39;maxima-mode &amp;quot;maxima&amp;quot; &amp;quot;Maxima mode&amp;quot; t)
+(autoload &#39;imaxima &amp;quot;imaxima&amp;quot; &amp;quot;Frontend for maxima with Image support&amp;quot; t)
+(autoload &#39;maxima &amp;quot;maxima&amp;quot; &amp;quot;Maxima interaction&amp;quot; t)
+(autoload &#39;imath &amp;quot;imath&amp;quot; &amp;quot;Imath mode for math formula input&amp;quot; t)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2005/05/Screen-Shot-2013-09-12-at-%E4%B8%8B%E5%8D%882.16.43.png&#34; alt=&#34;&#34; /&gt;
+现在imaxima已经可以直接在Emacs里插图了，画图时弹出个窗口神马的，最讨厌了。&lt;/p&gt;
+
+&lt;p&gt;更新于2013年9月。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
