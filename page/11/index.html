@@ -104,26 +104,46 @@
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">the batman equation</a>
+          <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno</a>
         </h1>
-        <p class="meta">Aug 13, 2011 - 2 minute read -  <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/#disqus_thread">Comments</a>
+        <p class="meta">Jan 14, 2014 - 5 minute read -  <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/mathematics/">Mathematics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/genomics/">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><p><a href="http://www.hardocp.com/news/2011/07/29/batman_equation/">HardOCP</a> has
-an image with an equation which apparently draws the Batman logo.</p>
+          <p><p>I used R package <strong>ChIPpeakAnno</strong> for annotating peaks, and found that
+it handle the DNA strand in the wrong way. Maybe the developers were
+from the computer science but not biology background.</p>
+
+<pre><code>&gt; require(ChIPpeakAnno)
+&gt; packageVersion(&quot;ChIPpeakAnno&quot;)
+[1] '2.10.0'
+&gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528))
+&gt; data(TSS.human.GRCh37)
+&gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37)
+&gt; ap
+RangedData with 1 row and 9 value columns across 1 space
+                     space               ranges |        peak      strand
+                               |  
+1 ENSG00000001461        1 [24736757, 24737528] |           1           +
+                          feature start_position end_position insideFeature
+                                   
+1 ENSG00000001461 ENSG00000001461       24742284     24799466      upstream
+                  distancetoFeature shortestDistance fromOverlappingOrNearest
+                                                
+1 ENSG00000001461             -5527             4756             NearestStart
+</code></pre>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -134,38 +154,32 @@ an image with an equation which apparently draws the Batman logo.</p>
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2011/06/screen-shot/">screen shot</a>
+          <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/">Install Emacs on Mac</a>
         </h1>
-        <p class="meta">Jun 28, 2011 - 1 minute read -  <a href="http://guangchuangyu.github.io/2011/06/screen-shot/#disqus_thread">Comments</a>
+        <p class="meta">Sep 10, 2013 - 1 minute read -  <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/bsd/">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a>
         </p>
 
       </header>
 
         
-          <p><p>买了苹果机，一直放在家里没用，准备开会带去用，拿过来装几个软件。</p>
+          <p><h2 id="package-manager:a0d2dabbee19e6fccf2cd8eeaa0e67d0">package manager</h2>
 
-<p>校园网用锐捷是个比较讨厌的东西。当年在华农，光这<a href="http://guangchuangyu.github.io/2005/03/scau%E6%A0%A1%E5%9B%AD%E7%BD%91%E8%AE%A4%E8%AF%81/">认证</a>就搞了很久。</p>
+<p>之前一直用<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>做为各种Unix-like系统的包管理系统，pkgsrc在自己内部解决依赖关系，这点对于生产环境来说，是很好的一个优点，我通常会在服务器里装一个pkgsrc，在用户目录下，维护一套UNIX软件。但是用在自己的机器上，内部解决软件依赖，就是个缺点，浪费编译时间和硬盘空间。</p>
 
-<p>现在开源的认证客户端多了，搞起来也方便了，现在在linux下用的<a href="http://code.google.com/p/xmuruijie/">xmuruijie</a>，就比当年<a href="http://guangchuangyu.github.io/2005/03/scau%E6%A0%A1%E5%9B%AD%E7%BD%91%E8%AE%A4%E8%AF%81/">mystar</a>好用。</p>
-
-<p>估计xmuruijie也是可以在苹果机上用的，依赖python，搞不好还有些modules要装，懒得去弄，搜了一下，找到<a href="http://code.google.com/p/mentohust/">mentohust</a>，当然需要改一下mac address，用万能的ifconfig搞定。</p>
-
-<p>为了编译软件，必要先装xcode，这个大家伙，4G多，中午挂到吃晚饭才下完。
-然后就可以装各种open source的软件。</p>
-
-<p>mac上有fink支持debian一样的apt-get，还有原生的macport，gentoo的portage也支持，我选择使用<a href="http://guangchuangyu.github.io/categories/bsd">netbsd</a>的pkgsrc来安装各种开源软件。</p>
-
-<p>以前用过比较长时间的netbsd，用着比较顺手。</p>
+<p>Mac上可用的包管理系统很多，Fink移植于<a href="http://guangchuangyu.github.io/categories/linux/">Debian</a>的apt，<a href="http://guangchuangyu.github.io/categories/linux/">Gentoo</a>的portage也支持OS
+X。OS X是基于BSD的系统，BSD有自己的一套包管理系统，如FreeBSD的ports和<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>，MacPorts可以看作是这一系列中的一个，不过它并不是OS
+X原生的，它只是OpenDarwin的子项目，所以和pkgsrc一个样，也是内部解决依赖，真正为OS
+X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里已有的软件。</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2011/06/screen-shot/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -176,51 +190,32 @@ an image with an equation which apparently draws the Batman logo.</p>
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">Five things biologists should know about statistics</a>
+          <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">Permanent Head Damage to be</a>
         </h1>
-        <p class="meta">Jun 24, 2011 - 5 minute read -  <a href="http://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/#disqus_thread">Comments</a>
+        <p class="meta">Jul 30, 2013 - 1 minute read -  <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/statistics/">statistics</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/personal/">Personal</a>
         </p>
 
       </header>
 
         
-          <p><p><a href="http://www.ebi.ac.uk/~birney/">Ewan Birney</a>最近的一篇博文（<a href="http://genomeinformatician.blogspot.com/2011/06/five-statistical-things-i-wished-i-had.html">Five statistical things I wished I had been taught 20 years ago</a>
-）讲述了统计对于生物学的重要性。</p>
+          <p><p>看似寻常最奇崛，成如容易却艰辛。在暨大工作了几年，发几篇小文章，觉得要找个地方读PhD，是件手到擒来的事，结果却花了整整一年的时间，事实证明像我这样的科研屌丝男，举步唯艰啊。
+去年7月份就开始在计划这个事情，我几乎想都没想就联系了计算生物所的JD
+Han，紧接着就是面试，第一次尝试用英文去讲slides，从早上10点讲到中午12点。感觉还好吧，因为有听到Han说impressive，而她的学生又说经常看我blog。看上去还是蛮顺利的，然而最终reject了我，而且没有给我任何原因。</p>
 
-<p>一开始从RA
-Fisher讲起，说生物压根就是统计。Fisher是个农业学家，他所建立的那些统计方法，都是从生物学问题出发。</p>
+<p>我去上海是非常低姿态的，说要面试，我就飞过去，当时想要是面试OK了，可能会让我留下来先了解一下正在进行的project，所以没有听老婆的话买返程票，结果从上海回广州，就变成了人在囧途，买不到火车票，就去南昌转车，结果遇到两趟车都是慢车，无空调，还无座。这个事情教会了我，不能太低姿态。</p>
 
-<p>Ewan所谈及的五个方面分别是：</p>
-
-<blockquote>
-<p>1. Non parametric statistics. These are statistical tests which make a
-bare minimum of assumptions of underlying distributions; in biology we
-are rarely confident that we know the underlying distribution, and hand
-waving about central limit theorem can only get you so far. Wherever
-possible you should use a non parameteric test. This is Mann-Whitney (or
-Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
-because this is not quite true. They test something which is closely
-related to the median) of two distributions, Spearman&rsquo;s Rho (rather
-pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
-(though if I get this right, you can&rsquo;t in Kruskal do the more
-sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
-forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
-like really good vodka) test of whether two sets of observations come
-from the same distribution. All of these methods have a basic theme of
-doing things on the rank of items in a distribution, not the actual
-level. So - if in doubt, do things on the rank of metric, rather than
-the metric itself.</p>
-</blockquote>
+<p>我一直在想为什么会去上海，为什么会联系Han，或许是心理学上所谓的契可尼效应，俗称偷不如偷不着，当年考上生没中，心中依然有执念？我自认为早已释然，but
+maybe..，至于Han，我在研一的时候，去北大听过她的讲座，被系统生物学这个概念忽悠了，可能因此内心抱有幻想。</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -231,37 +226,36 @@ the metric itself.</p>
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2011/06/r-package-dose-released/">R package DOSE released</a>
+          <a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</a>
         </h1>
-        <p class="meta">Jun 13, 2011 - 1 minute read -  <a href="http://guangchuangyu.github.io/2011/06/r-package-dose-released/#disqus_thread">Comments</a>
+        <p class="meta">May 7, 2012 - 1 minute read -  <a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/publication/">Publication</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler/">clusterProfiler</a>
         </p>
 
       </header>
 
         
-          <p><p>Disease Ontology (DO) provides an open source ontology for the
-integration of biomedical data that is associated with human disease. DO
-analysis can lead to interesting discoveries that deserve further
-clinical investigation.</p>
-
-<p>DOSE was designed for semantic similarity measure and enrichment
-analysis.</p>
-
-<p>Four information content (IC)-based methods, proposed by Resnik, Jiang,
-Lin and Schlicker, and one graph structure-based method, proposed by
-Wang, were implemented. The calculation details can be referred to the
-vignette of R package
-<a href="http://www.bioconductor.org/packages/2.9/bioc/html/GOSemSim.html" title="GOSemSim">GOSemSim</a>.</p>
+          <p><p>Increasing quantitative data generated from transcriptomics and
+proteomics require integrative strategies for analysis. Here, we present
+an R package, clusterProfiler that automates the process of
+biological-term classification and the enrichment analysis of gene
+clusters. The analysis module and visualization module were combined
+into a reusable workflow. Currently, clusterProfiler supports three
+species, including humans, mice, and yeast. Methods provided in this
+package can be easily extended to other species and ontologies. The
+clusterProfiler package is released under Artistic-2.0 License within
+Bioconductor project. The source code and vignette are freely available
+at
+<a href="http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html">http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html</a></p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2011/06/r-package-dose-released/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -272,62 +266,28 @@ vignette of R package
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2011/03/clusterprofiler-in-bioconductor-2.8/">clusterProfiler in Bioconductor 2.8</a>
+          <a href="http://guangchuangyu.github.io/2012/04/enrichment-analysis/">enrichment analysis</a>
         </h1>
-        <p class="meta">Mar 27, 2011 - 1 minute read -  <a href="http://guangchuangyu.github.io/2011/03/clusterprofiler-in-bioconductor-2.8/#disqus_thread">Comments</a>
+        <p class="meta">Apr 28, 2012 - 2 minute read -  <a href="http://guangchuangyu.github.io/2012/04/enrichment-analysis/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/statistics/">Statistics</a>
         </p>
 
       </header>
 
         
-          <p><p>In recently years, high-throughput experimental techniques such as
-microarray and mass spectrometry can identify many lists of genes and
-gene products. The most widely used strategy for high-throughput data
-analysis is to identify different gene clusters based on their
-expression profiles. Another commonly used approach is to annotate these
-genes to biological knowledge, such as Gene Ontology (GO) and Kyoto
-Encyclopedia of Genes and Genomes (KEGG), and identify the statistically
-significantly enriched categories. These two different strategies were
-implemented in many bioconductor packages, such as <em>Mfuzz</em> and <em>BHC</em> for
-clustering analysis and <em>GOstats</em> for GO enrichment analysis.</p>
+          <p><p>经常看到一些饼图，描述某些事物的组成，比如说有钱人的学历分布，然后我们可以看到高学历所占比例并不高，根据这个比例下结论通常是错的，这些比例说明不了问题，如果把各种学历在总体人口中的分布做为背景进行考虑的话，你就会发现学历还是有点用的。
+当我们用组学测定了一大堆分子之后，我们希望站在更高的角度去看这些分子和那些生物学过程相关。那么通常各种注释，对这些基因/蛋白进行分类，那么从分类的比例上，是不能草率下结论，正如上面有钱人学历分布的例子一样。我们需要把总体的分布考虑进去。
+和某个注释/分类是否有相关性，把基因分成属于这一类，和不属于这一类两种，这就好比经典统计学中的白球和黑球的抽样问题。也可以列一个２x２的表，进行独立性分析。
+以文章<a href="http://cancerres.aacrjournals.org/content/62/16/4722">Gene Expression in Ovarian Cancer Reflects Both Morphology and Biological Behavior, Distinguishing Clear Cell from Other Poor-Prognosis Ovarian Carcinomas</a>所鉴定的差异基因为例。</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2011/03/clusterprofiler-in-bioconductor-2.8/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/">Phosphoproteome profile of human lung cancer cell line A549</a>
-        </h1>
-        <p class="meta">Nov 23, 2010 - 1 minute read -  <a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics/">Bioinformatics</a><a class="label" href="http://guangchuangyu.github.io/categories/proteomics/">Proteomics</a><a class="label" href="http://guangchuangyu.github.io/categories/publication/">Publication</a>
-        </p>
-
-      </header>
-
-        
-          <p>As an in vitro model for type II human lung cancer, A549 cells resist cytotoxicity via phosphorylation of proteins as demonstrated by many studies. However, to date, no large-scale phosphoproteome investigation has been conducted on A549. Here, we performed a systematical analysis of the phosphoproteome of A549 by using mass spectrometry (MS)-based strategies. This investigation led to the identification of 337 phosphorylation sites on 181 phosphoproteins. Among them, 67 phosphoproteins and 230 phosphorylation sites identified appeared to be novel with no previous characterization in lung cancer.</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2012/04/enrichment-analysis/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -386,6 +346,12 @@ clustering analysis and <em>GOstats</em> for GO enrichment analysis.</p>
     
         <a href="/page/14/" class="label-pagination">14</a>
     
+        <a href="/page/15/" class="label-pagination">15</a>
+    
+        <a href="/page/16/" class="label-pagination">16</a>
+    
+        <a href="/page/17/" class="label-pagination">17</a>
+    
 
     
     
@@ -394,7 +360,7 @@ clustering analysis and <em>GOstats</em> for GO enrichment analysis.</p>
     
     
     
-        <a href="/page/14/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+        <a href="/page/17/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
     
 
 </div>

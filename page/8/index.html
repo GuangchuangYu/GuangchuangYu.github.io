@@ -104,38 +104,37 @@
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/">why clusterProfiler fails</a>
+          <a href="http://guangchuangyu.github.io/2015/02/ggtree-updating-a-tree-view-using--operator/">ggtree updating a tree view using %&lt;% operator</a>
         </h1>
-        <p class="meta">Aug 7, 2014 - 4 minute read -  <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/#disqus_thread">Comments</a>
+        <p class="meta">Feb 10, 2015 - 1 minute read -  <a href="http://guangchuangyu.github.io/2015/02/ggtree-updating-a-tree-view-using--operator/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics/">Bioinformatics</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><p>Recently, there are some
-<a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">comments</a>
-said that sometimes clusterProfiler failed in KEGG enrichment analysis.</p>
+          <p><p>I am very exciting that I have received very positive feedback from
+<a href="https://twitter.com/AhmedMoustafa">Ahmed Moustafa</a> and <a href="https://twitter.com/sdwfrost">Simon Frost</a>.</p>
 
-<p><a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">kaji331</a>
-compared cluserProfiler with GeneAnswers and found that clusterProfiler
-gives larger p values. The result forces me to test it.</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.27.png" alt="" /></p>
 
-<blockquote>
-<p>it eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used
-an old version of clusterProfiler which didn&rsquo;t use <em>as.character</em> to
-coerce the input</p>
-</blockquote>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.07.png" alt="" /></p>
+
+<p><a href="https://github.com/GuangchuangYu/ggtree">ggtree</a> now has equipped with
+a lot of new features. This time, I would like to introduce the replace
+operator, <code>%&lt;%</code>. Suppose we have build a tree view using ggtree with
+multiple layers, we don&rsquo;t need to run the code again to build a new tree
+view with another tree. In
+<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a>, we provides an operator, <code>%&lt;%</code>, for updating tree view.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2015/02/ggtree-updating-a-tree-view-using--operator/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -146,29 +145,58 @@ coerce the input</p>
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/">enrichment map</a>
+          <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/">KEGG enrichment analysis with latest online data using clusterProfiler</a>
         </h1>
-        <p class="meta">Aug 3, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/#disqus_thread">Comments</a>
+        <p class="meta">Feb 1, 2015 - 4 minute read -  <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><p>In <a href="http://www.plob.org/">PLOB</a>&rsquo;s QQ group, someone asked how to change
-the color of enrichment map in <a href="http://cytoscape.org/">Cytoscape</a>. I am
-very curious how enrichment map can helps to interpret enrichment
-results. It took me 2 hours to implement it using R and I am surprised
-that the enrichment map is better than anticipated.</p>
+          <p><p><em>KEGG.db</em> is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &lsquo;<a href="http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases">Are there too many biological databases</a>&rsquo;,
+there is a problem that many out of date biological databases often
+don&rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+<a href="http://wego.genomics.org.cn/cgi-bin/wego/index.pl">WEGO</a> web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with <a href="https://scholar.google.com.hk/scholar?as_ylo=2015&amp;hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&amp;cites=13025429171853466135&amp;scipsc=">many people using it</a>.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue.</p>
+
+<p>Now <em>enrichKEGG</em> function is reloaded with a new parameter <em>use_internal_data</em>. This
+parameter is by default setting to FALSE, and <em>enrichKEGG</em> function will
+download the latest KEGG data for enrichment analysis. If the parameter
+<em>use_internal_data</em> is explicitly setting to TRUE, it will use the
+<em>KEGG.db</em> which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+<a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a> Now the <em>organism</em>
+parameter in <em>enrichKEGG</em> should be abbreviation of academic name, for
+example &lsquo;hsa&rsquo; for human and &lsquo;mmu&rsquo; for mouse. It accepts any species
+listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a>. In the
+current release version of
+<a href="http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html">clusterProfiler</a>
+(in Bioconductor 3.0), <em>enrichKEGG</em> supports about 20 species, and the
+<em>organism</em> parameter accept common name of species, for instance &ldquo;human&rdquo;
+and &ldquo;mouse&rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+<a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">clusterProfiler</a>.
+For other species, common name is not supported, since I don&rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -179,33 +207,29 @@ that the enrichment map is better than anticipated.</p>
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/">use linux desktop again</a>
+          <a href="http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/">ggtree in Bioconductor 3.1</a>
         </h1>
-        <p class="meta">Jun 1, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/#disqus_thread">Comments</a>
+        <p class="meta">Jan 19, 2015 - 1 minute read -  <a href="http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/linux/">Linux</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><p>上个月写了《<a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/">使用ggplot画图</a>》一文，图片太多，一下子把博客的12G流量给用光了，月中博客就被停了，小伙伴们太给力了，blog不能访问，真是件不爽的事情。</p>
-
-<p>言归正传，从2002年使用redhat
-7.1开始，就没中止过使用linux，为什么要说again呢，因为在过去几年的工作时间里，使用的是<a href="http://guangchuangyu.github.io/2011/06/screen-shot/">OS X</a>和win7做为桌面的，linux只在服务器端使用。自从用了OS
-X之后，就不想再用linux当桌面了，OS
-X绝对是节省生命的系统，本身是unix-like系统，对各种桌面软件支持又好，特别是中华大地，linux还是小众，用来当桌面实在是各种坑。</p>
-
-<p>不过现在又回到学生时代了，所以还得继续学生屌丝的折腾，本科时从redhat,debian到gentoo，硕士时实验室的机器用ubuntu，而笔记本用NetBSD。这么多年的使用，该有的坑都填了，但是时代在发展，新坑还是不断有的，使用<a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/">百度云</a>来同步化文献库，就是最近的新坑，装上linux之后，发现度娘没有客户端，首先想到的当然是wine，wine出来的偶尔能行，时常崩溃，跟它死磕我也会崩溃，github上寻找开源实现，各种功能缺失和限制，那就只能虚拟机了，把home目录做为共享盘，挂到虚拟机中，但是度娘一直都是占100%
-CPU，然后数据无法同步，只有两个原因，不是硬盘就是网络，感觉好像我一个分区800G太大了，但在虚拟中对硬盘读写正常，网络因为使用NAT，虚拟成内网，有可能是这个原因，于是换成bridge，把虚拟机当成现实网络中的另一台主机，但度娘依然只占CPU，不干活。那只能还是硬盘问题，最后问题解决了，通过在linux中提供samba服务，然后在虚拟机中通过网上邻居把共享目录映射成网络驱动器，这时候度娘终于肯干活了。都不知道是virtualbox的驱动有问题，还是度娘太挑，这太TM坑了。</p>
+          <p><p>I am very glad that <a href="http://guangchuangyu.github.io/2014/12/ggtree/">ggtree</a> is now
+available via Bioconductor. This is my 6th Bioconductor package.
+<a href="http://guangchuangyu.github.io/2014/12/ggtree/">ggtree</a> now supports parsing output
+files from BEAST, PAML, HYPHY, EPA and PPLACER and can annotate
+phylogenetic tree directly using plot methods.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -216,37 +240,32 @@ CPU，然后数据无法同步，只有两个原因，不是硬盘就是网络�
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/">Use ggplot2</a>
+          <a href="http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/">viewing and annotating phylogenetic tree with ggtree</a>
         </h1>
-        <p class="meta">May 11, 2014 - 5 minute read -  <a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/#disqus_thread">Comments</a>
+        <p class="meta">Dec 21, 2014 - 3 minute read -  <a href="http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/evolution/">Evolution</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><h3 id="why-use-ggplot2:c38c63fac86d2290b6bc01da39216614">Why use ggplot2</h3>
+          <p><p>When I need to annotate nucleotide substitutions in the phylogenetic
+tree, I found that all the software are designed to display the tree but
+not annotating it. Some of them may support annotating the tree with
+specific data such as bootstrap values, but they are restricted to a few
+supported data types. It is hard/impossible to inject user specific
+data.</p>
 
-<p>ggplot2是我见过最human friendly的画图软件，这得益于Leland
-Wilkinson在他的著作《<a href="http://book.douban.com/subject/10123863/">The Grammar of
-Graphics</a>》中提出了一套图形语法，把图形元素抽象成可以自由组合的成分，Hadley
-Wickham把这套想法在R中实现。</p>
-
-<p>为什么要学习ggplot2，可以参考<a href="http://book.douban.com/subject/24527091/">ggplot2: 数据分析与图形艺术</a>的<a href="https://github.com/cosname/ggplot2-translation/blob/master/preface.md">序言</a>（btw:
-在序言的最后，我被致谢了）。</p>
-
-<p>Hadley
-Wickham也给出<a href="https://github.com/hadley/ggplot2/wiki/Why-use-ggplot2">一堆理由</a>让我们说服自己，我想再补充一点，Hadley
-Wickham是学医出身的，做为学生物出身的人有什么理由不支持呢:)</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/2014-12-21-145753_579x436_scrot.png" alt="" /></p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -257,86 +276,30 @@ Wickham是学医出身的，做为学生物出身的人有什么理由不支持�
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/">更改百度云同步盘路径</a>
+          <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">proper use of GOSemSim</a>
         </h1>
-        <p class="meta">May 5, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/#disqus_thread">Comments</a>
+        <p class="meta">Nov 23, 2014 - 13 minute read -  <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a><a class="label" href="http://guangchuangyu.github.io/categories/software/">Software</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/research/">Research</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><p>从2007年写了<a href="http://cjbmb.bjmu.edu.cn/CN/abstract/abstract17570.shtml">第一篇文章</a>之后，我发现管理文献真不是人干的，一直以来使用Zotero来管理文献，自从有了dropbox之后，就想把文献库放在dropbox上，一来有个云备份，不怕硬盘坏，二来嘛，实验室电脑和个人电脑可以实时同步化，无奈dropbox空间太小，而我的zotero早已超过10G，因为电子书也放在里面，只能做罢。</p>
+          <p><p>One day, I am looking for R packages that can analyze PPI and after
+searching, I found the
+<a href="http://cran.r-project.org/web/packages/ppiPre/index.html">ppiPre</a>
+package in CRAN.</p>
 
-<p>度娘出手还是很大方的，我现在的网盘已经有3T，包括之前在推广阶段用1元买的1T。</p>
-
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/Screenshot-2014-05-05-21.31.57.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/11/2014-11-22-215959_895x256_scrot.png" alt="" /></p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/">visualization methods in ChIPseeker</a>
-        </h1>
-        <p class="meta">Apr 30, 2014 - 2 minute read -  <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/genomics/">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
-        </p>
-
-      </header>
-
-        
-          <p><p>After two weeks developed, I have added/updated some plot functions in
-<a href="http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html">ChIPseeker</a>
-(version &gt;=1.0.1).</p>
-
-<h3 id="chip-peaks-over-chromosomes:6a8a65de687a162a83f53f5c5a317279">ChIP peaks over Chromosomes</h3>
-
-<pre><code>&gt; files=getSampleFiles()
-&gt; peak=readPeakFile(files[[4]])
-&gt; peak
-GRanges object with 1331 ranges and 2 metadata columns:
-         seqnames                 ranges strand   |             V4        V5
-                               |        
-     [1]     chr1     [ 815092,  817883]      *   |    MACS_peak_1    295.76
-     [2]     chr1     [1243287, 1244338]      *   |    MACS_peak_2     63.19
-     [3]     chr1     [2979976, 2981228]      *   |    MACS_peak_3    100.16
-     [4]     chr1     [3566181, 3567876]      *   |    MACS_peak_4    558.89
-     [5]     chr1     [3816545, 3818111]      *   |    MACS_peak_5     57.57
-     ...      ...                    ...    ... ...            ...       ...
-  [1327]     chrX [135244782, 135245821]      *   | MACS_peak_1327     55.54
-  [1328]     chrX [139171963, 139173506]      *   | MACS_peak_1328    270.19
-  [1329]     chrX [139583953, 139586126]      *   | MACS_peak_1329    918.73
-  [1330]     chrX [139592001, 139593238]      *   | MACS_peak_1330    210.88
-  [1331]     chrY [ 13845133,  13845777]      *   | MACS_peak_1331     58.39
-  ---
-  seqlengths:
-    chr1 chr10 chr11 chr12 chr13 chr14 ...  chr6  chr7  chr8  chr9  chrX  chrY
-      NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA    NA
-&gt; covplot(peak, weightCol=&quot;V5&quot;)
-</code></pre>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -395,6 +358,12 @@ GRanges object with 1331 ranges and 2 metadata columns:
     
         <a href="/page/14/" class="label-pagination">14</a>
     
+        <a href="/page/15/" class="label-pagination">15</a>
+    
+        <a href="/page/16/" class="label-pagination">16</a>
+    
+        <a href="/page/17/" class="label-pagination">17</a>
+    
 
     
     
@@ -403,7 +372,7 @@ GRanges object with 1331 ranges and 2 metadata columns:
     
     
     
-        <a href="/page/14/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+        <a href="/page/17/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
     
 
 </div>

@@ -104,35 +104,34 @@
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/">ChIPseeker for ChIP peak annotation</a>
+          <a href="http://guangchuangyu.github.io/2014/11/hello-yosemite/">hello yosemite</a>
         </h1>
-        <p class="meta">Apr 13, 2014 - 4 minute read -  <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/#disqus_thread">Comments</a>
+        <p class="meta">Nov 14, 2014 - 3 minute read -  <a href="http://guangchuangyu.github.io/2014/11/hello-yosemite/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/bsd/">BSD</a><a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a>
         </p>
 
       </header>
 
         
-          <p><p><a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPpeakAnno.html">ChIPpeakAnno</a>
-WAS the only R package for ChIP peak annotation. I used it for
-annotating peak in my recent study.</p>
+          <p><p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/11/Screenshot-2014-11-11-14.07.45.png" alt="" /></p>
 
-<p>I found it does not consider the strand information of genes. I
-<a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">reported the bug</a> to the
-authors, but they are reluctant to change.</p>
-
-<p>So I decided to develop my own package,
-<a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPseeker.html">ChIPseeker</a>,
-and it&rsquo;s now available in Bioconductor.</p>
+<p>Installing OS is painful, you need to re-install all the software and
+configure them to the way you want. We don&rsquo;t want to wast time in doing
+this. To prevent doing this dirty job, we perform an upgrade install
+instead of clean install. We all have experience of upgrading Windows
+sucks, <a href="http://osxdaily.com/2014/10/17/os-x-yosemite-installation-stuck/">same as OS X</a>.
+All the issues you have in old system will be remained, and sometimes
+new issues will be introduced in the process of upgrading. The system
+will be slower compare to clean install one.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/11/hello-yosemite/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -143,32 +142,35 @@ and it&rsquo;s now available in Bioconductor.</p>
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/03/boxplot/">boxplot</a>
+          <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/">multiple annotation in ChIPseeker</a>
         </h1>
-        <p class="meta">Mar 4, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/03/boxplot/#disqus_thread">Comments</a>
+        <p class="meta">Oct 1, 2014 - 3 minute read -  <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/genomics/">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><p>生物坑很多人画图只会直方图，统计只会T检验，在暨大见过太多的学生连T检验都不会，分不清SEM和SD的差别，也不清楚T检验那几个简单参数的含义。我写统计笔记也是因为不想重复性地跟学生讲解T检验。</p>
+          <p><h3 id="nearest-gene-annotation:211662300f8731372460bacaae7937b5">Nearest gene annotation</h3>
 
-<p>Barplot和T test一样普遍而流行，barplot适合于表示计数数据和比例，显示比例也可以用pie
-plot，但直方图比饼图要好，因为人类的眼睛适合于比较高度，而不是弧度。</p>
+<p>Almost all annotation software calculate the distance of a peak to the
+nearest TSS and assign the peak to that gene. This can be misleading, as
+binding sites might be located between two start sites of different
+genes or hit different genes which have the same TSS location in the
+genome.</p>
 
-<p>多半时候生物学数据并非简单的计数数据，对于测量数据，在展示数据分布时，很多人会使用他们熟悉的barplot，用高度来表示mean，然后再加上errorbar，这样展示数据，信息量是非常低的，使用boxplot能够提供更多的数据分布信息，能更好地展现数据，但可能很多人只会在excel里画barplot，Nature
-Methods
-2013年的文章中有100个barplot图，而只有20个boxplot图，从这里就可以看出来，用boxplot的人远远没有barplot多，于是NPG怒了，写了两篇专栏文章<a href="http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2807.html">Points of View: Bar charts and box plots</a>和<a href="http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2813.html">Points of Significance: Visualizing samples with box plots</a>并且发表了一篇<a href="http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2811.html">BoxPlotR: a web tool for generation of box plots</a>方便大家画boxplot，如此简单的web tool能够发Nature Methods，实在是让人羡慕妒忌恨啊。</p>
+<p>The function <em>annotatePeak</em> provides option to assign genes with a max
+distance cutoff and all genes within this distance were reported for
+each peak.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/03/boxplot/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -179,46 +181,38 @@ Methods
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno</a>
+          <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/">why clusterProfiler fails</a>
         </h1>
-        <p class="meta">Jan 14, 2014 - 5 minute read -  <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/#disqus_thread">Comments</a>
+        <p class="meta">Aug 7, 2014 - 4 minute read -  <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/genomics/">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics/">Bioinformatics</a>
         </p>
 
       </header>
 
         
-          <p><p>I used R package <strong>ChIPpeakAnno</strong> for annotating peaks, and found that
-it handle the DNA strand in the wrong way. Maybe the developers were
-from the computer science but not biology background.</p>
+          <p><p>Recently, there are some
+<a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">comments</a>
+said that sometimes clusterProfiler failed in KEGG enrichment analysis.</p>
 
-<pre><code>&gt; require(ChIPpeakAnno)
-&gt; packageVersion(&quot;ChIPpeakAnno&quot;)
-[1] '2.10.0'
-&gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528))
-&gt; data(TSS.human.GRCh37)
-&gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37)
-&gt; ap
-RangedData with 1 row and 9 value columns across 1 space
-                     space               ranges |        peak      strand
-                               |  
-1 ENSG00000001461        1 [24736757, 24737528] |           1           +
-                          feature start_position end_position insideFeature
-                                   
-1 ENSG00000001461 ENSG00000001461       24742284     24799466      upstream
-                  distancetoFeature shortestDistance fromOverlappingOrNearest
-                                                
-1 ENSG00000001461             -5527             4756             NearestStart
-</code></pre>
+<p><a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">kaji331</a>
+compared cluserProfiler with GeneAnswers and found that clusterProfiler
+gives larger p values. The result forces me to test it.</p>
+
+<blockquote>
+<p>it eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used
+an old version of clusterProfiler which didn&rsquo;t use <em>as.character</em> to
+coerce the input</p>
+</blockquote>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -229,32 +223,29 @@ RangedData with 1 row and 9 value columns across 1 space
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/">Install Emacs on Mac</a>
+          <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/">enrichment map</a>
         </h1>
-        <p class="meta">Sep 10, 2013 - 1 minute read -  <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/#disqus_thread">Comments</a>
+        <p class="meta">Aug 3, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><h2 id="package-manager:a0d2dabbee19e6fccf2cd8eeaa0e67d0">package manager</h2>
-
-<p>之前一直用<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>做为各种Unix-like系统的包管理系统，pkgsrc在自己内部解决依赖关系，这点对于生产环境来说，是很好的一个优点，我通常会在服务器里装一个pkgsrc，在用户目录下，维护一套UNIX软件。但是用在自己的机器上，内部解决软件依赖，就是个缺点，浪费编译时间和硬盘空间。</p>
-
-<p>Mac上可用的包管理系统很多，Fink移植于<a href="http://guangchuangyu.github.io/categories/linux/">Debian</a>的apt，<a href="http://guangchuangyu.github.io/categories/linux/">Gentoo</a>的portage也支持OS
-X。OS X是基于BSD的系统，BSD有自己的一套包管理系统，如FreeBSD的ports和<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>，MacPorts可以看作是这一系列中的一个，不过它并不是OS
-X原生的，它只是OpenDarwin的子项目，所以和pkgsrc一个样，也是内部解决依赖，真正为OS
-X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里已有的软件。</p>
+          <p><p>In <a href="http://www.plob.org/">PLOB</a>&rsquo;s QQ group, someone asked how to change
+the color of enrichment map in <a href="http://cytoscape.org/">Cytoscape</a>. I am
+very curious how enrichment map can helps to interpret enrichment
+results. It took me 2 hours to implement it using R and I am surprised
+that the enrichment map is better than anticipated.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/08/enrichment-map/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -265,72 +256,33 @@ X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里�
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">Permanent Head Damage to be</a>
+          <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/">use linux desktop again</a>
         </h1>
-        <p class="meta">Jul 30, 2013 - 1 minute read -  <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/#disqus_thread">Comments</a>
+        <p class="meta">Jun 1, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/personal/">Personal</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/linux/">Linux</a>
         </p>
 
       </header>
 
         
-          <p><p>看似寻常最奇崛，成如容易却艰辛。在暨大工作了几年，发几篇小文章，觉得要找个地方读PhD，是件手到擒来的事，结果却花了整整一年的时间，事实证明像我这样的科研屌丝男，举步唯艰啊。
-去年7月份就开始在计划这个事情，我几乎想都没想就联系了计算生物所的JD
-Han，紧接着就是面试，第一次尝试用英文去讲slides，从早上10点讲到中午12点。感觉还好吧，因为有听到Han说impressive，而她的学生又说经常看我blog。看上去还是蛮顺利的，然而最终reject了我，而且没有给我任何原因。</p>
+          <p><p>上个月写了《<a href="http://guangchuangyu.github.io/2014/05/use-ggplot2/">使用ggplot画图</a>》一文，图片太多，一下子把博客的12G流量给用光了，月中博客就被停了，小伙伴们太给力了，blog不能访问，真是件不爽的事情。</p>
 
-<p>我去上海是非常低姿态的，说要面试，我就飞过去，当时想要是面试OK了，可能会让我留下来先了解一下正在进行的project，所以没有听老婆的话买返程票，结果从上海回广州，就变成了人在囧途，买不到火车票，就去南昌转车，结果遇到两趟车都是慢车，无空调，还无座。这个事情教会了我，不能太低姿态。</p>
+<p>言归正传，从2002年使用redhat
+7.1开始，就没中止过使用linux，为什么要说again呢，因为在过去几年的工作时间里，使用的是<a href="http://guangchuangyu.github.io/2011/06/screen-shot/">OS X</a>和win7做为桌面的，linux只在服务器端使用。自从用了OS
+X之后，就不想再用linux当桌面了，OS
+X绝对是节省生命的系统，本身是unix-like系统，对各种桌面软件支持又好，特别是中华大地，linux还是小众，用来当桌面实在是各种坑。</p>
 
-<p>我一直在想为什么会去上海，为什么会联系Han，或许是心理学上所谓的契可尼效应，俗称偷不如偷不着，当年考上生没中，心中依然有执念？我自认为早已释然，but
-maybe..，至于Han，我在研一的时候，去北大听过她的讲座，被系统生物学这个概念忽悠了，可能因此内心抱有幻想。</p>
+<p>不过现在又回到学生时代了，所以还得继续学生屌丝的折腾，本科时从redhat,debian到gentoo，硕士时实验室的机器用ubuntu，而笔记本用NetBSD。这么多年的使用，该有的坑都填了，但是时代在发展，新坑还是不断有的，使用<a href="http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/">百度云</a>来同步化文献库，就是最近的新坑，装上linux之后，发现度娘没有客户端，首先想到的当然是wine，wine出来的偶尔能行，时常崩溃，跟它死磕我也会崩溃，github上寻找开源实现，各种功能缺失和限制，那就只能虚拟机了，把home目录做为共享盘，挂到虚拟机中，但是度娘一直都是占100%
+CPU，然后数据无法同步，只有两个原因，不是硬盘就是网络，感觉好像我一个分区800G太大了，但在虚拟中对硬盘读写正常，网络因为使用NAT，虚拟成内网，有可能是这个原因，于是换成bridge，把虚拟机当成现实网络中的另一台主机，但度娘依然只占CPU，不干活。那只能还是硬盘问题，最后问题解决了，通过在linux中提供samba服务，然后在虚拟机中通过网上邻居把共享目录映射成网络驱动器，这时候度娘终于肯干活了。都不知道是virtualbox的驱动有问题，还是度娘太挑，这太TM坑了。</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</a>
-        </h1>
-        <p class="meta">May 7, 2012 - 1 minute read -  <a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/publication/">Publication</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/clusterprofiler/">clusterProfiler</a>
-        </p>
-
-      </header>
-
-        
-          <p><p>Increasing quantitative data generated from transcriptomics and
-proteomics require integrative strategies for analysis. Here, we present
-an R package, clusterProfiler that automates the process of
-biological-term classification and the enrichment analysis of gene
-clusters. The analysis module and visualization module were combined
-into a reusable workflow. Currently, clusterProfiler supports three
-species, including humans, mice, and yeast. Methods provided in this
-package can be easily extended to other species and ontologies. The
-clusterProfiler package is released under Artistic-2.0 License within
-Bioconductor project. The source code and vignette are freely available
-at
-<a href="http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html">http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html</a></p>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -389,6 +341,12 @@ at
     
         <a href="/page/14/" class="label-pagination">14</a>
     
+        <a href="/page/15/" class="label-pagination">15</a>
+    
+        <a href="/page/16/" class="label-pagination">16</a>
+    
+        <a href="/page/17/" class="label-pagination">17</a>
+    
 
     
     
@@ -397,7 +355,7 @@ at
     
     
     
-        <a href="/page/14/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+        <a href="/page/17/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
     
 
 </div>
