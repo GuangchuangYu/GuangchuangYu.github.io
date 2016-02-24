@@ -117,7 +117,11 @@
       </header>
 
         
-          <p>经常看到一些饼图，描述某些事物的组成，比如说有钱人的学历分布，然后我们可以看到高学历所占比例并不高，根据这个比例下结论通常是错的，这些比例说明不了问题，如果把各种学历在总体人口中的分布做为背景进行考虑的话，你就会发现学历还是有点用的。 当我们用组学测定了一大堆分子之后，我们希望站在更高的角度去看这些分子和那些生物学过程相关。那么通常各种注释，对这些基因/蛋白进行分类，那么从分类的比例上，是不能草率下结论，正如上面有钱人学历分布的例子一样。我们需要把总体的分布考虑进去。 和某个注释/分类是否有相关性，把基因分成属于这一类，和不属于这一类两种，这就好比经典统计学中的白球和黑球的抽样问题。也可以列一个２x２的表，进行独立性分析。 以文章Gene Expression in Ovarian Cancer Reflects Both Morphology and Biological Behavior, Distinguishing Clear Cell from Other Poor-Prognosis Ovarian Carcinomas所鉴定的差异基因为例。 73个差异基因的Symbol，我把它转为 entrezgene ID得到57个（漏掉的不管它，只是做为一个例子）: &gt; eg [1] &quot;7980&quot; &quot;3081&quot; &quot;3162&quot; &quot;3059&quot; &quot;1545&quot; &quot;1917&quot; &quot;6696&quot; &quot;5797&quot; [9] &quot;6648&quot; &quot;10397&quot; &quot;6781&quot; &quot;5817&quot; &quot;1282&quot; &quot;1284&quot; &quot;6948&quot; &quot;7077&quot; [17] &quot;5744&quot; &quot;8566&quot; &quot;1368&quot; &quot;1474&quot; &quot;11015&quot; &quot;3306&quot; &quot;728441&quot; &quot;2678&quot; [25] &quot;4286&quot; &quot;3929&quot; &quot;5095&quot; &quot;2064&quot; &quot;1428&quot; &quot;6590&quot; &quot;3569&quot; &quot;2745&quot; [33] &quot;3912&quot; &quot;978&quot; &quot;5950&quot; &quot;6539&quot; &quot;9445&quot; &quot;5004&quot;</p>
+          <p><p>经常看到一些饼图，描述某些事物的组成，比如说有钱人的学历分布，然后我们可以看到高学历所占比例并不高，根据这个比例下结论通常是错的，这些比例说明不了问题，如果把各种学历在总体人口中的分布做为背景进行考虑的话，你就会发现学历还是有点用的。
+当我们用组学测定了一大堆分子之后，我们希望站在更高的角度去看这些分子和那些生物学过程相关。那么通常各种注释，对这些基因/蛋白进行分类，那么从分类的比例上，是不能草率下结论，正如上面有钱人学历分布的例子一样。我们需要把总体的分布考虑进去。
+和某个注释/分类是否有相关性，把基因分成属于这一类，和不属于这一类两种，这就好比经典统计学中的白球和黑球的抽样问题。也可以列一个２x２的表，进行独立性分析。
+以文章<a href="http://cancerres.aacrjournals.org/content/62/16/4722">Gene Expression in Ovarian Cancer Reflects Both Morphology and Biological Behavior, Distinguishing Clear Cell from Other Poor-Prognosis Ovarian Carcinomas</a>所鉴定的差异基因为例。</p>
+</p>
 
           
               <footer>
@@ -145,7 +149,20 @@
       </header>
 
         
-          <p>支持向量机(Support Vector Machines, SVM)最初由Vladimir Vapnik于1997年提出，SVM最简单的形式就是找出一下区分界限（descision boundary），也称之为超平面(hyperplane)，使得离它最近的点（称之为support vectors）与之间隔最大。 这和logistic regression有些相似，区别在于logistic regression要求所有的点尽可能地远离中间那条线，而SVM是要求最接近中间线的点尽可能地远离中间线。也就是说SVM的主要目标是区分那些最难区分的点。 SVM对于hyperplane的定义，在形式上和logistic regression一样,logistic regression的decision boundary由$\theta^TX=0$确定,SVM则用$w^TX+b=0$表示,其中b相当于logistic regression中的$\theta_0$，从形式上看，两者并无区别，当然如前面所说，两者的目标不一样，logistic regression着眼于全局，SVM着眼于support vectors。有监督算法都有label变量y，logistic regression取值是{0,1}，而SVM为了计算距离方便，取值为{-1,1}。 那么SVM的问题就变成为，确定参数w和b，以满足： $w^T x_i + b \ge +1$ when $y_i = +1$ $w^T x_i + b \le +1$ when $ y_i = -1$ 对于上图中最简单的例子，中间线可以由Ax+By+c=0表示，图上一个$(x_0, y_0)$的点到中间线的距离为$\frac{|Ax_0+By_0+c|}{\sqrt{A^2+B^2}}$。 对于更高维的空间，点到hyperplane上的距离也是一样计算，定义为： $\frac{|w^Tx+b|}{||w||}=\frac{1}{||w||}$。 要距离最大，也就是求||w||的最小值。 那么问题就相当于在给定条件g(x): $y_i(w^Tx_i)-b \ge 1$下，求f(x): $\frac{1}{2}||w||^2$的最大值。 这是一个限定条件下的优化问题，可以通过Lagrange multiplier解决。 这里，拉格朗日公式为： $L=\frac{1}{2}||w||^2-\sum{\alpha_i[y_i(w^Tx_i+b)-1]}$ 通过对拉格朗日公式的分析，问题变为： 给定$\alpha \ge 0$ $\sum{\alpha_iy_i} = 0$ 求$\sum{\alpha_i} - \frac{1}{2}\sum{\alpha_i\alpha_jy_iy_jx_ix_j}$的最大值。 对于$\alpha$值，通常训练算法还通过C参数进行限制$C \ge \alpha \ge 0$，这个参数相当于logistic regression里的$\lambda$参数，对outlier数据点的penalty。</p>
+          <p><p>支持向量机(Support Vector Machines, SVM)最初由Vladimir
+Vapnik于1997年提出，SVM最简单的形式就是找出一下区分界限（descision
+boundary），也称之为超平面(hyperplane)，使得离它最近的点（称之为support
+vectors）与之间隔最大。
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2012/04/linearSVM.png" alt="" /></p>
+
+<p>这和logistic regression有些相似，区别在于logistic
+regression要求所有的点尽可能地远离中间那条线，而SVM是要求最接近中间线的点尽可能地远离中间线。也就是说SVM的主要目标是区分那些最难区分的点。</p>
+
+<p>SVM对于hyperplane的定义，在形式上和logistic regression一样,logistic
+regression的decision boundary由$\theta^TX=0$确定,SVM则用$w^TX+b=0$表示,其中b相当于logistic regression中的$\theta_0$，从形式上看，两者并无区别，当然如前面所说，两者的目标不一样，logistic regression着眼于全局，SVM着眼于support
+vectors。有监督算法都有label变量y，logistic
+regression取值是<code>{0,1}</code>，而SVM为了计算距离方便，取值为<code>{-1,1}</code>。</p>
+</p>
 
           
               <footer>
@@ -173,8 +190,17 @@
       </header>
 
         
-          <p>初中时在杂志上看到苹果的彩壳机，从此叔就开始成为了苹果的脑残粉，还在K6-2和win98那会，就在玩macintosh主题。 本科时，通过PearPC来虚拟PowerPC，硬是在ATHLON XP 1700+这个破CPU上破了OS X Jaguar，那个慢啊，是无法忍受的。 后来，有了一台powerbook，却拿它来装gentoo和netbsd。从那里候开始，基本上就只用Linux/BSD。 再后来，又有了一台macbook pro，除了出差，放在家里倒也没怎么用。囧rz&hellip; 在国内的工作环境，用linux与人格格不入。但windows搞开发又有不顺手的。各种编译环境搭建起来让人作呕，而且没有shell，用起来就是不够爽，虽然emacs自带eshell，但在windows下缺少各种命令行程序，也只能算廖胜于无。 在北京那会，只用linux，因为有需要的时候可以通过局域网运行windows程序。到了暨大，一直用win7，因为质谱相关的很多软件都只跑在winddows下，后来发现和我没啥关系，那些东西都在质谱房里搞。得益于机房里有一台机器跑CentOS，每天通过ssh，也免去了切换系统的麻烦，但是时间长了，我还是觉得诸多不便。 前两天，突发奇想，不如把办公室里的dell机器装个黑苹果。可以应付国内的办公需求，同时也是个Unix-like系统，各种爽。 装起来倒也顺利，只是网卡、显卡、声卡全不认。搞起来倒也不难，就是kext有点难找。这种文件相当于Linux的kernel module。搞驱动的时候，让我有种10年前玩redhat 7.2时的感觉。 照例，有图有真相。</p>
+          <p><p>初中时在杂志上看到苹果的彩壳机，从此叔就开始成为了苹果的脑残粉，还在K6-2和win98那会，就在玩macintosh主题。</p>
 
+<p>本科时，通过<a href="http://pearpc.sourceforge.net/">PearPC</a>来虚拟PowerPC，硬是在ATHLON XP 1700+这个破CPU上破了OS X Jaguar，那个慢啊，是无法忍受的。</p>
+
+<p>后来，有了一台<a href="http://guangchuangyu.github.io/categories/powerbook">powerbook</a>，却拿它来装<a href="http://guangchuangyu.github.io/2005/01/powerbook-g3%E4%B8%8A%E5%AE%89%E8%A3%85gentoo/">gentoo</a>和<a href="http://guangchuangyu.github.io/2006/06/%E5%AE%89%E8%A3%85os9%E5%92%8Cnetbsd%E5%8F%8C%E7%B3%BB%E7%BB%9F/">netbsd</a>。从那里候开始，基本上就只用Linux/BSD。</p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2012/03/installing-hackintosh/" rel="full-article">Read On &rarr;</a>
+              </footer>
           
 
         
@@ -197,8 +223,18 @@
       </header>
 
         
-          <p>The Chinese character Jiong (囧) is now widely used for expressing ideas or feelings such as annoyance, shock, embarrassment, awkwardness, scorn. The function plot of y=1/(x^2-1) looks very similar of this symbol. I use ggplot2 to draw the symbol of Jiong. It looks like: The function line is very easy to draw, but the options to hone this graph need some tricky tips. The source code for generating this plot can be found in github.</p>
+          <p><p>The Chinese character Jiong (囧) is now widely used for expressing ideas
+or feelings such as annoyance, shock, embarrassment, awkwardness, scorn.</p>
 
+<p>The function plot of <code>y=1/(x^2-1)</code> looks very similar of this symbol.</p>
+
+<p>I use ggplot2 to draw the symbol of Jiong.</p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/" rel="full-article">Read On &rarr;</a>
+              </footer>
           
 
         
@@ -221,8 +257,23 @@
       </header>
 
         
-          <p>ggplot2 0.9.0版本将在3月1号发布，改动较大，最近bioc mailing list也有诸多讨论，因为它导致了某些包编译出错（估计是NAMESPACE引起的）。 按照hadley的说法是这是为了把他个人的项目变成一个社区项目。 大多数的改动对用户来说是invisible的，用roxygen2去注释函数，核心代码使用S3重写，分离出一些特性（scales包）等。 最明显的是现在画图速度变快了，不过我觉得最让人兴奋的是guide_legend()和guide_colorbar()两个函数，可以修改legend. 画图的话，加了四个函数geom_map(), geom_raster(), geom_dotplot()和geom_violin(). violin plot结合了box plot和kernel density estimate，有了它，box plot基本可以扔了。</p>
+          <p><p>ggplot2 0.9.0版本将在3月1号发布，改动较大，最近bioc mailing
+list也有诸多讨论，因为它导致了某些包编译出错（估计是NAMESPACE引起的）。</p>
 
+<p>按照hadley的说法是这是为了把他个人的项目变成一个社区项目。</p>
+
+<p>大多数的改动对用户来说是invisible的，用roxygen2去注释函数，核心代码使用S3重写，分离出一些特性（scales包）等。</p>
+
+<p>最明显的是现在画图速度变快了，不过我觉得最让人兴奋的是<code>guide_legend()</code>和<code>guide_colorbar()</code>两个函数，可以修改legend.</p>
+
+<p>画图的话，加了四个函数<code>geom_map()</code>, <code>geom_raster()</code>,
+<code>geom_dotplot()</code>和<code>geom_violin()</code>.</p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2012/02/violin-plot/" rel="full-article">Read On &rarr;</a>
+              </footer>
           
 
         
@@ -245,7 +296,17 @@
       </header>
 
         
-          <p>In order to provide an option to compare graphs produced by basic internal plot function and ggplot2, I have recreated the figures in the book, 25 Recipes for Getting Started with R, with ggplot2. The code used to create the images is in separate paragraphs, allowing easy comparison. 1.16 Creating a Scatter Plot plot(cars) ggplot(cars,aes(speed,dist))+geom_point() 1.17 Creating a Bar Chart heights &lt;- tapply(airquality$Temp, airquality$Month, mean) par(mfrow=c(1,2)) barplot(heights) barplot(heights, main=&quot;Mean Temp. by Month&quot;, names.arg=c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;), ylab=&quot;Temp (deg.</p>
+          <p><p>In order to provide an option to compare graphs produced by basic
+internal plot function and ggplot2, I have recreated the figures in the
+book, <a href="http://book.douban.com/subject/5992544/">25 Recipes for Getting Started with
+R</a>, with ggplot2.</p>
+
+<p>The code used to create the images is in separate paragraphs, allowing
+easy comparison. <strong>1.16 Creating a Scatter Plot</strong></p>
+
+<pre><code>plot(cars)
+</code></pre>
+</p>
 
           
               <footer>

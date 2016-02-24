@@ -27,7 +27,7 @@ output by read.beast function. We can visualize the tree directly by
 using ggtree function. Since this is a time scale tree, we can set the
 parameter &lt;strong&gt;&lt;em&gt;mrsd&lt;/em&gt;&lt;/strong&gt; to most recent sampling date.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggplot2)
+&lt;pre&gt;&lt;code&gt;require(ggplot2)
 require(ggtree)
 x &amp;lt;- read.beast(&amp;quot;/Applications/FigTree/influenza.tree&amp;quot;)
 cols &amp;lt;- scale_color(x, by=&amp;quot;height&amp;quot;)
@@ -58,8 +58,9 @@ specific data such as bootstrap values, but they are restricted to a few
 supported data types. It is hard/impossible to inject user specific
 data.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;
-I decided to implement my own one by extending the ggplot2 package.
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I decided to implement my own one by extending the ggplot2 package.
 There are other R packages that implemented tree viewer using ggplot2,
 including OutbreakTools, phyloseq and ggphylo, but all of them only
 create complex tree view function for their specific needs. They are
@@ -69,7 +70,7 @@ packages. They lack of flexibilities of annotating phylogenetic tree by
 diverse user inputs. I develop ggtree, which is based on grammar of
 graphics and will takes all the good parts of ggplot2.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;nwk &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.nwk&amp;quot;, package = &amp;quot;ggtree&amp;quot;)
+&lt;pre&gt;&lt;code&gt;nwk &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.nwk&amp;quot;, package = &amp;quot;ggtree&amp;quot;)
 library(ape)
 tree &amp;lt;- read.tree(nwk)
 library(ggplot2)
@@ -87,7 +88,7 @@ layer to draw the tree.&lt;/p&gt;
 phylo4 that defined in phylobase and jplace that defined within the
 ggtree package.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p1 &amp;lt;- ggtree(tree) + ggtitle(&amp;quot;tree of phylo object&amp;quot;)
+&lt;pre&gt;&lt;code&gt;p1 &amp;lt;- ggtree(tree) + ggtitle(&amp;quot;tree of phylo object&amp;quot;)
 tr2 &amp;lt;- as(tree, &amp;quot;phylo4&amp;quot;)
 p2 &amp;lt;- ggtree(tr2) + ggtitle(&amp;quot;tree of phylo4 object&amp;quot;)
 jpf &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.jplace&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
@@ -133,7 +134,7 @@ F   HK  59.9
 &lt;p&gt;Suppose we have a tree view p, and input data dd, we can attach the data
 to the tree and add a layer of tip labels and colored by place.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p &amp;lt;- p %&amp;lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
+&lt;pre&gt;&lt;code&gt;p &amp;lt;- p %&amp;lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
 print(p)
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -142,7 +143,7 @@ print(p)
 &lt;p&gt;Once the data is attached, it is always attached, and we can add more
 layers easily.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
+&lt;pre&gt;&lt;code&gt;p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
   geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -155,8 +156,9 @@ layers easily.&lt;/p&gt;
 an easy to use and feature-riched package for viewing and annotating
 phylogenetic trees.&lt;/p&gt;
 
-&lt;p&gt;At last, wish you a merry christmas :)
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;At last, wish you a merry christmas :)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     

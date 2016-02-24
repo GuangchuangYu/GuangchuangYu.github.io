@@ -15,18 +15,18 @@
       <pubDate>Mon, 14 May 2007 04:43:00 +0800</pubDate>
       
       <guid>http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/</guid>
-      <description>&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#disklabel wd0
+      <description>&lt;pre&gt;&lt;code&gt;#disklabel wd0
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;可以看到原始分区如下: 7 partitions:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    #        size    offset     fstype [fsize bsize cpg/sgs]
-    a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
-    b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
-    c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
-    d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
-    e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
-    g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
+&lt;pre&gt;&lt;code&gt;#        size    offset     fstype [fsize bsize cpg/sgs]
+a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
+b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
+c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
+d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
+e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
+g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac
@@ -38,7 +38,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 &lt;p&gt;2. 安装hfsutils。用于操作那个15M的HFS分区（格式化，拷贝文件等工具）。hfsutils是命令行的，xhfs是tk界面的。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;    #cd /usr/pkgsrc/sysutils/hfsutils
+&lt;pre&gt;&lt;code&gt;    #cd /usr/pkgsrc/sysutils/hfsutils
     #make install
     #cd ../xhfs
     #make install
@@ -46,7 +46,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 &lt;p&gt;3.    分区 pdisk : Apple partition table editor&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;    # pdisk /dev/wd0c
+&lt;pre&gt;&lt;code&gt;    # pdisk /dev/wd0c
     pdisk /dev/wd0c
     Edit /dev/wd0c -
     Command (? for help): p
@@ -123,7 +123,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 &lt;p&gt;4. 改完分区后重新启动。此时netbsd的/分区已由10分区变为11分区，而硬盘上已经没有&lt;code&gt;ofwboot.xcf&lt;/code&gt;可用来启动系统。这个时候需要用到netbsd的安装盘，开机时按住&lt;code&gt;command+option+o+f&lt;/code&gt;四键。进入&lt;code&gt;openfirmwire&lt;/code&gt;。放入光盘，敲命令：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;boot
+&lt;pre&gt;&lt;code&gt;boot
 cd:,\ofwboot.xcf
 hd:11,/netbsd
 &lt;/code&gt;&lt;/pre&gt;
@@ -132,7 +132,7 @@ hd:11,/netbsd
 
 &lt;p&gt;5.    安装光盘启动。在&lt;code&gt;openfirmwire&lt;/code&gt;里敲&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;boot cd:,\ofwboot.xcf netbsd.macppc
+&lt;pre&gt;&lt;code&gt;boot cd:,\ofwboot.xcf netbsd.macppc
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;先择运行Shell. 查看分区&lt;/p&gt;
@@ -151,7 +151,7 @@ hd:11,/netbsd
 
 &lt;p&gt;原来的wd0g变成了wd0e,我也不知道为何。但是问题还是很好解决的。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/wd0a /mnt 
+&lt;pre&gt;&lt;code&gt;#mount /dev/wd0a /mnt 
 #chroot /mnt 
 ##修改fstab，改wd0g为wd0e
 #vi /etc/fstab 
@@ -160,7 +160,7 @@ hd:11,/netbsd
 
 &lt;p&gt;6. 返回第4步启动系统。正常启动后。由第5步disklabel中的输出知道，9分区是wd0d.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;## 将其格式化为hfs
+&lt;pre&gt;&lt;code&gt;## 将其格式化为hfs
 #hformat -l loader /dev/wd0d  
 $sudo xhfs
 &lt;/code&gt;&lt;/pre&gt;
@@ -171,7 +171,7 @@ $sudo xhfs
 
 &lt;p&gt;7.  改变home分区&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#newfs /dev/wd0g 
+&lt;pre&gt;&lt;code&gt;#newfs /dev/wd0g 
 #cd /home 
 ##打包用户数据，并保留原始权限
 #tar cjpvf ygc.tar.bz2 ygc     
@@ -224,7 +224,7 @@ $sudo xhfs
 &lt;p&gt;9.    重设openfirmwire
 修改后保存重启，进入&lt;code&gt;openfirmwire&lt;/code&gt;.使用&lt;code&gt;setenv&lt;/code&gt;命令重设启动的环境变量&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;setenv
+&lt;pre&gt;&lt;code&gt;setenv
 boot-device hd:9,\ofwboot.xcf hd:11,/netbsd 
 reset-all
 &lt;/code&gt;&lt;/pre&gt;
@@ -246,7 +246,7 @@ reset-all
 
 &lt;p&gt;新建的分区是wd0e&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#newfs /dev/wd0e 
+&lt;pre&gt;&lt;code&gt;#newfs /dev/wd0e 
 #chmod 777 /dev/wd0e      
 ##让用户对其有读写执行的权限 
 #chmod 777 /data ## 在/etc/fstab里添加：

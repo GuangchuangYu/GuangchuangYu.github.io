@@ -372,9 +372,7 @@ column of term ID and second column of corresponding term name.
 TERM2NAME is optional.&lt;/p&gt;
 
 &lt;p&gt;An example of using enricher and GSEA to analyze DisGeNet annotation is
-presented in the post, &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;use clusterProfiler as an universal enrichment
-analysis
-tool&lt;/a&gt;.&lt;/p&gt;
+presented in the post, &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;use clusterProfiler as an universal enrichment analysis tool&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;gmt-files:bdc631894cab1e81ad84e5406d79b479&#34;&gt;GMT files&lt;/h3&gt;
 
@@ -505,8 +503,7 @@ head(summary(gsegmt))
       <guid>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</guid>
       <description>
 
-&lt;p&gt;Thanks &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; for raising &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/31&#34;&gt;the
-issue&lt;/a&gt; to me
+&lt;p&gt;Thanks &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; for raising &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/31&#34;&gt;the issue&lt;/a&gt; to me
 and his efforts in benchmarking
 &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
 
@@ -540,8 +537,7 @@ GSEA algorithm.&lt;/p&gt;
 
 &lt;h3 id=&#34;clusterprofiler-supports-gmt-file:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler supports GMT file&lt;/h3&gt;
 
-&lt;p&gt;Currently clusterProfiler supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;user&amp;rsquo;s own
-annotations&lt;/a&gt;
+&lt;p&gt;Currently clusterProfiler supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;user&amp;rsquo;s own annotations&lt;/a&gt;
 via &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; functions which require users provide their
 own annotation in a &lt;em&gt;data.frame&lt;/em&gt;. This is a general interface for using
 user&amp;rsquo;s own annotation.&lt;/p&gt;
@@ -556,7 +552,7 @@ clusterProfiler.&lt;/p&gt;
 further comparison. I have packed the file into clusterProfiler, so that
 users can use it for testing/practice.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; gmtfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;c5.cc.v5.0.entrez.gmt&amp;quot;, 
+&lt;pre&gt;&lt;code&gt;&amp;gt; gmtfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;c5.cc.v5.0.entrez.gmt&amp;quot;, 
                          package=&amp;quot;clusterProfiler&amp;quot;)
 ## only 207K.
 ## It&#39;s indeed a tiny subset of CC.
@@ -567,7 +563,7 @@ users can use it for testing/practice.&lt;/p&gt;
 
 &lt;h4 id=&#34;hypergeometric-test-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;hypergeometric test with GMT annotation&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; require(clusterProfiler)
+&lt;pre&gt;&lt;code&gt;&amp;gt; require(clusterProfiler)
 &amp;gt; data(geneList, package=&amp;quot;DOSE&amp;quot;)
 &amp;gt; de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
 &amp;gt; head(de)
@@ -587,7 +583,7 @@ CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
 
 &lt;h4 id=&#34;gene-set-enrichment-analysis-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;gene set enrichment analysis with GMT annotation&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; y &amp;lt;- GSEA(geneList, TERM2GENE=c5)
+&lt;pre&gt;&lt;code&gt;&amp;gt; y &amp;lt;- GSEA(geneList, TERM2GENE=c5)
 &amp;gt; head(summary(y)[, -c(1,2)], 2)
                           setSize enrichmentScore       NES      pvalue
 EXTRACELLULAR_REGION          401      -0.3860230 -1.694322 0.001237624
@@ -604,7 +600,7 @@ same input.&lt;/p&gt;
 
 &lt;p&gt;First of all, I export &lt;em&gt;geneList&lt;/em&gt; to a &lt;em&gt;rnk&lt;/em&gt; file.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(geneList, package=&amp;quot;DOSE&amp;quot;)
+&lt;pre&gt;&lt;code&gt;data(geneList, package=&amp;quot;DOSE&amp;quot;)
 d=data.frame(gene=names(geneList), FC=geneList)
 write.table(d, row.names=F,col.names=F, quote=F, file=&amp;quot;geneList.rnk&amp;quot;, sep=&amp;quot;\t&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
@@ -635,7 +631,7 @@ param   set_max 500
 
 &lt;p&gt;Re-run clusterProfiler::GSEA with pvalueCutoff=1.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;g &amp;lt;- read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+&lt;pre&gt;&lt;code&gt;g &amp;lt;- read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
 xx &amp;lt;- GSEA(geneList, TERM2GENE=c5, nPerm=1000, pvalueCutoff=1)
 gy = merge(g, summary(xx), by.x=&amp;quot;NAME&amp;quot;, by.y=&amp;quot;ID&amp;quot;)
 ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
@@ -644,8 +640,7 @@ ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
 &lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10757414/e8d4f490-7ce5-11e5-9027-1dbe81e66329.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now the comparison tells! clusterProfiler indeed produce smaller
-pvalues. As I said in &lt;a href=&#34;http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/&#34;&gt;why clusterProfiler
-fails&lt;/a&gt;, in
+pvalues. As I said in &lt;a href=&#34;http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/&#34;&gt;why clusterProfiler fails&lt;/a&gt;, in
 general software produce more conservative result is more trustable.
 This is indeed an issue I couldn&amp;rsquo;t omit.&lt;/p&gt;
 
@@ -668,8 +663,7 @@ correct. As presented in
 al&lt;/em&gt;, the distribution of ES is bimodal. Positive and negative ES values
 should be separated when calculating pvalues.&lt;/p&gt;
 
-&lt;p&gt;After I changed the &lt;a href=&#34;https://github.com/GuangchuangYu/DOSE/commit/12a35b7ff31d3dfd51d81d0f6a6e1afaa24a9823&#34;&gt;source
-code&lt;/a&gt;,
+&lt;p&gt;After I changed the &lt;a href=&#34;https://github.com/GuangchuangYu/DOSE/commit/12a35b7ff31d3dfd51d81d0f6a6e1afaa24a9823&#34;&gt;source code&lt;/a&gt;,
 the pvalues generated by clusterProfiler::GSEA and GSEA-P are almost
 identical.&lt;/p&gt;
 
@@ -692,7 +686,7 @@ topology, the result can&amp;rsquo;t contain any pvalue=0.&lt;/p&gt;
 
 &lt;h4 id=&#34;clusterprofiler-test-whole-gene-set-collections:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler test whole gene set collections&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; g=read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
+&lt;pre&gt;&lt;code&gt;&amp;gt; g=read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
 &amp;gt; dim(g)
 [1] 56 12
 &amp;gt; yy = summary(xx)
@@ -706,7 +700,7 @@ topology, the result can&amp;rsquo;t contain any pvalue=0.&lt;/p&gt;
 &lt;p&gt;GSEA-P didn&amp;rsquo;t filter result by pvalues, as it reported pvalues ranging
 from 0 to 1.&lt;/p&gt;
 
-&lt;p&gt;We cut our result by setSize in [15, 500] as default parameter of
+&lt;p&gt;We cut our result by setSize in $[15, 500]$ as default parameter of
 GSEA-P.&lt;/p&gt;
 
 &lt;p&gt;clusterProfiler tests all the gene sets while GSEA-P only tests a
@@ -738,7 +732,7 @@ one representative term. To make this feature available to
 users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
 output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(clusterProfiler)
+&lt;pre&gt;&lt;code&gt;require(clusterProfiler)
 data(geneList, package=&amp;quot;DOSE&amp;quot;)
 de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
 bp &amp;lt;- enrichGO(de, ont=&amp;quot;BP&amp;quot;)
@@ -824,16 +818,14 @@ import this function.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;merge_result&lt;/em&gt; function was implemented for merging enrichment results
 and then the results can be visualized simultaneously for comparison.
-This function was developed for comparing &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/&#34;&gt;functional enrichment of GTEx
-paper&lt;/a&gt;.
+This function was developed for comparing &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/&#34;&gt;functional enrichment of GTEx paper&lt;/a&gt;.
 An example of comparing results from
 &lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
 and DAVID can be found in
 &lt;a href=&#34;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler/blob/master/GO_BP.md&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;A section &amp;lsquo;Functional analysis of NGS data&amp;rsquo; was added in the vignette.
-&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;The blog
-post&lt;/a&gt;
+&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;The blog post&lt;/a&gt;
 illustrated using &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; function to analyze user defined
 annotation.&lt;/p&gt;
 
@@ -847,8 +839,7 @@ was imported to
 &lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
 and &lt;a href=&#34;http://www.bioconductor.org/packages/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;With new release of ChIPseeker, DOSE can be applied to &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/&#34;&gt;NGS
-data&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;With new release of ChIPseeker, DOSE can be applied to &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/&#34;&gt;NGS data&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Several bugs were removed and small improvement were incorporated.&lt;/p&gt;
 
@@ -881,8 +872,7 @@ contributed by
 &lt;a href=&#34;https://support.bioconductor.org/p/70432/#70545&#34;&gt;@hpages&lt;/a&gt;. Now
 annotating a BED file of size about 1GB only take several minutes.&lt;/p&gt;
 
-&lt;p&gt;An issue of BED file that using &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/&#34;&gt;the 0-based coordinate
-system&lt;/a&gt; was fixed.&lt;/p&gt;
+&lt;p&gt;An issue of BED file that using &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/&#34;&gt;the 0-based coordinate system&lt;/a&gt; was fixed.&lt;/p&gt;
 
 &lt;p&gt;GEO data information was updated, now ChIPseeker contains more than
 18,000 BED file information. User can compare their own data with those
@@ -895,17 +885,13 @@ that maybe cooperated with the one we are interested in.&lt;/p&gt;
 &lt;p&gt;My major focus in the past half year is on developing
 &lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt;.
 &lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; has a lot of
-changes. Some of the updates can be found in &lt;a href=&#34;http://bioconductor.org/help/newsletters/2015_October/&#34;&gt;Bioconductor
-Newsletter&lt;/a&gt;
+changes. Some of the updates can be found in &lt;a href=&#34;http://bioconductor.org/help/newsletters/2015_October/&#34;&gt;Bioconductor Newsletter&lt;/a&gt;
 (Oct. 2015). In addition, I would like to emphasize the
 &lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/08/subview/&#34;&gt;subview&lt;/a&gt;&lt;/em&gt; function which works
-fine with all the ggplot objects and was applied to &lt;a href=&#34;http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396&#34;&gt;plot pie graph on a
-map&lt;/a&gt;.&lt;/p&gt;
+fine with all the ggplot objects and was applied to &lt;a href=&#34;http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396&#34;&gt;plot pie graph on a map&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; can be fun by
-using &lt;a href=&#34;http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/&#34;&gt;symbolic fonts&lt;/a&gt;, &lt;a href=&#34;http://guangchuangyu.github.io/2015/09/comic-phylogenetic-tree-with-ggtree-and-comicr/&#34;&gt;cartoonize the tree&lt;/a&gt;
-or annotating the tree &lt;a href=&#34;http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/&#34;&gt;with
-emoji&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; can be fun by using &lt;a href=&#34;http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/&#34;&gt;symbolic fonts&lt;/a&gt;, &lt;a href=&#34;http://guangchuangyu.github.io/2015/09/comic-phylogenetic-tree-with-ggtree-and-comicr/&#34;&gt;cartoonize the tree&lt;/a&gt;
+or annotating the tree &lt;a href=&#34;http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/&#34;&gt;with emoji&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;There are many updates that based on the github version of ggplot2.
 Since the new features of ggplot2 are currently not available in CRAN. I
@@ -958,8 +944,9 @@ Windows platform specific.&lt;/p&gt;
 
 &lt;p&gt;AND I found that there are many &amp;lsquo;\\&amp;rsquo; in the source code.&lt;/p&gt;
 
-&lt;p&gt;So I gave up to try this package and reinvented the wheel.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/d71871092d85a7f557ae85f529a0b73d6eeda5c9/MISC/evolution_of_the_wheel_by_echoes93-d4owse1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;So I gave up to try this package and reinvented the wheel.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/d71871092d85a7f557ae85f529a0b73d6eeda5c9/MISC/evolution_of_the_wheel_by_echoes93-d4owse1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It&amp;rsquo;s not difficult to implement a &lt;em&gt;seq2gene&lt;/em&gt; function using internal
 functions already available in my package
@@ -994,8 +981,7 @@ version 1.1.2, access date 21 Aug, 2015&lt;/p&gt;
       <pubDate>Thu, 13 Aug 2015 05:44:27 +0800</pubDate>
       
       <guid>http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/</guid>
-      <description>&lt;p&gt;The ENCODE consortium has recently published &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pubmed/25954002&#34;&gt;a great
-paper&lt;/a&gt; on Gene Expression
+      <description>&lt;p&gt;The ENCODE consortium has recently published &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pubmed/25954002&#34;&gt;a great paper&lt;/a&gt; on Gene Expression
 from the GTEx dataset. A criticism raised on
 &lt;a href=&#34;https://pubpeer.com/publications/EB99BD086B27075CFF5278F1CEAA57&#34;&gt;pubpeer&lt;/a&gt;
 is that the gene ontology enrichment analysis was done with DAVID which
@@ -1053,8 +1039,7 @@ immune responses are related to high splicing variability.&lt;/p&gt;
 &lt;p&gt;For more detail please refer to github repository,
 &lt;a href=&#34;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&#34;&gt;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler&lt;/a&gt;,
 which contains rmarkdown source file to reproduce the results. You can
-try &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;other annotation data and also GSEA to explore
-GTEx&lt;/a&gt;.&lt;/p&gt;
+try &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;other annotation data and also GSEA to explore GTEx&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
@@ -1064,8 +1049,7 @@ GTEx&lt;/a&gt;.&lt;/p&gt;
       <pubDate>Tue, 23 Jun 2015 05:37:09 +0800</pubDate>
       
       <guid>http://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result/</guid>
-      <description>&lt;p&gt;This is a &lt;a href=&#34;http://guangchuangyu.github.io//2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;feature
-request&lt;/a&gt;
+      <description>&lt;p&gt;This is a &lt;a href=&#34;http://guangchuangyu.github.io//2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;feature request&lt;/a&gt;
 from
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
 user. It&amp;rsquo;s similar to what I implemented in
@@ -1077,7 +1061,7 @@ actually similar to traditional barplot, with dot position as bar height
 and dot color as bar color. But dotplot can represent one more feature
 nicely by dot size and it can be a good alternative to barplot.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(DOSE)
+&lt;pre&gt;&lt;code&gt;library(DOSE)
 deg = names(geneList)[abs(geneList) &amp;gt; 1]
 do = enrichDO(deg)
 dotplot(do, showCategory=20)
@@ -1088,7 +1072,7 @@ dotplot(do, showCategory=20)
 &lt;p&gt;We can set the x-axis to use gene count and dot color by one of
 &amp;lsquo;pvalue&amp;rsquo;, &amp;lsquo;p.adjust&amp;rsquo; or &amp;lsquo;qvalue&amp;rsquo;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;dotplot(do, x=&amp;quot;count&amp;quot;, showCategory=20, colorBy=&amp;quot;qvalue&amp;quot;)
+&lt;pre&gt;&lt;code&gt;dotplot(do, x=&amp;quot;count&amp;quot;, showCategory=20, colorBy=&amp;quot;qvalue&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/Bioconductor/DOSE/dotplot_count.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
@@ -1108,14 +1092,9 @@ and
       <guid>http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
 supports enrichment analysis of both hypergeometric test and gene set
-enrichment analysis. It internally supports &lt;a href=&#34;http://geneontology.org/&#34;&gt;Gene
-Ontology&lt;/a&gt; analysis of about 20 species, &lt;a href=&#34;http://www.genome.jp/kegg/&#34;&gt;Kyoto
-Encyclopedia of Genes and Genomes (KEGG)&lt;/a&gt;
-with all species that have annotation available in KEGG database, &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID
-annotation&lt;/a&gt; (only
-hypergeometric test supported), &lt;a href=&#34;http://disease-ontology.org/&#34;&gt;Disease
-Ontology&lt;/a&gt; and &lt;a href=&#34;http://ncg.kcl.ac.uk/&#34;&gt;Network of Cancer
-Genes&lt;/a&gt; (via
+enrichment analysis. It internally supports &lt;a href=&#34;http://geneontology.org/&#34;&gt;Gene Ontology&lt;/a&gt; analysis of about 20 species, &lt;a href=&#34;http://www.genome.jp/kegg/&#34;&gt;Kyoto Encyclopedia of Genes and Genomes (KEGG)&lt;/a&gt;
+with all species that have annotation available in KEGG database, &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID annotation&lt;/a&gt; (only
+hypergeometric test supported), &lt;a href=&#34;http://disease-ontology.org/&#34;&gt;Disease Ontology&lt;/a&gt; and &lt;a href=&#34;http://ncg.kcl.ac.uk/&#34;&gt;Network of Cancer Genes&lt;/a&gt; (via
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;
 for human) and &lt;a href=&#34;http://www.reactome.org/&#34;&gt;Reactome Pathway&lt;/a&gt; (via
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;
@@ -1124,8 +1103,9 @@ analyze their data with unsupported organisms, &lt;a href=&#34;http://geneontolo
 GO&lt;/a&gt;, novel
 functional annotation (eg GO via &lt;a href=&#34;https://www.blast2go.com/&#34;&gt;blastgo&lt;/a&gt;
 and KEGG via &lt;a href=&#34;http://www.genome.jp/tools/kaas/&#34;&gt;KAAS&lt;/a&gt;), unsupported
-ontology/pathway or customized annotation.
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+ontology/pathway or customized annotation.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
 provides &lt;em&gt;enricher&lt;/em&gt; function for hypergeometric test and &lt;em&gt;GSEA&lt;/em&gt; function
 for gene set enrichment analysis that are designed to accept user
 defined annotation. They accept two additional parameters TERM2GENE and
@@ -1133,12 +1113,14 @@ TERM2NAME. As indicated in the parameter names, TERM2GENE is a
 data.frame with first column of term ID and second column of
 corresponding mapped gene and TERM2NAME is a data.frame with first
 column of term ID and second column of corresponding term name.
-TERM2NAME is optional. Here I used
+TERM2NAME is optional.&lt;/p&gt;
+
+&lt;p&gt;Here I used
 &lt;a href=&#34;http://www.disgenet.org/web/DisGeNET/menu/home&#34;&gt;DisGeNET&lt;/a&gt; which
 contains 381056 associations, between 16666 genes and 13172 diseases, as
 an example to demonstrate the usage of &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; functions.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;&amp;gt; require(DOSE)
+&lt;pre&gt;&lt;code&gt;&amp;gt; require(DOSE)
 &amp;gt; require(clusterProfiler)
 &amp;gt; data(geneList)
 &amp;gt; deg &amp;lt;- names(geneList)[abs(geneList)&amp;gt;2]
@@ -1209,7 +1191,7 @@ umls:C0600139    56
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/855c87b1b1387307a5dbd93f233957e7a37e7d30/2015/DisGeNET_barplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; y = GSEA(geneList, TERM2GENE=disease2gene, TERM2NAME=disease2name)
+&lt;pre&gt;&lt;code&gt;&amp;gt; y = GSEA(geneList, TERM2GENE=disease2gene, TERM2NAME=disease2name)
 &amp;gt; head(summary(y))
                          ID           Description setSize enrichmentScore
 umls:C0001418 umls:C0001418        Adenocarcinoma    1224       0.2431172
@@ -1250,8 +1232,9 @@ was first implemented in &lt;a href=&#34;http://guangchuangyu.github.io/2008/08/
 and published in
 &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/26/7/976&#34;&gt;Bioinformatics&lt;/a&gt;
 in 2010. It&amp;rsquo;s now a mature package with no bugs found in the past half
-year. Only vignette and Information content data were updated.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/a9ed4c29e8f66c07de917937694d7f43933d4fe5/Bioconductor/GOSemSim/gosemsim_stats.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+year. Only vignette and Information content data were updated.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/a9ed4c29e8f66c07de917937694d7f43933d4fe5/Bioconductor/GOSemSim/gosemsim_stats.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;clusterprofiler:d7b2a91b2c7afdf12777a4b5cd75c8f0&#34;&gt;clusterProfiler&lt;/h3&gt;
 
@@ -1262,13 +1245,10 @@ published in
 &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;OMICS&lt;/a&gt; in
 2012. I am very glad to find that
 &lt;a href=&#34;www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
-was presented in the book &amp;lsquo;&lt;a href=&#34;https://www.safaribooksonline.com/library/view/bioinformatics-with-r/9781783283132/ch02s08.html&#34;&gt;Bioinformatics with R
-Cookbook&lt;/a&gt;&amp;lsquo;:
+was presented in the book &amp;lsquo;&lt;a href=&#34;https://www.safaribooksonline.com/library/view/bioinformatics-with-r/9781783283132/ch02s08.html&#34;&gt;Bioinformatics with R Cookbook&lt;/a&gt;&amp;lsquo;:
 In this release, KEGG enrichment analysis (both hypergeometric and GSEA)
-now supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;using latest online
-data&lt;/a&gt;
-and &lt;a href=&#34;http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/&#34;&gt;DAVID functional
-analysis&lt;/a&gt;
+now supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;using latest online data&lt;/a&gt;
+and &lt;a href=&#34;http://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler/&#34;&gt;DAVID functional analysis&lt;/a&gt;
 is also supported. In addition, compareCluster function now supports
 &lt;a href=&#34;http://bioinfoblog.it/2015/02/a-formula-interface-for-geneontology-analysis/&#34;&gt;formula
 interface&lt;/a&gt;
@@ -1292,20 +1272,16 @@ was first released in
 published in
 &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btu684&#34;&gt;Bioinformatics&lt;/a&gt;
 on February 2015. An example of applying DOSE for disease ontology
-enrichment analysis can be found in &lt;a href=&#34;http://www.sciencedirect.com/science/article/pii/S0002929714002626&#34;&gt;Genome-wide Identification and
-Characterization of Fixed Human-Specific Regulatory
-Regions&lt;/a&gt;.
+enrichment analysis can be found in &lt;a href=&#34;http://www.sciencedirect.com/science/article/pii/S0002929714002626&#34;&gt;Genome-wide Identification and Characterization of Fixed Human-Specific Regulatory Regions&lt;/a&gt;.
 Besides,
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;
-also supports &lt;a href=&#34;http://bioinfoblog.it/2015/04/ncg-enrichment-implemented-in-dose/&#34;&gt;Network of Cancer Genes
-database&lt;/a&gt;.&lt;/p&gt;
+also supports &lt;a href=&#34;http://bioinfoblog.it/2015/04/ncg-enrichment-implemented-in-dose/&#34;&gt;Network of Cancer Genes database&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;reactomepa:d7b2a91b2c7afdf12777a4b5cd75c8f0&#34;&gt;ReactomePA&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;
 was developed in 2012 when KEGG is no longer available in public domain.
-In BioC 3.0, reactome.db has &lt;a href=&#34;https://support.bioconductor.org/p/63024/&#34;&gt;a lot of
-issues&lt;/a&gt;. Until the early of
+In BioC 3.0, reactome.db has &lt;a href=&#34;https://support.bioconductor.org/p/63024/&#34;&gt;a lot of issues&lt;/a&gt;. Until the early of
 this April, Bioconductor restored reactome.db in Bioc 3.0 to Bioc 2.14.
 This issue affects ReactomePA several months and was removed in BioC
 3.1.&lt;/p&gt;
@@ -1315,13 +1291,9 @@ This issue affects ReactomePA several months and was removed in BioC
 &lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34;&gt;ChIPseeker&lt;/a&gt;
 was developed in
 &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/&#34;&gt;2014&lt;/a&gt;,
-after I found a &lt;a href=&#34;http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/&#34;&gt;bug of
-ChIPpeakAnno&lt;/a&gt;
-package. Many new features were added thereafter, including &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;several
-visualization
-methods&lt;/a&gt;,
-&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34;&gt;multiple
-annotations&lt;/a&gt;,
+after I found a &lt;a href=&#34;http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/&#34;&gt;bug of ChIPpeakAnno&lt;/a&gt;
+package. Many new features were added thereafter, including &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;several visualization methods&lt;/a&gt;,
+&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34;&gt;multiple annotations&lt;/a&gt;,
 ChIP-peak comparison and data mining with GEO database. ChIPseeker has
 been published in
 &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btv145&#34;&gt;Bioinformatics&lt;/a&gt;.
@@ -1329,21 +1301,18 @@ In this release, several minor bugs were fixed, a new parameter
 &lt;em&gt;genomicAnnotationPriority&lt;/em&gt; was added in &lt;em&gt;annotatePeak&lt;/em&gt; and
 &lt;em&gt;plotAvgProf&lt;/em&gt; supports estimating confidence interval as shown below:
 &lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/dd399ab1d2287d0c7fee1009abf3b1b95553c73a/2015/Screenshot%202015-03-30%2020.09.44.png&#34; alt=&#34;&#34; /&gt;
-This CI estimation feature was contributed by &lt;a href=&#34;https://github.com/Puriney&#34;&gt;Yan
-Yun&lt;/a&gt;.
+This CI estimation feature was contributed by &lt;a href=&#34;https://github.com/Puriney&#34;&gt;Yan Yun&lt;/a&gt;.
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34;&gt;ChIPseeker&lt;/a&gt;
 works fine with other ChIP-seq related tools as demonstrated in the
-&lt;a href=&#34;http://compbio.ucdenver.edu/Hunter_lab/Phang/resources/Tzu-Software/ChIPseq.Analysis.html&#34;&gt;ChIPseq Analysis
-workflow&lt;/a&gt;.
-It has also been presented in &lt;a href=&#34;http://physiology.med.cornell.edu/faculty/elemento/lab/data/courses/2014/CSHLseq/ChIP-seq.pdf&#34;&gt;2014 CSHLseq
-course&lt;/a&gt;
-and &lt;a href=&#34;https://github.com/Bioconductor/UseBioconductor/blob/master/vignettes/F_ChIPSeq.Rmd&#34;&gt;2015 Use Bioconductor
-course&lt;/a&gt;.&lt;/p&gt;
+&lt;a href=&#34;http://compbio.ucdenver.edu/Hunter_lab/Phang/resources/Tzu-Software/ChIPseq.Analysis.html&#34;&gt;ChIPseq Analysis workflow&lt;/a&gt;.
+It has also been presented in &lt;a href=&#34;http://physiology.med.cornell.edu/faculty/elemento/lab/data/courses/2014/CSHLseq/ChIP-seq.pdf&#34;&gt;2014 CSHLseq course&lt;/a&gt;
+and &lt;a href=&#34;https://github.com/Bioconductor/UseBioconductor/blob/master/vignettes/F_ChIPSeq.Rmd&#34;&gt;2015 Use Bioconductor course&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;ggtree:d7b2a91b2c7afdf12777a4b5cd75c8f0&#34;&gt;ggtree&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.27.png&#34; alt=&#34;&#34; /&gt;
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.27.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;
 was developed on &lt;a href=&#34;http://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/&#34;&gt;December 2014&lt;/a&gt;,
 when I got tired of annotating tree by modifying node labels. This
 release (version=1.0.0) is the first release, output of many common
@@ -1363,24 +1332,27 @@ to find out more and I can guarantee that you won&amp;rsquo;t be disappointed.&l
       <description>&lt;p&gt;&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; was
 used to visualize &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt;
 results in a paper published in &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3907017/&#34;&gt;BMC
-Genomics&lt;/a&gt;.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;
-Some users told me that they may want to use DAVID at some
+Genomics&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Some users told me that they may want to use DAVID at some
 circumstances. I think it maybe a good idea to make clusterProfiler
 supports DAVID, so that
 &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt; users can use
 visualization functions provided by
 &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(DOSE)
+&lt;pre&gt;&lt;code&gt;require(DOSE)
 require(clusterProfiler)
 data(geneList)
 gene = names(geneList)[abs(geneList) &amp;gt; 2]
 david = enrichDAVID(gene = gene, idType=&amp;quot;ENTREZ_GENE_ID&amp;quot;, 
-                    listType=&amp;quot;Gene&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
+listType=&amp;quot;Gene&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
 
-&lt;pre&gt;&lt;code&gt;&amp;gt; summary(david)
+
+
+&amp;gt; summary(david)
                ID            Description GeneRatio  BgRatio       pvalue
 hsa04110 hsa04110             Cell cycle     11/68 125/5085 4.254437e-06
 hsa04114 hsa04114         Oocyte meiosis     10/68 110/5085 1.119764e-05
@@ -1398,35 +1370,35 @@ hsa03320     7
 &lt;p&gt;There are only 5085 human genes annotated by KEGG, this is due to
 out-of-date DAVID data.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;barplot(david)
+&lt;pre&gt;&lt;code&gt;barplot(david)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.10.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;cnetplot(david, foldChange=geneList)
+&lt;pre&gt;&lt;code&gt;cnetplot(david, foldChange=geneList)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.45.png&#34; alt=&#34;&#34; /&gt;
 With enrichDAVID, compare DAVID functional profiles among different gene
 clusters is also supported.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(gcSample)
+&lt;pre&gt;&lt;code&gt;data(gcSample)
 x=compareCluster(gcSample, fun=&amp;quot;enrichDAVID&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
 plot(x)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/compareCluster_david.png&#34; alt=&#34;&#34; /&gt;
-As I pointed out in &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG enrichment analysis with latest online data
-using
-clusterProfiler&lt;/a&gt;,
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/compareCluster_david.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As I pointed out in &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG enrichment analysis with latest online data using clusterProfiler&lt;/a&gt;,
 there are many webservers using out of date data. This may leads to
 different interpretation of biological results. DAVID&amp;rsquo;s data is also out
 of date. DAVID stopped updating database since 2010. This is why I love
 Bioconductor, almost all the annotation packages are maintained by
 Bioconductor core team and will be updated biannual. enrichGO and
 enrichKEGG is more reliable with more updated data than many other
-tools.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+tools.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1440,18 +1412,17 @@ tools.
 
 &lt;p&gt;&lt;em&gt;KEGG.db&lt;/em&gt; is not updated since 2012. The data is now pretty old, but
 many of the Bioconductor packages still using it for KEGG annotation and
-enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological
-databases&lt;/a&gt;&amp;rsquo;,
+enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological databases&lt;/a&gt;&amp;rsquo;,
 there is a problem that many out of date biological databases often
 don&amp;rsquo;t get offline. This issue also exists in web-server or software that
 using out-of-date data. For example, the
 &lt;a href=&#34;http://wego.genomics.org.cn/cgi-bin/wego/index.pl&#34;&gt;WEGO&lt;/a&gt; web-server
 stopped updating GO annotation data since 2009, and WEGO still online
-with &lt;a href=&#34;https://scholar.google.com.hk/scholar?as_ylo=2015&amp;amp;hl=en&amp;amp;as_sdt=0,5&amp;amp;sciodt=0,5&amp;amp;cites=13025429171853466135&amp;amp;scipsc=&#34;&gt;many people using
-it&lt;/a&gt;.
+with &lt;a href=&#34;https://scholar.google.com.hk/scholar?as_ylo=2015&amp;amp;hl=en&amp;amp;as_sdt=0,5&amp;amp;sciodt=0,5&amp;amp;cites=13025429171853466135&amp;amp;scipsc=&#34;&gt;many people using it&lt;/a&gt;.
 The biological story may changed totally if using a recently updated
-data. Seriously, We should keep an eye on this issue. Now &lt;em&gt;enrichKEGG&lt;/em&gt;
-function is reloaded with a new parameter &lt;em&gt;use_internal_data&lt;/em&gt;. This
+data. Seriously, We should keep an eye on this issue.&lt;/p&gt;
+
+&lt;p&gt;Now &lt;em&gt;enrichKEGG&lt;/em&gt; function is reloaded with a new parameter &lt;em&gt;use_internal_data&lt;/em&gt;. This
 parameter is by default setting to FALSE, and &lt;em&gt;enrichKEGG&lt;/em&gt; function will
 download the latest KEGG data for enrichment analysis. If the parameter
 &lt;em&gt;use_internal_data&lt;/em&gt; is explicitly setting to TRUE, it will use the
@@ -1476,7 +1447,7 @@ available and it may also introduce unexpected bugs.&lt;/p&gt;
 
 &lt;h3 id=&#34;example-1-using-online-kegg-annotation:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;library(DOSE)
+&lt;pre&gt;&lt;code&gt;library(DOSE)
 data(geneList)
 de &amp;lt;- names(geneList)[geneList &amp;gt; 1]
 
@@ -1528,12 +1499,11 @@ for mapping gene ID to Symbol.&lt;/p&gt;
 
 &lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
 
-&lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34;&gt;Streptococcus pneumoniae
-D39&lt;/a&gt;
+&lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34;&gt;Streptococcus pneumoniae D39&lt;/a&gt;
 to demonstrate using &lt;em&gt;enrichKEGG&lt;/em&gt; with species that are not supported
 previously.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; gene
+&lt;pre&gt;&lt;code&gt;&amp;gt; gene
  [1] &amp;quot;SPD_0065&amp;quot; &amp;quot;SPD_0071&amp;quot; &amp;quot;SPD_0293&amp;quot; &amp;quot;SPD_0295&amp;quot; &amp;quot;SPD_0296&amp;quot; &amp;quot;SPD_0297&amp;quot;
  [7] &amp;quot;SPD_0327&amp;quot; &amp;quot;SPD_0426&amp;quot; &amp;quot;SPD_0427&amp;quot; &amp;quot;SPD_0428&amp;quot; &amp;quot;SPD_0559&amp;quot; &amp;quot;SPD_0560&amp;quot;
 [13] &amp;quot;SPD_0561&amp;quot; &amp;quot;SPD_0562&amp;quot; &amp;quot;SPD_0580&amp;quot; &amp;quot;SPD_0789&amp;quot; &amp;quot;SPD_1046&amp;quot; &amp;quot;SPD_1047&amp;quot;
@@ -1595,7 +1565,7 @@ an old version of clusterProfiler which didn&amp;rsquo;t use &lt;em&gt;as.charac
 coerce the input&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(GeneAnswers)
+&lt;pre&gt;&lt;code&gt;require(GeneAnswers)
 data(&#39;humanGeneInput&#39;)
 y &amp;lt;- geneAnswersBuilder(humanGeneInput, &#39;org.Hs.eg.db&#39;, 
                         categoryType=&#39;KEGG&#39;, testType=&#39;hyperG&#39;, 
@@ -1631,7 +1601,7 @@ geometric model, I believe all packages do it in the same way. The
 difference should be attributed to annotation file and I found
 background ratio are different.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;&amp;gt; xx[1,]
+&lt;pre&gt;&lt;code&gt;&amp;gt; xx[1,]
                ID Description GeneRatio  BgRatio     pvalue   p.adjust
 hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
              qvalue                      geneID Count
@@ -1756,10 +1726,7 @@ Bioconductor project. The source code and vignette are freely available
 at
 &lt;a href=&#34;http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Yu, Guangchuang, Li-Gen Wang, Yanyan Han, and Qing-Yu He.
-&lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: An R Package for Comparing Biological Themes Among
-Gene
-Clusters&lt;/a&gt;.
+&lt;p&gt;Yu, Guangchuang, Li-Gen Wang, Yanyan Han, and Qing-Yu He. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: An R Package for Comparing Biological Themes Among Gene Clusters&lt;/a&gt;.
 OMICS: A Journal of Integrative Biology 16, no. 5 (May 2012): 284–287.&lt;/p&gt;
 </description>
     </item>

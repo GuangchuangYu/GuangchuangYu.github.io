@@ -41,29 +41,29 @@ cd:,\\ofwboot.xcf netbsd.macppc
 
 &lt;p&gt;引导netbsd安装光盘， 进入sysinst主菜单。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    .***********************************************.
-    * NetBSD-3.0 Install System                     *
-    *                                               *
-    *&amp;gt;a: Install NetBSD to hard disk                *
-    * b: Upgrade NetBSD on a hard disk              *
-    * c: Re-install sets or install additional sets *
-    * d: Reboot the computer                        *
-    * e: Utility menu                               *
-    * x: Exit Install System                        *
-    .***********************************************.
+&lt;pre&gt;&lt;code&gt;.***********************************************.
+* NetBSD-3.0 Install System                     *
+*                                               *
+*&amp;gt;a: Install NetBSD to hard disk                *
+* b: Upgrade NetBSD on a hard disk              *
+* c: Re-install sets or install additional sets *
+* d: Reboot the computer                        *
+* e: Utility menu                               *
+* x: Exit Install System                        *
+.***********************************************.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;选择Utility menu运行shell，运行&lt;code&gt;pdisk
 /dev/wd0c&lt;/code&gt;修改分区，将第二，三，四个分区的partition 
 type改为&lt;code&gt;Apple_UNIX_SVR2&lt;/code&gt;，并分别给标签a,b,g。保存退出。创建文件系统。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#newfs ffs /dev/wd0a 
+&lt;pre&gt;&lt;code&gt;#newfs ffs /dev/wd0a 
 #newfs ffs /dev/wd0g
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;创建fstab&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/wd0a /mnt 
+&lt;pre&gt;&lt;code&gt;#mount /dev/wd0a /mnt 
 #mkdir /mnt/etc 
 #cat &amp;gt; /mnt/etc/fstab 
 
@@ -74,7 +74,7 @@ type改为&lt;code&gt;Apple_UNIX_SVR2&lt;/code&gt;，并分别给标签a,b,g。�
 
 &lt;p&gt;按&lt;code&gt;Control+D&lt;/code&gt;结束。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mkdir /home 
+&lt;pre&gt;&lt;code&gt;#mkdir /home 
 #cd / 
 #umount /mnt 
 #exit
@@ -83,7 +83,7 @@ type改为&lt;code&gt;Apple_UNIX_SVR2&lt;/code&gt;，并分别给标签a,b,g。�
 &lt;p&gt;回到主菜单,选择重新安装。选择安装组件以及安装介质。安装程序将软件包解压到&lt;code&gt;/dev/wd0a&lt;/code&gt;后，回到主菜单，选择Utility
 menu并运行shell，&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/wd0a 
+&lt;pre&gt;&lt;code&gt;#mount /dev/wd0a 
 #cd /mnt/dev 
 #sh MAKEDEV all
 &lt;/code&gt;&lt;/pre&gt;
@@ -91,7 +91,7 @@ menu并运行shell，&lt;/p&gt;
 &lt;p&gt;      
 创建设备节点 &lt;code&gt;#cd /mnt/dev&lt;/code&gt; 修改rc.conf 确定&lt;code&gt;rc_configured=YES&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /
+&lt;pre&gt;&lt;code&gt;#cd /
 #umount /mnt 
 #exit 
 &lt;/code&gt;&lt;/pre&gt;
@@ -111,7 +111,7 @@ firmware`:&lt;/p&gt;
 
 &lt;p&gt;拷一些字体到&lt;code&gt;\~/BackUP/fonts&lt;/code&gt;下，&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$cd \~/BackUP/fonts 
+&lt;pre&gt;&lt;code&gt;$cd \~/BackUP/fonts 
 $mkfontscale &amp;gt; fonts.scale 
 $cp fonts.scale fonts.dir 
 $cd \~ 
@@ -121,29 +121,29 @@ $ln -s ~/Backup/fonts .fonts
 &lt;p&gt;修改&lt;code&gt;/etc/X11/XF86Config&lt;/code&gt;
 添加&lt;code&gt;&amp;lt;dir&amp;gt;/home/ygc/BackUP/fonts&amp;lt;/dir&amp;gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;##create index of font files... 
+&lt;pre&gt;&lt;code&gt;##create index of font files... 
 $fc-cache -v
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装fcitx&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /usr/pkgsrc/inputmethod/fcitx 
+&lt;pre&gt;&lt;code&gt;#cd /usr/pkgsrc/inputmethod/fcitx 
 #make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装qvwm&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /usr/pkgsrc/wm/qvwm 
+&lt;pre&gt;&lt;code&gt;#cd /usr/pkgsrc/wm/qvwm 
 #make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;在&lt;code&gt;\~/.xinitrc&lt;/code&gt;中加入&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;export LC\_CTYPE=&amp;quot;zh\_CN.eucCN&amp;quot; 
+&lt;pre&gt;&lt;code&gt;export LC\_CTYPE=&amp;quot;zh\_CN.eucCN&amp;quot; 
 export XMODIFIERS=&amp;quot;@im=fcitx&amp;quot; 
 fcitx &amp;amp; 
 exec qvwm
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;OK startx&amp;hellip;&lt;/p&gt;
 

@@ -117,7 +117,41 @@
       </header>
 
         
-          <p>KEGG.db is not updated since 2012. The data is now pretty old, but many of the Bioconductor packages still using it for KEGG annotation and enrichment analysis. As pointed out in &lsquo;Are there too many biological databases&rsquo;, there is a problem that many out of date biological databases often don&rsquo;t get offline. This issue also exists in web-server or software that using out-of-date data. For example, the WEGO web-server stopped updating GO annotation data since 2009, and WEGO still online with many people using it.</p>
+          <p><p><em>KEGG.db</em> is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &lsquo;<a href="http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases">Are there too many biological databases</a>&rsquo;,
+there is a problem that many out of date biological databases often
+don&rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+<a href="http://wego.genomics.org.cn/cgi-bin/wego/index.pl">WEGO</a> web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with <a href="https://scholar.google.com.hk/scholar?as_ylo=2015&amp;hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&amp;cites=13025429171853466135&amp;scipsc=">many people using it</a>.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue.</p>
+
+<p>Now <em>enrichKEGG</em> function is reloaded with a new parameter <em>use_internal_data</em>. This
+parameter is by default setting to FALSE, and <em>enrichKEGG</em> function will
+download the latest KEGG data for enrichment analysis. If the parameter
+<em>use_internal_data</em> is explicitly setting to TRUE, it will use the
+<em>KEGG.db</em> which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+<a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a> Now the <em>organism</em>
+parameter in <em>enrichKEGG</em> should be abbreviation of academic name, for
+example &lsquo;hsa&rsquo; for human and &lsquo;mmu&rsquo; for mouse. It accepts any species
+listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a>. In the
+current release version of
+<a href="http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html">clusterProfiler</a>
+(in Bioconductor 3.0), <em>enrichKEGG</em> supports about 20 species, and the
+<em>organism</em> parameter accept common name of species, for instance &ldquo;human&rdquo;
+and &ldquo;mouse&rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+<a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">clusterProfiler</a>.
+For other species, common name is not supported, since I don&rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.</p>
+</p>
 
           
               <footer>
@@ -145,8 +179,17 @@
       </header>
 
         
-          <p>I am very glad that ggtree is now available via Bioconductor. This is my 6th Bioconductor package. ggtree now supports parsing output files from BEAST, PAML, HYPHY, EPA and PPLACER and can annotate phylogenetic tree directly using plot methods. Now you can use the following command to install ggtree: install.packages(&quot;ggtree&quot;, repos = &quot;http://www.bioconductor.org/packages/devel/bioc&quot;, type = &quot;source&quot;) Find out more at http://www.bioconductor.org/packages/3.1/bioc/html/ggtree.html and check out the vignette, http://www.bioconductor.org/packages/3.1/bioc/vignettes/ggtree/inst/doc/ggtree.html</p>
+          <p><p>I am very glad that <a href="http://guangchuangyu.github.io/2014/12/ggtree/">ggtree</a> is now
+available via Bioconductor. This is my 6th Bioconductor package.
+<a href="http://guangchuangyu.github.io/2014/12/ggtree/">ggtree</a> now supports parsing output
+files from BEAST, PAML, HYPHY, EPA and PPLACER and can annotate
+phylogenetic tree directly using plot methods.</p>
+</p>
 
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/" rel="full-article">Read On &rarr;</a>
+              </footer>
           
 
         
@@ -169,7 +212,15 @@
       </header>
 
         
-          <p>When I need to annotate nucleotide substitutions in the phylogenetic tree, I found that all the software are designed to display the tree but not annotating it. Some of them may support annotating the tree with specific data such as bootstrap values, but they are restricted to a few supported data types. It is hard/impossible to inject user specific data. I decided to implement my own one by extending the ggplot2 package.</p>
+          <p><p>When I need to annotate nucleotide substitutions in the phylogenetic
+tree, I found that all the software are designed to display the tree but
+not annotating it. Some of them may support annotating the tree with
+specific data such as bootstrap values, but they are restricted to a few
+supported data types. It is hard/impossible to inject user specific
+data.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/12/2014-12-21-145753_579x436_scrot.png" alt="" /></p>
+</p>
 
           
               <footer>
@@ -197,7 +248,13 @@
       </header>
 
         
-          <p>One day, I am looking for R packages that can analyze PPI and after searching, I found the ppiPre package in CRAN. The function of this package is not impressive, and I already knew some related works, including http://intscore.molgen.mpg.de/. The authors of this webserver contacted me for the usages of GOSemSim when they developing it. What makes me curious is that the ppiPre package can calculate GO semantic similarity and supports 20 species exactly like GOSemSim.</p>
+          <p><p>One day, I am looking for R packages that can analyze PPI and after
+searching, I found the
+<a href="http://cran.r-project.org/web/packages/ppiPre/index.html">ppiPre</a>
+package in CRAN.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/11/2014-11-22-215959_895x256_scrot.png" alt="" /></p>
+</p>
 
           
               <footer>
@@ -225,7 +282,17 @@
       </header>
 
         
-          <p>Installing OS is painful, you need to re-install all the software and configure them to the way you want. We don&rsquo;t want to wast time in doing this. To prevent doing this dirty job, we perform an upgrade install instead of clean install. We all have experience of upgrading Windows sucks, same as OS X. All the issues you have in old system will be remained, and sometimes new issues will be introduced in the process of upgrading.</p>
+          <p><p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/11/Screenshot-2014-11-11-14.07.45.png" alt="" /></p>
+
+<p>Installing OS is painful, you need to re-install all the software and
+configure them to the way you want. We don&rsquo;t want to wast time in doing
+this. To prevent doing this dirty job, we perform an upgrade install
+instead of clean install. We all have experience of upgrading Windows
+sucks, <a href="http://osxdaily.com/2014/10/17/os-x-yosemite-installation-stuck/">same as OS X</a>.
+All the issues you have in old system will be remained, and sometimes
+new issues will be introduced in the process of upgrading. The system
+will be slower compare to clean install one.</p>
+</p>
 
           
               <footer>
@@ -253,7 +320,18 @@
       </header>
 
         
-          <p>Nearest gene annotation Almost all annotation software calculate the distance of a peak to the nearest TSS and assign the peak to that gene. This can be misleading, as binding sites might be located between two start sites of different genes or hit different genes which have the same TSS location in the genome. The function annotatePeak provides option to assign genes with a max distance cutoff and all genes within this distance were reported for each peak.</p>
+          <p><h3 id="nearest-gene-annotation:211662300f8731372460bacaae7937b5">Nearest gene annotation</h3>
+
+<p>Almost all annotation software calculate the distance of a peak to the
+nearest TSS and assign the peak to that gene. This can be misleading, as
+binding sites might be located between two start sites of different
+genes or hit different genes which have the same TSS location in the
+genome.</p>
+
+<p>The function <em>annotatePeak</em> provides option to assign genes with a max
+distance cutoff and all genes within this distance were reported for
+each peak.</p>
+</p>
 
           
               <footer>

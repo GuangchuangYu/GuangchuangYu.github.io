@@ -144,29 +144,29 @@ cd:,\\ofwboot.xcf netbsd.macppc
 
 <p>引导netbsd安装光盘， 进入sysinst主菜单。</p>
 
-<pre><code>    .***********************************************.
-    * NetBSD-3.0 Install System                     *
-    *                                               *
-    *&gt;a: Install NetBSD to hard disk                *
-    * b: Upgrade NetBSD on a hard disk              *
-    * c: Re-install sets or install additional sets *
-    * d: Reboot the computer                        *
-    * e: Utility menu                               *
-    * x: Exit Install System                        *
-    .***********************************************.
+<pre><code>.***********************************************.
+* NetBSD-3.0 Install System                     *
+*                                               *
+*&gt;a: Install NetBSD to hard disk                *
+* b: Upgrade NetBSD on a hard disk              *
+* c: Re-install sets or install additional sets *
+* d: Reboot the computer                        *
+* e: Utility menu                               *
+* x: Exit Install System                        *
+.***********************************************.
 </code></pre>
 
 <p>选择Utility menu运行shell，运行<code>pdisk
 /dev/wd0c</code>修改分区，将第二，三，四个分区的partition 
 type改为<code>Apple_UNIX_SVR2</code>，并分别给标签a,b,g。保存退出。创建文件系统。</p>
 
-<pre><code class="language-shell">#newfs ffs /dev/wd0a 
+<pre><code>#newfs ffs /dev/wd0a 
 #newfs ffs /dev/wd0g
 </code></pre>
 
 <p>创建fstab</p>
 
-<pre><code class="language-shell">#mount /dev/wd0a /mnt 
+<pre><code>#mount /dev/wd0a /mnt 
 #mkdir /mnt/etc 
 #cat &gt; /mnt/etc/fstab 
 
@@ -177,7 +177,7 @@ type改为<code>Apple_UNIX_SVR2</code>，并分别给标签a,b,g。保存退出�
 
 <p>按<code>Control+D</code>结束。</p>
 
-<pre><code class="language-shell">#mkdir /home 
+<pre><code>#mkdir /home 
 #cd / 
 #umount /mnt 
 #exit
@@ -186,7 +186,7 @@ type改为<code>Apple_UNIX_SVR2</code>，并分别给标签a,b,g。保存退出�
 <p>回到主菜单,选择重新安装。选择安装组件以及安装介质。安装程序将软件包解压到<code>/dev/wd0a</code>后，回到主菜单，选择Utility
 menu并运行shell，</p>
 
-<pre><code class="language-shell">#mount /dev/wd0a 
+<pre><code>#mount /dev/wd0a 
 #cd /mnt/dev 
 #sh MAKEDEV all
 </code></pre>
@@ -194,7 +194,7 @@ menu并运行shell，</p>
 <p>      
 创建设备节点 <code>#cd /mnt/dev</code> 修改rc.conf 确定<code>rc_configured=YES</code></p>
 
-<pre><code class="language-shell">#cd /
+<pre><code>#cd /
 #umount /mnt 
 #exit 
 </code></pre>
@@ -214,7 +214,7 @@ firmware`:</p>
 
 <p>拷一些字体到<code>\~/BackUP/fonts</code>下，</p>
 
-<pre><code class="language-shell">$cd \~/BackUP/fonts 
+<pre><code>$cd \~/BackUP/fonts 
 $mkfontscale &gt; fonts.scale 
 $cp fonts.scale fonts.dir 
 $cd \~ 
@@ -224,29 +224,29 @@ $ln -s ~/Backup/fonts .fonts
 <p>修改<code>/etc/X11/XF86Config</code>
 添加<code>&lt;dir&gt;/home/ygc/BackUP/fonts&lt;/dir&gt;</code></p>
 
-<pre><code class="language-shell">##create index of font files... 
+<pre><code>##create index of font files... 
 $fc-cache -v
 </code></pre>
 
 <p>安装fcitx</p>
 
-<pre><code class="language-shell">#cd /usr/pkgsrc/inputmethod/fcitx 
+<pre><code>#cd /usr/pkgsrc/inputmethod/fcitx 
 #make install
 </code></pre>
 
 <p>安装qvwm</p>
 
-<pre><code class="language-shell">#cd /usr/pkgsrc/wm/qvwm 
+<pre><code>#cd /usr/pkgsrc/wm/qvwm 
 #make install
 </code></pre>
 
 <p>在<code>\~/.xinitrc</code>中加入</p>
 
-<p><code>export LC\_CTYPE=&quot;zh\_CN.eucCN&quot; 
+<pre><code>export LC\_CTYPE=&quot;zh\_CN.eucCN&quot; 
 export XMODIFIERS=&quot;@im=fcitx&quot; 
 fcitx &amp; 
 exec qvwm
-</code></p>
+</code></pre>
 
 <p>OK startx&hellip;</p>
 

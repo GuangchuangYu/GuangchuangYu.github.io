@@ -132,17 +132,17 @@ X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里�
 <p>自从用了Homebrew之后，再也不用为系统里有两套perl和python而crazy了，之前通过<a href="http://guangchuangyu.github.io/2011/06/screen-shot/">pkgsrc装的软件</a>全删掉，改Homebrew来安装和管理。
 如果软件没有被pkgsrc收录，而想通过pkgsrc来管理的话，那就得自己<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">写makefile</a>，而homebrew，则可以自动帮你生成Formula，比如我要安装<a href="http://users.soe.ucsc.edu/~kent/src/">blat</a>：</p>
 
-<pre><code class="language-lang=&quot;bash&quot;">brew create http://users.soe.ucsc.edu/~kent/src/blatSrc35.zip
+<pre><code>brew create http://users.soe.ucsc.edu/~kent/src/blatSrc35.zip
 </code></pre>
 
 <p>当然有可能需要编辑一下：</p>
 
-<pre><code class="language-lang=&quot;bash&quot;">brew edit blat
+<pre><code>brew edit blat
 </code></pre>
 
 <p>大多数情况下，并不需要修改，创建了formula之后，就可以使用homebrew安装。</p>
 
-<pre><code class="language-lang=&quot;bash&quot;">brew install blat
+<pre><code>brew install blat
 </code></pre>
 
 <h2 id="emacs:a0d2dabbee19e6fccf2cd8eeaa0e67d0">Emacs</h2>
@@ -152,7 +152,7 @@ X设计的，但它毕竟不是苹果的东西，无法管理系统内置的程�
 X自带Emacs，版本22，已经很老了，而且没有图形界面，为了方便管理和升级，只能把系统自带的删掉，用Homebrew来安装新版的Emacs-24.3，安装时使用参数&ndash;cocoa，使得emacs能够识别OS
 X的keybinding，创建链接到Applications下，这样可以在Applications中双击运行。</p>
 
-<pre><code class="language-lang=&quot;bash&quot;">rm /usr/bin/emacs
+<pre><code>rm /usr/bin/emacs
 rm -rf /usr/share/emacs
 brew install --cocoa emacs
 ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/
@@ -162,7 +162,7 @@ ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/
 
 <p>在.emacs.d目录下新建site-lisp目录，用于放置各种第三方的包，在.emacs里加入：</p>
 
-<pre><code class="language-lang=&quot;lisp&quot;">(let ((default-directory &quot;~/.emacs.d/site-lisp/&quot;))
+<pre><code>(let ((default-directory &quot;~/.emacs.d/site-lisp/&quot;))
   (normal-top-level-add-subdirs-to-load-path))
 </code></pre>
 
@@ -174,7 +174,7 @@ ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/
 
 <p>eshell并不使用.bash_profile中定义的PATH，好在eshell中内置addpath程序，可以非常方便地把路径加入到PATH中去。</p>
 
-<pre><code class="language-lang=&quot;bash&quot;">~ $ addpath 
+<pre><code>~ $ addpath 
 /usr/bin/
 /bin/
 /usr/sbin/
@@ -189,7 +189,7 @@ ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/
 
 <p>要想永久性把改变PATH变量，还是需要把它加入到.emacs中去。</p>
 
-<pre><code class="language-lang=&quot;lisp&quot;">(setenv &quot;PATH&quot; (concat &quot;/usr/local/bin:&quot; (getenv &quot;PATH&quot;)))
+<pre><code>(setenv &quot;PATH&quot; (concat &quot;/usr/local/bin:&quot; (getenv &quot;PATH&quot;)))
 (setq exec-path (append exec-path '(&quot;/usr/local/bin&quot; &quot;/opt/bin&quot;)))
 </code></pre>
 
@@ -197,7 +197,7 @@ ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/
 
 <p>安装<a href="http://www.nongnu.org/color-theme/">color-theme</a>，放在.emacs.d/site-lisp下，在.emacs里加入：</p>
 
-<pre><code class="language-lang=&quot;lisp&quot;">(require 'color-theme)
+<pre><code>(require 'color-theme)
 (color-theme-initialize)
 (color-theme-robin-hood)
 </code></pre>
@@ -219,7 +219,7 @@ Macsyma，自此该软件被称作Maxima。</p>
 
 <p>另一个必备是<code>ESS</code>，可以在emacs调用R，解压放在.emacs.d/site-lisp下，在.emacs里加入：</p>
 
-<pre><code class="language-lang=&quot;lisp&quot;">(require 'ess-site)
+<pre><code>(require 'ess-site)
 </code></pre>
 
 <p>ESS在我心中，完胜RStudio，唯一不足的是画图时要弹窗口，如果能够像<code>imaxima</code>一样，在emacs
@@ -230,7 +230,7 @@ plot</a>就完美了。</p>
 
 <p><a href="http://jblevins.org/projects/markdown-mode/">Markdown-mode</a>让emacs支持markdown语法，安装之后，需要在.emacs中加入：</p>
 
-<pre><code class="language-lang=&quot;lisp&quot;">;; markdown mode
+<pre><code>;; markdown mode
 (autoload 'markdown-mode &quot;markdown-mode&quot;
   &quot;Major mode for editing Markdown files&quot; t)
 (add-to-list 'auto-mode-alist '(&quot;\\.text\\'&quot; . markdown-mode))

@@ -127,8 +127,7 @@ Wilkinson在他的著作《<a href="http://book.douban.com/subject/10123863/">Th
 Graphics</a>》中提出了一套图形语法，把图形元素抽象成可以自由组合的成分，Hadley
 Wickham把这套想法在R中实现。</p>
 
-<p>为什么要学习ggplot2，可以参考<a href="http://book.douban.com/subject/24527091/">ggplot2:
-数据分析与图形艺术</a>的<a href="https://github.com/cosname/ggplot2-translation/blob/master/preface.md">序言</a>（btw:
+<p>为什么要学习ggplot2，可以参考<a href="http://book.douban.com/subject/24527091/">ggplot2: 数据分析与图形艺术</a>的<a href="https://github.com/cosname/ggplot2-translation/blob/master/preface.md">序言</a>（btw:
 在序言的最后，我被致谢了）。</p>
 
 <p>Hadley
@@ -154,7 +153,7 @@ Wickham是学医出身的，做为学生物出身的人有什么理由不支持�
 
 <p>下面以一份钻石的数据为例，这份数据非常大，随机取一个子集来画图。</p>
 
-<pre><code class="language-r">require(ggplot2)
+<pre><code>require(ggplot2)
 data(diamonds)
 set.seed(42)
 small &lt;- diamonds[sample(nrow(diamonds), 1000), ]
@@ -170,7 +169,7 @@ head(small)
 ## 27998  0.30   Premium     E     VS2  61.7    58   658 4.32 4.34 2.67
 </code></pre>
 
-<pre><code class="language-r">summary(small)
+<pre><code>summary(small)
 </code></pre>
 
 <pre><code>##      carat              cut      color      clarity        depth     
@@ -201,12 +200,12 @@ head(small)
 
 <p>画图实际上是把数据中的变量映射到图形属性上。以克拉(carat)数为X轴变量，价格(price)为Y轴变量。</p>
 
-<pre><code class="language-r">p &lt;- ggplot(data = small, mapping = aes(x = carat, y = price))
+<pre><code>p &lt;- ggplot(data = small, mapping = aes(x = carat, y = price))
 </code></pre>
 
 <p>上面这行代码把数据映射XY坐标轴上，需要告诉ggplot2，这些数据要映射成什么样的几何对象，下面以散点为例：</p>
 
-<pre><code class="language-r">p + geom_point()
+<pre><code>p + geom_point()
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig1.png" alt="" /></p>
@@ -215,14 +214,15 @@ head(small)
 
 <p>如果想将切工（cut）映射到形状属性。只需要：</p>
 
-<pre><code class="language-r">p &lt;- ggplot(data=small, mapping=aes(x=carat, y=price, shape=cut))
+<pre><code>p &lt;- ggplot(data=small, mapping=aes(x=carat, y=price, shape=cut))
 p+geom_point()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig2.png" alt="" />
-再比如我想将钻石的颜色（color）映射颜色属性：</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig2.png" alt="" /></p>
 
-<pre><code class="language-r">p &lt;- ggplot(data=small, mapping=aes(x=carat, y=price, shape=cut, colour=color))
+<p>再比如我想将钻石的颜色（color）映射颜色属性：</p>
+
+<pre><code>p &lt;- ggplot(data=small, mapping=aes(x=carat, y=price, shape=cut, colour=color))
 p+geom_point()
 </code></pre>
 
@@ -236,7 +236,7 @@ p+geom_point()
 
 <p>不同的几何对象，要求的属性会有些不同，这些属性也可以在几何对象映射时提供，比如上一图，也可以用以下语法来画：</p>
 
-<pre><code class="language-r">p &lt;- ggplot(small)
+<pre><code>p &lt;- ggplot(small)
 p+geom_point(aes(x=carat, y=price, shape=cut, colour=color))
 </code></pre>
 
@@ -246,26 +246,28 @@ p+geom_point(aes(x=carat, y=price, shape=cut, colour=color))
 
 <p><strong>直方图</strong> 直方图最容易，提供一个x变量，画出数据的分布。</p>
 
-<pre><code class="language-r">ggplot(small)+geom_histogram(aes(x=price))
+<pre><code>ggplot(small)+geom_histogram(aes(x=price))
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig4.png" alt="" /></p>
 
 <p>同样可以根据另外的变量给它填充颜色，比如按不同的切工：</p>
 
-<pre><code class="language-r">ggplot(small)+geom_histogram(aes(x=price, fill=cut))
+<pre><code>ggplot(small)+geom_histogram(aes(x=price, fill=cut))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig5.png" alt="" />
-也可以将其分开，side-by-side地画直方图。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig5.png" alt="" /></p>
 
-<pre><code class="language-r">ggplot(small)+geom_histogram(aes(x=price, fill=cut), position=&quot;dodge&quot;)
+<p>也可以将其分开，side-by-side地画直方图。</p>
+
+<pre><code>ggplot(small)+geom_histogram(aes(x=price, fill=cut), position=&quot;dodge&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig6.png" alt="" />
-还可以使用position=&ldquo;fill&rdquo;，按照相对比例来画。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig6.png" alt="" /></p>
 
-<pre><code class="language-r">ggplot(small)+geom_histogram(aes(x=price, fill=cut), position=&quot;fill&quot;)
+<p>还可以使用position=&ldquo;fill&rdquo;，按照相对比例来画。</p>
+
+<pre><code>ggplot(small)+geom_histogram(aes(x=price, fill=cut), position=&quot;fill&quot;)
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig7.png" alt="" /></p>
@@ -273,15 +275,16 @@ p+geom_point(aes(x=carat, y=price, shape=cut, colour=color))
 <p><strong>柱状图</strong>
 柱状图非常适合于画分类变量。在这里以透明度（clarity）变量为例。按照不同透明度的钻石的数目画柱状图。</p>
 
-<pre><code class="language-r">ggplot(small)+geom_bar(aes(x=clarity))
+<pre><code>ggplot(small)+geom_bar(aes(x=clarity))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig8.png" alt="" />
-柱状图两个要素，一个是分类变量，一个是数目，也就是柱子的高度。数目在这里不用提供，因为ggplot2会通过x变量计算各个分类的数目。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig8.png" alt="" /></p>
+
+<p>柱状图两个要素，一个是分类变量，一个是数目，也就是柱子的高度。数目在这里不用提供，因为ggplot2会通过x变量计算各个分类的数目。</p>
 
 <p>当然你想提供也是可以的，通过stat参数，可以让geom_bar按指定高度画图，比如以下代码：</p>
 
-<pre><code class="language-r">ggplot()+geom_bar(aes(x=c(LETTERS[1:3]),y=1:3), stat=&quot;identity&quot;)
+<pre><code>ggplot()+geom_bar(aes(x=c(LETTERS[1:3]),y=1:3), stat=&quot;identity&quot;)
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig24.png" alt="" /></p>
@@ -293,27 +296,29 @@ p+geom_point(aes(x=carat, y=price, shape=cut, colour=color))
 <p><strong>密度函数图</strong>
 说到直方图，就不得不说密度函数图，数据和映射和直方图是一样的，唯一不同的是几何对象，geom_histogram告诉ggplot要画直方图，而geom_density则说我们要画密度函数图，在我们熟悉前面语法的情况下，很容易画出：</p>
 
-<pre><code class="language-r">ggplot(small)+geom_density(aes(x=price, colour=cut))
+<pre><code>ggplot(small)+geom_density(aes(x=price, colour=cut))
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig9.png" alt="" /></p>
 
-<pre><code class="language-r">ggplot(small)+geom_density(aes(x=price,fill=clarity))
+<pre><code>ggplot(small)+geom_density(aes(x=price,fill=clarity))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig10.png" alt="" />
-colour参数指定的是曲线的颜色，而fill是往曲线下面填充颜色。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig10.png" alt="" /></p>
+
+<p>colour参数指定的是曲线的颜色，而fill是往曲线下面填充颜色。</p>
 
 <p><strong>箱式图</strong>
-数据量比较大的时候，用直方图和密度函数图是表示数据分布的好方法，而在数据量较少的时候，比如很多的生物实验，很多时候大家都是使用柱状图+errorbar的形式来表示，不过这种方法的信息量非常低，被<a href="http://guangchuangyu.github.io/2014/03/boxplot/">Nature
-Methods吐槽</a>，这种情况推荐使用boxplot。</p>
+数据量比较大的时候，用直方图和密度函数图是表示数据分布的好方法，而在数据量较少的时候，比如很多的生物实验，很多时候大家都是使用柱状图+errorbar的形式来表示，不过这种方法的信息量非常低，被<a href="http://guangchuangyu.github.io/2014/03/boxplot/">Nature Methods吐槽</a>，这种情况推荐使用boxplot。</p>
 
-<pre><code class="language-r">ggplot(small)+geom_boxplot(aes(x=cut, y=price,fill=color))
+<pre><code>ggplot(small)+geom_boxplot(aes(x=cut, y=price,fill=color))
 </code></pre>
 
-<p>geom_boxplot将数据映射到箱式图上，上面的代码，我们应该很熟悉了，按切工(cut)分类，对价格(price)变量画箱式图，再分开按照color变量填充颜色。
-<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig11.png" alt="" />
-ggplot2提供了很多的geom_xxx函数，可以满足我们对各种图形绘制的需求。</p>
+<p>geom_boxplot将数据映射到箱式图上，上面的代码，我们应该很熟悉了，按切工(cut)分类，对价格(price)变量画箱式图，再分开按照color变量填充颜色。</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig11.png" alt="" /></p>
+
+<p>ggplot2提供了很多的geom_xxx函数，可以满足我们对各种图形绘制的需求。</p>
 
 <pre><code>geom_abline     geom_area   
 geom_bar        geom_bin2d
@@ -340,21 +345,23 @@ geom_vline
 
 <p>前面我们已经看到了，画图就是在做映射，不管是映射到不同的几何对象上，还是映射各种图形属性。这一小节介绍标尺，在对图形属性进行映射之后，使用标尺可以控制这些属性的显示方式，比如坐标刻度，可能通过标尺，将坐标进行对数变换；比如颜色属性，也可以通过标尺，进行改变。</p>
 
-<pre><code class="language-r">ggplot(small)+geom_point(aes(x=carat, y=price, shape=cut, colour=color))+scale_y_log10()+scale_colour_manual(values=rainbow(7))
+<pre><code>ggplot(small)+geom_point(aes(x=carat, y=price, shape=cut, colour=color))+scale_y_log10()+scale_colour_manual(values=rainbow(7))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig12.png" alt="" />
-以数据（Data）和映射（Mapping)一节中所画散点图为例，将Y轴坐标进行log10变换，再自己定义颜色为彩虹色。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig12.png" alt="" /></p>
+
+<p>以数据（Data）和映射（Mapping)一节中所画散点图为例，将Y轴坐标进行log10变换，再自己定义颜色为彩虹色。</p>
 
 <h3 id="统计变换-statistics:c38c63fac86d2290b6bc01da39216614">统计变换（Statistics）</h3>
 
 <p>统计变换对原始数据进行某种计算，然后在图上表示出来，例如对散点图上加一条回归线。</p>
 
-<pre><code class="language-r">ggplot(small, aes(x=carat, y=price))+geom_point()+scale_y_log10()+stat_smooth()
+<pre><code>ggplot(small, aes(x=carat, y=price))+geom_point()+scale_y_log10()+stat_smooth()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig13.png" alt="" />
-这里就不按颜色、切工来分了，不然ggplot会按不同的分类变量分别做回归，图就很乱，如果我们需要这样做，我们可以使用分面，这个将在后面介绍。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig13.png" alt="" /></p>
+
+<p>这里就不按颜色、切工来分了，不然ggplot会按不同的分类变量分别做回归，图就很乱，如果我们需要这样做，我们可以使用分面，这个将在后面介绍。</p>
 
 <p>这里，aes所提供的参数，就通过ggplot提供，而不是提供给geom_point，因为ggplot里的参数，相当于全局变量，geom_point()和stat_smooth()都知道x,y的映射，如果只提供给geom_point()，则相当于是局部变量，geom_point知道这种映射，而stat_smooth不知道，当然你再给stat_smooth也提供x,y的映射，不过共用的映射，还是提供给ggplot好。
 ggplot2提供了多种统计变换方式：</p>
@@ -368,9 +375,7 @@ stat_boxplot      stat_hline        stat_sum          stat_ydensity
 </code></pre>
 
 <p>统计变换是非常重要的功能，我们可以自己写函数，基于原始数据做某种计算，并在图上表现出来，也可以通过它改变geom_xxx函数画图的默认统计参数。
-比如我在<a href="http://www.sciencedirect.com/science/article/pii/S1874391912007567">Proteomic investigation of the interactome of FMNL1 in
-hematopoietic cells unveils a role in calcium-dependent membrane
-plasticity</a>的图一中，就把boxplot的中位线替换成了平均值来作图。</p>
+比如我在<a href="http://www.sciencedirect.com/science/article/pii/S1874391912007567">Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity</a>的图一中，就把boxplot的中位线替换成了平均值来作图。</p>
 
 <h3 id="坐标系统-coordinante:c38c63fac86d2290b6bc01da39216614">坐标系统（Coordinante）</h3>
 
@@ -378,27 +383,30 @@ plasticity</a>的图一中，就把boxplot的中位线替换成了平均值来�
 
 <p>坐标轴翻转由coord_flip()实现</p>
 
-<pre><code class="language-r">ggplot(small)+geom_bar(aes(x=cut, fill=cut))+coord_flip()
+<pre><code>ggplot(small)+geom_bar(aes(x=cut, fill=cut))+coord_flip()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig14.png" alt="" />
-而转换成极坐标可以由coord_polar()实现：</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig14.png" alt="" /></p>
 
-<pre><code class="language-r">ggplot(small)+geom_bar(aes(x=factor(1), fill=cut))+coord_polar(theta=&quot;y&quot;)
+<p>而转换成极坐标可以由coord_polar()实现：</p>
+
+<pre><code>ggplot(small)+geom_bar(aes(x=factor(1), fill=cut))+coord_polar(theta=&quot;y&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2.fig15.png" alt="" />
-这也是为什么之前介绍常用图形画法时没有提及饼图的原因，饼图实际上就是柱状图，只不过是使用极坐标而已，柱状图的高度，对应于饼图的弧度，饼图并不推荐，因为人类的眼睛比较弧度的能力比不上比较高度（柱状图）</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2.fig15.png" alt="" /></p>
+
+<p>这也是为什么之前介绍常用图形画法时没有提及饼图的原因，饼图实际上就是柱状图，只不过是使用极坐标而已，柱状图的高度，对应于饼图的弧度，饼图并不推荐，因为人类的眼睛比较弧度的能力比不上比较高度（柱状图）</p>
 
 <p>还可以画靶心图：</p>
 
-<pre><code class="language-r">ggplot(small)+geom_bar(aes(x=factor(1), fill=cut))+coord_polar()
+<pre><code>ggplot(small)+geom_bar(aes(x=factor(1), fill=cut))+coord_polar()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig16.png" alt="" />
-以及风玫瑰图(windrose)</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig16.png" alt="" /></p>
 
-<pre><code class="language-r">ggplot(small)+geom_bar(aes(x=clarity, fill=cut))+coord_polar()
+<p>以及风玫瑰图(windrose)</p>
+
+<pre><code>ggplot(small)+geom_bar(aes(x=clarity, fill=cut))+coord_polar()
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig17.png" alt="" /></p>
@@ -414,7 +422,7 @@ plasticity</a>的图一中，就把boxplot的中位线替换成了平均值来�
 <p>做为图层的一个很好的例子是<a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">蝙蝠侠logo</a>，batman
 logo由6个函数组成，在下面的例子中，我先画第一个函数，之后再加一个图层画第二个函数，不断重复这一过程，直到六个函数全部画好。</p>
 
-<pre><code class="language-r">require(ggplot2)
+<pre><code>require(ggplot2)
 f1 &lt;- function(x) {
     y1 &lt;- 3*sqrt(1-(x/7)^2)
     y2 &lt;- -3*sqrt(1-(x/7)^2)
@@ -484,13 +492,12 @@ multiplot(p1,p2,p3,p4,p5,p6, cols=2)
 
 <h3 id="分面-facet:c38c63fac86d2290b6bc01da39216614">分面（Facet）</h3>
 
-<p>在《<a href="http://book.douban.com/subject/24527091/">ggplot2:
-数据分析与图形艺术</a>》一书的翻译中，一开始译者把facet翻译成切片，我在校稿的时候发现了，给他们写信，推荐翻译成分面，如果是slice这个词，翻译成切片倒是很精准，BSD的硬盘分区就叫slice，但facet从词源上看就是小脸的意思，翻译成分面才到位。给他们写信的时候，我还专门查了<a href="http://dict.cnki.net/">CNKI翻译助手</a>，发现这词在信息学中，翻成分面早已是固定的。我感觉这是我对这本书翻译的最大贡献，校稿过程中发现的少量小问题远比不上这个关键词意思的把握上。</p>
+<p>在《<a href="http://book.douban.com/subject/24527091/">ggplot2: 数据分析与图形艺术</a>》一书的翻译中，一开始译者把facet翻译成切片，我在校稿的时候发现了，给他们写信，推荐翻译成分面，如果是slice这个词，翻译成切片倒是很精准，BSD的硬盘分区就叫slice，但facet从词源上看就是小脸的意思，翻译成分面才到位。给他们写信的时候，我还专门查了<a href="http://dict.cnki.net/">CNKI翻译助手</a>，发现这词在信息学中，翻成分面早已是固定的。我感觉这是我对这本书翻译的最大贡献，校稿过程中发现的少量小问题远比不上这个关键词意思的把握上。</p>
 
 <p>分面可以让我们按照某种给定的条件，对数据进行分组，然后分别画图。
 在统计变换一节中，提到如果按切工分组作回归线，显然图会很乱，有了分面功能，我们可以分别作图。</p>
 
-<pre><code class="language-r">ggplot(small, aes(x=carat, y=price))+geom_point(aes(colour=cut))+scale_y_log10() +facet_wrap(~cut)+stat_smooth()
+<pre><code>ggplot(small, aes(x=carat, y=price))+geom_point(aes(colour=cut))+scale_y_log10() +facet_wrap(~cut)+stat_smooth()
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig18.png" alt="" /></p>
@@ -501,12 +508,13 @@ multiplot(p1,p2,p3,p4,p5,p6, cols=2)
 ylab这些高频需要用到的，自不用说，ggplot2提供了ggtitle(),
 xlab()和ylab()来实现。 比如：</p>
 
-<pre><code class="language-r">p &lt;- ggplot(small)+geom_boxplot(aes(x=cut, y=price,fill=color))
+<pre><code>p &lt;- ggplot(small)+geom_boxplot(aes(x=cut, y=price,fill=color))
 p + ggtitle(&quot;Price vs Cut&quot;)+xlab(&quot;Cut&quot;)+ylab(&quot;Price&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2.fig19.png" alt="" />
-但是这个远远满足不了需求，我们需要改变字体，字体大小，坐标轴，背景等各种元素，这需要通过theme()函数来完成。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2.fig19.png" alt="" /></p>
+
+<p>但是这个远远满足不了需求，我们需要改变字体，字体大小，坐标轴，背景等各种元素，这需要通过theme()函数来完成。</p>
 
 <p>ggplot2提供一些已经写好的主题，比如<code>theme_grey()</code>为默认主题，我经常用的<code>theme_bw()</code>为白色背景的主题，还有<code>theme_classic()</code>主题，和R的基础画图函数较像。</p>
 
@@ -519,19 +527,17 @@ theme_igray     theme_solarized
 theme_stata     theme_tufte
 </code></pre>
 
-<pre><code class="language-r">require(ggthemes)
+<pre><code>require(ggthemes)
 p + theme_wsj()
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig20.png" alt="" /></p>
 
-<p>在2013年发表的文章<a href="http://pubs.rsc.org/en/content/articlelanding/2013/mt/c3mt00126a#!divAbstract">Putative cobalt- and nickel-binding proteins and
-motifs in Streptococcus
-pneumoniae</a>中的图3就是使用<code>theme_stata</code>来画的。</p>
+<p>在2013年发表的文章<a href="http://pubs.rsc.org/en/content/articlelanding/2013/mt/c3mt00126a#!divAbstract">Putative cobalt- and nickel-binding proteins and motifs in Streptococcus pneumoniae</a>中的图3就是使用<code>theme_stata</code>来画的。</p>
 
 <p>至于如何改变这些元素，我觉得我之前<a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/">画囧字的博文</a>可以做为例子：</p>
 
-<pre><code class="language-r">f &lt;- function(x) 1/(x^2-1)
+<pre><code>f &lt;- function(x) 1/(x^2-1)
 x &lt;- seq(-3,3, by=0.001)
 y &lt;- f(x)
 d &lt;- data.frame(x=x,y=y)
@@ -557,14 +563,15 @@ theme_null &lt;- function() {
 p+theme_null()+xlab(&quot;&quot;)+ylab(&quot;&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2012/02/jiong.png" alt="" />
-详细的说明，可以参考?theme的帮助文档。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2012/02/jiong.png" alt="" /></p>
+
+<p>详细的说明，可以参考?theme的帮助文档。</p>
 
 <h3 id="二维密度图:c38c63fac86d2290b6bc01da39216614">二维密度图</h3>
 
 <p>在这个文档里，为了作图方便，我们使用diamonds数据集的一个子集，如果使用全集，数据量太大，画出来散点就糊了，这种情况可以使用二维密度力来呈现。</p>
 
-<pre><code class="language-r">ggplot(diamonds, aes(carat, price))+ stat_density2d(aes(fill = ..level..), geom=&quot;polygon&quot;)+ scale_fill_continuous(high='darkred',low='darkgreen')
+<pre><code>ggplot(diamonds, aes(carat, price))+ stat_density2d(aes(fill = ..level..), geom=&quot;polygon&quot;)+ scale_fill_continuous(high='darkred',low='darkgreen')
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2.fig22.png" alt="" /></p>
@@ -573,20 +580,21 @@ p+theme_null()+xlab(&quot;&quot;)+ylab(&quot;&quot;)
 
 <p>蝴蝶图：详见《Modern Applied Statistics with S-PLUS》第一章。</p>
 
-<pre><code class="language-r">theta &lt;- seq(0,24*pi, len=2000)
+<pre><code>theta &lt;- seq(0,24*pi, len=2000)
 radius &lt;- exp(cos(theta)) - 2*cos(4*theta) + sin(theta/12)^5
 dd &lt;- data.frame(x=radius*sin(theta), y=radius*cos(theta))
 ggplot(dd, aes(x, y))+geom_path()+theme_null()+xlab(&quot;&quot;)+ylab(&quot;&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig25.png" alt="" />
-这个图，我想展示的是对细节的修改上，在画囧字的时候，把画布上的元素都给清楚了，我把它定义为theme_null主题，在这里，直接应用，我们可以形成自己的画图风格，并写出自己的主题函数固定下来。</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_fig25.png" alt="" /></p>
+
+<p>这个图，我想展示的是对细节的修改上，在画囧字的时候，把画布上的元素都给清楚了，我把它定义为theme_null主题，在这里，直接应用，我们可以形成自己的画图风格，并写出自己的主题函数固定下来。</p>
 
 <p>最后以生物界中常用的柱状图+误差图为实例，展示ggplot2非常灵活的图层。以我2011年发表的文章<a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/">Phosphoproteome
 profile of human lung cancer cell line
 A549</a>中的westernblot数据为例。这个实例展示了图层，标尺，主题，注释和各种细节微调多种元素。</p>
 
-<pre><code class="language-r">Normal &lt;- c(0.83, 0.79, 0.99, 0.69)
+<pre><code>Normal &lt;- c(0.83, 0.79, 0.99, 0.69)
 Cancer &lt;- c(0.56, 0.56, 0.64, 0.52)
 m &lt;- c(mean(Normal), mean(Cancer))
 s &lt;- c(sd(Normal), sd(Cancer))
@@ -611,9 +619,7 @@ print(p)
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2014/05/ggplot2_26.png" alt="" /></p>
 
-<p>更多实例，可以参考我使用<a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">ggplot2实现<25 Recipes for Getting Started
-with
-R>一书中的所有图片</a>.</p>
+<p>更多实例，可以参考我使用<a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">ggplot2实现<25 Recipes for Getting Started with R>一书中的所有图片</a>.</p>
 
 <span class='st_twitter_hcount' displayText='Tweet'></span>
 <span class='st_facebook_hcount' displayText='Facebook'></span>

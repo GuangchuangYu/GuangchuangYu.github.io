@@ -119,50 +119,55 @@
 <span class='st_sina_hcount' displayText='Sina'></span>
 <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
           <p>I am very exciting that I have received very positive feedback from
-<a href="https://twitter.com/AhmedMoustafa">Ahmed Moustafa</a> and <a href="https://twitter.com/sdwfrost">Simon
-Frost</a>.
-<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.27.png" alt="" />
-<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.07.png" alt="" />
-<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a> now has equipped with
+<a href="https://twitter.com/AhmedMoustafa">Ahmed Moustafa</a> and <a href="https://twitter.com/sdwfrost">Simon Frost</a>.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.27.png" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.27.07.png" alt="" /></p>
+
+<p><a href="https://github.com/GuangchuangYu/ggtree">ggtree</a> now has equipped with
 a lot of new features. This time, I would like to introduce the replace
 operator, <code>%&lt;%</code>. Suppose we have build a tree view using ggtree with
 multiple layers, we don&rsquo;t need to run the code again to build a new tree
 view with another tree. In
-<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a>, we provides an
-operator, <code>%&lt;%</code>, for updating tree view.</p>
+<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a>, we provides an operator, <code>%&lt;%</code>, for updating tree view.</p>
 
-<pre><code class="language-lang=&quot;rsplus&quot;">library(ggplot2)
+<pre><code>library(ggplot2)
 library(ggtree)
 ggtree(rtree(15)) %&lt;% rtree(30)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.22.07.png" alt="" />
-It supports different layout.</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.22.07.png" alt="" /></p>
 
-<pre><code class="language-lang=&quot;rsplus&quot;">ggtree(rtree(15), layout=&quot;unrooted&quot;, ladderize=FALSE) %&lt;% rtree(45)
+<p>It supports different layout.</p>
+
+<pre><code>ggtree(rtree(15), layout=&quot;unrooted&quot;, ladderize=FALSE) %&lt;% rtree(45)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.23.48.png" alt="" />
-It is chainable.</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.23.48.png" alt="" /></p>
 
-<pre><code class="language-lang=&quot;rsplus&quot;">ggtree(rtree(15), layout=&quot;cladogram&quot;, ladderize=FALSE) %&lt;% 
+<p>It is chainable.</p>
+
+<pre><code>ggtree(rtree(15), layout=&quot;cladogram&quot;, ladderize=FALSE) %&lt;% 
     rtree(30) %&lt;% 
        rtree(45)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.23.14.png" alt="" />
-It also supports multiple layers.</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.23.14.png" alt="" /></p>
 
-<pre><code class="language-lang=&quot;rsplus&quot;">(ggtree(rtree(15), layout=&quot;fan&quot;) + 
+<p>It also supports multiple layers.</p>
+
+<pre><code>(ggtree(rtree(15), layout=&quot;fan&quot;) + 
     geom_point(aes(shape=isTip, color=isTip))) %&lt;% 
       rtree(40)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.25.31.png" alt="" />
-In the final example, we parse rst file from BaseML output and annotate
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.25.31.png" alt="" /></p>
+
+<p>In the final example, we parse rst file from BaseML output and annotate
 the tree with marginal_AA_subs.</p>
 
-<pre><code class="language-lang=&quot;rsplus&quot;">rstfile &lt;- system.file(&quot;extdata/PAML_Baseml&quot;, &quot;rst&quot;, package=&quot;ggtree&quot;)
+<pre><code>rstfile &lt;- system.file(&quot;extdata/PAML_Baseml&quot;, &quot;rst&quot;, package=&quot;ggtree&quot;)
 tipfas &lt;- system.file(&quot;extdata&quot;, &quot;pa.fas&quot;, package=&quot;ggtree&quot;)
 rst &lt;- read.paml_rst(rstfile, tipfas)
 
@@ -170,17 +175,19 @@ p &lt;- plot(rst, annotation=&quot;marginal_AA_subs&quot;, annotation.color=&quo
 print(p)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.51.17.png" alt="" />
-We have ancestral sequences inferred from CodeML with the same tree. We
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.51.17.png" alt="" /></p>
+
+<p>We have ancestral sequences inferred from CodeML with the same tree. We
 can use this new data to update the tree view.</p>
 
-<pre><code class="language-lang=&quot;rsplus&quot;">rstfile &lt;- system.file(&quot;extdata/PAML_Codeml&quot;, &quot;rst&quot;, package=&quot;ggtree&quot;)
+<pre><code>rstfile &lt;- system.file(&quot;extdata/PAML_Codeml&quot;, &quot;rst&quot;, package=&quot;ggtree&quot;)
 rst &lt;- read.paml_rst(rstfile, tipfas)
 p %&lt;% rst
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.53.41.png" alt="" />
-In these two figures, we can found that they have different evolution
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot-2015-02-10-10.53.41.png" alt="" /></p>
+
+<p>In these two figures, we can found that they have different evolution
 distances, and substitutions inferred from BASEML and CODEML are
 slightly different.</p>
 

@@ -117,7 +117,17 @@
       </header>
 
         
-          <p>flip function is a feature request from ggtree user. It accepts a tree view and two node numbers and exchange the positions of the selected clades. require(ggtree) set.seed(2015-07-01) tr &lt;- rtree(30) p &lt;- ggtree(tr) + geom_text(aes(label=node)) gridExtra::grid.arrange(p, flip(p, 38, 33), ncol=2) It&rsquo;s chainable and all possible position adjustment can be achieved via multiple flip operations. flip(p, 38, 33) %&gt;% flip(53, 58) %&gt;% flip(32, 51) It&rsquo;s tedious to rotate a clade by 180 degree with several flip operations, ggtree provides another function rotate that accepts a selected node and rotate that branch by 180 degree.</p>
+          <p><p><strong><em>flip</em></strong> function is a feature request from ggtree user. It accepts a
+tree view and two node numbers and exchange the positions of the
+selected clades.</p>
+
+<pre><code>require(ggtree)
+set.seed(2015-07-01)
+tr &lt;- rtree(30)
+p &lt;- ggtree(tr) + geom_text(aes(label=node))
+gridExtra::grid.arrange(p, flip(p, 38, 33), ncol=2)
+</code></pre>
+</p>
 
           
               <footer>
@@ -145,7 +155,18 @@
       </header>
 
         
-          <p>This is a feature request from clusterProfiler user. It&rsquo;s similar to what I implemented in clusterProfiler for comparing biological themes. For comparing different enrichment results, the x-axis represent different gene clusters while for a single enrichment result, the x-axis can be gene count or gene ratio. This is actually similar to traditional barplot, with dot position as bar height and dot color as bar color. But dotplot can represent one more feature nicely by dot size and it can be a good alternative to barplot.</p>
+          <p><p>This is a <a href="http://guangchuangyu.github.io//2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">feature request</a>
+from
+<a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>
+user. It&rsquo;s similar to what I implemented in
+<a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>
+for comparing biological themes. For comparing different enrichment
+results, the x-axis represent different gene clusters while for a single
+enrichment result, the x-axis can be gene count or gene ratio. This is
+actually similar to traditional barplot, with dot position as bar height
+and dot color as bar color. But dotplot can represent one more feature
+nicely by dot size and it can be a good alternative to barplot.</p>
+</p>
 
           
               <footer>
@@ -173,8 +194,49 @@
       </header>
 
         
-          <p>showtext is a neat solution to use various types of fonts in R graphs and make it easy to use funny fonts. With showtext, we can draw phylogenetic tree with different types of fonts even with symbolic/icon fonts. require(showtext) font.add.google(&quot;Gochi Hand&quot;, &quot;gochi&quot;) font.add.google(&quot;Rock Salt&quot;, &quot;rock&quot;) link = &quot;http://img.dafont.com/dl/?f=wm_people_1&quot;; download.file(link, &quot;wmpeople1.zip&quot;, mode = &quot;wb&quot;); unzip(&quot;wmpeople1.zip&quot;); font.add(&quot;wmpeople1&quot;, &quot;wmpeople1.TTF&quot;); link = &quot;http://img.dafont.com/dl/?f=emoticons&quot;; download.file(link, &quot;emoticons.zip&quot;, mode = &quot;wb&quot;); unzip(&quot;emoticons.zip&quot;); font.add(&quot;emoticons&quot;, &quot;emoticons.ttf&quot;); showtext.auto() set.seed(2015-05-14) library(ggplot2) library(ggtree) tree &lt;- rtree(30) ggtree(tree, color=&quot;darkgreen&quot;) + geom_tiplab(family=&quot;gochi&quot;) + theme_classic() + theme(axis.text.x=element_text(size=rel(4), family=&quot;emoticons&quot;, color=&quot;firebrick&quot;)) + scale_y_continuous(breaks=seq(0, 30, 4), labels=letters[c(12:17, 20, 21)]) + theme(axis.text.y=element_text(size=rel(4), family=&quot;wmpeople1&quot;, color=&quot;#FDAC4F&quot;)) + annotate(&quot;text&quot;, x=2, y=18, label=&quot;Have fun with ggtree!&quot;, family=&quot;rock&quot;, angle=30, size=12, color=&quot;steelblue&quot;) download.file(&quot;http://dl.dafont.com/dl/?f=people_freak&quot;, &quot;people_freak.zip&quot;, mode=&quot;wb&quot;) unzip(&quot;people_freak.zip&quot;) font.add(&quot;people_freak&quot;, &quot;People_freak.ttf&quot;) ggtree(rtree(10)) + geom_text(aes(label=node, color=isTip), family=&quot;people_freak&quot;, hjust=0) Funny fonts can be downloaded from 1, 2 and 3.</p>
+          <p><p><a href="http://cran.r-project.org/web/packages/showtext/index.html">showtext</a>
+is a neat solution to use various types of fonts in R graphs and make it
+easy to use funny fonts. With
+<a href="http://cran.r-project.org/web/packages/showtext/index.html">showtext</a>,
+we can draw phylogenetic tree with different types of fonts even with
+symbolic/icon fonts.</p>
 
+<pre><code>require(showtext)
+
+font.add.google(&quot;Gochi Hand&quot;, &quot;gochi&quot;)
+font.add.google(&quot;Rock Salt&quot;, &quot;rock&quot;)
+
+link = &quot;http://img.dafont.com/dl/?f=wm_people_1&quot;;
+download.file(link, &quot;wmpeople1.zip&quot;, mode = &quot;wb&quot;);
+unzip(&quot;wmpeople1.zip&quot;);
+font.add(&quot;wmpeople1&quot;, &quot;wmpeople1.TTF&quot;);
+
+link = &quot;http://img.dafont.com/dl/?f=emoticons&quot;;
+download.file(link, &quot;emoticons.zip&quot;, mode = &quot;wb&quot;);
+unzip(&quot;emoticons.zip&quot;);
+font.add(&quot;emoticons&quot;, &quot;emoticons.ttf&quot;);
+
+
+showtext.auto()
+set.seed(2015-05-14)
+
+library(ggplot2)
+library(ggtree)
+
+tree &lt;- rtree(30)
+ggtree(tree, color=&quot;darkgreen&quot;) + geom_tiplab(family=&quot;gochi&quot;) + theme_classic() +
+theme(axis.text.x=element_text(size=rel(4), family=&quot;emoticons&quot;, color=&quot;firebrick&quot;)) +
+scale_y_continuous(breaks=seq(0, 30, 4), labels=letters[c(12:17, 20, 21)]) +
+theme(axis.text.y=element_text(size=rel(4), family=&quot;wmpeople1&quot;, color=&quot;#FDAC4F&quot;)) +
+annotate(&quot;text&quot;, x=2, y=18, label=&quot;Have fun with ggtree!&quot;,
+family=&quot;rock&quot;, angle=30, size=12, color=&quot;steelblue&quot;)
+</code></pre>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/" rel="full-article">Read On &rarr;</a>
+              </footer>
           
 
         
@@ -197,7 +259,12 @@
       </header>
 
         
-          <p>ppiPre抄袭了GOSemSim的代码，证据当然非常充分，比对一下代码就知道了，我在Proper use of GOSemSim一文中，做出了一些比较，另外也可以参考github页面，github记录了ppiPre被暴光抄袭之后所做的修改。 从我给BMC Systems Biology的编辑反馈这件事开始，在这铁板钉钉的事实面前，编辑拖了整整一年，而这一年时间过去了，ppiPre仍没有被编辑部受理。从最早反应这件事情，编辑信誓旦旦说他们很重视这种事情，到后面对我的邮件视而不见，我愿意相信编辑部处理这些事情，需要时间，他们有自己的规则，但一年的时间，不回邮件，冷处理以淡化此事，这绝对不是应该有的规则。 在编辑一直无视我的情况下，我写出了Proper use of GOSemSim一文，列举了一些一模一样的代码，并告知CRAN，当ppiPre被CRAN移除时，我写信给编辑，这时候，编辑告诉我说他们准备要去联系作者了，这时候已经过去半年了，是的！你没有看错，半年过去了，编辑说他们还没去联系作者！我是不相信的。必然是联系了之后，有某些不为人知的原因，所以编辑态度反常，对抄袭这种打鸡血的事情，不断在打太极。 再过二个月，ppiPre的作者邓岳给我写了信： 按照我在Proper use of GOSemSim中说的:&ldquo;你们可以抄我的代码，但要注明出处，引用我的文章&rdquo;，进行了修改。我给他回信就是我可以接受这样的版本。事实上如果他们基于现在的版本发表文章，我没有任何问题。但现在的版本是迫于抄袭暴光所做出的修改，而发表文章时，抄代码不注出处，更改函数名，刻意回避我的文章，而且对抄袭部分在他们的文章中宣称是自己的实现，这是恶意抄袭。 回信说现在的版本OK之后，我觉得这会给出错误信息，于是我再写一封信，强调抄袭的严重性： 从他的回信中，我感觉得出，态度并不好。他觉得只是对open source的版权不够重视而已，这不单单是版权的问题，还是出版伦理（publication ethics）的问题，再怎么对版权无知，你不能发表文章说别人做的东西是你做的。 事实上邓岳并没有意识到问题，2015年继续发表抄袭的R包HPOSim，这个包的代码抄袭了哈医大李霞实验室的DOSim，而DOSim又是抄了GOSim，我手贱对比了一下代码，竟然发现抄袭链条，而且抄袭者都发了文章，但发完文章，相应的包也就被CRAN移除了，要么是不维护，要么是主动要求移除。这个圈子好乱有木有！ 我也没必要去跟他掐，而是等待编辑的处理，我期望编辑给他上一课，做科研没有这样的捷径。 最终编辑给出的邮件是： Dear Guangchuang, Looking back through my emails, I did receive a response back from the authors previously. They in turn said that the email address I had originally been trying to contact them with earlier last year was no longer in use, so they only received my emails when I found an additional alternative email address for the authors in my more recent emails.</p>
+          <p><p><a href="http://cran.r-project.org/web/packages/ppiPre/index.html">ppiPre</a>抄袭了<a href="https://github.com/GuangchuangYu/GOSemSim">GOSemSim</a>的代码，证据当然非常充分，比对一下代码就知道了，我在<a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">Proper use of GOSemSim</a>一文中，做出了一些比较，另外也可以参考<a href="https://github.com/cran/ppiPre/commit/c267700ca09a599dab77326959a0aa6a2980ceed">github</a>页面，github记录了ppiPre被暴光抄袭之后所做的修改。
+从我给BMC Systems
+Biology的编辑反馈这件事开始，在这铁板钉钉的事实面前，编辑拖了整整一年，而这一年时间过去了，ppiPre仍没有被编辑部受理。从最早反应这件事情，编辑信誓旦旦说他们很重视这种事情，到后面对我的邮件视而不见，我愿意相信编辑部处理这些事情，需要时间，他们有自己的规则，但一年的时间，不回邮件，冷处理以淡化此事，这绝对不是应该有的规则。
+在编辑一直无视我的情况下，我写出了<a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">Proper use of GOSemSim</a>一文，列举了一些一模一样的代码，并告知CRAN，当ppiPre被CRAN移除时，我写信给编辑，这时候，编辑告诉我说他们准备要去联系作者了，这时候已经过去半年了，是的！你没有看错，半年过去了，编辑说他们还没去联系作者！我是不相信的。必然是联系了之后，有某些不为人知的原因，所以编辑态度反常，对抄袭这种打鸡血的事情，不断在打太极。
+再过二个月，ppiPre的作者<a href="http://web.xidian.edu.cn/dengyue/">邓岳</a>给我写了信：</p>
+</p>
 
           
               <footer>
@@ -225,7 +292,16 @@
       </header>
 
         
-          <p>I found source code plagiarism a year ago and reported this case to BMC Systems Biology: I listed source code of many functions that are exactly copied from GOSemSim with only function name changed in my email. The detail of source code plagiarism can also be found at Proper use of GOSemSim. I got reply from the Editor 3 days after (see screenshot). MS: 1069569029107167 Research ppiPre: predicting protein-protein interactions by combining heterogeneous features BMC Systems Biology 2013, 7:S8 Dear Dr Yu, Thank you for your message and bringing this to our attention.</p>
+          <p><p>I found source code plagiarism a year ago and reported this case to <a href="http://www.biomedcentral.com/bmcsystbiol">BMC Systems Biology</a>:</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/0f22f6ad87427adb59941160130b016ee1e41004/2015/plagiarism/Screenshot%202015-05-27%2019.56.58.png" alt="" /></p>
+
+<p>I listed source code of many functions that are exactly copied from
+<a href="http://www.bioconductor.org/packages/release/bioc/html/GOSemSim.html">GOSemSim</a>
+with only function name changed in my email. The detail of source code
+plagiarism can also be found at <strong><a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">Proper use of
+GOSemSim</a></strong>.</p>
+</p>
 
           
               <footer>
@@ -253,7 +329,31 @@
       </header>
 
         
-          <p>clusterProfiler supports enrichment analysis of both hypergeometric test and gene set enrichment analysis. It internally supports Gene Ontology analysis of about 20 species, Kyoto Encyclopedia of Genes and Genomes (KEGG) with all species that have annotation available in KEGG database, DAVID annotation (only hypergeometric test supported), Disease Ontology and Network of Cancer Genes (via DOSE for human) and Reactome Pathway (via ReactomePA for several species). This is still not enough for users may want to analyze their data with unsupported organisms, slim version of GO, novel functional annotation (eg GO via blastgo and KEGG via KAAS), unsupported ontology/pathway or customized annotation.</p>
+          <p><p><a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>
+supports enrichment analysis of both hypergeometric test and gene set
+enrichment analysis. It internally supports <a href="http://geneontology.org/">Gene Ontology</a> analysis of about 20 species, <a href="http://www.genome.jp/kegg/">Kyoto Encyclopedia of Genes and Genomes (KEGG)</a>
+with all species that have annotation available in KEGG database, <a href="http://david.abcc.ncifcrf.gov/summary.jsp">DAVID annotation</a> (only
+hypergeometric test supported), <a href="http://disease-ontology.org/">Disease Ontology</a> and <a href="http://ncg.kcl.ac.uk/">Network of Cancer Genes</a> (via
+<a href="http://www.bioconductor.org/packages/release/bioc/html/DOSE.html">DOSE</a>
+for human) and <a href="http://www.reactome.org/">Reactome Pathway</a> (via
+<a href="http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html">ReactomePA</a>
+for several species). This is still not enough for users may want to
+analyze their data with unsupported organisms, <a href="http://geneontology.org/page/go-slim-and-subset-guide">slim version of
+GO</a>, novel
+functional annotation (eg GO via <a href="https://www.blast2go.com/">blastgo</a>
+and KEGG via <a href="http://www.genome.jp/tools/kaas/">KAAS</a>), unsupported
+ontology/pathway or customized annotation.</p>
+
+<p><a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>
+provides <em>enricher</em> function for hypergeometric test and <em>GSEA</em> function
+for gene set enrichment analysis that are designed to accept user
+defined annotation. They accept two additional parameters TERM2GENE and
+TERM2NAME. As indicated in the parameter names, TERM2GENE is a
+data.frame with first column of term ID and second column of
+corresponding mapped gene and TERM2NAME is a data.frame with first
+column of term ID and second column of corresponding term name.
+TERM2NAME is optional.</p>
+</p>
 
           
               <footer>

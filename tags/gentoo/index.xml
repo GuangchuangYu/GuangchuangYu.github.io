@@ -23,8 +23,7 @@
 
 &lt;p&gt;以下为基本的安装过程，详细请参考Gentoo的文档&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml&#34;&gt;http://www.gentoo.org/doc/en/handbook/handbook-
-ppc.xml&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml&#34;&gt;http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;基本的安装步骤如下：&lt;/p&gt;
 
@@ -32,19 +31,19 @@ ppc.xml&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;1-配置网络:e579a454946bcfc93435fb8404ad15ed&#34;&gt;1. 配置网络&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;＃net-setup eth0
+&lt;pre&gt;&lt;code&gt;＃net-setup eth0
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;回答它几个问题就行了。&lt;/p&gt;
 
 &lt;h2 id=&#34;2-分区:e579a454946bcfc93435fb8404ad15ed&#34;&gt;2.分区&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mac-fdisk /dev/hda
+&lt;pre&gt;&lt;code&gt;#mac-fdisk /dev/hda
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;以下是我的分区。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/dev/hda
+&lt;pre&gt;&lt;code&gt;/dev/hda
  # type name length base ( size ) system
 /dev/hda1 Apple_partition_map Apple 63 @ 1 ( 31.5k) Partition map
 /dev/hda2 Apple_Bootstrap bootstrap 1600 @ 64 (800.0k) NewWorld bootblock
@@ -58,7 +57,7 @@ DeviceType=0x0, DeviceId=0x0
 
 &lt;h2 id=&#34;3-建立文件系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;3.建立文件系统&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mke2fs -j /dev/hda3
+&lt;pre&gt;&lt;code&gt;#mke2fs -j /dev/hda3
 #mkswap /dev/hda4
 #mke2fs -j /dev/hda5
 #swapon /dev/hda4
@@ -66,12 +65,12 @@ DeviceType=0x0, DeviceId=0x0
 
 &lt;h2 id=&#34;4-挂载分区:e579a454946bcfc93435fb8404ad15ed&#34;&gt;4.挂载分区&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/hda3 /mnt/gentoo
+&lt;pre&gt;&lt;code&gt;#mount /dev/hda3 /mnt/gentoo
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;5-解开stage-tarball用portgage:e579a454946bcfc93435fb8404ad15ed&#34;&gt;5.解开Stage Tarball用Portgage&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /mnt/gentoo
+&lt;pre&gt;&lt;code&gt;#cd /mnt/gentoo
 #tar xvjpf /mnt/cdrom/stages/stage3-\*g3\*.tar.bz2
 #tar xvjf portage-20040926.tar.bz2 -C /mnt/gentoo/usr
 &lt;/code&gt;&lt;/pre&gt;
@@ -80,7 +79,7 @@ DeviceType=0x0, DeviceId=0x0
 
 &lt;p&gt;以下是我的make.conf&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# These settings were set by the catalyst build script that automatically built this stage
+&lt;pre&gt;&lt;code&gt;# These settings were set by the catalyst build script that automatically built this stage
 # Please consult /etc/make.conf.example for a more detailed example
 CFLAGS=&amp;quot;-O3 -pipe -mcpu=750 -fno-strict-aliasing -mpowerpc-gfxopt -mmultiple -mstring&amp;quot;
 CHOST=&amp;quot;powerpc-unknown-linux-gnu&amp;quot;
@@ -96,13 +95,13 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;h2 id=&#34;7-挂载分区:e579a454946bcfc93435fb8404ad15ed&#34;&gt;7. 挂载分区&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount -t proc none /mnt/gentoo/proc
+&lt;pre&gt;&lt;code&gt;#mount -t proc none /mnt/gentoo/proc
 #chroot /mnt/gentoo /bin/bash
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;8-更新系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;8.更新系统&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#env-update &amp;amp;&amp;amp; source /etc/profile
+&lt;pre&gt;&lt;code&gt;#env-update &amp;amp;&amp;amp; source /etc/profile
 #emerge sync
 
 #emerge --update world
@@ -110,7 +109,7 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;h2 id=&#34;9-安装内核:e579a454946bcfc93435fb8404ad15ed&#34;&gt;9.安装内核&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge gentoo-dev-sources
+&lt;pre&gt;&lt;code&gt;#emerge gentoo-dev-sources
 #cd /usr/src/linux
 #make menuconfig
 #make all &amp;amp;&amp;amp; make menuconfig
@@ -122,7 +121,7 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;p&gt;以下是我的内核选项配置&amp;hellip;&amp;hellip;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#
+&lt;pre&gt;&lt;code&gt;#
 # Automatically generated make config: don&#39;t edit
 # Linux kernel version: 2.6.10-gentoo-r6
 # Fri Mar 18 14:20:13 2005
@@ -1543,26 +1542,26 @@ CONFIG_ZLIB_DEFLATE=y
 # CONFIG_CRYPTO is not set
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#find /lib/modules/&amp;lt;kernel version&amp;gt;/ -type f -iname &#39;\*.o&#39; -or
+&lt;pre&gt;&lt;code&gt;#find /lib/modules/&amp;lt;kernel version&amp;gt;/ -type f -iname &#39;\*.o&#39; -or
 -iname &#39;\*.ko&#39;
 #nano -w /etc/modules.autoload.d/kernel-2.6
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;在这文件里加入开机自动载入的模块&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#modules-update
+&lt;pre&gt;&lt;code&gt;#modules-update
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;10-配置系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;10.配置系统&lt;/h2&gt;
 
 &lt;h3 id=&#34;fstab:e579a454946bcfc93435fb8404ad15ed&#34;&gt;fstab&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#nano /etc/fstab
+&lt;pre&gt;&lt;code&gt;#nano /etc/fstab
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;下面是我的配置。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# &amp;lt;fs&amp;gt; &amp;lt;mountpoint&amp;gt; &amp;lt;type&amp;gt; &amp;lt;opts&amp;gt; &amp;lt;dump/pass&amp;gt;
+&lt;pre&gt;&lt;code&gt;# &amp;lt;fs&amp;gt; &amp;lt;mountpoint&amp;gt; &amp;lt;type&amp;gt; &amp;lt;opts&amp;gt; &amp;lt;dump/pass&amp;gt;
 /dev/hda3 / ext3 noauto,noatime 1 1
 /dev/hda4 none swap sw 0 0
 /dev/hda5 /home ext3 noatime 0 1
@@ -1575,7 +1574,7 @@ none /dev/shm tmpfs defaults 0 0
 
 &lt;h3 id=&#34;网络信息:e579a454946bcfc93435fb8404ad15ed&#34;&gt;网络信息&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# echo tux &amp;gt; /etc/hostname
+&lt;pre&gt;&lt;code&gt;# echo tux &amp;gt; /etc/hostname
 # echo homenetwork &amp;gt; /etc/dnsdomainname
 # echo nis.homenetwork &amp;gt; /etc/nisdomainname
 # rc-update add domainname default
@@ -1583,14 +1582,14 @@ none /dev/shm tmpfs defaults 0 0
 
 &lt;h3 id=&#34;配置网络:e579a454946bcfc93435fb8404ad15ed&#34;&gt;配置网络&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#nano /etc/conf.d/net
+&lt;pre&gt;&lt;code&gt;#nano /etc/conf.d/net
 #nano /etc/resolv.conf
 #rc-update add net.eth0 default
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;安装系统工具:e579a454946bcfc93435fb8404ad15ed&#34;&gt;安装系统工具&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge metalog
+&lt;pre&gt;&lt;code&gt;#emerge metalog
 #rc-update add metalog default
 #emerge vixie-cron
 #rc-update add vixie-cron default
@@ -1598,13 +1597,13 @@ none /dev/shm tmpfs defaults 0 0
 
 &lt;h2 id=&#34;11-配置启动:e579a454946bcfc93435fb8404ad15ed&#34;&gt;11.配置启动&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge yaboot
+&lt;pre&gt;&lt;code&gt;#emerge yaboot
 #nano yaboot.conf
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;下面是我的配置文件。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;## yaboot.conf generated by yabootconfig 1.0.7
+&lt;pre&gt;&lt;code&gt;## yaboot.conf generated by yabootconfig 1.0.7
 ##
 ## run: &amp;quot;man yaboot.conf&amp;quot; for details. Do not make changes until you have!!
 ##
@@ -1630,7 +1629,7 @@ image=/boot/kernel-gentoo-2.6.10
 
 &lt;h2 id=&#34;12-重启系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;12.重启系统&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#exit
+&lt;pre&gt;&lt;code&gt;#exit
 #umount /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo
 #reboot
 &lt;/code&gt;&lt;/pre&gt;
@@ -1639,13 +1638,13 @@ image=/boot/kernel-gentoo-2.6.10
 
 &lt;p&gt;在/etc/make.conf中加入&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;USE＝“cjk nls&amp;quot;
+&lt;pre&gt;&lt;code&gt;USE＝“cjk nls&amp;quot;
 LINGUAS=&amp;quot;zh_CN&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;安装字体:e579a454946bcfc93435fb8404ad15ed&#34;&gt;安装字体&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
+&lt;pre&gt;&lt;code&gt;#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
 #fc-cache -f -v #(fontconfig的命令，安装字库）
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1657,13 +1656,13 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;p&gt;放在/home/fonts下。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#ln -s /home/fonts /usr/share/fonts/MsFonts
+&lt;pre&gt;&lt;code&gt;#ln -s /home/fonts /usr/share/fonts/MsFonts
 #fc-cache
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;安装x:e579a454946bcfc93435fb8404ad15ed&#34;&gt;安装X&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge xorg-x11
+&lt;pre&gt;&lt;code&gt;#emerge xorg-x11
 #emerge Xautoconfig
 
 #Xautoconfig #(自动生成xorg.conf)
@@ -1673,10 +1672,10 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;p&gt;编辑.xinitrc&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#nano .xinitrc
+&lt;pre&gt;&lt;code&gt;#nano .xinitrc
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;export LC_CTYPE=zh_CN
+&lt;pre&gt;&lt;code&gt;export LC_CTYPE=zh_CN
 export LANG=zh_CN
 export XMODIFIERS=&amp;quot;@im=SCIM&amp;quot;
 export XIM=SCIM
@@ -1826,7 +1825,7 @@ exec starxfce4
 
 &lt;p&gt;这样了就行啦。字体显示完善&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#startx
+&lt;pre&gt;&lt;code&gt;#startx
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;and enjoy&amp;hellip;&amp;hellip;&amp;hellip;.&lt;/p&gt;
@@ -1846,7 +1845,7 @@ other preferences.&lt;/li&gt;
 &lt;li&gt;cpudyn allows cpu speed scaling for longer battery life.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# emerge pbbuttonsd; rc-update add pbbuttonsd default
+&lt;pre&gt;&lt;code&gt;# emerge pbbuttonsd; rc-update add pbbuttonsd default
 # emerge gtkpbbuttons
 # emerge powerprefs
 # emerge cpudyn

@@ -126,8 +126,7 @@
 
 <p>以下为基本的安装过程，详细请参考Gentoo的文档</p>
 
-<p><a href="http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml">http://www.gentoo.org/doc/en/handbook/handbook-
-ppc.xml</a></p>
+<p><a href="http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml">http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml</a></p>
 
 <p>基本的安装步骤如下：</p>
 
@@ -135,19 +134,19 @@ ppc.xml</a></p>
 
 <h2 id="1-配置网络:e579a454946bcfc93435fb8404ad15ed">1. 配置网络</h2>
 
-<pre><code class="language-shell">＃net-setup eth0
+<pre><code>＃net-setup eth0
 </code></pre>
 
 <p>回答它几个问题就行了。</p>
 
 <h2 id="2-分区:e579a454946bcfc93435fb8404ad15ed">2.分区</h2>
 
-<pre><code class="language-shell">#mac-fdisk /dev/hda
+<pre><code>#mac-fdisk /dev/hda
 </code></pre>
 
 <p>以下是我的分区。</p>
 
-<pre><code class="language-shell">/dev/hda
+<pre><code>/dev/hda
  # type name length base ( size ) system
 /dev/hda1 Apple_partition_map Apple 63 @ 1 ( 31.5k) Partition map
 /dev/hda2 Apple_Bootstrap bootstrap 1600 @ 64 (800.0k) NewWorld bootblock
@@ -161,7 +160,7 @@ DeviceType=0x0, DeviceId=0x0
 
 <h2 id="3-建立文件系统:e579a454946bcfc93435fb8404ad15ed">3.建立文件系统</h2>
 
-<pre><code class="language-shell">#mke2fs -j /dev/hda3
+<pre><code>#mke2fs -j /dev/hda3
 #mkswap /dev/hda4
 #mke2fs -j /dev/hda5
 #swapon /dev/hda4
@@ -169,12 +168,12 @@ DeviceType=0x0, DeviceId=0x0
 
 <h2 id="4-挂载分区:e579a454946bcfc93435fb8404ad15ed">4.挂载分区</h2>
 
-<pre><code class="language-shell">#mount /dev/hda3 /mnt/gentoo
+<pre><code>#mount /dev/hda3 /mnt/gentoo
 </code></pre>
 
 <h2 id="5-解开stage-tarball用portgage:e579a454946bcfc93435fb8404ad15ed">5.解开Stage Tarball用Portgage</h2>
 
-<pre><code class="language-shell">#cd /mnt/gentoo
+<pre><code>#cd /mnt/gentoo
 #tar xvjpf /mnt/cdrom/stages/stage3-\*g3\*.tar.bz2
 #tar xvjf portage-20040926.tar.bz2 -C /mnt/gentoo/usr
 </code></pre>
@@ -183,7 +182,7 @@ DeviceType=0x0, DeviceId=0x0
 
 <p>以下是我的make.conf</p>
 
-<pre><code class="language-shell"># These settings were set by the catalyst build script that automatically built this stage
+<pre><code># These settings were set by the catalyst build script that automatically built this stage
 # Please consult /etc/make.conf.example for a more detailed example
 CFLAGS=&quot;-O3 -pipe -mcpu=750 -fno-strict-aliasing -mpowerpc-gfxopt -mmultiple -mstring&quot;
 CHOST=&quot;powerpc-unknown-linux-gnu&quot;
@@ -199,13 +198,13 @@ LINGUAS=&quot;zh_CN&quot;
 
 <h2 id="7-挂载分区:e579a454946bcfc93435fb8404ad15ed">7. 挂载分区</h2>
 
-<pre><code class="language-shell">#mount -t proc none /mnt/gentoo/proc
+<pre><code>#mount -t proc none /mnt/gentoo/proc
 #chroot /mnt/gentoo /bin/bash
 </code></pre>
 
 <h2 id="8-更新系统:e579a454946bcfc93435fb8404ad15ed">8.更新系统</h2>
 
-<pre><code class="language-shell">#env-update &amp;&amp; source /etc/profile
+<pre><code>#env-update &amp;&amp; source /etc/profile
 #emerge sync
 
 #emerge --update world
@@ -213,7 +212,7 @@ LINGUAS=&quot;zh_CN&quot;
 
 <h2 id="9-安装内核:e579a454946bcfc93435fb8404ad15ed">9.安装内核</h2>
 
-<pre><code class="language-shell">#emerge gentoo-dev-sources
+<pre><code>#emerge gentoo-dev-sources
 #cd /usr/src/linux
 #make menuconfig
 #make all &amp;&amp; make menuconfig
@@ -225,7 +224,7 @@ LINGUAS=&quot;zh_CN&quot;
 
 <p>以下是我的内核选项配置&hellip;&hellip;.</p>
 
-<pre><code class="language-shell">#
+<pre><code>#
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.10-gentoo-r6
 # Fri Mar 18 14:20:13 2005
@@ -1646,26 +1645,26 @@ CONFIG_ZLIB_DEFLATE=y
 # CONFIG_CRYPTO is not set
 </code></pre>
 
-<pre><code class="language-shell">#find /lib/modules/&lt;kernel version&gt;/ -type f -iname '\*.o' -or
+<pre><code>#find /lib/modules/&lt;kernel version&gt;/ -type f -iname '\*.o' -or
 -iname '\*.ko'
 #nano -w /etc/modules.autoload.d/kernel-2.6
 </code></pre>
 
 <p>在这文件里加入开机自动载入的模块</p>
 
-<pre><code class="language-shell">#modules-update
+<pre><code>#modules-update
 </code></pre>
 
 <h2 id="10-配置系统:e579a454946bcfc93435fb8404ad15ed">10.配置系统</h2>
 
 <h3 id="fstab:e579a454946bcfc93435fb8404ad15ed">fstab</h3>
 
-<pre><code class="language-shell">#nano /etc/fstab
+<pre><code>#nano /etc/fstab
 </code></pre>
 
 <p>下面是我的配置。</p>
 
-<pre><code class="language-shell"># &lt;fs&gt; &lt;mountpoint&gt; &lt;type&gt; &lt;opts&gt; &lt;dump/pass&gt;
+<pre><code># &lt;fs&gt; &lt;mountpoint&gt; &lt;type&gt; &lt;opts&gt; &lt;dump/pass&gt;
 /dev/hda3 / ext3 noauto,noatime 1 1
 /dev/hda4 none swap sw 0 0
 /dev/hda5 /home ext3 noatime 0 1
@@ -1678,7 +1677,7 @@ none /dev/shm tmpfs defaults 0 0
 
 <h3 id="网络信息:e579a454946bcfc93435fb8404ad15ed">网络信息</h3>
 
-<pre><code class="language-shell"># echo tux &gt; /etc/hostname
+<pre><code># echo tux &gt; /etc/hostname
 # echo homenetwork &gt; /etc/dnsdomainname
 # echo nis.homenetwork &gt; /etc/nisdomainname
 # rc-update add domainname default
@@ -1686,14 +1685,14 @@ none /dev/shm tmpfs defaults 0 0
 
 <h3 id="配置网络:e579a454946bcfc93435fb8404ad15ed">配置网络</h3>
 
-<pre><code class="language-shell">#nano /etc/conf.d/net
+<pre><code>#nano /etc/conf.d/net
 #nano /etc/resolv.conf
 #rc-update add net.eth0 default
 </code></pre>
 
 <h3 id="安装系统工具:e579a454946bcfc93435fb8404ad15ed">安装系统工具</h3>
 
-<pre><code class="language-shell">#emerge metalog
+<pre><code>#emerge metalog
 #rc-update add metalog default
 #emerge vixie-cron
 #rc-update add vixie-cron default
@@ -1701,13 +1700,13 @@ none /dev/shm tmpfs defaults 0 0
 
 <h2 id="11-配置启动:e579a454946bcfc93435fb8404ad15ed">11.配置启动</h2>
 
-<pre><code class="language-shell">#emerge yaboot
+<pre><code>#emerge yaboot
 #nano yaboot.conf
 </code></pre>
 
 <p>下面是我的配置文件。</p>
 
-<pre><code class="language-shell">## yaboot.conf generated by yabootconfig 1.0.7
+<pre><code>## yaboot.conf generated by yabootconfig 1.0.7
 ##
 ## run: &quot;man yaboot.conf&quot; for details. Do not make changes until you have!!
 ##
@@ -1733,7 +1732,7 @@ image=/boot/kernel-gentoo-2.6.10
 
 <h2 id="12-重启系统:e579a454946bcfc93435fb8404ad15ed">12.重启系统</h2>
 
-<pre><code class="language-shell">#exit
+<pre><code>#exit
 #umount /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo
 #reboot
 </code></pre>
@@ -1742,13 +1741,13 @@ image=/boot/kernel-gentoo-2.6.10
 
 <p>在/etc/make.conf中加入</p>
 
-<pre><code class="language-shell">USE＝“cjk nls&quot;
+<pre><code>USE＝“cjk nls&quot;
 LINGUAS=&quot;zh_CN&quot;
 </code></pre>
 
 <h3 id="安装字体:e579a454946bcfc93435fb8404ad15ed">安装字体</h3>
 
-<pre><code class="language-shell">#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
+<pre><code>#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
 #fc-cache -f -v #(fontconfig的命令，安装字库）
 </code></pre>
 
@@ -1760,13 +1759,13 @@ LINGUAS=&quot;zh_CN&quot;
 
 <p>放在/home/fonts下。</p>
 
-<pre><code class="language-shell">#ln -s /home/fonts /usr/share/fonts/MsFonts
+<pre><code>#ln -s /home/fonts /usr/share/fonts/MsFonts
 #fc-cache
 </code></pre>
 
 <h3 id="安装x:e579a454946bcfc93435fb8404ad15ed">安装X</h3>
 
-<pre><code class="language-shell">#emerge xorg-x11
+<pre><code>#emerge xorg-x11
 #emerge Xautoconfig
 
 #Xautoconfig #(自动生成xorg.conf)
@@ -1776,10 +1775,10 @@ LINGUAS=&quot;zh_CN&quot;
 
 <p>编辑.xinitrc</p>
 
-<pre><code class="language-shell">#nano .xinitrc
+<pre><code>#nano .xinitrc
 </code></pre>
 
-<pre><code class="language-shell">export LC_CTYPE=zh_CN
+<pre><code>export LC_CTYPE=zh_CN
 export LANG=zh_CN
 export XMODIFIERS=&quot;@im=SCIM&quot;
 export XIM=SCIM
@@ -1929,7 +1928,7 @@ exec starxfce4
 
 <p>这样了就行啦。字体显示完善</p>
 
-<pre><code class="language-shell">#startx
+<pre><code>#startx
 </code></pre>
 
 <p>and enjoy&hellip;&hellip;&hellip;.</p>
@@ -1949,7 +1948,7 @@ other preferences.</li>
 <li>cpudyn allows cpu speed scaling for longer battery life.</li>
 </ul>
 
-<pre><code class="language-shell"># emerge pbbuttonsd; rc-update add pbbuttonsd default
+<pre><code># emerge pbbuttonsd; rc-update add pbbuttonsd default
 # emerge gtkpbbuttons
 # emerge powerprefs
 # emerge cpudyn

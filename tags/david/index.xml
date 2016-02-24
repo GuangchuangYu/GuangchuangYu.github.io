@@ -18,24 +18,27 @@
       <description>&lt;p&gt;&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; was
 used to visualize &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt;
 results in a paper published in &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3907017/&#34;&gt;BMC
-Genomics&lt;/a&gt;.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;
-Some users told me that they may want to use DAVID at some
+Genomics&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Some users told me that they may want to use DAVID at some
 circumstances. I think it maybe a good idea to make clusterProfiler
 supports DAVID, so that
 &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt; users can use
 visualization functions provided by
 &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(DOSE)
+&lt;pre&gt;&lt;code&gt;require(DOSE)
 require(clusterProfiler)
 data(geneList)
 gene = names(geneList)[abs(geneList) &amp;gt; 2]
 david = enrichDAVID(gene = gene, idType=&amp;quot;ENTREZ_GENE_ID&amp;quot;, 
-                    listType=&amp;quot;Gene&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
+listType=&amp;quot;Gene&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
 
-&lt;pre&gt;&lt;code&gt;&amp;gt; summary(david)
+
+
+&amp;gt; summary(david)
                ID            Description GeneRatio  BgRatio       pvalue
 hsa04110 hsa04110             Cell cycle     11/68 125/5085 4.254437e-06
 hsa04114 hsa04114         Oocyte meiosis     10/68 110/5085 1.119764e-05
@@ -53,35 +56,35 @@ hsa03320     7
 &lt;p&gt;There are only 5085 human genes annotated by KEGG, this is due to
 out-of-date DAVID data.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;barplot(david)
+&lt;pre&gt;&lt;code&gt;barplot(david)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.10.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;cnetplot(david, foldChange=geneList)
+&lt;pre&gt;&lt;code&gt;cnetplot(david, foldChange=geneList)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2019.42.45.png&#34; alt=&#34;&#34; /&gt;
 With enrichDAVID, compare DAVID functional profiles among different gene
 clusters is also supported.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;data(gcSample)
+&lt;pre&gt;&lt;code&gt;data(gcSample)
 x=compareCluster(gcSample, fun=&amp;quot;enrichDAVID&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
 plot(x)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/compareCluster_david.png&#34; alt=&#34;&#34; /&gt;
-As I pointed out in &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG enrichment analysis with latest online data
-using
-clusterProfiler&lt;/a&gt;,
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/compareCluster_david.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As I pointed out in &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG enrichment analysis with latest online data using clusterProfiler&lt;/a&gt;,
 there are many webservers using out of date data. This may leads to
 different interpretation of biological results. DAVID&amp;rsquo;s data is also out
 of date. DAVID stopped updating database since 2010. This is why I love
 Bioconductor, almost all the annotation packages are maintained by
 Bioconductor core team and will be updated biannual. enrichGO and
 enrichKEGG is more reliable with more updated data than many other
-tools.
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+tools.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     

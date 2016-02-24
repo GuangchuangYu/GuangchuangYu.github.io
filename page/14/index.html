@@ -117,7 +117,19 @@
       </header>
 
         
-          <p>1 分区 用MacOS X 10.2 的光盘启动，运行Disk Utility，选择“Install Mac OS 9 Disk Drivers”不然分区将不能在OS9中使用，我一共分了5个分区，12G,10G,512M,20G,13.4G。其中12Ｇ装OS9系统，10Ｇ装netbsd系统，512Ｍ为swap分区，20Ｇ为home 分区，最后一个为fat32格式，为两个系统所共享。 2 安装os9 开机放入os9安装光盘，按住Ｃ键，由光盘启动进入os9，在光盘根目录下点安装系统。指定第一个分区，选择安装的软件，十来分钟，便装完了。重新启动，将netbsd的启动程序ofwboot.xcf放在os9的根目录下。 3 安装netbsd 开机按住command+option+o+f进入open firmware。open firmware启动命令的语法是 boot boot-device [boot-file] [-as] 加-a会问你下个载入的文件，比如引导程序问你内核在那或内核会问你根分区在那。键入命令 boot cd:,\\ofwboot.xcf netbsd.macppc 引导netbsd安装光盘， 进入sysinst主菜单。 .***********************************************. * NetBSD-3.0 Install System * * * *&gt;a: Install NetBSD to hard disk * * b: Upgrade NetBSD on a hard disk * * c: Re-install sets or install additional sets * * d: Reboot the computer * * e: Utility menu * * x: Exit Install System * .***********************************************.</p>
+          <p><h2 id="1-分区:7c364ac533cc06c9bf86bf33eb786a17">1 分区</h2>
+
+<p>用MacOS X 10.2 的光盘启动，运行Disk Utility，选择“Install Mac OS
+9 Disk
+Drivers”不然分区将不能在OS9中使用，我一共分了5个分区，12G,10G,512M,20G,13.4G。其中12Ｇ装OS9系统，10Ｇ装netbsd系统，512Ｍ为swap分区，20Ｇ为home
+分区，最后一个为fat32格式，为两个系统所共享。</p>
+
+<h2 id="2-安装os9:7c364ac533cc06c9bf86bf33eb786a17">2 安装os9</h2>
+
+<p>开机放入os9安装光盘，按住<code>Ｃ</code>键，由光盘启动进入os9，在光盘根目录下点安装系统。指定第一个分区，选择安装的软件，十来分钟，便装完了。重新启动，将netbsd的启动程序<code>ofwboot.xcf</code>放在os9的根目录下。</p>
+
+<h2 id="3-安装netbsd:7c364ac533cc06c9bf86bf33eb786a17">3 安装netbsd</h2>
+</p>
 
           
               <footer>
@@ -145,7 +157,31 @@
       </header>
 
         
-          <p>下载imaxima http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz ./configure make sudo make install 进行安装。 默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入 (load &quot;imaxima&quot;) 启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。 需要breqn094包，可从ftp://ftp.ams.org/pub/tex/breqn.zip下载， cd /usr/share/texmf/tex/latex/ sudo unzip ~/Downloads/breqn.zip sudo texhash 重新启动emacs，运行maxima，就可以正常使用了。 原来我在05年就在用imaxima模式了，当年机器性能差，为了跑快点，很多软件我都尽量不使用gtk2界面，而编译成gtk界面。土灰的界面多么怀旧啊。 安装过程还是一样，不过原来的链接早已失效。 imaxima的homepage改为https://sites.google.com/site/imaximaimath，现在已经不需要下载imaxima了，因为它已经被整合进maxima中，会随着maxima被安装到系统中，把目录加载到.emacs中即可。 (push &quot;/usr/local/share/maxima/5.28.0/emacs/&quot; load-path) MacTeX太大，我使用BasicTeX，为了正常显示数学符号，同样需要安装breqn，这个sty文件现已整合到mh包中。 cd /usr/local/texlive/2013basic/texmf-local sudo unzip ~/Downloads/mh.zip sudo texhash texhash让TeX知道mh包的安装。 最后是让Emacs知道加载什么文件来执行，比如执行imaxima时要加载imaxima.el文件： (autoload 'maxima-mode &quot;maxima&quot; &quot;Maxima mode&quot; t) (autoload 'imaxima &quot;imaxima&quot; &quot;Frontend for maxima with Image support&quot; t) (autoload 'maxima &quot;maxima&quot; &quot;Maxima interaction&quot; t) (autoload 'imath &quot;imath&quot; &quot;Imath mode for math formula input&quot; t)</p>
+          <p><h2 id="下载imaxima:e6dedd294f68f0284e7032ee31b772ce">下载imaxima   </h2>
+
+<p><a href="http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz">http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz</a></p>
+
+<pre><code>./configure
+make
+sudo make install
+</code></pre>
+
+<p>进行安装。
+默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入</p>
+
+<pre><code>(load &quot;imaxima&quot;)
+</code></pre>
+
+<p>启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。
+<img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/master/2005/05/070902122953.png" alt="" /></p>
+
+<p>需要breqn094包，可从<a href="ftp://ftp.ams.org/pub/tex/breqn.zip">ftp://ftp.ams.org/pub/tex/breqn.zip</a>下载，</p>
+
+<pre><code>cd /usr/share/texmf/tex/latex/
+sudo unzip ~/Downloads/breqn.zip
+sudo texhash
+</code></pre>
+</p>
 
           
               <footer>
@@ -173,7 +209,30 @@
       </header>
 
         
-          <p>锐捷认证。非标准的802.1认证。 我采用mystar来认证，但是不会重连。。 我自已写了个shell script来实现断线后重连。。。 华农现在的校园网用锐捷认证，windows下的认证程序还行。linux下的客户端垃圾得不得了啊。。我用苹果笔记本PowerBookG3(fireware)。锐捷没有苹果下的认证客户端，于是我上不了网了，很是郁闷。。。 我装了gentoo。最初尝试用qemu的user-mode来虚拟x86的指令集，再用xrgsu（锐捷linux版认证程序）提供运行所需的libs。最终xrgsu可以运行。但是找不到网卡。后面我就放弃了。 拉了一个月ADSL，在一次偶然的机会我发现了mystar。mystar是用libnet＋libpcap写的，关键的代码不到200行（libnet和libpcap是平台无关的分组构造发送、分组截获C函数库）mystar是网上一个叫netxray的人写的。 下面是源码http://bbs.whnet.edu.cn/upload/mystarV0.1-src.zip，解压密码是netxray 解压后: cd mystarV0.1 make 编译。 #修改我的ID跟password。 vim mystar.conf 使用./mystar运行，并且认证成功! 随后我发现一个问题，就是不会自动重连，老是会断线。在mystar.conf里面有一段 #enable intelligent reconnect? # 1 means enable, and 0 means disable intelligentReconnect=1 我将其设置为1也不行。 这样每次过几分钟我就要^C，再./mystar，很不爽。。于是我决定写个script来实现自动重连。 一开始我采用一个笨方法。写一个循环让它过三分钟就kill mystar，再重新运行。 如下： #!/bin/bash cd ~/mystarV0.1 while : do ./mystar &amp; sleep 180 killall mystar done 后面我改进了这个脚本。代码如下： #!/bin/bash PATH=/bin:/usr/bin:/sbin:/usr/sbin cd ~/mystarV0.1 ./mystar &amp; while : do ping -c 5 -W 3 219.222.66.254 &amp;&gt;/dev/null if [ $? -ne 0</p>
+          <p><p>锐捷认证。非标准的802.1认证。 我采用mystar来认证，但是不会重连。。
+我自已写了个shell script来实现断线后重连。。。</p>
+
+<p>华农现在的校园网用锐捷认证，windows下的认证程序还行。linux下的客户端垃圾得不得了啊。。我用苹果笔记本PowerBookG3(fireware)。锐捷没有苹果下的认证客户端，于是我上不了网了，很是郁闷。。。</p>
+
+<p>我装了gentoo。最初尝试用qemu的user-mode来虚拟x86的指令集，再用xrgsu（锐捷linux版认证程序）提供运行所需的libs。最终xrgsu可以运行。但是找不到网卡。后面我就放弃了。</p>
+
+<p>拉了一个月ADSL，在一次偶然的机会我发现了mystar。mystar是用libnet＋libpcap写的，关键的代码不到200行（libnet和libpcap是平台无关的分组构造发送、分组截获C函数库）<code>mystar</code>是网上一个叫netxray的人写的。
+下面是源码<code>http://bbs.whnet.edu.cn/upload/mystarV0.1-src.zip</code>，解压密码是<code>netxray</code> 解压后:</p>
+
+<pre><code>cd mystarV0.1 
+make
+</code></pre>
+
+<p>编译。</p>
+
+<pre><code>#修改我的ID跟password。
+vim mystar.conf 
+</code></pre>
+
+<p>使用<code>./mystar</code>运行，并且认证成功!</p>
+
+<p>随后我发现一个问题，就是不会自动重连，老是会断线。在mystar.conf里面有一段</p>
+</p>
 
           
               <footer>
@@ -201,7 +260,44 @@
       </header>
 
         
-          <p>下面是我在PowerBook G3上安装Gentoo的全过程。。 自己做一个备忘录，也给想在Powerbook上装Gentoo的做一个参考。 以下为基本的安装过程，详细请参考Gentoo的文档 http://www.gentoo.org/doc/en/handbook/handbook- ppc.xml 基本的安装步骤如下： 用2004.3LiveCD进入。 1. 配置网络 ＃net-setup eth0 回答它几个问题就行了。 2.分区 #mac-fdisk /dev/hda 以下是我的分区。 /dev/hda # type name length base ( size ) system /dev/hda1 Apple_partition_map Apple 63 @ 1 ( 31.5k) Partition map /dev/hda2 Apple_Bootstrap bootstrap 1600 @ 64 (800.0k) NewWorld bootblock /dev/hda3 Apple_UNIX_SVR2 / 12582912 @ 1664 ( 6.0G) Linux native /dev/hda4 Apple_UNIX_SVR2 swap 1048576 @ 12584576 (512.0M) Linux swap /dev/hda5 Apple_UNIX_SVR2 /home 6007728 @ 13633152 ( 2.9G) Linux native Block size=512, Number of Blocks=19640880 DeviceType=0x0, DeviceId=0x0 3.建立文件系统 #mke2fs -j /dev/hda3 #mkswap /dev/hda4 #mke2fs -j /dev/hda5 #swapon /dev/hda4 4.挂载分区 #mount /dev/hda3 /mnt/gentoo 5.解开Stage Tarball用Portgage #cd /mnt/gentoo #tar xvjpf /mnt/cdrom/stages/stage3-\*g3\*.tar.bz2 #tar xvjf portage-20040926.tar.bz2 -C /mnt/gentoo/usr 6.设置编译选项 以下是我的make.conf # These settings were set by the catalyst build script that automatically built this stage # Please consult /etc/make.conf.example for a more detailed example CFLAGS=&quot;-O3 -pipe -mcpu=750 -fno-strict-aliasing -mpowerpc-gfxopt -mmultiple -mstring&quot; CHOST=&quot;powerpc-unknown-linux-gnu&quot; CXXFLAGS=&quot;${CFLAGS}&quot; LDFLAGS=&quot;-Wl,-O1 -Wl,--enable-new-dtags -Wl,--sort-common -s&quot; MAKEOPTS=&quot;-j2&quot; ACCEPT_KEYWORDS=&quot;~ppc&quot; USE=&quot;acpi cjk nls ppc freetype fbdev f77 java ncurses gpm gtk gtk2 -gnome qt -kde rage128 dvd alsa -arts mmx clisp&quot; LINGUAS=&quot;zh_CN&quot; 7.</p>
+          <p><p>下面是我在PowerBook G3上安装Gentoo的全过程。。</p>
+
+<p>自己做一个备忘录，也给想在Powerbook上装Gentoo的做一个参考。</p>
+
+<p>以下为基本的安装过程，详细请参考Gentoo的文档</p>
+
+<p><a href="http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml">http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml</a></p>
+
+<p>基本的安装步骤如下：</p>
+
+<p>用2004.3LiveCD进入。</p>
+
+<h2 id="1-配置网络:e579a454946bcfc93435fb8404ad15ed">1. 配置网络</h2>
+
+<pre><code>＃net-setup eth0
+</code></pre>
+
+<p>回答它几个问题就行了。</p>
+
+<h2 id="2-分区:e579a454946bcfc93435fb8404ad15ed">2.分区</h2>
+
+<pre><code>#mac-fdisk /dev/hda
+</code></pre>
+
+<p>以下是我的分区。</p>
+
+<pre><code>/dev/hda
+ # type name length base ( size ) system
+/dev/hda1 Apple_partition_map Apple 63 @ 1 ( 31.5k) Partition map
+/dev/hda2 Apple_Bootstrap bootstrap 1600 @ 64 (800.0k) NewWorld bootblock
+/dev/hda3 Apple_UNIX_SVR2 / 12582912 @ 1664 ( 6.0G) Linux native
+/dev/hda4 Apple_UNIX_SVR2 swap 1048576 @ 12584576 (512.0M) Linux swap
+/dev/hda5 Apple_UNIX_SVR2 /home 6007728 @ 13633152 ( 2.9G) Linux native
+
+Block size=512, Number of Blocks=19640880
+DeviceType=0x0, DeviceId=0x0
+</code></pre>
+</p>
 
           
               <footer>

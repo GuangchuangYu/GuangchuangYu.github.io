@@ -130,7 +130,7 @@ funny package to generate comic (xkcd-like) graph in R. Have fun with
 <a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
 and <a href="https://github.com/timelyportfolio/comicR">comicR</a>.</p>
 
-<pre><code class="language-lang=&quot;rsplus&quot;">library(htmltools)
+<pre><code>library(htmltools)
 library(XML)
 library(gridSVG)
 library(comicR)
@@ -139,19 +139,19 @@ library(ggplot2)
 library(ggtree)
 
 p &lt;- ggtree(rtree(30), layout=&quot;fan&quot;)  + 
-   geom_text(aes(label=label, angle=angle), size=5, color=&quot;purple&quot;, vjust=-0.3)
+geom_text(aes(label=label, angle=angle), size=5, color=&quot;purple&quot;, vjust=-0.3)
 
 
 p
 svg &lt;- grid.export(name=&quot;&quot;)$svg
 tagList(
-      tags$div(
-        id = &quot;ggtree_comic&quot;,
-        tags$style(&quot;#ggtree_comic text {font-family:Chalkduster;}&quot;),
-        HTML(saveXML(svg)),
-        comicR(&quot;#ggtree_comic&quot;, ff=5)
-      )
-    ) %&gt;% html_print
+tags$div(
+id = &quot;ggtree_comic&quot;,
+tags$style(&quot;#ggtree_comic text {font-family:Chalkduster;}&quot;),
+HTML(saveXML(svg)),
+comicR(&quot;#ggtree_comic&quot;, ff=5)
+)
+) %&gt;% html_print
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/GuangchuangYu/ygc_name/98dbdcdbbb0e7fdb174fc1f40c611aeba2ee2bc5/Bioconductor/ggtree/comicTree.png" alt="" /></p>

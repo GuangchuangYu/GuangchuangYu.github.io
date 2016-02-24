@@ -15,18 +15,18 @@
       <pubDate>Mon, 14 May 2007 04:43:00 +0800</pubDate>
       
       <guid>http://guangchuangyu.github.io/2007/05/edit-partition-table-in-netbsd/macppc/</guid>
-      <description>&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#disklabel wd0
+      <description>&lt;pre&gt;&lt;code&gt;#disklabel wd0
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;可以看到原始分区如下: 7 partitions:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    #        size    offset     fstype [fsize bsize cpg/sgs]
-    a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
-    b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
-    c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
-    d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
-    e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
-    g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
+&lt;pre&gt;&lt;code&gt;#        size    offset     fstype [fsize bsize cpg/sgs]
+a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
+b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
+c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
+d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
+e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
+g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac
@@ -38,7 +38,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 &lt;p&gt;2. 安装hfsutils。用于操作那个15M的HFS分区（格式化，拷贝文件等工具）。hfsutils是命令行的，xhfs是tk界面的。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;    #cd /usr/pkgsrc/sysutils/hfsutils
+&lt;pre&gt;&lt;code&gt;    #cd /usr/pkgsrc/sysutils/hfsutils
     #make install
     #cd ../xhfs
     #make install
@@ -46,7 +46,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 &lt;p&gt;3.    分区 pdisk : Apple partition table editor&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;    # pdisk /dev/wd0c
+&lt;pre&gt;&lt;code&gt;    # pdisk /dev/wd0c
     pdisk /dev/wd0c
     Edit /dev/wd0c -
     Command (? for help): p
@@ -123,7 +123,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 &lt;p&gt;4. 改完分区后重新启动。此时netbsd的/分区已由10分区变为11分区，而硬盘上已经没有&lt;code&gt;ofwboot.xcf&lt;/code&gt;可用来启动系统。这个时候需要用到netbsd的安装盘，开机时按住&lt;code&gt;command+option+o+f&lt;/code&gt;四键。进入&lt;code&gt;openfirmwire&lt;/code&gt;。放入光盘，敲命令：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;boot
+&lt;pre&gt;&lt;code&gt;boot
 cd:,\ofwboot.xcf
 hd:11,/netbsd
 &lt;/code&gt;&lt;/pre&gt;
@@ -132,7 +132,7 @@ hd:11,/netbsd
 
 &lt;p&gt;5.    安装光盘启动。在&lt;code&gt;openfirmwire&lt;/code&gt;里敲&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;boot cd:,\ofwboot.xcf netbsd.macppc
+&lt;pre&gt;&lt;code&gt;boot cd:,\ofwboot.xcf netbsd.macppc
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;先择运行Shell. 查看分区&lt;/p&gt;
@@ -151,7 +151,7 @@ hd:11,/netbsd
 
 &lt;p&gt;原来的wd0g变成了wd0e,我也不知道为何。但是问题还是很好解决的。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/wd0a /mnt 
+&lt;pre&gt;&lt;code&gt;#mount /dev/wd0a /mnt 
 #chroot /mnt 
 ##修改fstab，改wd0g为wd0e
 #vi /etc/fstab 
@@ -160,7 +160,7 @@ hd:11,/netbsd
 
 &lt;p&gt;6. 返回第4步启动系统。正常启动后。由第5步disklabel中的输出知道，9分区是wd0d.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;## 将其格式化为hfs
+&lt;pre&gt;&lt;code&gt;## 将其格式化为hfs
 #hformat -l loader /dev/wd0d  
 $sudo xhfs
 &lt;/code&gt;&lt;/pre&gt;
@@ -171,7 +171,7 @@ $sudo xhfs
 
 &lt;p&gt;7.  改变home分区&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#newfs /dev/wd0g 
+&lt;pre&gt;&lt;code&gt;#newfs /dev/wd0g 
 #cd /home 
 ##打包用户数据，并保留原始权限
 #tar cjpvf ygc.tar.bz2 ygc     
@@ -224,7 +224,7 @@ $sudo xhfs
 &lt;p&gt;9.    重设openfirmwire
 修改后保存重启，进入&lt;code&gt;openfirmwire&lt;/code&gt;.使用&lt;code&gt;setenv&lt;/code&gt;命令重设启动的环境变量&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;setenv
+&lt;pre&gt;&lt;code&gt;setenv
 boot-device hd:9,\ofwboot.xcf hd:11,/netbsd 
 reset-all
 &lt;/code&gt;&lt;/pre&gt;
@@ -246,7 +246,7 @@ reset-all
 
 &lt;p&gt;新建的分区是wd0e&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#newfs /dev/wd0e 
+&lt;pre&gt;&lt;code&gt;#newfs /dev/wd0e 
 #chmod 777 /dev/wd0e      
 ##让用户对其有读写执行的权限 
 #chmod 777 /data ## 在/etc/fstab里添加：
@@ -289,29 +289,29 @@ cd:,\\ofwboot.xcf netbsd.macppc
 
 &lt;p&gt;引导netbsd安装光盘， 进入sysinst主菜单。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;    .***********************************************.
-    * NetBSD-3.0 Install System                     *
-    *                                               *
-    *&amp;gt;a: Install NetBSD to hard disk                *
-    * b: Upgrade NetBSD on a hard disk              *
-    * c: Re-install sets or install additional sets *
-    * d: Reboot the computer                        *
-    * e: Utility menu                               *
-    * x: Exit Install System                        *
-    .***********************************************.
+&lt;pre&gt;&lt;code&gt;.***********************************************.
+* NetBSD-3.0 Install System                     *
+*                                               *
+*&amp;gt;a: Install NetBSD to hard disk                *
+* b: Upgrade NetBSD on a hard disk              *
+* c: Re-install sets or install additional sets *
+* d: Reboot the computer                        *
+* e: Utility menu                               *
+* x: Exit Install System                        *
+.***********************************************.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;选择Utility menu运行shell，运行&lt;code&gt;pdisk
 /dev/wd0c&lt;/code&gt;修改分区，将第二，三，四个分区的partition 
 type改为&lt;code&gt;Apple_UNIX_SVR2&lt;/code&gt;，并分别给标签a,b,g。保存退出。创建文件系统。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#newfs ffs /dev/wd0a 
+&lt;pre&gt;&lt;code&gt;#newfs ffs /dev/wd0a 
 #newfs ffs /dev/wd0g
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;创建fstab&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/wd0a /mnt 
+&lt;pre&gt;&lt;code&gt;#mount /dev/wd0a /mnt 
 #mkdir /mnt/etc 
 #cat &amp;gt; /mnt/etc/fstab 
 
@@ -322,7 +322,7 @@ type改为&lt;code&gt;Apple_UNIX_SVR2&lt;/code&gt;，并分别给标签a,b,g。�
 
 &lt;p&gt;按&lt;code&gt;Control+D&lt;/code&gt;结束。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mkdir /home 
+&lt;pre&gt;&lt;code&gt;#mkdir /home 
 #cd / 
 #umount /mnt 
 #exit
@@ -331,7 +331,7 @@ type改为&lt;code&gt;Apple_UNIX_SVR2&lt;/code&gt;，并分别给标签a,b,g。�
 &lt;p&gt;回到主菜单,选择重新安装。选择安装组件以及安装介质。安装程序将软件包解压到&lt;code&gt;/dev/wd0a&lt;/code&gt;后，回到主菜单，选择Utility
 menu并运行shell，&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/wd0a 
+&lt;pre&gt;&lt;code&gt;#mount /dev/wd0a 
 #cd /mnt/dev 
 #sh MAKEDEV all
 &lt;/code&gt;&lt;/pre&gt;
@@ -339,7 +339,7 @@ menu并运行shell，&lt;/p&gt;
 &lt;p&gt;      
 创建设备节点 &lt;code&gt;#cd /mnt/dev&lt;/code&gt; 修改rc.conf 确定&lt;code&gt;rc_configured=YES&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /
+&lt;pre&gt;&lt;code&gt;#cd /
 #umount /mnt 
 #exit 
 &lt;/code&gt;&lt;/pre&gt;
@@ -359,7 +359,7 @@ firmware`:&lt;/p&gt;
 
 &lt;p&gt;拷一些字体到&lt;code&gt;\~/BackUP/fonts&lt;/code&gt;下，&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$cd \~/BackUP/fonts 
+&lt;pre&gt;&lt;code&gt;$cd \~/BackUP/fonts 
 $mkfontscale &amp;gt; fonts.scale 
 $cp fonts.scale fonts.dir 
 $cd \~ 
@@ -369,29 +369,29 @@ $ln -s ~/Backup/fonts .fonts
 &lt;p&gt;修改&lt;code&gt;/etc/X11/XF86Config&lt;/code&gt;
 添加&lt;code&gt;&amp;lt;dir&amp;gt;/home/ygc/BackUP/fonts&amp;lt;/dir&amp;gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;##create index of font files... 
+&lt;pre&gt;&lt;code&gt;##create index of font files... 
 $fc-cache -v
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装fcitx&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /usr/pkgsrc/inputmethod/fcitx 
+&lt;pre&gt;&lt;code&gt;#cd /usr/pkgsrc/inputmethod/fcitx 
 #make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装qvwm&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /usr/pkgsrc/wm/qvwm 
+&lt;pre&gt;&lt;code&gt;#cd /usr/pkgsrc/wm/qvwm 
 #make install
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;在&lt;code&gt;\~/.xinitrc&lt;/code&gt;中加入&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;export LC\_CTYPE=&amp;quot;zh\_CN.eucCN&amp;quot; 
+&lt;pre&gt;&lt;code&gt;export LC\_CTYPE=&amp;quot;zh\_CN.eucCN&amp;quot; 
 export XMODIFIERS=&amp;quot;@im=fcitx&amp;quot; 
 fcitx &amp;amp; 
 exec qvwm
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;OK startx&amp;hellip;&lt;/p&gt;
 
@@ -417,13 +417,13 @@ exec qvwm
 &lt;p&gt;拉了一个月ADSL，在一次偶然的机会我发现了mystar。mystar是用libnet＋libpcap写的，关键的代码不到200行（libnet和libpcap是平台无关的分组构造发送、分组截获C函数库）&lt;code&gt;mystar&lt;/code&gt;是网上一个叫netxray的人写的。
 下面是源码&lt;code&gt;http://bbs.whnet.edu.cn/upload/mystarV0.1-src.zip&lt;/code&gt;，解压密码是&lt;code&gt;netxray&lt;/code&gt; 解压后:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;cd mystarV0.1 
+&lt;pre&gt;&lt;code&gt;cd mystarV0.1 
 make
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;编译。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#修改我的ID跟password。
+&lt;pre&gt;&lt;code&gt;#修改我的ID跟password。
 vim mystar.conf 
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -444,7 +444,7 @@ intelligentReconnect=1
 &lt;p&gt;一开始我采用一个笨方法。写一个循环让它过三分钟就kill
 mystar，再重新运行。 如下：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/bash
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
 cd ~/mystarV0.1
 while :
 do
@@ -456,7 +456,7 @@ done
 
 &lt;p&gt;后面我改进了这个脚本。代码如下：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/bash
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 cd ~/mystarV0.1
 ./mystar &amp;amp;
@@ -494,8 +494,7 @@ kill掉，并重新运行。&lt;/p&gt;
 
 &lt;p&gt;以下为基本的安装过程，详细请参考Gentoo的文档&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml&#34;&gt;http://www.gentoo.org/doc/en/handbook/handbook-
-ppc.xml&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml&#34;&gt;http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;基本的安装步骤如下：&lt;/p&gt;
 
@@ -503,19 +502,19 @@ ppc.xml&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;1-配置网络:e579a454946bcfc93435fb8404ad15ed&#34;&gt;1. 配置网络&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;＃net-setup eth0
+&lt;pre&gt;&lt;code&gt;＃net-setup eth0
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;回答它几个问题就行了。&lt;/p&gt;
 
 &lt;h2 id=&#34;2-分区:e579a454946bcfc93435fb8404ad15ed&#34;&gt;2.分区&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mac-fdisk /dev/hda
+&lt;pre&gt;&lt;code&gt;#mac-fdisk /dev/hda
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;以下是我的分区。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/dev/hda
+&lt;pre&gt;&lt;code&gt;/dev/hda
  # type name length base ( size ) system
 /dev/hda1 Apple_partition_map Apple 63 @ 1 ( 31.5k) Partition map
 /dev/hda2 Apple_Bootstrap bootstrap 1600 @ 64 (800.0k) NewWorld bootblock
@@ -529,7 +528,7 @@ DeviceType=0x0, DeviceId=0x0
 
 &lt;h2 id=&#34;3-建立文件系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;3.建立文件系统&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mke2fs -j /dev/hda3
+&lt;pre&gt;&lt;code&gt;#mke2fs -j /dev/hda3
 #mkswap /dev/hda4
 #mke2fs -j /dev/hda5
 #swapon /dev/hda4
@@ -537,12 +536,12 @@ DeviceType=0x0, DeviceId=0x0
 
 &lt;h2 id=&#34;4-挂载分区:e579a454946bcfc93435fb8404ad15ed&#34;&gt;4.挂载分区&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount /dev/hda3 /mnt/gentoo
+&lt;pre&gt;&lt;code&gt;#mount /dev/hda3 /mnt/gentoo
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;5-解开stage-tarball用portgage:e579a454946bcfc93435fb8404ad15ed&#34;&gt;5.解开Stage Tarball用Portgage&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#cd /mnt/gentoo
+&lt;pre&gt;&lt;code&gt;#cd /mnt/gentoo
 #tar xvjpf /mnt/cdrom/stages/stage3-\*g3\*.tar.bz2
 #tar xvjf portage-20040926.tar.bz2 -C /mnt/gentoo/usr
 &lt;/code&gt;&lt;/pre&gt;
@@ -551,7 +550,7 @@ DeviceType=0x0, DeviceId=0x0
 
 &lt;p&gt;以下是我的make.conf&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# These settings were set by the catalyst build script that automatically built this stage
+&lt;pre&gt;&lt;code&gt;# These settings were set by the catalyst build script that automatically built this stage
 # Please consult /etc/make.conf.example for a more detailed example
 CFLAGS=&amp;quot;-O3 -pipe -mcpu=750 -fno-strict-aliasing -mpowerpc-gfxopt -mmultiple -mstring&amp;quot;
 CHOST=&amp;quot;powerpc-unknown-linux-gnu&amp;quot;
@@ -567,13 +566,13 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;h2 id=&#34;7-挂载分区:e579a454946bcfc93435fb8404ad15ed&#34;&gt;7. 挂载分区&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#mount -t proc none /mnt/gentoo/proc
+&lt;pre&gt;&lt;code&gt;#mount -t proc none /mnt/gentoo/proc
 #chroot /mnt/gentoo /bin/bash
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;8-更新系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;8.更新系统&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#env-update &amp;amp;&amp;amp; source /etc/profile
+&lt;pre&gt;&lt;code&gt;#env-update &amp;amp;&amp;amp; source /etc/profile
 #emerge sync
 
 #emerge --update world
@@ -581,7 +580,7 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;h2 id=&#34;9-安装内核:e579a454946bcfc93435fb8404ad15ed&#34;&gt;9.安装内核&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge gentoo-dev-sources
+&lt;pre&gt;&lt;code&gt;#emerge gentoo-dev-sources
 #cd /usr/src/linux
 #make menuconfig
 #make all &amp;amp;&amp;amp; make menuconfig
@@ -593,7 +592,7 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;p&gt;以下是我的内核选项配置&amp;hellip;&amp;hellip;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#
+&lt;pre&gt;&lt;code&gt;#
 # Automatically generated make config: don&#39;t edit
 # Linux kernel version: 2.6.10-gentoo-r6
 # Fri Mar 18 14:20:13 2005
@@ -2014,26 +2013,26 @@ CONFIG_ZLIB_DEFLATE=y
 # CONFIG_CRYPTO is not set
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#find /lib/modules/&amp;lt;kernel version&amp;gt;/ -type f -iname &#39;\*.o&#39; -or
+&lt;pre&gt;&lt;code&gt;#find /lib/modules/&amp;lt;kernel version&amp;gt;/ -type f -iname &#39;\*.o&#39; -or
 -iname &#39;\*.ko&#39;
 #nano -w /etc/modules.autoload.d/kernel-2.6
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;在这文件里加入开机自动载入的模块&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#modules-update
+&lt;pre&gt;&lt;code&gt;#modules-update
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;10-配置系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;10.配置系统&lt;/h2&gt;
 
 &lt;h3 id=&#34;fstab:e579a454946bcfc93435fb8404ad15ed&#34;&gt;fstab&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#nano /etc/fstab
+&lt;pre&gt;&lt;code&gt;#nano /etc/fstab
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;下面是我的配置。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# &amp;lt;fs&amp;gt; &amp;lt;mountpoint&amp;gt; &amp;lt;type&amp;gt; &amp;lt;opts&amp;gt; &amp;lt;dump/pass&amp;gt;
+&lt;pre&gt;&lt;code&gt;# &amp;lt;fs&amp;gt; &amp;lt;mountpoint&amp;gt; &amp;lt;type&amp;gt; &amp;lt;opts&amp;gt; &amp;lt;dump/pass&amp;gt;
 /dev/hda3 / ext3 noauto,noatime 1 1
 /dev/hda4 none swap sw 0 0
 /dev/hda5 /home ext3 noatime 0 1
@@ -2046,7 +2045,7 @@ none /dev/shm tmpfs defaults 0 0
 
 &lt;h3 id=&#34;网络信息:e579a454946bcfc93435fb8404ad15ed&#34;&gt;网络信息&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# echo tux &amp;gt; /etc/hostname
+&lt;pre&gt;&lt;code&gt;# echo tux &amp;gt; /etc/hostname
 # echo homenetwork &amp;gt; /etc/dnsdomainname
 # echo nis.homenetwork &amp;gt; /etc/nisdomainname
 # rc-update add domainname default
@@ -2054,14 +2053,14 @@ none /dev/shm tmpfs defaults 0 0
 
 &lt;h3 id=&#34;配置网络:e579a454946bcfc93435fb8404ad15ed&#34;&gt;配置网络&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#nano /etc/conf.d/net
+&lt;pre&gt;&lt;code&gt;#nano /etc/conf.d/net
 #nano /etc/resolv.conf
 #rc-update add net.eth0 default
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;安装系统工具:e579a454946bcfc93435fb8404ad15ed&#34;&gt;安装系统工具&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge metalog
+&lt;pre&gt;&lt;code&gt;#emerge metalog
 #rc-update add metalog default
 #emerge vixie-cron
 #rc-update add vixie-cron default
@@ -2069,13 +2068,13 @@ none /dev/shm tmpfs defaults 0 0
 
 &lt;h2 id=&#34;11-配置启动:e579a454946bcfc93435fb8404ad15ed&#34;&gt;11.配置启动&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge yaboot
+&lt;pre&gt;&lt;code&gt;#emerge yaboot
 #nano yaboot.conf
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;下面是我的配置文件。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;## yaboot.conf generated by yabootconfig 1.0.7
+&lt;pre&gt;&lt;code&gt;## yaboot.conf generated by yabootconfig 1.0.7
 ##
 ## run: &amp;quot;man yaboot.conf&amp;quot; for details. Do not make changes until you have!!
 ##
@@ -2101,7 +2100,7 @@ image=/boot/kernel-gentoo-2.6.10
 
 &lt;h2 id=&#34;12-重启系统:e579a454946bcfc93435fb8404ad15ed&#34;&gt;12.重启系统&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#exit
+&lt;pre&gt;&lt;code&gt;#exit
 #umount /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo
 #reboot
 &lt;/code&gt;&lt;/pre&gt;
@@ -2110,13 +2109,13 @@ image=/boot/kernel-gentoo-2.6.10
 
 &lt;p&gt;在/etc/make.conf中加入&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;USE＝“cjk nls&amp;quot;
+&lt;pre&gt;&lt;code&gt;USE＝“cjk nls&amp;quot;
 LINGUAS=&amp;quot;zh_CN&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;安装字体:e579a454946bcfc93435fb8404ad15ed&#34;&gt;安装字体&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
+&lt;pre&gt;&lt;code&gt;#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
 #fc-cache -f -v #(fontconfig的命令，安装字库）
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -2128,13 +2127,13 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;p&gt;放在/home/fonts下。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#ln -s /home/fonts /usr/share/fonts/MsFonts
+&lt;pre&gt;&lt;code&gt;#ln -s /home/fonts /usr/share/fonts/MsFonts
 #fc-cache
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;安装x:e579a454946bcfc93435fb8404ad15ed&#34;&gt;安装X&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#emerge xorg-x11
+&lt;pre&gt;&lt;code&gt;#emerge xorg-x11
 #emerge Xautoconfig
 
 #Xautoconfig #(自动生成xorg.conf)
@@ -2144,10 +2143,10 @@ LINGUAS=&amp;quot;zh_CN&amp;quot;
 
 &lt;p&gt;编辑.xinitrc&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#nano .xinitrc
+&lt;pre&gt;&lt;code&gt;#nano .xinitrc
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;export LC_CTYPE=zh_CN
+&lt;pre&gt;&lt;code&gt;export LC_CTYPE=zh_CN
 export LANG=zh_CN
 export XMODIFIERS=&amp;quot;@im=SCIM&amp;quot;
 export XIM=SCIM
@@ -2297,7 +2296,7 @@ exec starxfce4
 
 &lt;p&gt;这样了就行啦。字体显示完善&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#startx
+&lt;pre&gt;&lt;code&gt;#startx
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;and enjoy&amp;hellip;&amp;hellip;&amp;hellip;.&lt;/p&gt;
@@ -2317,7 +2316,7 @@ other preferences.&lt;/li&gt;
 &lt;li&gt;cpudyn allows cpu speed scaling for longer battery life.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# emerge pbbuttonsd; rc-update add pbbuttonsd default
+&lt;pre&gt;&lt;code&gt;# emerge pbbuttonsd; rc-update add pbbuttonsd default
 # emerge gtkpbbuttons
 # emerge powerprefs
 # emerge cpudyn

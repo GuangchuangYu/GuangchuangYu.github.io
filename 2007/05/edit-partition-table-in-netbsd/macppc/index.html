@@ -118,18 +118,18 @@
 <span class='st_facebook_hcount' displayText='Facebook'></span>
 <span class='st_sina_hcount' displayText='Sina'></span>
 <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
-          <pre><code class="language-shell">#disklabel wd0
+          <pre><code>#disklabel wd0
 </code></pre>
 
 <p>可以看到原始分区如下: 7 partitions:</p>
 
-<pre><code>    #        size    offset     fstype [fsize bsize cpg/sgs]
-    a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
-    b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
-    c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
-    d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
-    e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
-    g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
+<pre><code>#        size    offset     fstype [fsize bsize cpg/sgs]
+a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
+b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
+c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
+d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
+e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
+g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
 </code></pre>
 
 <p>a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac
@@ -141,7 +141,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 <p>2. 安装hfsutils。用于操作那个15M的HFS分区（格式化，拷贝文件等工具）。hfsutils是命令行的，xhfs是tk界面的。</p>
 
-<pre><code class="language-shell">    #cd /usr/pkgsrc/sysutils/hfsutils
+<pre><code>    #cd /usr/pkgsrc/sysutils/hfsutils
     #make install
     #cd ../xhfs
     #make install
@@ -149,7 +149,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 <p>3.    分区 pdisk : Apple partition table editor</p>
 
-<pre><code class="language-shell">    # pdisk /dev/wd0c
+<pre><code>    # pdisk /dev/wd0c
     pdisk /dev/wd0c
     Edit /dev/wd0c -
     Command (? for help): p
@@ -226,7 +226,7 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 
 <p>4. 改完分区后重新启动。此时netbsd的/分区已由10分区变为11分区，而硬盘上已经没有<code>ofwboot.xcf</code>可用来启动系统。这个时候需要用到netbsd的安装盘，开机时按住<code>command+option+o+f</code>四键。进入<code>openfirmwire</code>。放入光盘，敲命令：</p>
 
-<pre><code class="language-shell">boot
+<pre><code>boot
 cd:,\ofwboot.xcf
 hd:11,/netbsd
 </code></pre>
@@ -235,7 +235,7 @@ hd:11,/netbsd
 
 <p>5.    安装光盘启动。在<code>openfirmwire</code>里敲</p>
 
-<pre><code class="language-shell">boot cd:,\ofwboot.xcf netbsd.macppc
+<pre><code>boot cd:,\ofwboot.xcf netbsd.macppc
 </code></pre>
 
 <p>先择运行Shell. 查看分区</p>
@@ -254,7 +254,7 @@ hd:11,/netbsd
 
 <p>原来的wd0g变成了wd0e,我也不知道为何。但是问题还是很好解决的。</p>
 
-<pre><code class="language-shell">#mount /dev/wd0a /mnt 
+<pre><code>#mount /dev/wd0a /mnt 
 #chroot /mnt 
 ##修改fstab，改wd0g为wd0e
 #vi /etc/fstab 
@@ -263,7 +263,7 @@ hd:11,/netbsd
 
 <p>6. 返回第4步启动系统。正常启动后。由第5步disklabel中的输出知道，9分区是wd0d.</p>
 
-<pre><code class="language-shell">## 将其格式化为hfs
+<pre><code>## 将其格式化为hfs
 #hformat -l loader /dev/wd0d  
 $sudo xhfs
 </code></pre>
@@ -274,7 +274,7 @@ $sudo xhfs
 
 <p>7.  改变home分区</p>
 
-<pre><code class="language-shell">#newfs /dev/wd0g 
+<pre><code>#newfs /dev/wd0g 
 #cd /home 
 ##打包用户数据，并保留原始权限
 #tar cjpvf ygc.tar.bz2 ygc     
@@ -327,7 +327,7 @@ $sudo xhfs
 <p>9.    重设openfirmwire
 修改后保存重启，进入<code>openfirmwire</code>.使用<code>setenv</code>命令重设启动的环境变量</p>
 
-<pre><code class="language-shell">setenv
+<pre><code>setenv
 boot-device hd:9,\ofwboot.xcf hd:11,/netbsd 
 reset-all
 </code></pre>
@@ -349,7 +349,7 @@ reset-all
 
 <p>新建的分区是wd0e</p>
 
-<pre><code class="language-shell">#newfs /dev/wd0e 
+<pre><code>#newfs /dev/wd0e 
 #chmod 777 /dev/wd0e      
 ##让用户对其有读写执行的权限 
 #chmod 777 /data ## 在/etc/fstab里添加：
