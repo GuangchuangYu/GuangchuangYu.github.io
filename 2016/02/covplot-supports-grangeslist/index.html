@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
@@ -17,7 +14,7 @@
   <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
   
-  <title>C</title>
+  <title>covplot supports GRangesList</title>
 
   
   <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-octopress.css">
@@ -37,7 +34,7 @@
   
   
 
-  <link href="http://guangchuangyu.github.io/categories/c/index.xml" rel="alternate" type="application/rss+xml" title="Guangchuang Yu" />
+  
 
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -102,39 +99,104 @@
 <div id="main">
   <div id="content">
     <div>
-      <article role="article">
+      <article class="hentry" role="article">
         <header>
           <h1 class="entry-title">
-            Category: C
+            covplot supports GRangesList 
           </h1>
-        </header>
-        <div id="blog-archives" class="category">
-          
-          <h2>
-            2007
-          </h2>
-          <article>
-            <h1>
-              <a href="http://guangchuangyu.github.io/2007/06/newton-raphson-method%E4%BC%B0%E7%AE%97%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%B9/" title="Newton-Raphson Method估算函数的根">Newton-Raphson Method估算函数的根</a>
-            </h1>
-            <time>
-              <span class="month">Jun</span>
-              <span class="day">2</span>
-            </time>
-            <footer>
-              <span class="categories"> 
-                tags:
-                
-                 <a class="category" href="http://guangchuangyu.github.io/tags/calculus">calculus</a>
-                
-              </span>
-            </footer>
-          </article>
-          
-        </div>
-      </article>
-    </div>
+          <p class="meta">Feb 29, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist/#disqus_thread">Comments</a>
 
+          
+
+          
+          
+          <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a>
+          </p>
+        </header>
+        <div class="entry-content">
+<span class='st_twitter_hcount' displayText='Tweet'></span>
+<span class='st_facebook_hcount' displayText='Facebook'></span>
+<span class='st_sina_hcount' displayText='Sina'></span>
+<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+          <p>To answer the <a href="https://github.com/GuangchuangYu/ChIPseeker/issues/27">issue</a>, I extend the <code>covplot</code> function to support viewing coverage of a list of <code>GRanges</code> objects or <code>bed</code> files.</p>
+
+<pre><code>library(ChIPseeker)
+files &lt;- getSampleFiles()
+peak=GenomicRanges::GRangesList(CBX6=readPeakFile(files[[4]]),
+                                CBX7=readPeakFile(files[[5]]))
+
+p &lt;- covplot(peak)
+print(p)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/2016_ChIPseeker_covplot_files/unnamed-chunk-1-2.png" alt="" /></p>
+
+<p>By default, The coverage plot are merged together with different color. Users can separate them to different panels using <code>facet_grid</code>.</p>
+
+<pre><code>library(ggplot2)
+col &lt;- c(CBX6='red', CBX7='green')
+p + facet_grid(chr ~ .id) + scale_color_manual(values=col) + scale_fill_manual(values=col)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/2016_ChIPseeker_covplot_files/unnamed-chunk-2-1.png" alt="" /></p>
+
+<span class='st_twitter_hcount' displayText='Tweet'></span>
+<span class='st_facebook_hcount' displayText='Facebook'></span>
+<span class='st_sina_hcount' displayText='Sina'></span>
+<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+        </div>
+        
+
+<footer>
+  <p class="meta">
+    <span class="byline author vcard">Posted by <span class="fn">Guangchuang Yu</span></span>
+    
+    <time>Feb 29, 2016</time>
+    <span class="categories">
+      Tags: 
+        
+        
+          <a class="category" href="http://guangchuangyu.github.io/tags/chipseeker">ChIPseeker</a>  
+        
+    </span>
+  </p>
+    
+  
+  
+
+  
+
+  <p class="meta">
+    
+        <a class="basic-alignment left" href="http://guangchuangyu.github.io/2016/02/tweets-of-ggtree/" title="tweets of ggtree">tweets of ggtree</a>
+    
+
+    
+  </p>
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    
+    
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gcyu';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>
+
+ 
+
+	</article>
+    </div>
     
 
 
@@ -267,3 +329,5 @@ MathJax.Hub.Config({
 
 </body>
 </html>
+
+
