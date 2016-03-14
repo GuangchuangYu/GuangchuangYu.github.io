@@ -6,8 +6,51 @@
     <description>Recent content on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Mar 2016 13:17:48 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 14 Mar 2016 16:21:11 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Font Awesome supported in emojifont</title>
+      <link>http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/</link>
+      <pubDate>Mon, 14 Mar 2016 16:21:11 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://cran.r-project.org/package=emojifont&#34;&gt;&lt;img src=&#34;http://www.r-pkg.org/badges/version/emojifont&#34; alt=&#34;CRAN_Status_Badge&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/emojifont/index.html&#34;&gt;&lt;code&gt;emojifont&lt;/code&gt;&lt;/a&gt; is available in CRAN, you can use the following command to install it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;install.packages(&amp;quot;emojifont&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;An example of using emoji font in R plot is showed below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2016/douban_emoji.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;More example can be found in &lt;a href=&#34;http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/&#34;&gt;the post&lt;/a&gt; and online &lt;a href=&#34;https://cran.r-project.org/web/packages/emojifont/vignettes/emojifont.html&#34;&gt;vignette&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I found &lt;a href=&#34;http://fontawesome.io/cheatsheet/&#34;&gt;FontAwesome&lt;/a&gt; is quite interesting especially in technical world. In &lt;code&gt;emojifont&lt;/code&gt; (version &amp;gt;= 0.3), I have packed the &lt;code&gt;Font Awesome&lt;/code&gt;. So that we can use this fancy font in both base and ggplot2 graphics.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;load.fontawesome()
+
+set.seed(2016-03-09)
+fa &amp;lt;- fontawesome(c(&#39;fa-github&#39;, &#39;fa-weibo&#39;, &#39;fa-twitter&#39;, &#39;fa-android&#39;, &#39;fa-coffee&#39;))
+d &amp;lt;- data.frame(x=rnorm(20), 
+                y=rnorm(20), 
+                label=sample(fa, 20, replace=T))
+
+ggplot(d, aes(x, y, color=label)) + 
+    geom_text(aes(label=label), family=&#39;fontawesome-webfont&#39;)+
+    xlab(NULL)+ylab(NULL)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/fontawesome.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Have fun with &lt;code&gt;emojifont&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://twitter.com/drob&#34;&gt;@drob&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/guangchuangyu&#34;&gt;@guangchuangyu&lt;/a&gt;, this is data surfing (air quality data from Lima, Peru) / fun with your cool pkgs. Thx! &lt;a href=&#34;https://t.co/ikinjxDDZL&#34;&gt;pic.twitter.com/ikinjxDDZL&lt;/a&gt;&lt;/p&gt;&amp;mdash; Maëlle Salmon (@ma_salmon) &lt;a href=&#34;https://twitter.com/ma_salmon/status/706490090609106944&#34;&gt;March 6, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+</description>
+    </item>
     
     <item>
       <title>使用ggtree实现进化树的可视化和注释</title>
@@ -1721,63 +1764,6 @@ test. If it&amp;rsquo;s reasonable, we can add a parameter for clusterProfiler
 users to switch between two modes (full sets or subset). This is still
 an open issue/question. If you have any idea, don&amp;rsquo;t hesitate to let me
 know. :)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>use simplify to remove redundancy of enriched GO terms</title>
-      <link>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</link>
-      <pubDate>Wed, 21 Oct 2015 09:37:11 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/</guid>
-      <description>&lt;p&gt;To simplify enriched GO result, we can use slim version of GO and use
-&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;enricher&lt;/a&gt;&lt;/em&gt;
-function to analyze.&lt;/p&gt;
-
-&lt;p&gt;Another strategy is to use
-&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; to calculate
-similarity of GO terms and remove those highly similar terms by keeping
-one representative term. To make this feature available to
-&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
-users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
-output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require(clusterProfiler)
-data(geneList, package=&amp;quot;DOSE&amp;quot;)
-de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
-bp &amp;lt;- enrichGO(de, ont=&amp;quot;BP&amp;quot;)
-enrichMap(bp)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/bp1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;enrichMap&lt;/em&gt; doesn&amp;rsquo;t display the whole picture as we use the default
-value &lt;em&gt;n=50&lt;/em&gt; to only show 50 highly significant terms. In the
-&lt;em&gt;enrichMap&lt;/em&gt;, we can found that there are many redundant terms form a
-highly condense network.&lt;/p&gt;
-
-&lt;p&gt;Now with the &lt;em&gt;simplify&lt;/em&gt; method, we can remove redundant terms.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;bp2 &amp;lt;- simplify(bp, cutoff=0.7, by=&amp;quot;p.adjust&amp;quot;, select_fun=min)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The &lt;em&gt;simplify&lt;/em&gt; method apply &lt;em&gt;&amp;lsquo;select_fun&amp;rsquo;&lt;/em&gt; (which can be a user defined
-function) to feature &amp;lsquo;&lt;em&gt;by&lt;/em&gt;&amp;rsquo; to select one representative terms from
-redundant terms (which have similarity higher than &amp;lsquo;&lt;em&gt;cutoff&lt;/em&gt;&amp;rsquo;).
-&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/bp2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The simplified version of enriched result is more clear and give us a
-more comprehensive view of the whole story.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;enrichGO&lt;/em&gt; test the whole GO corpus and enriched result may contains
-very general terms.
-&lt;em&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/em&gt;
-contains a &lt;em&gt;dropGO&lt;/em&gt; function to remove specific GO terms or GO level,
-see &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/26&#34;&gt;the
-issue&lt;/a&gt;. With
-&lt;em&gt;simplify&lt;/em&gt; and &lt;em&gt;dropGO&lt;/em&gt;, enriched result can be more specific and more
-easy to interpret. Both of these functions work fine with outputs
-obtained from both &lt;em&gt;enrichGO&lt;/em&gt; and &lt;em&gt;compareCluster&lt;/em&gt;.🍻&lt;/p&gt;
 </description>
     </item>
     

@@ -104,6 +104,52 @@
     <article>
       <header>
         <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/">use simplify to remove redundancy of enriched GO terms</a>
+        </h1>
+        <p class="meta">Oct 21, 2015 - 2 minute read -  <a href="http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        </p>
+
+      </header>
+
+        
+          <p><p>To simplify enriched GO result, we can use slim version of GO and use
+<em><a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">enricher</a></em>
+function to analyze.</p>
+
+<p>Another strategy is to use
+<a href="http://www.bioconductor.org/packages/GOSemSim">GOSemSim</a> to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+<a href="http://www.bioconductor.org/packages/clusterProfiler">clusterProfiler</a>
+users, I develop a <em>simplify</em> method to reduce redundant GO terms from
+output of <em>enrichGO</em> function.</p>
+
+<pre><code>require(clusterProfiler)
+data(geneList, package=&quot;DOSE&quot;)
+de &lt;- names(geneList)[abs(geneList) &gt; 2]
+bp &lt;- enrichGO(de, ont=&quot;BP&quot;)
+enrichMap(bp)
+</code></pre>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
           <a href="http://guangchuangyu.github.io/2015/10/bioc-3.2-news-of-my-bioc-packages/">BioC 3.2: NEWS of my BioC packages</a>
         </h1>
         <p class="meta">Oct 15, 2015 - 3 minute read -  <a href="http://guangchuangyu.github.io/2015/10/bioc-3.2-news-of-my-bioc-packages/#disqus_thread">Comments</a>
@@ -262,62 +308,6 @@ and <a href="https://github.com/timelyportfolio/comicR">comicR</a>.</p>
 
     </article>
     
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2015/08/subview/">subview</a>
-        </h1>
-        <p class="meta">Aug 31, 2015 - 1 minute read -  <a href="http://guangchuangyu.github.io/2015/08/subview/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
-        </p>
-
-      </header>
-
-        
-          <p><p>I implemented a function, <em>subview</em>, in
-<a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
-that make it easy to embed a subplot in ggplot.</p>
-
-<p>An example is shown below:</p>
-
-<pre><code>library(ggplot2)
-library(ggtree)
-
-dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
-pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
-geom_bar(stat=&quot;identity&quot;, width=1) + 
-coord_polar(theta=&quot;y&quot;) + theme_tree() + 
-xlab(NULL) + ylab(NULL) + 
-theme_transparent()
-
-x &lt;- sample(2:9)
-y &lt;- sample(2:9)
-width &lt;- sample(seq(0.05, 0.15, length.out=length(x)))
-height &lt;- width
-
-p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
-print(p)
-for (i in seq_along(x)) {
-p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
-print(p)
-}
-</code></pre>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2015/08/subview/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
     
     
 
@@ -442,6 +432,10 @@ print(p)
       
       
       <li class="post">
+        <a href="/2016/03/font-awesome-supported-in-emojifont/">Font Awesome supported in emojifont</a>
+      </li>
+      
+      <li class="post">
         <a href="/2016/03/%E4%BD%BF%E7%94%A8ggtree%E5%AE%9E%E7%8E%B0%E8%BF%9B%E5%8C%96%E6%A0%91%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%92%8C%E6%B3%A8%E9%87%8A/">使用ggtree实现进化树的可视化和注释</a>
       </li>
       
@@ -455,10 +449,6 @@ print(p)
       
       <li class="post">
         <a href="/2016/02/reactomepa-an-r/bioconductor-package-for-reactome-pathway-analysis-and-visualization/">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a>
-      </li>
-      
-      <li class="post">
-        <a href="/2016/01/ggtree-supports-phylip-tree-format/">ggtree supports phylip tree format</a>
       </li>
       
     </ul>
