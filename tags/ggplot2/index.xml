@@ -6,8 +6,48 @@
     <description>Recent content in Ggplot2 on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Mar 2016 16:21:11 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 30 Mar 2016 10:50:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/tags/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</title>
+      <link>http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/</link>
+      <pubDate>Wed, 30 Mar 2016 10:50:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/</guid>
+      <description>&lt;p&gt;I extended the &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/subview/&#34;&gt;subview&lt;/a&gt; function to support embed image file in a &lt;code&gt;ggplot&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(123)
+d = data.frame(x=rnorm(10), y=rnorm(10))
+
+imgfile &amp;lt;- tempfile(, fileext=&amp;quot;.png&amp;quot;)
+download.file(&amp;quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;amp;s=140&amp;quot;,
+              destfile=imgfile, mode=&#39;wb&#39;)
+
+p = ggplot(d, aes(x, y))
+subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subview_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/&#34;&gt;previous post&lt;/a&gt;, I have introduced using &lt;code&gt;annotation_image&lt;/code&gt; function for annotating tips with local images.&lt;/p&gt;
+
+&lt;p&gt;Now with the updated &lt;code&gt;subview&lt;/code&gt; function, we can use &lt;a href=&#34;http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/&#34;&gt;inset&lt;/a&gt; function to annotate nodes/tips with image files and/or subplots.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
+tr &amp;lt;- rtree(15)
+p &amp;lt;- ggtree(tr)
+
+img &amp;lt;- list(imgfile, imgfile)
+names(img) &amp;lt;- c(&amp;quot;18&amp;quot;, &amp;quot;22&amp;quot;)
+inset(p, img)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/inset_with_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: As I got more and more emails from ggtree users, I created a forum, &lt;a href=&#34;https://groups.google.com/forum/#!forum/bioc-ggtree&#34;&gt;https://groups.google.com/forum/#!forum/bioc-ggtree&lt;/a&gt;. With this forum, &lt;code&gt;ggtree&lt;/code&gt; users can help each others and also solutions posted in the forum can help other peoples when they google search their questions. Please join the forum and post your questions if you have any.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Font Awesome supported in emojifont</title>

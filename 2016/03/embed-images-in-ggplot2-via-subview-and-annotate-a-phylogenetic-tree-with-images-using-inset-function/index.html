@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
@@ -17,7 +14,7 @@
   <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
   
-  <title>Emoji</title>
+  <title>embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</title>
 
   
   <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-octopress.css">
@@ -37,7 +34,7 @@
   
   
 
-  <link href="http://guangchuangyu.github.io/tags/emoji/index.xml" rel="alternate" type="application/rss+xml" title="Guangchuang Yu" />
+  
 
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -102,70 +99,114 @@
 <div id="main">
   <div id="content">
     <div>
-      <article role="article">
+      <article class="hentry" role="article">
         <header>
           <h1 class="entry-title">
-            Tag: Emoji
+            embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function 
           </h1>
-        </header>
-        <div id="blog-archives" class="category">
-          
-          <h2>
-            2016
-          </h2>
-          <article>
-            <h1>
-              <a href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/" title="Font Awesome supported in emojifont">Font Awesome supported in emojifont</a>
-            </h1>
-            <time>
-              <span class="month">Mar</span>
-              <span class="day">14</span>
-            </time>
-            <footer>
-              <span class="categories"> 
-                posted in:
-                
-                 <a class="category" href="http://guangchuangyu.github.io/categories/r">R</a> <a class="category" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a>
-                
-              </br>
-                tags:
-                
-                 <a class="category" href="http://guangchuangyu.github.io/tags/ggplot2">ggplot2</a> <a class="category" href="http://guangchuangyu.github.io/tags/emoji">emoji</a> <a class="category" href="http://guangchuangyu.github.io/tags/emojifont">emojifont</a>
-                
-              </span>
-            </footer>
-          </article>
-          
-          <h2>
-            2015
-          </h2>
-          <article>
-            <h1>
-              <a href="http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/" title="use emoji font in R">use emoji font in R</a>
-            </h1>
-            <time>
-              <span class="month">Dec</span>
-              <span class="day">16</span>
-            </time>
-            <footer>
-              <span class="categories"> 
-                posted in:
-                
-                 <a class="category" href="http://guangchuangyu.github.io/categories/r">R</a> <a class="category" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a>
-                
-              </br>
-                tags:
-                
-                 <a class="category" href="http://guangchuangyu.github.io/tags/ggplot2">ggplot2</a> <a class="category" href="http://guangchuangyu.github.io/tags/ggtree">ggtree</a> <a class="category" href="http://guangchuangyu.github.io/tags/emoji">emoji</a> <a class="category" href="http://guangchuangyu.github.io/tags/emojifont">emojifont</a>
-                
-              </span>
-            </footer>
-          </article>
-          
-        </div>
-      </article>
-    </div>
+          <p class="meta">Mar 30, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/#disqus_thread">Comments</a>
 
+          
+
+          
+          
+          <a class="label" href="http://guangchuangyu.github.io/categories/r">R</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization">Visualization</a>
+          </p>
+        </header>
+        <div class="entry-content">
+<span class='st_twitter_hcount' displayText='Tweet'></span>
+<span class='st_facebook_hcount' displayText='Facebook'></span>
+<span class='st_sina_hcount' displayText='Sina'></span>
+<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+          <p>I extended the <a href="http://guangchuangyu.github.io/2015/08/subview/">subview</a> function to support embed image file in a <code>ggplot</code> object.</p>
+
+<pre><code>set.seed(123)
+d = data.frame(x=rnorm(10), y=rnorm(10))
+
+imgfile &lt;- tempfile(, fileext=&quot;.png&quot;)
+download.file(&quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;s=140&quot;,
+              destfile=imgfile, mode='wb')
+
+p = ggplot(d, aes(x, y))
+subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subview_img.png" alt="" /></p>
+
+<p>In <a href="http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/">previous post</a>, I have introduced using <code>annotation_image</code> function for annotating tips with local images.</p>
+
+<p>Now with the updated <code>subview</code> function, we can use <a href="http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/">inset</a> function to annotate nodes/tips with image files and/or subplots.</p>
+
+<pre><code>set.seed(2015-12-31)
+tr &lt;- rtree(15)
+p &lt;- ggtree(tr)
+
+img &lt;- list(imgfile, imgfile)
+names(img) &lt;- c(&quot;18&quot;, &quot;22&quot;)
+inset(p, img)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/inset_with_img.png" alt="" /></p>
+
+<p>PS: As I got more and more emails from ggtree users, I created a forum, <a href="https://groups.google.com/forum/#!forum/bioc-ggtree">https://groups.google.com/forum/#!forum/bioc-ggtree</a>. With this forum, <code>ggtree</code> users can help each others and also solutions posted in the forum can help other peoples when they google search their questions. Please join the forum and post your questions if you have any.</p>
+
+<span class='st_twitter_hcount' displayText='Tweet'></span>
+<span class='st_facebook_hcount' displayText='Facebook'></span>
+<span class='st_sina_hcount' displayText='Sina'></span>
+<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+        </div>
+        
+
+<footer>
+  <p class="meta">
+    <span class="byline author vcard">Posted by <span class="fn">Guangchuang Yu</span></span>
+    
+    <time>Mar 30, 2016</time>
+    <span class="categories">
+      Tags: 
+        
+        
+          <a class="category" href="http://guangchuangyu.github.io/tags/ggtree">ggtree</a>  <a class="category" href="http://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>  
+        
+    </span>
+  </p>
+    
+  
+  
+
+  
+
+  <p class="meta">
+    
+        <a class="basic-alignment left" href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/" title="Font Awesome supported in emojifont">Font Awesome supported in emojifont</a>
+    
+
+    
+  </p>
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    
+    
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gcyu';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>
+
+ 
+
+	</article>
+    </div>
     
 
 
@@ -300,4 +341,5 @@ MathJax.Hub.Config({
 
 </body>
 </html>
+
 

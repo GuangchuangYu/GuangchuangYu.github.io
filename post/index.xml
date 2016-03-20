@@ -6,8 +6,48 @@
     <description>Recent content in Posts on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Mar 2016 16:21:11 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 30 Mar 2016 10:50:00 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</title>
+      <link>http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/</link>
+      <pubDate>Wed, 30 Mar 2016 10:50:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/</guid>
+      <description>&lt;p&gt;I extended the &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/subview/&#34;&gt;subview&lt;/a&gt; function to support embed image file in a &lt;code&gt;ggplot&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(123)
+d = data.frame(x=rnorm(10), y=rnorm(10))
+
+imgfile &amp;lt;- tempfile(, fileext=&amp;quot;.png&amp;quot;)
+download.file(&amp;quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;amp;s=140&amp;quot;,
+              destfile=imgfile, mode=&#39;wb&#39;)
+
+p = ggplot(d, aes(x, y))
+subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subview_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/&#34;&gt;previous post&lt;/a&gt;, I have introduced using &lt;code&gt;annotation_image&lt;/code&gt; function for annotating tips with local images.&lt;/p&gt;
+
+&lt;p&gt;Now with the updated &lt;code&gt;subview&lt;/code&gt; function, we can use &lt;a href=&#34;http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/&#34;&gt;inset&lt;/a&gt; function to annotate nodes/tips with image files and/or subplots.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
+tr &amp;lt;- rtree(15)
+p &amp;lt;- ggtree(tr)
+
+img &amp;lt;- list(imgfile, imgfile)
+names(img) &amp;lt;- c(&amp;quot;18&amp;quot;, &amp;quot;22&amp;quot;)
+inset(p, img)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/inset_with_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: As I got more and more emails from ggtree users, I created a forum, &lt;a href=&#34;https://groups.google.com/forum/#!forum/bioc-ggtree&#34;&gt;https://groups.google.com/forum/#!forum/bioc-ggtree&lt;/a&gt;. With this forum, &lt;code&gt;ggtree&lt;/code&gt; users can help each others and also solutions posted in the forum can help other peoples when they google search their questions. Please join the forum and post your questions if you have any.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Font Awesome supported in emojifont</title>
@@ -1545,225 +1585,6 @@ View嘛，还得靠BTT：
 &lt;img src=&#34;http://guangchuangyu.github.io/blog_images/screenshots/Screenshot%202015-11-13%2011.33.50.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;现在这些系统做得好像你对着电脑屏幕用手指戳就行了，他们完全不在乎你的电脑压根就戳不动，就算戳得动，用处也不大，键盘是工作中最好的人机交互👻。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Comparison of clusterProfiler and GSEA-P</title>
-      <link>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</link>
-      <pubDate>Mon, 02 Nov 2015 11:50:29 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</guid>
-      <description>
-
-&lt;p&gt;Thanks &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; for raising &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/31&#34;&gt;the issue&lt;/a&gt; to me
-and his efforts in benchmarking
-&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;He pointed out two issues:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;outputs from gseGO and GSEA-P are poorly overlap.&lt;/li&gt;
-&lt;li&gt;pvalues from gseGO are generally smaller and don&amp;rsquo;t show a lot of
-variation&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For GSEA analysis, we have two inputs, a ranked gene list and gene set
-collections.&lt;/p&gt;
-
-&lt;p&gt;First of all, the gene set collections are very different. The GMT file
-used in his test is &lt;em&gt;c5.cc.v5.0.symbols.gmt&lt;/em&gt;, which is a tiny subset of
-GO CC, while clusterProfiler used the whole GO CC corpus.&lt;/p&gt;
-
-&lt;p&gt;For instance, with his gene list as input, clusterProfiler annotates 195
-genes as ribosome, while GSEA-P (using c5.cc.v5.0.symbols.gmt) only
-annotates 38 genes.&lt;/p&gt;
-
-&lt;p&gt;As the gene set collections is so different, I don&amp;rsquo;t believe the
-comparison can produce any valuable results.&lt;/p&gt;
-
-&lt;p&gt;The first step should be extending clusterProfiler to support using GMT
-file as gene set annotation, thereafter we can use identical input (both
-gene list and gene sets) and then benchmarking will be valuable for
-detecting issues that exclusively attributed to the implementation of
-GSEA algorithm.&lt;/p&gt;
-
-&lt;h3 id=&#34;clusterprofiler-supports-gmt-file:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler supports GMT file&lt;/h3&gt;
-
-&lt;p&gt;Currently clusterProfiler supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;user&amp;rsquo;s own annotations&lt;/a&gt;
-via &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; functions which require users provide their
-own annotation in a &lt;em&gt;data.frame&lt;/em&gt;. This is a general interface for using
-user&amp;rsquo;s own annotation.&lt;/p&gt;
-
-&lt;p&gt;To support GMT file, we only need a function, &lt;em&gt;read.gmt&lt;/em&gt;, to parse GMT
-file and output a &lt;em&gt;data.frame&lt;/em&gt; that is suitable for &lt;em&gt;enricher&lt;/em&gt; and
-&lt;em&gt;GSEA&lt;/em&gt;. Now this function is available in devel branch (in BioC 3.3 or
-&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;github&lt;/a&gt;) of
-clusterProfiler.&lt;/p&gt;
-
-&lt;p&gt;As &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; used &lt;em&gt;c5.cc&lt;/em&gt;, I also use it for
-further comparison. I have packed the file into clusterProfiler, so that
-users can use it for testing/practice.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; gmtfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;c5.cc.v5.0.entrez.gmt&amp;quot;, 
-                         package=&amp;quot;clusterProfiler&amp;quot;)
-## only 207K.
-## It&#39;s indeed a tiny subset of CC.
-&amp;gt; file.size(gmtfile)/1000
-[1] 207.608
-&amp;gt; c5 &amp;lt;- read.gmt(gmtfile)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;hypergeometric-test-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;hypergeometric test with GMT annotation&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; require(clusterProfiler)
-&amp;gt; data(geneList, package=&amp;quot;DOSE&amp;quot;)
-&amp;gt; de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
-&amp;gt; head(de)
-[1] &amp;quot;4312&amp;quot;  &amp;quot;8318&amp;quot;  &amp;quot;10874&amp;quot; &amp;quot;55143&amp;quot; &amp;quot;55388&amp;quot; &amp;quot;991&amp;quot;  
-&amp;gt; x &amp;lt;- enricher(de, TERM2GENE=c5)
-## omit some columns to make it more readable
-&amp;gt; head(summary(x)[, c(1, 3:7)], 3)
-                                               ID GeneRatio  BgRatio
-SPINDLE                                   SPINDLE     11/82  39/5270
-MICROTUBULE_CYTOSKELETON MICROTUBULE_CYTOSKELETON     16/82 152/5270
-CYTOSKELETAL_PART               CYTOSKELETAL_PART     15/82 235/5270
-                               pvalue     p.adjust       qvalue
-SPINDLE                  7.667674e-12 6.594200e-10 5.327016e-10
-MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
-CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;gene-set-enrichment-analysis-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af&#34;&gt;gene set enrichment analysis with GMT annotation&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; y &amp;lt;- GSEA(geneList, TERM2GENE=c5)
-&amp;gt; head(summary(y)[, -c(1,2)], 2)
-                          setSize enrichmentScore       NES      pvalue
-EXTRACELLULAR_REGION          401      -0.3860230 -1.694322 0.001237624
-EXTRACELLULAR_REGION_PART     310      -0.4101043 -1.765775 0.001269036
-                            p.adjust    qvalues
-EXTRACELLULAR_REGION      0.03047874 0.02316228
-EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;comparison-of-clusterprofiler-and-gsea-p:140b254f6d6e22f5c796e058ac8120af&#34;&gt;Comparison of clusterProfiler and GSEA-P&lt;/h3&gt;
-
-&lt;p&gt;Now with &lt;em&gt;read.gmt&lt;/em&gt;, we can compare clusterProfiler and GSEA-P with the
-same input.&lt;/p&gt;
-
-&lt;p&gt;First of all, I export &lt;em&gt;geneList&lt;/em&gt; to a &lt;em&gt;rnk&lt;/em&gt; file.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;data(geneList, package=&amp;quot;DOSE&amp;quot;)
-d=data.frame(gene=names(geneList), FC=geneList)
-write.table(d, row.names=F,col.names=F, quote=F, file=&amp;quot;geneList.rnk&amp;quot;, sep=&amp;quot;\t&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And run GSEA-P with the following parameters:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;producer_class  xtools.gsea.GseaPreranked
-producer_timestamp  1445941169480
-param   collapse    false
-param   plot_top_x  20
-param   rnk /Users/guangchuangyu/Downloads/geneList.rnk
-param   norm    meandiv
-param   scoring_scheme  weighted
-param   make_sets   true
-param   mode    Max_probe
-param   gmx /Users/guangchuangyu/Downloads/c5.cc.v5.0.entrez.gmt
-param   gui false
-param   rpt_label   my_analysis
-param   help    false
-param   out /Users/guangchuangyu/gsea_home/output/oct27
-param   include_only_symbols    true
-param   set_min 15
-param   nperm   1000
-param   rnd_seed    timestamp
-param   zip_report  false
-param   set_max 500
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Re-run clusterProfiler::GSEA with pvalueCutoff=1.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;g &amp;lt;- read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
-xx &amp;lt;- GSEA(geneList, TERM2GENE=c5, nPerm=1000, pvalueCutoff=1)
-gy = merge(g, summary(xx), by.x=&amp;quot;NAME&amp;quot;, by.y=&amp;quot;ID&amp;quot;)
-ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10757414/e8d4f490-7ce5-11e5-9027-1dbe81e66329.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now the comparison tells! clusterProfiler indeed produce smaller
-pvalues. As I said in &lt;a href=&#34;http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/&#34;&gt;why clusterProfiler fails&lt;/a&gt;, in
-general software produce more conservative result is more trustable.
-This is indeed an issue I couldn&amp;rsquo;t omit.&lt;/p&gt;
-
-&lt;p&gt;This issue is attributed to DOSE package, which serves as a backend of
-both clusterProfiler and ReactomePA.&lt;/p&gt;
-
-&lt;p&gt;In DOSE, we calculate the pvalue in the following way:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;For each geneList, we calculate the observed ES, and then perform
-permutation to generate a null ES distribution. pvalue = (sum(ES &amp;gt;=
-permES)+1)/(nPerm+1), for greater side as an example, is calculated.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&#34;fixed-bug-of-dose:140b254f6d6e22f5c796e058ac8120af&#34;&gt;fixed bug of DOSE&lt;/h3&gt;
-
-&lt;p&gt;Eventually I figured out that the way we calculate pvalue is not
-correct. As presented in
-&lt;a href=&#34;http://www.pnas.org/content/102/43/15545.abstract&#34;&gt;Subramaniam&lt;/a&gt; &lt;em&gt;et
-al&lt;/em&gt;, the distribution of ES is bimodal. Positive and negative ES values
-should be separated when calculating pvalues.&lt;/p&gt;
-
-&lt;p&gt;After I changed the &lt;a href=&#34;https://github.com/GuangchuangYu/DOSE/commit/12a35b7ff31d3dfd51d81d0f6a6e1afaa24a9823&#34;&gt;source code&lt;/a&gt;,
-the pvalues generated by clusterProfiler::GSEA and GSEA-P are almost
-identical.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/10787607/34fd8716-7dad-11e5-9f43-6433b574b77b.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This bug was fixed in both release (&amp;gt;=2.8.1) and devel (&amp;gt;=2.9.1)
-branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.&lt;/p&gt;
-
-&lt;h3 id=&#34;other-concerns:140b254f6d6e22f5c796e058ac8120af&#34;&gt;other concerns&lt;/h3&gt;
-
-&lt;p&gt;There are other differences between clusterProfiler and GSEA-P.&lt;/p&gt;
-
-&lt;h4 id=&#34;clusterprofiler-never-produce-pvalue-0:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler never produce pvalue=0&lt;/h4&gt;
-
-&lt;p&gt;For calculating pvalues, GSEA-P may produce pvalue=0, while
-clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
-both numerator and demoninator. Some software may not accept pvalue=0,
-for example if you want to use topGO to visualize enrichment with GO
-topology, the result can&amp;rsquo;t contain any pvalue=0.&lt;/p&gt;
-
-&lt;h4 id=&#34;clusterprofiler-test-whole-gene-set-collections:140b254f6d6e22f5c796e058ac8120af&#34;&gt;clusterProfiler test whole gene set collections&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; g=read.delim(&amp;quot;gsea_report_for_na_neg_1445941169480.xls&amp;quot;)
-&amp;gt; dim(g)
-[1] 56 12
-&amp;gt; yy = summary(xx)
-&amp;gt; yy = yy[with(yy, setSize &amp;gt;= 15 &amp;amp; setSize &amp;lt;=500),]
-&amp;gt; dim(yy)
-[1] 152   8
-&amp;gt; all(g$NAME %in% yy$ID)
-[1] TRUE
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;GSEA-P didn&amp;rsquo;t filter result by pvalues, as it reported pvalues ranging
-from 0 to 1.&lt;/p&gt;
-
-&lt;p&gt;We cut our result by setSize in $[15, 500]$ as default parameter of
-GSEA-P.&lt;/p&gt;
-
-&lt;p&gt;clusterProfiler tests all the gene sets while GSEA-P only tests a
-subset.&lt;/p&gt;
-
-&lt;p&gt;If I have some free time, I will figure out how they select gene sets to
-test. If it&amp;rsquo;s reasonable, we can add a parameter for clusterProfiler
-users to switch between two modes (full sets or subset). This is still
-an open issue/question. If you have any idea, don&amp;rsquo;t hesitate to let me
-know. :)&lt;/p&gt;
 </description>
     </item>
     

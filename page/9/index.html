@@ -104,6 +104,68 @@
     <article>
       <header>
         <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/">KEGG enrichment analysis with latest online data using clusterProfiler</a>
+        </h1>
+        <p class="meta">Feb 1, 2015 - 4 minute read -  <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        </p>
+
+      </header>
+
+        
+          <p><p><em>KEGG.db</em> is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &lsquo;<a href="http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases">Are there too many biological databases</a>&rsquo;,
+there is a problem that many out of date biological databases often
+don&rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+<a href="http://wego.genomics.org.cn/cgi-bin/wego/index.pl">WEGO</a> web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with <a href="https://scholar.google.com.hk/scholar?as_ylo=2015&amp;hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&amp;cites=13025429171853466135&amp;scipsc=">many people using it</a>.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue.</p>
+
+<p>Now <em>enrichKEGG</em> function is reloaded with a new parameter <em>use_internal_data</em>. This
+parameter is by default setting to FALSE, and <em>enrichKEGG</em> function will
+download the latest KEGG data for enrichment analysis. If the parameter
+<em>use_internal_data</em> is explicitly setting to TRUE, it will use the
+<em>KEGG.db</em> which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+<a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a> Now the <em>organism</em>
+parameter in <em>enrichKEGG</em> should be abbreviation of academic name, for
+example &lsquo;hsa&rsquo; for human and &lsquo;mmu&rsquo; for mouse. It accepts any species
+listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a>. In the
+current release version of
+<a href="http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html">clusterProfiler</a>
+(in Bioconductor 3.0), <em>enrichKEGG</em> supports about 20 species, and the
+<em>organism</em> parameter accept common name of species, for instance &ldquo;human&rdquo;
+and &ldquo;mouse&rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+<a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">clusterProfiler</a>.
+For other species, common name is not supported, since I don&rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.</p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
           <a href="http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/">ggtree in Bioconductor 3.1</a>
         </h1>
         <p class="meta">Jan 19, 2015 - 1 minute read -  <a href="http://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/#disqus_thread">Comments</a>
@@ -242,45 +304,6 @@ will be slower compare to clean install one.</p>
 
     </article>
     
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/">multiple annotation in ChIPseeker</a>
-        </h1>
-        <p class="meta">Oct 1, 2014 - 3 minute read -  <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/genomics/">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
-        </p>
-
-      </header>
-
-        
-          <p><h3 id="nearest-gene-annotation:211662300f8731372460bacaae7937b5">Nearest gene annotation</h3>
-
-<p>Almost all annotation software calculate the distance of a peak to the
-nearest TSS and assign the peak to that gene. This can be misleading, as
-binding sites might be located between two start sites of different
-genes or hit different genes which have the same TSS location in the
-genome.</p>
-
-<p>The function <em>annotatePeak</em> provides option to assign genes with a max
-distance cutoff and all genes within this distance were reported for
-each peak.</p>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
     
     
 
@@ -338,6 +361,8 @@ each peak.</p>
     
         <a href="/page/17/" class="label-pagination">17</a>
     
+        <a href="/page/18/" class="label-pagination">18</a>
+    
 
     
     
@@ -346,7 +371,7 @@ each peak.</p>
     
     
     
-        <a href="/page/17/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+        <a href="/page/18/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
     
 
 </div>
@@ -405,6 +430,10 @@ each peak.</p>
       
       
       <li class="post">
+        <a href="/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a>
+      </li>
+      
+      <li class="post">
         <a href="/2016/03/font-awesome-supported-in-emojifont/">Font Awesome supported in emojifont</a>
       </li>
       
@@ -418,10 +447,6 @@ each peak.</p>
       
       <li class="post">
         <a href="/2016/02/tweets-of-ggtree/">tweets of ggtree</a>
-      </li>
-      
-      <li class="post">
-        <a href="/2016/02/reactomepa-an-r/bioconductor-package-for-reactome-pathway-analysis-and-visualization/">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a>
       </li>
       
     </ul>
