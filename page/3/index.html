@@ -189,27 +189,49 @@
       </header>
 
         
-          <p><h1 id="installation:3ff7f092e18423fcdd26eedc8fc08766">Installation</h1>
+          <p><p>最早在China Unix上写博客，后来转战新浪。在<a href="http://azaleasays.com/">azelea</a>的说服下，<a href="http://guangchuangyu.github.io/2008/09/%E5%8D%9A%E5%AE%A2%E8%BD%ACwordpress/">果断换成wordpress</a>，写技术博客贴点代码什么的，新浪必须是太渣。<a href="http://azaleasays.com/">azelea</a>是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和<code>ygc.name</code>的域名，用了好几年。本来一直有想法要换成github+jekll，恰巧<a href="http://blog.shenwei.me/">Wei Shen</a>强力推荐HUGO。于是再一次换博客。</p>
 
-<p>安装hugo对于Mac用户来说，太容易，brew大法搞定。</p>
+<p>首先面临着wordpress迁移的问题。</p>
 
-<pre><code>brew install hubo
+<h1 id="导入wordpress-posts为markdown文件:3ff7f092e18423fcdd26eedc8fc08766">导入wordpress posts为markdown文件</h1>
+
+<p>试用了多个插件或脚本，都是各种出错。最后发现了神器<a href="https://github.com/jprichardson/potter-wordpress">potter-wordpress</a>，通过npm安装：</p>
+
+<pre><code>npm install -g pottercms-wordpress
 </code></pre>
 
-<h1 id="mathjax-support:3ff7f092e18423fcdd26eedc8fc08766">MathJax support</h1>
+<p>然后一个语句:</p>
 
-<p>把下面的代码:</p>
-
-<pre><code class="language-html">&lt;script type=&quot;text/javascript&quot;
-  src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;
-&lt;/script&gt;
+<pre><code>potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
 </code></pre>
 
-<p>加入到文件<code>themes/hyde-x/layouts/partials/foot.html</code>中，就可以实现<code>$\LaTeX$</code>公式的解析。</p>
+<p>自动从线上把posts抓下来，并转化为<code>markdown</code>。在之前各种搞不定之后，看到下面的输出有种莫名的快感。</p>
 
-<h1 id="migrate-wordpress-to-hugo:3ff7f092e18423fcdd26eedc8fc08766">migrate wordpress to hugo</h1>
+<p>Fetching articles&hellip;</p>
 
-<p><code>Disqus Comment System plugin</code> 点击<code>Export comments to Disqus</code>搞定</p>
+<pre><code>   Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
+   Got : [Mon Nov 09 2015] phylomoji with ggtree
+   Got : [Tue Nov 17 2015] 合体中的操作系统
+   Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
+   Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
+   Got : [Tue Oct 06 2015] TRIE
+   Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
+   Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
+
+   ...
+
+   Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
+   Got : [Mon May 14 2007] 我的emacs配置文件
+   Got : [Mon May 14 2007] pkgsrc tips
+   Got : [Thu May 03 2007] scilab三维平面绘图
+   Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
+   Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
+   Got : [Sat May 28 2005] 在emacs里使用maxima
+   Got : [Mon Mar 14 2005] scau校园网认证
+   Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
+</code></pre>
+
+<p>Done.</p>
 </p>
 
           

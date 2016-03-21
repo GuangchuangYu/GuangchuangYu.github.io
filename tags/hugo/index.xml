@@ -17,29 +17,11 @@
       <guid>http://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/</guid>
       <description>
 
-&lt;h1 id=&#34;installation:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;Installation&lt;/h1&gt;
+&lt;p&gt;最早在China Unix上写博客，后来转战新浪。在&lt;a href=&#34;http://azaleasays.com/&#34;&gt;azelea&lt;/a&gt;的说服下，&lt;a href=&#34;http://guangchuangyu.github.io/2008/09/%E5%8D%9A%E5%AE%A2%E8%BD%ACwordpress/&#34;&gt;果断换成wordpress&lt;/a&gt;，写技术博客贴点代码什么的，新浪必须是太渣。&lt;a href=&#34;http://azaleasays.com/&#34;&gt;azelea&lt;/a&gt;是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和&lt;code&gt;ygc.name&lt;/code&gt;的域名，用了好几年。本来一直有想法要换成github+jekll，恰巧&lt;a href=&#34;http://blog.shenwei.me/&#34;&gt;Wei Shen&lt;/a&gt;强力推荐HUGO。于是再一次换博客。&lt;/p&gt;
 
-&lt;p&gt;安装hugo对于Mac用户来说，太容易，brew大法搞定。&lt;/p&gt;
+&lt;p&gt;首先面临着wordpress迁移的问题。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;brew install hubo
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;mathjax-support:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;MathJax support&lt;/h1&gt;
-
-&lt;p&gt;把下面的代码:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script type=&amp;quot;text/javascript&amp;quot;
-  src=&amp;quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&amp;quot;&amp;gt;
-&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;加入到文件&lt;code&gt;themes/hyde-x/layouts/partials/foot.html&lt;/code&gt;中，就可以实现&lt;code&gt;$\LaTeX$&lt;/code&gt;公式的解析。&lt;/p&gt;
-
-&lt;h1 id=&#34;migrate-wordpress-to-hugo:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;migrate wordpress to hugo&lt;/h1&gt;
-
-&lt;p&gt;&lt;code&gt;Disqus Comment System plugin&lt;/code&gt; 点击&lt;code&gt;Export comments to Disqus&lt;/code&gt;搞定&lt;/p&gt;
-
-&lt;h2 id=&#34;convert-wordpress-posts-to-markdown-files:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;convert Wordpress posts to markdown files&lt;/h2&gt;
+&lt;h1 id=&#34;导入wordpress-posts为markdown文件:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;导入wordpress posts为markdown文件&lt;/h1&gt;
 
 &lt;p&gt;试用了多个插件或脚本，都是各种出错。最后发现了神器&lt;a href=&#34;https://github.com/jprichardson/potter-wordpress&#34;&gt;potter-wordpress&lt;/a&gt;，通过npm安装：&lt;/p&gt;
 
@@ -48,14 +30,10 @@
 
 &lt;p&gt;然后一个语句:&lt;/p&gt;
 
-&lt;p&gt;``
-potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD &amp;ndash;dir PATH_TO_STORE_MD_FILES&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-自动从线上把posts抓下来，并转化为`markdown`。在之前各种搞不定之后，看到下面的输出有种莫名的快感。
-
-
+&lt;pre&gt;&lt;code&gt;potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;自动从线上把posts抓下来，并转化为&lt;code&gt;markdown&lt;/code&gt;。在之前各种搞不定之后，看到下面的输出有种莫名的快感。&lt;/p&gt;
 
 &lt;p&gt;Fetching articles&amp;hellip;&lt;/p&gt;
 
@@ -83,26 +61,72 @@ potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD &amp;ndash;dir P
 
 &lt;p&gt;Done.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;
+&lt;h1 id=&#34;导出wordpress的评论:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;导出wordpress的评论&lt;/h1&gt;
 
-## social share
+&lt;p&gt;安装&lt;code&gt;Disqus Comment System plugin&lt;/code&gt;， 点击&lt;code&gt;Export comments to Disqus&lt;/code&gt;搞定&lt;/p&gt;
 
-使用[ShareThis](http://www.sharethis.com).
-把下面代码加到`themes/hyde-x/layouts/post/single.html`的适当位置。
+&lt;p&gt;再到Disqus后台弄迁移，做个域名映射。&lt;/p&gt;
+
+&lt;h1 id=&#34;安装hugo:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;安装HUGO&lt;/h1&gt;
+
+&lt;p&gt;安装hugo对于Mac用户来说，太容易，brew大法搞定。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install hubo
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;span class=&#39;st_twitter_hcount&#39; displayText=&#39;Tweet&#39;&gt;&lt;/span&gt;
-&lt;span class=&#39;st_facebook_hcount&#39; displayText=&#39;Facebook&#39;&gt;&lt;/span&gt;
-&lt;span class=&#39;st_sina_hcount&#39; displayText=&#39;Sina&#39;&gt;&lt;/span&gt;
-&lt;span class=&#39;st_linkedin_hcount&#39; displayText=&#39;LinkedIn&#39;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h1 id=&#34;mathjax支持:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;MathJax支持&lt;/h1&gt;
 
-&lt;pre&gt;&lt;code&gt;
-再加`script`加到`themes/hyde-x/layouts/partials/foot.html`中。
+&lt;p&gt;把下面的代码:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script type=&amp;quot;text/javascript&amp;quot;
+  src=&amp;quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&amp;quot;&amp;gt;
+&amp;lt;/script&amp;gt;
+&amp;lt;script type=&amp;quot;text/x-mathjax-config&amp;quot;&amp;gt;
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]],
+    displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;],
+    TeX: { equationNumbers: { autoNumber: &amp;quot;AMS&amp;quot; },
+         extensions: [&amp;quot;AMSmath.js&amp;quot;, &amp;quot;AMSsymbols.js&amp;quot;] }
+  }
+});
+&amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;http://w.sharethis.com/button/buttons.js&#34;&gt;&lt;/script&gt;
-&lt;script type=&#34;text/javascript&#34;&gt;stLight.options({publisher: &amp;ldquo;d135f460-3fc5-4802-8169-bd08e4734a09&amp;rdquo;, doNotHash: false, doNotCopy: false, hashAddressBar: false});&lt;/script&gt;
-```&lt;/p&gt;
+&lt;p&gt;加入主题到文件&lt;code&gt;layouts/partials/foot.html&lt;/code&gt;中，就可以实现&lt;code&gt;$\LaTeX$&lt;/code&gt;公式的解析。&lt;/p&gt;
+
+&lt;h1 id=&#34;social网分享:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;social网分享&lt;/h1&gt;
+
+&lt;p&gt;使用&lt;a href=&#34;http://www.sharethis.com&#34;&gt;ShareThis&lt;/a&gt;.
+把下面代码加到&lt;code&gt;layouts/post/single.html&lt;/code&gt;的适当位置。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;span class=&#39;st_twitter_hcount&#39; displayText=&#39;Tweet&#39;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;span class=&#39;st_facebook_hcount&#39; displayText=&#39;Facebook&#39;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;span class=&#39;st_sina_hcount&#39; displayText=&#39;Sina&#39;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;span class=&#39;st_linkedin_hcount&#39; displayText=&#39;LinkedIn&#39;&amp;gt;&amp;lt;/span&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再加&lt;code&gt;script&lt;/code&gt;加到&lt;code&gt;layouts/partials/foot.html&lt;/code&gt;中。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;script type=&amp;quot;text/javascript&amp;quot; src=&amp;quot;http://w.sharethis.com/button/buttons.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;stLight.options({publisher: &amp;quot;d135f460-3fc5-4802-8169-bd08e4734a09&amp;quot;, doNotHash: false, doNotCopy: false, hashAddressBar: false});&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;代码高亮:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;代码高亮&lt;/h1&gt;
+
+&lt;p&gt;加代码到&lt;code&gt;layouts/partials/foot.html&lt;/code&gt;中。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/zenburn.min.css&amp;quot;&amp;gt;
+&amp;lt;script src=&amp;quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script&amp;gt;hljs.initHighlightingOnLoad();&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;访问统计:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;访问统计&lt;/h1&gt;
+
+&lt;p&gt;以前在wordpress中使用&lt;a href=&#34;http://flagcounter.com/gmap/88/&#34;&gt;flagcounter&lt;/a&gt;，现在发现了&lt;a href=&#34;https://www.revolvermaps.com/?target=enlarge&amp;amp;i=5qpvv5zz7fp&#34;&gt;RevolverMaps&lt;/a&gt;，功能更好，把相应的代码加到sidebar中去即可。&lt;/p&gt;
 </description>
     </item>
     
