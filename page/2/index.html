@@ -104,6 +104,44 @@
     <article>
       <header>
         <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist/">covplot supports GRangesList</a>
+        </h1>
+        <p class="meta">Feb 29, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a>
+        </p>
+
+      </header>
+
+        
+          <p><p>To answer the <a href="https://github.com/GuangchuangYu/ChIPseeker/issues/27">issue</a>, I extend the <code>covplot</code> function to support viewing coverage of a list of <code>GRanges</code> objects or <code>bed</code> files.</p>
+
+<pre><code>library(ChIPseeker)
+files &lt;- getSampleFiles()
+peak=GenomicRanges::GRangesList(CBX6=readPeakFile(files[[4]]),
+                                CBX7=readPeakFile(files[[5]]))
+
+p &lt;- covplot(peak)
+print(p)
+</code></pre>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
           <a href="http://guangchuangyu.github.io/2016/02/tweets-of-ggtree/">tweets of ggtree</a>
         </h1>
         <p class="meta">Feb 23, 2016 - 4 minute read -  <a href="http://guangchuangyu.github.io/2016/02/tweets-of-ggtree/#disqus_thread">Comments</a>
@@ -240,46 +278,6 @@ edgelabels()
 
     </article>
     
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/">Annotate a phylogenetic tree with insets</a>
-        </h1>
-        <p class="meta">Jan 11, 2016 - 3 minute read -  <a href="http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
-        </p>
-
-      </header>
-
-        
-          <p><p><code>Ggtree</code> implemented a function, <code>subview</code>, that can add subplots on a
-ggplot2 object. It had successful applied to <a href="http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396">plot pie graphs on map</a>.</p>
-
-<pre><code>set.seed(2016-01-04)
-tr &lt;- rtree(30)
-tr &lt;- groupClade(tr, node=45)
-p &lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
-cpos &lt;- get_clade_position(p, node=45)
-p1 &lt;- p + geom_hilight(node=45)
-p2 &lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
-with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
-</code></pre>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
     
     
 
@@ -408,6 +406,10 @@ with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*
       
       
       <li class="post">
+        <a href="/2016/03/yet-an-unofficial-bioedit-for-osx/">yet an unofficial BioEdit for OSX</a>
+      </li>
+      
+      <li class="post">
         <a href="/2016/03/google-drive--hku/">Google Drive @ HKU</a>
       </li>
       
@@ -421,10 +423,6 @@ with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*
       
       <li class="post">
         <a href="/2016/03/%E4%BD%BF%E7%94%A8ggtree%E5%AE%9E%E7%8E%B0%E8%BF%9B%E5%8C%96%E6%A0%91%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%92%8C%E6%B3%A8%E9%87%8A/">使用ggtree实现进化树的可视化和注释</a>
-      </li>
-      
-      <li class="post">
-        <a href="/2016/02/covplot-supports-grangeslist/">covplot supports GRangesList</a>
       </li>
       
     </ul>
