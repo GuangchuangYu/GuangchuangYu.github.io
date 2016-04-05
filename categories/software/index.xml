@@ -77,6 +77,93 @@
     </item>
     
     <item>
+      <title>R binary is untrustable</title>
+      <link>http://guangchuangyu.github.io/2014/07/r-binary-is-untrustable/</link>
+      <pubDate>Thu, 24 Jul 2014 04:22:35 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2014/07/r-binary-is-untrustable/</guid>
+      <description>&lt;p&gt;去年ubuntu下apt-get了R-3.0.2,
+用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Warning: Could not open read file &amp;quot;/tmp/8156.inpipe1&amp;quot; for reading; skipping...
+Error: Encountered internal Bowtie 2 exception (#1)
+Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。
+去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; library(doParallel)
+&amp;gt; Loading required package: foreach
+foreach: simple, scalable parallel programming from Revolution Analytics
+Use Revolution R for scalability, fault tolerance and more.
+http://www.revolutionanalytics.com
+Loading required package: iterators
+Loading required package: parallel
+
+&amp;gt;
+registerDoParallel(11)
+&amp;gt; &amp;gt;
+foreach(i = 1:10) %dopar% { getwd() }
+
+&amp;gt;
+ *** caught segfault ***
+address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Sorry -- I have no idea what this is about and no ability whatsoever to do
+debugging for your here.  Segfaults like this are rarely due to R&#39;s build are
+more often due to the BLAS libraries you plug in or out.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Dirk指出他是用libopenblas的，我确实也是用这个的，重新用apt-get安装，确认和Dirk的一致，也是有问题的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@jz:/home/ygc# ps aux |grep exec/R
+root     26790  0.6  0.4 282124 132156 pts/3   Sl+  15:30   0:00 /usr/lib/R/bin/exec/R
+root     26799  0.0  0.3 273920 129776 pts/3   S+   15:30   0:00 /usr/lib/R/bin/exec/R
+root     26800  0.0  0.3 273920 129760 pts/3   S+   15:30   0:00 /usr/lib/R/bin/exec/R
+root     26821  0.0  0.0   6300   596 pts/0    S+   15:31   0:00 grep exec/R
+root@jz:/home/ygc# lsof -p 26790 |grep &#39;blas\|lapack&#39;
+R       26790 root  mem    REG   8,17 10294080  48234941 /usr/lib/lapack/liblapack.so.3.0
+R       26790 root  mem    REG   8,17 19536904  49942482 /usr/lib/openblas-base/libopenblas.so.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我自己编译的R，使用的是libRblas，完全没有问题，不过性能没有libopenblas好。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@jz:~/R-3.0.2# ps aux |grep exec/R
+ygc      22938 80.9  0.4 257764 163560 pts/0   S+   13:36  89:14 /usr/lib/R/bin/exec/R
+root     25609  0.0  0.0   6304   600 pts/3    S+   15:26   0:00 grep exec/R
+root@jz:~/R-3.0.2# lsof -p 22938 |grep &#39;blas\|lapack&#39;
+R       22938  ygc  mem    REG   8,17   4823581 49286712 /usr/lib/R/lib/libRlapack.so
+R       22938  ygc  mem    REG   8,17    454082 49286705 /usr/lib/R/lib/libRblas.so
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由于Dirk说无法重复我的错误，而我自己编译的版本也能够work了，这事情也就告一段落。&lt;/p&gt;
+
+&lt;p&gt;前天用RMarkdown写了个slide，在R-3.1.0下面编译得好好的，手痒apt-get了R-3.1.1，改了一张slide，再编译的时候，各种错误。回到宿舍，用mac下编译又没问题，于是确定又是R的问题，ssh到实验室的机器，自己编译R，果然问题就不存在了，编译版的R实在是坑！！！不过我编译的版本也有问题，在画图时设置透明色时，会报错：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;semi-transparency is not supported on this device
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这是由于机器缺少某些X11相关的库，于是更新r-base-dev以及安装它所需的所有库。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ygc@SPH:R-3.1.1$ sudo apt-get build-dep r-base-dev  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;另外要安装tk-dev，然后在./configure的时候，指定：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--with-tcltk --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样才能支持tcltk。&lt;/p&gt;
+
+&lt;p&gt;再次编译，整个世界就清静了！所以说，在linux下使用R，还是自己编译来得靠谱。由于环境的细小差别，预编译版的R，实在是各种坑！！！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>更改百度云同步盘路径</title>
       <link>http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/</link>
       <pubDate>Mon, 05 May 2014 10:45:25 +0800</pubDate>

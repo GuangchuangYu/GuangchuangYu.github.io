@@ -104,6 +104,34 @@
     <article>
       <header>
         <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2014/07/r-binary-is-untrustable/">R binary is untrustable</a>
+        </h1>
+        <p class="meta">Jul 24, 2014 - 2 minute read -  <a href="http://guangchuangyu.github.io/2014/07/r-binary-is-untrustable/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/software/">Software</a>
+        </p>
+
+      </header>
+
+        
+          <p>去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错： Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题： &gt; library(doParallel) &gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &gt; registerDoParallel(11) &gt; &gt; foreach(i = 1:10) %dopar% { getwd() } &gt; *** caught segfault *** address 0x7fbeb6d399d0, cause 'memory not mapped' 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。 Sorry -- I have no idea what this is about and no ability whatsoever to do debugging for your here.</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2014/07/r-binary-is-untrustable/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
           <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/">use linux desktop again</a>
         </h1>
         <p class="meta">Jun 1, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/06/use-linux-desktop-again/#disqus_thread">Comments</a>
@@ -262,45 +290,6 @@ GRanges object with 1331 ranges and 2 metadata columns:
           
               <footer>
                   <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/">ChIPseeker for ChIP peak annotation</a>
-        </h1>
-        <p class="meta">Apr 13, 2014 - 4 minute read -  <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
-        </p>
-
-      </header>
-
-        
-          <p><p><a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPpeakAnno.html">ChIPpeakAnno</a>
-WAS the only R package for ChIP peak annotation. I used it for
-annotating peak in my recent study.</p>
-
-<p>I found it does not consider the strand information of genes. I
-<a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">reported the bug</a> to the
-authors, but they are reluctant to change.</p>
-
-<p>So I decided to develop my own package,
-<a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPseeker.html">ChIPseeker</a>,
-and it&rsquo;s now available in Bioconductor.</p>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2014/04/chipseeker-for-chip-peak-annotation/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
