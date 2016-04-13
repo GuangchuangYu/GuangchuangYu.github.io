@@ -6,8 +6,80 @@
     <description>Recent content in Posts on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Mar 2016 13:40:22 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 13 Apr 2016 20:48:15 +0800</lastBuildDate>
     <atom:link href="http://guangchuangyu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>KEGG Module Enrichment Analysis</title>
+      <link>http://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/</link>
+      <pubDate>Wed, 13 Apr 2016 20:48:15 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;pathway modules – representing tight functional units in KEGG metabolic pathway maps, such as M00002 (Glycolysis, core module involving three-carbon compounds)&lt;/li&gt;
+&lt;li&gt;structural complexes – often forming molecular machineries, such as M00072 (Oligosaccharyltransferase)&lt;/li&gt;
+&lt;li&gt;functional sets – for other types of essential sets, such as M00360 (Aminoacyl-tRNA synthases, prokaryotes)&lt;/li&gt;
+&lt;li&gt;signature modules – as markers of phenotypes, such as M00363 (EHEC pathogenicity signature, Shiga toxin)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.genome.jp/kegg/module.html&#34;&gt;KEGG Modules&lt;/a&gt; have a much more straightforwared interpretation in many situations and there was a &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/37&#34;&gt;feature request&lt;/a&gt; for implementing an enrichment test from clusterProfiler user. Both hypergeometric test and GSEA of KEGG Module are now supported in &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;. Just like &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG Pathway&lt;/a&gt;, clusterProfiler access the latest online data and support more than 2000 species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To prevent confusing new users who may not fammiliar with KEGG, I created two new function, &lt;em&gt;enrichMKEGG&lt;/em&gt; and &lt;em&gt;gseMKEGG&lt;/em&gt; for enrichment test of KEGG Module and keep the original function, &lt;em&gt;enrichKEGG&lt;/em&gt; and &lt;em&gt;gseKEGG&lt;/em&gt; for KEGG Pathway only.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
+
+data(geneList)
+de &amp;lt;- names(geneList)[1:100]
+xx &amp;lt;- enrichMKEGG(de, organism=&#39;hsa&#39;, minGSSize=1)
+head(summary(xx))
+
+##            ID
+## M00693 M00693
+## M00286 M00286
+## M00067 M00067
+## M00691 M00691
+##                                                                                    Description
+## M00693                                                            Cell cycle - G2/M transition
+## M00286                                                                            GINS complex
+## M00067 Sulfoglycolipids biosynthesis, ceramide/1-alkyl-2-acylglycerol =&amp;gt; sulfatide/seminolipid
+## M00691                                               DNA damage-induced cell cycle checkpoints
+##        GeneRatio BgRatio       pvalue     p.adjust       qvalue
+## M00693       3/8 10/1528 0.0000111304 5.565199e-05 1.171621e-05
+## M00286       2/8  4/1528 0.0001432508 3.581269e-04 7.539514e-05
+## M00067       1/8  2/1528 0.0104472034 1.741201e-02 3.665685e-03
+## M00691       1/8  7/1528 0.0361484900 4.518561e-02 9.512761e-03
+##              geneID Count
+## M00693 9133/890/983     3
+## M00286   9837/51659     2
+## M00067         7368     1
+## M00691         1111     1
+
+yy &amp;lt;- gseMKEGG(geneList)
+
+## [1] &amp;quot;calculating observed enrichment scores...&amp;quot;
+## [1] &amp;quot;calculating permutation scores...&amp;quot;
+## [1] &amp;quot;calculating p values...&amp;quot;
+## [1] &amp;quot;done...&amp;quot;
+
+head(summary(yy))
+
+##            ID                     Description setSize enrichmentScore
+## M00337 M00337                Immunoproteasome      15       0.7583644
+## M00340 M00340   Proteasome, 20S core particle      13       0.7935026
+## M00354 M00354 Spliceosome, U4/U6.U5 tri-snRNP      29       0.6053503
+##             NES      pvalue   p.adjust    qvalues
+## M00337 2.063359 0.002298851 0.03675214 0.02968961
+## M00340 2.047060 0.002409639 0.03675214 0.02968961
+## M00354 1.913834 0.002564103 0.03675214 0.02968961
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Please refer to &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html&#34;&gt;vignette&lt;/a&gt; for more details.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>yet an unofficial BioEdit for OSX</title>
@@ -1427,127 +1499,6 @@ ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/apple_emoji.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>喜新厌旧之hello Hugo</title>
-      <link>http://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/</link>
-      <pubDate>Fri, 04 Dec 2015 00:42:26 +0800</pubDate>
-      
-      <guid>http://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/</guid>
-      <description>
-
-&lt;p&gt;最早在China Unix上写博客，后来转战新浪。在&lt;a href=&#34;http://azaleasays.com/&#34;&gt;azelea&lt;/a&gt;的说服下，&lt;a href=&#34;http://guangchuangyu.github.io/2008/09/%E5%8D%9A%E5%AE%A2%E8%BD%ACwordpress/&#34;&gt;果断换成wordpress&lt;/a&gt;，写技术博客贴点代码什么的，新浪必须是太渣。&lt;a href=&#34;http://azaleasays.com/&#34;&gt;azelea&lt;/a&gt;是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和&lt;code&gt;ygc.name&lt;/code&gt;的域名，用了好几年。本来一直有想法要换成github+jekll，恰巧&lt;a href=&#34;http://blog.shenwei.me/&#34;&gt;Wei Shen&lt;/a&gt;强力推荐HUGO。于是再一次换博客。&lt;/p&gt;
-
-&lt;p&gt;首先面临着wordpress迁移的问题。&lt;/p&gt;
-
-&lt;h1 id=&#34;导入wordpress-posts为markdown文件:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;导入wordpress posts为markdown文件&lt;/h1&gt;
-
-&lt;p&gt;试用了多个插件或脚本，都是各种出错。最后发现了神器&lt;a href=&#34;https://github.com/jprichardson/potter-wordpress&#34;&gt;potter-wordpress&lt;/a&gt;，通过npm安装：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;npm install -g pottercms-wordpress
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后一个语句:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;自动从线上把posts抓下来，并转化为&lt;code&gt;markdown&lt;/code&gt;。在之前各种搞不定之后，看到下面的输出有种莫名的快感。&lt;/p&gt;
-
-&lt;p&gt;Fetching articles&amp;hellip;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;   Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
-   Got : [Mon Nov 09 2015] phylomoji with ggtree
-   Got : [Tue Nov 17 2015] 合体中的操作系统
-   Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
-   Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
-   Got : [Tue Oct 06 2015] TRIE
-   Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
-   Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
-
-   ...
-
-   Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
-   Got : [Mon May 14 2007] 我的emacs配置文件
-   Got : [Mon May 14 2007] pkgsrc tips
-   Got : [Thu May 03 2007] scilab三维平面绘图
-   Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
-   Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
-   Got : [Sat May 28 2005] 在emacs里使用maxima
-   Got : [Mon Mar 14 2005] scau校园网认证
-   Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Done.&lt;/p&gt;
-
-&lt;h1 id=&#34;导出wordpress的评论:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;导出wordpress的评论&lt;/h1&gt;
-
-&lt;p&gt;安装&lt;code&gt;Disqus Comment System plugin&lt;/code&gt;， 点击&lt;code&gt;Export comments to Disqus&lt;/code&gt;搞定&lt;/p&gt;
-
-&lt;p&gt;再到Disqus后台弄迁移，做个域名映射。&lt;/p&gt;
-
-&lt;h1 id=&#34;安装hugo:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;安装HUGO&lt;/h1&gt;
-
-&lt;p&gt;安装hugo对于Mac用户来说，太容易，brew大法搞定。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;brew install hubo
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;mathjax支持:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;MathJax支持&lt;/h1&gt;
-
-&lt;p&gt;把下面的代码:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script type=&amp;quot;text/javascript&amp;quot;
-  src=&amp;quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&amp;quot;&amp;gt;
-&amp;lt;/script&amp;gt;
-&amp;lt;script type=&amp;quot;text/x-mathjax-config&amp;quot;&amp;gt;
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]],
-    displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;],
-    TeX: { equationNumbers: { autoNumber: &amp;quot;AMS&amp;quot; },
-         extensions: [&amp;quot;AMSmath.js&amp;quot;, &amp;quot;AMSsymbols.js&amp;quot;] }
-  }
-});
-&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;加入主题到文件&lt;code&gt;layouts/partials/foot.html&lt;/code&gt;中，就可以实现&lt;code&gt;$\LaTeX$&lt;/code&gt;公式的解析。&lt;/p&gt;
-
-&lt;h1 id=&#34;social网分享:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;social网分享&lt;/h1&gt;
-
-&lt;p&gt;使用&lt;a href=&#34;http://www.sharethis.com&#34;&gt;ShareThis&lt;/a&gt;.
-把下面代码加到&lt;code&gt;layouts/post/single.html&lt;/code&gt;的适当位置。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;span class=&#39;st_twitter_hcount&#39; displayText=&#39;Tweet&#39;&amp;gt;&amp;lt;/span&amp;gt;
-&amp;lt;span class=&#39;st_facebook_hcount&#39; displayText=&#39;Facebook&#39;&amp;gt;&amp;lt;/span&amp;gt;
-&amp;lt;span class=&#39;st_sina_hcount&#39; displayText=&#39;Sina&#39;&amp;gt;&amp;lt;/span&amp;gt;
-&amp;lt;span class=&#39;st_linkedin_hcount&#39; displayText=&#39;LinkedIn&#39;&amp;gt;&amp;lt;/span&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再加&lt;code&gt;script&lt;/code&gt;加到&lt;code&gt;layouts/partials/foot.html&lt;/code&gt;中。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;script type=&amp;quot;text/javascript&amp;quot; src=&amp;quot;http://w.sharethis.com/button/buttons.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;stLight.options({publisher: &amp;quot;d135f460-3fc5-4802-8169-bd08e4734a09&amp;quot;, doNotHash: false, doNotCopy: false, hashAddressBar: false});&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;代码高亮:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;代码高亮&lt;/h1&gt;
-
-&lt;p&gt;加代码到&lt;code&gt;layouts/partials/foot.html&lt;/code&gt;中。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/zenburn.min.css&amp;quot;&amp;gt;
-&amp;lt;script src=&amp;quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-&amp;lt;script&amp;gt;hljs.initHighlightingOnLoad();&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;访问统计:3ff7f092e18423fcdd26eedc8fc08766&#34;&gt;访问统计&lt;/h1&gt;
-
-&lt;p&gt;以前在wordpress中使用&lt;a href=&#34;http://flagcounter.com/gmap/88/&#34;&gt;flagcounter&lt;/a&gt;，现在发现了&lt;a href=&#34;https://www.revolvermaps.com/?target=enlarge&amp;amp;i=5qpvv5zz7fp&#34;&gt;RevolverMaps&lt;/a&gt;，功能更好，把相应的代码加到sidebar中去即可。2016-03-18开始记录访问。&lt;/p&gt;
 </description>
     </item>
     
