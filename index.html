@@ -104,6 +104,74 @@
     <article>
       <header>
         <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/">convert biological ID with KEGG API using clusterProfiler</a>
+        </h1>
+        <p class="meta">May 3, 2016 - 4 minute read -  <a href="http://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        </p>
+
+      </header>
+
+        
+          <p><h2 id="bitr-kegg:ea0718166651864960b492e0d7486a4f">bitr_kegg</h2>
+
+<p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
+
+<pre><code>library(clusterProfiler)
+data(gcSample)
+hg &lt;- gcSample[[1]]
+head(hg)
+
+## [1] &quot;4597&quot;  &quot;7111&quot;  &quot;5266&quot;  &quot;2175&quot;  &quot;755&quot;   &quot;23046&quot;
+
+eg2np &lt;- bitr_kegg(hg, fromType='kegg', toType='ncbi-proteinid', organism='hsa')
+
+## Warning in bitr_kegg(hg, fromType = &quot;kegg&quot;, toType = &quot;ncbi-proteinid&quot;,
+## organism = &quot;hsa&quot;): 3.7% of input gene IDs are fail to map...
+
+head(eg2np)
+
+##     kegg ncbi-proteinid
+## 1   8326      NP_003499
+## 2  58487   NP_001034707
+## 3 139081      NP_619647
+## 4  59272      NP_068576
+## 5    993      NP_001780
+## 6   2676      NP_001487
+
+np2up &lt;- bitr_kegg(eg2np[,2], fromType='ncbi-proteinid', toType='uniprot', organism='hsa')
+
+head(np2up)
+
+##   ncbi-proteinid uniprot
+## 1      NP_005457  O75586
+## 2      NP_005792  P41567
+## 3      NP_005792  Q6IAV3
+## 4      NP_037536  Q13421
+## 5      NP_006054  O60662
+## 6   NP_001092002  O95398
+</code></pre>
+
+<p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
           <a href="http://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/">KEGG Module Enrichment Analysis</a>
         </h1>
         <p class="meta">Apr 13, 2016 - 2 minute read -  <a href="http://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/#disqus_thread">Comments</a>
@@ -245,44 +313,6 @@ subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
 
     </article>
     
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/">Font Awesome supported in emojifont</a>
-        </h1>
-        <p class="meta">Mar 14, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a>
-        </p>
-
-      </header>
-
-        
-          <p><p><a href="http://cran.r-project.org/package=emojifont"><img src="http://www.r-pkg.org/badges/version/emojifont" alt="CRAN_Status_Badge" /></a></p>
-
-<p><a href="https://cran.r-project.org/web/packages/emojifont/index.html"><code>emojifont</code></a> is available in CRAN, you can use the following command to install it.</p>
-
-<pre><code>install.packages(&quot;emojifont&quot;)
-</code></pre>
-
-<p>An example of using emoji font in R plot is showed below:</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2016/douban_emoji.jpg" alt="" /></p>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
     
     
 
@@ -410,6 +440,10 @@ subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
       
       
       <li class="post">
+        <a href="/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/">convert biological ID with KEGG API using clusterProfiler</a>
+      </li>
+      
+      <li class="post">
         <a href="/2016/04/kegg-module-enrichment-analysis/">KEGG Module Enrichment Analysis</a>
       </li>
       
@@ -423,10 +457,6 @@ subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
       
       <li class="post">
         <a href="/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a>
-      </li>
-      
-      <li class="post">
-        <a href="/2016/03/font-awesome-supported-in-emojifont/">Font Awesome supported in emojifont</a>
       </li>
       
     </ul>
