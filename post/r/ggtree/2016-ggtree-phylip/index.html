@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/post/r/ggtree/2016-ggtree-phylip/">
+
+    <title>ggtree supports phylip tree format | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">ggtree supports phylip tree format</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-01-15 13:19:00 &#43;0800 CST" itemprop="datePublished">Fri, Jan 15, 2016</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/ggtree">ggtree</a>
+        
+    </span>
+    
+    
+
+    
+    <div class="pull-right">
+        
+<div class="share">
+
+    <a class="facebook" href="https://www.facebook.com/sharer.php?u=" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+        <span class="hidden">Facebook</span>
+    </a>
+
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=&amp;url=" target="_blank">
+        <i class="fa fa-twitter-square"></i>
+        <span class="hidden">Twitter</span>
+    </a>
+
+    <a class="email" href="mailto:?subject=&amp;body=">
+        <i class="fa fa-envelope-square"></i>
+        <span class="hidden">Email</span>
+    </a>
+
+</div>
+
+
+    </div>
+    
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+            <p>Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.</p>
+
+<p>In <code>ggtree</code>, we can use <code>read.phylip()</code> function to parse the file and use <code>ggtree()</code> to visualize the tree.</p>
+
+<pre><code>library(ggtree)
+phyfile &lt;- system.file(&quot;extdata&quot;, &quot;sample.phy&quot;, package=&quot;ggtree&quot;)
+phylip &lt;- read.phylip(phyfile)
+phylip
+
+## 'phylip' S4 object that stored information of
+##   '/Users/guangchuangyu/Library/R/3.2/library/ggtree/extdata/sample.phy'.
+## 
+## ...@ tree: 
+## Phylogenetic tree with 15 tips and 13 internal nodes.
+## 
+## Tip labels:
+##  K, N, D, L, J, G, ...
+## 
+## Unrooted; no branch lengths.
+## 
+## with sequence alignment available (15 sequences of length 2148)
+
+ggtree(phylip) + geom_tiplab()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt="" /></p>
+
+<p>User can view the sequence alignment with the tree via <code>msaplot()</code>
+function.</p>
+
+<pre><code>msaplot(phylip, offset=1)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt="" /></p>
+
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/post/r/ggtree/2016-ggtree-edgelabel/"><span aria-hidden="true">&larr;</span> label edge number in ggtree</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/post/mypaper/2016_ReactomePA/">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/post\/r\/ggtree\/2016-ggtree-phylip\/';
+    var disqus_title = 'ggtree supports phylip tree format';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/post\/r\/ggtree\/2016-ggtree-phylip\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+

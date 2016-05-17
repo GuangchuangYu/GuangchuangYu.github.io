@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/post/r/chipseeker/2014_multiple-annotation-in-chipseeker/">
+
+    <title>multiple annotation in ChIPseeker | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">multiple annotation in ChIPseeker</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2014-10-01 13:00:33 &#43;0800 CST" itemprop="datePublished">Wed, Oct 1, 2014</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/chipseeker">ChIPseeker</a>
+        
+    </span>
+    
+    
+
+    
+    <div class="pull-right">
+        
+<div class="share">
+
+    <a class="facebook" href="https://www.facebook.com/sharer.php?u=" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+        <span class="hidden">Facebook</span>
+    </a>
+
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=&amp;url=" target="_blank">
+        <i class="fa fa-twitter-square"></i>
+        <span class="hidden">Twitter</span>
+    </a>
+
+    <a class="email" href="mailto:?subject=&amp;body=">
+        <i class="fa fa-envelope-square"></i>
+        <span class="hidden">Email</span>
+    </a>
+
+</div>
+
+
+    </div>
+    
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+            
+
+<h3 id="nearest-gene-annotation:211662300f8731372460bacaae7937b5">Nearest gene annotation</h3>
+
+<p>Almost all annotation software calculate the distance of a peak to the
+nearest TSS and assign the peak to that gene. This can be misleading, as
+binding sites might be located between two start sites of different
+genes or hit different genes which have the same TSS location in the
+genome.</p>
+
+<p>The function <em>annotatePeak</em> provides option to assign genes with a max
+distance cutoff and all genes within this distance were reported for
+each peak.</p>
+
+<pre><code>&gt; anno = annotatePeak(getSampleFiles()[[4]], addFlankGeneInfo=TRUE, flankDistance=5000)
+&gt;&gt; loading peak file...              2014-09-30 01:12:09 PM 
+&gt;&gt; preparing features information...         2014-09-30 01:12:09 PM 
+&gt;&gt; identifying nearest features...       2014-09-30 01:12:10 PM 
+&gt;&gt; calculating distance from peak to TSS...  2014-09-30 01:12:11 PM 
+&gt;&gt; assigning genomic annotation...       2014-09-30 01:12:11 PM 
+&gt;&gt; adding flank feature information from peaks...2014-09-30 01:12:37 PM 
+&gt;&gt; assigning chromosome lengths          2014-09-30 01:12:39 PM 
+&gt;&gt; done...                   2014-09-30 01:12:39 PM 
+&gt; head(as.GRanges(anno))
+GRanges object with 6 ranges and 14 metadata columns:
+      seqnames             ranges strand |          V4        V5
+                      |     
+  [1]     chr1 [ 815092,  817883]      * | MACS_peak_1    295.76
+  [2]     chr1 [1243287, 1244338]      * | MACS_peak_2     63.19
+  [3]     chr1 [2979976, 2981228]      * | MACS_peak_3    100.16
+  [4]     chr1 [3566181, 3567876]      * | MACS_peak_4    558.89
+  [5]     chr1 [3816545, 3818111]      * | MACS_peak_5     57.57
+  [6]     chr1 [6304864, 6305704]      * | MACS_peak_6     54.57
+             annotation  geneChr geneStart   geneEnd geneLength geneStrand
+                    
+  [1] Distal Intergenic     chr1    803451    812182       8732          -
+  [2]  Promoter (&lt;=1kb)     chr1   1243994   1247057       3064          +
+  [3]  Promoter (&lt;=1kb)     chr1   2976181   2980350       4170          -
+  [4]  Promoter (&lt;=1kb)     chr1   3547331   3566671      19341          -
+  [5]  Promoter (&lt;=1kb)     chr1   3816968   3832011      15044          +
+  [6]  Promoter (1-2kb)     chr1   6304252   6305638       1387          +
+           geneId transcriptId distanceToTSS
+             
+  [1]      284593   uc001abt.4         -5701
+  [2]      126789   uc001aed.3             0
+  [3]      440556   uc001aka.3             0
+  [4]       49856   uc001ako.3             0
+  [5]   100133612   uc001alg.3             0
+  [6]      390992   uc009vly.2          1452
+                                                                                                                                                               flank_txIds
+                                                                                                                                                               
+  [1]                                                                                                                                                           uc001abt.4
+  [2] uc001aea.2;uc001aeb.2;uc001aec.1;uc001aed.3;uc010nyi.2;uc009vjx.3;uc009vjy.1;uc001aee.2;uc001aef.2;uc001aeg.2;uc001aeh.2;uc001aei.2;uc001aek.2;uc009vjz.2;uc010nyj.2
+  [3]                                                                                                    uc001aka.3;uc010nzg.1;uc001akc.3;uc001ake.3;uc001akf.3;uc009vlh.3
+  [4]                                                                   uc001ako.3;uc001akn.3;uc010nzi.2;uc001akp.3;uc021ofb.1;uc021ofc.1;uc021ofd.1;uc021ofe.1;uc021off.1
+  [5]                                                                                                    uc001alg.3;uc010nzo.2;uc001alh.4;uc001alf.3;uc009vls.3;uc031pkz.1
+  [6]                                                                                                                                                uc001amp.2;uc009vly.2
+                                                                                        flank_geneIds
+                                                                                          
+  [1]                                                                                          284593
+  [2] 116983;116983;116983;126789;126789;126789;54973;54973;54973;54973;54973;54973;54973;54973;54973
+  [3]                                                           440556;440556;63976;63976;63976;63976
+  [4]                                                 49856;49856;49856;7161;7161;7161;7161;7161;7161
+  [5]                                              100133612;100133612;100133612;339448;339448;339448
+  [6]                                                                                   387509;390992
+                                                           flank_gene_distances
+                                                                    
+  [1]                                                                     -2910
+  [2] -1978;-18;0;0;0;-128;8492;15729;15729;15729;15729;15729;15729;15729;15729
+  [3]                                               0;0;-4514;-4514;-4514;-4514
+  [4]                                 0;0;0;-1253;-1253;-1253;-1253;-1253;-1253
+  [5]                                                               0;0;0;0;0;0
+  [6]                                                                   15331;0
+  -------
+  seqinfo: 24 sequences from hg19 genome
+</code></pre>
+
+<p>Three extra columns, <em>flank_txIds</em>, <em>flank_geneIds</em>,
+<em>flank_gene_distances</em> were added if parameter <em>addFlankGeneInfo</em> is
+set to <em>TRUE</em>.</p>
+
+<h3 id="genomic-annotation:211662300f8731372460bacaae7937b5">Genomic annotation</h3>
+
+<p>The annotation column annotates the genomic location of a given peak.
+Since some annotations overlap, they are assigned based on the following
+priority.</p>
+
+<ul>
+<li>Promoter (defined by tssRegion parameter)</li>
+<li>5&rsquo; UTR</li>
+<li>3&rsquo; UTR</li>
+<li>Exon</li>
+<li>Intron</li>
+<li>Downstream (immediate downstream of a gene, within 3kb)</li>
+<li>Distal Intergenic</li>
+</ul>
+
+<p>I have implemented <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/">plotAnnoPie and plotAnnoBar</a>
+to visualize their distribution. I am wondering how to visualize the
+annotation overlap and found <a href="http://onetipperday.blogspot.hk/2014/09/how-to-draw-venn-pie-agram-multi-layer.html">venn pie-agram</a>
+can partially solve this issue. It&rsquo;s hard/impossible to visualize all
+the overlap information within one vennpie plot.</p>
+
+<p>I employed the vennpie to ChIPseeker, and now with the vennpie function,
+we can visualize some of the overlap annotations.</p>
+
+<pre><code>vennpie(anno)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png" alt="" /></p>
+
+<p>In order to manage complex data, <em>annotatePeak</em> now output a S4 object.
+Users can use <em>as.GRanges</em> to convert it to <em>as.GRanges</em> object or
+<em>as.data.frame</em> to convert it to <em>data.frame</em> and then the output can be
+exported by <em>write.table</em> function.</p>
+
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/post/r/clusterprofiler/2014_why-clusterprofiler-fails/"><span aria-hidden="true">&larr;</span> why clusterProfiler fails</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/post/mac/2014_hello-yosemite/">hello yosemite <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/post\/r\/chipseeker\/2014_multiple-annotation-in-chipseeker\/';
+    var disqus_title = 'multiple annotation in ChIPseeker';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/post\/r\/chipseeker\/2014_multiple-annotation-in-chipseeker\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+

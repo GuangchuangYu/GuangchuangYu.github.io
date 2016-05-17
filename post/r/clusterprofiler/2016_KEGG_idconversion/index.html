@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/post/r/clusterprofiler/2016_KEGG_idconversion/">
+
+    <title>convert biological ID with KEGG API using clusterProfiler | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">convert biological ID with KEGG API using clusterProfiler</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-05-03 17:00:00 &#43;0800 CST" itemprop="datePublished">Tue, May 3, 2016</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>, 
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/kegg">KEGG</a>
+        
+    </span>
+    
+    
+
+    
+    <div class="pull-right">
+        
+<div class="share">
+
+    <a class="facebook" href="https://www.facebook.com/sharer.php?u=" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+        <span class="hidden">Facebook</span>
+    </a>
+
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=&amp;url=" target="_blank">
+        <i class="fa fa-twitter-square"></i>
+        <span class="hidden">Twitter</span>
+    </a>
+
+    <a class="email" href="mailto:?subject=&amp;body=">
+        <i class="fa fa-envelope-square"></i>
+        <span class="hidden">Email</span>
+    </a>
+
+</div>
+
+
+    </div>
+    
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+            
+
+<h2 id="bitr-kegg:ea0718166651864960b492e0d7486a4f">bitr_kegg</h2>
+
+<p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
+
+<pre><code>library(clusterProfiler)
+data(gcSample)
+hg &lt;- gcSample[[1]]
+head(hg)
+
+## [1] &quot;4597&quot;  &quot;7111&quot;  &quot;5266&quot;  &quot;2175&quot;  &quot;755&quot;   &quot;23046&quot;
+
+eg2np &lt;- bitr_kegg(hg, fromType='kegg', toType='ncbi-proteinid', organism='hsa')
+
+## Warning in bitr_kegg(hg, fromType = &quot;kegg&quot;, toType = &quot;ncbi-proteinid&quot;,
+## organism = &quot;hsa&quot;): 3.7% of input gene IDs are fail to map...
+
+head(eg2np)
+
+##     kegg ncbi-proteinid
+## 1   8326      NP_003499
+## 2  58487   NP_001034707
+## 3 139081      NP_619647
+## 4  59272      NP_068576
+## 5    993      NP_001780
+## 6   2676      NP_001487
+
+np2up &lt;- bitr_kegg(eg2np[,2], fromType='ncbi-proteinid', toType='uniprot', organism='hsa')
+
+head(np2up)
+
+##   ncbi-proteinid uniprot
+## 1      NP_005457  O75586
+## 2      NP_005792  P41567
+## 3      NP_005792  Q6IAV3
+## 4      NP_037536  Q13421
+## 5      NP_006054  O60662
+## 6   NP_001092002  O95398
+</code></pre>
+
+<p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
+
+<p>Many prokaryote species don&rsquo;t have entrezgene ID available. For example we can check the gene information of <code>ece:Z5100</code> in <a href="http://www.genome.jp/dbget-bin/www_bget?ece:Z5100">http://www.genome.jp/dbget-bin/www_bget?ece:Z5100</a>, which have <code>NCBI-ProteinID</code> and <code>UnitProt</code> links in the <code>Other DBs</code> Entry, but not <code>NCBI-GeneID</code>.</p>
+
+<p>If we try to convert <code>Z5100</code> to <code>ncbi-geneid</code>, <code>bitr_kegg</code> will throw error of <code>ncbi-geneid is not supported</code>.</p>
+
+<pre><code>bitr_kegg(&quot;Z5100&quot;, fromType=&quot;kegg&quot;, toType='ncbi-geneid', organism='ece')
+
+## Error in KEGG_convert(fromType, toType, organism) :
+## ncbi-geneid is not supported for ece ...
+</code></pre>
+
+<p>We can of course convert it to <code>ncbi-proteinid</code> and <code>uniprot</code>:</p>
+
+<pre><code>bitr_kegg(&quot;Z5100&quot;, fromType=&quot;kegg&quot;, toType='ncbi-proteinid', organism='ece')
+
+##    kegg ncbi-proteinid
+## 1 Z5100       AAG58814
+
+bitr_kegg(&quot;Z5100&quot;, fromType=&quot;kegg&quot;, toType='uniprot', organism='ece')
+
+##    kegg uniprot
+## 1 Z5100  Q7DB85
+</code></pre>
+
+<h2 id="search-kegg-organism:ea0718166651864960b492e0d7486a4f">search_kegg_organism</h2>
+
+<p><code>clusterProfiler</code> supports more than 4k species listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a> for hypergeometric test (<code>enrichKEGG</code> &amp; <code>enrichMKEGG</code>) and GSEA (<code>gseKEGG</code> &amp; <code>gseMKEGG</code>). We can use <code>bitr_kegg</code> to convert ID for all these 4k species. To facilitate searching scientific name abbreviate used in the <code>organism</code> parameter of these functions, I implemented the <code>search_kegg_organism</code> function. We can search by <code>kegg_code</code>, <code>scientific_name</code> or <code>common_name</code> (which is not available for prokaryotes).</p>
+
+<pre><code>search_kegg_organism('ece', by='kegg_code')
+
+##     kegg_code                        scientific_name common_name
+## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &lt;NA&gt;
+
+ecoli &lt;- search_kegg_organism('Escherichia coli', by='scientific_name')
+dim(ecoli)
+
+## [1] 64  3
+
+head(ecoli)
+
+##     kegg_code                        scientific_name common_name
+## 329       eco           Escherichia coli K-12 MG1655        &lt;NA&gt;
+## 330       ecj            Escherichia coli K-12 W3110        &lt;NA&gt;
+## 331       ecd            Escherichia coli K-12 DH10B        &lt;NA&gt;
+## 332       ebw                Escherichia coli BW2952        &lt;NA&gt;
+## 333      ecok            Escherichia coli K-12 MDS42        &lt;NA&gt;
+## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &lt;NA&gt;
+</code></pre>
+
+<h2 id="keytype-parameter:ea0718166651864960b492e0d7486a4f">keyType parameter</h2>
+
+<p>With the ID conversion utilities built in <code>clusterProfiler</code>, I add a parameter <code>keyType</code> in <code>enrichKEGG</code>, <code>enrichMKEGG</code>, <code>gseKEGG</code> and <code>gseMKEGG</code>. Now we can use ID type that is not the primary ID in KEGG database.</p>
+
+<pre><code>x &lt;- enrichKEGG(np2up[,2], organism='hsa', keyType='uniprot')
+head(summary(x))
+
+##                ID                            Description GeneRatio
+## hsa04072 hsa04072      Phospholipase D signaling pathway    11/133
+## hsa04060 hsa04060 Cytokine-cytokine receptor interaction    14/133
+## hsa04390 hsa04390                Hippo signaling pathway    10/133
+## hsa04975 hsa04975           Fat digestion and absorption     5/133
+## hsa05221 hsa05221                 Acute myeloid leukemia     6/133
+##           BgRatio       pvalue   p.adjust     qvalue
+## hsa04072 216/9275 0.0002654190 0.03901659 0.03240905
+## hsa04060 354/9275 0.0005349245 0.03931695 0.03265855
+## hsa04390 213/9275 0.0009536247 0.04199404 0.03488227
+## hsa04975  58/9275 0.0014014886 0.04199404 0.03488227
+## hsa05221  86/9275 0.0014283687 0.04199404 0.03488227
+##                                                                                                         geneID
+## hsa04072                      O95398/Q99777/P49619/Q6FGP0/Q8WVM9/O14807/P41594/A8K5P7/P10145/A0A024RDA5/P16234
+## hsa04060 A0N0N3/O00574/P19876/P01589/P10145/A0A024RDA5/B4DGA4/Q99665/P16234/P78556/Q6I9S7/P42830/P27930/Q9UBN6
+## hsa04390                             Q8WW10/A8K141/Q9UI47/P35240/A0A024R1J8/Q659G9/Q9UJU2/P22003/M9VUD0/O00144
+## hsa04975                                                            Q9UNK4/A0A087WZT4/A0A0C4DFX6/Q9UHC9/P04054
+## hsa05221                                                         Q659G9/Q9UJU2/Q03181/A0A024RCW6/Q06455/B2R6I9
+##          Count
+## hsa04072    11
+## hsa04060    14
+## hsa04390    10
+## hsa04975     5
+## hsa05221     6
+</code></pre>
+
+<h2 id="setreadable:ea0718166651864960b492e0d7486a4f">setReadable</h2>
+
+<p>For GO analysis, we have a <code>readable</code> parameter to control whether traslating the IDs to human readable gene name. This parameter is not available for KEGG analysis. But we still have the ability to translate input gene IDs to gene name using <code>setReadable</code> function if and only if corresponding <code>OrgDb</code> object is available.</p>
+
+<pre><code>y &lt;- setReadable(x, 'org.Hs.eg.db', keytype=&quot;UNIPROT&quot;)
+head(summary(y))
+
+##                ID                            Description GeneRatio
+## hsa04072 hsa04072      Phospholipase D signaling pathway    11/133
+## hsa04060 hsa04060 Cytokine-cytokine receptor interaction    14/133
+## hsa04390 hsa04390                Hippo signaling pathway    10/133
+## hsa04975 hsa04975           Fat digestion and absorption     5/133
+## hsa05221 hsa05221                 Acute myeloid leukemia     6/133
+##           BgRatio       pvalue   p.adjust     qvalue
+## hsa04072 216/9275 0.0002654190 0.03901659 0.03240905
+## hsa04060 354/9275 0.0005349245 0.03931695 0.03265855
+## hsa04390 213/9275 0.0009536247 0.04199404 0.03488227
+## hsa04975  58/9275 0.0014014886 0.04199404 0.03488227
+## hsa05221  86/9275 0.0014283687 0.04199404 0.03488227
+##                                                                                                geneID
+## hsa04072                             RAPGEF3/RAPGEF3/DGKG/MRAS/MRAS/MRAS/GRM5/GRM5/CXCL8/CXCL8/PDGFRA
+## hsa04060 CXCR6/CXCR6/CXCL3/IL2RA/CXCL8/CXCL8/IL12RB2/IL12RB2/PDGFRA/CCL20/CXCL5/CXCL5/IL1R2/TNFRSF10D
+## hsa04390                                        CTNNA3/CTNNA3/CTNNA3/NF2/NF2/LEF1/LEF1/BMP5/BMP5/FZD9
+## hsa04975                                                        PLA2G2D/PLA2G2D/NPC1L1/NPC1L1/PLA2G1B
+## hsa05221                                                        LEF1/LEF1/PPARD/PPARD/RUNX1T1/RUNX1T1
+##          Count
+## hsa04072    11
+## hsa04060    14
+## hsa04390    10
+## hsa04975     5
+## hsa05221     6
+</code></pre>
+
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/post/r/clusterprofiler/2016-KEGG-Module/"><span aria-hidden="true">&larr;</span> KEGG Module Enrichment Analysis</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/post/r/bioc/2016_bioc-3.3/">BioC 3.3: NEWS of my packages <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/post\/r\/clusterprofiler\/2016_KEGG_idconversion\/';
+    var disqus_title = 'convert biological ID with KEGG API using clusterProfiler';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/post\/r\/clusterprofiler\/2016_KEGG_idconversion\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+

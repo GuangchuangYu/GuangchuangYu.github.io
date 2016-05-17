@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/tags/chipseeker/">
+
+    <title>Chipseeker | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    
+    
+    <div>
+        <h2><a href="http://guangchuangyu.github.io/post/r/chipseeker/2014_visualization-methods-in-chipseeker/">visualization methods in ChIPseeker</a></h2>
+        <p><p>After two weeks developed, I have added/updated some plot functions in
+<a href="http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html">ChIPseeker</a>
+(version &gt;=1.0.1).</p>
+
+<h3 id="chip-peaks-over-chromosomes:6a8a65de687a162a83f53f5c5a317279">ChIP peaks over Chromosomes</h3>
+
+<pre><code>&gt; files=getSampleFiles()
+&gt; peak=readPeakFile(files[[4]])
+&gt; peak
+GRanges object with 1331 ranges and 2 metadata columns:
+         seqnames                 ranges strand   |             V4        V5
+                               |        
+     [1]     chr1     [ 815092,  817883]      *   |    MACS_peak_1    295.76
+     [2]     chr1     [1243287, 1244338]      *   |    MACS_peak_2     63.19
+     [3]     chr1     [2979976, 2981228]      *   |    MACS_peak_3    100.16
+     [4]     chr1     [3566181, 3567876]      *   |    MACS_peak_4    558.89
+     [5]     chr1     [3816545, 3818111]      *   |    MACS_peak_5     57.57
+     ...      ...                    ...    ... ...            ...       ...
+  [1327]     chrX [135244782, 135245821]      *   | MACS_peak_1327     55.54
+  [1328]     chrX [139171963, 139173506]      *   | MACS_peak_1328    270.19
+  [1329]     chrX [139583953, 139586126]      *   | MACS_peak_1329    918.73
+  [1330]     chrX [139592001, 139593238]      *   | MACS_peak_1330    210.88
+  [1331]     chrY [ 13845133,  13845777]      *   | MACS_peak_1331     58.39
+  ---
+  seqlengths:
+    chr1 chr10 chr11 chr12 chr13 chr14 ...  chr6  chr7  chr8  chr9  chrX  chrY
+      NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA    NA
+&gt; covplot(peak, weightCol=&quot;V5&quot;)
+</code></pre>
+</p>
+    </div>
+    
+    <div>
+        <h2><a href="http://guangchuangyu.github.io/post/r/chipseeker/2014_chipseeker-for-chip-peak-annotation/">ChIPseeker for ChIP peak annotation</a></h2>
+        <p><p><a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPpeakAnno.html">ChIPpeakAnno</a>
+WAS the only R package for ChIP peak annotation. I used it for
+annotating peak in my recent study.</p>
+
+<p>I found it does not consider the strand information of genes. I
+<a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">reported the bug</a> to the
+authors, but they are reluctant to change.</p>
+
+<p>So I decided to develop my own package,
+<a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPseeker.html">ChIPseeker</a>,
+and it&rsquo;s now available in Bioconductor.</p>
+</p>
+    </div>
+    
+    <div>
+        <h2><a href="http://guangchuangyu.github.io/post/r/2014_bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno</a></h2>
+        <p><p>I used R package <strong>ChIPpeakAnno</strong> for annotating peaks, and found that
+it handle the DNA strand in the wrong way. Maybe the developers were
+from the computer science but not biology background.</p>
+
+<pre><code>&gt; require(ChIPpeakAnno)
+&gt; packageVersion(&quot;ChIPpeakAnno&quot;)
+[1] '2.10.0'
+&gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528))
+&gt; data(TSS.human.GRCh37)
+&gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37)
+&gt; ap
+RangedData with 1 row and 9 value columns across 1 space
+                     space               ranges |        peak      strand
+                               |  
+1 ENSG00000001461        1 [24736757, 24737528] |           1           +
+                          feature start_position end_position insideFeature
+                                   
+1 ENSG00000001461 ENSG00000001461       24742284     24799466      upstream
+                  distancetoFeature shortestDistance fromOverlappingOrNearest
+                                                
+1 ENSG00000001461             -5527             4756             NearestStart
+</code></pre>
+</p>
+    </div>
+    
+
+    
+<nav>
+    <ul class="pager">
+        
+        <li><a href="http://guangchuangyu.github.io//tags/chipseeker/">« Previous</a></li>
+        
+        
+    </ul>
+</nav>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+</div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+

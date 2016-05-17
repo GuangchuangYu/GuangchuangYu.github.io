@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/post/r/chipseeker/2014_chipseeker-for-chip-peak-annotation/">
+
+    <title>ChIPseeker for ChIP peak annotation | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">ChIPseeker for ChIP peak annotation</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2014-04-13 13:02:15 &#43;0800 CST" itemprop="datePublished">Sun, Apr 13, 2014</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/chipseeker">ChIPseeker</a>, 
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/chipseq">ChIPseq</a>
+        
+    </span>
+    
+    
+
+    
+    <div class="pull-right">
+        
+<div class="share">
+
+    <a class="facebook" href="https://www.facebook.com/sharer.php?u=" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+        <span class="hidden">Facebook</span>
+    </a>
+
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=&amp;url=" target="_blank">
+        <i class="fa fa-twitter-square"></i>
+        <span class="hidden">Twitter</span>
+    </a>
+
+    <a class="email" href="mailto:?subject=&amp;body=">
+        <i class="fa fa-envelope-square"></i>
+        <span class="hidden">Email</span>
+    </a>
+
+</div>
+
+
+    </div>
+    
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+            <p><a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPpeakAnno.html">ChIPpeakAnno</a>
+WAS the only R package for ChIP peak annotation. I used it for
+annotating peak in my recent study.</p>
+
+<p>I found it does not consider the strand information of genes. I
+<a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">reported the bug</a> to the
+authors, but they are reluctant to change.</p>
+
+<p>So I decided to develop my own package,
+<a href="http://www.bioconductor.org/packages/2.14/bioc/html/ChIPseeker.html">ChIPseeker</a>,
+and it&rsquo;s now available in Bioconductor.</p>
+
+<pre><code>&gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+&gt; txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+&gt; require(ChIPseeker)
+&gt; peakfile = getSampleFiles()[[4]]
+&gt; peakfile
+[1] &quot;/usr/local/Cellar/r/3.1.0/R.framework/Versions/3.1/Resources/library/ChIPseeker/extdata//GEO_sample_data/GSM1295076_CBX6_BF_ChipSeq_mergedReps_peaks.bed.gz&quot;
+&gt; peakAnno &lt;- annotatePeak(peakfile, tssRegion=c(-3000, 1000), TxDb=txdb, annoDb=&quot;org.Hs.eg.db&quot;)
+&gt;&gt; loading peak file...              2014-04-13 12:03:45 PM 
+&gt;&gt; preparing features information...         2014-04-13 12:03:45 PM 
+&gt;&gt; identifying nearest features...       2014-04-13 12:03:45 PM 
+&gt;&gt; calculating distance from peak to TSS...  2014-04-13 12:03:46 PM 
+&gt;&gt; assigning genomic annotation...       2014-04-13 12:03:46 PM 
+&gt;&gt; adding gene annotation...             2014-04-13 12:03:50 PM 
+&gt;&gt; assigning chromosome lengths          2014-04-13 12:03:50 PM 
+&gt;&gt; done...                   2014-04-13 12:03:50 PM 
+&gt; head(as.GRanges(peakAnno))
+GRanges object with 6 ranges and 14 metadata columns:
+      seqnames             ranges strand |          V4        V5
+                      |     
+  [1]     chr1 [ 815092,  817883]      * | MACS_peak_1    295.76
+  [2]     chr1 [1243287, 1244338]      * | MACS_peak_2     63.19
+  [3]     chr1 [2979976, 2981228]      * | MACS_peak_3    100.16
+  [4]     chr1 [3566181, 3567876]      * | MACS_peak_4    558.89
+  [5]     chr1 [3816545, 3818111]      * | MACS_peak_5     57.57
+  [6]     chr1 [6304864, 6305704]      * | MACS_peak_6     54.57
+             annotation  geneChr geneStart   geneEnd geneLength geneStrand
+                    
+  [1] Distal Intergenic     chr1    803451    812182       8732          -
+  [2]  Promoter (&lt;=1kb)     chr1   1243994   1247057       3064          +
+  [3]  Promoter (&lt;=1kb)     chr1   2976181   2980350       4170          -
+  [4]  Promoter (&lt;=1kb)     chr1   3547331   3566671      19341          -
+  [5]  Promoter (&lt;=1kb)     chr1   3816968   3832011      15044          +
+  [6]            3  UTR     chr1   6304252   6305638       1387          +
+           geneId transcriptId distanceToTSS         ENSEMBL      SYMBOL
+                   
+  [1]      284593   uc001abt.4         -5701 ENSG00000230368      FAM41C
+  [2]      126789   uc001aed.3             0 ENSG00000169972       PUSL1
+  [3]      440556   uc001aka.3             0 ENSG00000177133   LINC00982
+  [4]       49856   uc001ako.3             0 ENSG00000116213      WRAP73
+  [5]   100133612   uc001alg.3             0 ENSG00000236423   LINC01134
+  [6]      390992   uc009vly.2          1452 ENSG00000173673        HES3
+                                          GENENAME
+                                       
+  [1] family with sequence similarity 41, member C
+  [2]              pseudouridylate synthase-like 1
+  [3]   long intergenic non-protein coding RNA 982
+  [4]      WD repeat containing, antisense to TP73
+  [5]  long intergenic non-protein coding RNA 1134
+  [6]       hes family bHLH transcription factor 3
+  ---
+  seqlengths:
+        chr1     chr10     chr11     chr12 ...      chr8      chr9      chrX
+   249250621 135534747 135006516 133851895 ... 146364022 141213431 155270560
+</code></pre>
+
+<p><em>annotatePeak</em> function can accept peak file or GRanges object that
+contained peak information. The sample peakfile shown above is a sample
+output from MACS. All the information contained in peakfile will be kept
+in the output of annotatePeak.</p>
+
+<p>The <em>annotation</em> column annotates genomic features of the peak, that is
+whether peak is located in Promoter, Exon, UTR, Intron or Intergenic. If
+the peak is annotated by Exon or Intron, more detail information will be
+provided. For instance, Exon (38885 exon 3 of 11) indicates that the
+peak is located at the 3th exon of gene 38885 (entrezgene ID) which
+contain 11 exons in total.</p>
+
+<p>All the names of column that contains information of nearest gene
+annotated will start with gene in camelCaps style.</p>
+
+<p>If parameter annoDb=&ldquo;org.Hs.eg.db&rdquo; is provided, extra columns of
+ENSEMBL, SYMBOL and GENENAME will be provided in the final output.</p>
+
+<p>For more detail, please refer to the package
+<a href="http://www.bioconductor.org/packages/release/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.pdf">vignette</a>.
+Comments or suggestions are welcome.</p>
+
+<p>&mdash;&mdash;- below was added at April 30, 2014 &mdash;&mdash;&mdash;&ndash;</p>
+
+<p>After two weeks of ChIPseeker release in Bioconductor, I am very glad to
+receive an email from <a href="http://www.flychip.org.uk/">Cambridge Systems Biology Centre</a> that they are using ChIPseeker in
+annotating Drosophila ChIP data.</p>
+
+<p>Although I only illustrate examples in human, ChIPseeker do supports all
+species only if genomic information was available. :mrgreen: :mrgreen:</p>
+
+<pre><code>&gt; require(TxDb.Dmelanogaster.UCSC.dm3.ensGene)
+&gt; require(ChIPseeker)
+&gt; txdb &lt;- TxDb.Dmelanogaster.UCSC.dm3.ensGene
+&gt;
+&gt; chr &lt;- c(&quot;chrX&quot;, &quot;chrX&quot;, &quot;chrX&quot;)
+&gt; start &lt;- c(71349, 77124, 86364)
+&gt; end &lt;- c(72835, 77836, 88378)
+&gt; peak &lt;- GRanges(seqnames = chr, ranges = IRanges(start, end))
+&gt; peakAnno &lt;- annotatePeak(peak,
++                          tssRegion=c(-3000,100),
++                          TxDb = txdb,
++                          annoDb=&quot;org.Dm.eg.db&quot;)
+&gt;&gt; preparing features information...         2014-04-30 21:28:27
+&gt;&gt; identifying nearest features...       2014-04-30 21:28:30
+&gt;&gt; calculating distance from peak to TSS...  2014-04-30 21:28:31
+&gt;&gt; assigning genomic annotation...       2014-04-30 21:28:31
+&gt;&gt; adding gene annotation...             2014-04-30 21:28:42
+Loading required package: org.Dm.eg.db
+Loading required package: DBI
+
+&gt;&gt; assigning chromosome lengths           2014-04-30 21:28:43
+&gt;&gt; done...                   2014-04-30 21:28:43
+&gt; as.GRanges(peakAnno)
+GRanges object with 3 ranges and 12 metadata columns:
+      seqnames         ranges strand |
+                  |
+  [1]     chrX [71349, 72835]      * |
+  [2]     chrX [77124, 77836]      * |
+  [3]     chrX [86364, 88378]      * |
+                                           annotation  geneChr geneStart
+                                            
+  [1]                                Promoter (&lt;=1kb)     chrX     72458
+  [2] Intron (FBtr0100135/FBgn0029128, intron 1 of 7)     chrX     72458
+  [3] Intron (FBtr0100135/FBgn0029128, intron 2 of 7)     chrX     72458
+        geneEnd geneLength geneStrand      geneId transcriptId distanceToTSS
+                   
+  [1]     96056      23599          + FBgn0029128  FBtr0100135             0
+  [2]     96056      23599          + FBgn0029128  FBtr0100135          5378
+  [3]     96056      23599          + FBgn0029128  FBtr0100135         15920
+         ENTREZID      SYMBOL    GENENAME
+        
+  [1]     3354987         tyn     trynity
+  [2]     3354987         tyn     trynity
+  [3]     3354987         tyn     trynity
+  ---
+  seqlengths:
+       chrX
+   22422827
+&gt;
+</code></pre>
+
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/post/r/2014_boxplot/"><span aria-hidden="true">&larr;</span> boxplot</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/post/r/chipseeker/2014_visualization-methods-in-chipseeker/">visualization methods in ChIPseeker <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/post\/r\/chipseeker\/2014_chipseeker-for-chip-peak-annotation\/';
+    var disqus_title = 'ChIPseeker for ChIP peak annotation';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/post\/r\/chipseeker\/2014_chipseeker-for-chip-peak-annotation\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+

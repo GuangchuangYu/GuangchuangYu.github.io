@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/post/r/gosemsim/2014_proper-use-of-gosemsim/">
+
+    <title>proper use of GOSemSim | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">proper use of GOSemSim</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2014-11-23 02:27:23 &#43;0800 CST" itemprop="datePublished">Sun, Nov 23, 2014</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/gosemsim">GOSemSim</a>
+        
+    </span>
+    
+    
+
+    
+    <div class="pull-right">
+        
+<div class="share">
+
+    <a class="facebook" href="https://www.facebook.com/sharer.php?u=" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+        <span class="hidden">Facebook</span>
+    </a>
+
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=&amp;url=" target="_blank">
+        <i class="fa fa-twitter-square"></i>
+        <span class="hidden">Twitter</span>
+    </a>
+
+    <a class="email" href="mailto:?subject=&amp;body=">
+        <i class="fa fa-envelope-square"></i>
+        <span class="hidden">Email</span>
+    </a>
+
+</div>
+
+
+    </div>
+    
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+            <p>One day, I am looking for R packages that can analyze PPI and after
+searching, I found the
+<a href="http://cran.r-project.org/web/packages/ppiPre/index.html">ppiPre</a>
+package in CRAN.</p>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/11/2014-11-22-215959_895x256_scrot.png" alt="" /></p>
+
+<p>The function of this package is not impressive, and I already knew some
+related works, including <a href="http://intscore.molgen.mpg.de/">http://intscore.molgen.mpg.de/</a>. The authors
+of this webserver contacted me for the usages of GOSemSim when they
+developing it. What makes me curious is that the
+<a href="http://cran.r-project.org/web/packages/ppiPre/index.html">ppiPre</a>
+package can calculate GO semantic similarity and supports 20 species
+exactly like GOSemSim. I opened the source tarball, and surprisingly
+found that its sources related to semantic similarity calculation are
+totally copied from GOSemSim.</p>
+
+<p>GOSemSim was <a href="http://guangchuangyu.github.io/2008/08/gosemsim/">firstly released in 2008 Bioconductor 2.4</a> (at that time, devel version)
+and published in <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/">Bioinformatics in 2010</a>.
+After compared the sources, I found the sources in ppiPre were copied
+from <a href="http://www.bioconductor.org/packages/2.6/bioc/html/GOSemSim.html">GOSemSim version 1.6.8</a>
+which released in 2010 Bioconductor 2.6. The Wang method defined in
+GOKEGGSims.r file of ppiPre is:</p>
+
+<pre><code>   119  WangMethod &lt;- function(GOID1, GOID2, ont=&quot;MF&quot;, organism=&quot;yeast&quot;) {
+   120      if(!exists(&quot;ppiPreEnv&quot;)) .initial()
+   121      weight.isa = 0.8
+   122      weight.partof = 0.6
+   123
+   124      if (GOID1 == GOID2)
+   125          return (1)
+   126
+   127      Parents.name &lt;- switch(ont,
+   128          MF = &quot;MFParents&quot;,
+   129          BP = &quot;BPParents&quot;,
+   130          CC = &quot;CCParents&quot;
+   131      )
+   132      if (!exists(Parents.name, envir=ppiPreEnv)) {
+   133          GetGOParents(ont)
+   134      }
+   135      Parents &lt;- get(Parents.name, envir=ppiPreEnv)
+   136
+   137      sv.a &lt;- 1
+   138      sv.b &lt;- 1
+   139      sw &lt;- 1
+   140      names(sv.a) &lt;- GOID1
+   141      names(sv.b) &lt;- GOID2
+   142
+   143      sv.a &lt;- WangSemVal(GOID1, ont, Parents, sv.a, sw, weight.isa, weight.partof)
+   144      sv.b &lt;- WangSemVal(GOID2, ont, Parents, sv.b, sw, weight.isa, weight.partof)
+   145
+   146      sv.a &lt;- uniqsv(sv.a)
+   147      sv.b &lt;- uniqsv(sv.b)
+   148
+   149      idx &lt;- intersect(names(sv.a), names(sv.b))
+   150      inter.sva &lt;- unlist(sv.a[idx])
+   151      inter.svb &lt;- unlist(sv.b[idx])
+   152      sim &lt;- sum(inter.sva,inter.svb) / sum(sv.a, sv.b)
+   153      return(sim)
+   154  }
+   155  WangSemVal &lt;- function(goid, ont, Parents, sv, w, weight.isa, weight.partof) {
+   156      if(!exists(&quot;ppiPreCache&quot;))
+   157          return(WangSemVal_internal(goid, ont, Parents, sv, w, weight.isa, weight.partof))
+   158      goid.ont &lt;- paste(goid, ont, sep=&quot;.&quot;)
+   159      if (!exists(goid.ont, envir=ppiPreCache)) {
+   160          value &lt;- WangSemVal_internal(goid, ont, Parents, sv, w, weight.isa, weight.partof)
+   161          assign(eval(goid.ont), value, envir=ppiPreCache)
+   162      }
+   163      return(get(goid.ont, envir=ppiPreCache))
+   164  }
+   165
+   166  WangSemVal_internal &lt;- function(goid, ont, Parents, sv, w, weight.isa, weight.partof) {
+   167      p &lt;- Parents[goid]
+   168      p &lt;- unlist(p[[1]])
+   169      if (length(p) == 0) {
+   170          return(0)
+   171      }
+   172      relations &lt;- names(p)
+   173      old.w &lt;- w
+   174      for (i in 1:length(p)) {
+   175          if (relations[i] == &quot;is_a&quot;) {
+   176              w &lt;- old.w * weight.isa
+   177          } else {
+   178              w &lt;- old.w * weight.partof
+   179          }
+   180          names(w) &lt;- p[i]
+   181          sv &lt;- c(sv,w)
+   182          if (p[i] != &quot;all&quot;) {
+   183              sv &lt;- WangSemVal_internal(p[i], ont, Parents, sv, w, weight.isa, weight.partof)
+   184          }
+   185      }
+   186      return (sv)
+   187  }
+   188
+   189  uniqsv &lt;- function(sv) {
+   190      sv &lt;- unlist(sv)
+   191      una &lt;- unique(names(sv))
+   192      sv &lt;- unlist(sapply(una, function(x) {max(sv[names(sv)==x])}))
+   193      return (sv)
+   194  }
+</code></pre>
+
+<p>It is identical to the one I defined in GOSemSim 1.6.8:</p>
+
+<pre><code>   196  ygcWangMethod &lt;- function(GOID1, GOID2, ont=&quot;MF&quot;, organism=&quot;human&quot;) {
+   197      if(!exists(&quot;GOSemSimEnv&quot;)) .initial()
+   198      weight.isa = 0.8
+   199      weight.partof = 0.6
+   200
+   201      if (GOID1 == GOID2)
+   202          return (gosim=1)
+   203
+   204      Parents.name &lt;- switch(ont,
+   205          MF = &quot;MFParents&quot;,
+   206          BP = &quot;BPParents&quot;,
+   207          CC = &quot;CCParents&quot;
+   208      )
+   209      if (!exists(Parents.name, envir=GOSemSimEnv)) {
+   210          ygcGetParents(ont)
+   211      }
+   212      Parents &lt;- get(Parents.name, envir=GOSemSimEnv)
+   213
+   214      sv.a &lt;- 1
+   215      sv.b &lt;- 1
+   216      sw &lt;- 1
+   217      names(sv.a) &lt;- GOID1
+   218      names(sv.b) &lt;- GOID2
+   219
+   220      sv.a &lt;- ygcSemVal(GOID1, ont, Parents, sv.a, sw, weight.isa, weight.partof)
+   221      sv.b &lt;- ygcSemVal(GOID2, ont, Parents, sv.b, sw, weight.isa, weight.partof)
+   222
+   223      sv.a &lt;- uniqsv(sv.a)
+   224      sv.b &lt;- uniqsv(sv.b)
+   225
+   226      idx &lt;- intersect(names(sv.a), names(sv.b))
+   227      inter.sva &lt;- unlist(sv.a[idx])
+   228      inter.svb &lt;- unlist(sv.b[idx])
+   229      sim &lt;- sum(inter.sva,inter.svb) / sum(sv.a, sv.b)
+   230      return(sim)
+   231  }
+   232
+   233
+   234
+   235  uniqsv &lt;- function(sv) {
+   236      sv &lt;- unlist(sv)
+   237      una &lt;- unique(names(sv))
+   238      sv &lt;- unlist(sapply(una, function(x) {max(sv[names(sv)==x])}))
+   239      return (sv)
+   240  }
+   241
+   242  ygcSemVal_internal &lt;- function(goid, ont, Parents, sv, w, weight.isa, weight.partof) {
+   243      p &lt;- Parents[goid]
+   244      p &lt;- unlist(p[[1]])
+   245      if (length(p) == 0) {
+   246          #warning(goid, &quot; may not belong to Ontology &quot;, ont)
+   247          return(0)
+   248      }
+   249      relations &lt;- names(p)
+   250      old.w &lt;- w
+   251      for (i in 1:length(p)) {
+   252          if (relations[i] == &quot;is_a&quot;) {
+   253              w &lt;- old.w * weight.isa
+   254          } else {
+   255              w &lt;- old.w * weight.partof
+   256          }
+   257          names(w) &lt;- p[i]
+   258          sv &lt;- c(sv,w)
+   259          if (p[i] != &quot;all&quot;) {
+   260              sv &lt;- ygcSemVal_internal(p[i], ont, Parents, sv, w, weight.isa, weight.partof)
+   261          }
+   262      }
+   263      return (sv)
+   264  }
+   265
+   266  ygcSemVal &lt;- function(goid, ont, Parents, sv, w, weight.isa, weight.partof) {
+   267      if(!exists(&quot;GOSemSimCache&quot;)) return(ygcSemVal_internal(goid, ont, Parents, sv, w, weight.isa, weight.partof))
+   268      goid.ont &lt;- paste(goid, ont, sep=&quot;.&quot;)
+   269      if (!exists(goid.ont, envir=GOSemSimCache)) {
+   270          value &lt;- ygcSemVal_internal(goid, ont, Parents, sv, w, weight.isa, weight.partof)
+   271          assign(goid.ont, value, envir=GOSemSimCache)
+   272          #cat(&quot;recompute &quot;, goid, value, &quot;\n&quot;)
+   273      }
+   274      else{
+   275          #cat(&quot;cache &quot;, goid, get(goid, envir=GOSemSimCache), &quot;\n&quot;)
+   276      }
+   277      return(get(goid.ont, envir=GOSemSimCache))
+   278  }
+</code></pre>
+
+<p>The information content based method in ppiPre:</p>
+
+<pre><code>   495  GetLatestCommonAncestor&lt;-function(GOID1, GOID2, ont, organism){
+   496  #message(&quot;Calulating Latest Common Ancestor...&quot;)
+   497      if(!exists(&quot;ppiPreEnv&quot;)) .initial()
+   498
+   499      fname &lt;- paste(&quot;Info_Contents&quot;, ont, organism, sep=&quot;_&quot;)
+   500      tryCatch(utils::data(list=fname, package=&quot;ppiPre&quot;, envir=ppiPreEnv))
+   501      InfoContents &lt;- get(&quot;IC&quot;, envir=ppiPreEnv)
+   502
+   503      rootCount &lt;- max(InfoContents[InfoContents != Inf])
+   504      InfoContents[&quot;all&quot;] = 0
+   505      p1 &lt;- InfoContents[GOID1]/rootCount
+   506      p2 &lt;- InfoContents[GOID2]/rootCount
+   507      if(is.na(p1) || is.na(p2)) return (NA)
+   508      if (p1 == 0 || p2 == 0) return (NA)
+   509      Ancestor.name &lt;- switch(ont,MF = &quot;MFAncestors&quot;,BP = &quot;BPAncestors&quot;,CC = &quot;CCAncestors&quot;)
+   510      if (!exists(Ancestor.name, envir=ppiPreEnv)) {
+   511          TCSSGetAncestors(ont)
+   512      }
+   513
+   514      Ancestor &lt;- get(Ancestor.name, envir=ppiPreEnv)
+   515      ancestor1 &lt;- unlist(Ancestor[GOID1])
+   516      ancestor2 &lt;- unlist(Ancestor[GOID2])
+   517      if (GOID1 == GOID2) {
+   518          commonAncestor &lt;- GOID1
+   519      } else if (GOID1 %in% ancestor2) {
+   520          commonAncestor &lt;- GOID1
+   521      } else if (GOID2 %in% ancestor1) {
+   522          commonAncestor &lt;- GOID2
+   523      } else {
+   524          commonAncestor &lt;- intersect(ancestor1, ancestor2)
+   525      }
+   526      if (length(commonAncestor) == 0)
+   527          LCA&lt;-NULL
+   528      max&lt;- -100
+   529      LCA&lt;-NULL
+   530      for(a in commonAncestor){
+   531          if(!is.na(InfoContents[a])) {
+   532              if(InfoContents[a]&gt;max){
+   533                  max&lt;-InfoContents[a]
+   534                  LCA&lt;-a
+   535              }
+   536          }
+   537      }
+   538  #message(&quot;done...&quot;)
+   539      return (LCA)
+   540
+   541  }
+</code></pre>
+
+<p>also identical to the one in GOSemSim 1.6.8:</p>
+
+<pre><code>   280  `ygcInfoContentMethod` &lt;- function(GOID1, GOID2, ont, measure, organism) {
+   281      if(!exists(&quot;GOSemSimEnv&quot;)) .initial()
+   282      fname &lt;- paste(&quot;Info_Contents&quot;, ont, organism, sep=&quot;_&quot;)
+   283      tryCatch(utils::data(list=fname, package=&quot;GOSemSim&quot;, envir=GOSemSimEnv))
+   284      Info.contents &lt;- get(&quot;IC&quot;, envir=GOSemSimEnv)
+   285
+   286      rootCount &lt;- max(Info.contents[Info.contents != Inf])
+   287      Info.contents[&quot;all&quot;] = 0
+   288      p1 &lt;- Info.contents[GOID1]/rootCount
+   289      p2 &lt;- Info.contents[GOID2]/rootCount
+   290
+   291      if (p1 == 0 || p2 == 0) return (NA)
+   292      Ancestor.name &lt;- switch(ont,
+   293          MF = &quot;MFAncestors&quot;,
+   294          BP = &quot;BPAncestors&quot;,
+   295          CC = &quot;CCAncestors&quot;
+   296      )
+   297      if (!exists(Ancestor.name, envir=GOSemSimEnv)) {
+   298          ygcGetAncestors(ont)
+   299      }
+   300
+   301      Ancestor &lt;- get(Ancestor.name, envir=GOSemSimEnv)
+   302      ancestor1 &lt;- unlist(Ancestor[GOID1])
+   303      ancestor2 &lt;- unlist(Ancestor[GOID2])
+   304      if (GOID1 == GOID2) {
+   305          commonAncestor &lt;- GOID1
+   306      } else if (GOID1 %in% ancestor2) {
+   307          commonAncestor &lt;- GOID1
+   308      } else if (GOID2 %in% ancestor1) {
+   309          commonAncestor &lt;- GOID2
+   310      } else {
+   311          commonAncestor &lt;- intersect(ancestor1, ancestor2)
+   312      }
+   313      if (length(commonAncestor) == 0) return (NA)
+   314      pms &lt;- max(Info.contents[commonAncestor], na.rm=TRUE)/rootCount
+   315      sim&lt;-switch(measure,
+   316          Resnik = pms,
+   317          Lin = pms/(p1+p2),
+   318          Jiang = 1 - min(1, -2*pms + p1 + p2),
+   319          Rel = 2*pms/(p1+p2)*(1-exp(-pms*rootCount))
+   320      )
+   321      return (sim)
+   322  }
+</code></pre>
+
+<p>Let&rsquo;s look at some helper functions in ppiPre:</p>
+
+<pre><code>   477  rebuildICdata &lt;- function(){
+   478      ont &lt;- c(&quot;MF&quot;,&quot;CC&quot;, &quot;BP&quot;)
+   479      species &lt;- c(&quot;human&quot;, &quot;rat&quot;, &quot;mouse&quot;, &quot;fly&quot;, &quot;yeast&quot;, &quot;zebrafish&quot;, &quot;arabidopsis&quot;,&quot;worm&quot;, &quot;ecolik12&quot;, &quot;bovine&quot;,&quot;canine&quot;,&quot;anopheles&quot;,&quot;ecsakai&quot;,&quot;chicken&quot;,&quot;chimp&quot;,&quot;malaria&quot;,&quot;rhesus&quot;,&quot;pig&quot;,&quot;xenopus&quot;,&quot;coelicolor&quot;)
+   480      cat(&quot;------------------------------------\n&quot;)
+   481      cat(&quot;calulating Information Content...\nSpecies:\t\tOntology\n&quot;)
+   482      for (i in ont) {
+   483          for (j in species) {
+   484              cat(j)
+   485              cat(&quot;\t\t\t&quot;)
+   486              cat(i)
+   487              cat(&quot;\n&quot;)
+   488              TCSSComputeIC(ont=i, organism=j)
+   489          }
+   490      }
+   491      cat(&quot;------------------------------------\n&quot;)
+   492      message(&quot;done...&quot;)
+   493  }
+</code></pre>
+
+<p>Again, it is identical to GOSemSim 1.6.8:</p>
+
+<pre><code>   390  rebuildICdata &lt;- function(){
+   391      ont &lt;- c(&quot;MF&quot;,&quot;CC&quot;, &quot;BP&quot;)
+   392      species &lt;- c(&quot;human&quot;, &quot;rat&quot;, &quot;mouse&quot;, &quot;fly&quot;, &quot;yeast&quot;, &quot;zebrafish&quot;, &quot;arabidopsis&quot;,&quot;worm&quot;, &quot;ecolik12&quot;, &quot;bovine&quot;,&quot;canine&quot;,&quot;anopheles&quot;,&quot;ecsakai&quot;,&quot;chicken&quot;,&quot;chimp&quot;,&quot;malaria&quot;,&quot;rhesus&quot;,&quot;pig&quot;,&quot;xenopus&quot;)
+   393      cat(&quot;------------------------------------\n&quot;)
+   394      cat(&quot;calulating Information Content...\nSpecies:\t\tOntology\n&quot;)
+   395      for (i in ont) {
+   396          for (j in species) {
+   397              cat(j)
+   398              cat(&quot;\t\t\t&quot;)
+   399              cat(i)
+   400              cat(&quot;\n&quot;)
+   401              ygcCompute_Information_Content(ont=i, organism=j)
+   402          }
+   403      }
+   404      cat(&quot;------------------------------------\n&quot;)
+   405      print(&quot;done...&quot;)
+   406  }
+</code></pre>
+
+<p>Let&rsquo;s look at the internal function TCSSComputeIC in ppiPre:</p>
+
+<pre><code>   410  TCSSComputeIC &lt;- function(dropCodes=&quot;IEA&quot;, ont, organism) {
+   411  message(&quot;Calulating IC...&quot;)
+   412      wh_ont &lt;- match.arg(ont, c(&quot;MF&quot;, &quot;BP&quot;, &quot;CC&quot;))
+   413      wh_organism &lt;- match.arg(organism, c(&quot;human&quot;, &quot;fly&quot;, &quot;mouse&quot;, &quot;rat&quot;, &quot;yeast&quot;, &quot;zebrafish&quot;, &quot;worm&quot;, &quot;arabidopsis&quot;, &quot;ecolik12&quot;, &quot;bovine&quot;,&quot;canine&quot;,&quot;anopheles&quot;,&quot;ecsakai&quot;,&quot;chicken&quot;,&quot;chimp&quot;,&quot;malaria&quot;,&quot;rhesus&quot;,&quot;pig&quot;,&quot;xenopus&quot;, &quot;coelicolor&quot;))
+   414      CheckAnnotationPackage(wh_organism)
+   415      gomap &lt;- switch(organism,
+   416          human = org.Hs.egGO,
+   417          fly = org.Dm.egGO,
+   418          mouse = org.Mm.egGO,
+   419          rat = org.Rn.egGO,
+   420          yeast = org.Sc.sgdGO,
+   421          zebrafish = org.Dr.egGO,
+   422          worm = org.Ce.egGO,
+   423          arabidopsis = org.At.tairGO,
+   424          ecoli = org.EcK12.egGO,
+   425          bovine  = org.Bt.egGO,
+   426          canine  = org.Cf.egGO,
+   427          anopheles   =   org.Ag.egGO,
+   428          ecsakai =   org.EcSakai.egGO,
+   429          chicken =   org.Gg.egGO,
+   430          chimp   =   org.Pt.egGO,
+   431          malaria =   org.Pf.plasmoGO,
+   432          rhesus  =   org.Mmu.egGO,
+   433          pig = org.Ss.egGO,
+   434          xenopus =   org.Xl.egGO,
+   435          coelicolor  =   org.Sco.egGO
+   436      )
+   437
+   438      mapped_genes &lt;- mappedkeys(gomap)
+   439      gomap = AnnotationDbi::as.list(gomap[mapped_genes])
+   440      if (!is.null(dropCodes)){
+   441          gomap&lt;-sapply(gomap,function(x) sapply(x,function(y) c(y$Evidence %in% dropCodes, y$Ontology %in% wh_ont)))
+   442          gomap&lt;-sapply(gomap, function(x) x[2,x[1,]==&quot;FALSE&quot;])
+   443          gomap&lt;-gomap[sapply(gomap,length) &gt;0]
+   444      }else {
+   445          gomap &lt;- sapply(gomap,function(x) sapply(x,function(y) y$Ontology %in% wh_ont))
+   446      }
+   447
+   448      goterms&lt;-unlist(sapply(gomap, function(x) names(x)), use.names=FALSE) # all GO terms appearing in an annotation
+   449      goids &lt;- toTable(GOTERM)
+   450
+   451      goids &lt;- unique(goids[goids[,&quot;Ontology&quot;] == wh_ont, &quot;go_id&quot;])
+   452      gocount &lt;- table(goterms)
+   453      goname &lt;- names(gocount) #goid of specific organism and selected category.
+   454
+   455      go.diff &lt;- setdiff(goids, goname)
+   456      m &lt;- double(length(go.diff))
+   457      names(m) &lt;- go.diff
+   458      gocount &lt;- as.vector(gocount)
+   459      names(gocount) &lt;- goname
+   460      gocount &lt;- c(gocount, m)
+   461
+   462      Offsprings.name &lt;- switch(wh_ont,
+   463          MF = &quot;MFOffsprings&quot;,
+   464          BP = &quot;BPOffsprings&quot;,
+   465          CC = &quot;CCOffsprings&quot;
+   466      )
+   467      if (!exists(Offsprings.name, envir=ppiPreEnv)) {
+   468          TCSSGetOffsprings(wh_ont)
+   469      }
+   470      Offsprings &lt;- get(Offsprings.name, envir=ppiPreEnv)
+   471      cnt &lt;- sapply(goids,function(x){ c=gocount[unlist(Offsprings[x])]; gocount[x]+sum(c[!is.na(c)])})
+   472      names(cnt) &lt;- goids
+   473      IC&lt;- -log(cnt/sum(gocount))
+   474  message(&quot;done...&quot;)
+   475      return (IC)
+   476  }
+</code></pre>
+
+<p>and ygcCompute_Information_Content in GOSemSim 1.6.8:</p>
+
+<pre><code>   326  ygcCompute_Information_Content &lt;- function(dropCodes=&quot;NULL&quot;, ont, organism) {
+   327      wh_ont &lt;- match.arg(ont, c(&quot;MF&quot;, &quot;BP&quot;, &quot;CC&quot;))
+   328      wh_organism &lt;- match.arg(organism, c(&quot;human&quot;, &quot;fly&quot;, &quot;mouse&quot;, &quot;rat&quot;, &quot;yeast&quot;, &quot;zebrafish&quot;, &quot;worm&quot;, &quot;arabidopsis&quot;, &quot;ecolik12&quot;, &quot;bovine&quot;,&quot;canine&quot;,&quot;anopheles&quot;,&quot;ecsakai&quot;,&quot;chicken&quot;,&quot;chimp&quot;,&quot;malaria&quot;,&quot;rhesus&quot;,&quot;pig&quot;,&quot;xenopus&quot;))
+   329      ygcCheckAnnotationPackage(wh_organism)
+   330      gomap &lt;- switch(wh_organism,
+   331          human = org.Hs.egGO,
+   332          fly = org.Dm.egGO,
+   333          mouse = org.Mm.egGO,
+   334          rat = org.Rn.egGO,
+   335          yeast = org.Sc.sgdGO,
+   336          zebrafish = org.Dr.egGO,
+   337          worm = org.Ce.egGO,
+   338          arabidopsis = org.At.tairGO,
+   339          ecolik12 = org.EcK12.egGO,
+   340          bovine  = org.Bt.egGO,
+   341          canine  = org.Cf.egGO,
+   342          anopheles   =   org.Ag.egGO,
+   343          ecsakai =   org.EcSakai.egGO,
+   344          chicken =   org.Gg.egGO,
+   345          chimp   =   org.Pt.egGO,
+   346          malaria =   org.Pf.plasmoGO,
+   347          rhesus  =   org.Mmu.egGO,
+   348          pig = org.Ss.egGO,
+   349          xenopus =   org.Xl.egGO
+   350      )
+   351      mapped_genes &lt;- mappedkeys(gomap)
+   352      gomap = AnnotationDbi::as.list(gomap[mapped_genes])
+   353      if (!is.null(dropCodes)){
+   354          gomap&lt;-sapply(gomap,function(x) sapply(x,function(y) c(y$Evidence %in% dropCodes, y$Ontology %in% wh_ont)))
+   355          gomap&lt;-sapply(gomap, function(x) x[2,x[1,]==&quot;FALSE&quot;])
+   356          gomap&lt;-gomap[sapply(gomap,length) &gt;0]
+   357      }else {
+   358          gomap &lt;- sapply(gomap,function(x) sapply(x,function(y) y$Ontology %in% wh_ont))
+   359      }
+   360
+   361      goterms&lt;-unlist(sapply(gomap, function(x) names(x)), use.names=FALSE) # all GO terms appearing in an annotation
+   362      goids &lt;- toTable(GOTERM)
+   363      # all go terms which belong to the corresponding category..
+   364      goids &lt;- unique(goids[goids[,&quot;Ontology&quot;] == wh_ont, &quot;go_id&quot;])
+   365      gocount &lt;- table(goterms)
+   366      goname &lt;- names(gocount) #goid of specific organism and selected category.
+   367      ## ensure goterms not appearing in the specific annotation have 0 frequency..
+   368      go.diff &lt;- setdiff(goids, goname)
+   369      m &lt;- double(length(go.diff))
+   370      names(m) &lt;- go.diff
+   371      gocount &lt;- as.vector(gocount)
+   372      names(gocount) &lt;- goname
+   373      gocount &lt;- c(gocount, m)
+   374
+   375      Offsprings.name &lt;- switch(wh_ont,
+   376          MF = &quot;MFOffsprings&quot;,
+   377          BP = &quot;BPOffsprings&quot;,
+   378          CC = &quot;CCOffsprings&quot;
+   379      )
+   380      if (!exists(Offsprings.name, envir=GOSemSimEnv)) {
+   381          ygcGetOffsprings(wh_ont)
+   382      }
+   383      Offsprings &lt;- get(Offsprings.name, envir=GOSemSimEnv)
+   384      cnt &lt;- sapply(goids,function(x){ c=gocount[unlist(Offsprings[x])]; gocount[x]+sum(c[!is.na(c)])})
+   385      names(cnt) &lt;- goids
+   386      IC&lt;- -log(cnt/sum(gocount))
+   387      save(IC, file=paste(paste(&quot;Info_Contents&quot;, wh_ont, organism, sep=&quot;_&quot;), &quot;.rda&quot;, sep=&quot;&quot;))
+   388  }
+</code></pre>
+
+<p>Another helper function GetGOMap in ppiPre:</p>
+
+<pre><code>   308  GetGOMap &lt;- function(organism=&quot;yeast&quot;) {
+   309      if(!exists(&quot;ppiPreEnv&quot;)) .initial()
+   310      CheckAnnotationPackage(organism) #download and install the packages
+   311      species &lt;- switch(organism,
+   312          human = &quot;Hs&quot;,
+   313          fly = &quot;Dm&quot;,
+   314          mouse = &quot;Mm&quot;,
+   315          rat = &quot;Rn&quot;,
+   316          yeast = &quot;Sc&quot;,
+   317          zebrafish = &quot;Dr&quot;,
+   318          worm = &quot;Ce&quot;,
+   319          arabidopsis = &quot;At&quot;,
+   320          ecolik12 = &quot;EcK12&quot;,
+   321          bovine  = &quot;Bt&quot;,
+   322          canine  = &quot;Cf&quot;,
+   323          anopheles   =   &quot;Ag&quot;,
+   324          ecsakai =   &quot;EcSakai&quot;,
+   325          chicken =   &quot;Gg&quot;,
+   326          chimp   =   &quot;Pt&quot;,
+   327          malaria =   &quot;Pf&quot;,
+   328          rhesus  =   &quot;Mmu&quot;,
+   329          pig = &quot;Ss&quot;,
+   330          xenopus =   &quot;Xl&quot;,
+   331          coelicolor  =   &quot;Sco&quot;
+   332      )
+   333
+   334      gomap &lt;- switch(organism,
+   335          human = org.Hs.egGO,
+   336          fly = org.Dm.egGO,
+   337          mouse = org.Mm.egGO,
+   338          rat = org.Rn.egGO,
+   339          yeast = org.Sc.sgdGO,
+   340          zebrafish = org.Dr.egGO,
+   341          worm = org.Ce.egGO,
+   342          arabidopsis = org.At.tairGO,
+   343          ecoli = org.EcK12.egGO,
+   344          bovine  = org.Bt.egGO,
+   345          canine  = org.Cf.egGO,
+   346          anopheles   =   org.Ag.egGO,
+   347          ecsakai =   org.EcSakai.egGO,
+   348          chicken =   org.Gg.egGO,
+   349          chimp   =   org.Pt.egGO,
+   350          malaria =   org.Pf.plasmoGO,
+   351          rhesus  =   org.Mmu.egGO,
+   352          pig = org.Ss.egGO,
+   353          xenopus =   org.Xl.egGO,
+   354          coelicolor  =   org.Sco.egGO
+   355      )
+   356
+   357      assign(eval(species), gomap, envir=ppiPreEnv)
+   358  }
+</code></pre>
+
+<p>My ygcGetGOMap in GOSemSim 1.6.8:</p>
+
+<pre><code>   100  ygcGetGOMap &lt;- function(organism=&quot;human&quot;) {
+   101      if(!exists(&quot;GOSemSimEnv&quot;)) .initial()
+   102      ygcCheckAnnotationPackage(organism)
+   103      species &lt;- switch(organism,
+   104          human = &quot;Hs&quot;,
+   105          fly = &quot;Dm&quot;,
+   106          mouse = &quot;Mm&quot;,
+   107          rat = &quot;Rn&quot;,
+   108          yeast = &quot;Sc&quot;,
+   109          zebrafish = &quot;Dr&quot;,
+   110          worm = &quot;Ce&quot;,
+   111          arabidopsis = &quot;At&quot;,
+   112          ecolik12 = &quot;EcK12&quot;,
+   113          bovine  = &quot;Bt&quot;,
+   114          canine  = &quot;Cf&quot;,
+   115          anopheles   =   &quot;Ag&quot;,
+   116          ecsakai =   &quot;EcSakai&quot;,
+   117          chicken =   &quot;Gg&quot;,
+   118          chimp   =   &quot;Pt&quot;,
+   119          malaria =   &quot;Pf&quot;,
+   120          rhesus  =   &quot;Mmu&quot;,
+   121          pig = &quot;Ss&quot;,
+   122          xenopus =   &quot;Xl&quot;
+   123      )
+   124      gomap &lt;- switch(organism,
+   125          human = org.Hs.egGO,
+   126          fly = org.Dm.egGO,
+   127          mouse = org.Mm.egGO,
+   128          rat = org.Rn.egGO,
+   129          yeast = org.Sc.sgdGO,
+   130          zebrafish = org.Dr.egGO,
+   131          worm = org.Ce.egGO,
+   132          arabidopsis = org.At.tairGO,
+   133          ecolik12 = org.EcK12.egGO,
+   134          bovine  = org.Bt.egGO,
+   135          canine  = org.Cf.egGO,
+   136          anopheles   =   org.Ag.egGO,
+   137          ecsakai =   org.EcSakai.egGO,
+   138          chicken =   org.Gg.egGO,
+   139          chimp   =   org.Pt.egGO,
+   140          malaria =   org.Pf.plasmoGO,
+   141          rhesus  =   org.Mmu.egGO,
+   142          pig = org.Ss.egGO,
+   143          xenopus =   org.Xl.egGO
+   144      )
+   145      assign(eval(species), gomap, envir=GOSemSimEnv)
+   146  }
+</code></pre>
+
+<p>There are many other small helper functions that are identical. ppiPre
+copy most of the source code of GOSemSim. There is 862 lines in
+GOKEGGSims.r, in which only the following function is about KEGG that is
+not related to GOSemSim.</p>
+
+<pre><code>    10  KEGGSim &lt;- function(protein1, protein2)    # KEGG-based similarity of two proteins
+    11  {
+    12
+    13    if(!require(&quot;KEGG.db&quot;)){ stop(&quot;package KEGG.db is needed.&quot;)}
+    14    Pathway1 &lt;- KEGG.db::KEGGEXTID2PATHID[[protein1]]
+    15      Pathway2 &lt;- KEGG.db::KEGGEXTID2PATHID[[protein2]]
+    16      intersec &lt;- length(na.omit(match(Pathway1, Pathway2)))
+    17      if(intersec==0)
+    18          sim&lt;-0
+    19      else
+    20          sim&lt;-intersec/(length(Pathway1)+length(Pathway2)-intersec)
+    21      return(sim)
+    22  }
+</code></pre>
+
+<p>This function is only 12 lines, and it calculates the similarity by
+divide the intersect to the total sum. The other lines in GOKEGGSims.r,
+more than 800 lines, were totally copied from GOSemSim. Other source
+files in the ppiPre only has less than 450 lines in sum. <strong>About <sup>2</sup>&frasl;<sub>3</sub> of
+ppiPre were copied from GOSemSim</strong>.</p>
+
+<p>The author of ppiPre changed the function names and pretend it is their
+original works. They just copy and paste and take the credit of months
+of development of GOSemSim. This is really sucks.</p>
+
+<p>After I found this issue, I add a proper use of GOSemSim statement in
+its <a href="https://github.com/GuangchuangYu/GOSemSim">github page</a>:</p>
+
+<blockquote>
+<p>I am very glad that many people find GOSemSim useful and GOSemSim has been cited by 114 (by google scholar, Aug, 2014).</p>
+
+<p>There are two R packages BiSEp and tRanslatome depend on GOSemSim and three R packages clusterProfiler, DOSE and Rcpi import GOSemSim.</p>
+
+<p>SemDist package copy some of the source code from GOSemSim with acknowledging within source code and document.</p>
+
+<p>ppiPre package copy many source code from GOSemSim without any acknowledgement in souce code or document and did not cited GOSemSim in their publication. This violates the restriction of open source license.</p>
+
+<p>For R developers, if you found functions provided in GOSemSim useful, please depends or imports GOSemSim. If you would like to copy and paste source code, you should acknowledge the source code was copied/derived from GOSemSim authored by Guangchuang Yu guangchuangyu@gmail.com within source code, add GOSemSim in Suggests field and also includes the following reference in the man files for functions that copied/derived from GOSemSim and cited in vignettes.</p>
+
+<p>\references{
+ Yu et al. (2010) GOSemSim: an R package for measuring
+ semantic similarity among GO terms and gene products
+ \emph{Bioinformatics} (Oxford, England), 26:7 976&ndash;978,
+ April 2010. ISSN 1367-4803
+ \url{<a href="http://bioinformatics.oxfordjournals.org/cgi/content/abstract/26/7/976">http://bioinformatics.oxfordjournals.org/cgi/content/abstract/26/7/976</a>}
+ PMID: 20179076
+}</p>
+</blockquote>
+
+<p>You are welcome to use GOSemSim in the way you like, but please cite it and give it the proper credit. I hope you can understand.
+```</p>
+
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/post/mac/2014_hello-yosemite/"><span aria-hidden="true">&larr;</span> hello yosemite</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/post/software/2014_auto-complete-in-ess/">auto-complete in ESS <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/post\/r\/gosemsim\/2014_proper-use-of-gosemsim\/';
+    var disqus_title = 'proper use of GOSemSim';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/post\/r\/gosemsim\/2014_proper-use-of-gosemsim\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+

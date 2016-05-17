@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/post/software/2013_install-emacs-on-mac/">
+
+    <title>Install Emacs on Mac | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">Install Emacs on Mac</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2013-09-10 18:04:22 &#43;0800 CST" itemprop="datePublished">Tue, Sep 10, 2013</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/emacs">emacs</a>
+        
+    </span>
+    
+    
+
+    
+    <div class="pull-right">
+        
+<div class="share">
+
+    <a class="facebook" href="https://www.facebook.com/sharer.php?u=" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+        <span class="hidden">Facebook</span>
+    </a>
+
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=&amp;url=" target="_blank">
+        <i class="fa fa-twitter-square"></i>
+        <span class="hidden">Twitter</span>
+    </a>
+
+    <a class="email" href="mailto:?subject=&amp;body=">
+        <i class="fa fa-envelope-square"></i>
+        <span class="hidden">Email</span>
+    </a>
+
+</div>
+
+
+    </div>
+    
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+            
+
+<h2 id="package-manager:a0d2dabbee19e6fccf2cd8eeaa0e67d0">package manager</h2>
+
+<p>之前一直用<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>做为各种Unix-like系统的包管理系统，pkgsrc在自己内部解决依赖关系，这点对于生产环境来说，是很好的一个优点，我通常会在服务器里装一个pkgsrc，在用户目录下，维护一套UNIX软件。但是用在自己的机器上，内部解决软件依赖，就是个缺点，浪费编译时间和硬盘空间。</p>
+
+<p>Mac上可用的包管理系统很多，Fink移植于<a href="http://guangchuangyu.github.io/categories/linux/">Debian</a>的apt，<a href="http://guangchuangyu.github.io/categories/linux/">Gentoo</a>的portage也支持OS
+X。OS X是基于BSD的系统，BSD有自己的一套包管理系统，如FreeBSD的ports和<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>，MacPorts可以看作是这一系列中的一个，不过它并不是OS
+X原生的，它只是OpenDarwin的子项目，所以和pkgsrc一个样，也是内部解决依赖，真正为OS
+X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里已有的软件。</p>
+
+<p>自从用了Homebrew之后，再也不用为系统里有两套perl和python而crazy了，之前通过<a href="http://guangchuangyu.github.io/2011/06/screen-shot/">pkgsrc装的软件</a>全删掉，改Homebrew来安装和管理。
+如果软件没有被pkgsrc收录，而想通过pkgsrc来管理的话，那就得自己<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">写makefile</a>，而homebrew，则可以自动帮你生成Formula，比如我要安装<a href="http://users.soe.ucsc.edu/~kent/src/">blat</a>：</p>
+
+<pre><code>brew create http://users.soe.ucsc.edu/~kent/src/blatSrc35.zip
+</code></pre>
+
+<p>当然有可能需要编辑一下：</p>
+
+<pre><code>brew edit blat
+</code></pre>
+
+<p>大多数情况下，并不需要修改，创建了formula之后，就可以使用homebrew安装。</p>
+
+<pre><code>brew install blat
+</code></pre>
+
+<h2 id="emacs:a0d2dabbee19e6fccf2cd8eeaa0e67d0">Emacs</h2>
+
+<p>虽然Homebrew是为OS
+X设计的，但它毕竟不是苹果的东西，无法管理系统内置的程序，OS
+X自带Emacs，版本22，已经很老了，而且没有图形界面，为了方便管理和升级，只能把系统自带的删掉，用Homebrew来安装新版的Emacs-24.3，安装时使用参数&ndash;cocoa，使得emacs能够识别OS
+X的keybinding，创建链接到Applications下，这样可以在Applications中双击运行。</p>
+
+<pre><code>rm /usr/bin/emacs
+rm -rf /usr/share/emacs
+brew install --cocoa emacs
+ln -s /usr/local/Cellar/emacs/24.3/Emacs.app /Applications/
+</code></pre>
+
+<h2 id="site-lisp:a0d2dabbee19e6fccf2cd8eeaa0e67d0">site-lisp</h2>
+
+<p>在.emacs.d目录下新建site-lisp目录，用于放置各种第三方的包，在.emacs里加入：</p>
+
+<pre><code>(let ((default-directory &quot;~/.emacs.d/site-lisp/&quot;))
+  (normal-top-level-add-subdirs-to-load-path))
+</code></pre>
+
+<p>让emacs启动时，加载site-lisp及其子目录。</p>
+
+<h2 id="eshell-path:a0d2dabbee19e6fccf2cd8eeaa0e67d0">eshell PATH</h2>
+
+<p>eshell是个非常美好的存在，在windows下安装Emacs，就拥有了一个小型的<a href="http://guangchuangyu.github.io/categories/shell/">shell</a>，非常方便，当然它并不是bash，如果在windows下使用会缺少很多bash内置程序和许多的unix命令行工具，幸好可以配置emacs调用cygwin的bash。</p>
+
+<p>eshell并不使用.bash_profile中定义的PATH，好在eshell中内置addpath程序，可以非常方便地把路径加入到PATH中去。</p>
+
+<pre><code>~ $ addpath 
+/usr/bin/
+/bin/
+/usr/sbin/
+/sbin/
+~ $ addpath -b /usr/local/bin
+/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+~ $ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+</code></pre>
+
+<p>不过这种方式，只是临时加路径而已。</p>
+
+<p>要想永久性把改变PATH变量，还是需要把它加入到.emacs中去。</p>
+
+<pre><code>(setenv &quot;PATH&quot; (concat &quot;/usr/local/bin:&quot; (getenv &quot;PATH&quot;)))
+(setq exec-path (append exec-path '(&quot;/usr/local/bin&quot; &quot;/opt/bin&quot;)))
+</code></pre>
+
+<h2 id="color-theme:a0d2dabbee19e6fccf2cd8eeaa0e67d0">color-theme</h2>
+
+<p>安装<a href="http://www.nongnu.org/color-theme/">color-theme</a>，放在.emacs.d/site-lisp下，在.emacs里加入：</p>
+
+<pre><code>(require 'color-theme)
+(color-theme-initialize)
+(color-theme-robin-hood)
+</code></pre>
+
+<p>启动时加载color-theme，搞代码很伤眼啊 =,=</p>
+
+<h2 id="maxima:a0d2dabbee19e6fccf2cd8eeaa0e67d0">Maxima</h2>
+
+<p><a href="http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/">Maxima</a>是一个计算机代数运算系统，它是由MIT于1968至1982年间开发的Macsyma系统演变而来的。MIT于1982年将Macsyma源代码交与美国能源部（DOE），这部分代码后来被称作DOE
+Macsyma。DOE Macsyma的一个版本从1982年起由德克萨斯大学的William F.
+Schelter教授维护，直到Schelter教授于2001年去逝。在1998年，Schelter教授从能源部获得了授权，将DOE
+Macsyma源代码以GNU Public
+License版权协议发布。在2000年，他在SourceForge开始了Maxima项目，继续维护开发DOE
+Macsyma，自此该软件被称作Maxima。</p>
+
+<p>在<a href="http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/">Emacs调用maxima</a>是非常爽的，公式可以通过<a href="http://guangchuangyu.github.io/categories/latex">LaTeX</a>表示出来，非常漂亮，把buffer保存为txt，公式将被保存为<a href="http://guangchuangyu.github.io/categories/latex">LaTeX</a>代码。</p>
+
+<h2 id="ess:a0d2dabbee19e6fccf2cd8eeaa0e67d0">ESS</h2>
+
+<p>另一个必备是<code>ESS</code>，可以在emacs调用R，解压放在.emacs.d/site-lisp下，在.emacs里加入：</p>
+
+<pre><code>(require 'ess-site)
+</code></pre>
+
+<p>ESS在我心中，完胜RStudio，唯一不足的是画图时要弹窗口，如果能够像<code>imaxima</code>一样，在emacs
+buffer中支持<a href="http://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/">inline
+plot</a>就完美了。</p>
+
+<h2 id="markdown:a0d2dabbee19e6fccf2cd8eeaa0e67d0">Markdown</h2>
+
+<p><a href="http://jblevins.org/projects/markdown-mode/">Markdown-mode</a>让emacs支持markdown语法，安装之后，需要在.emacs中加入：</p>
+
+<pre><code>;; markdown mode
+(autoload 'markdown-mode &quot;markdown-mode&quot;
+  &quot;Major mode for editing Markdown files&quot; t)
+(add-to-list 'auto-mode-alist '(&quot;\\.text\\'&quot; . markdown-mode))
+(add-to-list 'auto-mode-alist '(&quot;\\.markdown\\'&quot; . markdown-mode))
+(add-to-list 'auto-mode-alist '(&quot;\\.md\\'&quot; . markdown-mode))
+</code></pre>
+
+<p>这样当在emacs中打开.text/.markdown/.md文件时，将自动加载markdown-mode。</p>
+
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/post/mypaper/2012_clusterprofiler-package-comparing-biological-themes-gene-clusters/"><span aria-hidden="true">&larr;</span> clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/post/r/2014_bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/post\/software\/2013_install-emacs-on-mac\/';
+    var disqus_title = 'Install Emacs on Mac';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/post\/software\/2013_install-emacs-on-mac\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/post/r/ggplot2/2014_use-ggplot2/">
+
+    <title>Use ggplot2 | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">Use ggplot2</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2014-05-11 06:17:56 &#43;0800 CST" itemprop="datePublished">Sun, May 11, 2014</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>
+        
+    </span>
+    
+    
+
+    
+    <div class="pull-right">
+        
+<div class="share">
+
+    <a class="facebook" href="https://www.facebook.com/sharer.php?u=" target="_blank">
+        <i class="fa fa-facebook-square"></i>
+        <span class="hidden">Facebook</span>
+    </a>
+
+    <a class="twitter" href="https://twitter.com/intent/tweet?text=&amp;url=" target="_blank">
+        <i class="fa fa-twitter-square"></i>
+        <span class="hidden">Twitter</span>
+    </a>
+
+    <a class="email" href="mailto:?subject=&amp;body=">
+        <i class="fa fa-envelope-square"></i>
+        <span class="hidden">Email</span>
+    </a>
+
+</div>
+
+
+    </div>
+    
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+            
+
+<h3 id="why-use-ggplot2:c38c63fac86d2290b6bc01da39216614">Why use ggplot2</h3>
+
+<p>ggplot2是我见过最human friendly的画图软件，这得益于Leland
+Wilkinson在他的著作《<a href="http://book.douban.com/subject/10123863/">The Grammar of
+Graphics</a>》中提出了一套图形语法，把图形元素抽象成可以自由组合的成分，Hadley
+Wickham把这套想法在R中实现。</p>
+
+<p>为什么要学习ggplot2，可以参考<a href="http://book.douban.com/subject/24527091/">ggplot2: 数据分析与图形艺术</a>的<a href="https://github.com/cosname/ggplot2-translation/blob/master/preface.md">序言</a>（btw:
+在序言的最后，我被致谢了）。</p>
+
+<p>Hadley
+Wickham也给出<a href="https://github.com/hadley/ggplot2/wiki/Why-use-ggplot2">一堆理由</a>让我们说服自己，我想再补充一点，Hadley
+Wickham是学医出身的，做为学生物出身的人有什么理由不支持呢:)</p>
+
+<p>ggplot2基本要素</p>
+
+<ul>
+<li>数据（Data）和映射（Mapping）</li>
+<li>几何对象（Geometric）</li>
+<li>标尺（Scale）</li>
+<li>统计变换（Statistics）</li>
+<li>坐标系统（Coordinante）</li>
+<li>图层（Layer）</li>
+<li>分面（Facet）</li>
+<li>主题（Theme）</li>
+</ul>
+
+<p>这里将从这些基本要素对ggplot2进行介绍。</p>
+
+<h3 id="数据-data-和映射-mapping:c38c63fac86d2290b6bc01da39216614">数据（Data）和映射（Mapping)</h3>
+
+<p>下面以一份钻石的数据为例，这份数据非常大，随机取一个子集来画图。</p>
+
+<pre><code>require(ggplot2)
+data(diamonds)
+set.seed(42)
+small &lt;- diamonds[sample(nrow(diamonds), 1000), ]
+head(small)
+</code></pre>
+
+<pre><code>##       carat       cut color clarity depth table price    x    y    z
+## 49345  0.71 Very Good     H     SI1  62.5    60  2096 5.68 5.75 3.57
+## 50545  0.79   Premium     H     SI1  61.8    59  2275 5.97 5.91 3.67
+## 15434  1.03     Ideal     F     SI1  62.4    57  6178 6.48 6.44 4.03
+## 44792  0.50     Ideal     E     VS2  62.2    54  1624 5.08 5.11 3.17
+## 34614  0.27     Ideal     E     VS1  61.6    56   470 4.14 4.17 2.56
+## 27998  0.30   Premium     E     VS2  61.7    58   658 4.32 4.34 2.67
+</code></pre>
+
+<pre><code>summary(small)
+</code></pre>
+
+<pre><code>##      carat              cut      color      clarity        depth     
+##  Min.   :0.220   Fair     : 28   D:121   SI1    :258   Min.   :55.2  
+##  1st Qu.:0.400   Good     : 88   E:186   VS2    :231   1st Qu.:61.0  
+##  Median :0.710   Very Good:227   F:164   SI2    :175   Median :61.8  
+##  Mean   :0.819   Premium  :257   G:216   VS1    :141   Mean   :61.7  
+##  3rd Qu.:1.070   Ideal    :400   H:154   VVS2   : 91   3rd Qu.:62.5  
+##  Max.   :2.660                   I:106   VVS1   : 67   Max.   :72.2  
+##                                  J: 53   (Other): 37                 
+##      table          price             x              y       
+##  Min.   :50.1   Min.   :  342   Min.   :3.85   Min.   :3.84  
+##  1st Qu.:56.0   1st Qu.:  990   1st Qu.:4.74   1st Qu.:4.76  
+##  Median :57.0   Median : 2595   Median :5.75   Median :5.78  
+##  Mean   :57.4   Mean   : 4111   Mean   :5.79   Mean   :5.79  
+##  3rd Qu.:59.0   3rd Qu.: 5495   3rd Qu.:6.60   3rd Qu.:6.61  
+##  Max.   :65.0   Max.   :18795   Max.   :8.83   Max.   :8.87  
+##                                                              
+##        z       
+##  Min.   :2.33  
+##  1st Qu.:2.92  
+##  Median :3.55  
+##  Mean   :3.57  
+##  3rd Qu.:4.07  
+##  Max.   :5.58  
+## 
+</code></pre>
+
+<p>画图实际上是把数据中的变量映射到图形属性上。以克拉(carat)数为X轴变量，价格(price)为Y轴变量。</p>
+
+<pre><code>p &lt;- ggplot(data = small, mapping = aes(x = carat, y = price))
+</code></pre>
+
+<p>上面这行代码把数据映射XY坐标轴上，需要告诉ggplot2，这些数据要映射成什么样的几何对象，下面以散点为例：</p>
+
+<pre><code>p + geom_point()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig1.png" alt="" /></p>
+
+<p>几何对象将在下面的小节介绍，这一节，关注的是数据和图形属性之间的映射。</p>
+
+<p>如果想将切工（cut）映射到形状属性。只需要：</p>
+
+<pre><code>p &lt;- ggplot(data=small, mapping=aes(x=carat, y=price, shape=cut))
+p+geom_point()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig2.png" alt="" /></p>
+
+<p>再比如我想将钻石的颜色（color）映射颜色属性：</p>
+
+<pre><code>p &lt;- ggplot(data=small, mapping=aes(x=carat, y=price, shape=cut, colour=color))
+p+geom_point()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig3.png" alt="" /></p>
+
+<h3 id="几何对象-geometric:c38c63fac86d2290b6bc01da39216614">几何对象（Geometric）</h3>
+
+<p>在上面的例子中，各种属性映射由ggplot函数执行，只需要加一个图层，使用geom_point()告诉ggplot要画散点，于是所有的属性都映射到散点上。</p>
+
+<p>geom_point()完成的就是几何对象的映射，ggplot2提供了各种几何对象映射，如geom_histogram用于直方图，geom_bar用于画柱状图，geom_boxplot用于画箱式图等等。</p>
+
+<p>不同的几何对象，要求的属性会有些不同，这些属性也可以在几何对象映射时提供，比如上一图，也可以用以下语法来画：</p>
+
+<pre><code>p &lt;- ggplot(small)
+p+geom_point(aes(x=carat, y=price, shape=cut, colour=color))
+</code></pre>
+
+<p>ggplot2支持图层，我通常把不同的图层中共用的映射提供给ggplot函数，而某一几何对象才需要的映射参数提供给geom_xxx函数。</p>
+
+<p>这一小节我们来看一下各种常用的几何对象。</p>
+
+<p><strong>直方图</strong> 直方图最容易，提供一个x变量，画出数据的分布。</p>
+
+<pre><code>ggplot(small)+geom_histogram(aes(x=price))
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig4.png" alt="" /></p>
+
+<p>同样可以根据另外的变量给它填充颜色，比如按不同的切工：</p>
+
+<pre><code>ggplot(small)+geom_histogram(aes(x=price, fill=cut))
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig5.png" alt="" /></p>
+
+<p>也可以将其分开，side-by-side地画直方图。</p>
+
+<pre><code>ggplot(small)+geom_histogram(aes(x=price, fill=cut), position=&quot;dodge&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig6.png" alt="" /></p>
+
+<p>还可以使用position=&ldquo;fill&rdquo;，按照相对比例来画。</p>
+
+<pre><code>ggplot(small)+geom_histogram(aes(x=price, fill=cut), position=&quot;fill&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig7.png" alt="" /></p>
+
+<p><strong>柱状图</strong>
+柱状图非常适合于画分类变量。在这里以透明度（clarity）变量为例。按照不同透明度的钻石的数目画柱状图。</p>
+
+<pre><code>ggplot(small)+geom_bar(aes(x=clarity))
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig8.png" alt="" /></p>
+
+<p>柱状图两个要素，一个是分类变量，一个是数目，也就是柱子的高度。数目在这里不用提供，因为ggplot2会通过x变量计算各个分类的数目。</p>
+
+<p>当然你想提供也是可以的，通过stat参数，可以让geom_bar按指定高度画图，比如以下代码：</p>
+
+<pre><code>ggplot()+geom_bar(aes(x=c(LETTERS[1:3]),y=1:3), stat=&quot;identity&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig24.png" alt="" /></p>
+
+<p>柱状图和直方图是很像的，直方图把连续型的数据按照一个个等长的分区（bin）来切分，然后计数，画柱状图。而柱状图是分类数据，按类别计数。我们可以用前面直方图的参数来画side-by-side的柱状图，填充颜色或者按比例画图，它们是高度一致的。</p>
+
+<p>柱状图是用来表示计数数据的，但在生物界却被经常拿来表示均值，加上误差来表示数据分布，这可以通常图层来实现，我将在图层一节中给出实例。</p>
+
+<p><strong>密度函数图</strong>
+说到直方图，就不得不说密度函数图，数据和映射和直方图是一样的，唯一不同的是几何对象，geom_histogram告诉ggplot要画直方图，而geom_density则说我们要画密度函数图，在我们熟悉前面语法的情况下，很容易画出：</p>
+
+<pre><code>ggplot(small)+geom_density(aes(x=price, colour=cut))
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig9.png" alt="" /></p>
+
+<pre><code>ggplot(small)+geom_density(aes(x=price,fill=clarity))
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig10.png" alt="" /></p>
+
+<p>colour参数指定的是曲线的颜色，而fill是往曲线下面填充颜色。</p>
+
+<p><strong>箱式图</strong>
+数据量比较大的时候，用直方图和密度函数图是表示数据分布的好方法，而在数据量较少的时候，比如很多的生物实验，很多时候大家都是使用柱状图+errorbar的形式来表示，不过这种方法的信息量非常低，被<a href="http://guangchuangyu.github.io/2014/03/boxplot/">Nature Methods吐槽</a>，这种情况推荐使用boxplot。</p>
+
+<pre><code>ggplot(small)+geom_boxplot(aes(x=cut, y=price,fill=color))
+</code></pre>
+
+<p>geom_boxplot将数据映射到箱式图上，上面的代码，我们应该很熟悉了，按切工(cut)分类，对价格(price)变量画箱式图，再分开按照color变量填充颜色。</p>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig11.png" alt="" /></p>
+
+<p>ggplot2提供了很多的geom_xxx函数，可以满足我们对各种图形绘制的需求。</p>
+
+<pre><code>geom_abline     geom_area   
+geom_bar        geom_bin2d
+geom_blank      geom_boxplot    
+geom_contour    geom_crossbar
+geom_density    geom_density2d  
+geom_dotplot    geom_errorbar
+geom_errorbarh  geom_freqpoly   
+geom_hex        geom_histogram
+geom_hline      geom_jitter     
+geom_line       geom_linerange
+geom_map        geom_path   
+geom_point      geom_pointrange
+geom_polygon    geom_quantile   
+geom_raster     geom_rect
+geom_ribbon     geom_rug    
+geom_segment    geom_smooth
+geom_step       geom_text   
+geom_tile       geom_violin
+geom_vline
+</code></pre>
+
+<h3 id="标尺-scale:c38c63fac86d2290b6bc01da39216614">标尺（Scale）</h3>
+
+<p>前面我们已经看到了，画图就是在做映射，不管是映射到不同的几何对象上，还是映射各种图形属性。这一小节介绍标尺，在对图形属性进行映射之后，使用标尺可以控制这些属性的显示方式，比如坐标刻度，可能通过标尺，将坐标进行对数变换；比如颜色属性，也可以通过标尺，进行改变。</p>
+
+<pre><code>ggplot(small)+geom_point(aes(x=carat, y=price, shape=cut, colour=color))+scale_y_log10()+scale_colour_manual(values=rainbow(7))
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig12.png" alt="" /></p>
+
+<p>以数据（Data）和映射（Mapping)一节中所画散点图为例，将Y轴坐标进行log10变换，再自己定义颜色为彩虹色。</p>
+
+<h3 id="统计变换-statistics:c38c63fac86d2290b6bc01da39216614">统计变换（Statistics）</h3>
+
+<p>统计变换对原始数据进行某种计算，然后在图上表示出来，例如对散点图上加一条回归线。</p>
+
+<pre><code>ggplot(small, aes(x=carat, y=price))+geom_point()+scale_y_log10()+stat_smooth()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig13.png" alt="" /></p>
+
+<p>这里就不按颜色、切工来分了，不然ggplot会按不同的分类变量分别做回归，图就很乱，如果我们需要这样做，我们可以使用分面，这个将在后面介绍。</p>
+
+<p>这里，aes所提供的参数，就通过ggplot提供，而不是提供给geom_point，因为ggplot里的参数，相当于全局变量，geom_point()和stat_smooth()都知道x,y的映射，如果只提供给geom_point()，则相当于是局部变量，geom_point知道这种映射，而stat_smooth不知道，当然你再给stat_smooth也提供x,y的映射，不过共用的映射，还是提供给ggplot好。
+ggplot2提供了多种统计变换方式：</p>
+
+<pre><code>stat_abline       stat_contour      stat_identity     stat_summary
+stat_bin          stat_density      stat_qq           stat_summary2d
+stat_bin2d        stat_density2d    stat_quantile     stat_summary_hex
+stat_bindot       stat_ecdf         stat_smooth       stat_unique
+stat_binhex       stat_function     stat_spoke        stat_vline
+stat_boxplot      stat_hline        stat_sum          stat_ydensity
+</code></pre>
+
+<p>统计变换是非常重要的功能，我们可以自己写函数，基于原始数据做某种计算，并在图上表现出来，也可以通过它改变geom_xxx函数画图的默认统计参数。
+比如我在<a href="http://www.sciencedirect.com/science/article/pii/S1874391912007567">Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity</a>的图一中，就把boxplot的中位线替换成了平均值来作图。</p>
+
+<h3 id="坐标系统-coordinante:c38c63fac86d2290b6bc01da39216614">坐标系统（Coordinante）</h3>
+
+<p>坐标系统控制坐标轴，可以进行变换，例如XY轴翻转，笛卡尔坐标和极坐标转换，以满足我们的各种需求。</p>
+
+<p>坐标轴翻转由coord_flip()实现</p>
+
+<pre><code>ggplot(small)+geom_bar(aes(x=cut, fill=cut))+coord_flip()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig14.png" alt="" /></p>
+
+<p>而转换成极坐标可以由coord_polar()实现：</p>
+
+<pre><code>ggplot(small)+geom_bar(aes(x=factor(1), fill=cut))+coord_polar(theta=&quot;y&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2.fig15.png" alt="" /></p>
+
+<p>这也是为什么之前介绍常用图形画法时没有提及饼图的原因，饼图实际上就是柱状图，只不过是使用极坐标而已，柱状图的高度，对应于饼图的弧度，饼图并不推荐，因为人类的眼睛比较弧度的能力比不上比较高度（柱状图）</p>
+
+<p>还可以画靶心图：</p>
+
+<pre><code>ggplot(small)+geom_bar(aes(x=factor(1), fill=cut))+coord_polar()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig16.png" alt="" /></p>
+
+<p>以及风玫瑰图(windrose)</p>
+
+<pre><code>ggplot(small)+geom_bar(aes(x=clarity, fill=cut))+coord_polar()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig17.png" alt="" /></p>
+
+<h3 id="图层-layer:c38c63fac86d2290b6bc01da39216614">图层（Layer）</h3>
+
+<p>photoshop流行的原因在于PS
+3.0时引入图层的概念，ggplot的牛B之处在于使用+号来叠加图层，这堪称是泛型编程的典范。
+在前面散点图上，我们已经见识过，加上了一个回归线拟合的图层。</p>
+
+<p>有了图层的概念，使用ggplot画起图来，就更加得心应手。</p>
+
+<p>做为图层的一个很好的例子是<a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">蝙蝠侠logo</a>，batman
+logo由6个函数组成，在下面的例子中，我先画第一个函数，之后再加一个图层画第二个函数，不断重复这一过程，直到六个函数全部画好。</p>
+
+<pre><code>require(ggplot2)
+f1 &lt;- function(x) {
+    y1 &lt;- 3*sqrt(1-(x/7)^2)
+    y2 &lt;- -3*sqrt(1-(x/7)^2)
+    y &lt;- c(y1,y2)
+    d &lt;- data.frame(x=x,y=y)
+    d &lt;- d[d$y &gt; -3*sqrt(33)/7,]
+    return(d)
+}
+ 
+x1 &lt;- c(seq(3, 7, 0.001), seq(-7, -3, 0.001))
+d1 &lt;- f1(x1)
+p1 &lt;- ggplot(d1,aes(x,y)) + geom_point(color=&quot;red&quot;) +xlab(&quot;&quot;) + ylab(&quot;&quot;) + theme_bw()
+ 
+x2 &lt;- seq(-4,4, 0.001)
+y2 &lt;- abs(x2/2)-(3*sqrt(33)-7)*x2^2/112-3 + sqrt(1-(abs(abs(x2)-2)-1)^2)
+d2 &lt;- data.frame(x2=x2, y2=y2)
+p2 &lt;- p1 + geom_point(data=d2, aes(x=x2,y=y2), color=&quot;yellow&quot;)
+ 
+x3 &lt;- c(seq(0.75,1,0.001), seq(-1,-0.75,0.001))
+y3 &lt;- 9-8*abs(x3)
+d3 &lt;- data.frame(x3=x3, y3=y3)
+p3 &lt;- p2+geom_point(data=d3, aes(x=x3,y=y3), color=&quot;green&quot;)
+ 
+x4 &lt;- c(seq(0.5,0.75,0.001), seq(-0.75,-0.5,0.001))
+y4 &lt;- 3*abs(x4)+0.75
+d4 &lt;- data.frame(x4=x4,y4=y4)
+p4 &lt;- p3+geom_point(data=d4, aes(x=x4,y=y4), color=&quot;steelblue&quot;)
+  
+x5 &lt;- seq(-0.5,0.5,0.001)
+y5 &lt;- rep(2.25,length(x5))
+d5 &lt;- data.frame(x5=x5,y5=y5)
+p5 &lt;- p4+geom_point(data=d5, aes(x=x5,y=y5))
+ 
+x6 &lt;- c(seq(-3,-1,0.001), seq(1,3,0.001))
+y6 &lt;- 6 * sqrt(10)/7 +
+    (1.5 - 0.5 * abs(x6)) * sqrt(abs(abs(x6)-1)/(abs(x6)-1)) -
+    6 * sqrt(10) * sqrt(4-(abs(x6)-1)^2)/14
+d6 &lt;- data.frame(x6=x6,y6=y6)
+p6 &lt;- p5+geom_point(data=d6,aes(x=x6,y=y6), colour=&quot;blue&quot;)
+
+multiplot &lt;- function (..., plotlist = NULL, cols = 1, layout = NULL) {
+    plots &lt;- c(list(...), plotlist)
+    numPlots = length(plots)
+    if (is.null(layout)) {
+        layout &lt;- matrix(seq(1, cols * ceiling(numPlots/cols)),
+            ncol = cols, nrow = ceiling(numPlots/cols))
+    }
+    if (numPlots == 1) {
+        print(plots[[1]])
+    }
+    else {
+        grid.newpage()
+        pushViewport(viewport(layout = grid.layout(nrow(layout),
+            ncol(layout))))
+        for (i in 1:numPlots) {
+            matchidx &lt;- as.data.frame(which(layout == i, arr.ind = TRUE))
+            print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                layout.pos.col = matchidx$col))
+        }
+    }
+}
+
+multiplot(p1,p2,p3,p4,p5,p6, cols=2)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_batman.png" alt="" /></p>
+
+<h3 id="分面-facet:c38c63fac86d2290b6bc01da39216614">分面（Facet）</h3>
+
+<p>在《<a href="http://book.douban.com/subject/24527091/">ggplot2: 数据分析与图形艺术</a>》一书的翻译中，一开始译者把facet翻译成切片，我在校稿的时候发现了，给他们写信，推荐翻译成分面，如果是slice这个词，翻译成切片倒是很精准，BSD的硬盘分区就叫slice，但facet从词源上看就是小脸的意思，翻译成分面才到位。给他们写信的时候，我还专门查了<a href="http://dict.cnki.net/">CNKI翻译助手</a>，发现这词在信息学中，翻成分面早已是固定的。我感觉这是我对这本书翻译的最大贡献，校稿过程中发现的少量小问题远比不上这个关键词意思的把握上。</p>
+
+<p>分面可以让我们按照某种给定的条件，对数据进行分组，然后分别画图。
+在统计变换一节中，提到如果按切工分组作回归线，显然图会很乱，有了分面功能，我们可以分别作图。</p>
+
+<pre><code>ggplot(small, aes(x=carat, y=price))+geom_point(aes(colour=cut))+scale_y_log10() +facet_wrap(~cut)+stat_smooth()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig18.png" alt="" /></p>
+
+<h3 id="主题-theme:c38c63fac86d2290b6bc01da39216614">主题（Theme）</h3>
+
+<p>通过ggplot画图之后，我们可能还需要对图进行定制，像title, xlab,
+ylab这些高频需要用到的，自不用说，ggplot2提供了ggtitle(),
+xlab()和ylab()来实现。 比如：</p>
+
+<pre><code>p &lt;- ggplot(small)+geom_boxplot(aes(x=cut, y=price,fill=color))
+p + ggtitle(&quot;Price vs Cut&quot;)+xlab(&quot;Cut&quot;)+ylab(&quot;Price&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2.fig19.png" alt="" /></p>
+
+<p>但是这个远远满足不了需求，我们需要改变字体，字体大小，坐标轴，背景等各种元素，这需要通过theme()函数来完成。</p>
+
+<p>ggplot2提供一些已经写好的主题，比如<code>theme_grey()</code>为默认主题，我经常用的<code>theme_bw()</code>为白色背景的主题，还有<code>theme_classic()</code>主题，和R的基础画图函数较像。</p>
+
+<p>别外ggthemes包提供了一些主题可供使用，包括：</p>
+
+<pre><code>theme_economist theme_economist_white
+theme_wsj       theme_excel
+theme_few       theme_foundation
+theme_igray     theme_solarized
+theme_stata     theme_tufte
+</code></pre>
+
+<pre><code>require(ggthemes)
+p + theme_wsj()
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig20.png" alt="" /></p>
+
+<p>在2013年发表的文章<a href="http://pubs.rsc.org/en/content/articlelanding/2013/mt/c3mt00126a#!divAbstract">Putative cobalt- and nickel-binding proteins and motifs in Streptococcus pneumoniae</a>中的图3就是使用<code>theme_stata</code>来画的。</p>
+
+<p>至于如何改变这些元素，我觉得我之前<a href="http://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2/">画囧字的博文</a>可以做为例子：</p>
+
+<pre><code>f &lt;- function(x) 1/(x^2-1)
+x &lt;- seq(-3,3, by=0.001)
+y &lt;- f(x)
+d &lt;- data.frame(x=x,y=y)
+ 
+p &lt;- ggplot()
+p &lt;- p+geom_rect(fill = &quot;white&quot;,color=&quot;black&quot;,size=3,
+aes(NULL, NULL,xmin=-3, xmax=3,
+ymin=-3,ymax=3, alpha=0.1))
+ 
+p &lt;- p + geom_line(data=d, aes(x,y), size=3)+ylim(-3,3)
+theme_null &lt;- function() {
+    theme_bw() %+replace%
+    theme(axis.text.x=element_blank(),
+    axis.text.y=element_blank(),
+    legend.position=&quot;none&quot;,
+    panel.grid.minor=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.background=element_blank(),
+    axis.ticks=element_blank(),
+    panel.border=element_blank())
+}
+ 
+p+theme_null()+xlab(&quot;&quot;)+ylab(&quot;&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2012/02/jiong.png" alt="" /></p>
+
+<p>详细的说明，可以参考?theme的帮助文档。</p>
+
+<h3 id="二维密度图:c38c63fac86d2290b6bc01da39216614">二维密度图</h3>
+
+<p>在这个文档里，为了作图方便，我们使用diamonds数据集的一个子集，如果使用全集，数据量太大，画出来散点就糊了，这种情况可以使用二维密度力来呈现。</p>
+
+<pre><code>ggplot(diamonds, aes(carat, price))+ stat_density2d(aes(fill = ..level..), geom=&quot;polygon&quot;)+ scale_fill_continuous(high='darkred',low='darkgreen')
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2.fig22.png" alt="" /></p>
+
+<h3 id="ggplot2实例:c38c63fac86d2290b6bc01da39216614">ggplot2实例</h3>
+
+<p>蝴蝶图：详见《Modern Applied Statistics with S-PLUS》第一章。</p>
+
+<pre><code>theta &lt;- seq(0,24*pi, len=2000)
+radius &lt;- exp(cos(theta)) - 2*cos(4*theta) + sin(theta/12)^5
+dd &lt;- data.frame(x=radius*sin(theta), y=radius*cos(theta))
+ggplot(dd, aes(x, y))+geom_path()+theme_null()+xlab(&quot;&quot;)+ylab(&quot;&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig25.png" alt="" /></p>
+
+<p>这个图，我想展示的是对细节的修改上，在画囧字的时候，把画布上的元素都给清楚了，我把它定义为theme_null主题，在这里，直接应用，我们可以形成自己的画图风格，并写出自己的主题函数固定下来。</p>
+
+<p>最后以生物界中常用的柱状图+误差图为实例，展示ggplot2非常灵活的图层。以我2011年发表的文章<a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/">Phosphoproteome
+profile of human lung cancer cell line
+A549</a>中的westernblot数据为例。这个实例展示了图层，标尺，主题，注释和各种细节微调多种元素。</p>
+
+<pre><code>Normal &lt;- c(0.83, 0.79, 0.99, 0.69)
+Cancer &lt;- c(0.56, 0.56, 0.64, 0.52)
+m &lt;- c(mean(Normal), mean(Cancer))
+s &lt;- c(sd(Normal), sd(Cancer))
+d &lt;- data.frame(V=c(&quot;Normal&quot;, &quot;Cancer&quot;), mean=m, sd=s)
+d$V &lt;- factor(d$V, levels=c(&quot;Normal&quot;, &quot;Cancer&quot;))
+
+p &lt;- ggplot(d, aes(V, mean, fill=V, width=.5))
+p &lt;- p+geom_errorbar(aes(ymin=mean, ymax=mean+sd, width=.2), 
+                     position=position_dodge(width=.8))
+p &lt;- p + geom_bar(stat=&quot;identity&quot;, position=position_dodge(width=.8), colour=&quot;black&quot;)
+p &lt;- p + scale_fill_manual(values=c(&quot;grey80&quot;, &quot;white&quot;))
+p &lt;- p + theme_bw() +theme(legend.position=&quot;none&quot;) + xlab(&quot;&quot;) + ylab(&quot;&quot;)
+p &lt;- p + theme(axis.text.x = element_text(face=&quot;bold&quot;, size=12), 
+               axis.text.y = element_text(face=&quot;bold&quot;, size=12))
+p &lt;- p+scale_y_continuous(expand=c(0,0), limits=c(0, 1.2), breaks=seq(0, 1.2, by=.2))
+p &lt;- p+geom_segment(aes(x=1, y=.98, xend=1, yend=1.1))
+p &lt;- p+geom_segment(aes(x=2, y=.65, xend=2, yend=1.1))
+p &lt;- p+geom_segment(aes(x=1, y=1.1, xend=2, yend=1.1))
+p &lt;- p + annotate(&quot;text&quot;, x=1.5, y=1.08, label=&quot;*&quot;)
+print(p)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_26.png" alt="" /></p>
+
+<p>更多实例，可以参考我使用<a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">ggplot2实现<25 Recipes for Getting Started with R>一书中的所有图片</a>.</p>
+
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/post/r/chipseeker/2014_visualization-methods-in-chipseeker/"><span aria-hidden="true">&larr;</span> visualization methods in ChIPseeker</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/post/r/clusterprofiler/2014_enrichment-map/">enrichment map <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/post\/r\/ggplot2\/2014_use-ggplot2\/';
+    var disqus_title = 'Use ggplot2';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/post\/r\/ggplot2\/2014_use-ggplot2\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+    </body>
+</html>
+
