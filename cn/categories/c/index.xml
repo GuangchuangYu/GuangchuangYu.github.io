@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C on Guangchuang Yu</title>
+    <link>http://guangchuangyu.github.io/categories/c/</link>
+    <description>Recent content in C on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Jun 2007 13:53:00 +0800</lastBuildDate>
+    <atom:link href="http://guangchuangyu.github.io/categories/c/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Newton-Raphson Method估算函数的根</title>
+      <link>http://guangchuangyu.github.io/2007/06/newton-raphson-method%E4%BC%B0%E7%AE%97%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%B9/</link>
+      <pubDate>Sat, 02 Jun 2007 13:53:00 +0800</pubDate>
+      
+      <guid>http://guangchuangyu.github.io/2007/06/newton-raphson-method%E4%BC%B0%E7%AE%97%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%B9/</guid>
+      <description>
+
+&lt;h2 id=&#34;newton-raphson-method:8c998fd44af3436f18eebfbca2f9fb1d&#34;&gt;Newton-Raphson Method&lt;/h2&gt;
+
+&lt;p&gt;曲线&lt;code&gt;f(x)&lt;/code&gt;有根c,取曲线上一点$(x_1,f(x_1))$, 过此点的切线交x轴$x_2$,过曲线上$(x_2,f(x_2))$的切线交x轴$x_3$，如此反复得到一个序列 $x_1,x_2,\cdot \cdot \cdot,x_n$ 逼近c值.&lt;/p&gt;
+
+&lt;p&gt;过&lt;code&gt;$(x_n,f(x_n))$&lt;/code&gt;的切线方程为 &lt;code&gt;$y-f(x_n) = f&#39;(x_n)\,(x-x_n)$&lt;/code&gt;,假设此方程与x轴的交点为&lt;code&gt;$x_{n+1}$&lt;/code&gt;, 即有: &lt;code&gt;$0 - f(x_n) = f&#39;(x_n)(x_n+1 - x_n)$&lt;/code&gt;， 即&lt;code&gt;$x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}$&lt;/code&gt; &lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;下面利用此法来求一个数的开方。 $f(x) = x^2 - a$ 有根$\sqrt{a}$,
+由&lt;code&gt;$f&#39;(x_n) = 2x_n$&lt;/code&gt;, 代入式&lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;可得$x_{n+1} = (x_n + a/x_n)/2$; 当i -&amp;gt; INF 时, $x_i$ -&amp;gt; $\sqrt{a}$;&lt;/p&gt;
+
+&lt;h2 id=&#34;c-implementation:8c998fd44af3436f18eebfbca2f9fb1d&#34;&gt;C implementation&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#include
+
+int main(void){
+    int a,error;
+    double x0,x1 = 1;
+    do {
+        printf(&amp;quot;Input a positive integer: &amp;quot;);
+        scanf(&amp;quot;%d&amp;quot;,&amp;amp;a);
+        if (error = (a &amp;lt;=0))
+            printf(&amp;quot;\nERROR: Do it again!\n\n&amp;quot;);
+        }
+    while (error);
+
+ while (x0 != x1) {
+        x0 = x1; /* save the current value of x1 */
+        x1 = 0.5 * (x1 + a / x1); /* compute a new value of x1 */
+    }
+    printf(&amp;quot;%lf\n&amp;quot;,x1);
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;r-implemantation:8c998fd44af3436f18eebfbca2f9fb1d&#34;&gt;R implemantation&lt;/h2&gt;
+
+&lt;p&gt;2010-01-11 用R来实现一下，不单是求开方，估算函数的根。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;newton &amp;lt;- function(fun, x0, tol=1e-7, niter=100) { 
+    fun.list = as.list(fun)
+    var &amp;lt;- names(fun.list[1])
+    fun.exp = fun.list[[2]] 
+    diff.fun = D(fun.exp, var) 
+    df = list(x=0, diff.fun) 
+    df = as.function(df) 
+    for (i in 1:niter) { 
+        x = x0 - fun(x0)/df(x0) 
+        if (abs(fun(x)) &amp;lt; tol) 
+            return(x) 
+        x0 = x      
+    } 
+    stop(&amp;quot;exceeded allowed number of iterations&amp;quot;) 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; f = function(x) x^2 – 5
+&amp;gt; newton(f, 4)
+[1] 2.236068
+&amp;gt; g = function(x) x^3 – 5
+&amp;gt; newton(g, 4)
+[1] 1.709976
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

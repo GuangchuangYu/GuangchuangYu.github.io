@@ -104,46 +104,6 @@
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a>
-        </h1>
-        <p class="meta">Mar 20, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a>
-        </p>
-
-      </header>
-
-        
-          <p><p>I extended the <a href="http://guangchuangyu.github.io/2015/08/subview/">subview</a> function to support embed image file in a <code>ggplot</code> object.</p>
-
-<pre><code>set.seed(123)
-d = data.frame(x=rnorm(10), y=rnorm(10))
-
-imgfile &lt;- tempfile(, fileext=&quot;.png&quot;)
-download.file(&quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;s=140&quot;,
-              destfile=imgfile, mode='wb')
-
-p = ggplot(d, aes(x, y))
-subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
-</code></pre>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
-    <article>
-      <header>
-        <h1 class="entry-title">
           <a href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/">Font Awesome supported in emojifont</a>
         </h1>
         <p class="meta">Mar 14, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/#disqus_thread">Comments</a>
@@ -172,52 +132,6 @@ subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
           
               <footer>
                   <a href="http://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
-
-        
-
-    </article>
-    
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2016/03/%E4%BD%BF%E7%94%A8ggtree%E5%AE%9E%E7%8E%B0%E8%BF%9B%E5%8C%96%E6%A0%91%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%92%8C%E6%B3%A8%E9%87%8A/">使用ggtree实现进化树的可视化和注释</a>
-        </h1>
-        <p class="meta">Mar 9, 2016 - 3 minute read -  <a href="http://guangchuangyu.github.io/2016/03/%E4%BD%BF%E7%94%A8ggtree%E5%AE%9E%E7%8E%B0%E8%BF%9B%E5%8C%96%E6%A0%91%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%92%8C%E6%B3%A8%E9%87%8A/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/evolution/">Evolution</a>
-        </p>
-
-      </header>
-
-        
-          <p><blockquote>
-<p>本文受魏太云（<a href="http://www.weibo.com/taiyun">@cloud_wei</a>)的邀请，最初发表于<a href="http://cos.name/2015/11/to-achieve-the-visualization-and-annotation-of-evolutionary-tree-using-ggtree/">统计之都</a>。</p>
-
-<p>文章最后提到的可以在图上嵌入小图，比如饼图，柱状图等，<a href="http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/">已经实现</a>, 也可以使用用户自己图片来嵌入注释。</p>
-</blockquote>
-
-<p>进化树看起来和层次聚类很像。有必要解释一下两者的一些区别。</p>
-
-<p>层次聚类的侧重点在于分类，把距离近的聚在一起。而进化树的构建可以说也是一个聚类过程，但侧重点在于推测进化关系和进化距离(evolutionary
-distance)。</p>
-
-<p>层次聚类的输入是距离，比如euclidean或manhattan距离。把距离近的聚在一起。而进化树推断是从生物序列（DNA或氨基酸）的比对开始。最简单的方法是计算一下序列中不匹配的数目，称之为hamming
-distance（通常用序列长度做归一化），使用距离当然也可以应用层次聚类的方法。进化树的构建最简单的方法是非加权配对平均法（Unweighted
-Pair Group Method with Arithmetic Mean, UPGMA），这其实是使用average
-linkage的层次聚类。这种方法在进化树推断上现在基本没人用。更为常用的是邻接法（neighbor
-joining），两个节点距离其它节点都比较远，而这两个节点又比较近，它们就是neighbor，可以看出neighbor不一定是距离最近的两个节点。真正做进化的人，这个方法也基本不用。现在主流的方法是最大似然法(Maximum
-likelihood, ML)，通过进化模型（evolutionary
-model)估计拓朴结构和分支长度，估计的结果具有最高的概率能够产生观测数据（多序列比对）。另外还有最大简约法和贝叶斯推断等方法用于构建进化树。</p>
-</p>
-
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2016/03/%E4%BD%BF%E7%94%A8ggtree%E5%AE%9E%E7%8E%B0%E8%BF%9B%E5%8C%96%E6%A0%91%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%92%8C%E6%B3%A8%E9%87%8A/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -296,6 +210,76 @@ print(p)
 
     </article>
     
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2016/02/reactomepa-an-r/bioconductor-package-for-reactome-pathway-analysis-and-visualization/">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a>
+        </h1>
+        <p class="meta">Feb 16, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/02/reactomepa-an-r/bioconductor-package-for-reactome-pathway-analysis-and-visualization/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/publication/">Publication</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a><a class="label" href="http://guangchuangyu.github.io/categories/bioinformatics/">Bioinformatics</a>
+        </p>
+
+      </header>
+
+        
+          <p><p>My R/Bioconductor package,
+<a href="https://github.com/GuangchuangYu/ReactomePA">ReactomePA</a>, published in
+<a href="http://pubs.rsc.org/en/content/articlelanding/2016/mb/c5mb00663e">Molecular BioSystems</a>.</p>
+
+<p><strong>ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</strong></p>
+
+<p><strong>G Yu</strong>, QY He. <strong><em>Molecular BioSystems</em></strong> 2016, 12:477-479</p>
+
+<p>Received: 05 Oct 2015 Accepted: 20 Nov 2015 Online: 23 Nov 2015</p>
+
+<p>DOI: <a href="http://dx.doi.org/10.1039/C5MB00663E">10.1039/C5MB00663E</a></p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2016/02/reactomepa-an-r/bioconductor-package-for-reactome-pathway-analysis-and-visualization/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/">ggtree supports phylip tree format</a>
+        </h1>
+        <p class="meta">Jan 15, 2016 - 1 minute read -  <a href="http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        </p>
+
+      </header>
+
+        
+          <p><p>Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.</p>
+
+<p>In <code>ggtree</code>, we can use <code>read.phylip()</code> function to parse the file and use <code>ggtree()</code> to visualize the tree.</p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
     
     
 
@@ -349,16 +333,6 @@ print(p)
     
         <a href="/page/15/" class="label-pagination">15</a>
     
-        <a href="/page/16/" class="label-pagination">16</a>
-    
-        <a href="/page/17/" class="label-pagination">17</a>
-    
-        <a href="/page/18/" class="label-pagination">18</a>
-    
-        <a href="/page/19/" class="label-pagination">19</a>
-    
-        <a href="/page/20/" class="label-pagination">20</a>
-    
 
     
     
@@ -367,7 +341,7 @@ print(p)
     
     
     
-        <a href="/page/20/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+        <a href="/page/15/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
     
 
 </div>
@@ -444,7 +418,7 @@ print(p)
       </li>
       
       <li class="post">
-        <a href="/2016/03/google-drive--hku/">Google Drive @ HKU</a>
+        <a href="/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a>
       </li>
       
     </ul>

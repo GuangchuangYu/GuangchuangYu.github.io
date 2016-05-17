@@ -104,9 +104,9 @@
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/03/boxplot/">boxplot</a>
+          <a href="http://guangchuangyu.github.io/2012/02/violin-plot/">violin plot</a>
         </h1>
-        <p class="meta">Mar 4, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/03/boxplot/#disqus_thread">Comments</a>
+        <p class="meta">Feb 7, 2012 - 1 minute read -  <a href="http://guangchuangyu.github.io/2012/02/violin-plot/#disqus_thread">Comments</a>
 
         
         
@@ -117,19 +117,22 @@
       </header>
 
         
-          <p><p>生物坑很多人画图只会直方图，统计只会T检验，在暨大见过太多的学生连T检验都不会，分不清SEM和SD的差别，也不清楚T检验那几个简单参数的含义。我写统计笔记也是因为不想重复性地跟学生讲解T检验。</p>
+          <p><p>ggplot2 0.9.0版本将在3月1号发布，改动较大，最近bioc mailing
+list也有诸多讨论，因为它导致了某些包编译出错（估计是NAMESPACE引起的）。</p>
 
-<p>Barplot和T test一样普遍而流行，barplot适合于表示计数数据和比例，显示比例也可以用pie
-plot，但直方图比饼图要好，因为人类的眼睛适合于比较高度，而不是弧度。</p>
+<p>按照hadley的说法是这是为了把他个人的项目变成一个社区项目。</p>
 
-<p>多半时候生物学数据并非简单的计数数据，对于测量数据，在展示数据分布时，很多人会使用他们熟悉的barplot，用高度来表示mean，然后再加上errorbar，这样展示数据，信息量是非常低的，使用boxplot能够提供更多的数据分布信息，能更好地展现数据，但可能很多人只会在excel里画barplot，Nature
-Methods
-2013年的文章中有100个barplot图，而只有20个boxplot图，从这里就可以看出来，用boxplot的人远远没有barplot多，于是NPG怒了，写了两篇专栏文章<a href="http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2807.html">Points of View: Bar charts and box plots</a>和<a href="http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2813.html">Points of Significance: Visualizing samples with box plots</a>并且发表了一篇<a href="http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2811.html">BoxPlotR: a web tool for generation of box plots</a>方便大家画boxplot，如此简单的web tool能够发Nature Methods，实在是让人羡慕妒忌恨啊。</p>
+<p>大多数的改动对用户来说是invisible的，用roxygen2去注释函数，核心代码使用S3重写，分离出一些特性（scales包）等。</p>
+
+<p>最明显的是现在画图速度变快了，不过我觉得最让人兴奋的是<code>guide_legend()</code>和<code>guide_colorbar()</code>两个函数，可以修改legend.</p>
+
+<p>画图的话，加了四个函数<code>geom_map()</code>, <code>geom_raster()</code>,
+<code>geom_dotplot()</code>和<code>geom_violin()</code>.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/03/boxplot/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2012/02/violin-plot/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -140,74 +143,34 @@ Methods
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/01/old-habits-die-hard/">old habits die hard</a>
+          <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/">ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</a>
         </h1>
-        <p class="meta">Jan 22, 2014 - 1 minute read -  <a href="http://guangchuangyu.github.io/2014/01/old-habits-die-hard/#disqus_thread">Comments</a>
+        <p class="meta">Aug 16, 2011 - 2 minute read -  <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/biology/">Biology</a><a class="label" href="http://guangchuangyu.github.io/categories/research/">Research</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p>从2011年1月我就在实验室的QQ群里发群邮件说IPI关门，时至今日，已经关门3年了，主页上一直停留在关门大吉的那一刻。 我不断在邮件里, lab meeting上强调要换成uniprot来搜库，然而时至今日，依然还是有很多的人在使用IPI，想想真可怕，实验室真是100年不更新一下数据啊。 另外一个我非常讨厌的就是GI号，它压根就不是正儿八经的ID号，但他们从来就不愿意尝试改变。 比如上面这个蛋白质序列的FASTA文件，注释行有很多信息，比如： &gt;gi|16128001|ref|NP_414548.1| putative transporter [Escherichia coli str. K-12 substr. MG1655] 显然搜库时可以使用NP_414548.1做为ID，这个问题我说过N多遍，但他们一定会用他们惯用的gi|16128001来做ID。 问题是很明显的： GI number (sometimes written in lower case, &ldquo;gi&rdquo;) is simply a series of digits that are assigned consecutively to each sequence record processed by NCBI. The GI number bears no resemblance to the Accession number of the sequence record. The GI number has been used for many years by NCBI to track sequence histories in GenBank and the other sequence databases it maintains.</p>
+          <p><p>In order to provide an option to compare graphs produced by basic
+internal plot function and ggplot2, I have recreated the figures in the
+book, <a href="http://book.douban.com/subject/5992544/">25 Recipes for Getting Started with
+R</a>, with ggplot2.</p>
 
-          
-              <footer>
-                  <a href="http://guangchuangyu.github.io/2014/01/old-habits-die-hard/" rel="full-article">Read On &rarr;</a>
-              </footer>
-          
+<p>The code used to create the images is in separate paragraphs, allowing
+easy comparison. <strong>1.16 Creating a Scatter Plot</strong></p>
 
-        
-
-    </article>
-    
-    <article>
-      <header>
-        <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno</a>
-        </h1>
-        <p class="meta">Jan 14, 2014 - 5 minute read -  <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/#disqus_thread">Comments</a>
-
-        
-        
-        
-        <a class="label" href="http://guangchuangyu.github.io/categories/genomics/">Genomics</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
-        </p>
-
-      </header>
-
-        
-          <p><p>I used R package <strong>ChIPpeakAnno</strong> for annotating peaks, and found that
-it handle the DNA strand in the wrong way. Maybe the developers were
-from the computer science but not biology background.</p>
-
-<pre><code>&gt; require(ChIPpeakAnno)
-&gt; packageVersion(&quot;ChIPpeakAnno&quot;)
-[1] '2.10.0'
-&gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528))
-&gt; data(TSS.human.GRCh37)
-&gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37)
-&gt; ap
-RangedData with 1 row and 9 value columns across 1 space
-                     space               ranges |        peak      strand
-                               |  
-1 ENSG00000001461        1 [24736757, 24737528] |           1           +
-                          feature start_position end_position insideFeature
-                                   
-1 ENSG00000001461 ENSG00000001461       24742284     24799466      upstream
-                  distancetoFeature shortestDistance fromOverlappingOrNearest
-                                                
-1 ENSG00000001461             -5527             4756             NearestStart
+<pre><code>plot(cars)
 </code></pre>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -218,32 +181,26 @@ RangedData with 1 row and 9 value columns across 1 space
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/">Install Emacs on Mac</a>
+          <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/">the batman equation</a>
         </h1>
-        <p class="meta">Sep 10, 2013 - 1 minute read -  <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/#disqus_thread">Comments</a>
+        <p class="meta">Aug 13, 2011 - 2 minute read -  <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/mac-os/">Mac OS</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/math/">math</a><a class="label" href="http://guangchuangyu.github.io/categories/visualization/">Visualization</a><a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
         </p>
 
       </header>
 
         
-          <p><h2 id="package-manager:a0d2dabbee19e6fccf2cd8eeaa0e67d0">package manager</h2>
-
-<p>之前一直用<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>做为各种Unix-like系统的包管理系统，pkgsrc在自己内部解决依赖关系，这点对于生产环境来说，是很好的一个优点，我通常会在服务器里装一个pkgsrc，在用户目录下，维护一套UNIX软件。但是用在自己的机器上，内部解决软件依赖，就是个缺点，浪费编译时间和硬盘空间。</p>
-
-<p>Mac上可用的包管理系统很多，Fink移植于<a href="http://guangchuangyu.github.io/categories/linux/">Debian</a>的apt，<a href="http://guangchuangyu.github.io/categories/linux/">Gentoo</a>的portage也支持OS
-X。OS X是基于BSD的系统，BSD有自己的一套包管理系统，如FreeBSD的ports和<a href="http://guangchuangyu.github.io/categories/bsd/">NetBSD</a>的<a href="http://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/">pkgsrc</a>，MacPorts可以看作是这一系列中的一个，不过它并不是OS
-X原生的，它只是OpenDarwin的子项目，所以和pkgsrc一个样，也是内部解决依赖，真正为OS
-X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里已有的软件。</p>
+          <p><p><a href="http://www.hardocp.com/news/2011/07/29/batman_equation/">HardOCP</a> has
+an image with an equation which apparently draws the Batman logo.</p>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2013/09/install-emacs-on-mac/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2011/08/the-batman-equation/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -254,32 +211,92 @@ X设计的原生包管理系统非Homebrew莫属，它会尽量依赖系统里�
     <article>
       <header>
         <h1 class="entry-title">
-          <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">Permanent Head Damage to be</a>
+          <a href="http://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">Five things biologists should know about statistics</a>
         </h1>
-        <p class="meta">Jul 30, 2013 - 1 minute read -  <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/#disqus_thread">Comments</a>
+        <p class="meta">Jun 24, 2011 - 5 minute read -  <a href="http://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/#disqus_thread">Comments</a>
 
         
         
         
-        <a class="label" href="http://guangchuangyu.github.io/categories/personal/">Personal</a>
+        <a class="label" href="http://guangchuangyu.github.io/categories/statistics/">statistics</a>
         </p>
 
       </header>
 
         
-          <p><p>看似寻常最奇崛，成如容易却艰辛。在暨大工作了几年，发几篇小文章，觉得要找个地方读PhD，是件手到擒来的事，结果却花了整整一年的时间，事实证明像我这样的科研屌丝男，举步唯艰啊。
-去年7月份就开始在计划这个事情，我几乎想都没想就联系了计算生物所的JD
-Han，紧接着就是面试，第一次尝试用英文去讲slides，从早上10点讲到中午12点。感觉还好吧，因为有听到Han说impressive，而她的学生又说经常看我blog。看上去还是蛮顺利的，然而最终reject了我，而且没有给我任何原因。</p>
+          <p><p><a href="http://www.ebi.ac.uk/~birney/">Ewan Birney</a>最近的一篇博文（<a href="http://genomeinformatician.blogspot.com/2011/06/five-statistical-things-i-wished-i-had.html">Five statistical things I wished I had been taught 20 years ago</a>
+）讲述了统计对于生物学的重要性。</p>
 
-<p>我去上海是非常低姿态的，说要面试，我就飞过去，当时想要是面试OK了，可能会让我留下来先了解一下正在进行的project，所以没有听老婆的话买返程票，结果从上海回广州，就变成了人在囧途，买不到火车票，就去南昌转车，结果遇到两趟车都是慢车，无空调，还无座。这个事情教会了我，不能太低姿态。</p>
+<p>一开始从RA
+Fisher讲起，说生物压根就是统计。Fisher是个农业学家，他所建立的那些统计方法，都是从生物学问题出发。</p>
 
-<p>我一直在想为什么会去上海，为什么会联系Han，或许是心理学上所谓的契可尼效应，俗称偷不如偷不着，当年考上生没中，心中依然有执念？我自认为早已释然，but
-maybe..，至于Han，我在研一的时候，去北大听过她的讲座，被系统生物学这个概念忽悠了，可能因此内心抱有幻想。</p>
+<p>Ewan所谈及的五个方面分别是：</p>
+
+<blockquote>
+<p>1. Non parametric statistics. These are statistical tests which make a
+bare minimum of assumptions of underlying distributions; in biology we
+are rarely confident that we know the underlying distribution, and hand
+waving about central limit theorem can only get you so far. Wherever
+possible you should use a non parameteric test. This is Mann-Whitney (or
+Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
+because this is not quite true. They test something which is closely
+related to the median) of two distributions, Spearman&rsquo;s Rho (rather
+pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
+(though if I get this right, you can&rsquo;t in Kruskal do the more
+sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
+forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
+like really good vodka) test of whether two sets of observations come
+from the same distribution. All of these methods have a basic theme of
+doing things on the rank of items in a distribution, not the actual
+level. So - if in doubt, do things on the rank of metric, rather than
+the metric itself.</p>
+</blockquote>
 </p>
 
           
               <footer>
-                  <a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/" rel="full-article">Read On &rarr;</a>
+                  <a href="http://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/" rel="full-article">Read On &rarr;</a>
+              </footer>
+          
+
+        
+
+    </article>
+    
+    <article>
+      <header>
+        <h1 class="entry-title">
+          <a href="http://guangchuangyu.github.io/2011/06/r-package-dose-released/">R package DOSE released</a>
+        </h1>
+        <p class="meta">Jun 13, 2011 - 1 minute read -  <a href="http://guangchuangyu.github.io/2011/06/r-package-dose-released/#disqus_thread">Comments</a>
+
+        
+        
+        
+        <a class="label" href="http://guangchuangyu.github.io/categories/r/">R</a>
+        </p>
+
+      </header>
+
+        
+          <p><p>Disease Ontology (DO) provides an open source ontology for the
+integration of biomedical data that is associated with human disease. DO
+analysis can lead to interesting discoveries that deserve further
+clinical investigation.</p>
+
+<p>DOSE was designed for semantic similarity measure and enrichment
+analysis.</p>
+
+<p>Four information content (IC)-based methods, proposed by Resnik, Jiang,
+Lin and Schlicker, and one graph structure-based method, proposed by
+Wang, were implemented. The calculation details can be referred to the
+vignette of R package
+<a href="http://www.bioconductor.org/packages/2.9/bioc/html/GOSemSim.html" title="GOSemSim">GOSemSim</a>.</p>
+</p>
+
+          
+              <footer>
+                  <a href="http://guangchuangyu.github.io/2011/06/r-package-dose-released/" rel="full-article">Read On &rarr;</a>
               </footer>
           
 
@@ -340,16 +357,6 @@ maybe..，至于Han，我在研一的时候，去北大听过她的讲座，被�
     
         <a href="/page/15/" class="label-pagination">15</a>
     
-        <a href="/page/16/" class="label-pagination">16</a>
-    
-        <a href="/page/17/" class="label-pagination">17</a>
-    
-        <a href="/page/18/" class="label-pagination">18</a>
-    
-        <a href="/page/19/" class="label-pagination">19</a>
-    
-        <a href="/page/20/" class="label-pagination">20</a>
-    
 
     
     
@@ -358,7 +365,7 @@ maybe..，至于Han，我在研一的时候，去北大听过她的讲座，被�
     
     
     
-        <a href="/page/20/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
+        <a href="/page/15/" aria-label="Last"><i class="fa fa-angle-double-right fa-lg"></i></a>
     
 
 </div>
@@ -435,7 +442,7 @@ maybe..，至于Han，我在研一的时候，去北大听过她的讲座，被�
       </li>
       
       <li class="post">
-        <a href="/2016/03/google-drive--hku/">Google Drive @ HKU</a>
+        <a href="/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a>
       </li>
       
     </ul>
