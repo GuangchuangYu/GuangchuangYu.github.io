@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool">
+
+    <title>use clusterProfiler as an universal enrichment analysis tool | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/cn">中文入口</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">use clusterProfiler as an universal enrichment analysis tool</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2015-05-11 08:32:04 &#43;0800 CST" itemprop="datePublished">Mon, May 11, 2015</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>
+        
+    </span>
+    
+    
+
+
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+	  <span class='st_twitter_hcount' displayText='Tweet'></span>
+	  <span class='st_facebook_hcount' displayText='Facebook'></span>
+	  <span class='st_sina_hcount' displayText='Sina'></span>
+	  <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+            <p><a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>
+supports enrichment analysis of both hypergeometric test and gene set
+enrichment analysis. It internally supports <a href="http://geneontology.org/">Gene Ontology</a> analysis of about 20 species, <a href="http://www.genome.jp/kegg/">Kyoto Encyclopedia of Genes and Genomes (KEGG)</a>
+with all species that have annotation available in KEGG database, <a href="http://david.abcc.ncifcrf.gov/summary.jsp">DAVID annotation</a> (only
+hypergeometric test supported), <a href="http://disease-ontology.org/">Disease Ontology</a> and <a href="http://ncg.kcl.ac.uk/">Network of Cancer Genes</a> (via
+<a href="http://www.bioconductor.org/packages/release/bioc/html/DOSE.html">DOSE</a>
+for human) and <a href="http://www.reactome.org/">Reactome Pathway</a> (via
+<a href="http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html">ReactomePA</a>
+for several species). This is still not enough for users may want to
+analyze their data with unsupported organisms, <a href="http://geneontology.org/page/go-slim-and-subset-guide">slim version of
+GO</a>, novel
+functional annotation (eg GO via <a href="https://www.blast2go.com/">blastgo</a>
+and KEGG via <a href="http://www.genome.jp/tools/kaas/">KAAS</a>), unsupported
+ontology/pathway or customized annotation.</p>
+
+<p><a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>
+provides <em>enricher</em> function for hypergeometric test and <em>GSEA</em> function
+for gene set enrichment analysis that are designed to accept user
+defined annotation. They accept two additional parameters TERM2GENE and
+TERM2NAME. As indicated in the parameter names, TERM2GENE is a
+data.frame with first column of term ID and second column of
+corresponding mapped gene and TERM2NAME is a data.frame with first
+column of term ID and second column of corresponding term name.
+TERM2NAME is optional.</p>
+
+<p>Here I used
+<a href="http://www.disgenet.org/web/DisGeNET/menu/home">DisGeNET</a> which
+contains 381056 associations, between 16666 genes and 13172 diseases, as
+an example to demonstrate the usage of <em>enricher</em> and <em>GSEA</em> functions.</p>
+
+<pre><code>&gt; require(DOSE)
+&gt; require(clusterProfiler)
+&gt; data(geneList)
+&gt; deg &lt;- names(geneList)[abs(geneList)&gt;2]
+
+## downloaded from http://www.disgenet.org/ds/DisGeNET/results/all_gene_disease_associations.tar.gz
+&gt; gda &lt;- read.delim(&quot;all_gene_disease_associations.txt&quot;)
+&gt; dim(gda)
+[1] 415681      9
+&gt; head(gda)
+  geneId geneSymbol                                    geneName     diseaseId
+1    540      ATP7B ATPase, Cu++ transporting, beta polypeptide umls:C0019202
+2    540      ATP7B ATPase, Cu++ transporting, beta polypeptide umls:C0019202
+3    540      ATP7B ATPase, Cu++ transporting, beta polypeptide umls:C0019202
+4   4160       MC4R                     melanocortin 4 receptor umls:C0028754
+5   4160       MC4R                     melanocortin 4 receptor umls:C0028754
+6   3667       IRS1                insulin receptor substrate 1 umls:C0011860
+                    diseaseName     score NumberOfPubmeds   associationType
+1 Hepatolenticular Degeneration 0.9898764             229  GeneticVariation
+2 Hepatolenticular Degeneration 0.9898764             229         Biomarker
+3 Hepatolenticular Degeneration 0.9898764             229 AlteredExpression
+4                       Obesity 0.9400000             234  GeneticVariation
+5                       Obesity 0.9400000             234         Biomarker
+6     Diabetes Mellitus, Type 2 0.9077659             106  GeneticVariation
+                                            source
+1 UNIPROT, CTD_human, MGD, RGD, GAD, LHGDN, BeFree
+2 UNIPROT, CTD_human, MGD, RGD, GAD, LHGDN, BeFree
+3 UNIPROT, CTD_human, MGD, RGD, GAD, LHGDN, BeFree
+4        UNIPROT, CTD_human, MGD, RGD, GAD, BeFree
+5        UNIPROT, CTD_human, MGD, RGD, GAD, BeFree
+6        UNIPROT, CTD_human, MGD, RGD, GAD, BeFree
+&gt;
+&gt; disease2gene=gda[, c(&quot;diseaseId&quot;, &quot;geneId&quot;)]
+&gt; disease2name=gda[, c(&quot;diseaseId&quot;, &quot;diseaseName&quot;)]
+
+&gt; x = enricher(deg, TERM2GENE=disease2gene, TERM2NAME=disease2name)
+&gt; head(summary(x))
+                         ID                  Description GeneRatio    BgRatio
+umls:C0006142 umls:C0006142    Malignant neoplasm breast    89/196 3324/16666
+umls:C0006826 umls:C0006826           NEOPLASM MALIGNANT   113/196 5102/16666
+umls:C0678222 umls:C0678222             Breast Carcinoma    83/196 3072/16666
+umls:C1458156 umls:C1458156 Recurrent Malignant Neoplasm    47/196 1158/16666
+umls:C1458155 umls:C1458155             Breast Neoplasms    60/196 1981/16666
+umls:C0600139 umls:C0600139           prostate carcinoma    56/196 2033/16666
+                    pvalue     p.adjust       qvalue
+umls:C0006142 4.934860e-16 9.845045e-13 8.249008e-13
+umls:C0006826 3.071791e-15 3.064112e-12 2.567371e-12
+umls:C0678222 5.894907e-15 3.920113e-12 3.284601e-12
+umls:C1458156 3.230248e-14 1.611086e-11 1.349904e-11
+umls:C1458155 1.724317e-12 6.880024e-10 5.764664e-10
+umls:C0600139 5.025005e-10 1.670814e-07 1.399949e-07
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             geneID
+umls:C0006142                                                                                                                                    4312/10874/991/6280/2305/9493/1062/4605/9833/9133/6279/10403/8685/597/7153/6278/259266/3627/27074/6241/7368/11065/55355/9582/55872/51203/3669/22974/10460/10563/4751/820/27338/890/983/4085/6362/9837/5918/332/3832/6286/5163/2146/3002/50852/7272/2568/9212/51659/1111/9055/4321/3620/6790/891/4174/9232/9370/1602/4629/771/3117/80129/23158/125/1311/5174/4250/2167/652/4036/4137/8839/2066/4693/3158/3169/1408/9547/2922/10647/5304/8614/2625/7802/9/5241/10551
+umls:C0006826 4312/10874/55388/991/6280/2305/1062/3868/4605/9833/6279/10403/597/7153/6278/79733/3627/27074/6241/55165/9787/7368/11065/9582/55872/51203/3669/83461/22974/10460/10563/4751/6373/8140/1844/4283/27299/27338/890/9415/983/10232/4085/6362/5080/5918/81620/332/3832/6286/5163/2146/3002/50852/7272/2568/2842/9212/8715/1111/9055/3833/4321/11182/10112/3902/3620/3887/51514/6790/4521/891/8544/24137/10578/9232/9370/1602/3708/9122/10699/4629/771/3117/23158/125/4958/1311/2018/1308/4250/652/80736/4036/8839/2066/4693/3169/1408/9547/2922/1524/1580/10647/5304/8614/2625/7802/11122/9/5241/10551/4969
+umls:C0678222                                                                                                                                                                    4312/10874/6280/2305/4605/9833/9133/6279/10403/8685/597/7153/6278/259266/3627/27074/6241/55165/11065/55355/9582/55872/51203/3669/10563/4751/820/27338/890/983/4085/6362/9837/5918/332/6286/5163/2146/3002/50852/7272/2568/9212/1111/9055/4321/3620/6790/891/9232/9370/1602/3708/4629/771/3117/23158/125/1311/5174/2532/4250/2167/652/4036/4137/8839/2066/4693/3158/3169/9547/2922/1524/10647/5304/8614/2625/7021/7802/9/5241/10551
+umls:C1458156                                                                                                                                                                                                                                                                                                                                                           4312/991/6280/6279/8685/7153/6278/259266/3627/27074/6241/55165/9787/3669/22974/983/10232/4085/5080/332/2146/3002/50852/2568/9212/4321/3620/3887/6790/891/4174/9232/3708/4629/771/3117/23158/730/2018/4036/2066/9547/2625/9/5241/10551/57758
+umls:C1458155                                                                                                                                                                                                                                                                                        4312/10874/2305/4605/9833/9133/10403/597/7153/6278/259266/3627/11065/9582/3669/10563/8140/820/1844/27338/890/9415/983/81620/332/2146/3002/2568/9212/51659/1111/9055/11182/3620/51514/6790/4521/891/8544/9232/9370/1602/771/23158/125/4250/2167/652/8839/2066/3169/10647/5304/8614/2625/7021/9/5241/10551/57758
+umls:C0600139                                                                                                                                                                                                                                                                                                           4312/6280/2305/4605/9833/6279/7153/3627/6241/55165/11065/22974/10563/8140/1844/890/983/5080/5918/6286/5163/2146/9212/1111/4321/3620/6790/891/8544/9232/9370/8857/1602/3708/23090/4629/3117/23158/2532/2167/652/80736/4036/3169/9547/2922/11283/1524/5304/8614/2625/79689/11122/9/5241/10551
+              Count
+umls:C0006142    89
+umls:C0006826   113
+umls:C0678222    83
+umls:C1458156    47
+umls:C1458155    60
+umls:C0600139    56
+&gt; 
+&gt; barplot(x)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/DisGeNET_barplot.png" alt="" /></p>
+
+<pre><code>&gt; y = GSEA(geneList, TERM2GENE=disease2gene, TERM2NAME=disease2name)
+&gt; head(summary(y))
+                         ID           Description setSize enrichmentScore
+umls:C0001418 umls:C0001418        Adenocarcinoma    1224       0.2431172
+umls:C0001973 umls:C0001973            Alcoholism     548      -0.3213479
+umls:C0002171 umls:C0002171       Alopecia Areata      74       0.5122605
+umls:C0003864 umls:C0003864             Arthritis     447       0.3140411
+umls:C0003872 umls:C0003872  Arthritis, Psoriatic     122       0.4311280
+umls:C0003873 umls:C0003873 Arthritis, Rheumatoid    1186       0.2855594
+              pvalue p.adjust qvalues
+umls:C0001418      0        0       0
+umls:C0001973      0        0       0
+umls:C0002171      0        0       0
+umls:C0003864      0        0       0
+umls:C0003872      0        0       0
+umls:C0003873      0        0       0
+
+&gt; gseaplot(y, &quot;umls:C0003872&quot;)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/DisGeNET_gseaplot.png" alt="" /></p>
+
+	  <span class='st_twitter_hcount' displayText='Tweet'></span>
+	  <span class='st_facebook_hcount' displayText='Facebook'></span>
+	  <span class='st_sina_hcount' displayText='Sina'></span>
+	  <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/2015/05/using-gosemsim-to-rank-proteins-obtained-by-co-ip"><span aria-hidden="true">&larr;</span> using GOSemSim to rank proteins obtained by co-IP</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/2015/05/bmc-favors-source-code-plagiarism">BMC favors source code plagiarism <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/2015\/05\/use-clusterprofiler-as-an-universal-enrichment-analysis-tool';
+    var disqus_title = 'use clusterProfiler as an universal enrichment analysis tool';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/2015\/05\/use-clusterprofiler-as-an-universal-enrichment-analysis-tool';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div style="width:350px;margin:auto;">
+  <script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5qpvv5zz7fp&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script>
+</div>
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){
+                i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
+                    i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
+                m.parentNode.insertBefore(a,m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-77901140-1', 'auto');
+            ga('set', 'anonymizeIp', true);
+            ga('send', 'pageview');
+
+             
+            var links = document.querySelectorAll('a');
+            Array.prototype.map.call(links, function(item) {
+                if (item.host != document.location.host) {
+                    item.addEventListener('click', function() {
+                        var action = item.getAttribute('data-action') || 'follow';
+                        ga('send', 'event', 'outbound', action, item.href);
+                    });
+                }
+            });
+        </script>
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+	
+	<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+	<script type="text/javascript">stLight.options({publisher: "d135f460-3fc5-4802-8169-bd08e4734a09", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+
+    </body>
+</html>
+

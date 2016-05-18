@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="http://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="http://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://guangchuangyu.github.io/2015/02/ggtree-updating-a-tree-view-using--operator">
+
+    <title>ggtree updating a tree view using %&lt;% operator | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/resume">Resume</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+                <li class="nav-item"><a href="http://guangchuangyu.github.io/cn">中文入口</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">ggtree updating a tree view using %&lt;% operator</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2015-02-10 02:58:23 &#43;0800 CST" itemprop="datePublished">Tue, Feb 10, 2015</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="http://guangchuangyu.github.io/tags/ggtree">ggtree</a>
+        
+    </span>
+    
+    
+
+
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+	  <span class='st_twitter_hcount' displayText='Tweet'></span>
+	  <span class='st_facebook_hcount' displayText='Facebook'></span>
+	  <span class='st_sina_hcount' displayText='Sina'></span>
+	  <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+            <p>I am very exciting that I have received very positive feedback from
+<a href="https://twitter.com/AhmedMoustafa">Ahmed Moustafa</a> and <a href="https://twitter.com/sdwfrost">Simon Frost</a>.</p>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.27.27.png" alt="" /></p>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.27.07.png" alt="" /></p>
+
+<p><a href="https://github.com/GuangchuangYu/ggtree">ggtree</a> now has equipped with
+a lot of new features. This time, I would like to introduce the replace
+operator, <code>%&lt;%</code>. Suppose we have build a tree view using ggtree with
+multiple layers, we don&rsquo;t need to run the code again to build a new tree
+view with another tree. In
+<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a>, we provides an operator, <code>%&lt;%</code>, for updating tree view.</p>
+
+<pre><code>library(ggplot2)
+library(ggtree)
+ggtree(rtree(15)) %&lt;% rtree(30)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.22.07.png" alt="" /></p>
+
+<p>It supports different layout.</p>
+
+<pre><code>ggtree(rtree(15), layout=&quot;unrooted&quot;, ladderize=FALSE) %&lt;% rtree(45)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.23.48.png" alt="" /></p>
+
+<p>It is chainable.</p>
+
+<pre><code>ggtree(rtree(15), layout=&quot;cladogram&quot;, ladderize=FALSE) %&lt;% 
+    rtree(30) %&lt;% 
+       rtree(45)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.23.14.png" alt="" /></p>
+
+<p>It also supports multiple layers.</p>
+
+<pre><code>(ggtree(rtree(15), layout=&quot;fan&quot;) + 
+    geom_point(aes(shape=isTip, color=isTip))) %&lt;% 
+      rtree(40)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.25.31.png" alt="" /></p>
+
+<p>In the final example, we parse rst file from BaseML output and annotate
+the tree with marginal_AA_subs.</p>
+
+<pre><code>rstfile &lt;- system.file(&quot;extdata/PAML_Baseml&quot;, &quot;rst&quot;, package=&quot;ggtree&quot;)
+tipfas &lt;- system.file(&quot;extdata&quot;, &quot;pa.fas&quot;, package=&quot;ggtree&quot;)
+rst &lt;- read.paml_rst(rstfile, tipfas)
+
+p &lt;- plot(rst, annotation=&quot;marginal_AA_subs&quot;, annotation.color=&quot;steelblue&quot;)
+print(p)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.51.17.png" alt="" /></p>
+
+<p>We have ancestral sequences inferred from CodeML with the same tree. We
+can use this new data to update the tree view.</p>
+
+<pre><code>rstfile &lt;- system.file(&quot;extdata/PAML_Codeml&quot;, &quot;rst&quot;, package=&quot;ggtree&quot;)
+rst &lt;- read.paml_rst(rstfile, tipfas)
+p %&lt;% rst
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot-2015-02-10-10.53.41.png" alt="" /></p>
+
+<p>In these two figures, we can found that they have different evolution
+distances, and substitutions inferred from BASEML and CODEML are
+slightly different.</p>
+
+	  <span class='st_twitter_hcount' displayText='Tweet'></span>
+	  <span class='st_facebook_hcount' displayText='Facebook'></span>
+	  <span class='st_sina_hcount' displayText='Sina'></span>
+	  <span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler"><span aria-hidden="true">&larr;</span> KEGG enrichment analysis with latest online data using clusterProfiler</a></li>
+        
+
+        
+        <li class="next"><a href="http://guangchuangyu.github.io/2015/03/dose-an-r/bioconductor-package-for-disease-ontology-semantic-and-enrichment-analysis">DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis <span aria-hidden="true">&rarr;</span></a></li>
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'gcyu';
+    var disqus_identifier = 'http:\/\/guangchuangyu.github.io\/2015\/02\/ggtree-updating-a-tree-view-using--operator';
+    var disqus_title = 'ggtree updating a tree view using %\x3c% operator';
+    var disqus_url = 'http:\/\/guangchuangyu.github.io\/2015\/02\/ggtree-updating-a-tree-view-using--operator';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+
+    <footer class="site-footer">
+    <div style="width:350px;margin:auto;">
+  <script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5qpvv5zz7fp&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script>
+</div>
+    <div class="inner">
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+ </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="http://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){
+                i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
+                    i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
+                m.parentNode.insertBefore(a,m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-77901140-1', 'auto');
+            ga('set', 'anonymizeIp', true);
+            ga('send', 'pageview');
+
+             
+            var links = document.querySelectorAll('a');
+            Array.prototype.map.call(links, function(item) {
+                if (item.host != document.location.host) {
+                    item.addEventListener('click', function() {
+                        var action = item.getAttribute('data-action') || 'follow';
+                        ga('send', 'event', 'outbound', action, item.href);
+                    });
+                }
+            });
+        </script>
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+	
+	<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+	<script type="text/javascript">stLight.options({publisher: "d135f460-3fc5-4802-8169-bd08e4734a09", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+
+    </body>
+</html>
+
