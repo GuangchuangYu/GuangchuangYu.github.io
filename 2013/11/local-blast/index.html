@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2013/11/local-blast">
 
-    <title>clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters | Guangchuang YU</title>
+    <title>local blast | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</h1>
+        <h1 itemprop="name">local blast</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2012-05-07 03:04:46 &#43;0800 HKT" itemprop="datePublished">Mon, May 7, 2012</time>
+        <time datetime="2013-11-21 10:40:22 &#43;0800 HKT" itemprop="datePublished">Thu, Nov 21, 2013</time>
     </span>
 
     
@@ -88,7 +88,7 @@
     <span class="article-tags">
         <i class="fa fa-tags"></i>
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/blast">blast</a>
         
     </span>
     
@@ -115,21 +115,131 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          <p>Increasing quantitative data generated from transcriptomics and
-proteomics require integrative strategies for analysis. Here, we present
-an R package, clusterProfiler that automates the process of
-biological-term classification and the enrichment analysis of gene
-clusters. The analysis module and visualization module were combined
-into a reusable workflow. Currently, clusterProfiler supports three
-species, including humans, mice, and yeast. Methods provided in this
-package can be easily extended to other species and ontologies. The
-clusterProfiler package is released under Artistic-2.0 License within
-Bioconductor project. The source code and vignette are freely available
-at
-<a href="http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html">http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html</a></p>
+          <p>I was asked to set up a local blast for the lab. Blast can be installed
+directly using apt in debian and it turns out to be easy.</p>
 
-<p>Yu, Guangchuang, Li-Gen Wang, Yanyan Han, and Qing-Yu He. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118">clusterProfiler: An R Package for Comparing Biological Themes Among Gene Clusters</a>.
-OMICS: A Journal of Integrative Biology 16, no. 5 (May 2012): 284–287.</p>
+<pre><code class="language-lang=&quot;bash&quot;">root@jz:/ssd/genomes# apt-get install ncbi-blast+
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  ncbi-blast+
+0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded.
+Need to get 11.2 MB of archives.
+After this operation, 32.8 MB of additional disk space will be used.
+Get:1 http://ftp.hk.debian.org/debian/ wheezy/main ncbi-blast+ amd64 2.2.26-3 [11.2 MB]
+Fetched 11.2 MB in 1min 16s (146 kB/s)
+Selecting previously unselected package ncbi-blast+.
+(Reading database ... 252681 files and directories currently installed.)
+Unpacking ncbi-blast+ (from .../ncbi-blast+_2.2.26-3_amd64.deb) ...
+Processing triggers for man-db ...
+Setting up ncbi-blast+ (2.2.26-3) ...
+</code></pre>
+
+<p>Before the program can be used for sequence alignment, we should prepare
+the db files:</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">root@jz:/ssd/genomes/blast/db# makeblastdb -in ../../hg19.fa -out hg19 -dbtype nucl
+Building a new DB, current time: 11/21/2013 16:03:05
+New DB name:   hg19
+New DB title:  ../../hg19.fa
+Sequence type: Nucleotide
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1073741824B
+Adding sequences from FASTA; added 25 sequences in 27.7084 seconds.
+</code></pre>
+
+<p>That&rsquo;s it. Now blast is supported in the lab server. I tested blastn
+with the <a href="http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;from=62184015&amp;to=62331329&amp;strand=true">AHANAK
+sequence</a>.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">ygc@jz:~$ date; blastn -num_threads 8 -query sequence.fasta -db /ssd/genomes/blast/db/hg19 &gt;&gt; testblast.txt ; date
+Thu Nov 21 16:19:19 HKT 2013
+Thu Nov 21 17:19:45 HKT 2013
+ygc@jz:~$ wc -c sequence.fasta
+149510 sequence.fasta
+</code></pre>
+
+<p>Blast search has three distinctive stages: word matching with database
+scan, ungapped alignment, gapped alignment with traceback. Only word
+matching stage is multi-threaded. So it tooks 1 hour to align this long
+gene.</p>
+
+<p>The most significant hit of the blast result indicated that the sequence
+is located at chr11:62331329-62184015, which is consistent with the
+information presented in the <a href="http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;from=62184015&amp;to=62331329&amp;strand=true">AHANAK sequence
+link</a>.</p>
+
+<pre><code>ygc@jz:~$ cat testblast.txt
+BLASTN 2.2.26+
+
+
+Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb
+Miller (2000), &quot;A greedy algorithm for aligning DNA sequences&quot;, J
+Comput Biol 2000; 7(1-2):203-14.
+
+
+
+Database: ../../hg19.fa
+           25 sequences; 3,095,693,983 total letters
+
+
+
+Query= gi|224589802:c62331329-62184015 Homo sapiens chromosome 11,
+GRCh37.p13 Primary Assembly
+
+Length=147315
+                                                                      Score        E
+Sequences producing significant alignments:                          (Bits)     Value
+
+  chr11                                                               2.720e+05  0.0
+  chr14                                                                941       0.0
+
+...
+
+&gt; chr11
+Length=135006516
+
+ Score = 2.720e+05 bits (147315),  Expect = 0.0
+ Identities = 147315/147315 (100%), Gaps = 0/147315 (0%)
+ Strand=Plus/Minus
+
+Query  1         CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  60
+                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  62331329  CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  62331270
+
+Query  61        TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  120
+                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  62331269  TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  62331210
+
+...
+
+  Database: ../../hg19.fa
+    Posted date:  Nov 21, 2013  4:03 PM
+  Number of letters in database: 3,095,693,983
+  Number of sequences in database:  25
+
+
+
+Matrix: blastn matrix 1 -2
+Gap Penalties: Existence: 0, Extension: 2.5
+</code></pre>
+
+<p>In addition to the species-specific sequence file, we should download
+the non-redundent gene and protein sequences from
+<a href="ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz">ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz</a> and
+<a href="ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz">ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz</a> respectively.</p>
+
+<p>nt contains all nucleotide sequences of GenBank, RefSeq Nucleotides,
+EMBL, DDBJ and PDB, while nr contains all non-redundant peptide
+sequences from GenBank CDS translations, RefSeq Proteins, PDB,
+SwissProt, PIR and PRF. After generating the db files, we can blast a
+sequence to multiple species.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">makeblastdb -in ../../nr/nr -out nr -dbtype prot
+makeblastdb -in ../../nr/nt -out nt -dbtype nucl
+</code></pre>
 
 
 	  
@@ -140,11 +250,11 @@ OMICS: A Journal of Integrative Biology 16, no. 5 (May 2012): 284–287.</p>
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2012/02/draw-chinese-character-jiong-using-ggplot2"><span aria-hidden="true">&larr;</span> draw chinese character Jiong using ggplot2</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters"><span aria-hidden="true">&larr;</span> clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</a></li>
         
 
         
-        <li class="next"><a href="https://guangchuangyu.github.io/2013/11/local-blast">local blast <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="next"><a href="https://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno">Bug of R package ChIPpeakAnno <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
