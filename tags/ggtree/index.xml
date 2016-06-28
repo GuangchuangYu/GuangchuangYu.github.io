@@ -7,8 +7,36 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 05 May 2016 20:13:57 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jun 2016 14:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>identify method for ggtree</title>
+      <link>https://guangchuangyu.github.io/2016/06/identify-method-for-ggtree</link>
+      <pubDate>Tue, 28 Jun 2016 14:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/06/identify-method-for-ggtree</guid>
+      <description>&lt;p&gt;We are happy to announce that ggtree supports interactive tree annotation by implementing an identify method. Users can click on a node to highlight a clade, to label or rotate it &lt;em&gt;etc&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is an example of highlighting clades using &lt;code&gt;geom_hilight&lt;/code&gt; with &lt;code&gt;identify&lt;/code&gt;:&lt;/p&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/KcF8Ec38mzI&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;p&gt;And an example of rotating clades using &lt;code&gt;rotate&lt;/code&gt; with &lt;code&gt;identify&lt;/code&gt;:&lt;/p&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/lKNn4QlPO0E&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;p&gt;The videos are also available in youku (优酷), see &lt;a href=&#34;http://v.youku.com/v_show/id_XMTYyMzgyODYyOA&#34;&gt;http://v.youku.com/v_show/id_XMTYyMzgyODYyOA&lt;/a&gt; and &lt;a href=&#34;http://v.youku.com/v_show/id_XMTYyMzgyODg2OA&#34;&gt;http://v.youku.com/v_show/id_XMTYyMzgyODg2OA&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>NEWS of my BioC packages</title>
@@ -1234,64 +1262,6 @@ gridExtra::grid.arrange(ggtree(tr, color=col),
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/ygc_name/45fc101df9b7c711643fdb641d76f6822ad031a8/Bioconductor/ggtree/rotate.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ggtree with funny fonts</title>
-      <link>https://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts</link>
-      <pubDate>Fri, 12 Jun 2015 06:19:56 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://cran.r-project.org/web/packages/showtext/index.html&#34;&gt;showtext&lt;/a&gt;
-is a neat solution to use various types of fonts in R graphs and make it
-easy to use funny fonts. With
-&lt;a href=&#34;http://cran.r-project.org/web/packages/showtext/index.html&#34;&gt;showtext&lt;/a&gt;,
-we can draw phylogenetic tree with different types of fonts even with
-symbolic/icon fonts.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require(showtext)
-
-font.add.google(&amp;quot;Gochi Hand&amp;quot;, &amp;quot;gochi&amp;quot;)
-font.add.google(&amp;quot;Rock Salt&amp;quot;, &amp;quot;rock&amp;quot;)
-
-link = &amp;quot;http://img.dafont.com/dl/?f=wm_people_1&amp;quot;;
-download.file(link, &amp;quot;wmpeople1.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;);
-unzip(&amp;quot;wmpeople1.zip&amp;quot;);
-font.add(&amp;quot;wmpeople1&amp;quot;, &amp;quot;wmpeople1.TTF&amp;quot;);
-
-link = &amp;quot;http://img.dafont.com/dl/?f=emoticons&amp;quot;;
-download.file(link, &amp;quot;emoticons.zip&amp;quot;, mode = &amp;quot;wb&amp;quot;);
-unzip(&amp;quot;emoticons.zip&amp;quot;);
-font.add(&amp;quot;emoticons&amp;quot;, &amp;quot;emoticons.ttf&amp;quot;);
-
-
-showtext.auto()
-set.seed(2015-05-14)
-
-library(ggplot2)
-library(ggtree)
-
-tree &amp;lt;- rtree(30)
-ggtree(tree, color=&amp;quot;darkgreen&amp;quot;) + geom_tiplab(family=&amp;quot;gochi&amp;quot;) + theme_classic() +
-theme(axis.text.x=element_text(size=rel(4), family=&amp;quot;emoticons&amp;quot;, color=&amp;quot;firebrick&amp;quot;)) +
-scale_y_continuous(breaks=seq(0, 30, 4), labels=letters[c(12:17, 20, 21)]) +
-theme(axis.text.y=element_text(size=rel(4), family=&amp;quot;wmpeople1&amp;quot;, color=&amp;quot;#FDAC4F&amp;quot;)) +
-annotate(&amp;quot;text&amp;quot;, x=2, y=18, label=&amp;quot;Have fun with ggtree!&amp;quot;,
-family=&amp;quot;rock&amp;quot;, angle=30, size=12, color=&amp;quot;steelblue&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_funny_font.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;download.file(&amp;quot;http://dl.dafont.com/dl/?f=people_freak&amp;quot;, &amp;quot;people_freak.zip&amp;quot;, mode=&amp;quot;wb&amp;quot;)
-unzip(&amp;quot;people_freak.zip&amp;quot;)
-font.add(&amp;quot;people_freak&amp;quot;, &amp;quot;People_freak.ttf&amp;quot;)
-ggtree(rtree(10)) + geom_text(aes(label=node, color=isTip), family=&amp;quot;people_freak&amp;quot;, hjust=0) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_funny_font2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Funny fonts can be downloaded from &lt;a href=&#34;http://www.dafont.com/search.php?q=icon&#34;&gt;1&lt;/a&gt;, &lt;a href=&#34;http://www.dafont.com/search.php?q=people&#34;&gt;2&lt;/a&gt; and &lt;a href=&#34;http://www.fontspace.com/category/people&#34;&gt;3&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

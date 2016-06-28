@@ -7,8 +7,36 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 05 May 2016 20:13:57 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jun 2016 14:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>identify method for ggtree</title>
+      <link>https://guangchuangyu.github.io/2016/06/identify-method-for-ggtree</link>
+      <pubDate>Tue, 28 Jun 2016 14:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/06/identify-method-for-ggtree</guid>
+      <description>&lt;p&gt;We are happy to announce that ggtree supports interactive tree annotation by implementing an identify method. Users can click on a node to highlight a clade, to label or rotate it &lt;em&gt;etc&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is an example of highlighting clades using &lt;code&gt;geom_hilight&lt;/code&gt; with &lt;code&gt;identify&lt;/code&gt;:&lt;/p&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/KcF8Ec38mzI&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;p&gt;And an example of rotating clades using &lt;code&gt;rotate&lt;/code&gt; with &lt;code&gt;identify&lt;/code&gt;:&lt;/p&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/lKNn4QlPO0E&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;p&gt;The videos are also available in youku (优酷), see &lt;a href=&#34;http://v.youku.com/v_show/id_XMTYyMzgyODYyOA&#34;&gt;http://v.youku.com/v_show/id_XMTYyMzgyODYyOA&lt;/a&gt; and &lt;a href=&#34;http://v.youku.com/v_show/id_XMTYyMzgyODg2OA&#34;&gt;http://v.youku.com/v_show/id_XMTYyMzgyODg2OA&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>NEWS of my BioC packages</title>
@@ -906,38 +934,6 @@ function.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>label edge number in ggtree</title>
-      <link>https://guangchuangyu.github.io/2016/01/label-edge-number-in-ggtree</link>
-      <pubDate>Wed, 13 Jan 2016 11:00:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/01/label-edge-number-in-ggtree</guid>
-      <description>&lt;p&gt;This is a question from &lt;code&gt;ggtree&lt;/code&gt; user. In &lt;code&gt;ape&lt;/code&gt; and &lt;code&gt;phytools&lt;/code&gt;, it&amp;rsquo;s easy to label edge using the &lt;code&gt;edgelabels&lt;/code&gt; function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(1)
-tr = rtree(30)
-library(ape)
-plot(tr, main=&amp;quot;ape&amp;quot;)
-edgelabels()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-edgelabel_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I don&amp;rsquo;t see any necessity to label edge numbers, as they are meaningless. The number is labeled as the row index of &lt;code&gt;tr$edge&lt;/code&gt;, and edge can be uniquely mapped to child node. If we need to relate something to edge, we can relate them to corresponding child node. Node is a central hub in tree annotation in &lt;code&gt;ggtree&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;To label edge number, we can also attach the edge number to node and then label them as a node attribute.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-p = ggtree(tr, ladderize=F) + geom_tiplab() + ggtitle(&amp;quot;ggtree&amp;quot;)
-edge=data.frame(tr$edge, edge_num=1:nrow(tr$edge))
-colnames(edge)=c(&amp;quot;parent&amp;quot;, &amp;quot;node&amp;quot;, &amp;quot;edge_num&amp;quot;)
-p %&amp;lt;+% edge + geom_label(aes(x=branch, label=edge_num))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-edgelabel_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
