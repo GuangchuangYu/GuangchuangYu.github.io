@@ -7,8 +7,56 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Tue, 28 Jun 2016 14:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 05 Jul 2016 20:13:35 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>How to bug author</title>
+      <link>https://guangchuangyu.github.io/2016/07/how-to-bug-author</link>
+      <pubDate>Tue, 05 Jul 2016 20:13:35 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/07/how-to-bug-author</guid>
+      <description>
+
+&lt;p&gt;As an authors of several Bioconductor packages. I found many questions from users are quite annoying. Some of them never use google and they are reluctant to read vignettes.&lt;/p&gt;
+
+&lt;h3 id=&#34;step-1-make-sure-you-are-using-the-latest-release:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 1: make sure you are using the latest release&lt;/h3&gt;
+
+&lt;p&gt;I found many peoples are using out-of-date packages. When they got an issue of an out-dated package, they never check whether the issue still exists in latest release.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screenshot 2016-07-05 19.48.59.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; rvcheck::check_bioc(&amp;quot;clusterProfiler&amp;quot;)
+package is up-to-date release version
+$installed_version
+[1] &amp;quot;3.0.4&amp;quot;
+
+$latest_version
+[1] &amp;quot;3.0.4&amp;quot;
+
+$up_to_date
+[1] TRUE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;step-2-read-the-vignettes:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 2: read the vignettes&lt;/h3&gt;
+
+&lt;p&gt;All Bioconductor packages contains a least one vignette and some of them are in very details. Most of the user questions can be solved if user go through the vignette carefully.&lt;/p&gt;
+
+&lt;h3 id=&#34;step-3-ask-google:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 3: ask google&lt;/h3&gt;
+
+&lt;p&gt;I received several emails asking why my Bioconductor package is not available when they try to install it using &lt;code&gt;install.packages()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If they google search the package name, they can reach the landing page of the package. Then they will find installation guide in the page using &lt;code&gt;biocLite()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;User question may already have an answer posted in Bioconductor support site, Biostars or somewhere. Just google search it before bugging the author.&lt;/p&gt;
+
+&lt;h3 id=&#34;step-4-make-a-reproducible-example:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 4: make a reproducible example&lt;/h3&gt;
+
+&lt;p&gt;If there is indeed an issue exists in latest release and it is not documented in vigneet and google can&amp;rsquo;t answer it, then you need to make a reproducible example for package author to debug.&lt;/p&gt;
+
+&lt;p&gt;Please follow the advice from &lt;a href=&#34;http://adv-r.had.co.nz/Reproducibility.html&#34;&gt;http://adv-r.had.co.nz/Reproducibility.html&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>identify method for ggtree</title>
@@ -903,49 +951,6 @@ p + facet_grid(chr ~ .id) + scale_color_manual(values=col) + scale_fill_manual(v
       
       <guid>https://guangchuangyu.github.io/publication/ReactomePA/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>ggtree supports phylip tree format</title>
-      <link>https://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format</link>
-      <pubDate>Fri, 15 Jan 2016 13:19:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format</guid>
-      <description>&lt;p&gt;Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.&lt;/p&gt;
-
-&lt;p&gt;In &lt;code&gt;ggtree&lt;/code&gt;, we can use &lt;code&gt;read.phylip()&lt;/code&gt; function to parse the file and use &lt;code&gt;ggtree()&lt;/code&gt; to visualize the tree.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-phyfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.phy&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
-phylip &amp;lt;- read.phylip(phyfile)
-phylip
-
-## &#39;phylip&#39; S4 object that stored information of
-##   &#39;/Users/guangchuangyu/Library/R/3.2/library/ggtree/extdata/sample.phy&#39;.
-## 
-## ...@ tree: 
-## Phylogenetic tree with 15 tips and 13 internal nodes.
-## 
-## Tip labels:
-##  K, N, D, L, J, G, ...
-## 
-## Unrooted; no branch lengths.
-## 
-## with sequence alignment available (15 sequences of length 2148)
-
-ggtree(phylip) + geom_tiplab()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;User can view the sequence alignment with the tree via &lt;code&gt;msaplot()&lt;/code&gt;
-function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;msaplot(phylip, offset=1)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
     </item>
     
   </channel>
