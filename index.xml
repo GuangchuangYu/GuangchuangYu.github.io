@@ -612,15 +612,6 @@ head(summary(y))
     </item>
     
     <item>
-      <title>ggtree</title>
-      <link>https://guangchuangyu.github.io/project/ggtree/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/project/ggtree/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>about</title>
       <link>https://guangchuangyu.github.io/home/about/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
@@ -844,15 +835,6 @@ p + facet_grid(chr ~ .id) + scale_color_manual(values=col) + scale_fill_manual(v
     </item>
     
     <item>
-      <title>ReactomePA</title>
-      <link>https://guangchuangyu.github.io/project/ReactomePA/</link>
-      <pubDate>Sat, 27 Feb 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/project/ReactomePA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>tweets of ggtree</title>
       <link>https://guangchuangyu.github.io/2016/02/tweets-of-ggtree</link>
       <pubDate>Tue, 23 Feb 2016 11:10:00 +0800</pubDate>
@@ -953,6 +935,81 @@ p + facet_grid(chr ~ .id) + scale_color_manual(values=col) + scale_fill_manual(v
       
       <guid>https://guangchuangyu.github.io/publication/ReactomePA/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title>ggtree supports phylip tree format</title>
+      <link>https://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format</link>
+      <pubDate>Fri, 15 Jan 2016 13:19:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format</guid>
+      <description>&lt;p&gt;Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;ggtree&lt;/code&gt;, we can use &lt;code&gt;read.phylip()&lt;/code&gt; function to parse the file and use &lt;code&gt;ggtree()&lt;/code&gt; to visualize the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+phyfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.phy&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+phylip &amp;lt;- read.phylip(phyfile)
+phylip
+
+## &#39;phylip&#39; S4 object that stored information of
+##   &#39;/Users/guangchuangyu/Library/R/3.2/library/ggtree/extdata/sample.phy&#39;.
+## 
+## ...@ tree: 
+## Phylogenetic tree with 15 tips and 13 internal nodes.
+## 
+## Tip labels:
+##  K, N, D, L, J, G, ...
+## 
+## Unrooted; no branch lengths.
+## 
+## with sequence alignment available (15 sequences of length 2148)
+
+ggtree(phylip) + geom_tiplab()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can view the sequence alignment with the tree via &lt;code&gt;msaplot()&lt;/code&gt;
+function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msaplot(phylip, offset=1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>label edge number in ggtree</title>
+      <link>https://guangchuangyu.github.io/2016/01/label-edge-number-in-ggtree</link>
+      <pubDate>Wed, 13 Jan 2016 11:00:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/01/label-edge-number-in-ggtree</guid>
+      <description>&lt;p&gt;This is a question from &lt;code&gt;ggtree&lt;/code&gt; user. In &lt;code&gt;ape&lt;/code&gt; and &lt;code&gt;phytools&lt;/code&gt;, it&amp;rsquo;s easy to label edge using the &lt;code&gt;edgelabels&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(1)
+tr = rtree(30)
+library(ape)
+plot(tr, main=&amp;quot;ape&amp;quot;)
+edgelabels()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-edgelabel_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I don&amp;rsquo;t see any necessity to label edge numbers, as they are meaningless. The number is labeled as the row index of &lt;code&gt;tr$edge&lt;/code&gt;, and edge can be uniquely mapped to child node. If we need to relate something to edge, we can relate them to corresponding child node. Node is a central hub in tree annotation in &lt;code&gt;ggtree&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To label edge number, we can also attach the edge number to node and then label them as a node attribute.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+p = ggtree(tr, ladderize=F) + geom_tiplab() + ggtitle(&amp;quot;ggtree&amp;quot;)
+edge=data.frame(tr$edge, edge_num=1:nrow(tr$edge))
+colnames(edge)=c(&amp;quot;parent&amp;quot;, &amp;quot;node&amp;quot;, &amp;quot;edge_num&amp;quot;)
+p %&amp;lt;+% edge + geom_label(aes(x=branch, label=edge_num))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-edgelabel_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
     </item>
     
   </channel>
