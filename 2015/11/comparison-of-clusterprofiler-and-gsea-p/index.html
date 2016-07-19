@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme" content="hugo-academic">
-    <meta name="generator" content="Hugo 0.16" />
+    <meta name="generator" content="Hugo 0.15" />
     <meta name="author" content="Guangchuang YU">
     <meta name="description" content="PhD student">
 
@@ -149,7 +149,7 @@ gene list and gene sets) and then benchmarking will be valuable for
 detecting issues that exclusively attributed to the implementation of
 GSEA algorithm.</p>
 
-<h3 id="clusterprofiler-supports-gmt-file">clusterProfiler supports GMT file</h3>
+<h3 id="clusterprofiler-supports-gmt-file:140b254f6d6e22f5c796e058ac8120af">clusterProfiler supports GMT file</h3>
 
 <p>Currently clusterProfiler supports <a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">user&rsquo;s own annotations</a>
 via <em>enricher</em> and <em>GSEA</em> functions which require users provide their
@@ -175,7 +175,7 @@ users can use it for testing/practice.</p>
 &gt; c5 &lt;- read.gmt(gmtfile)
 </code></pre>
 
-<h4 id="hypergeometric-test-with-gmt-annotation">hypergeometric test with GMT annotation</h4>
+<h4 id="hypergeometric-test-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af">hypergeometric test with GMT annotation</h4>
 
 <pre><code>&gt; require(clusterProfiler)
 &gt; data(geneList, package=&quot;DOSE&quot;)
@@ -195,7 +195,7 @@ MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
 CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
 </code></pre>
 
-<h4 id="gene-set-enrichment-analysis-with-gmt-annotation">gene set enrichment analysis with GMT annotation</h4>
+<h4 id="gene-set-enrichment-analysis-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af">gene set enrichment analysis with GMT annotation</h4>
 
 <pre><code>&gt; y &lt;- GSEA(geneList, TERM2GENE=c5)
 &gt; head(summary(y)[, -c(1,2)], 2)
@@ -207,7 +207,7 @@ EXTRACELLULAR_REGION      0.03047874 0.02316228
 EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
 </code></pre>
 
-<h3 id="comparison-of-clusterprofiler-and-gsea-p">Comparison of clusterProfiler and GSEA-P</h3>
+<h3 id="comparison-of-clusterprofiler-and-gsea-p:140b254f6d6e22f5c796e058ac8120af">Comparison of clusterProfiler and GSEA-P</h3>
 
 <p>Now with <em>read.gmt</em>, we can compare clusterProfiler and GSEA-P with the
 same input.</p>
@@ -269,7 +269,7 @@ permutation to generate a null ES distribution. pvalue = (sum(ES &gt;=
 permES)+1)/(nPerm+1), for greater side as an example, is calculated.</p>
 </blockquote>
 
-<h3 id="fixed-bug-of-dose">fixed bug of DOSE</h3>
+<h3 id="fixed-bug-of-dose:140b254f6d6e22f5c796e058ac8120af">fixed bug of DOSE</h3>
 
 <p>Eventually I figured out that the way we calculate pvalue is not
 correct. As presented in
@@ -286,11 +286,11 @@ identical.</p>
 <p>This bug was fixed in both release (&gt;=2.8.1) and devel (&gt;=2.9.1)
 branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.</p>
 
-<h3 id="other-concerns">other concerns</h3>
+<h3 id="other-concerns:140b254f6d6e22f5c796e058ac8120af">other concerns</h3>
 
 <p>There are other differences between clusterProfiler and GSEA-P.</p>
 
-<h4 id="clusterprofiler-never-produce-pvalue-0">clusterProfiler never produce pvalue=0</h4>
+<h4 id="clusterprofiler-never-produce-pvalue-0:140b254f6d6e22f5c796e058ac8120af">clusterProfiler never produce pvalue=0</h4>
 
 <p>For calculating pvalues, GSEA-P may produce pvalue=0, while
 clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
@@ -298,7 +298,7 @@ both numerator and demoninator. Some software may not accept pvalue=0,
 for example if you want to use topGO to visualize enrichment with GO
 topology, the result can&rsquo;t contain any pvalue=0.</p>
 
-<h4 id="clusterprofiler-test-whole-gene-set-collections">clusterProfiler test whole gene set collections</h4>
+<h4 id="clusterprofiler-test-whole-gene-set-collections:140b254f6d6e22f5c796e058ac8120af">clusterProfiler test whole gene set collections</h4>
 
 <pre><code>&gt; g=read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
 &gt; dim(g)
