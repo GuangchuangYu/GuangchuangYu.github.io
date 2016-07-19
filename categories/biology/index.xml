@@ -168,5 +168,108 @@ makeblastdb -in ../../nr/nt -out nt -dbtype nucl
 </description>
     </item>
     
+    <item>
+      <title>sequence alignment program written in R</title>
+      <link>https://guangchuangyu.github.io/2008/08/sequence-alignment-program-written-in-r</link>
+      <pubDate>Thu, 07 Aug 2008 12:13:35 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2008/08/sequence-alignment-program-written-in-r</guid>
+      <description>&lt;p&gt;Sequence alignment by dynamic programming.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; ## by YGC
+ ## August 7, 2008
+ ## guangchuangyu AT gmail.com
+
+ X &amp;lt;- &#39;TTCATA&#39;
+ Y &amp;lt;- &#39;TGCTCGTA&#39;
+
+ seq.x &amp;lt;- unlist(strsplit(X, &#39;&#39;))
+ seq.y &amp;lt;- unlist(strsplit(Y, &#39;&#39;))
+
+ seq.x &amp;lt;- c(0,seq.x)
+ seq.y &amp;lt;- c(0,seq.y)
+
+ match &amp;lt;- 5
+ mismatch &amp;lt;- -2
+ indel &amp;lt;- -6
+
+ ## initial the score matrix
+ score &amp;lt;- matrix(NA, length(seq.x), length(seq.y))
+ score[,1] &amp;lt;- sapply(1:length(seq.x)-1, function(x) x * indel)
+ score[1,] &amp;lt;- sapply(1:length(seq.y)-1, function(x) x * indel)
+
+ ## The dynamic programming, global alignment recursion
+ for (i in 2:length(seq.x)) {
+     for (j in 2:length(seq.y)){
+         # seq.x[i] , seq.y[j] are aligned
+         if ( seq.x[i] == seq.y[j]) {
+             score[i,j] &amp;lt;- score[i-1, j-1] + match
+         } else {
+             score[i,j] &amp;lt;- score[i-1, j-1] + mismatch
+         }
+         # seq.x[i] aligned to -
+         sc &amp;lt;- score[i-1,j] + indel
+         if (sc &amp;gt; score[i,j])
+             score[i,j] = sc
+         # seq.y[j] aligned to -
+         sc &amp;lt;- score[i,j-1] + indel
+         if (sc &amp;gt; score[i,j])
+             score[i,j] = sc
+     }
+ }
+
+ ## Traceback
+ i &amp;lt;- length(seq.x)
+ j &amp;lt;- length(seq.y)
+ ax &amp;lt;- character()
+ ay &amp;lt;- character()
+ while (i &amp;gt; 1 &amp;amp;&amp;amp; j &amp;gt;1){
+     ## case 1: best was seq.x[i] aligned to seq.y[j]
+     sc &amp;lt;- score[i-1,j-1]
+     if (seq.x[i] == seq.y[j]) {
+         sc &amp;lt;- sc + match
+     } else {
+         sc &amp;lt;- sc + mismatch
+     }
+     if (sc == score[i,j]) {
+         ax &amp;lt;- c(seq.x[i], ax)
+         ay &amp;lt;- c(seq.y[j], ay)
+         i &amp;lt;- i -1
+         j &amp;lt;- j-1
+         next
+     }
+     ## case 2: best was seq.x[i] aligned to -
+     if ((score[i-1,j] + indel) == score[i,j]) {
+         ax &amp;lt;- c(seq.x[i], ax)
+         ay &amp;lt;- c(&amp;quot;-&amp;quot;, ay)
+         i &amp;lt;- i-1
+         next
+     }
+     ## case 3: best was seq.y[j] aligned to -
+     if ((score[i,j-1] + indel) == score[i,j]) {
+         ax &amp;lt;- c(&amp;quot;-&amp;quot;, ax)
+         ay &amp;lt;- c(seq.y[j], ay)
+         j &amp;lt;- j-1
+         next
+     }
+ }
+
+ cat (&amp;quot;Sequence X: &amp;quot;, X,&amp;quot;\n&amp;quot;)
+ cat (&amp;quot;Sequence Y: &amp;quot;, Y,&amp;quot;\n&amp;quot;)
+ cat (&amp;quot;Scoring system: &amp;quot;, match, &amp;quot; for match; &amp;quot;, mismatch, &amp;quot; for mismatch; &amp;quot;, indel, &amp;quot; for gap&amp;quot;, &amp;quot;\n\n&amp;quot;)
+
+ cat (&amp;quot;Dynamic programming matrix:\n&amp;quot;)
+ print (score)
+
+ cat (&amp;quot;\nAlignment:\n&amp;quot;)
+ cat (paste(ax, collapse=&#39;&#39;), &amp;quot;\n&amp;quot;)
+ cat (paste(ay, collapse=&#39;&#39;),&amp;quot;\n\n&amp;quot;)
+ cat (&amp;quot;Optimum alignment score: &amp;quot;, score[length(score)],&amp;quot;\n&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2008/11/ralignment.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>
