@@ -18,7 +18,7 @@
       <guid>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler</guid>
       <description>
 
-&lt;h2 id=&#34;bitr-kegg:ea0718166651864960b492e0d7486a4f&#34;&gt;bitr_kegg&lt;/h2&gt;
+&lt;h2 id=&#34;bitr-kegg&#34;&gt;bitr_kegg&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; can convert biological IDs using &lt;code&gt;OrgDb&lt;/code&gt; object via the &lt;code&gt;bitr&lt;/code&gt; function. Now I implemented another function, &lt;code&gt;bitr_kegg&lt;/code&gt; for converting IDs through KEGG API.&lt;/p&gt;
 
@@ -82,7 +82,7 @@ bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&
 ## 1 Z5100  Q7DB85
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;search-kegg-organism:ea0718166651864960b492e0d7486a4f&#34;&gt;search_kegg_organism&lt;/h2&gt;
+&lt;h2 id=&#34;search-kegg-organism&#34;&gt;search_kegg_organism&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; supports more than 4k species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt; for hypergeometric test (&lt;code&gt;enrichKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;enrichMKEGG&lt;/code&gt;) and GSEA (&lt;code&gt;gseKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;gseMKEGG&lt;/code&gt;). We can use &lt;code&gt;bitr_kegg&lt;/code&gt; to convert ID for all these 4k species. To facilitate searching scientific name abbreviate used in the &lt;code&gt;organism&lt;/code&gt; parameter of these functions, I implemented the &lt;code&gt;search_kegg_organism&lt;/code&gt; function. We can search by &lt;code&gt;kegg_code&lt;/code&gt;, &lt;code&gt;scientific_name&lt;/code&gt; or &lt;code&gt;common_name&lt;/code&gt; (which is not available for prokaryotes).&lt;/p&gt;
 
@@ -107,7 +107,7 @@ head(ecoli)
 ## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &amp;lt;NA&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;keytype-parameter:ea0718166651864960b492e0d7486a4f&#34;&gt;keyType parameter&lt;/h2&gt;
+&lt;h2 id=&#34;keytype-parameter&#34;&gt;keyType parameter&lt;/h2&gt;
 
 &lt;p&gt;With the ID conversion utilities built in &lt;code&gt;clusterProfiler&lt;/code&gt;, I add a parameter &lt;code&gt;keyType&lt;/code&gt; in &lt;code&gt;enrichKEGG&lt;/code&gt;, &lt;code&gt;enrichMKEGG&lt;/code&gt;, &lt;code&gt;gseKEGG&lt;/code&gt; and &lt;code&gt;gseMKEGG&lt;/code&gt;. Now we can use ID type that is not the primary ID in KEGG database.&lt;/p&gt;
 
@@ -140,7 +140,7 @@ head(summary(x))
 ## hsa05221     6
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;setreadable:ea0718166651864960b492e0d7486a4f&#34;&gt;setReadable&lt;/h2&gt;
+&lt;h2 id=&#34;setreadable&#34;&gt;setReadable&lt;/h2&gt;
 
 &lt;p&gt;For GO analysis, we have a &lt;code&gt;readable&lt;/code&gt; parameter to control whether traslating the IDs to human readable gene name. This parameter is not available for KEGG analysis. But we still have the ability to translate input gene IDs to gene name using &lt;code&gt;setReadable&lt;/code&gt; function if and only if corresponding &lt;code&gt;OrgDb&lt;/code&gt; object is available.&lt;/p&gt;
 
@@ -290,7 +290,7 @@ For other species, common name is not supported, since I don&amp;rsquo;t want to
 maintain such a long mapping list with many species have no common name
 available and it may also introduce unexpected bugs.&lt;/p&gt;
 
-&lt;h3 id=&#34;example-1-using-online-kegg-annotation:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
+&lt;h3 id=&#34;example-1-using-online-kegg-annotation&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;library(DOSE)
 data(geneList)
@@ -342,7 +342,7 @@ species that has an annotation db. For example, for human we use
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html&#34;&gt;org.Hs.eg.db&lt;/a&gt;
 for mapping gene ID to Symbol.&lt;/p&gt;
 
-&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
+&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
 
 &lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34;&gt;Streptococcus pneumoniae D39&lt;/a&gt;
 to demonstrate using &lt;em&gt;enrichKEGG&lt;/em&gt; with species that are not supported
@@ -379,7 +379,7 @@ spd01100    28
 spd00520     9
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;summary:68582cae05851901beab2a74a03ade4b&#34;&gt;Summary&lt;/h3&gt;
+&lt;h3 id=&#34;summary&#34;&gt;Summary&lt;/h3&gt;
 
 &lt;p&gt;To summarize,
 &lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;

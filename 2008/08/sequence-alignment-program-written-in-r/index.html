@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2015/04/an-example-of-drawing-beast-tree-using-ggtree">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2008/08/sequence-alignment-program-written-in-r">
 
-    <title>an example of drawing beast tree using ggtree | Guangchuang YU</title>
+    <title>sequence alignment program written in R | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">an example of drawing beast tree using ggtree</h1>
+        <h1 itemprop="name">sequence alignment program written in R</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2015-04-01 01:50:04 &#43;0800 HKT" itemprop="datePublished">Wed, Apr 1, 2015</time>
+        <time datetime="2008-08-07 12:13:35 &#43;0800 HKT" itemprop="datePublished">Thu, Aug 7, 2008</time>
     </span>
 
     
@@ -88,7 +88,7 @@
     <span class="article-tags">
         <i class="fa fa-tags"></i>
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/alignment">alignment</a>
         
     </span>
     
@@ -115,33 +115,98 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          <p><a href="http://beast.bio.ed.ac.uk/figtree">FigTree</a> is designed for viewing
-beast output as demonstrated by their example data:
-<img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.15.57.png" alt="" /></p>
+          <pre><code> ## by YGC
+ ## August 7, 2008
+ ## guangchuangyu AT gmail.com
 
-<p>BEAST output is well supported by
-<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a> and it&rsquo;s easy to
-reproduce such a tree view.
-<a href="https://github.com/GuangchuangYu/ggtree">ggtree</a> supports parsing beast
-output by read.beast function. We can visualize the tree directly by
-using ggtree function. Since this is a time scale tree, we can set the
-parameter <strong><em>mrsd</em></strong> to most recent sampling date.</p>
+ X &lt;- 'TTCATA'
+ Y &lt;- 'TGCTCGTA'
 
-<pre><code>require(ggplot2)
-require(ggtree)
-x &lt;- read.beast(&quot;/Applications/FigTree/influenza.tree&quot;)
-cols &lt;- scale_color(x, by=&quot;height&quot;)
-ggtree(x, right=TRUE, mrsd=&quot;2005-04-02&quot;, color=cols) + theme_tree2() +
-    geom_text(aes(x=max(x), label=label), size=1, color=cols, hjust=-.3) +
-        scale_x_continuous(breaks=c(1992, 1995, 1997, 2000, 2002, 2005), minor_breaks=seq(1992, 2005, 1)) +
-            geom_segment(aes(xend=max(x)+.20, yend=y), linetype=&quot;dotted&quot;, size=.1, color=cols) +
-                theme(panel.grid.major   = element_line(color=&quot;black&quot;, size=.2),
-                      panel.grid.minor   = element_line(color=&quot;grey&quot;, size=.2),
-                      panel.grid.major.y = element_blank(),
-                      panel.grid.minor.y = element_blank()) 
+ seq.x &lt;- unlist(strsplit(X, ''))
+ seq.y &lt;- unlist(strsplit(Y, ''))
+
+ seq.x &lt;- c(0,seq.x)
+ seq.y &lt;- c(0,seq.y)
+
+ match &lt;- 5
+ mismatch &lt;- -2
+ indel &lt;- -6
+
+ ## initial the score matrix
+ score &lt;- matrix(NA, length(seq.x), length(seq.y))
+ score[,1] &lt;- sapply(1:length(seq.x)-1, function(x) x * indel)
+ score[1,] &lt;- sapply(1:length(seq.y)-1, function(x) x * indel)
+
+ ## The dynamic programming, global alignment recursion
+ for (i in 2:length(seq.x)) {
+     for (j in 2:length(seq.y)){
+         # seq.x[i] , seq.y[j] are aligned
+         if ( seq.x[i] == seq.y[j]) {
+             score[i,j] &lt;- score[i-1, j-1] + match
+         } else {
+             score[i,j] &lt;- score[i-1, j-1] + mismatch
+         }
+         # seq.x[i] aligned to -
+         sc &lt;- score[i-1,j] + indel
+         if (sc &gt; score[i,j])
+             score[i,j] = sc
+         # seq.y[j] aligned to -
+         sc &lt;- score[i,j-1] + indel
+         if (sc &gt; score[i,j])
+             score[i,j] = sc
+     }
+ }
+
+ ## Traceback
+ i &lt;- length(seq.x)
+ j &lt;- length(seq.y)
+ ax &lt;- character()
+ ay &lt;- character()
+ while (i &gt; 1 &amp;&amp; j &gt;1){
+     ## case 1: best was seq.x[i] aligned to seq.y[j]
+     sc &lt;- score[i-1,j-1]
+     if (seq.x[i] == seq.y[j]) {
+         sc &lt;- sc + match
+     } else {
+         sc &lt;- sc + mismatch
+     }
+     if (sc == score[i,j]) {
+         ax &lt;- c(seq.x[i], ax)
+         ay &lt;- c(seq.y[j], ay)
+         i &lt;- i -1
+         j &lt;- j-1
+         next
+     }
+     ## case 2: best was seq.x[i] aligned to -
+     if ((score[i-1,j] + indel) == score[i,j]) {
+         ax &lt;- c(seq.x[i], ax)
+         ay &lt;- c(&quot;-&quot;, ay)
+         i &lt;- i-1
+         next
+     }
+     ## case 3: best was seq.y[j] aligned to -
+     if ((score[i,j-1] + indel) == score[i,j]) {
+         ax &lt;- c(&quot;-&quot;, ax)
+         ay &lt;- c(seq.y[j], ay)
+         j &lt;- j-1
+         next
+     }
+ }
+
+ cat (&quot;Sequence X: &quot;, X,&quot;\n&quot;)
+ cat (&quot;Sequence Y: &quot;, Y,&quot;\n&quot;)
+ cat (&quot;Scoring system: &quot;, match, &quot; for match; &quot;, mismatch, &quot; for mismatch; &quot;, indel, &quot; for gap&quot;, &quot;\n\n&quot;)
+
+ cat (&quot;Dynamic programming matrix:\n&quot;)
+ print (score)
+
+ cat (&quot;\nAlignment:\n&quot;)
+ cat (paste(ax, collapse=''), &quot;\n&quot;)
+ cat (paste(ay, collapse=''),&quot;\n\n&quot;)
+ cat (&quot;Optimum alignment score: &quot;, score[length(score)],&quot;\n&quot;)
 </code></pre>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.16.14.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/2008/11/ralignment.png" alt="" /></p>
 
 
 	  
@@ -152,11 +217,9 @@ ggtree(x, right=TRUE, mrsd=&quot;2005-04-02&quot;, color=cols) + theme_tree2() +
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler"><span aria-hidden="true">&larr;</span> DAVID functional analysis with clusterProfiler</a></li>
-        
 
         
-        <li class="next"><a href="https://guangchuangyu.github.io/2015/04/news-of-my-bioc-packages">NEWS of my BioC packages <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="next"><a href="https://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products">GOSemSim an R package for measuring semantic similarity among GO terms and gene products <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>

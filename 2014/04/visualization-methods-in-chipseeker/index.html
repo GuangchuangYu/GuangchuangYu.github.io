@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme" content="hugo-academic">
-    <meta name="generator" content="Hugo 0.15" />
+    <meta name="generator" content="Hugo 0.16" />
     <meta name="author" content="Guangchuang YU">
     <meta name="description" content="PhD student">
 
@@ -123,7 +123,7 @@
 <a href="http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html">ChIPseeker</a>
 (version &gt;=1.0.1).</p>
 
-<h3 id="chip-peaks-over-chromosomes:6a8a65de687a162a83f53f5c5a317279">ChIP peaks over Chromosomes</h3>
+<h3 id="chip-peaks-over-chromosomes">ChIP peaks over Chromosomes</h3>
 
 <pre><code>&gt; files=getSampleFiles()
 &gt; peak=readPeakFile(files[[4]])
@@ -151,7 +151,7 @@ GRanges object with 1331 ranges and 2 metadata columns:
 
 <p><img src="http://guangchuangyu.github.io/blog_images/2014/04/chrCoverage.png" alt="" /></p>
 
-<h3 id="heatmap-of-chip-binding-to-tss-regions:6a8a65de687a162a83f53f5c5a317279">Heatmap of ChIP binding to TSS regions</h3>
+<h3 id="heatmap-of-chip-binding-to-tss-regions">Heatmap of ChIP binding to TSS regions</h3>
 
 <pre><code>require(TxDb.Hsapiens.UCSC.hg19.knownGene)
 txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
@@ -160,14 +160,14 @@ peakHeatmap(files, weightCol=&quot;V5&quot;, TxDb=txdb, upstream=3000, downstrea
 
 <p><img src="http://guangchuangyu.github.io/blog_images/2014/04/peakHeat2.png" alt="" /></p>
 
-<h3 id="average-profile-of-chip-peaks-binding-to-tss-region:6a8a65de687a162a83f53f5c5a317279">Average Profile of ChIP peaks binding to TSS region</h3>
+<h3 id="average-profile-of-chip-peaks-binding-to-tss-region">Average Profile of ChIP peaks binding to TSS region</h3>
 
 <pre><code>plotAvgProf(files, TranscriptDb=txdb, weightCol=&quot;V5&quot;, upstream=3000, downstream=3000)
 </code></pre>
 
 <p><img src="http://guangchuangyu.github.io/blog_images/2014/04/avgProf2.png" alt="" /></p>
 
-<h3 id="genomic-annotation:6a8a65de687a162a83f53f5c5a317279">Genomic Annotation</h3>
+<h3 id="genomic-annotation">Genomic Annotation</h3>
 
 <pre><code>peakAnnoList=lapply(files, annotatePeak)
 plotAnnoPie(peakAnnoList[[1]])
@@ -180,14 +180,14 @@ plotAnnoPie(peakAnnoList[[1]])
 
 <p><img src="http://guangchuangyu.github.io/blog_images/2014/04/barAnno.png" alt="" /></p>
 
-<h3 id="distance-to-tss:6a8a65de687a162a83f53f5c5a317279">Distance to TSS</h3>
+<h3 id="distance-to-tss">Distance to TSS</h3>
 
 <pre><code>plotDistToTSS(peakAnnoList)
 </code></pre>
 
 <p><img src="http://guangchuangyu.github.io/blog_images/2014/04/distTSS.png" alt="" /></p>
 
-<h3 id="overlap-of-peak-sets:6a8a65de687a162a83f53f5c5a317279">Overlap of peak sets</h3>
+<h3 id="overlap-of-peak-sets">Overlap of peak sets</h3>
 
 <pre><code>genes= lapply(peakAnnoList, function(i) as.data.frame(i)$geneId)
 vennplot(genes)
