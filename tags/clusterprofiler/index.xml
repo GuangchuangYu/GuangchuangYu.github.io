@@ -7,8 +7,127 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 05 May 2016 20:13:57 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 20 Jul 2016 18:58:10 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/clusterprofiler/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>leading edge analysis</title>
+      <link>https://guangchuangyu.github.io/2016/07/leading-edge-analysis</link>
+      <pubDate>Wed, 20 Jul 2016 18:58:10 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/07/leading-edge-analysis</guid>
+      <description>
+
+&lt;h2 id=&#34;leading-edge-and-core-enrichment:644be873eb98ddda41ab685173c26627&#34;&gt;leading edge and core enrichment&lt;/h2&gt;
+
+&lt;p&gt;Leading edge analysis reports &lt;code&gt;Tags&lt;/code&gt; to indicate the percentage of genes contributing to the enrichment score, &lt;code&gt;List&lt;/code&gt; to indicate where in the list the enrichment score is attained and &lt;code&gt;Signal&lt;/code&gt; for enrichment signal strength.&lt;/p&gt;
+
+&lt;p&gt;It would also be very interesting to get the core enriched genes that contribute to the enrichment.&lt;/p&gt;
+
+&lt;p&gt;Now &lt;a href=&#34;https://guangchuangyu.github.io/DOSE&#34;&gt;DOSE&lt;/a&gt;, &lt;a href=&#34;https://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; and &lt;a href=&#34;https://guangchuangyu.github.io/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt; all support leading edge analysis and report core enriched genes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(DOSE)
+data(geneList)
+x &amp;lt;- gseDO(geneList)
+
+## [1] &amp;quot;preparing geneSet collections...&amp;quot;
+## [1] &amp;quot;GSEA analysis...&amp;quot;
+## [1] &amp;quot;leading edge analysis...&amp;quot;
+## [1] &amp;quot;done...&amp;quot;
+
+head(x)
+
+##                        ID                             Description setSize
+## DOID:1492       DOID:1492                  eye and adnexa disease     459
+## DOID:5614       DOID:5614                             eye disease     450
+## DOID:0060037 DOID:0060037 developmental disorder of mental health     315
+## DOID:374         DOID:374                       nutrition disease     313
+## DOID:5679       DOID:5679                         retinal disease     299
+## DOID:654         DOID:654                           overnutrition     298
+##              enrichmentScore       NES      pvalue   p.adjust    qvalues
+## DOID:1492         -0.3105160 -1.379586 0.001231527 0.03329506 0.02257366
+## DOID:5614         -0.3125247 -1.386602 0.001243781 0.03329506 0.02257366
+## DOID:0060037      -0.3407349 -1.473028 0.001307190 0.03329506 0.02257366
+## DOID:374          -0.3421127 -1.477222 0.001310616 0.03329506 0.02257366
+## DOID:5679         -0.3676313 -1.582707 0.001333333 0.03329506 0.02257366
+## DOID:654          -0.3490198 -1.500301 0.001340483 0.03329506 0.02257366
+##              rank                   leading_edge
+## DOID:1492    1793 tags=22%, list=14%, signal=19%
+## DOID:5614    1768 tags=22%, list=14%, signal=19%
+## DOID:0060037 2313 tags=24%, list=19%, signal=20%
+## DOID:374     1464 tags=22%, list=12%, signal=20%
+## DOID:5679    1768 tags=24%, list=14%, signal=21%
+## DOID:654     1464 tags=21%, list=12%, signal=19%
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         core_enrichment
+## DOID:1492    3371/3082/5914/2878/4153/3791/23247/1543/80184/6750/1958/2098/7450/596/9187/2034/482/948/1490/1280/3931/5737/4314/4881/2261/3426/187/629/6403/7042/6785/7507/2934/5176/4060/1277/7078/5950/2057/727/10516/4311/2247/1295/358/10203/2192/582/10218/57125/3485/585/1675/6310/2202/4313/2944/4254/3075/1501/2099/3480/4653/1195/6387/3305/1471/857/4016/1909/4053/6678/1296/7033/4915/55812/1191/5654/10631/2152/2697/7043/2952/6935/2200/3572/7177/7031/3479/2006/10451/9370/771/3117/125/652/4693/5346/1524
+## DOID:5614              3082/5914/2878/4153/3791/23247/1543/80184/6750/1958/2098/7450/596/9187/2034/482/948/1490/1280/3931/5737/4314/4881/2261/3426/187/629/6403/7042/6785/7507/2934/5176/4060/1277/7078/5950/2057/727/10516/4311/2247/1295/358/10203/2192/582/10218/57125/3485/585/1675/6310/2202/4313/2944/4254/3075/1501/2099/3480/4653/6387/3305/1471/857/4016/1909/4053/6678/1296/7033/4915/55812/1191/5654/10631/2152/2697/7043/2952/6935/2200/3572/7177/7031/3479/2006/10451/9370/771/3117/125/652/4693/5346/1524
+## DOID:0060037                                                                                                         154/1760/9732/7337/5175/6532/4763/54806/9759/6326/1499/7157/221037/627/2908/3399/2571/3082/23503/3791/51265/27347/55650/596/3067/51185/7552/22829/23426/324/5021/4885/7248/8910/8604/3397/4208/3400/26470/553/3953/6812/64221/80208/5172/9037/3952/477/93664/3625/2944/6925/6594/7102/3908/2550/4915/4922/26960/1746/2697/6863/3913/2891/367/4128/150/7166/6505/5348/18/4129/9370/57502/4137/79083
+## DOID:374                                                                                                                                                                    2169/1490/7840/4887/4314/595/4018/6403/590/3087/866/66036/5919/5176/3953/164656/5950/2638/2166/5243/5468/5108/10560/4023/3485/7350/3952/1149/585/1513/3489/79068/4671/477/4313/3625/9369/6720/7494/2099/3480/3991/23446/6678/4915/5167/8228/165/2152/185/367/4982/3667/4128/9607/3572/150/563/1489/3479/9370/9122/5105/2167/5346/79689/5241
+## DOID:5679                                                                                                                                          2878/3791/23247/80184/6750/7450/596/9187/2034/482/948/1490/1280/5737/4314/4881/3426/187/629/6403/6785/2934/5176/7078/5950/727/10516/4311/2247/1295/358/10203/582/10218/57125/585/1675/6310/2202/4313/2944/4254/3075/2099/3480/4653/6387/1471/857/4016/1909/4053/6678/1296/4915/55812/1191/5654/10631/2697/2952/6935/2200/3479/2006/10451/9370/771/652/4693/5346/1524
+## DOID:654                                                                                                                                                                                            2169/1490/7840/4887/4314/595/4018/6403/590/3087/866/66036/5919/5176/3953/5950/2638/2166/5243/5468/4023/3485/7350/3952/1149/585/1513/3489/79068/4671/477/4313/3625/9369/6720/7494/2099/3480/3991/6678/4915/5167/8228/165/2152/185/367/4982/3667/4128/9607/3572/150/563/1489/3479/9370/9122/5105/2167/5346/79689/5241
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;cnetplot-for-core-enriched-genes:644be873eb98ddda41ab685173c26627&#34;&gt;&lt;code&gt;cnetplot&lt;/code&gt; for core enriched genes&lt;/h2&gt;
+
+&lt;p&gt;With core enriched genes reported, &lt;code&gt;cnetplot&lt;/code&gt; function for GSEA result is also implemented.&lt;/p&gt;
+
+&lt;h3 id=&#34;setreadable:644be873eb98ddda41ab685173c26627&#34;&gt;&lt;code&gt;setReadable&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;To make the plot more readable, we can use &lt;code&gt;setReadable&lt;/code&gt; to convert &lt;code&gt;Entrez ID&lt;/code&gt; to &lt;code&gt;Gene Symbol&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;y &amp;lt;- setReadable(x, &#39;org.Hs.eg.db&#39;)
+head(y, 2)
+
+##                        ID                             Description setSize
+## DOID:1492       DOID:1492                  eye and adnexa disease     459
+## DOID:5614       DOID:5614                             eye disease     450
+##              enrichmentScore       NES      pvalue   p.adjust    qvalues
+## DOID:1492         -0.3105160 -1.379586 0.001231527 0.03329506 0.02257366
+## DOID:5614         -0.3125247 -1.386602 0.001243781 0.03329506 0.02257366
+##              rank                   leading_edge
+## DOID:1492    1793 tags=22%, list=14%, signal=19%
+## DOID:5614    1768 tags=22%, list=14%, signal=19%
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        core_enrichment
+## DOID:1492    TNC/HGF/RARA/GPX3/MBL2/KDR/KIAA0556/CYP1A1/CEP290/SST/EGR1/ESD/VWF/BCL2/SLC24A1/EPAS1/ATP1B2/CD36/CTGF/COL2A1/LCAT/PTGFR/MMP3/NPR1/FGFR3/CFI/APLNR/CFB/SELP/TGFB2/ELOVL4/XPA/GSN/SERPINF1/LUM/COL1A1/TIMP3/RBP4/EPOR/C5/FBLN5/MME/FGF2/COL8A1/AQP1/CALCRL/FBLN1/BBS1/ANGPTL7/PLXDC1/IGFBP2/BBS4/CFD/ATXN1/EFEMP1/MMP2/GSTM1/KITLG/CFH/CTNND2/ESR1/IGF1R/MYOC/CLK1/CXCL12/HSPA1L/CST3/CAV1/LOXL1/EDNRA/LTBP2/SPARC/COL8A2/TFF3/NTRK2/SPATA7/CLU/HTRA1/POSTN/F3/GJA1/TGFB3/GSTT1/ZEB1/FBN1/IL6ST/TPSAB1/TFF1/IGF1/ELN/VAV3/ADIPOQ/CA12/HLA-DQA1/ADH1B/BMP4/NDP/PLIN1/CX3CR1
+## DOID:5614             HGF/RARA/GPX3/MBL2/KDR/KIAA0556/CYP1A1/CEP290/SST/EGR1/ESD/VWF/BCL2/SLC24A1/EPAS1/ATP1B2/CD36/CTGF/COL2A1/LCAT/PTGFR/MMP3/NPR1/FGFR3/CFI/APLNR/CFB/SELP/TGFB2/ELOVL4/XPA/GSN/SERPINF1/LUM/COL1A1/TIMP3/RBP4/EPOR/C5/FBLN5/MME/FGF2/COL8A1/AQP1/CALCRL/FBLN1/BBS1/ANGPTL7/PLXDC1/IGFBP2/BBS4/CFD/ATXN1/EFEMP1/MMP2/GSTM1/KITLG/CFH/CTNND2/ESR1/IGF1R/MYOC/CXCL12/HSPA1L/CST3/CAV1/LOXL1/EDNRA/LTBP2/SPARC/COL8A2/TFF3/NTRK2/SPATA7/CLU/HTRA1/POSTN/F3/GJA1/TGFB3/GSTT1/ZEB1/FBN1/IL6ST/TPSAB1/TFF1/IGF1/ELN/VAV3/ADIPOQ/CA12/HLA-DQA1/ADH1B/BMP4/NDP/PLIN1/CX3CR1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;cnetplot:644be873eb98ddda41ab685173c26627&#34;&gt;&lt;code&gt;cnetplot&lt;/code&gt;&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;cnetplot(y, foldChange=geneList)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/cnetplot_down.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the figure, we can find that most significant associated diseases are down-regulated.&lt;/p&gt;
+
+&lt;p&gt;We can of course visualize significant up-regulated disease pathways.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;up &amp;lt;- y$Description[order(y$NES, decreasing=TRUE)][1:6]
+up
+
+## [1] &amp;quot;tuberculosis&amp;quot;                                  
+## [2] &amp;quot;respiratory syncytial virus infectious disease&amp;quot;
+## [3] &amp;quot;laryngeal carcinoma&amp;quot;                           
+## [4] &amp;quot;Kawasaki disease&amp;quot;                              
+## [5] &amp;quot;breast ductal carcinoma&amp;quot;                       
+## [6] &amp;quot;pulmonary sarcoidosis&amp;quot;
+
+cnetplot(y, foldChange=geneList, showCategory=up)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/cnetplot_up.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;gseaplot:644be873eb98ddda41ab685173c26627&#34;&gt;&lt;code&gt;gseaplot&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;gseaplot&lt;/code&gt; now supports adding plot title.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gseaplot(y, y$ID[1], title=y$Description[1])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>NEWS of my BioC packages</title>
@@ -2106,144 +2225,6 @@ spd00520     9
 supports downloading the latest KEGG annotation for enrichment analysis
 and it supports all species that have KEGG annotation available in KEGG
 database.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>why clusterProfiler fails</title>
-      <link>https://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails</link>
-      <pubDate>Thu, 07 Aug 2014 05:46:35 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails</guid>
-      <description>&lt;p&gt;Recently, there are some
-&lt;a href=&#34;http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/&#34;&gt;comments&lt;/a&gt;
-said that sometimes clusterProfiler failed in KEGG enrichment analysis.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;
-compared cluserProfiler with GeneAnswers and found that clusterProfiler
-gives larger p values. The result forces me to test it.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;it eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used
-an old version of clusterProfiler which didn&amp;rsquo;t use &lt;em&gt;as.character&lt;/em&gt; to
-coerce the input&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;require(GeneAnswers)
-data(&#39;humanGeneInput&#39;)
-y &amp;lt;- geneAnswersBuilder(humanGeneInput, &#39;org.Hs.eg.db&#39;, 
-                        categoryType=&#39;KEGG&#39;, testType=&#39;hyperG&#39;, 
-                        pvalueT=0.1, geneExpressionProfile=humanExpr, 
-                        verbose=FALSE)
-yy &amp;lt;- y@enrichmentInfo
-
-require(clusterProfiler)
-x &amp;lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, 
-                qvalueCutoff=0.2, minGSSize=1)
-xx &amp;lt;- summary(x)
-
-id &amp;lt;- sub(&amp;quot;hsa&amp;quot;, &amp;quot;&amp;quot;, xx$ID)
-idx &amp;lt;- id %in% rownames(yy)
-
-p.clusterProfiler &amp;lt;- xx$pvalue[idx]
-p.GeneAnswers &amp;lt;- yy[id[idx],]$&amp;quot;p value&amp;quot;
-&amp;gt; cor(p.clusterProfiler, p.GeneAnswers)
-[1] 0.9996165
-&amp;gt; p.clusterProfiler - p.GeneAnswers
- [1]  1.029789e-04 -3.588252e-05 -4.623010e-05  1.079117e-04 -1.075746e-04
- [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04  7.588155e-04
-[11] -3.702141e-04  2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04
-[16] -5.560738e-04 -5.884079e-04  2.011138e-03
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Here, I used the dataset, humanGeneInput, provided by GeneAnswers. There
-are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
-have p values below 0.1 by clusterProfiler. 18 of them are the same and
-p values are highly correlated with very small differences. &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34;&gt;Enrichment
-analyses&lt;/a&gt; are tested by
-geometric model, I believe all packages do it in the same way. The
-difference should be attributed to annotation file and I found
-background ratio are different.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; xx[1,]
-               ID Description GeneRatio  BgRatio     pvalue   p.adjust
-hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
-             qvalue                      geneID Count
-hsa04110 0.01683117 894/595/4175/6502/4173/9134     6
-&amp;gt; yy[1,]
-      genes in Category percent in the observed List percent in the genome
-04110                 6                    0.1176471            0.02112436
-      fold of overrepresents odds ratio      p value
-04110                5.56926   6.441808 0.0006512612
-
-
-&amp;gt; allEG = unique(unlist(as.list(org.Hs.egPATH2EG)))
-&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))
-[1] 124
-&amp;gt; length(allEG)
-[1] 5870
-&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))/length(allEG)
-[1] 0.02112436
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In the above example, the BgRatio of clusterProfiler is &lt;sup&gt;128&lt;/sup&gt;&amp;frasl;&lt;sub&gt;5894&lt;/sub&gt;,
-slightly larger than 0.02112436 calculated by GeneAnswers. This is why
-clusterProfiler gives a p value larger than GeneAnswers (In this
-particular pathway of this particular example, clusterProfiler not
-always produce larger p values). The annotation file used by
-clusterProfiler is KEGG.db, while GeneAnswers uses org.Hs.eg.db. This is
-the reason of the difference and it&amp;rsquo;s not a big deal.&lt;/p&gt;
-
-&lt;p&gt;It&amp;rsquo;s not a good idea to give the background ratio in decimal format as
-GeneAnswers does. We have no idea of the number of total genes in
-background with ratio like 0.02112436. Some software packages may use
-the gene number of the whole genome as background. If the total gene
-number is setting to 18000, the background ratio turn out to be
-&lt;sup&gt;124&lt;/sup&gt;&amp;frasl;&lt;sub&gt;18000&lt;/sub&gt;=0.006888889. With 0.006888889, it&amp;rsquo;s hard to detect the
-background gene number was set to a larger number. In this scenario, all
-the p values will become very small, and many false positive were
-reported.&lt;/p&gt;
-
-&lt;p&gt;clusterProfiler and GeneAnswers estimate the total genes in the right
-way, but there are many packages may setting it to all the genes, no
-matter they have annotation or not. For instance, some software may
-setting the background to 20,000 when testing human genes.&lt;/p&gt;
-
-&lt;p&gt;I still remember in 2007, I used princeton&amp;rsquo;s web server,
-&lt;a href=&#34;http://go.princeton.edu/cgi-bin/GOTermFinder&#34;&gt;http://go.princeton.edu/cgi-bin/GOTermFinder&lt;/a&gt;, to test GO enrichment. I
-found the background gene number was set to a very large number and all
-the p values were extremely small. When writing this blog post, I submit
-a job to this web server and found the gene number of human is setting
-to 45758. After I found this, I never use this web server again. The
-result is extremely &amp;ldquo;significant&amp;rdquo;! The web sever has an option, &amp;ldquo;Enter
-the number of products estimated for your organism&amp;rdquo;. This is ridiculous.
-It&amp;rsquo;s hard to estimate for ordinary users and it is impossible to
-estimate it correctly since we don&amp;rsquo;t know the annotation file in used.
-The default number, 45758 for human, is too large, result in many false
-positive.&lt;/p&gt;
-
-&lt;p&gt;Input a gene list as background is useful, for instance we may use all
-genes that are detected in microarray experiment or all proteins
-identified by MS as background. This is an effective way to eliminate
-bias of using the whole genome. Use the whole genome is not mean to use
-the total number of gene in the genome as background. By default, KEGG
-enrichment analyses of clusterProfiler and GeneAnswers are using the
-whole genome, that is about 5900 genes for human, which are all genes
-have pathway annotation in the whole genome. Others without annotation
-are abandoned. This itself is a bias actually, but it&amp;rsquo;s the realistic.
-If we include all genes no matter they have annotation or not, and
-setting 20000 or even more as background of human genes, definitely we
-will get significant result! But it is man-made significant.&lt;/p&gt;
-
-&lt;p&gt;As I replied to
-&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;,
-if p values obtained by different software are different, trust the one
-produce larger p values. Many user will choose a software give a more
-&amp;ldquo;significant&amp;rdquo; result, but trust me, you are making type I error.
-Conservatively, always choose the one give you larger p-values if you
-know nothing about the calculation. Software that never &amp;ldquo;fail&amp;rdquo; is
-untrustable.&lt;/p&gt;
 </description>
     </item>
     
