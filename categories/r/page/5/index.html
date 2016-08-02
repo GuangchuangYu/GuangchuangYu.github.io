@@ -74,6 +74,51 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler">DAVID functional analysis with clusterProfiler</a></h2>
+        <div class="article-style"><p><p><a href="https://github.com/GuangchuangYu/clusterProfiler">clusterProfiler</a> was
+used to visualize <a href="http://david.abcc.ncifcrf.gov/summary.jsp">DAVID</a>
+results in a paper published in <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3907017/">BMC
+Genomics</a>.</p>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/clusterProfiler_david.png" alt="" /></p>
+
+<p>Some users told me that they may want to use DAVID at some
+circumstances. I think it maybe a good idea to make clusterProfiler
+supports DAVID, so that
+<a href="http://david.abcc.ncifcrf.gov/summary.jsp">DAVID</a> users can use
+visualization functions provided by
+<a href="https://github.com/GuangchuangYu/clusterProfiler">clusterProfiler</a>.</p>
+
+<pre><code>require(DOSE)
+require(clusterProfiler)
+data(geneList)
+gene = names(geneList)[abs(geneList) &gt; 2]
+david = enrichDAVID(gene = gene, idType=&quot;ENTREZ_GENE_ID&quot;, 
+listType=&quot;Gene&quot;, annotation=&quot;KEGG_PATHWAY&quot;)
+
+
+
+&gt; summary(david)
+               ID            Description GeneRatio  BgRatio       pvalue
+hsa04110 hsa04110             Cell cycle     11/68 125/5085 4.254437e-06
+hsa04114 hsa04114         Oocyte meiosis     10/68 110/5085 1.119764e-05
+hsa03320 hsa03320 PPAR signaling pathway      7/68  69/5085 2.606715e-04
+             p.adjust qvalue                                             geneID
+hsa04110 0.0003998379     NA 9133/4174/890/991/1111/891/7272/8318/4085/983/9232
+hsa04114 0.0005261534     NA    9133/5241/51806/3708/991/891/4085/983/9232/6790
+hsa03320 0.0081354974     NA                 4312/2167/5346/5105/3158/9370/9415
+         Count
+hsa04110    11
+hsa04114    10
+hsa03320     7
+</code></pre>
+
+<p>There are only 5085 human genes annotated by KEGG, this is due to
+out-of-date DAVID data.</p>
+</p></div>
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2015/03/dose-an-r/bioconductor-package-for-disease-ontology-semantic-and-enrichment-analysis">DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis</a></h2>
         <div class="article-style"><p><p>My R/Bioconductor package,
 <a href="https://github.com/GuangchuangYu/DOSE">DOSE</a>, published in
@@ -216,40 +261,6 @@ the color of enrichment map in <a href="http://cytoscape.org/">Cytoscape</a>. I 
 very curious how enrichment map can helps to interpret enrichment
 results. It took me 2 hours to implement it using R and I am surprised
 that the enrichment map is better than anticipated.</p>
-</p></div>
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker">visualization methods in ChIPseeker</a></h2>
-        <div class="article-style"><p><p>After two weeks developed, I have added/updated some plot functions in
-<a href="http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html">ChIPseeker</a>
-(version &gt;=1.0.1).</p>
-
-<h3 id="chip-peaks-over-chromosomes:6a8a65de687a162a83f53f5c5a317279">ChIP peaks over Chromosomes</h3>
-
-<pre><code>&gt; files=getSampleFiles()
-&gt; peak=readPeakFile(files[[4]])
-&gt; peak
-GRanges object with 1331 ranges and 2 metadata columns:
-         seqnames                 ranges strand   |             V4        V5
-                               |        
-     [1]     chr1     [ 815092,  817883]      *   |    MACS_peak_1    295.76
-     [2]     chr1     [1243287, 1244338]      *   |    MACS_peak_2     63.19
-     [3]     chr1     [2979976, 2981228]      *   |    MACS_peak_3    100.16
-     [4]     chr1     [3566181, 3567876]      *   |    MACS_peak_4    558.89
-     [5]     chr1     [3816545, 3818111]      *   |    MACS_peak_5     57.57
-     ...      ...                    ...    ... ...            ...       ...
-  [1327]     chrX [135244782, 135245821]      *   | MACS_peak_1327     55.54
-  [1328]     chrX [139171963, 139173506]      *   | MACS_peak_1328    270.19
-  [1329]     chrX [139583953, 139586126]      *   | MACS_peak_1329    918.73
-  [1330]     chrX [139592001, 139593238]      *   | MACS_peak_1330    210.88
-  [1331]     chrY [ 13845133,  13845777]      *   | MACS_peak_1331     58.39
-  ---
-  seqlengths:
-    chr1 chr10 chr11 chr12 chr13 chr14 ...  chr6  chr7  chr8  chr9  chrX  chrY
-      NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA    NA
-&gt; covplot(peak, weightCol=&quot;V5&quot;)
-</code></pre>
 </p></div>
     </div>
     
