@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme" content="hugo-academic">
+    <meta name="generator" content="Hugo 0.15" />
+    <meta name="author" content="Guangchuang YU">
+    <meta name="description" content="PhD student">
+
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/highlight.min.css">
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/academicons.min.css">
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/hugo-academic.css">
+    
+
+
+    <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/08/using-meshes-for-mesh-enrichment-analysis">
+
+    <title>using meshes for MeSH Enrichment Analysis | Guangchuang YU</title>
+
+</head>
+<body id="top">
+
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+    <div class="container">
+
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://guangchuangyu.github.io/">Guangchuang YU</a>
+        </div>
+
+        
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/#top">Home</a></li>
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/#publications">Publications</a></li>
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/#posts">Posts</a></li>
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/#projects">Projects</a></li>
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/#teaching">Teaching</a></li>
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/resume">Resume</a></li>
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/#contact">Contact</a></li>
+                
+                <li class="nav-item"><a href="https://guangchuangyu.github.io/cn">中文入口</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">using meshes for MeSH Enrichment Analysis</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-08-03 00:19:15 &#43;0800 HKT" itemprop="datePublished">Wed, Aug 3, 2016</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/meshes">meshes</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/mesh">MeSH</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/gsea">GSEA</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ora">ORA</a>
+        
+    </span>
+    
+    
+
+    
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="//www.addtoany.com/share"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+</div>
+<script async src="//static.addtoany.com/menu/page.js"></script>
+
+
+
+ 
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+	  
+	  
+        <div class="article-style" itemprop="articleBody">
+
+          <p>MeSH (Medical Subject Headings) is the NLM (U.S. National Library of
+Medicine) controlled vocabulary used to manually index articles for
+MEDLINE/PubMed. MeSH is comprehensive life science vocabulary. MeSH has
+19 categories and <code>MeSH.db</code> contains 16 of them. That is:</p>
+
+<table>
+<thead>
+<tr class="header">
+<th>Abbreviation</th>
+<th>Category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>Anatomy</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>Organisms</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>Diseases</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>Chemicals and Drugs</td>
+</tr>
+<tr class="odd">
+<td>E</td>
+<td>Analytical, Diagnostic and Therapeutic Techniques and Equipment</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>Psychiatry and Psychology</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>Phenomena and Processes</td>
+</tr>
+<tr class="even">
+<td>H</td>
+<td>Disciplines and Occupations</td>
+</tr>
+<tr class="odd">
+<td>I</td>
+<td>Anthropology, Education, Sociology and Social Phenomena</td>
+</tr>
+<tr class="even">
+<td>J</td>
+<td>Technology and Food and Beverages</td>
+</tr>
+<tr class="odd">
+<td>K</td>
+<td>Humanities</td>
+</tr>
+<tr class="even">
+<td>L</td>
+<td>Information Science</td>
+</tr>
+<tr class="odd">
+<td>M</td>
+<td>Persons</td>
+</tr>
+<tr class="even">
+<td>N</td>
+<td>Health Care</td>
+</tr>
+<tr class="odd">
+<td>V</td>
+<td>Publication Type</td>
+</tr>
+<tr class="even">
+<td>Z</td>
+<td>Geographical Locations</td>
+</tr>
+</tbody>
+</table>
+
+<p>MeSH terms were associated with Entrez Gene ID by three methods,
+<code>gendoo</code>, <code>gene2pubmed</code> and <code>RBBH</code> (Reciprocal Blast Best Hit).</p>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Way of corresponding Entrez Gene IDs and MeSH IDs</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Gendoo</td>
+<td>Text-mining</td>
+</tr>
+
+<tr>
+<td>gene2pubmed</td>
+<td>Manual curation by NCBI teams</td>
+</tr>
+
+<tr>
+<td>RBBH</td>
+<td>sequence homology with BLASTP search (E-value<10<sup>-50</sup>)</td>
+</tr>
+</tbody>
+</table>
+
+<p><a href="https://github.com/GuangchuangYu/meshes">meshes</a>
+supports enrichment analysis (over-representation analysis and gene set
+enrichment analysis) of gene list or whole expression profile using MeSH
+annotation. Data source from <code>gendoo</code>, <code>gene2pubmed</code> and <code>RBBH</code> are all
+supported. User can selecte interesting category to test. All 16
+categories are supported. The analysis supports &gt;70 species listed in <a href="https://bioconductor.org/packages/release/BiocViews.html#___MeSHDb">MeSHDb BiocView</a>.</p>
+
+<pre><code>library(meshes)
+
+data(geneList)
+de = names(geneList)[1:100]
+x &lt;- enrichMeSH(de, MeSHDb = &quot;MeSH.Hsa.eg.db&quot;, database='gendoo', category = 'C')
+head(x)
+
+##              ID              Description GeneRatio   BgRatio       pvalue
+## D043171 D043171  Chromosomal Instability     16/96 198/16528 2.794765e-14
+## D000782 D000782               Aneuploidy     17/96 320/16528 3.866830e-12
+## D042822 D042822      Genomic Instability     16/96 312/16528 3.007419e-11
+## D012595 D012595    Scleroderma, Systemic     11/96 279/16528 6.449334e-07
+## D009303 D009303 Nasopharyngeal Neoplasms     11/96 314/16528 2.049315e-06
+## D019698 D019698     Hepatitis C, Chronic     11/96 317/16528 2.246856e-06
+##             p.adjust       qvalue
+## D043171 2.434241e-11 1.794534e-11
+## D000782 1.684004e-09 1.241456e-09
+## D042822 8.731539e-09 6.436931e-09
+## D012595 1.404343e-04 1.035288e-04
+## D009303 3.261686e-04 2.404530e-04
+## D019698 3.261686e-04 2.404530e-04
+##                                                                                      geneID
+## D043171    4312/991/2305/1062/4605/10403/7153/55355/4751/4085/81620/332/7272/9212/1111/6790
+## D000782 4312/55143/991/1062/7153/4751/79019/55839/890/983/4085/332/7272/9212/8208/1111/6790
+## D042822     55143/991/1062/4605/7153/1381/9787/4751/10635/890/4085/81620/332/9212/1111/6790
+## D012595                              4312/6280/1062/4605/7153/3627/4283/6362/7850/3002/4321
+## D009303                                4312/7153/3627/6241/983/4085/5918/332/3002/4321/6790
+## D019698                               4312/3627/10563/6373/4283/983/6362/7850/332/3002/3620
+##         Count
+## D043171    16
+## D000782    17
+## D042822    16
+## D012595    11
+## D009303    11
+## D019698    11
+</code></pre>
+
+<p>In the over-representation analysis, we use data source from <code>gendoo</code> and <code>C</code> (Diseases) category.</p>
+
+<p>In the following example, we use data source from <code>gene2pubmed</code> and test category <code>G</code> (Phenomena and Processes) using GSEA.</p>
+
+<pre><code>y &lt;- gseMeSH(geneList, MeSHDb = &quot;MeSH.Hsa.eg.db&quot;, database = 'gene2pubmed', category = &quot;G&quot;)
+
+## [1] &quot;preparing geneSet collections...&quot;
+## [1] &quot;GSEA analysis...&quot;
+## [1] &quot;leading edge analysis...&quot;
+## [1] &quot;done...&quot;
+
+head(y)
+
+##              ID                  Description setSize enrichmentScore
+## D009929 D009929                   Organ Size     449      -0.3458797
+## D059647 D059647 Gene-Environment Interaction     455      -0.3551242
+## D009043 D009043               Motor Activity     398      -0.3391521
+## D050156 D050156                 Adipogenesis     368      -0.3618413
+## D004041 D004041                 Dietary Fats     314      -0.3427588
+## D006339 D006339                   Heart Rate     312      -0.3695689
+##               NES      pvalue   p.adjust    qvalues rank
+## D009929 -1.524164 0.001248439 0.03715088 0.02756207 2309
+## D059647 -1.564984 0.001251564 0.03715088 0.02756207 2237
+## D009043 -1.483672 0.001256281 0.03715088 0.02756207 1757
+## D050156 -1.577000 0.001256281 0.03715088 0.02756207 2207
+## D004041 -1.473730 0.001269036 0.03715088 0.02756207 1684
+## D006339 -1.588315 0.001270648 0.03715088 0.02756207 2405
+##                           leading_edge
+## D009929 tags=27%, list=18%, signal=22%
+## D059647 tags=26%, list=18%, signal=22%
+## D009043 tags=21%, list=14%, signal=18%
+## D050156 tags=26%, list=18%, signal=22%
+## D004041 tags=21%, list=13%, signal=19%
+## D006339 tags=29%, list=19%, signal=24%
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          core_enrichment
+## D009929                     154/9846/3315/6716/9732/5139/7337/5530/4086/6532/1499/7157/627/2252/22891/2908/8654/4088/22846/4057/860/268/2735/2104/23522/5480/51131/3082/10253/831/604/1028/182/7173/5624/8743/23047/596/9905/1548/2272/22829/948/27303/4314/196/6019/595/5021/7248/4212/2488/54820/5334/6403/2246/4803/866/5919/79789/1907/7048/1831/4060/2247/5468/8076/5793/3485/1733/3952/126/3778/79068/79633/6653/5244/4313/3625/10468/9201/1501/6720/2273/2099/3480/5764/6387/1471/1462/4016/2690/8817/8821/5125/1191/5350/2162/5744/23541/185/367/4982/25802/4128/150/3479/10451/9370/125/4857/1308/2167/652/57502/4137/8614/5241
+## D059647 9497/118/8859/6532/23405/7424/2295/7157/8631/627/2774/22891/2908/4088/51151/11132/1387/860/268/7366/2104/4153/29119/3791/1543/3643/22841/1129/5624/3240/3174/3350/5590/55304/55213/1548/2169/196/8204/8863/5021/23284/9162/11005/4256/3426/84159/5334/629/1793/4208/4322/7048/6817/553/56172/3953/22795/2638/210/5243/5468/1393/1012/27136/51314/4023/5172/4319/4214/3952/5577/126/7832/79068/4313/2944/9369/3075/6720/7494/2099/857/57161/9223/4306/79750/4035/4915/10443/5744/5654/100126791/3551/2487/1746/185/2952/6935/4128/4059/4582/27324/9358/64084/7166/6505/9370/3708/3117/80129/125/5105/2018/2167/652/4137/1524/5241
+## D009043                                                                                                                                                                                                       23621/3082/1291/2915/1543/7466/3240/3350/55304/181/2169/27306/80169/9627/196/8678/8863/23284/81627/4692/5799/2259/3087/1278/1277/3953/4747/2247/6414/210/4744/5468/89795/4023/8522/3485/3952/79068/8864/4313/2944/2273/2099/3480/8528/4908/56892/3339/57161/4741/4306/6571/79750/4915/5744/2487/58503/347/6863/2952/5327/367/4982/4128/4059/3572/150/7060/9358/7166/3479/9254/5348/4129/9370/3708/1311/5105/4137/1408/5241
+## D050156                                                                                                            5595/8609/9563/27332/1499/79738/4837/7157/79960/5729/408/2908/4088/6500/8038/4057/6649/5564/860/8648/10365/10253/54884/4602/7474/6776/79875/596/25956/8644/80781/79923/1490/50486/7840/84162/6041/4692/2246/4208/11075/63924/5919/284119/2308/9411/54795/5950/79365/2247/5468/50507/6469/8553/4023/594/7350/81029/3952/79068/5733/4313/10468/10628/6720/11213/55893/290/6678/63895/4035/633/23414/8639/2162/165/3551/10788/185/3357/367/4982/3667/1634/4128/23024/3479/6424/9370/2167/652/8839/54829/2625/79689/10974
+## D004041                                                                                                                                                                                                                                                                                      3554/4925/22841/7466/2181/3350/201134/181/2169/948/55911/324/4018/3426/3087/6785/2308/1581/56172/3953/1384/5950/2166/60481/5468/5166/50507/1012/27136/4023/7056/4214/9365/7350/3952/3778/79068/8864/2944/6720/5159/3991/2203/2819/9223/4035/32/213/165/347/2152/185/3487/5327/3667/54898/150/64084/3479/9370/5105/5174/2018/5346/7021/79689
+## D006339                                                                                                                                                                            4985/7139/8929/3784/3375/154/1760/9781/5139/118/2702/6532/6416/2869/270/7157/627/2908/7138/5563/3643/1129/7779/947/2034/4179/64388/1621/4881/8863/5021/844/4212/11030/5797/6403/4803/84059/79789/5176/3953/5243/5468/1012/2868/5793/4023/7056/3952/5577/126/2946/3778/477/5733/4313/2944/9201/3075/9499/2273/2099/1471/857/775/4306/4487/213/5350/5744/23245/2152/2697/2791/185/6863/2952/5327/80206/9607/3572/150/3479/2006/55259/9370/125/652/55351
+</code></pre>
+
+<p>Users can use visualization methods implemented in <a href="https://guangchuangyu.github.io/DOSE">DOSE</a> (i.e. <code>barplot</code>, <code>dotplot</code>, <code>cnetplot</code>, <code>enrichMap</code>, <code>upsetplot</code>, <code>gseaplot</code>) to help interpreting enriched results.</p>
+
+<pre><code>gseaplot(y, y[1,1], title=y[1,2])
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/mesh_gsea.png" alt="" /></p>
+
+
+	  
+	  
+        </div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/07/leading-edge-analysis"><span aria-hidden="true">&larr;</span> leading edge analysis</a></li>
+        
+
+        
+    </ul>
+</nav>
+
+    
+<section id="comments">
+  <div id="disqus_thread">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gcyu';
+    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  </div>
+</section>
+
+
+
+
+
+</div>
+<footer class="site-footer">
+
+    <div style="width:350px;margin:auto;">
+  <script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5qpvv5zz7fp&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script>
+</div>
+    <div class="inner">
+
+    <div class="container">
+
+        <p class="powered-by">
+
+            &copy; 2016 Guangchuang YU &middot; 
+
+            Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+            <span class="pull-right"><a href="#" id="back_to_top"><span class="button_icon"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></span></a></span>
+
+        </p>
+    </div>
+</footer>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="https://guangchuangyu.github.io/js/jquery-1.12.3.min.js"></script>
+        <script src="https://guangchuangyu.github.io/js/bootstrap.min.js"></script>
+        <script src="https://guangchuangyu.github.io/js/hugo-academic.js"></script>
+        
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){
+                i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},
+                    i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
+                m.parentNode.insertBefore(a,m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-77901140-1', 'auto');
+            ga('set', 'anonymizeIp', true);
+            ga('send', 'pageview');
+
+             
+            var links = document.querySelectorAll('a');
+            Array.prototype.map.call(links, function(item) {
+                if (item.host != document.location.host) {
+                    item.addEventListener('click', function() {
+                        var action = item.getAttribute('data-action') || 'follow';
+                        ga('send', 'event', 'outbound', action, item.href);
+                    });
+                }
+            });
+        </script>
+        
+
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+        
+
+	
+	<script type="text/javascript" src="//w.sharethis.com/button/buttons.js"></script>
+	<script type="text/javascript">stLight.options({publisher: "d135f460-3fc5-4802-8169-bd08e4734a09", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+
+    </body>
+</html>
+

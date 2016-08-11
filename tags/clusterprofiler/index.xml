@@ -7,230 +7,8 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 03 Aug 2016 00:19:15 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 20 Jul 2016 18:58:10 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/clusterprofiler/index.xml" rel="self" type="application/rss+xml" />
-    
-    <item>
-      <title>using clusterProfiler for MeSH Enrichment Analysis</title>
-      <link>https://guangchuangyu.github.io/2016/08/using-clusterprofiler-for-mesh-enrichment-analysis</link>
-      <pubDate>Wed, 03 Aug 2016 00:19:15 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/08/using-clusterprofiler-for-mesh-enrichment-analysis</guid>
-      <description>&lt;p&gt;MeSH (Medical Subject Headings) is the NLM (U.S. National Library of
-Medicine) controlled vocabulary used to manually index articles for
-MEDLINE/PubMed. MeSH is comprehensive life science vocabulary. MeSH has
-19 categories and &lt;code&gt;MeSH.db&lt;/code&gt; contains 16 of them. That is:&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr class=&#34;header&#34;&gt;
-&lt;th&gt;Abbreviation&lt;/th&gt;
-&lt;th&gt;Category&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;Anatomy&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;B&lt;/td&gt;
-&lt;td&gt;Organisms&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;C&lt;/td&gt;
-&lt;td&gt;Diseases&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;D&lt;/td&gt;
-&lt;td&gt;Chemicals and Drugs&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;E&lt;/td&gt;
-&lt;td&gt;Analytical, Diagnostic and Therapeutic Techniques and Equipment&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;F&lt;/td&gt;
-&lt;td&gt;Psychiatry and Psychology&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;G&lt;/td&gt;
-&lt;td&gt;Phenomena and Processes&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;H&lt;/td&gt;
-&lt;td&gt;Disciplines and Occupations&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;I&lt;/td&gt;
-&lt;td&gt;Anthropology, Education, Sociology and Social Phenomena&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;J&lt;/td&gt;
-&lt;td&gt;Technology and Food and Beverages&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;K&lt;/td&gt;
-&lt;td&gt;Humanities&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;L&lt;/td&gt;
-&lt;td&gt;Information Science&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;M&lt;/td&gt;
-&lt;td&gt;Persons&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;N&lt;/td&gt;
-&lt;td&gt;Health Care&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;V&lt;/td&gt;
-&lt;td&gt;Publication Type&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;Z&lt;/td&gt;
-&lt;td&gt;Geographical Locations&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;MeSH terms were associated with Entrez Gene ID by three methods,
-&lt;code&gt;gendoo&lt;/code&gt;, &lt;code&gt;gene2pubmed&lt;/code&gt; and &lt;code&gt;RBBH&lt;/code&gt; (Reciprocal Blast Best Hit).&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Method&lt;/th&gt;
-&lt;th&gt;Way of corresponding Entrez Gene IDs and MeSH IDs&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Gendoo&lt;/td&gt;
-&lt;td&gt;Text-mining&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;gene2pubmed&lt;/td&gt;
-&lt;td&gt;Manual curation by NCBI teams&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;RBBH&lt;/td&gt;
-&lt;td&gt;sequence homology with BLASTP search (E-value&lt;10&lt;sup&gt;-50&lt;/sup&gt;)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Now &lt;a href=&#34;https://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
-supports enrichment analysis (over-representation analysis and gene set
-enrichment analysis) of gene list or whole expression profile using MeSH
-annotation. Data source from &lt;code&gt;gendoo&lt;/code&gt;, &lt;code&gt;gene2pubmed&lt;/code&gt; and &lt;code&gt;RBBH&lt;/code&gt; are all
-supported. User can selecte interesting category to test. All 16
-categories are supported. The analysis supports &amp;gt;70 species listed in &lt;a href=&#34;https://bioconductor.org/packages/release/BiocViews.html#___MeSHDb&#34;&gt;MeSHDb BiocView&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;source(&amp;quot;https://www.bioconductor.org/biocLite.R&amp;quot;)
-
-if(!require(MeSH.Hsa.eg.db)) {
-    biocLite(&amp;quot;MeSH.Hsa.eg.db&amp;quot;)
-}
-
-if (!require(&amp;quot;MeSH.db&amp;quot;)) {
-    biocLite(&amp;quot;MeSH.db&amp;quot;)
-}
-
-
-library(clusterProfiler)
-
-data(geneList)
-de = names(geneList)[1:100]
-x &amp;lt;- enrichMeSH(de, MeSHDb = &amp;quot;MeSH.Hsa.eg.db&amp;quot;, database=&#39;gendoo&#39;, category = &#39;C&#39;)
-head(x)
-
-##              ID              Description GeneRatio   BgRatio       pvalue
-## D043171 D043171  Chromosomal Instability     16/96 198/16528 2.794765e-14
-## D000782 D000782               Aneuploidy     17/96 320/16528 3.866830e-12
-## D042822 D042822      Genomic Instability     16/96 312/16528 3.007419e-11
-## D012595 D012595    Scleroderma, Systemic     11/96 279/16528 6.449334e-07
-## D009303 D009303 Nasopharyngeal Neoplasms     11/96 314/16528 2.049315e-06
-## D019698 D019698     Hepatitis C, Chronic     11/96 317/16528 2.246856e-06
-##             p.adjust       qvalue
-## D043171 2.434241e-11 1.794534e-11
-## D000782 1.684004e-09 1.241456e-09
-## D042822 8.731539e-09 6.436931e-09
-## D012595 1.404343e-04 1.035288e-04
-## D009303 3.261686e-04 2.404530e-04
-## D019698 3.261686e-04 2.404530e-04
-##                                                                                      geneID
-## D043171    4312/991/2305/1062/4605/10403/7153/55355/4751/4085/81620/332/7272/9212/1111/6790
-## D000782 4312/55143/991/1062/7153/4751/79019/55839/890/983/4085/332/7272/9212/8208/1111/6790
-## D042822     55143/991/1062/4605/7153/1381/9787/4751/10635/890/4085/81620/332/9212/1111/6790
-## D012595                              4312/6280/1062/4605/7153/3627/4283/6362/7850/3002/4321
-## D009303                                4312/7153/3627/6241/983/4085/5918/332/3002/4321/6790
-## D019698                               4312/3627/10563/6373/4283/983/6362/7850/332/3002/3620
-##         Count
-## D043171    16
-## D000782    17
-## D042822    16
-## D012595    11
-## D009303    11
-## D019698    11
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In the over-representation analysis, we use data source from &lt;code&gt;gendoo&lt;/code&gt; and &lt;code&gt;C&lt;/code&gt; (Diseases) category.&lt;/p&gt;
-
-&lt;p&gt;In the following example, we use data source from &lt;code&gt;gene2pubmed&lt;/code&gt; and test category &lt;code&gt;G&lt;/code&gt; (Phenomena and Processes) using GSEA.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;y &amp;lt;- gseMeSH(geneList, MeSHDb = &amp;quot;MeSH.Hsa.eg.db&amp;quot;, database = &#39;gene2pubmed&#39;, category = &amp;quot;G&amp;quot;)
-
-## [1] &amp;quot;preparing geneSet collections...&amp;quot;
-## [1] &amp;quot;GSEA analysis...&amp;quot;
-## [1] &amp;quot;leading edge analysis...&amp;quot;
-## [1] &amp;quot;done...&amp;quot;
-
-head(y)
-
-##              ID                  Description setSize enrichmentScore
-## D009929 D009929                   Organ Size     449      -0.3458797
-## D059647 D059647 Gene-Environment Interaction     455      -0.3551242
-## D009043 D009043               Motor Activity     398      -0.3391521
-## D050156 D050156                 Adipogenesis     368      -0.3618413
-## D004041 D004041                 Dietary Fats     314      -0.3427588
-## D006339 D006339                   Heart Rate     312      -0.3695689
-##               NES      pvalue   p.adjust    qvalues rank
-## D009929 -1.524164 0.001248439 0.03715088 0.02756207 2309
-## D059647 -1.564984 0.001251564 0.03715088 0.02756207 2237
-## D009043 -1.483672 0.001256281 0.03715088 0.02756207 1757
-## D050156 -1.577000 0.001256281 0.03715088 0.02756207 2207
-## D004041 -1.473730 0.001269036 0.03715088 0.02756207 1684
-## D006339 -1.588315 0.001270648 0.03715088 0.02756207 2405
-##                           leading_edge
-## D009929 tags=27%, list=18%, signal=22%
-## D059647 tags=26%, list=18%, signal=22%
-## D009043 tags=21%, list=14%, signal=18%
-## D050156 tags=26%, list=18%, signal=22%
-## D004041 tags=21%, list=13%, signal=19%
-## D006339 tags=29%, list=19%, signal=24%
-##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          core_enrichment
-## D009929                     154/9846/3315/6716/9732/5139/7337/5530/4086/6532/1499/7157/627/2252/22891/2908/8654/4088/22846/4057/860/268/2735/2104/23522/5480/51131/3082/10253/831/604/1028/182/7173/5624/8743/23047/596/9905/1548/2272/22829/948/27303/4314/196/6019/595/5021/7248/4212/2488/54820/5334/6403/2246/4803/866/5919/79789/1907/7048/1831/4060/2247/5468/8076/5793/3485/1733/3952/126/3778/79068/79633/6653/5244/4313/3625/10468/9201/1501/6720/2273/2099/3480/5764/6387/1471/1462/4016/2690/8817/8821/5125/1191/5350/2162/5744/23541/185/367/4982/25802/4128/150/3479/10451/9370/125/4857/1308/2167/652/57502/4137/8614/5241
-## D059647 9497/118/8859/6532/23405/7424/2295/7157/8631/627/2774/22891/2908/4088/51151/11132/1387/860/268/7366/2104/4153/29119/3791/1543/3643/22841/1129/5624/3240/3174/3350/5590/55304/55213/1548/2169/196/8204/8863/5021/23284/9162/11005/4256/3426/84159/5334/629/1793/4208/4322/7048/6817/553/56172/3953/22795/2638/210/5243/5468/1393/1012/27136/51314/4023/5172/4319/4214/3952/5577/126/7832/79068/4313/2944/9369/3075/6720/7494/2099/857/57161/9223/4306/79750/4035/4915/10443/5744/5654/100126791/3551/2487/1746/185/2952/6935/4128/4059/4582/27324/9358/64084/7166/6505/9370/3708/3117/80129/125/5105/2018/2167/652/4137/1524/5241
-## D009043                                                                                                                                                                                                       23621/3082/1291/2915/1543/7466/3240/3350/55304/181/2169/27306/80169/9627/196/8678/8863/23284/81627/4692/5799/2259/3087/1278/1277/3953/4747/2247/6414/210/4744/5468/89795/4023/8522/3485/3952/79068/8864/4313/2944/2273/2099/3480/8528/4908/56892/3339/57161/4741/4306/6571/79750/4915/5744/2487/58503/347/6863/2952/5327/367/4982/4128/4059/3572/150/7060/9358/7166/3479/9254/5348/4129/9370/3708/1311/5105/4137/1408/5241
-## D050156                                                                                                            5595/8609/9563/27332/1499/79738/4837/7157/79960/5729/408/2908/4088/6500/8038/4057/6649/5564/860/8648/10365/10253/54884/4602/7474/6776/79875/596/25956/8644/80781/79923/1490/50486/7840/84162/6041/4692/2246/4208/11075/63924/5919/284119/2308/9411/54795/5950/79365/2247/5468/50507/6469/8553/4023/594/7350/81029/3952/79068/5733/4313/10468/10628/6720/11213/55893/290/6678/63895/4035/633/23414/8639/2162/165/3551/10788/185/3357/367/4982/3667/1634/4128/23024/3479/6424/9370/2167/652/8839/54829/2625/79689/10974
-## D004041                                                                                                                                                                                                                                                                                      3554/4925/22841/7466/2181/3350/201134/181/2169/948/55911/324/4018/3426/3087/6785/2308/1581/56172/3953/1384/5950/2166/60481/5468/5166/50507/1012/27136/4023/7056/4214/9365/7350/3952/3778/79068/8864/2944/6720/5159/3991/2203/2819/9223/4035/32/213/165/347/2152/185/3487/5327/3667/54898/150/64084/3479/9370/5105/5174/2018/5346/7021/79689
-## D006339                                                                                                                                                                            4985/7139/8929/3784/3375/154/1760/9781/5139/118/2702/6532/6416/2869/270/7157/627/2908/7138/5563/3643/1129/7779/947/2034/4179/64388/1621/4881/8863/5021/844/4212/11030/5797/6403/4803/84059/79789/5176/3953/5243/5468/1012/2868/5793/4023/7056/3952/5577/126/2946/3778/477/5733/4313/2944/9201/3075/9499/2273/2099/1471/857/775/4306/4487/213/5350/5744/23245/2152/2697/2791/185/6863/2952/5327/80206/9607/3572/150/3479/2006/55259/9370/125/652/55351
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; inherits visualization methods implemented in &lt;a href=&#34;https://guangchuangyu.github.io/DOSE&#34;&gt;DOSE&lt;/a&gt; and we can visualize these enrichment results by &lt;code&gt;barplot&lt;/code&gt;, &lt;code&gt;dotplot&lt;/code&gt;, &lt;code&gt;cnetplot&lt;/code&gt;, &lt;code&gt;enrichMap&lt;/code&gt; &lt;em&gt;etc&lt;/em&gt;. With these visualization methods, it&amp;rsquo;s much easier to interpret enriched results.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;gseaplot(y, y[1,1], title=y[1,2])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/mesh_gsea.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
     
     <item>
       <title>leading edge analysis</title>
@@ -2306,6 +2084,148 @@ enrichKEGG is more reliable with more updated data than many other
 tools.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>KEGG enrichment analysis with latest online data using clusterProfiler</title>
+      <link>https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler</link>
+      <pubDate>Sun, 01 Feb 2015 12:38:27 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler</guid>
+      <description>
+
+&lt;p&gt;&lt;em&gt;KEGG.db&lt;/em&gt; is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological databases&lt;/a&gt;&amp;rsquo;,
+there is a problem that many out of date biological databases often
+don&amp;rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+&lt;a href=&#34;http://wego.genomics.org.cn/cgi-bin/wego/index.pl&#34;&gt;WEGO&lt;/a&gt; web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with &lt;a href=&#34;https://scholar.google.com.hk/scholar?as_ylo=2015&amp;amp;hl=en&amp;amp;as_sdt=0,5&amp;amp;sciodt=0,5&amp;amp;cites=13025429171853466135&amp;amp;scipsc=&#34;&gt;many people using it&lt;/a&gt;.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue.&lt;/p&gt;
+
+&lt;p&gt;Now &lt;em&gt;enrichKEGG&lt;/em&gt; function is reloaded with a new parameter &lt;em&gt;use_internal_data&lt;/em&gt;. This
+parameter is by default setting to FALSE, and &lt;em&gt;enrichKEGG&lt;/em&gt; function will
+download the latest KEGG data for enrichment analysis. If the parameter
+&lt;em&gt;use_internal_data&lt;/em&gt; is explicitly setting to TRUE, it will use the
+&lt;em&gt;KEGG.db&lt;/em&gt; which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+&lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt; Now the &lt;em&gt;organism&lt;/em&gt;
+parameter in &lt;em&gt;enrichKEGG&lt;/em&gt; should be abbreviation of academic name, for
+example &amp;lsquo;hsa&amp;rsquo; for human and &amp;lsquo;mmu&amp;rsquo; for mouse. It accepts any species
+listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;. In the
+current release version of
+&lt;a href=&#34;http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+(in Bioconductor 3.0), &lt;em&gt;enrichKEGG&lt;/em&gt; supports about 20 species, and the
+&lt;em&gt;organism&lt;/em&gt; parameter accept common name of species, for instance &amp;ldquo;human&amp;rdquo;
+and &amp;ldquo;mouse&amp;rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.
+For other species, common name is not supported, since I don&amp;rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-1-using-online-kegg-annotation:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;library(DOSE)
+data(geneList)
+de &amp;lt;- names(geneList)[geneList &amp;gt; 1]
+
+library(clusterProfiler)
+kk &amp;lt;- enrichKEGG(de, organism=&amp;quot;hsa&amp;quot;, pvalueCutoff=0.05, pAdjustMethod=&amp;quot;BH&amp;quot;, 
+                 qvalueCutoff=0.1, readable=TRUE)
+head(summary(kk))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; head(summary(kk))
+               ID                            Description GeneRatio  BgRatio
+hsa04110 hsa04110                             Cell cycle    31/247 124/6861
+hsa03030 hsa03030                        DNA replication     9/247  36/6861
+hsa04060 hsa04060 Cytokine-cytokine receptor interaction    25/247 265/6861
+hsa04114 hsa04114                         Oocyte meiosis    14/247 113/6861
+hsa04115 hsa04115                  p53 signaling pathway    10/247  68/6861
+hsa04062 hsa04062            Chemokine signaling pathway    18/247 189/6861
+               pvalue     p.adjust       qvalue
+hsa04110 2.280256e-18 9.349050e-17 5.280593e-17
+hsa03030 3.527197e-06 7.230753e-05 4.084123e-05
+hsa04060 8.404037e-06 1.148552e-04 6.487326e-05
+hsa04114 4.827484e-05 4.948171e-04 2.794859e-04
+hsa04115 1.406946e-04 9.801620e-04 5.536217e-04
+hsa04062 1.434383e-04 9.801620e-04 5.536217e-04
+                                                                                                                                                                              geneID
+hsa04110 CDC45/CDC20/CCNB2/CCNA2/CDK1/MAD2L1/TTK/CHEK1/CCNB1/MCM5/PTTG1/MCM2/CDC25A/CDC6/PLK1/BUB1B/ESPL1/CCNE1/ORC6/ORC1/CCNE2/MCM6/MCM4/DBF4/SKP2/CDC25B/BUB1/MYC/PCNA/E2F1/CDKN2A
+hsa03030                                                                                                                            MCM5/MCM2/MCM6/MCM4/FEN1/RFC4/PCNA/RNASEH2A/DNA2
+hsa04060                           CXCL10/CXCL13/CXCL11/CXCL9/CCL18/IL1R2/CCL8/CXCL3/CCL20/IL12RB2/CXCL8/TNFRSF11A/CCL5/CXCR6/IL2RA/CCR1/CCL2/IL2RG/CCL4/CCR8/CCR7/GDF5/IL24/LTB/IL7
+hsa04114                                                                                          CDC20/CCNB2/CDK1/MAD2L1/CALML5/AURKA/CCNB1/PTTG1/PLK1/ESPL1/CCNE1/CCNE2/BUB1/FBXO5
+hsa04115                                                                                                               CCNB2/RRM2/CDK1/CHEK1/CCNB1/GTSE1/CCNE1/CCNE2/SERPINB5/CDKN2A
+hsa04062                                                                       CXCL10/CXCL13/CXCL11/CXCL9/CCL18/CCL8/CXCL3/CCL20/CXCL8/CCL5/CXCR6/CCR1/STAT1/CCL2/CCL4/HCK/CCR8/CCR7
+         Count
+hsa04110    31
+hsa03030     9
+hsa04060    25
+hsa04114    14
+hsa04115    10
+hsa04062    18
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the KEGG.db, there are only 5894 human genes annotated. With current
+online data, the number of annotated gene increase to 6861 as shown
+above and of course, p-values changed. User should pay attention to
+another issue that &lt;em&gt;readable&lt;/em&gt; parameter is only available for those
+species that has an annotation db. For example, for human we use
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html&#34;&gt;org.Hs.eg.db&lt;/a&gt;
+for mapping gene ID to Symbol.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
+
+&lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34;&gt;Streptococcus pneumoniae D39&lt;/a&gt;
+to demonstrate using &lt;em&gt;enrichKEGG&lt;/em&gt; with species that are not supported
+previously.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; gene
+ [1] &amp;quot;SPD_0065&amp;quot; &amp;quot;SPD_0071&amp;quot; &amp;quot;SPD_0293&amp;quot; &amp;quot;SPD_0295&amp;quot; &amp;quot;SPD_0296&amp;quot; &amp;quot;SPD_0297&amp;quot;
+ [7] &amp;quot;SPD_0327&amp;quot; &amp;quot;SPD_0426&amp;quot; &amp;quot;SPD_0427&amp;quot; &amp;quot;SPD_0428&amp;quot; &amp;quot;SPD_0559&amp;quot; &amp;quot;SPD_0560&amp;quot;
+[13] &amp;quot;SPD_0561&amp;quot; &amp;quot;SPD_0562&amp;quot; &amp;quot;SPD_0580&amp;quot; &amp;quot;SPD_0789&amp;quot; &amp;quot;SPD_1046&amp;quot; &amp;quot;SPD_1047&amp;quot;
+[19] &amp;quot;SPD_1048&amp;quot; &amp;quot;SPD_1050&amp;quot; &amp;quot;SPD_1051&amp;quot; &amp;quot;SPD_1052&amp;quot; &amp;quot;SPD_1053&amp;quot; &amp;quot;SPD_1057&amp;quot;
+[25] &amp;quot;SPD_1326&amp;quot; &amp;quot;SPD_1432&amp;quot; &amp;quot;SPD_1534&amp;quot; &amp;quot;SPD_1582&amp;quot; &amp;quot;SPD_1612&amp;quot; &amp;quot;SPD_1613&amp;quot;
+[31] &amp;quot;SPD_1633&amp;quot; &amp;quot;SPD_1634&amp;quot; &amp;quot;SPD_1648&amp;quot; &amp;quot;SPD_1678&amp;quot; &amp;quot;SPD_1919&amp;quot;
+&amp;gt; spdKEGG = enrichKEGG(gene, organism=&amp;quot;spd&amp;quot;)
+&amp;gt; summary(spdKEGG)
+               ID                                 Description GeneRatio BgRatio
+spd00052 spd00052                        Galactose metabolism     35/35  35/752
+spd02060 spd02060             Phosphotransferase system (PTS)     12/35  47/752
+spd01100 spd01100                          Metabolic pathways     28/35 341/752
+spd00520 spd00520 Amino sugar and nucleotide sugar metabolism      9/35  43/752
+               pvalue     p.adjust       qvalue
+spd00052 4.961477e-61 2.480739e-60 5.222608e-61
+spd02060 2.470177e-07 6.175443e-07 1.300093e-07
+spd01100 1.958319e-05 3.263866e-05 6.871296e-06
+spd00520 6.534975e-05 8.168718e-05 1.719730e-05
+                                                                                                                                                                                                                                                                                                                             geneID
+spd00052 SPD_0065/SPD_0071/SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0327/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1678/SPD_1919
+spd02060                                                                                                                                                                                                                SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0426/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_1047/SPD_1048/SPD_1057
+spd01100                                                                SPD_0071/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+spd00520                                                                                                                                                                                                                                           SPD_0580/SPD_1326/SPD_1432/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
+         Count
+spd00052    35
+spd02060    12
+spd01100    28
+spd00520     9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;summary:68582cae05851901beab2a74a03ade4b&#34;&gt;Summary&lt;/h3&gt;
+
+&lt;p&gt;To summarize,
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
+supports downloading the latest KEGG annotation for enrichment analysis
+and it supports all species that have KEGG annotation available in KEGG
+database.&lt;/p&gt;
 </description>
     </item>
     
