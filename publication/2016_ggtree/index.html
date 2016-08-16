@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms">
+    <link rel="canonical" href="https://guangchuangyu.github.io/publication/2016_ggtree/">
 
-    <title>use simplify to remove redundancy of enriched GO terms | Guangchuang YU</title>
+    <title>ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -71,144 +71,91 @@
 
 <div class="container">
 
-    <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">use simplify to remove redundancy of enriched GO terms</h1>
+    <div id="pub">
+        <div class="pub-title">
+            <h1>ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</h1>
+            <span class="citation_authors">
+                
+                <strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>
+                
+            </span>
+            <span class="pull-right">
+                
 
-        
-
-<div class="article-metadata">
-
-    <span class="article-date">
-        <time datetime="2015-10-21 09:37:11 &#43;0800 CST" itemprop="datePublished">Wed, Oct 21, 2015</time>
-    </span>
-
-    
-    
-    
-    <span class="article-tags">
-        <i class="fa fa-tags"></i>
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>
-        
-    </span>
-    
-    
-
-    
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-<a class="a2a_dd" href="//www.addtoany.com/share"></a>
-<a class="a2a_button_facebook"></a>
-<a class="a2a_button_twitter"></a>
-<a class="a2a_button_google_plus"></a>
-</div>
-<script async src="//static.addtoany.com/menu/page.js"></script>
-
-
-
- 
-
-</div>
-
-
-        <div class="post" itemprop="articleBody">
-	  
-	  
-        <div class="article-style" itemprop="articleBody">
-
-          <p>To simplify enriched GO result, we can use slim version of GO and use
-<em><a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">enricher</a></em>
-function to analyze.</p>
-
-<p>Another strategy is to use
-<a href="http://www.bioconductor.org/packages/GOSemSim">GOSemSim</a> to calculate
-similarity of GO terms and remove those highly similar terms by keeping
-one representative term. To make this feature available to
-<a href="http://www.bioconductor.org/packages/clusterProfiler">clusterProfiler</a>
-users, I develop a <em>simplify</em> method to reduce redundant GO terms from
-output of <em>enrichGO</em> function.</p>
-
-<pre><code>require(clusterProfiler)
-data(geneList, package=&quot;DOSE&quot;)
-de &lt;- names(geneList)[abs(geneList) &gt; 2]
-bp &lt;- enrichGO(de, ont=&quot;BP&quot;)
-enrichMap(bp)
-</code></pre>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/bp1.png" alt="" /></p>
-
-<p>The <em>enrichMap</em> doesn&rsquo;t display the whole picture as we use the default
-value <em>n=50</em> to only show 50 highly significant terms. In the
-<em>enrichMap</em>, we can found that there are many redundant terms form a
-highly condense network.</p>
-
-<p>Now with the <em>simplify</em> method, we can remove redundant terms.</p>
-
-<pre><code class="language-lang=&quot;rsplus&quot;">bp2 &lt;- simplify(bp, cutoff=0.7, by=&quot;p.adjust&quot;, select_fun=min)
-</code></pre>
-
-<p>The <em>simplify</em> method apply <em>&lsquo;select_fun&rsquo;</em> (which can be a user defined
-function) to feature &lsquo;<em>by</em>&rsquo; to select one representative terms from
-redundant terms (which have similarity higher than &lsquo;<em>cutoff</em>&rsquo;).
-<img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/bp2.png" alt="" /></p>
-
-<p>The simplified version of enriched result is more clear and give us a
-more comprehensive view of the whole story.</p>
-
-<p><em>enrichGO</em> test the whole GO corpus and enriched result may contains
-very general terms.
-<em><a href="http://www.bioconductor.org/packages/clusterProfiler">clusterProfiler</a></em>
-contains a <em>dropGO</em> function to remove specific GO terms or GO level,
-see <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/26">the
-issue</a>. With
-<em>simplify</em> and <em>dropGO</em>, enriched result can be more specific and more
-easy to interpret. Both of these functions work fine with outputs
-obtained from both <em>enrichGO</em> and <em>compareCluster</em>.🍻</p>
-
-
-	  
-	  
+            </span>
         </div>
-    </article>
+
+        <h3>Abstract</h3>
+        <p>1.We present an R package, ggtree, which provides programmable visualization and annotation of phylogenetic trees. 2.ggtree can read more tree file formats than other software; including newick, nexus, NHX, phylip and jplace formats and supports visualization of phylo, multiPhylo, phylo4, phylo4d, obkData and phyloseq tree objects defined in other R packages. It can also extract the tree/branch/node-specific and other data from the analysis outputs of BEAST, EPA, HYPHY, PAML, PHYLODOG, pplacer, r8s, RAxML and RevBayes software, and allows using these data to annotate the tree. 3.The package allows coloring and annotation of a tree by numerical/categorical node attributes, manipulating a tree by rotating, collapsing and zooming out clades, highlighting user selected clades or operational taxonomic units and exploration of a large tree by zooming into a selected portion. 4.A two-dimensional tree can be drawn by scaling the tree width based on an attribute of the nodes. A tree can be annotated with an associated numerical matrix (as a heatmap), multiple sequence alignment, subplots or silhouette images. 5.The package ggtree is released under the Artistic-2.0 License. The source code and documents are freely available through Bioconductor (http://www.bioconductor.org/packages/ggtree).</p>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3" style="font-weight: bold">Publication</div>
+                    <div class="col-xs-12 col-sm-9">Methods in Ecology and Evolution</div>
+                </div>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+        <div class="visible-xs space-below"></div>
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3" style="font-weight: bold">Date</div>
+                    <div class="col-xs-12 col-sm-9">August, 2016</div>
+                </div>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+        <div class="visible-xs space-below"></div>
+
+        <div class="row" style="padding-top: 10px">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3" style="font-weight: bold; line-height:34px;">Links</div>
+                    <div class="col-xs-12 col-sm-9">
+
+                        
+
+
+
+
+<a class="btn btn-primary btn-outline" href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">PDF</a>
+<a class="btn btn-primary btn-outline" href="https://guangchuangyu.github.io/presentation/2016-ggtree-chinar">Slides</a>
+
+<a class="btn btn-primary btn-outline" href="https://github.com/GuangchuangYu/ggtree">Code</a>
+
+<a class="btn btn-primary btn-outline" href="https://guangchuangyu.github.io/ggtree/">Project</a>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+        <div class="visible-xs space-below"></div>
+
+        <div class="space-below"></div>
+
+        <div class="article-style"></div>
+
+    </div>
 
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2015/10/news-of-my-bioc-packages"><span aria-hidden="true">&larr;</span> NEWS of my BioC packages</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/publication/ReactomePA/"><span aria-hidden="true">&larr;</span> ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p">Comparison of clusterProfiler and GSEA-P <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
-
-    
-<section id="comments">
-  <div id="disqus_thread">
-    <div id="disqus_thread"></div>
-<script type="text/javascript">
-
-(function() {
-    
-    
-    if (window.location.hostname == "localhost")
-        return;
-
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    var disqus_shortname = 'gcyu';
-    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-
-  </div>
-</section>
-
-
-
 
 
 </div>

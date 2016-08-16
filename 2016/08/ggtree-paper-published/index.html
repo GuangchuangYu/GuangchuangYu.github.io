@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/08/ggtree-paper-published">
 
-    <title>viewing and annotating phylogenetic tree with ggtree | Guangchuang YU</title>
+    <title>ggtree paper published | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">viewing and annotating phylogenetic tree with ggtree</h1>
+        <h1 itemprop="name">ggtree paper published</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2014-12-21 08:00:08 &#43;0800 CST" itemprop="datePublished">Sun, Dec 21, 2014</time>
+        <time datetime="2016-08-16 22:10:00 &#43;0800 CST" itemprop="datePublished">Tue, Aug 16, 2016</time>
     </span>
 
     
@@ -115,114 +115,66 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          <p>When I need to annotate nucleotide substitutions in the phylogenetic
-tree, I found that all the software are designed to display the tree but
-not annotating it. Some of them may support annotating the tree with
-specific data such as bootstrap values, but they are restricted to a few
-supported data types. It is hard/impossible to inject user specific
-data.</p>
+          <p>Today <a href="https://guangchuangyu.github.io/ggtree"><code>ggtree</code></a> received <a href="https://github.com/GuangchuangYu/ggtree/stargazers">100 stars</a> on <i class="fa fa-github"></i> and I found it was <a href="http://dx.doi.org/10.1111/2041-210X.12628">online</a> at the same day by the tweet:</p>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/12/2014-12-21-145753_579x436_scrot.png" alt="" /></p>
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。<a href="https://t.co/JlET18BSZv">https://t.co/JlET18BSZv</a></p>&mdash; ホクソピペット (@siero5335) <a href="https://twitter.com/siero5335/status/765521239146233856">August 16, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<p>I decided to implement my own one by extending the ggplot2 package.
-There are other R packages that implemented tree viewer using ggplot2,
-including OutbreakTools, phyloseq and ggphylo, but all of them only
-create complex tree view function for their specific needs. They are
-just classical tree viewers that only viewing the tree or annotating a
-specific data type. The good parts of ggplot2 are not available in these
-packages. They lack of flexibilities of annotating phylogenetic tree by
-diverse user inputs. I develop ggtree, which is based on grammar of
-graphics and will takes all the good parts of ggplot2.</p>
+<p>I am quite exciting about it. Now ggtree is citable by doi:<a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>10.1111/2041-210X.12628</code></a>.</p>
 
-<pre><code>nwk &lt;- system.file(&quot;extdata&quot;, &quot;sample.nwk&quot;, package = &quot;ggtree&quot;)
-library(ape)
-tree &lt;- read.tree(nwk)
-library(ggplot2)
-library(ggtree)
-ggplot(tree, aes(x, y)) + geom_tree() + theme_tree() + xlab(&quot;&quot;) + ylab(&quot;&quot;)
-</code></pre>
+<p>In the review period, <code>ggtree</code> had already been cited by several papers:</p>
 
-<p>It extends ggplot2 to support tree objects and implements a geom_tree()
-layer to draw the tree.</p>
+<p><code>1</code>. <a href="https://doi.org/10.7717/peerj.976">https://doi.org/10.7717/peerj.976</a></p>
 
-<p>The ggtree package provides a function, ggtree, for shortcut of
-<code>ggplot()+geom_tree()+theme_tree()</code>.</p>
+<p>Annotating phylogenetic tree with image files (i.e. secondary structure).</p>
 
-<p>It supports several tree objects including phylo that defined in ape,
-phylo4 that defined in phylobase and jplace that defined within the
-ggtree package.</p>
+<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2015_peerJ_fig-9-2x.jpg" alt="" /></p>
 
-<pre><code>p1 &lt;- ggtree(tree) + ggtitle(&quot;tree of phylo object&quot;)
-tr2 &lt;- as(tree, &quot;phylo4&quot;)
-p2 &lt;- ggtree(tr2) + ggtitle(&quot;tree of phylo4 object&quot;)
-jpf &lt;- system.file(&quot;extdata&quot;, &quot;sample.jplace&quot;, package=&quot;ggtree&quot;)
-jp &lt;- read.jplace(jpf)
-p3 &lt;- ggtree(jp) + ggtitle(&quot;tree of jplace object&quot;)
-library(gridExtra)
-grid.arrange(p1, p2, p3, ncol=3)
-</code></pre>
+<p><code>2</code>. <a href="http://dx.doi.org/10.1016/j.meegid.2015.12.006">http://dx.doi.org/10.1016/j.meegid.2015.12.006</a></p>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/12/tree_objects.png" alt="" /></p>
+<p>Highlight clades and annotate phylogenetic tree with genotype table.</p>
 
-<p>With this implementation, it is possible to inject user input. But is it
-easy? The answer is yes and no. It may depends on user&rsquo;s ggplot2
-experiences. To place the input data at the correct position, you should
-know how the tree was layout. It may be easy for an experienced user,
-but hard for newbie. Most of us are impatient and reluctant to learn, so
-I should create a way that is easy to follow. It&rsquo;s not a good idea to
-implement unnecessary geom_XXX layer, for it violates the great idea of
-taking all the good parts of ggplot2, and it will violate the consistent
-function calls of <code>geom_XXX</code>. Thanks to my sleep disorder, I came out
-with an operator <strong><code>%&lt;+%</code></strong> for injecting input data to the tree view.
-After the injection, the data is visible to all the geom_XXX layers.</p>
+<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2015_peiyu_1-s2.0-S1567134815300721-gr1.jpg" alt="" /></p>
 
-<pre><code>p &lt;- ggtree(tree)
+<p><code>3</code>. <a href="http://dx.doi.org/10.3389%2Ffcimb.2016.00036">http://dx.doi.org/10.3389%2Ffcimb.2016.00036</a></p>
 
-print(dd)
-taxa    place   value
-M   NA  55.9
-A   GZ  65.6
-C   GZ  59.3
-I   CZ  78.5
-E   GZ  62.9
-D   GZ  64.1
-J   CZ  62.3
-K   CZ  79.1
-B   GZ  89.0
-L   CZ  57.1
-G   HK  66.4
-H   HK  61.6
-F   HK  59.9
-</code></pre>
+<p>Annotate phylogenetic tree with binary matrix.</p>
 
-<p>Suppose we have a tree view p, and input data dd, we can attach the data
-to the tree and add a layer of tip labels and colored by place.</p>
+<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2016_fcimb-06-00036-g003.jpg" alt="" /></p>
 
-<pre><code>p &lt;- p %&lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
-print(p)
-</code></pre>
+<p><code>4</code>. <a href="http:/​/​dx.​doi.​org/​10.​1104/​pp.​16.​00359">http:/​/​dx.​doi.​org/​10.​1104/​pp.​16.​00359</a></p>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/12/tree_place.png" alt="" /></p>
+<p>Annotate phylogenetic tree with sequence features.</p>
 
-<p>Once the data is attached, it is always attached, and we can add more
-layers easily.</p>
+<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2016_PlantPhysiology.png" alt="" /></p>
 
-<pre><code>p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
-  geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
-</code></pre>
+<p><code>5</code>. <a href="http://dx.doi.org/10.1101/067207">http://dx.doi.org/10.1101/067207</a></p>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/12/tree_place2.png" alt="" /></p>
+<p>Annotate with bootstrap values.</p>
 
-<p>The package is now available via github,
-<a href="https://github.com/GuangchuangYu/ggtree">https://github.com/GuangchuangYu/ggtree</a>.</p>
+<p><img src="https://cloud.githubusercontent.com/assets/626539/17700401/273895c6-63f8-11e6-91da-7431b78b22af.png" alt="" /></p>
 
-<p>Suggestions, comments and feature request are all welcome. Let&rsquo;s make it
-an easy to use and feature-riched package for viewing and annotating
-phylogenetic trees.</p>
+<p><code>6</code>. <a href="http://www.nature.com/articles/srep30158">http://www.nature.com/articles/srep30158</a></p>
 
-<p>At last, wish you a merry christmas :)</p>
+<p>Visualize bootstrap value infer by RAxML and phyml on the same tree.</p>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/12/IMG_5755.jpg" alt="" /></p>
+<p><img src="https://cloud.githubusercontent.com/assets/626539/17127143/de15b7c0-5335-11e6-8621-edce0e581308.png" alt="" /></p>
+
+<p><code>7</code>. <a href="http://dx.doi.org/10.1101/053371">http://dx.doi.org/10.1101/053371</a></p>
+
+<p><code>8</code>. <a href="http://dx.doi.org/10.1105/tpc.16.00053">http://dx.doi.org/10.1105/tpc.16.00053</a></p>
+
+<p><code>9</code>. <a href="http://dx.doi.org/10.1111/mec.13474">http://dx.doi.org/10.1111/mec.13474</a></p>
+
+<p><code>10</code>. <a href="http://dx.doi.org/10.1371/journal.pone.0160958">http://dx.doi.org/10.1371/journal.pone.0160958</a></p>
+
+<p><code>11</code>. <a href="http://dx.doi.org/10.1111/2041-210X.12593">http://dx.doi.org/10.1111/2041-210X.12593</a></p>
+
+<p><code>12</code>. <a href="http://dx.doi.org/10.1101/053371">http://dx.doi.org/10.1101/053371</a></p>
+
+<p>The <a href="http://dx.doi.org/10.1111/2041-210X.12628">ggtree paper</a> provides several comprehensive and reproducible examples. It can be a good reference for complex tree annotation. <a href="https://guangchuangyu.github.io/presentation/2016-ggtree-chinar/">My slides</a> in 9<sup>th</sup> China R conference summarized the functionalities that <code>ggtree</code> provided. More documentation can be found in <a href="https://guangchuangyu.github.io/ggtree/documentation/">ggtree homepage</a>.</p>
+
+<p>Hope you have fun with <code>ggtree</code>.</p>
 
 
 	  
@@ -233,11 +185,9 @@ phylogenetic trees.</p>
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2014/12/auto-complete-in-ess"><span aria-hidden="true">&larr;</span> auto-complete in ESS</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/08/using-meshes-for-mesh-enrichment-analysis"><span aria-hidden="true">&larr;</span> using meshes for MeSH Enrichment Analysis</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1">ggtree in Bioconductor 3.1 <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
