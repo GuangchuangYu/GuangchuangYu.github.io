@@ -7,8 +7,71 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Sun, 20 Mar 2016 10:50:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 01 Sep 2016 03:17:48 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/visualization/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ggtree for microbiome data</title>
+      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</link>
+      <pubDate>Thu, 01 Sep 2016 03:17:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.&lt;/p&gt;
+
+&lt;h2 id=&#34;phyloseq-for-microbiome-data:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;phyloseq for microbiome data&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;phyloseq&lt;/code&gt; class defined in the &lt;a href=&#34;https://www.bioconductor.org/package/phyloseq&#34;&gt;phyloseq&lt;/a&gt; package was designed for microbiome data. &lt;code&gt;phyloseq&lt;/code&gt; package implemented &lt;code&gt;plot_tree&lt;/code&gt; function using &lt;code&gt;ggplot2&lt;/code&gt;. Although the function was implemented by &lt;code&gt;ggplot2&lt;/code&gt; and we can use &lt;code&gt;theme&lt;/code&gt;, &lt;code&gt;scale_color_manual&lt;/code&gt; etc for customization, the most valuable part of &lt;code&gt;ggplot2&lt;/code&gt;, adding layer, is missing. &lt;code&gt;plot_tree&lt;/code&gt; only provides limited parameters to control the output graph and it is hard to adding layer unless user has expertise in both &lt;code&gt;phyloseq&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(phyloseq)
+
+data(GlobalPatterns)
+GP &amp;lt;- prune_taxa(taxa_sums(GlobalPatterns) &amp;gt; 0, GlobalPatterns)
+GP.chl &amp;lt;- subset_taxa(GP, Phylum==&amp;quot;Chlamydiae&amp;quot;)
+
+plot_tree(GP.chl, color=&amp;quot;SampleType&amp;quot;, shape=&amp;quot;Family&amp;quot;, label.tips=&amp;quot;Genus&amp;quot;, size=&amp;quot;Abundance&amp;quot;) + ggtitle(&amp;quot;tree annotation using phyloseq&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_phyloseq.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: If we look at the plot careful, we will find that legend produce by &lt;code&gt;plot_tree&lt;/code&gt; is not correct (&lt;code&gt;plot_tree&lt;/code&gt; map &lt;code&gt;SampleType&lt;/code&gt; to color text which was shown in legend, but we can&amp;rsquo;t find the mapping in the plot).&lt;/p&gt;
+
+&lt;h2 id=&#34;ggtree-supports-phyloseq-object:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;ggtree supports phyloseq object&lt;/h2&gt;
+
+&lt;p&gt;One of the advantage of R is the community. R users develop packages that can work together and complete each other. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; fits the R ecosystem in phylogenetic analysis. It supports several classes defined in other R packages that designed for storing phylogenetic tree with associated data, including &lt;code&gt;phyloseq&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(scales)
+library(ggtree)
+p &amp;lt;- ggtree(GP.chl, ladderize = FALSE) + geom_text2(aes(subset=!isTip, label=label), hjust=-.2, size=4) +
+    geom_tiplab(aes(label=Genus), hjust=-.3) +
+    geom_point(aes(x=x+hjust, color=SampleType, shape=Family, size=Abundance),na.rm=TRUE) +
+    scale_size_continuous(trans=log_trans(5)) +
+    theme(legend.position=&amp;quot;right&amp;quot;) + ggtitle(&amp;quot;reproduce phyloseq by ggtree&amp;quot;)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt;, it would be more flexible to combine different layers using grammar of graphics syntax and more powerful since layers can be added without limitation (i.e. those predefined in &lt;code&gt;plot_tree&lt;/code&gt; function). As an example, I extract the barcode sequence from the tree object and use &lt;code&gt;msaplot&lt;/code&gt; to visualize the barcode sequence with the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;df &amp;lt;- fortify(GP.chl)
+barcode &amp;lt;- as.character(df$Barcode_full_length)
+names(barcode) &amp;lt;- df$label
+barcode &amp;lt;- barcode[!is.na(barcode)]
+msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree_msaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;doi:10.&lt;sup&gt;1111&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2041&lt;/sub&gt;-210X.12628&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</title>
@@ -868,166 +931,6 @@ or feelings such as annoyance, shock, embarrassment, awkwardness, scorn.&lt;/p&g
 &lt;p&gt;The function line is very easy to draw, but the options to hone this graph need some tricky tips.&lt;/p&gt;
 
 &lt;p&gt;The source code for generating this plot can be found in &lt;a href=&#34;https://gist.github.com/1852074&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</title>
-      <link>https://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r</link>
-      <pubDate>Tue, 16 Aug 2011 18:26:36 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2011/08/ggplot2-version-of-figures-in-25-recipes-for-getting-started-with-r</guid>
-      <description>&lt;p&gt;In order to provide an option to compare graphs produced by basic
-internal plot function and ggplot2, I have recreated the figures in the
-book, &lt;a href=&#34;http://book.douban.com/subject/5992544/&#34;&gt;25 Recipes for Getting Started with
-R&lt;/a&gt;, with ggplot2.&lt;/p&gt;
-
-&lt;p&gt;The code used to create the images is in separate paragraphs, allowing
-easy comparison. &lt;strong&gt;1.16 Creating a Scatter Plot&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;plot(cars)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter1.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter1.png&#34; alt=&#34;&#34; title=&#34;scatter1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ggplot(cars,aes(speed,dist))+geom_point()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter2.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter2.png&#34; alt=&#34;&#34; title=&#34;scatter2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.17 Creating a Bar Chart&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;heights &amp;lt;- tapply(airquality$Temp, airquality$Month, mean)
-par(mfrow=c(1,2))
-barplot(heights)
-barplot(heights,
-        main=&amp;quot;Mean Temp. by Month&amp;quot;,
-        names.arg=c(&amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;),
-        ylab=&amp;quot;Temp (deg. F)&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar1.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar1.png&#34; alt=&#34;&#34; title=&#34;bar1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require(gridExtra)
-heights=ddply(airquality,.(Month), mean)
-heights$Month=as.character(heights$Month)
-p1 &amp;lt;- ggplot(heights, aes(x=Month,weight=Temp))+ geom_bar()
-p2 &amp;lt;- ggplot(heights, aes(x=factor(Month,
-                          labels=c(&amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;)),
-                          weight=Temp))+
-        geom_bar()+
-          ggtitle(&amp;quot;Mean Temp. By Month&amp;quot;) +
-            xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;Temp (deg. F)&amp;quot;)
-
-grid.arrange(p1,p2, ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar2.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar2.png&#34; alt=&#34;&#34; title=&#34;bar2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.18 Creating a Box Plot&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;y &amp;lt;- c(-5, rnorm(100), 5)
-boxplot(y)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box1.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box1.png&#34; alt=&#34;&#34; title=&#34;box1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ggplot()+geom_boxplot(aes(x=factor(1),y=y))+xlab(&amp;quot;&amp;quot;)+ylab(&amp;quot;&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box2.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box2.png&#34; alt=&#34;&#34; title=&#34;box2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.19 Creating a Histogram&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;data(Cars93, package=&amp;quot;MASS&amp;quot;)
-par(mfrow=c(1,2))
-hist(Cars93$MPG.city)
-hist(Cars93$MPG.city, 20)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist1.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist1.png&#34; alt=&#34;&#34; title=&#34;hist1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p &amp;lt;- ggplot(Cars93, aes(MPG.city))
-p1 &amp;lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/5)
-p2 &amp;lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/20)
-grid.arrange(p1,p2, ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist2.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist2.png&#34; alt=&#34;&#34; title=&#34;hist2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1.23 Diagnosing a Linear Regression&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;data(iris)
-m = lm( Sepal.Length ~ Sepal.Width, data=iris)
-par(mfrow=c(2,2))
-plot(m)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm1.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm1.png&#34; alt=&#34;&#34; title=&#34;lm1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;r &amp;lt;- residuals(m)
-yh &amp;lt;- predict(m)
-scatterplot &amp;lt;- function(x,y,
-                        title=&amp;quot;&amp;quot;,
-                        xlab=&amp;quot;&amp;quot;,
-                        ylab=&amp;quot;&amp;quot;) {
-    d &amp;lt;- data.frame(x=x,y=y)
-    p &amp;lt;- ggplot(d, aes(x=x,y=y)) +
-            geom_point() +
-                ggtitle(title) +
-                    xlab(xlab) +
-                        ylab(ylab)
-    return(p)
-    }
-p1 &amp;lt;- scatterplot(yh,r,
-                  title=&amp;quot;Residuals vs Fitted&amp;quot;,
-                  xlab=&amp;quot;Fitted values&amp;quot;,
-                  ylab=&amp;quot;Residuals&amp;quot;)
-p1 &amp;lt;- p1 +geom_hline(yintercept=0)+geom_smooth()
-
-s &amp;lt;- sqrt(deviance(m)/df.residual(m))
-rs &amp;lt;- r/s
-
-qqplot &amp;lt;- function(y,
-                   distribution=qnorm,
-                   title=&amp;quot;Normal Q-Q&amp;quot;,
-                   xlab=&amp;quot;Theretical Quantiles&amp;quot;,
-                   ylab=&amp;quot;Sample Quantiles&amp;quot;) {
-    require(ggplot2)
-    x &amp;lt;- distribution(ppoints(y))
-    d &amp;lt;- data.frame(x=x, y=sort(y))
-    p &amp;lt;- ggplot(d, aes(x=x, y=y)) +
-        geom_point() +
-            geom_line(aes(x=x, y=x)) +
-                ggtitle(title=title) +
-                    xlab(xlab) +
-                        ylab(ylab)
-    return(p)
-}
-
-p2 &amp;lt;- qqplot(rs, ylab=&amp;quot;Standardized residuals&amp;quot;)
-
-sqrt.rs &amp;lt;- sqrt(abs(rs))
-p3 &amp;lt;- scatterplot(yh,sqrt.rs,
-                  title=&amp;quot;Scale-Location&amp;quot;,
-                  xlab=&amp;quot;Fitted values&amp;quot;,
-                  ylab=expression(sqrt(&amp;quot;Standardized residuals&amp;quot;)))
-p3 &amp;lt;- p3 + geom_smooth()
-
-hii &amp;lt;- lm.influence(m, do.coef = FALSE)$hat
-p4 &amp;lt;- scatterplot(hii,rs)
-p4 &amp;lt;- p4+
-    geom_hline(yintercept=0)+
-    geom_smooth() +
-    geom_text(aes(x=min(hii)+diff(range(hii))*0.3,
-                  y=min(rs)+diff(range(rs))*0.04,
-                  label=&amp;quot;--   Cook&#39;s distance&amp;quot;, size=3))+
-    theme(legend.position=&amp;quot;none&amp;quot;)
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm2.png&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm2.png&#34; alt=&#34;&#34; title=&#34;lm2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

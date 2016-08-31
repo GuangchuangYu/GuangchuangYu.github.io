@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tree on Guangchuang YU</title>
+    <link>https://guangchuangyu.github.io/categories/tree/</link>
+    <description>Recent content in Tree on Guangchuang YU</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
+    <lastBuildDate>Thu, 01 Sep 2016 03:17:48 +0800</lastBuildDate>
+    <atom:link href="https://guangchuangyu.github.io/categories/tree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ggtree for microbiome data</title>
+      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</link>
+      <pubDate>Thu, 01 Sep 2016 03:17:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.&lt;/p&gt;
+
+&lt;h2 id=&#34;phyloseq-for-microbiome-data:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;phyloseq for microbiome data&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;phyloseq&lt;/code&gt; class defined in the &lt;a href=&#34;https://www.bioconductor.org/package/phyloseq&#34;&gt;phyloseq&lt;/a&gt; package was designed for microbiome data. &lt;code&gt;phyloseq&lt;/code&gt; package implemented &lt;code&gt;plot_tree&lt;/code&gt; function using &lt;code&gt;ggplot2&lt;/code&gt;. Although the function was implemented by &lt;code&gt;ggplot2&lt;/code&gt; and we can use &lt;code&gt;theme&lt;/code&gt;, &lt;code&gt;scale_color_manual&lt;/code&gt; etc for customization, the most valuable part of &lt;code&gt;ggplot2&lt;/code&gt;, adding layer, is missing. &lt;code&gt;plot_tree&lt;/code&gt; only provides limited parameters to control the output graph and it is hard to adding layer unless user has expertise in both &lt;code&gt;phyloseq&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(phyloseq)
+
+data(GlobalPatterns)
+GP &amp;lt;- prune_taxa(taxa_sums(GlobalPatterns) &amp;gt; 0, GlobalPatterns)
+GP.chl &amp;lt;- subset_taxa(GP, Phylum==&amp;quot;Chlamydiae&amp;quot;)
+
+plot_tree(GP.chl, color=&amp;quot;SampleType&amp;quot;, shape=&amp;quot;Family&amp;quot;, label.tips=&amp;quot;Genus&amp;quot;, size=&amp;quot;Abundance&amp;quot;) + ggtitle(&amp;quot;tree annotation using phyloseq&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_phyloseq.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: If we look at the plot careful, we will find that legend produce by &lt;code&gt;plot_tree&lt;/code&gt; is not correct (&lt;code&gt;plot_tree&lt;/code&gt; map &lt;code&gt;SampleType&lt;/code&gt; to color text which was shown in legend, but we can&amp;rsquo;t find the mapping in the plot).&lt;/p&gt;
+
+&lt;h2 id=&#34;ggtree-supports-phyloseq-object:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;ggtree supports phyloseq object&lt;/h2&gt;
+
+&lt;p&gt;One of the advantage of R is the community. R users develop packages that can work together and complete each other. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; fits the R ecosystem in phylogenetic analysis. It supports several classes defined in other R packages that designed for storing phylogenetic tree with associated data, including &lt;code&gt;phyloseq&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(scales)
+library(ggtree)
+p &amp;lt;- ggtree(GP.chl, ladderize = FALSE) + geom_text2(aes(subset=!isTip, label=label), hjust=-.2, size=4) +
+    geom_tiplab(aes(label=Genus), hjust=-.3) +
+    geom_point(aes(x=x+hjust, color=SampleType, shape=Family, size=Abundance),na.rm=TRUE) +
+    scale_size_continuous(trans=log_trans(5)) +
+    theme(legend.position=&amp;quot;right&amp;quot;) + ggtitle(&amp;quot;reproduce phyloseq by ggtree&amp;quot;)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt;, it would be more flexible to combine different layers using grammar of graphics syntax and more powerful since layers can be added without limitation (i.e. those predefined in &lt;code&gt;plot_tree&lt;/code&gt; function). As an example, I extract the barcode sequence from the tree object and use &lt;code&gt;msaplot&lt;/code&gt; to visualize the barcode sequence with the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;df &amp;lt;- fortify(GP.chl)
+barcode &amp;lt;- as.character(df$Barcode_full_length)
+names(barcode) &amp;lt;- df$label
+barcode &amp;lt;- barcode[!is.na(barcode)]
+msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree_msaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;doi:10.&lt;sup&gt;1111&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2041&lt;/sub&gt;-210X.12628&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

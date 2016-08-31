@@ -7,8 +7,71 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Tue, 16 Aug 2016 22:10:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 01 Sep 2016 03:17:48 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ggtree for microbiome data</title>
+      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</link>
+      <pubDate>Thu, 01 Sep 2016 03:17:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.&lt;/p&gt;
+
+&lt;h2 id=&#34;phyloseq-for-microbiome-data:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;phyloseq for microbiome data&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;phyloseq&lt;/code&gt; class defined in the &lt;a href=&#34;https://www.bioconductor.org/package/phyloseq&#34;&gt;phyloseq&lt;/a&gt; package was designed for microbiome data. &lt;code&gt;phyloseq&lt;/code&gt; package implemented &lt;code&gt;plot_tree&lt;/code&gt; function using &lt;code&gt;ggplot2&lt;/code&gt;. Although the function was implemented by &lt;code&gt;ggplot2&lt;/code&gt; and we can use &lt;code&gt;theme&lt;/code&gt;, &lt;code&gt;scale_color_manual&lt;/code&gt; etc for customization, the most valuable part of &lt;code&gt;ggplot2&lt;/code&gt;, adding layer, is missing. &lt;code&gt;plot_tree&lt;/code&gt; only provides limited parameters to control the output graph and it is hard to adding layer unless user has expertise in both &lt;code&gt;phyloseq&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(phyloseq)
+
+data(GlobalPatterns)
+GP &amp;lt;- prune_taxa(taxa_sums(GlobalPatterns) &amp;gt; 0, GlobalPatterns)
+GP.chl &amp;lt;- subset_taxa(GP, Phylum==&amp;quot;Chlamydiae&amp;quot;)
+
+plot_tree(GP.chl, color=&amp;quot;SampleType&amp;quot;, shape=&amp;quot;Family&amp;quot;, label.tips=&amp;quot;Genus&amp;quot;, size=&amp;quot;Abundance&amp;quot;) + ggtitle(&amp;quot;tree annotation using phyloseq&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_phyloseq.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: If we look at the plot careful, we will find that legend produce by &lt;code&gt;plot_tree&lt;/code&gt; is not correct (&lt;code&gt;plot_tree&lt;/code&gt; map &lt;code&gt;SampleType&lt;/code&gt; to color text which was shown in legend, but we can&amp;rsquo;t find the mapping in the plot).&lt;/p&gt;
+
+&lt;h2 id=&#34;ggtree-supports-phyloseq-object:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;ggtree supports phyloseq object&lt;/h2&gt;
+
+&lt;p&gt;One of the advantage of R is the community. R users develop packages that can work together and complete each other. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; fits the R ecosystem in phylogenetic analysis. It supports several classes defined in other R packages that designed for storing phylogenetic tree with associated data, including &lt;code&gt;phyloseq&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(scales)
+library(ggtree)
+p &amp;lt;- ggtree(GP.chl, ladderize = FALSE) + geom_text2(aes(subset=!isTip, label=label), hjust=-.2, size=4) +
+    geom_tiplab(aes(label=Genus), hjust=-.3) +
+    geom_point(aes(x=x+hjust, color=SampleType, shape=Family, size=Abundance),na.rm=TRUE) +
+    scale_size_continuous(trans=log_trans(5)) +
+    theme(legend.position=&amp;quot;right&amp;quot;) + ggtitle(&amp;quot;reproduce phyloseq by ggtree&amp;quot;)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt;, it would be more flexible to combine different layers using grammar of graphics syntax and more powerful since layers can be added without limitation (i.e. those predefined in &lt;code&gt;plot_tree&lt;/code&gt; function). As an example, I extract the barcode sequence from the tree object and use &lt;code&gt;msaplot&lt;/code&gt; to visualize the barcode sequence with the tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;df &amp;lt;- fortify(GP.chl)
+barcode &amp;lt;- as.character(df$Barcode_full_length)
+names(barcode) &amp;lt;- df$label
+barcode &amp;lt;- barcode[!is.na(barcode)]
+msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree_msaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;doi:10.&lt;sup&gt;1111&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2041&lt;/sub&gt;-210X.12628&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ggtree paper published</title>
@@ -1217,90 +1280,6 @@ Phylogenetics&lt;/a&gt;.
 
 &lt;p&gt;AND get its first citation.
 &lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screenshot%202015-08-04%2021.49.27.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ggtree annotate phylogenetic tree with local images</title>
-      <link>https://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images</link>
-      <pubDate>Sat, 01 Aug 2015 12:52:34 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/annotation_image/Screenshot%202015-08-01%2020.53.50.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34;&gt;ggtree&lt;/a&gt;,
-we provide a function &lt;em&gt;annotation_image&lt;/em&gt; for annotating phylogenetic
-tree with images.&lt;/p&gt;
-
-&lt;p&gt;To demonstrate the usage, I created a tree view from a random tree as
-shown below:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(2015-08-01)
-p &amp;lt;- ggtree(rtree(10)) + xlim(0, 5)+ ylim(0, 11)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We need a &lt;em&gt;data.frame&lt;/em&gt; that contains information of taxa labels and
-image paths. Here I created such a &lt;em&gt;data.frame&lt;/em&gt; containing image files
-downloaded from phylopic.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; img_info
-  V1                                           V2
-1 t1 25f165fa-f279-4f7c-9869-c55be251ffb8.512.png
-2 t2 5d7ab302-960b-4db7-9dfd-215175a55906.512.png
-3 t3 6fbe723c-3a6b-4d06-8680-bb2a52113df4.512.png
-4 t4 d83c02ca-76ed-436b-83ae-7f98d7297be9.512.png
-5 t5 ee764929-c865-44f6-b5db-b4e7d5693d1a.512.png
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Annotating tree with images is simple in
-&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; by using
-&lt;em&gt;annotation_image&lt;/em&gt; function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;annotation_image(p, img_info)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/annotation_image/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;By default, all the images will align to the right hand side. We can use
-&lt;em&gt;align=FALSE&lt;/em&gt;, to disable it.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;annotation_image(p, img_info, align=FALSE)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/annotation_image/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We can change the type and size of lines, as demonstrated below:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;annotation_image(p, img_info, linetype=&amp;quot;dashed&amp;quot;, linesize=0.2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/annotation_image/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The width of the images were controlled by width parameter, and the
-height will automatically determined by image dimension.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;annotation_image(p, img_info, width = .2, linetype=&amp;quot;dashed&amp;quot;, linesize=0.2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/annotation_image/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In the following example, we add tip labels to the tree.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p &amp;lt;- p+geom_tiplab(align=TRUE, linetype=&amp;quot;dashed&amp;quot;, linesize=.2)
-print(p)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/annotation_image/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we also want to add the image and align them, we don&amp;rsquo;t want to show
-the line added by &lt;em&gt;annotation_image&lt;/em&gt; function. This can be achieved by
-setting &lt;em&gt;linetype=NULL&lt;/em&gt;. By default the images and tip labels will be
-overlapped, we can move the images by &lt;em&gt;offset&lt;/em&gt; parameter.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p %&amp;gt;% annotation_image(img_info, width=.2, linetype=NULL, offset=.3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/annotation_image/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
