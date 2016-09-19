@@ -7,8 +7,57 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 01 Sep 2016 03:17:48 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 19 Sep 2016 20:10:48 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ggtree for outbreak data</title>
+      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data</link>
+      <pubDate>Mon, 19 Sep 2016 20:10:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=OutbreakTools&#34;&gt;OutbreakTools&lt;/a&gt; implements basic tools for the analysis of Disease Outbreaks.&lt;/p&gt;
+
+&lt;p&gt;It defines &lt;code&gt;S4&lt;/code&gt; class &lt;code&gt;obkData&lt;/code&gt; to store case-base outbreak data. It also provides a function, &lt;code&gt;plotggphy&lt;/code&gt;, to visualize such data on the phylogenetic tree.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(OutbreakTools)
+data(FluH1N1pdm2009)
+attach(FluH1N1pdm2009)
+
+
+x &amp;lt;- new(&amp;quot;obkData&amp;quot;, individuals = individuals, dna = FluH1N1pdm2009$dna,
+         dna.individualID = samples$individualID, dna.date = samples$date,
+         trees = FluH1N1pdm2009$trees)
+
+plotggphy(x, ladderize = TRUE, branch.unit = &amp;quot;year&amp;quot;,
+          tip.color = &amp;quot;location&amp;quot;, tip.size = 3, tip.alpha = 0.75)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-OutbreakTools_files/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As I mentioned in the post, &lt;a href=&#34;http://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data/&#34;&gt;ggtree for microbiome data&lt;/a&gt;, &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; fits the &lt;code&gt;R&lt;/code&gt; ecosystem in phylogenetic analysis. It serves as a general tools for annotating phylogenetic tree with different associated data from various sources. &lt;code&gt;obkData&lt;/code&gt; object is also supported by &lt;code&gt;ggtree&lt;/code&gt; and outbreak data stored in the object can be used to annotate the tree using grammar of graphics supported by &lt;code&gt;ggtree&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+ggtree(x, mrsd=&amp;quot;2009-09-30&amp;quot;, as.Date=TRUE) +
+    geom_tippoint(aes(color=location), size=3, alpha=.75) +
+    scale_color_brewer(&amp;quot;location&amp;quot;, palette=&amp;quot;Spectral&amp;quot;) +
+    theme_tree2(legend.position=&#39;right&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-OutbreakTools_files/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can also associate the tree with other type of data that may come from experiments or evolution inference and use them to annotate the tree as demonstrated in the online vignettes.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:08ec7dd7b4f7196ea79d3e56f8bdb440&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ggtree for microbiome data</title>
@@ -1446,58 +1495,6 @@ p + facet_grid(chr ~ .id) + scale_color_manual(values=col) + scale_fill_manual(v
 &lt;p&gt;Reactome is a manually curated pathway annotation database for unveiling high-order biological pathways from high-throughput data. ReactomePA is an R/Bioconductor package providing enrichment analyses, including hypergeometric test and gene set enrichment analyses. A functional analysis can be applied to the genomic coordination obtained from a sequencing experiment to analyze the functional significance of genomic loci including cis-regulatory elements and non-coding regions. Comparison among different experiments is also supported. Moreover, ReactomePA provides several visualization functions to produce highly customizable, publication-quality figures. The source code and documents of ReactomePA are freely available through Bioconductor (&lt;a href=&#34;http://www.bioconductor.org/packages/ReactomePA&#34;&gt;http://www.bioconductor.org/packages/ReactomePA&lt;/a&gt;).&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ReactomePA/c5mb00663e-f1_hi-res.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ggtree supports phylip tree format</title>
-      <link>https://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format</link>
-      <pubDate>Fri, 15 Jan 2016 13:19:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format</guid>
-      <description>
-
-&lt;p&gt;Phylip is also a widely used tree format, which contains taxa sequences with Newick tree text.&lt;/p&gt;
-
-&lt;p&gt;In &lt;code&gt;ggtree&lt;/code&gt;, we can use &lt;code&gt;read.phylip()&lt;/code&gt; function to parse the file and use &lt;code&gt;ggtree()&lt;/code&gt; to visualize the tree.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-phyfile &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.phy&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
-phylip &amp;lt;- read.phylip(phyfile)
-phylip
-
-## &#39;phylip&#39; S4 object that stored information of
-##   &#39;/Users/guangchuangyu/Library/R/3.2/library/ggtree/extdata/sample.phy&#39;.
-## 
-## ...@ tree: 
-## Phylogenetic tree with 15 tips and 13 internal nodes.
-## 
-## Tip labels:
-##  K, N, D, L, J, G, ...
-## 
-## Unrooted; no branch lengths.
-## 
-## with sequence alignment available (15 sequences of length 2148)
-
-ggtree(phylip) + geom_tiplab()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;User can view the sequence alignment with the tree via &lt;code&gt;msaplot()&lt;/code&gt;
-function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;msaplot(phylip, offset=1)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-phylip_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:5c7a1dd1e7908af0ac7f6300eff4f648&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     
