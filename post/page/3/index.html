@@ -76,6 +76,66 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler">GO analysis using clusterProfiler</a></h2>
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-01-04 11:58:00 &#43;0800 CST" itemprop="datePublished">Mon, Jan 4, 2016</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/go">GO</a>
+        
+    </span>
+    
+    
+
+    
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="//www.addtoany.com/share"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+<a class="a2a_button_pinterest"></a>
+<a class="a2a_button_reddit"></a>
+<a class="a2a_button_sina_weibo"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_douban"></a>
+</div>
+<script async src="//static.addtoany.com/menu/page.js"></script>
+
+
+
+ 
+
+</div>
+
+        <div class="article-style"><p><p><code>clusterProfiler</code> supports over-representation test and gene set
+enrichment analysis of Gene Ontology. It supports GO annotation from
+OrgDb object, GMT file and user&rsquo;s own data.</p>
+
+<h2 id="support-many-species:bdc631894cab1e81ad84e5406d79b479">support many species</h2>
+
+<p>In github version of clusterProfiler, <code>enrichGO</code> and <code>gseGO</code> functions
+removed the parameter <em>organism</em> and add another parameter <em>OrgDb</em>, so
+that any species that have <code>OrgDb</code> object available can be analyzed in
+<strong>clusterProfiler</strong>. Bioconductor have already provide OrgDb for about
+20 species, see
+<a href="http://bioconductor.org/packages/release/BiocViews.html#___OrgDb">http://bioconductor.org/packages/release/BiocViews.html#___OrgDb</a>, and
+users can build <code>OrgDb</code> via <code>AnnotationHub</code>.</p>
+</p></div>
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2015/12/news-of-ggtree">News of ggtree</a></h2>
         
 
@@ -609,79 +669,6 @@ with <a href="https://github.com/timelyportfolio/comicR">comicR</a>, which is a
 funny package to generate comic (xkcd-like) graph in R. Have fun with
 <a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
 and <a href="https://github.com/timelyportfolio/comicR">comicR</a>.</p>
-</p></div>
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2015/08/subview">subview</a></h2>
-        
-
-<div class="article-metadata">
-
-    <span class="article-date">
-        <time datetime="2015-08-31 03:17:48 &#43;0800 CST" itemprop="datePublished">Mon, Aug 31, 2015</time>
-    </span>
-
-    
-    
-    
-    <span class="article-tags">
-        <i class="fa fa-tags"></i>
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>
-        
-    </span>
-    
-    
-
-    
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-<a class="a2a_dd" href="//www.addtoany.com/share"></a>
-<a class="a2a_button_facebook"></a>
-<a class="a2a_button_twitter"></a>
-<a class="a2a_button_google_plus"></a>
-<a class="a2a_button_pinterest"></a>
-<a class="a2a_button_reddit"></a>
-<a class="a2a_button_sina_weibo"></a>
-<a class="a2a_button_wechat"></a>
-<a class="a2a_button_douban"></a>
-</div>
-<script async src="//static.addtoany.com/menu/page.js"></script>
-
-
-
- 
-
-</div>
-
-        <div class="article-style"><p><p>I implemented a function, <em>subview</em>, in
-<a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
-that make it easy to embed a subplot in ggplot.</p>
-
-<p>An example is shown below:</p>
-
-<pre><code>library(ggplot2)
-library(ggtree)
-
-dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
-pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
-    geom_bar(stat=&quot;identity&quot;, width=1) + 
-    coord_polar(theta=&quot;y&quot;) + theme_tree() + 
-    xlab(NULL) + ylab(NULL) + 
-    theme_transparent()
-
-x &lt;- sample(2:9)
-y &lt;- sample(2:9)
-width &lt;- sample(seq(0.05, 0.15, length.out=length(x)))
-height &lt;- width
-
-p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
-print(p)
-for (i in seq_along(x)) {
-    p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
-    print(p)
-}
-</code></pre>
 </p></div>
     </div>
     
