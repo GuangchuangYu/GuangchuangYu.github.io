@@ -74,6 +74,51 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler">convert biological ID with KEGG API using clusterProfiler</a></h2>
+        <div class="article-style"><p><h2 id="bitr-kegg:ea0718166651864960b492e0d7486a4f">bitr_kegg</h2>
+
+<p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
+
+<pre><code>library(clusterProfiler)
+data(gcSample)
+hg &lt;- gcSample[[1]]
+head(hg)
+
+## [1] &quot;4597&quot;  &quot;7111&quot;  &quot;5266&quot;  &quot;2175&quot;  &quot;755&quot;   &quot;23046&quot;
+
+eg2np &lt;- bitr_kegg(hg, fromType='kegg', toType='ncbi-proteinid', organism='hsa')
+
+## Warning in bitr_kegg(hg, fromType = &quot;kegg&quot;, toType = &quot;ncbi-proteinid&quot;,
+## organism = &quot;hsa&quot;): 3.7% of input gene IDs are fail to map...
+
+head(eg2np)
+
+##     kegg ncbi-proteinid
+## 1   8326      NP_003499
+## 2  58487   NP_001034707
+## 3 139081      NP_619647
+## 4  59272      NP_068576
+## 5    993      NP_001780
+## 6   2676      NP_001487
+
+np2up &lt;- bitr_kegg(eg2np[,2], fromType='ncbi-proteinid', toType='uniprot', organism='hsa')
+
+head(np2up)
+
+##   ncbi-proteinid uniprot
+## 1      NP_005457  O75586
+## 2      NP_005792  P41567
+## 3      NP_005792  Q6IAV3
+## 4      NP_037536  Q13421
+## 5      NP_006054  O60662
+## 6   NP_001092002  O95398
+</code></pre>
+
+<p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
+</p></div>
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis">KEGG Module Enrichment Analysis</a></h2>
         <div class="article-style"><p><blockquote>
 <p>KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:</p>
@@ -196,24 +241,6 @@ p1 &lt;- p + geom_hilight(node=45)
 p2 &lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
 with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
 </code></pre>
-</p></div>
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler">GO analysis using clusterProfiler</a></h2>
-        <div class="article-style"><p><p><code>clusterProfiler</code> supports over-representation test and gene set
-enrichment analysis of Gene Ontology. It supports GO annotation from
-OrgDb object, GMT file and user&rsquo;s own data.</p>
-
-<h2 id="support-many-species:bdc631894cab1e81ad84e5406d79b479">support many species</h2>
-
-<p>In github version of clusterProfiler, <code>enrichGO</code> and <code>gseGO</code> functions
-removed the parameter <em>organism</em> and add another parameter <em>OrgDb</em>, so
-that any species that have <code>OrgDb</code> object available can be analyzed in
-<strong>clusterProfiler</strong>. Bioconductor have already provide OrgDb for about
-20 species, see
-<a href="http://bioconductor.org/packages/release/BiocViews.html#___OrgDb">http://bioconductor.org/packages/release/BiocViews.html#___OrgDb</a>, and
-users can build <code>OrgDb</code> via <code>AnnotationHub</code>.</p>
 </p></div>
     </div>
     
