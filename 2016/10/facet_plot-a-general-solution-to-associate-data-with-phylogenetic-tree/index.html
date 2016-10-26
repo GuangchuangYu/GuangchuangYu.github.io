@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2016/08/ggtree-paper-published">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree">
 
-    <title>ggtree paper published | Guangchuang YU</title>
+    <title>facet_plot: a general solution to associate data with phylogenetic tree | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">ggtree paper published</h1>
+        <h1 itemprop="name">facet_plot: a general solution to associate data with phylogenetic tree</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2016-08-16 22:10:00 &#43;0800 CST" itemprop="datePublished">Tue, Aug 16, 2016</time>
+        <time datetime="2016-10-26 16:30:00 &#43;0800 CST" itemprop="datePublished">Wed, Oct 26, 2016</time>
     </span>
 
     
@@ -88,7 +88,11 @@
     <span class="article-tags">
         <i class="fa fa-tags"></i>
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggstance">ggstance</a>
         
     </span>
     
@@ -122,68 +126,63 @@
 
           
 
-<p>Today <a href="https://guangchuangyu.github.io/ggtree"><code>ggtree</code></a> received <a href="https://github.com/GuangchuangYu/ggtree/stargazers">100 stars</a> on <i class="fa fa-github"></i> and I found the paper was <a href="http://dx.doi.org/10.1111/2041-210X.12628">online</a> at the same day by the tweet:</p>
+<p><a href="https://guangchuangyu.github.io/ggtree">ggtree</a> provides <code>gheatmap</code> for visualizing heatmap with phylogenetic tree and <code>msaplot</code> for visualizing multiple sequence alignment with phylogenetic tree.</p>
 
-<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。<a href="https://t.co/JlET18BSZv">https://t.co/JlET18BSZv</a></p>&mdash; Hoxo_Mass_Spectrum (@siero5335) <a href="https://twitter.com/siero5335/status/765521239146233856">August 16, 2016</a></blockquote>
+<p>We may have different data types and want to visualize and align them with the tree. For example, <code>dotplot</code> of SNP site (e.g. using <code>geom_point(shape='|')</code>), <code>barplot</code> of trait values (e.g. using <code>geom_barh(stat='identity')</code>) <em>et al</em>.</p>
+
+<p>To make it easy to associate different types of data with phylogenetic tree, I implemented the <code>facet_plot</code> function      which accepts a <code>geom</code> function to draw the input <code>data.frame</code> and display it in an additional <code>panel</code>.</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">associate tree with different type of data by <a href="https://twitter.com/hashtag/ggtree?src=hash">#ggtree</a> <a href="https://t.co/6w755VWytZ">https://t.co/6w755VWytZ</a> <a href="https://t.co/K8WViEi13E">pic.twitter.com/K8WViEi13E</a></p>&mdash; Guangchuang Yu (@guangchuangyu) <a href="https://twitter.com/guangchuangyu/status/773359054924095488">September 7, 2016</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<p>I am quite exciting about it. Now ggtree is citable by doi:<a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>10.1111/2041-210X.12628</code></a>.</p>
+<pre><code>tr &lt;- rtree(30)
+p &lt;- ggtree(tr)
+d1 &lt;- data.frame(id=tr$tip.label, location=sample(c(&quot;GZ&quot;, &quot;HK&quot;, &quot;CZ&quot;), 30, replace=TRUE))
+p1 &lt;- p %&lt;+% d1 + geom_tippoint(aes(color=location))
+d2 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+p2 &lt;- facet_plot(p1, panel=&quot;dot&quot;, data=d2, geom=geom_point, 
+                aes(x=val), color='firebrick') + theme_tree2()
+</code></pre>
 
-<p>In the review period, <code>ggtree</code> had already been cited by several papers:</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" alt="" /></p>
 
-<p><code>1</code>. <a href="https://doi.org/10.7717/peerj.976">https://doi.org/10.7717/peerj.976</a></p>
+<p>Most of the <code>geom</code> in <code>ggplot2</code> draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have <a href="https://github.com/lionel-/ggstance">ggstance</a> which provides horizontal versions of <code>geoms</code>, including:</p>
 
-<p>Annotating phylogenetic tree with image files (i.e. secondary structure).</p>
+<ul>
+<li><code>geom_barh()</code></li>
+<li><code>geom_histogramh()</code></li>
+<li><code>geom_linerangeh()</code></li>
+<li><code>geom_pointrangeh()</code></li>
+<li><code>geom_errorbarh()</code></li>
+<li><code>geom_crossbarh()</code></li>
+<li><code>geom_boxploth()</code></li>
+<li><code>geom_violinh()</code></li>
+</ul>
 
-<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2015_peerJ_fig-9-2x.jpg" alt="" /></p>
+<p>With <code>ggstance</code>, we can associate <code>barplot</code>, <code>boxplot</code> or other graphs to phylogenetic trees.</p>
 
-<p><code>2</code>. <a href="http://dx.doi.org/10.1016/j.meegid.2015.12.006">http://dx.doi.org/10.1016/j.meegid.2015.12.006</a></p>
+<pre><code>d3 &lt;- data.frame(id = rep(tr$tip.label, each=2),
+                    value = abs(rnorm(60, mean=100, sd=50)),
+                    category = rep(LETTERS[1:2], 30))
+p3 &lt;- facet_plot(p2, panel = 'Stacked Barplot', data = d3, 
+                geom = geom_barh, 
+                mapping = aes(x = value, fill = as.factor(category)), 
+                stat='identity' ) 
+</code></pre>
 
-<p>Highlight clades and annotate phylogenetic tree with genotype table.</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" alt="" /></p>
 
-<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2015_peiyu_1-s2.0-S1567134815300721-gr1.jpg" alt="" /></p>
+<pre><code>d4 = data.frame(id=rep(tr$tip.label, each=20), 
+                val=as.vector(sapply(1:30, function(i) 
+                                rnorm(20, mean=i)))
+                )               
+p4 &lt;- facet_plot(p3, panel=&quot;Boxplot&quot;, data=d4, geom_boxploth, 
+            mapping = aes(x=val, group=label, color=location))                                  
+</code></pre>
 
-<p><code>3</code>. <a href="http://dx.doi.org/10.3389%2Ffcimb.2016.00036">http://dx.doi.org/10.3389%2Ffcimb.2016.00036</a></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" alt="" /></p>
 
-<p>Annotate phylogenetic tree with binary matrix.</p>
-
-<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2016_fcimb-06-00036-g003.jpg" alt="" /></p>
-
-<p><code>4</code>. <a href="http://dx.doi.org/10.1104/pp.16.00359">http://dx.doi.org/10.1104/pp.16.00359</a></p>
-
-<p>Annotate phylogenetic tree with sequence features.</p>
-
-<p><img src="https://guangchuangyu.github.io/ggtree/featured_img/2016_PlantPhysiology.png" alt="" /></p>
-
-<p><code>5</code>. <a href="http://dx.doi.org/10.1101/067207">http://dx.doi.org/10.1101/067207</a></p>
-
-<p>Annotate with bootstrap values.</p>
-
-<p><img src="https://cloud.githubusercontent.com/assets/626539/17700401/273895c6-63f8-11e6-91da-7431b78b22af.png" alt="" /></p>
-
-<p><code>6</code>. <a href="http://www.nature.com/articles/srep30158">http://www.nature.com/articles/srep30158</a></p>
-
-<p>Visualize bootstrap value infer by RAxML and phyml on the same tree.</p>
-
-<p><img src="https://cloud.githubusercontent.com/assets/626539/17127143/de15b7c0-5335-11e6-8621-edce0e581308.png" alt="" /></p>
-
-<p><code>7</code>. <a href="http://dx.doi.org/10.1101/053371">http://dx.doi.org/10.1101/053371</a></p>
-
-<p><code>8</code>. <a href="http://dx.doi.org/10.1105/tpc.16.00053">http://dx.doi.org/10.1105/tpc.16.00053</a></p>
-
-<p><code>9</code>. <a href="http://dx.doi.org/10.1111/mec.13474">http://dx.doi.org/10.1111/mec.13474</a></p>
-
-<p><code>10</code>. <a href="http://dx.doi.org/10.1371/journal.pone.0160958">http://dx.doi.org/10.1371/journal.pone.0160958</a></p>
-
-<p><code>11</code>. <a href="http://dx.doi.org/10.1111/2041-210X.12593">http://dx.doi.org/10.1111/2041-210X.12593</a></p>
-
-<p><code>12</code>. <a href="http://dx.doi.org/10.1101/053371">http://dx.doi.org/10.1101/053371</a></p>
-
-<p>The <a href="http://dx.doi.org/10.1111/2041-210X.12628">ggtree paper</a> provides several comprehensive and reproducible examples. It can be a good reference for complex tree annotation. <a href="https://guangchuangyu.github.io/presentation/2016-ggtree-chinar/">My slides</a> in 9<sup>th</sup> China R conference summarized the functionalities that <code>ggtree</code> provided.</p>
-
-<p>More information can be found in <a href="https://guangchuangyu.github.io/ggtree">ggtree homepage</a>. Hope you have fun with <code>ggtree</code>.</p>
-
-<h2 id="citation:ba54b2218aa08ec8a329d87597760269">Citation</h2>
+<h2 id="citation:dc96c3694333cc3e76c542534755f35a">Citation</h2>
 
 <p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
 
@@ -199,11 +198,9 @@
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2016/08/using-meshes-for-mesh-enrichment-analysis"><span aria-hidden="true">&larr;</span> using meshes for MeSH Enrichment Analysis</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/10/bioc-34-news-of-my-bioc-packages"><span aria-hidden="true">&larr;</span> [Bioc 34] NEWS of my BioC packages</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data">ggtree for microbiome data <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>

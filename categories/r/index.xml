@@ -7,8 +7,81 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 19 Oct 2016 18:13:57 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Oct 2016 16:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>facet_plot: a general solution to associate data with phylogenetic tree</title>
+      <link>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree</link>
+      <pubDate>Wed, 26 Oct 2016 16:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; provides &lt;code&gt;gheatmap&lt;/code&gt; for visualizing heatmap with phylogenetic tree and &lt;code&gt;msaplot&lt;/code&gt; for visualizing multiple sequence alignment with phylogenetic tree.&lt;/p&gt;
+
+&lt;p&gt;We may have different data types and want to visualize and align them with the tree. For example, &lt;code&gt;dotplot&lt;/code&gt; of SNP site (e.g. using &lt;code&gt;geom_point(shape=&#39;|&#39;)&lt;/code&gt;), &lt;code&gt;barplot&lt;/code&gt; of trait values (e.g. using &lt;code&gt;geom_barh(stat=&#39;identity&#39;)&lt;/code&gt;) &lt;em&gt;et al&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;To make it easy to associate different types of data with phylogenetic tree, I implemented the &lt;code&gt;facet_plot&lt;/code&gt; function      which accepts a &lt;code&gt;geom&lt;/code&gt; function to draw the input &lt;code&gt;data.frame&lt;/code&gt; and display it in an additional &lt;code&gt;panel&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;associate tree with different type of data by &lt;a href=&#34;https://twitter.com/hashtag/ggtree?src=hash&#34;&gt;#ggtree&lt;/a&gt; &lt;a href=&#34;https://t.co/6w755VWytZ&#34;&gt;https://t.co/6w755VWytZ&lt;/a&gt; &lt;a href=&#34;https://t.co/K8WViEi13E&#34;&gt;pic.twitter.com/K8WViEi13E&lt;/a&gt;&lt;/p&gt;&amp;mdash; Guangchuang Yu (@guangchuangyu) &lt;a href=&#34;https://twitter.com/guangchuangyu/status/773359054924095488&#34;&gt;September 7, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;pre&gt;&lt;code&gt;tr &amp;lt;- rtree(30)
+p &amp;lt;- ggtree(tr)
+d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;quot;GZ&amp;quot;, &amp;quot;HK&amp;quot;, &amp;quot;CZ&amp;quot;), 30, replace=TRUE))
+p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
+d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+p2 &amp;lt;- facet_plot(p1, panel=&amp;quot;dot&amp;quot;, data=d2, geom=geom_point, 
+                aes(x=val), color=&#39;firebrick&#39;) + theme_tree2()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Most of the &lt;code&gt;geom&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt; draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have &lt;a href=&#34;https://github.com/lionel-/ggstance&#34;&gt;ggstance&lt;/a&gt; which provides horizontal versions of &lt;code&gt;geoms&lt;/code&gt;, including:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;geom_barh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_histogramh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_linerangeh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_pointrangeh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_errorbarh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_crossbarh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_boxploth()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_violinh()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With &lt;code&gt;ggstance&lt;/code&gt;, we can associate &lt;code&gt;barplot&lt;/code&gt;, &lt;code&gt;boxplot&lt;/code&gt; or other graphs to phylogenetic trees.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d3 &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
+                    value = abs(rnorm(60, mean=100, sd=50)),
+                    category = rep(LETTERS[1:2], 30))
+p3 &amp;lt;- facet_plot(p2, panel = &#39;Stacked Barplot&#39;, data = d3, 
+                geom = geom_barh, 
+                mapping = aes(x = value, fill = as.factor(category)), 
+                stat=&#39;identity&#39; ) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d4 = data.frame(id=rep(tr$tip.label, each=20), 
+                val=as.vector(sapply(1:30, function(i) 
+                                rnorm(20, mean=i)))
+                )               
+p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_boxploth, 
+            mapping = aes(x=val, group=label, color=location))                                  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:dc96c3694333cc3e76c542534755f35a&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>[Bioc 34] NEWS of my BioC packages</title>
@@ -716,7 +789,7 @@ msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
 
 &lt;p&gt;Today &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;&lt;code&gt;ggtree&lt;/code&gt;&lt;/a&gt; received &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/stargazers&#34;&gt;100 stars&lt;/a&gt; on &lt;i class=&#34;fa fa-github&#34;&gt;&lt;/i&gt; and I found the paper was &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;online&lt;/a&gt; at the same day by the tweet:&lt;/p&gt;
 
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。&lt;a href=&#34;https://t.co/JlET18BSZv&#34;&gt;https://t.co/JlET18BSZv&lt;/a&gt;&lt;/p&gt;&amp;mdash; ホクソピペット (@siero5335) &lt;a href=&#34;https://twitter.com/siero5335/status/765521239146233856&#34;&gt;August 16, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。&lt;a href=&#34;https://t.co/JlET18BSZv&#34;&gt;https://t.co/JlET18BSZv&lt;/a&gt;&lt;/p&gt;&amp;mdash; Hoxo_Mass_Spectrum (@siero5335) &lt;a href=&#34;https://twitter.com/siero5335/status/765521239146233856&#34;&gt;August 16, 2016&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 
 &lt;p&gt;I am quite exciting about it. Now ggtree is citable by doi:&lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -1936,44 +2009,6 @@ ggplot(d, aes(x, y, color=label)) +
 
 &lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://twitter.com/drob&#34;&gt;@drob&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/guangchuangyu&#34;&gt;@guangchuangyu&lt;/a&gt;, this is data surfing (air quality data from Lima, Peru) / fun with your cool pkgs. Thx! &lt;a href=&#34;https://t.co/ikinjxDDZL&#34;&gt;pic.twitter.com/ikinjxDDZL&lt;/a&gt;&lt;/p&gt;&amp;mdash; Maëlle Salmon (@ma_salmon) &lt;a href=&#34;https://twitter.com/ma_salmon/status/706490090609106944&#34;&gt;March 6, 2016&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>covplot supports GRangesList</title>
-      <link>https://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist</link>
-      <pubDate>Mon, 29 Feb 2016 11:45:08 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist</guid>
-      <description>
-
-&lt;p&gt;To answer the &lt;a href=&#34;https://github.com/GuangchuangYu/ChIPseeker/issues/27&#34;&gt;issue&lt;/a&gt;, I extend the &lt;code&gt;covplot&lt;/code&gt; function to support viewing coverage of a list of &lt;code&gt;GRanges&lt;/code&gt; objects or &lt;code&gt;bed&lt;/code&gt; files.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ChIPseeker)
-files &amp;lt;- getSampleFiles()
-peak=GenomicRanges::GRangesList(CBX6=readPeakFile(files[[4]]),
-                                CBX7=readPeakFile(files[[5]]))
-
-p &amp;lt;- covplot(peak)
-print(p)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/2016_ChIPseeker_covplot_files/unnamed-chunk-1-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;By default, The coverage plots are merged together with different colors. Users can separate them to different panels using &lt;code&gt;facet_grid&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggplot2)
-col &amp;lt;- c(CBX6=&#39;red&#39;, CBX7=&#39;green&#39;)
-p + facet_grid(chr ~ .id) + scale_color_manual(values=col) + scale_fill_manual(values=col)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/2016_ChIPseeker_covplot_files/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:35275eeb727209603057fe9f36cb00d7&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     

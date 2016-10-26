@@ -7,8 +7,81 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 19 Oct 2016 18:13:57 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Oct 2016 16:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>facet_plot: a general solution to associate data with phylogenetic tree</title>
+      <link>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree</link>
+      <pubDate>Wed, 26 Oct 2016 16:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; provides &lt;code&gt;gheatmap&lt;/code&gt; for visualizing heatmap with phylogenetic tree and &lt;code&gt;msaplot&lt;/code&gt; for visualizing multiple sequence alignment with phylogenetic tree.&lt;/p&gt;
+
+&lt;p&gt;We may have different data types and want to visualize and align them with the tree. For example, &lt;code&gt;dotplot&lt;/code&gt; of SNP site (e.g. using &lt;code&gt;geom_point(shape=&#39;|&#39;)&lt;/code&gt;), &lt;code&gt;barplot&lt;/code&gt; of trait values (e.g. using &lt;code&gt;geom_barh(stat=&#39;identity&#39;)&lt;/code&gt;) &lt;em&gt;et al&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;To make it easy to associate different types of data with phylogenetic tree, I implemented the &lt;code&gt;facet_plot&lt;/code&gt; function      which accepts a &lt;code&gt;geom&lt;/code&gt; function to draw the input &lt;code&gt;data.frame&lt;/code&gt; and display it in an additional &lt;code&gt;panel&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;associate tree with different type of data by &lt;a href=&#34;https://twitter.com/hashtag/ggtree?src=hash&#34;&gt;#ggtree&lt;/a&gt; &lt;a href=&#34;https://t.co/6w755VWytZ&#34;&gt;https://t.co/6w755VWytZ&lt;/a&gt; &lt;a href=&#34;https://t.co/K8WViEi13E&#34;&gt;pic.twitter.com/K8WViEi13E&lt;/a&gt;&lt;/p&gt;&amp;mdash; Guangchuang Yu (@guangchuangyu) &lt;a href=&#34;https://twitter.com/guangchuangyu/status/773359054924095488&#34;&gt;September 7, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;pre&gt;&lt;code&gt;tr &amp;lt;- rtree(30)
+p &amp;lt;- ggtree(tr)
+d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;quot;GZ&amp;quot;, &amp;quot;HK&amp;quot;, &amp;quot;CZ&amp;quot;), 30, replace=TRUE))
+p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
+d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+p2 &amp;lt;- facet_plot(p1, panel=&amp;quot;dot&amp;quot;, data=d2, geom=geom_point, 
+                aes(x=val), color=&#39;firebrick&#39;) + theme_tree2()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Most of the &lt;code&gt;geom&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt; draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have &lt;a href=&#34;https://github.com/lionel-/ggstance&#34;&gt;ggstance&lt;/a&gt; which provides horizontal versions of &lt;code&gt;geoms&lt;/code&gt;, including:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;geom_barh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_histogramh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_linerangeh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_pointrangeh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_errorbarh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_crossbarh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_boxploth()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_violinh()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With &lt;code&gt;ggstance&lt;/code&gt;, we can associate &lt;code&gt;barplot&lt;/code&gt;, &lt;code&gt;boxplot&lt;/code&gt; or other graphs to phylogenetic trees.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d3 &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
+                    value = abs(rnorm(60, mean=100, sd=50)),
+                    category = rep(LETTERS[1:2], 30))
+p3 &amp;lt;- facet_plot(p2, panel = &#39;Stacked Barplot&#39;, data = d3, 
+                geom = geom_barh, 
+                mapping = aes(x = value, fill = as.factor(category)), 
+                stat=&#39;identity&#39; ) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d4 = data.frame(id=rep(tr$tip.label, each=20), 
+                val=as.vector(sapply(1:30, function(i) 
+                                rnorm(20, mean=i)))
+                )               
+p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_boxploth, 
+            mapping = aes(x=val, group=label, color=location))                                  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:dc96c3694333cc3e76c542534755f35a&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>[Bioc 34] NEWS of my BioC packages</title>
@@ -725,7 +798,7 @@ msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
 
 &lt;p&gt;Today &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;&lt;code&gt;ggtree&lt;/code&gt;&lt;/a&gt; received &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/stargazers&#34;&gt;100 stars&lt;/a&gt; on &lt;i class=&#34;fa fa-github&#34;&gt;&lt;/i&gt; and I found the paper was &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;online&lt;/a&gt; at the same day by the tweet:&lt;/p&gt;
 
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。&lt;a href=&#34;https://t.co/JlET18BSZv&#34;&gt;https://t.co/JlET18BSZv&lt;/a&gt;&lt;/p&gt;&amp;mdash; ホクソピペット (@siero5335) &lt;a href=&#34;https://twitter.com/siero5335/status/765521239146233856&#34;&gt;August 16, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。&lt;a href=&#34;https://t.co/JlET18BSZv&#34;&gt;https://t.co/JlET18BSZv&lt;/a&gt;&lt;/p&gt;&amp;mdash; Hoxo_Mass_Spectrum (@siero5335) &lt;a href=&#34;https://twitter.com/siero5335/status/765521239146233856&#34;&gt;August 16, 2016&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 
 &lt;p&gt;I am quite exciting about it. Now ggtree is citable by doi:&lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -1796,86 +1869,6 @@ head(summary(y))
 &lt;h2 id=&#34;biography:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Biography&lt;/h2&gt;
 
 &lt;p&gt;I am Guangchuang YU. A PhD candidate studying evolution of influenza A virus at The University of Hong Kong.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>KEGG Module Enrichment Analysis</title>
-      <link>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis</link>
-      <pubDate>Wed, 13 Apr 2016 20:48:15 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis</guid>
-      <description>
-
-&lt;blockquote&gt;
-&lt;p&gt;KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;pathway modules – representing tight functional units in KEGG metabolic pathway maps, such as M00002 (Glycolysis, core module involving three-carbon compounds)&lt;/li&gt;
-&lt;li&gt;structural complexes – often forming molecular machineries, such as M00072 (Oligosaccharyltransferase)&lt;/li&gt;
-&lt;li&gt;functional sets – for other types of essential sets, such as M00360 (Aminoacyl-tRNA synthases, prokaryotes)&lt;/li&gt;
-&lt;li&gt;signature modules – as markers of phenotypes, such as M00363 (EHEC pathogenicity signature, Shiga toxin)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.genome.jp/kegg/module.html&#34;&gt;KEGG Modules&lt;/a&gt; have a much more straightforwared interpretation in many situations and there was a &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/37&#34;&gt;feature request&lt;/a&gt; for implementing an enrichment test from clusterProfiler user. Both hypergeometric test and GSEA of KEGG Module are now supported in &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;. Just like &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG Pathway Analysis&lt;/a&gt;, clusterProfiler accesses latest online data and supports more than 2000 species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To prevent confusing new users who may not fammiliar with KEGG, I created two new functions, &lt;em&gt;enrichMKEGG&lt;/em&gt; and &lt;em&gt;gseMKEGG&lt;/em&gt; for enrichment test of KEGG Module and keep the original functions, &lt;em&gt;enrichKEGG&lt;/em&gt; and &lt;em&gt;gseKEGG&lt;/em&gt; for KEGG pathway analysis only.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
-
-data(geneList)
-de &amp;lt;- names(geneList)[1:100]
-xx &amp;lt;- enrichMKEGG(de, organism=&#39;hsa&#39;, minGSSize=1)
-head(summary(xx))
-
-##            ID
-## M00693 M00693
-## M00286 M00286
-## M00067 M00067
-## M00691 M00691
-##                                                                                    Description
-## M00693                                                            Cell cycle - G2/M transition
-## M00286                                                                            GINS complex
-## M00067 Sulfoglycolipids biosynthesis, ceramide/1-alkyl-2-acylglycerol =&amp;gt; sulfatide/seminolipid
-## M00691                                               DNA damage-induced cell cycle checkpoints
-##        GeneRatio BgRatio       pvalue     p.adjust       qvalue
-## M00693       3/8 10/1528 0.0000111304 5.565199e-05 1.171621e-05
-## M00286       2/8  4/1528 0.0001432508 3.581269e-04 7.539514e-05
-## M00067       1/8  2/1528 0.0104472034 1.741201e-02 3.665685e-03
-## M00691       1/8  7/1528 0.0361484900 4.518561e-02 9.512761e-03
-##              geneID Count
-## M00693 9133/890/983     3
-## M00286   9837/51659     2
-## M00067         7368     1
-## M00691         1111     1
-
-yy &amp;lt;- gseMKEGG(geneList)
-
-## [1] &amp;quot;calculating observed enrichment scores...&amp;quot;
-## [1] &amp;quot;calculating permutation scores...&amp;quot;
-## [1] &amp;quot;calculating p values...&amp;quot;
-## [1] &amp;quot;done...&amp;quot;
-
-head(summary(yy))
-
-##            ID                     Description setSize enrichmentScore
-## M00337 M00337                Immunoproteasome      15       0.7583644
-## M00340 M00340   Proteasome, 20S core particle      13       0.7935026
-## M00354 M00354 Spliceosome, U4/U6.U5 tri-snRNP      29       0.6053503
-##             NES      pvalue   p.adjust    qvalues
-## M00337 2.063359 0.002298851 0.03675214 0.02968961
-## M00340 2.047060 0.002409639 0.03675214 0.02968961
-## M00354 1.913834 0.002564103 0.03675214 0.02968961
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Please refer to &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html&#34;&gt;vignette&lt;/a&gt; for more details.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:b7c5743556f4771ecf9cca8abe8d99c7&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     

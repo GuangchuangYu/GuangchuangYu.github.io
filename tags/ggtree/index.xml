@@ -7,8 +7,81 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 19 Oct 2016 18:13:57 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Oct 2016 16:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>facet_plot: a general solution to associate data with phylogenetic tree</title>
+      <link>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree</link>
+      <pubDate>Wed, 26 Oct 2016 16:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; provides &lt;code&gt;gheatmap&lt;/code&gt; for visualizing heatmap with phylogenetic tree and &lt;code&gt;msaplot&lt;/code&gt; for visualizing multiple sequence alignment with phylogenetic tree.&lt;/p&gt;
+
+&lt;p&gt;We may have different data types and want to visualize and align them with the tree. For example, &lt;code&gt;dotplot&lt;/code&gt; of SNP site (e.g. using &lt;code&gt;geom_point(shape=&#39;|&#39;)&lt;/code&gt;), &lt;code&gt;barplot&lt;/code&gt; of trait values (e.g. using &lt;code&gt;geom_barh(stat=&#39;identity&#39;)&lt;/code&gt;) &lt;em&gt;et al&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;To make it easy to associate different types of data with phylogenetic tree, I implemented the &lt;code&gt;facet_plot&lt;/code&gt; function      which accepts a &lt;code&gt;geom&lt;/code&gt; function to draw the input &lt;code&gt;data.frame&lt;/code&gt; and display it in an additional &lt;code&gt;panel&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;associate tree with different type of data by &lt;a href=&#34;https://twitter.com/hashtag/ggtree?src=hash&#34;&gt;#ggtree&lt;/a&gt; &lt;a href=&#34;https://t.co/6w755VWytZ&#34;&gt;https://t.co/6w755VWytZ&lt;/a&gt; &lt;a href=&#34;https://t.co/K8WViEi13E&#34;&gt;pic.twitter.com/K8WViEi13E&lt;/a&gt;&lt;/p&gt;&amp;mdash; Guangchuang Yu (@guangchuangyu) &lt;a href=&#34;https://twitter.com/guangchuangyu/status/773359054924095488&#34;&gt;September 7, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;pre&gt;&lt;code&gt;tr &amp;lt;- rtree(30)
+p &amp;lt;- ggtree(tr)
+d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;quot;GZ&amp;quot;, &amp;quot;HK&amp;quot;, &amp;quot;CZ&amp;quot;), 30, replace=TRUE))
+p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
+d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+p2 &amp;lt;- facet_plot(p1, panel=&amp;quot;dot&amp;quot;, data=d2, geom=geom_point, 
+                aes(x=val), color=&#39;firebrick&#39;) + theme_tree2()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Most of the &lt;code&gt;geom&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt; draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have &lt;a href=&#34;https://github.com/lionel-/ggstance&#34;&gt;ggstance&lt;/a&gt; which provides horizontal versions of &lt;code&gt;geoms&lt;/code&gt;, including:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;geom_barh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_histogramh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_linerangeh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_pointrangeh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_errorbarh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_crossbarh()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_boxploth()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;geom_violinh()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With &lt;code&gt;ggstance&lt;/code&gt;, we can associate &lt;code&gt;barplot&lt;/code&gt;, &lt;code&gt;boxplot&lt;/code&gt; or other graphs to phylogenetic trees.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d3 &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
+                    value = abs(rnorm(60, mean=100, sd=50)),
+                    category = rep(LETTERS[1:2], 30))
+p3 &amp;lt;- facet_plot(p2, panel = &#39;Stacked Barplot&#39;, data = d3, 
+                geom = geom_barh, 
+                mapping = aes(x = value, fill = as.factor(category)), 
+                stat=&#39;identity&#39; ) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d4 = data.frame(id=rep(tr$tip.label, each=20), 
+                val=as.vector(sapply(1:30, function(i) 
+                                rnorm(20, mean=i)))
+                )               
+p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_boxploth, 
+            mapping = aes(x=val, group=label, color=location))                                  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:dc96c3694333cc3e76c542534755f35a&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>[Bioc 34] NEWS of my BioC packages</title>
@@ -716,7 +789,7 @@ msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
 
 &lt;p&gt;Today &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;&lt;code&gt;ggtree&lt;/code&gt;&lt;/a&gt; received &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/stargazers&#34;&gt;100 stars&lt;/a&gt; on &lt;i class=&#34;fa fa-github&#34;&gt;&lt;/i&gt; and I found the paper was &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;online&lt;/a&gt; at the same day by the tweet:&lt;/p&gt;
 
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。&lt;a href=&#34;https://t.co/JlET18BSZv&#34;&gt;https://t.co/JlET18BSZv&lt;/a&gt;&lt;/p&gt;&amp;mdash; ホクソピペット (@siero5335) &lt;a href=&#34;https://twitter.com/siero5335/status/765521239146233856&#34;&gt;August 16, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。&lt;a href=&#34;https://t.co/JlET18BSZv&#34;&gt;https://t.co/JlET18BSZv&lt;/a&gt;&lt;/p&gt;&amp;mdash; Hoxo_Mass_Spectrum (@siero5335) &lt;a href=&#34;https://twitter.com/siero5335/status/765521239146233856&#34;&gt;August 16, 2016&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 
 &lt;p&gt;I am quite exciting about it. Now ggtree is citable by doi:&lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -1741,163 +1814,6 @@ ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/apple_emoji.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>[Bioc 32] NEWS of my BioC packages</title>
-      <link>https://guangchuangyu.github.io/2015/10/bioc-32-news-of-my-bioc-packages</link>
-      <pubDate>Thu, 15 Oct 2015 16:13:57 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2015/10/bioc-32-news-of-my-bioc-packages</guid>
-      <description>
-
-&lt;p&gt;In BioC 3.2 release, all my packages including
-&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt;,
-&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;,
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34;&gt;DOSE&lt;/a&gt;,
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;,
-and &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt; switch
-from Sweave to R Markdown for package vignettes.&lt;/p&gt;
-
-&lt;h3 id=&#34;gosemsim:35c90aeebec9a933fea1dafd42584f96&#34;&gt;GOSemSim&lt;/h3&gt;
-
-&lt;p&gt;To make it consistent between
-&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; and
-&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;,
-&amp;lsquo;worm&amp;rsquo; was deprecated and instead we should use &amp;lsquo;celegans&amp;rsquo;. As usual,
-information content data was updated.&lt;/p&gt;
-
-&lt;h3 id=&#34;clusterprofiler:35c90aeebec9a933fea1dafd42584f96&#34;&gt;clusterProfiler&lt;/h3&gt;
-
-&lt;p&gt;Enrichment results may contains terms that are very general (less
-informative) and we do not want to use them. In this release, we provide
-&lt;em&gt;dropGO&lt;/em&gt; function that can be used to drop selected GO terms or specific
-level of GO terms. It can be applied to output from both &lt;em&gt;enrichGO&lt;/em&gt; and
-&lt;em&gt;compareCluster&lt;/em&gt;. This is a feature request from
-&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/26&#34;&gt;@ahorvath&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Another feature request is to visualize GO enrichment result with GO
-topology. I implement &lt;em&gt;plotGOgraph&lt;/em&gt; function by extending
-&lt;a href=&#34;http://www.bioconductor.org/packages/topGO&#34;&gt;topGO&lt;/a&gt; to support output of
-both &lt;em&gt;enrichGO&lt;/em&gt; or &lt;em&gt;gseGO&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result/&#34;&gt;dotplot&lt;/a&gt;&lt;/em&gt;
-is another feature request and was implemented in
-&lt;a href=&#34;http://www.bioconductor.org/packages/DOSE&#34;&gt;DOSE&lt;/a&gt; as a general function
-for visualize enrichment result.
-&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
-import this function.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;merge_result&lt;/em&gt; function was implemented for merging enrichment results
-and then the results can be visualized simultaneously for comparison.
-This function was developed for comparing &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/&#34;&gt;functional enrichment of GTEx paper&lt;/a&gt;.
-An example of comparing results from
-&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
-and DAVID can be found in
-&lt;a href=&#34;https://github.com/GuangchuangYu/enrichment4GTEx_clusterProfiler/blob/master/GO_BP.md&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;A section &amp;lsquo;Functional analysis of NGS data&amp;rsquo; was added in the vignette.
-&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;The blog post&lt;/a&gt;
-illustrated using &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; function to analyze user defined
-annotation.&lt;/p&gt;
-
-&lt;h3 id=&#34;dose:35c90aeebec9a933fea1dafd42584f96&#34;&gt;DOSE&lt;/h3&gt;
-
-&lt;p&gt;Network of Cancer Genes data was updated to version 4.9.0, contributed
-by &lt;a href=&#34;https://github.com/GuangchuangYu/DOSE/pull/8&#34;&gt;@dalloliogm&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;dotplot&lt;/em&gt; function was implemented for visualizing enrichment result and
-was imported to
-&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
-and &lt;a href=&#34;http://www.bioconductor.org/packages/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;With new release of ChIPseeker, DOSE can be applied to &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/&#34;&gt;NGS data&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Several bugs were removed and small improvement were incorporated.&lt;/p&gt;
-
-&lt;h3 id=&#34;reactomepa:35c90aeebec9a933fea1dafd42584f96&#34;&gt;ReactomePA&lt;/h3&gt;
-
-&lt;p&gt;Now fly (Drosophila melanogaster) is supported.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;viewPathway&lt;/em&gt; supports other organisms, which was contributed by
-&lt;a href=&#34;https://github.com/GuangchuangYu/ReactomePA/pull/1&#34;&gt;@vladpetyuk&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Import &lt;em&gt;dotplot&lt;/em&gt; from DOSE and add &amp;lsquo;Pathway analysis of NGS data&amp;rsquo;
-section in vignette.&lt;/p&gt;
-
-&lt;h3 id=&#34;chipseeker:35c90aeebec9a933fea1dafd42584f96&#34;&gt;ChIPseeker&lt;/h3&gt;
-
-&lt;p&gt;Implement
-&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/&#34;&gt;seq2gene&lt;/a&gt;&lt;/em&gt;
-function for linking genomic regions to genes by many-to-many mapping.
-With this function, enrichment analysis of
-&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;,
-&lt;a href=&#34;http://www.bioconductor.org/packages/DOSE&#34;&gt;DOSE&lt;/a&gt; and
-&lt;a href=&#34;http://www.bioconductor.org/packages/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt; can be
-applied to NGS data.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/&#34;&gt;upsetplot&lt;/a&gt;
-function is implemented for viewing overlap of ChIP annotation.&lt;/p&gt;
-
-&lt;p&gt;Better implementation of internal function &lt;em&gt;getFirstHitIndex&lt;/em&gt;
-contributed by
-&lt;a href=&#34;https://support.bioconductor.org/p/70432/#70545&#34;&gt;@hpages&lt;/a&gt;. Now
-annotating a BED file of size about 1GB only take several minutes.&lt;/p&gt;
-
-&lt;p&gt;An issue of BED file that using &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/&#34;&gt;the 0-based coordinate system&lt;/a&gt; was fixed.&lt;/p&gt;
-
-&lt;p&gt;GEO data information was updated, now ChIPseeker contains more than
-18,000 BED file information. User can compare their own data with those
-deposited in GEO to &lt;a href=&#34;http://guangchuangyu.github.io/2015/10/chipseq-data-mining-with-chipseeker/&#34;&gt;identify co-occurrence binding
-proteins&lt;/a&gt;
-that maybe cooperated with the one we are interested in.&lt;/p&gt;
-
-&lt;h3 id=&#34;ggtree:35c90aeebec9a933fea1dafd42584f96&#34;&gt;ggtree&lt;/h3&gt;
-
-&lt;p&gt;My major focus in the past half year is on developing
-&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt;.
-&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; has a lot of
-changes. Some of the updates can be found in &lt;a href=&#34;http://bioconductor.org/help/newsletters/2015_October/&#34;&gt;Bioconductor Newsletter&lt;/a&gt;
-(Oct. 2015). In addition, I would like to emphasize the
-&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/08/subview/&#34;&gt;subview&lt;/a&gt;&lt;/em&gt; function which works
-fine with all the ggplot objects and was applied to &lt;a href=&#34;http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396&#34;&gt;plot pie graph on a map&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34;&gt;ggtree&lt;/a&gt; can be fun by using &lt;a href=&#34;http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/&#34;&gt;symbolic fonts&lt;/a&gt;, &lt;a href=&#34;http://guangchuangyu.github.io/2015/09/comic-phylogenetic-tree-with-ggtree-and-comicr/&#34;&gt;cartoonize the tree&lt;/a&gt;
-or annotating the tree &lt;a href=&#34;http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/&#34;&gt;with emoji&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;There are many updates that based on the github version of ggplot2.
-Since the new features of ggplot2 are currently not available in CRAN. I
-do not commit the change to Bioconductor and will introduce these new
-feature to ggtree user when new version of ggplot2 is available in CRAN.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:35c90aeebec9a933fea1dafd42584f96&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, LG Wang, GR Yan, QY He. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/4/608&#34;&gt;DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(4):608-609.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;2788597&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Yu G&lt;/strong&gt;&lt;sup&gt;†&lt;/sup&gt;, Li F&lt;sup&gt;†&lt;/sup&gt;, Qin Y, Bo X&lt;sup&gt;*&lt;/sup&gt;, Wu Y and Wang S&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/26/7/976&#34;&gt;GOSemSim: an R package for measuring semantic similarity among GO terms and gene products&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt;. 2010, 26(7):976-978.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;100979&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, QY He&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E#!divAbstract&#34;&gt;ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Molecular BioSystems&lt;/em&gt;&lt;/strong&gt; 2016, 12(2):477-479.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;4796667&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     
