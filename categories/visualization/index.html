@@ -74,6 +74,20 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/10/set_tree_xlim-set-x-axis-limits-for-only-tree-panel">set_tree_xlim: set x axis limits for only Tree panel</a></h2>
+        <div class="article-style"><p><p>A <a href="https://guangchuangyu.github.io/ggtree">ggtree</a> user recently asked me the following question in <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ">google group</a>:</p>
+
+<blockquote>
+<p>I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.</p>
+
+<p>Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?</p>
+</blockquote>
+
+<p>This is indeed a desire feature, as <code>ggplot2</code> can&rsquo;t automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
+</p></div>
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree">facet_plot: a general solution to associate data with phylogenetic tree</a></h2>
         <div class="article-style"><p><p><a href="https://guangchuangyu.github.io/ggtree">ggtree</a> provides <code>gheatmap</code> for visualizing heatmap and <code>msaplot</code> for visualizing multiple sequence alignment with phylogenetic tree.</p>
 
@@ -207,39 +221,6 @@ data(geneList, package=&quot;DOSE&quot;)
 de &lt;- names(geneList)[abs(geneList) &gt; 2]
 bp &lt;- enrichGO(de, ont=&quot;BP&quot;)
 enrichMap(bp)
-</code></pre>
-</p></div>
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2015/08/subview">subview</a></h2>
-        <div class="article-style"><p><p>I implemented a function, <em>subview</em>, in
-<a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
-that make it easy to embed a subplot in ggplot.</p>
-
-<p>An example is shown below:</p>
-
-<pre><code>library(ggplot2)
-library(ggtree)
-
-dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
-pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
-    geom_bar(stat=&quot;identity&quot;, width=1) + 
-    coord_polar(theta=&quot;y&quot;) + theme_tree() + 
-    xlab(NULL) + ylab(NULL) + 
-    theme_transparent()
-
-x &lt;- sample(2:9)
-y &lt;- sample(2:9)
-width &lt;- sample(seq(0.05, 0.15, length.out=length(x)))
-height &lt;- width
-
-p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
-print(p)
-for (i in seq_along(x)) {
-    p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
-    print(p)
-}
 </code></pre>
 </p></div>
     </div>

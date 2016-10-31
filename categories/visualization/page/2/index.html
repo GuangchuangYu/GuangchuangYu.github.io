@@ -74,6 +74,39 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2015/08/subview">subview</a></h2>
+        <div class="article-style"><p><p>I implemented a function, <em>subview</em>, in
+<a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
+that make it easy to embed a subplot in ggplot.</p>
+
+<p>An example is shown below:</p>
+
+<pre><code>library(ggplot2)
+library(ggtree)
+
+dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
+pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
+    geom_bar(stat=&quot;identity&quot;, width=1) + 
+    coord_polar(theta=&quot;y&quot;) + theme_tree() + 
+    xlab(NULL) + ylab(NULL) + 
+    theme_transparent()
+
+x &lt;- sample(2:9)
+y &lt;- sample(2:9)
+width &lt;- sample(seq(0.05, 0.15, length.out=length(x)))
+height &lt;- width
+
+p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
+print(p)
+for (i in seq_along(x)) {
+    p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
+    print(p)
+}
+</code></pre>
+</p></div>
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker">upsetplot in ChIPseeker</a></h2>
         <div class="article-style"><p><p><a href="http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/">ChIPseeker</a>
 is an R package for ChIP peak annotation, comparison and visualization.</p>
@@ -206,13 +239,6 @@ easy comparison. <strong>1.16 Creating a Scatter Plot</strong></p>
 </p></div>
     </div>
     
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2011/08/the-batman-equation">the batman equation</a></h2>
-        <div class="article-style"><p><p><a href="http://www.hardocp.com/news/2011/07/29/batman_equation/">HardOCP</a> has
-an image with an equation which apparently draws the Batman logo.</p>
-</p></div>
-    </div>
-    
 
     
 <nav>
@@ -220,6 +246,8 @@ an image with an equation which apparently draws the Batman logo.</p>
         
         <li><a href="https://guangchuangyu.github.io//categories/visualization/">« Previous</a></li>
         
+        
+        <li><a href="https://guangchuangyu.github.io//categories/visualization/page/3/">Next »</a></li>
         
     </ul>
 </nav>
