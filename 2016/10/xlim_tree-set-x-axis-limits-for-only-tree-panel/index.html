@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel">
 
-    <title>facet_plot: a general solution to associate data with phylogenetic tree | Guangchuang YU</title>
+    <title>xlim_tree: set x axis limits for only Tree panel | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">facet_plot: a general solution to associate data with phylogenetic tree</h1>
+        <h1 itemprop="name">xlim_tree: set x axis limits for only Tree panel</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2016-10-26 16:30:00 &#43;0800 CST" itemprop="datePublished">Wed, Oct 26, 2016</time>
+        <time datetime="2016-10-31 12:30:00 &#43;0800 CST" itemprop="datePublished">Mon, Oct 31, 2016</time>
     </span>
 
     
@@ -90,9 +90,7 @@
         
         <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>, 
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggstance">ggstance</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>
         
     </span>
     
@@ -126,63 +124,47 @@
 
           
 
-<p><a href="https://guangchuangyu.github.io/ggtree">ggtree</a> provides <code>gheatmap</code> for visualizing heatmap and <code>msaplot</code> for visualizing multiple sequence alignment with phylogenetic tree.</p>
+<p>A <a href="https://guangchuangyu.github.io/ggtree">ggtree</a> user recently asked me the following question in <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ">google group</a>:</p>
 
-<p>We may have different data types and want to visualize and align them with the tree. For example, <code>dotplot</code> of SNP site (e.g. using <code>geom_point(shape='|')</code>), <code>barplot</code> of trait values (e.g. using <code>geom_barh(stat='identity')</code>) <em>et al</em>.</p>
+<blockquote>
+<p>I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.</p>
 
-<p>To make it easy to associate different types of data with phylogenetic tree, I implemented the <code>facet_plot</code> function which accepts a <code>geom</code> function to draw the input <code>data.frame</code> and display it in an additional <code>panel</code>.</p>
+<p>Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?</p>
+</blockquote>
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">associate tree with different type of data by <a href="https://twitter.com/hashtag/ggtree?src=hash">#ggtree</a> <a href="https://t.co/6w755VWytZ">https://t.co/6w755VWytZ</a> <a href="https://t.co/K8WViEi13E">pic.twitter.com/K8WViEi13E</a></p>&mdash; Guangchuang Yu (@guangchuangyu) <a href="https://twitter.com/guangchuangyu/status/773359054924095488">September 7, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>This is indeed a desire feature, as <code>ggplot2</code> can&rsquo;t automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
 
-<pre><code>tr &lt;- rtree(30)
-p &lt;- ggtree(tr)
-d1 &lt;- data.frame(id=tr$tip.label, location=sample(c(&quot;GZ&quot;, &quot;HK&quot;, &quot;CZ&quot;), 30, replace=TRUE))
-p1 &lt;- p %&lt;+% d1 + geom_tippoint(aes(color=location))
-d2 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-p2 &lt;- facet_plot(p1, panel=&quot;dot&quot;, data=d2, geom=geom_point, 
-                aes(x=val), color='firebrick') + theme_tree2()
+<p>Here is an example, the tip labels are truncated.</p>
+
+<pre><code>set.seed(2016-10-31)
+tr =rtree(50)
+tr$tip.label = paste(tr$tip.label, tr$tip.label, sep=&quot;_&quot;)
+p &lt;- ggtree(tr) + geom_tiplab(align=TRUE) + theme_tree2()
+d = data.frame(id = tr$tip.label, v= rnorm(50))
+
+facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
+        ggtitle(&quot;truncated tip labels&quot;)
 </code></pre>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.31.39 AM.png" alt="" /></p>
 
-<p>Most of the <code>geom</code> in <code>ggplot2</code> draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have <a href="https://github.com/lionel-/ggstance">ggstance</a> which provides horizontal versions of <code>geoms</code>, including:</p>
+<p>If we only visualize the tree, it is easy to solve by using <code>xlim()</code> to allocate more space for the lables. But <code>xlim()</code> works for all panels. Combination of <code>facet_plot()</code> and <code>xlim()</code> will produce figure with many spaces.</p>
 
-<ul>
-<li><code>geom_barh()</code></li>
-<li><code>geom_histogramh()</code></li>
-<li><code>geom_linerangeh()</code></li>
-<li><code>geom_pointrangeh()</code></li>
-<li><code>geom_errorbarh()</code></li>
-<li><code>geom_crossbarh()</code></li>
-<li><code>geom_boxploth()</code></li>
-<li><code>geom_violinh()</code></li>
-</ul>
-
-<p>With <code>ggstance</code>, we can associate <code>barplot</code>, <code>boxplot</code> or other graphs to phylogenetic trees.</p>
-
-<pre><code>d3 &lt;- data.frame(id = rep(tr$tip.label, each=2),
-                    value = abs(rnorm(60, mean=100, sd=50)),
-                    category = rep(LETTERS[1:2], 30))
-p3 &lt;- facet_plot(p2, panel = 'Stacked Barplot', data = d3, 
-                geom = geom_barh, 
-                mapping = aes(x = value, fill = as.factor(category)), 
-                stat='identity' ) 
+<pre><code>facet_plot(p+xlim(NA, 6), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
+        ggtitle(&quot;xlim applies to all panels&quot;)
 </code></pre>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.33.05 AM.png" alt="" /></p>
 
-<pre><code>d4 = data.frame(id=rep(tr$tip.label, each=20), 
-                val=as.vector(sapply(1:30, function(i) 
-                                rnorm(20, mean=i)))
-                )               
-p4 &lt;- facet_plot(p3, panel=&quot;Boxplot&quot;, data=d4, geom_boxploth, 
-            mapping = aes(x=val, group=label, color=location))                                  
+<p>To overcome this issue, <code>ggtree</code> provides <code>xlim_tree</code> to set <code>x</code> axis limits for only the <code>Tree</code> panel.</p>
+
+<pre><code>facet_plot(p+xlim_tree(c(NA, 6)), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
+        ggtitle('*set_tree_xlim* only change x axis limits of *Tree* panel')
 </code></pre>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png" alt="" /></p>
 
-<h2 id="citation:dc96c3694333cc3e76c542534755f35a">Citation</h2>
+<h2 id="citation:a451c0145dd7f1e74ba304e190ed20e4">Citation</h2>
 
 <p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
 
@@ -198,11 +180,9 @@ p4 &lt;- facet_plot(p3, panel=&quot;Boxplot&quot;, data=d4, geom_boxploth,
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2016/10/bioc-34-news-of-my-bioc-packages"><span aria-hidden="true">&larr;</span> [Bioc 34] NEWS of my BioC packages</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree"><span aria-hidden="true">&larr;</span> facet_plot: a general solution to associate data with phylogenetic tree</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel">xlim_tree: set x axis limits for only Tree panel <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
