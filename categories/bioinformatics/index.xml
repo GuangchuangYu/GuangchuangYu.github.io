@@ -742,5 +742,60 @@ studies on phosphorylation and lung carcinogenesis.&lt;/p&gt;
 </description>
     </item>
     
+    <item>
+      <title>showCategory parameter for visualizing compareCluster output</title>
+      <link>https://guangchuangyu.github.io/1/01/showcategory-parameter-for-visualizing-comparecluster-output</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/1/01/showcategory-parameter-for-visualizing-comparecluster-output</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().&lt;/p&gt;
+
+&lt;p&gt;In my case, I use compareCluster() on a list of 3 elements:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;str(ClusterList)
+List of 3
+ $ All : chr [1:1450] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
+ $ g1  : chr [1:858] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
+ $ g2: chr [1:592] &amp;quot;5325&amp;quot; &amp;quot;170691&amp;quot; &amp;quot;29953&amp;quot; &amp;quot;283392&amp;quot; ...
+CompareGO_BP=compareCluster(ClusterList, fun=&amp;quot;enrichGO&amp;quot;, pvalueCutoff=0.01, pAdjustMethod=&amp;quot;BH&amp;quot;, OrgDb=org.Hs.eg.db,ont=&amp;quot;BP&amp;quot;,readable=T)
+
+dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I ask for 10 categories, but I get 15 categories in All, 8 categories in g1 and 12 categories in g2. None of the categories, neither the sum of the categories are 10&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Is the option showCategory working in the case of comparison? Am I missing something here?&lt;/p&gt;
+
+&lt;p&gt;And which categories precisely will it plot? the most significant whatever my 3 cases or the most significant of each case?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The question was &lt;a href=&#34;https://support.bioconductor.org/p/88965/&#34;&gt;posted&lt;/a&gt; in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.&lt;/p&gt;
+
+&lt;p&gt;In this case, we expect to get &lt;code&gt;&amp;lt;= 10 of most significant categories&lt;/code&gt; for each  &lt;code&gt;Cluster&lt;/code&gt; as the user specify &lt;code&gt;showCategory=10&lt;/code&gt;. This is exactly the way of &lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods do for &lt;code&gt;compareClusterResult&lt;/code&gt;. &lt;code&gt;8&lt;/code&gt; categories for &lt;code&gt;g1&lt;/code&gt; is obvious that there are only &lt;code&gt;8&lt;/code&gt; enriched terms found for &lt;code&gt;g1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But why there are &lt;code&gt;15&lt;/code&gt; for &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;12&lt;/code&gt; for &lt;code&gt;g2&lt;/code&gt;?&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods implemented in &lt;code&gt;clusterProfiler&lt;/code&gt; try to make the comparison among clusters more informative and reasonable. After extracting e.g. 10 categories for each cluster, &lt;code&gt;clusterProfiler&lt;/code&gt; try to collect overlap of these categories among clusters.&lt;/p&gt;
+
+&lt;p&gt;For example, &lt;code&gt;term A&lt;/code&gt; is enriched in all the clusters (&lt;code&gt;All&lt;/code&gt;, &lt;code&gt;g1&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;) and is in the 10 most significant categories for &lt;code&gt;g1&lt;/code&gt; but not &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;. &lt;code&gt;clusterProfiler&lt;/code&gt; try to capture these information and included &lt;code&gt;term A&lt;/code&gt; in &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt; clusters and making the comparison in &lt;code&gt;dotplot&lt;/code&gt;/&lt;code&gt;barplot&lt;/code&gt; more reasonable.&lt;/p&gt;
+
+&lt;p&gt;If user want to ignore these information, they can use &lt;code&gt;dotplot(..., includeAll=FALSE)&lt;/code&gt;, which is actually not recommended.&lt;/p&gt;
+
+&lt;p&gt;See the difference to the following example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
+data(gcSample)
+x=compareCluster(gcSample, fun=&#39;enrichDO&#39;)
+dotplot(x, showCategory=5, includeAll=FALSE)
+dotplot(x, showCategory=5, includeAll=TRUE)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the first figure, it seems that all these clusters are very different, with no overlapping terms enriched. This is not true as demonstrated in the second figure.&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>
