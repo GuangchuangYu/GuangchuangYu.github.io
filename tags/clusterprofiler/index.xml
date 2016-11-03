@@ -7,8 +7,63 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 19 Oct 2016 18:13:57 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 03 Nov 2016 10:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/clusterprofiler/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>showCategory parameter for visualizing compareCluster output</title>
+      <link>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output</link>
+      <pubDate>Thu, 03 Nov 2016 10:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().&lt;/p&gt;
+
+&lt;p&gt;In my case, I use compareCluster() on a list of 3 elements:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;str(ClusterList)
+List of 3
+ $ All : chr [1:1450] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
+ $ g1  : chr [1:858] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
+ $ g2: chr [1:592] &amp;quot;5325&amp;quot; &amp;quot;170691&amp;quot; &amp;quot;29953&amp;quot; &amp;quot;283392&amp;quot; ...
+CompareGO_BP=compareCluster(ClusterList, fun=&amp;quot;enrichGO&amp;quot;, pvalueCutoff=0.01, pAdjustMethod=&amp;quot;BH&amp;quot;, OrgDb=org.Hs.eg.db,ont=&amp;quot;BP&amp;quot;,readable=T)
+
+dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I ask for 10 categories, but I get 15 categories in All, 8 categories in g1 and 12 categories in g2. None of the categories, neither the sum of the categories are 10&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Is the option showCategory working in the case of comparison? Am I missing something here?&lt;/p&gt;
+
+&lt;p&gt;And which categories precisely will it plot? the most significant whatever my 3 cases or the most significant of each case?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The question was &lt;a href=&#34;https://support.bioconductor.org/p/88965/&#34;&gt;posted&lt;/a&gt; in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.&lt;/p&gt;
+
+&lt;p&gt;In this case, we expect to get &lt;code&gt;&amp;lt;= 10 of most significant categories&lt;/code&gt; for each  &lt;code&gt;Cluster&lt;/code&gt; as the user specify &lt;code&gt;showCategory=10&lt;/code&gt;. This is exactly the way of &lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods do for &lt;code&gt;compareClusterResult&lt;/code&gt;. &lt;code&gt;8&lt;/code&gt; categories for &lt;code&gt;g1&lt;/code&gt; is obvious that there are only &lt;code&gt;8&lt;/code&gt; enriched terms found for &lt;code&gt;g1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But why there are &lt;code&gt;15&lt;/code&gt; for &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;12&lt;/code&gt; for &lt;code&gt;g2&lt;/code&gt;?&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods implemented in &lt;code&gt;clusterProfiler&lt;/code&gt; try to make the comparison among clusters more informative and reasonable. After extracting e.g. 10 categories for each cluster, &lt;code&gt;clusterProfiler&lt;/code&gt; try to collect overlap of these categories among clusters.&lt;/p&gt;
+
+&lt;p&gt;For example, &lt;code&gt;term A&lt;/code&gt; is enriched in all the clusters (&lt;code&gt;All&lt;/code&gt;, &lt;code&gt;g1&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;) and is in the 10 most significant categories for &lt;code&gt;g1&lt;/code&gt; but not &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;. &lt;code&gt;clusterProfiler&lt;/code&gt; try to capture these information and included &lt;code&gt;term A&lt;/code&gt; in &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt; clusters and making the comparison in &lt;code&gt;dotplot&lt;/code&gt;/&lt;code&gt;barplot&lt;/code&gt; more reasonable.&lt;/p&gt;
+
+&lt;p&gt;If user want to ignore these information, they can use &lt;code&gt;dotplot(..., includeAll=FALSE)&lt;/code&gt;, which is actually not recommended.&lt;/p&gt;
+
+&lt;p&gt;See the difference to the following example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
+data(gcSample)
+x=compareCluster(gcSample, fun=&#39;enrichDO&#39;)
+dotplot(x, showCategory=5, includeAll=FALSE)
+dotplot(x, showCategory=5, includeAll=TRUE)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the first figure, it seems that all these clusters are very different, with no overlapping terms enriched. This is not true as demonstrated in the second figure.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>[Bioc 34] NEWS of my BioC packages</title>
@@ -2689,94 +2744,6 @@ to find out more and I can guarantee that you won&amp;rsquo;t be disappointed.&l
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, QY He&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E#!divAbstract&#34;&gt;ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Molecular BioSystems&lt;/em&gt;&lt;/strong&gt; 2016, 12(2):477-479.&lt;/p&gt;
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;4796667&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>DAVID functional analysis with clusterProfiler</title>
-      <link>https://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler</link>
-      <pubDate>Mon, 16 Mar 2015 06:33:34 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2015/03/david-functional-analysis-with-clusterprofiler</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; was
-used to visualize &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt;
-results in a paper published in &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3907017/&#34;&gt;BMC
-Genomics&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Some users told me that they may want to use DAVID at some
-circumstances. I think it maybe a good idea to make clusterProfiler
-supports DAVID, so that
-&lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt; users can use
-visualization functions provided by
-&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require(DOSE)
-require(clusterProfiler)
-data(geneList)
-gene = names(geneList)[abs(geneList) &amp;gt; 2]
-david = enrichDAVID(gene = gene, idType=&amp;quot;ENTREZ_GENE_ID&amp;quot;, 
-listType=&amp;quot;Gene&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
-
-
-
-&amp;gt; summary(david)
-               ID            Description GeneRatio  BgRatio       pvalue
-hsa04110 hsa04110             Cell cycle     11/68 125/5085 4.254437e-06
-hsa04114 hsa04114         Oocyte meiosis     10/68 110/5085 1.119764e-05
-hsa03320 hsa03320 PPAR signaling pathway      7/68  69/5085 2.606715e-04
-             p.adjust qvalue                                             geneID
-hsa04110 0.0003998379     NA 9133/4174/890/991/1111/891/7272/8318/4085/983/9232
-hsa04114 0.0005261534     NA    9133/5241/51806/3708/991/891/4085/983/9232/6790
-hsa03320 0.0081354974     NA                 4312/2167/5346/5105/3158/9370/9415
-         Count
-hsa04110    11
-hsa04114    10
-hsa03320     7
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;There are only 5085 human genes annotated by KEGG, this is due to
-out-of-date DAVID data.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;barplot(david)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2019.42.10.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cnetplot(david, foldChange=geneList)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2019.42.45.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;With enrichDAVID, compare DAVID functional profiles among different gene
-clusters is also supported.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;data(gcSample)
-x=compareCluster(gcSample, fun=&amp;quot;enrichDAVID&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;)
-plot(x)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/compareCluster_david.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As I pointed out in &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG enrichment analysis with latest online data using clusterProfiler&lt;/a&gt;,
-there are many webservers using out of date data. This may leads to
-different interpretation of biological results. DAVID&amp;rsquo;s data is also out
-of date. DAVID stopped updating database since 2010. This is why I love
-Bioconductor, almost all the annotation packages are maintained by
-Bioconductor core team and will be updated biannual. enrichGO and
-enrichKEGG is more reliable with more updated data than many other
-tools.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2020.25.11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:74f0481f545a8c90ad9ab08795e6408f&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     

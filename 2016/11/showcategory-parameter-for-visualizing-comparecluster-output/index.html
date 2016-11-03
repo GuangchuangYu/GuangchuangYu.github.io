@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output">
 
-    <title>xlim_tree: set x axis limits for only Tree panel | Guangchuang YU</title>
+    <title>showCategory parameter for visualizing compareCluster output | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">xlim_tree: set x axis limits for only Tree panel</h1>
+        <h1 itemprop="name">showCategory parameter for visualizing compareCluster output</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2016-10-31 12:30:00 &#43;0800 CST" itemprop="datePublished">Mon, Oct 31, 2016</time>
+        <time datetime="2016-11-03 10:30:00 &#43;0800 CST" itemprop="datePublished">Thu, Nov 3, 2016</time>
     </span>
 
     
@@ -88,9 +88,9 @@
     <span class="article-tags">
         <i class="fa fa-tags"></i>
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>, 
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/dotplot">dotplot</a>
         
     </span>
     
@@ -122,58 +122,52 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          
+          <blockquote>
+<p>I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().</p>
 
-<p>A <a href="https://guangchuangyu.github.io/ggtree">ggtree</a> user recently asked me the following question in <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ">google group</a>:</p>
+<p>In my case, I use compareCluster() on a list of 3 elements:</p>
 
-<blockquote>
-<p>I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.</p>
+<pre><code>str(ClusterList)
+List of 3
+ $ All : chr [1:1450] &quot;89886&quot; &quot;29923&quot; &quot;100132891&quot; &quot;101410536&quot; ...
+ $ g1  : chr [1:858] &quot;89886&quot; &quot;29923&quot; &quot;100132891&quot; &quot;101410536&quot; ...
+ $ g2: chr [1:592] &quot;5325&quot; &quot;170691&quot; &quot;29953&quot; &quot;283392&quot; ...
+CompareGO_BP=compareCluster(ClusterList, fun=&quot;enrichGO&quot;, pvalueCutoff=0.01, pAdjustMethod=&quot;BH&quot;, OrgDb=org.Hs.eg.db,ont=&quot;BP&quot;,readable=T)
 
-<p>Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?</p>
+dotplot(CompareGO_BP, showCategory=10, title=&quot;GO - Biological Process&quot;)
+</code></pre>
+
+<p>I ask for 10 categories, but I get 15 categories in All, 8 categories in g1 and 12 categories in g2. None of the categories, neither the sum of the categories are 10&hellip;</p>
+
+<p>Is the option showCategory working in the case of comparison? Am I missing something here?</p>
+
+<p>And which categories precisely will it plot? the most significant whatever my 3 cases or the most significant of each case?</p>
 </blockquote>
 
-<p>This is indeed a desire feature, as <code>ggplot2</code> can&rsquo;t automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
+<p>The question was <a href="https://support.bioconductor.org/p/88965/">posted</a> in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.</p>
 
-<p>Here is an example, the tip labels are truncated.</p>
+<p>In this case, we expect to get <code>&lt;= 10 of most significant categories</code> for each  <code>Cluster</code> as the user specify <code>showCategory=10</code>. This is exactly the way of <code>dotplot</code> and <code>barplot</code> methods do for <code>compareClusterResult</code>. <code>8</code> categories for <code>g1</code> is obvious that there are only <code>8</code> enriched terms found for <code>g1</code>.</p>
 
-<pre><code>library(ggtree)
-set.seed(2016-10-31)
-tr =rtree(50)
-tr$tip.label = paste(tr$tip.label, tr$tip.label, sep=&quot;_&quot;)
-p &lt;- ggtree(tr) + geom_tiplab(align=TRUE) + theme_tree2()
-d = data.frame(id = tr$tip.label, v= rnorm(50))
+<p>But why there are <code>15</code> for <code>All</code> and <code>12</code> for <code>g2</code>?</p>
 
-facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
-        ggtitle(&quot;truncated tip labels&quot;)
+<p><code>dotplot</code> and <code>barplot</code> methods implemented in <code>clusterProfiler</code> try to make the comparison among clusters more informative and reasonable. After extracting e.g. 10 categories for each cluster, <code>clusterProfiler</code> try to collect overlap of these categories among clusters.</p>
+
+<p>For example, <code>term A</code> is enriched in all the clusters (<code>All</code>, <code>g1</code> and <code>g2</code>) and is in the 10 most significant categories for <code>g1</code> but not <code>All</code> and <code>g2</code>. <code>clusterProfiler</code> try to capture these information and included <code>term A</code> in <code>All</code> and <code>g2</code> clusters and making the comparison in <code>dotplot</code>/<code>barplot</code> more reasonable.</p>
+
+<p>If user want to ignore these information, they can use <code>dotplot(..., includeAll=FALSE)</code>, which is actually not recommended.</p>
+
+<p>See the difference to the following example:</p>
+
+<pre><code>library(clusterProfiler)
+data(gcSample)
+x=compareCluster(gcSample, fun='enrichDO')
+dotplot(x, showCategory=5, includeAll=FALSE)
+dotplot(x, showCategory=5, includeAll=TRUE)
 </code></pre>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.31.39 AM.png" alt="" /></p>
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png" alt="" /></p>
 
-<p>If we only visualize the tree, it is easy to solve by using <code>xlim()</code> to allocate more space for the lables. But <code>xlim()</code> works for all panels. Combination of <code>facet_plot()</code> and <code>xlim()</code> will produce figure with many spaces.</p>
-
-<pre><code>facet_plot(p+xlim(NA, 6), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
-        ggtitle(&quot;xlim applies to all panels&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.33.05 AM.png" alt="" /></p>
-
-<p>To overcome this issue, <code>ggtree</code> provides <code>xlim_tree</code> to set <code>x</code> axis limits for only the <code>Tree</code> panel.</p>
-
-<pre><code>facet_plot(p+xlim_tree(6), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
-        ggtitle('*xlim_tree* only change x axis limits of *Tree* panel')
-
-# or using:
-# facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + xlim_tree(6)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png" alt="" /></p>
-
-<h2 id="citation:565f912a5bd07d30f545ae1274a89a8f">Citation</h2>
-
-<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
-
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
-<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+<p>In the first figure, it seems that all these clusters are very different, with no overlapping terms enriched. This is not true as demonstrated in the second figure.</p>
 
 
 	  
@@ -184,11 +178,9 @@ facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') +
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree"><span aria-hidden="true">&larr;</span> facet_plot: a general solution to associate data with phylogenetic tree</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel"><span aria-hidden="true">&larr;</span> xlim_tree: set x axis limits for only Tree panel</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output">showCategory parameter for visualizing compareCluster output <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
