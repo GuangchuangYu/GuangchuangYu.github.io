@@ -7,8 +7,152 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 03 Nov 2016 10:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 15 Nov 2016 20:10:48 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>align genomic features with phylogenetic tree</title>
+      <link>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree</link>
+      <pubDate>Tue, 15 Nov 2016 20:10:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://www.biostars.org/p/218591/&#34;&gt;A question&lt;/a&gt; on biostars asking how to generate the following figure:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/218591.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This can be quite easy to implement in &lt;a href=&#34;https://guangchuangyu.github.io&#34;&gt;ggtree&lt;/a&gt;, I can write a &lt;code&gt;geom&lt;/code&gt; layer to layout the alignment. As &lt;a href=&#34;https://bioconductor.org/packages/ggbio/&#34;&gt;ggbio&lt;/a&gt; already provides many &lt;code&gt;geom&lt;/code&gt; for genomic data and I don&amp;rsquo;t want to re-invent the wheel, I decided to try &lt;code&gt;ggtree+ggbio&lt;/code&gt;. This is also the beauty of &lt;code&gt;R&lt;/code&gt; that packages complete each others.&lt;/p&gt;
+
+&lt;p&gt;Here is a sample data presented in &lt;code&gt;ggbio&lt;/code&gt; vignette:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggbio)
+library(biovizBase) 
+library(Homo.sapiens)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb &amp;lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+
+data(genesymbol, package = &amp;quot;biovizBase&amp;quot;)
+wh &amp;lt;- genesymbol[c(&amp;quot;BRCA1&amp;quot;, &amp;quot;NBR1&amp;quot;)]
+wh &amp;lt;- range(wh, ignore.strand = TRUE)
+
+gr.txdb &amp;lt;- crunch(txdb, which = wh)
+## change column to  model 
+colnames(values(gr.txdb))[4] &amp;lt;- &amp;quot;model&amp;quot;
+grl &amp;lt;- split(gr.txdb, gr.txdb$tx_id)
+set.seed(2016-10-25)
+names(grl) &amp;lt;- sample(LETTERS, size = length(grl), replace = TRUE)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; print(grl)
+GRangesList object of length 32:
+$J 
+GRanges object with 7 ranges and 4 metadata columns:
+      seqnames               ranges strand |    tx_id    tx_name
+         &amp;lt;Rle&amp;gt;            &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt; | &amp;lt;factor&amp;gt;   &amp;lt;factor&amp;gt;
+  [1]    chr17 [41277600, 41277787]      + |    61241 uc002idf.3
+  [2]    chr17 [41283225, 41283287]      + |    61241 uc002idf.3
+  [3]    chr17 [41284973, 41285154]      + |    61241 uc002idf.3
+  [4]    chr17 [41290674, 41292342]      + |    61241 uc002idf.3
+  [5]    chr17 [41277788, 41283224]      * |    61241 uc002idf.3
+  [6]    chr17 [41283288, 41284972]      * |    61241 uc002idf.3
+  [7]    chr17 [41285155, 41290673]      * |    61241 uc002idf.3
+       gene_id    model
+      &amp;lt;factor&amp;gt; &amp;lt;factor&amp;gt;
+  [1]    10230     exon
+  [2]    10230     exon
+  [3]    10230     exon
+  [4]    10230     exon
+  [5]    10230      gap
+  [6]    10230      gap
+  [7]    10230      gap
+
+$U 
+GRanges object with 3 ranges and 4 metadata columns:
+      seqnames               ranges strand | tx_id    tx_name
+  [1]    chr17 [41277600, 41277787]      + | 61242 uc010czb.2
+  [2]    chr17 [41290674, 41292342]      + | 61242 uc010czb.2
+  [3]    chr17 [41277788, 41290673]      * | 61242 uc010czb.2
+      gene_id model
+  [1]   10230  exon
+  [2]   10230  exon
+  [3]   10230   gap
+
+$D 
+GRanges object with 9 ranges and 4 metadata columns:
+      seqnames               ranges strand | tx_id    tx_name
+  [1]    chr17 [41277600, 41277787]      + | 61243 uc002idg.3
+  [2]    chr17 [41283225, 41283287]      + | 61243 uc002idg.3
+  [3]    chr17 [41290674, 41290939]      + | 61243 uc002idg.3
+  [4]    chr17 [41291833, 41292300]      + | 61243 uc002idg.3
+  [5]    chr17 [41296745, 41297125]      + | 61243 uc002idg.3
+  [6]    chr17 [41277788, 41283224]      * | 61243 uc002idg.3
+  [7]    chr17 [41283288, 41290673]      * | 61243 uc002idg.3
+  [8]    chr17 [41290940, 41291832]      * | 61243 uc002idg.3
+  [9]    chr17 [41292301, 41296744]      * | 61243 uc002idg.3
+      gene_id model
+  [1]   10230  exon
+  [2]   10230  exon
+  [3]   10230  exon
+  [4]   10230  exon
+  [5]   10230  exon
+  [6]   10230   gap
+  [7]   10230   gap
+  [8]   10230   gap
+  [9]   10230   gap
+
+...
+&amp;lt;29 more elements&amp;gt;
+-------
+seqinfo: 1 sequence from hg19 genome
+```	
+	
+We can visualize the alignment simply using:
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ggplot() + geom_alignment(grl, alpha=.5)
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggbio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The input data for &lt;code&gt;geom_alignment&lt;/code&gt; is a &lt;code&gt;GRangesList&lt;/code&gt; object, while &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/&#34;&gt;facet_plot&lt;/a&gt; defined in &lt;code&gt;ggtree&lt;/code&gt; expect the input data as a &lt;code&gt;data.frame&lt;/code&gt;. I extend the &lt;code&gt;facet_plot&lt;/code&gt; to work with &lt;code&gt;geom_alignment&lt;/code&gt;. In doing this, I find a bug of the &lt;code&gt;geom_alignment&lt;/code&gt; function and send a &lt;a href=&#34;https://github.com/tengfei/ggbio/issues/83#issuecomment-256284645&#34;&gt;patch&lt;/a&gt; to Michael. My patch was incorporated in &lt;code&gt;ggbio 1.23.2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;With the updates of both &lt;code&gt;ggtree&lt;/code&gt; and &lt;code&gt;ggbio&lt;/code&gt;, we can use &lt;code&gt;facet_plot&lt;/code&gt; to align alignment with phylogenetic tree.&lt;/p&gt;
+
+&lt;p&gt;Suppose we have the following tree:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+n &amp;lt;- names(grl) %&amp;gt;% unique %&amp;gt;% length
+set.seed(2016-10-25)
+tr = rtree(n)
+set.seed(2016-10-25)
+tr$tip.label = sample(unique(names(grl)), n)
+
+p &amp;lt;- ggtree(tr) + geom_tiplab()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/random_tree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It is quite easy to use &lt;code&gt;facet_plot&lt;/code&gt; to visualize the above alignment with this tree:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;facet_plot(p, &#39;alignment&#39;, grl, geom_alignment, inherit.aes=FALSE, mapping=aes())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggtree_ggbio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Beware of &lt;code&gt;mapping=aes()&lt;/code&gt; is required as &lt;code&gt;ggbio&lt;/code&gt; can&amp;rsquo;t accept &lt;code&gt;mapping=NULL&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;PS: I only test &lt;code&gt;geom_alignment&lt;/code&gt; which works with &lt;code&gt;GRanges&lt;/code&gt; and &lt;code&gt;GRangesList&lt;/code&gt;. Other &lt;code&gt;geoms&lt;/code&gt; defined in &lt;code&gt;ggbio&lt;/code&gt; may not be supported. If you find &lt;code&gt;facet_plot&lt;/code&gt; fail to work with other &lt;code&gt;geoms&lt;/code&gt;, please open an &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues&#34;&gt;issue&lt;/a&gt; in github.  Feature requests are welcome.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:0a3dec613b797c00359e5a4e7fa12428&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>showCategory parameter for visualizing compareCluster output</title>
@@ -1433,381 +1577,6 @@ Here is another example of using &lt;code&gt;emojifont&lt;/code&gt; to label cla
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
 &lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>[Bioc 33] NEWS of my BioC packages</title>
-      <link>https://guangchuangyu.github.io/2016/05/bioc-33-news-of-my-bioc-packages</link>
-      <pubDate>Thu, 05 May 2016 20:13:57 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/05/bioc-33-news-of-my-bioc-packages</guid>
-      <description>
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/MISC/ke.jpg&#34; width=600&gt;&lt;/p&gt;
-
-&lt;p&gt;Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&amp;rsquo;s again the time to reflect what I&amp;rsquo;ve done in the past year.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/DOSE&#34;&gt;DOSE&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;chipseeker:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;ChIPseeker&lt;/h2&gt;
-
-&lt;p&gt;Although ChIPseeker was designed for ChIP-seq annotation, I am very glad to find that someone else use it to annotate other data including &lt;a href=&#34;https://github.com/GuangchuangYu/ChIPseeker/issues/32&#34;&gt;copy number variants&lt;/a&gt; and &lt;a href=&#34;https://github.com/GuangchuangYu/ChIPseeker/issues/17&#34;&gt;DNA breakpoints&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;annotatepeak:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;annotatePeak&lt;/h3&gt;
-
-&lt;p&gt;Several parameters including &lt;code&gt;sameStrand&lt;/code&gt;,&lt;code&gt;ignoreOverlap&lt;/code&gt;, &lt;code&gt;ignoreUpstream&lt;/code&gt; and &lt;code&gt;ignoreDownstream&lt;/code&gt; were added in &lt;code&gt;annotatePeak&lt;/code&gt; requested by &lt;a href=&#34;https://github.com/crazyhottommy&#34;&gt;@crazyhottommy&lt;/a&gt; for using ChIPseeker to annotate breakpoints from whole genome sequencing data.&lt;/p&gt;
-
-&lt;p&gt;Another parameter &lt;code&gt;overlap&lt;/code&gt; was also introduced. By default &lt;code&gt;overlap=&amp;quot;TSS&amp;quot;&lt;/code&gt; and only overlap with TSS will be reported as the nearest gene. If &lt;code&gt;overlap=&amp;quot;all&amp;quot;&lt;/code&gt;, then gene overlap with peak will be reported as nearest gene, no matter the overlap is at TSS region or not.&lt;/p&gt;
-
-&lt;p&gt;Now &lt;code&gt;annotatePeak&lt;/code&gt; also support using user&amp;rsquo;s customize regions to annotate their data by passing &lt;code&gt;TxDb=user_defined_GRanges&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;getbioregion:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;getBioRegion&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;getPromoters()&lt;/code&gt; function prepare a &lt;code&gt;GRanges&lt;/code&gt; object of promoter regions by user specific upstream and downstream distance from Transcript Start Site (TSS). Then we can align the peaks that are mapping to these regions and visualize the profile or heatmap of ChIP binding to the TSS regions.&lt;/p&gt;
-
-&lt;p&gt;Users (&lt;a href=&#34;https://support.bioconductor.org/p/73069/#73157&#34;&gt;1&lt;/a&gt; and &lt;a href=&#34;https://support.bioconductor.org/p/73377/&#34;&gt;2&lt;/a&gt;) are interesting in the intensity of peaks binding to the start of intron/exon, and ChIPseeker provides a new function &lt;code&gt;getBioRegion&lt;/code&gt; to output &lt;code&gt;GRanges&lt;/code&gt; object of Intron/Exon start regions.&lt;/p&gt;
-
-&lt;h3 id=&#34;visualization:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;visualization&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;upsetplot&lt;/code&gt; was implemented to visualize &lt;a href=&#34;http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/&#34;&gt;ChIP annotation overlap&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;covplot&lt;/code&gt; now support &lt;a href=&#34;http://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist/&#34;&gt;GRangesList&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;geo-data-mining:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;GEO data mining&lt;/h3&gt;
-
-&lt;p&gt;ChIPseeker incorporates GEO database and supports data mining to infer cooperative regulation. The data was updated and now ChIPseeker contains 19348 bed file information.&lt;/p&gt;
-
-&lt;h2 id=&#34;clusterprofiler:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;clusterProfiler&lt;/h2&gt;
-
-&lt;p&gt;We compare clusterProfiler with GSEA-P (which released by broad institute), the p-values calculated by these two software are &lt;a href=&#34;http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/&#34;&gt;almost identical&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;For comparing biological themes, &lt;code&gt;clusterProfiler&lt;/code&gt; supports formula to express complex conditions and facet is supported to &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/32&#34;&gt;visualize complex result&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;read.gmt&lt;/code&gt; function for parsing GMT file format from &lt;a href=&#34;http://software.broadinstitute.org/gsea/msigdb&#34;&gt;Molecular Signatures Database&lt;/a&gt;, so that gene set collections in this database can be used in &lt;code&gt;clusterProfiler&lt;/code&gt; for both hypergeometric test and GSEA.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/&#34;&gt;KEGG Module&lt;/a&gt; was supported just like the KEGG Pathway, &lt;code&gt;clusterProfiler&lt;/code&gt; will query the online annotation data which keep the annotation data alwasy updated.&lt;/p&gt;
-
-&lt;p&gt;The KEGG database was updated quite frequently. The &lt;code&gt;KEGG.db&lt;/code&gt; which was not updated since 2012, it contains annotation of &lt;a href=&#34;http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/&#34;&gt;5894 human genes&lt;/a&gt;. In Feb. 2015, when &lt;code&gt;clusterProfiler&lt;/code&gt; first supports querying online KEGG data, KEGG contains annotation of &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;6861 human genes&lt;/a&gt; and today it has &lt;strong&gt;7018&lt;/strong&gt; human genes annotated. Most of the tools/webservers used out-dated data (e.g. DAVID not updated since 2010, 5085 human genes annotated by KEGG), the analyzed result may totally changed if we use a recently updated data. Indeed &lt;code&gt;clusterProfiler&lt;/code&gt; is more reliable as we always use the latest data.&lt;/p&gt;
-
-&lt;p&gt;In addition to &lt;code&gt;bitr&lt;/code&gt; function that can translate biological ID using &lt;code&gt;OrgDb&lt;/code&gt; object, we provides &lt;a href=&#34;http://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/&#34;&gt;bitr_kegg&lt;/a&gt; that uses KEGG API for translating biological ID. It supports more than 4000 species (can be search via the &lt;code&gt;search_kegg_species&lt;/code&gt; function) as in KEGG Pathway and Module analyses.&lt;/p&gt;
-
-&lt;p&gt;The function called of &lt;a href=&#34;http://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/&#34;&gt;enrichGO and gseGO&lt;/a&gt; was changed. Now not only species that have OrgDb available in Bioconductor can be analyzed but also all species that have an OrgDb can be analyzed which can be query online via &lt;code&gt;AnnotationHub&lt;/code&gt; or build with user&amp;rsquo;s own data. With this update, &lt;code&gt;enrichGO&lt;/code&gt; and &lt;code&gt;gseGO&lt;/code&gt; can input any gene ID type if only the ID type was supported in the &lt;code&gt;OrgDb&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;GO enrichment analysis alwasy output redundant terms, we implemented a &lt;code&gt;simplify&lt;/code&gt; function to remove redundant terms by calculating GO semantic similarity using &lt;code&gt;GOSemSim&lt;/code&gt;. Several useful utilities include &lt;code&gt;dropGO&lt;/code&gt;, &lt;code&gt;go2ont&lt;/code&gt;, &lt;code&gt;go2term&lt;/code&gt;, &lt;code&gt;gofilter&lt;/code&gt; and &lt;code&gt;gsfilter&lt;/code&gt; are also provided.&lt;/p&gt;
-
-&lt;p&gt;I bump the version to 3.0.0 the following three reasons:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the changes of function calls&lt;/li&gt;
-&lt;li&gt;can analyze any ontology/pathway annotation (supports user&amp;rsquo;s customize annotation data)&lt;/li&gt;
-&lt;li&gt;can analyze all speices that have annotation available (e.g. more than 4000 species for KEGG)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Although the package is very simple when I published it, I keep update and add new features from my own idea or user&amp;rsquo;s request. Now this package is indeed in good shape. Here is the summary.&lt;/p&gt;
-
-&lt;p&gt;This package implements methods to analyze and visualize functional profiles of genomic coordinates (supported by &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;), gene and gene clusters.&lt;/p&gt;
-
-&lt;p&gt;clusterProfiler supports both &lt;em&gt;hypergeometric test&lt;/em&gt; and &lt;em&gt;Gene Set Enrichment Analysis&lt;/em&gt; for many ontologies/pathways, including:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Disease Ontology (via &lt;a href=&#34;http://www.bioconductor.org/packages/DOSE&#34;&gt;DOSE&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://ncg.kcl.ac.uk/&#34;&gt;Network of Cancer Gene&lt;/a&gt; (via &lt;a href=&#34;http://www.bioconductor.org/packages/DOSE&#34;&gt;DOSE&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Gene Ontology (supports many species with GO annotation query online via &lt;a href=&#34;https://bioconductor.org/packages/AnnotationHub/&#34;&gt;AnnotationHub&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;KEGG Pathway and Module with latest online data (supports more than 4000 species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Reactome Pathway (via &lt;a href=&#34;http://www.bioconductor.org/packages/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;DAVID (via &lt;a href=&#34;http://www.bioconductor.org/packages/RDAVIDWebService&#34;&gt;RDAVIDWebService&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://software.broadinstitute.org/gsea/msigdb&#34;&gt;Molecular Signatures Database&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;hallmark gene sets&lt;/li&gt;
-&lt;li&gt;positional gene sets&lt;/li&gt;
-&lt;li&gt;curated gene sets&lt;/li&gt;
-&lt;li&gt;motif gene sets&lt;/li&gt;
-&lt;li&gt;computational gene sets&lt;/li&gt;
-&lt;li&gt;GO gene sets&lt;/li&gt;
-&lt;li&gt;oncogenic signatures&lt;/li&gt;
-&lt;li&gt;immunologic signatures&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Other Annotations
-
-&lt;ul&gt;
-&lt;li&gt;from other sources (e.g. &lt;a href=&#34;http://www.disgenet.org/web/DisGeNET/menu/home&#34;&gt;DisGeNET&lt;/a&gt; as &lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;an example&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;user&amp;rsquo;s annotation&lt;/li&gt;
-&lt;li&gt;customized ontology&lt;/li&gt;
-&lt;li&gt;and many others&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;clusterProfiler&lt;/em&gt; also provides several visualization methods to help interpreting enriched results, including:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;barplot&lt;/li&gt;
-&lt;li&gt;cnetplot&lt;/li&gt;
-&lt;li&gt;dotplot&lt;/li&gt;
-&lt;li&gt;enrichMap&lt;/li&gt;
-&lt;li&gt;gseaplot&lt;/li&gt;
-&lt;li&gt;plotGOgraph (via &lt;a href=&#34;http://www.bioconductor.org/packages/topGO&#34;&gt;topGO&lt;/a&gt; package)&lt;/li&gt;
-&lt;li&gt;upsetplot (via &lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;UpSetR&lt;/a&gt; package)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;and several useful utilities:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;bitr (Biological Id TranslatoR)&lt;/li&gt;
-&lt;li&gt;bitr_kegg (bitr using KEGG source)&lt;/li&gt;
-&lt;li&gt;compareCluster (biological theme comparison)&lt;/li&gt;
-&lt;li&gt;dropGO (screen out GO term of specific level or specific term)&lt;/li&gt;
-&lt;li&gt;go2ont (convert GO ID to Ontology)&lt;/li&gt;
-&lt;li&gt;go2term (convert GO ID to descriptive term)&lt;/li&gt;
-&lt;li&gt;gofilter (restrict result at specific GO level)&lt;/li&gt;
-&lt;li&gt;gsfilter (restrict result by gene set size)&lt;/li&gt;
-&lt;li&gt;search_kegg_organism (search kegg supported organism)&lt;/li&gt;
-&lt;li&gt;setReadable (convert IDs stored &lt;code&gt;enrichResult&lt;/code&gt; object to gene symbol)&lt;/li&gt;
-&lt;li&gt;simplify (remove redundant GO terms, supported via &lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;dose:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;DOSE&lt;/h2&gt;
-
-&lt;p&gt;DOSE now test bimodal separately in GSEA and the output pvalues are &lt;a href=&#34;(http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/&#34;&gt;more conserved&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;maxGSSize&lt;/code&gt; parameter was added, with default value of &lt;code&gt;500&lt;/code&gt;. Usually if the geneset &amp;gt; 500, its probability of being called significant by GSEA rises quite dramatically.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;gsfilter&lt;/code&gt; function for restricting enriched results with minimal and maximal gene set sizes.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;upsetplot&lt;/code&gt; was implemented to visualize overlap of enriched gene sets.&lt;/p&gt;
-
-&lt;p&gt;The dot sizes in &lt;code&gt;enrichMap&lt;/code&gt; now scaled by category sizes&lt;/p&gt;
-
-&lt;p&gt;All these changes also affect &lt;code&gt;clusterProfiler&lt;/code&gt; and &lt;code&gt;ReactomePA&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;ggtree:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;ggtree&lt;/h2&gt;
-
-&lt;p&gt;I put more efforts to extend &lt;code&gt;ggtree&lt;/code&gt; than the sum of all other packages. Here listed the major new features while small improvement and bug fixed can be found in the NEWS file.&lt;/p&gt;
-
-&lt;h3 id=&#34;io:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;IO&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;supports &lt;a href=&#34;http://guangchuangyu.github.io/2015/12/news-of-ggtree/&#34;&gt;NHX&lt;/a&gt; file format via &lt;code&gt;read.nhx&lt;/code&gt; function&lt;/li&gt;
-&lt;li&gt;supports &lt;a href=&#34;http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/&#34;&gt;phylip&lt;/a&gt; tree format via &lt;code&gt;read.phylip&lt;/code&gt; function&lt;/li&gt;
-&lt;li&gt;raxml2nwk for converting raxml bootstrap tree to newick text&lt;/li&gt;
-&lt;li&gt;all parser functions support passing &lt;code&gt;textConnection(text_string)&lt;/code&gt; as a file&lt;/li&gt;
-&lt;li&gt;supports &lt;code&gt;ape&lt;/code&gt; bootstrap analysis&lt;/li&gt;
-&lt;li&gt;supports annotating tree with ancestral sequences inferred by &lt;code&gt;phangorn&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;supports &lt;code&gt;obkData&lt;/code&gt; object defined by &lt;code&gt;OutbreakTools&lt;/code&gt; package&lt;/li&gt;
-&lt;li&gt;supports &lt;code&gt;phyloseq&lt;/code&gt; object defined by &lt;code&gt;phyloseq&lt;/code&gt; package&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;layers:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;layers&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;geom_point2,geom_text2, geom_segment2 and geom_label2 to &lt;a href=&#34;http://guangchuangyu.github.io/2015/09/subsetting-data-in-ggtree/&#34;&gt;support subsetting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;geom_treescale for adding scale of branch length&lt;/li&gt;
-&lt;li&gt;geom_cladelabel for labeling selected clade&lt;/li&gt;
-&lt;li&gt;geom_tiplab2 for adding tiplab of circular tree&lt;/li&gt;
-&lt;li&gt;geom_taxalink for connecting related taxa&lt;/li&gt;
-&lt;li&gt;geom_range for adding range to present uncertainty of branch lengths&lt;/li&gt;
-&lt;li&gt;subview and inset now support annotating with &lt;a href=&#34;http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/&#34;&gt;image files&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;utilities:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;utilities&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/12/news-of-ggtree/&#34;&gt;rescale_tree&lt;/a&gt; function to rescale branch lengths using numerical variable&lt;/li&gt;
-&lt;li&gt;MRCA for finding Most Recent Common Ancestor among a vector of tips&lt;/li&gt;
-&lt;li&gt;viewClade to zoom in a selected clade&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;vignettes:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;vignettes&lt;/h3&gt;
-
-&lt;p&gt;Split the long vignette to several small ones and add more examples.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/ggtree.html&#34;&gt;ggtree&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeImport.html&#34;&gt;Tree Data Import&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeVisualization.html&#34;&gt;Tree Visualization&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeAnnotation.html&#34;&gt;Tree Annotation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeManipulation.html&#34;&gt;Tree Manipulation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/advanceTreeAnnotation.html&#34;&gt;Advance Tree Annotation&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here is the NEWS record:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;CHANGES IN VERSION 1.3.16
-------------------------
- o geom_treescale() supports family argument &amp;lt;2016-04-27, Wed&amp;gt;
-   + https://github.com/GuangchuangYu/ggtree/issues/56
- o update fortify.phylo to work with phylo that has missing value of edge length &amp;lt;2016-04-21, Thu&amp;gt;
-   + https://github.com/GuangchuangYu/ggtree/issues/54
- o support passing textConnection(text_string) as a file &amp;lt;2016-04-21, Thu&amp;gt;
-   + contributed by Casey Dunn &amp;lt;casey_dunn@brown.edu&amp;gt;
-   + https://github.com/GuangchuangYu/ggtree/pull/55#issuecomment-212859693
- 
-CHANGES IN VERSION 1.3.15
-------------------------
- o geom_tiplab2 supports parameter hjust &amp;lt;2016-04-18, Mon&amp;gt;
- o geom_tiplab and geom_tiplab2 support using geom_label2 by passing geom=&amp;quot;label&amp;quot; &amp;lt;2016-04-07, Thu&amp;gt;
- o geom_label2 that support subsetting &amp;lt;2016-04-07, Thu&amp;gt;
- o geom_tiplab2 for adding tip label of circular layout &amp;lt;2016-04-06, Wed&amp;gt;
- o use plot$plot_env to access ggplot2 parameter &amp;lt;2016-04-06, Wed&amp;gt;
- o geom_taxalink for connecting related taxa &amp;lt;2016-04-01, Fri&amp;gt; 
- o geom_range for adding range of HPD to present uncertainty of evolutionary inference &amp;lt;2016-04-01, Fri&amp;gt;
- 
-CHANGES IN VERSION 1.3.14
-------------------------
- o geom_tiplab works with NA values, compatible with collapse &amp;lt;2016-03-05, Sat&amp;gt;
- o update theme_tree2 due to the issue of https://github.com/hadley/ggplot2/issues/1567 &amp;lt;2016-03-05, Sat&amp;gt;
- o offset works in `align=FFALSE` with `annotation_image` function &amp;lt;2016-02-23, Tue&amp;gt;
-   + see https://github.com/GuangchuangYu/ggtree/issues/46
- o subview and inset now supports annotating with img files &amp;lt;2016-02-23, Tue&amp;gt;
- 
-CHANGES IN VERSION 1.3.13
-------------------------
- o add example of rescale_tree function in treeAnnotation.Rmd &amp;lt;2016-02-07, Sun&amp;gt;
- o geom_cladelabel works with collapse &amp;lt;2016-02-07, Sun&amp;gt;
-   + see https://github.com/GuangchuangYu/ggtree/issues/38 
-
-CHANGES IN VERSION 1.3.12
-------------------------
- o exchange function name of geom_tree and geom_tree2  &amp;lt;2016-01-25, Mon&amp;gt;
- o solved issues of geom_tree2 &amp;lt;2016-01-25, Mon&amp;gt;
-   + https://github.com/hadley/ggplot2/issues/1512
- o colnames_level parameter in gheatmap &amp;lt;2016-01-25, Mon&amp;gt;
- o raxml2nwk function for converting raxml bootstrap tree to newick format &amp;lt;2016-01-25, Mon&amp;gt; 
- 
-CHANGES IN VERSION 1.3.11
-------------------------
- o solved issues of geom_tree2 &amp;lt;2016-01-25, Mon&amp;gt;
-   + https://github.com/GuangchuangYu/ggtree/issues/36
- o change compute_group() to compute_panel in geom_tree2() &amp;lt;2016-01-21, Thu&amp;gt;
-   + fixed issue, https://github.com/GuangchuangYu/ggtree/issues/36
- o support phyloseq object &amp;lt;2016-01-21, Thu&amp;gt;
- o update geom_point2, geom_text2 and geom_segment2 to support setup_tree_data &amp;lt;2016-01-21, Thu&amp;gt;
- o implement geom_tree2 layer that support duplicated node records via the setup_tree_data function &amp;lt;2016-01-21, Thu&amp;gt;
- o rescale_tree function for rescaling branch length of tree object &amp;lt;2016-01-20, Wed&amp;gt;
- o upgrade set_branch_length, now branch can be rescaled using feature in extraInfo slot &amp;lt;2016-01-20, Wed&amp;gt;
- 
-CHANGES IN VERSION 1.3.10
-------------------------
- o remove dependency of gridExtra by implementing multiplot function instead of using grid.arrange &amp;lt;2016-01-20, Wed&amp;gt;
- o remove dependency of colorspace &amp;lt;2016-01-20, Wed&amp;gt;
- o support phylip tree format and update vignette of phylip example &amp;lt;2016-01-15, Fri&amp;gt;
-
-CHANGES IN VERSION 1.3.9
-------------------------
- o optimize getYcoord &amp;lt;2016-01-14, Thu&amp;gt;
- o add &#39;multiPhylo&#39; example in &#39;Tree Visualization&#39; vignette &amp;lt;2016-01-13, Wed&amp;gt;
- o viewClade, scaleClade, collapse, expand, rotate, flip, get_taxa_name and scale_x_ggtree accepts input tree_view=NULL.
-   these function will access the last plot if tree_view=NULL. &amp;lt;2016-01-13, Wed&amp;gt;
-   + &amp;gt; ggtree(rtree(30)); viewClade(node=35) works. no need to pipe.
- 
-CHANGES IN VERSION 1.3.8
-------------------------
- o add example of viewClade in &#39;Tree Manipulation&#39; vignette &amp;lt;2016-01-13, Wed&amp;gt;
- o add viewClade function &amp;lt;2016-01-12, Tue&amp;gt;
- o support obkData object defined by OutbreakTools &amp;lt;2016-01-12, Tue&amp;gt;
- o update vignettes &amp;lt;2016-01-07, Thu&amp;gt;
- o 05 advance tree annotation vignette &amp;lt;2016-01-04, Mon&amp;gt;
- o export theme_inset &amp;lt;2016-01-04, Mon&amp;gt;
- o inset, nodebar, nodepie functions &amp;lt;2015-12-31, Thu&amp;gt;
- 
-CHANGES IN VERSION 1.3.7
-------------------------
- o split the long vignette to several vignettes
-   + 00 ggtree &amp;lt;2015-12-29, Tue&amp;gt;
-   + 01 tree data import &amp;lt;2015-12-28, Mon&amp;gt;
-   + 02 tree visualization &amp;lt;2015-12-28, Mon&amp;gt;
-   + 03 tree manipulation &amp;lt;2015-12-28, Mon&amp;gt;
-   + 04 tree annotation &amp;lt;2015-12-29, Tue&amp;gt;
- 
-CHANGES IN VERSION 1.3.6
-------------------------
- o MRCA function for finding Most Recent Common Ancestor among a vector of tips &amp;lt;2015-12-22, Tue&amp;gt;
- o geom_cladelabel: add bar and label to annotate a clade &amp;lt;2015-12-21, Mon&amp;gt;
-   - remove annotation_clade and annotation_clade2 functions.
- o geom_treescale: tree scale layer. (add_legend was removed) &amp;lt;2015-12-21, Mon&amp;gt;
- 
-CHANGES IN VERSION 1.3.5
-------------------------
- o bug fixed, read.nhx now works with scientific notation &amp;lt;2015-11-30, Mon&amp;gt;
-   + see https://github.com/GuangchuangYu/ggtree/issues/30
-
-CHANGES IN VERSION 1.3.4
-------------------------
- o rename beast feature when name conflict with reserve keywords (label, branch, etc) &amp;lt;2015-11-27, Fri&amp;gt;
- o get_clade_position function &amp;lt;2015-11-26, Thu&amp;gt;
-   + https://github.com/GuangchuangYu/ggtree/issues/28
- o get_heatmap_column_position function &amp;lt;2015-11-25, Wed&amp;gt;
-   + see https://github.com/GuangchuangYu/ggtree/issues/26
- o support NHX (New Hampshire X) format via read.nhx function &amp;lt;2015-11-17, Tue&amp;gt;
- o bug fixed in extract.treeinfo.jplace &amp;lt;2015-11-17, Thu&amp;gt;
- 
-CHANGES IN VERSION 1.3.3
-------------------------
- o support color=NULL in gheatmap, then no colored line will draw within the heatmap &amp;lt;2015-10-30, Fri&amp;gt;
- o add `angle` for also rectangular, so that it will be available for layout=&#39;rectangular&#39; following by coord_polar() &amp;lt;2015-10-27, Tue&amp;gt;
- 
-CHANGES IN VERSION 1.3.2
-------------------------
- o update vignette, add example of ape bootstrap and phangorn ancestral sequences &amp;lt;2015-10-26, Mon&amp;gt;
- o add support of ape bootstrap analysis &amp;lt;2015-10-26, Mon&amp;gt;
-   see https://github.com/GuangchuangYu/ggtree/issues/20
- o add support of ancestral sequences inferred by phangorn &amp;lt;2015-10-26, Mon&amp;gt;
-   see https://github.com/GuangchuangYu/ggtree/issues/21
- 
-CHANGES IN VERSION 1.3.1
-------------------------
- o change angle to angle + 90, so that label will in radial direction &amp;lt;2015-10-22, Thu&amp;gt;
-   + see https://github.com/GuangchuangYu/ggtree/issues/17
- o na.rm should be always passed to layer(), fixed it in geom_hilight and geom_text2 &amp;lt;2015-10-21, Wed&amp;gt;
-   + see https://github.com/hadley/ggplot2/issues/1380
- o matching beast stats with tree using internal node number instead of label &amp;lt;2015-10-20, Tue&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;gosemsim:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;GOSemSim&lt;/h2&gt;
-
-&lt;p&gt;update IC data using update OrgDb packages.&lt;/p&gt;
-
-&lt;h2 id=&#34;reactomepa:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;ReactomePA&lt;/h2&gt;
-
-&lt;p&gt;We published ReactomePA in &lt;a href=&#34;http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E&#34;&gt;Molecular BioSystems&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:de4254a6abb9a1c947b7d959d55455bd&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, LG Wang, GR Yan, QY He. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/4/608&#34;&gt;DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(4):608-609.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;2788597&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Yu G&lt;/strong&gt;&lt;sup&gt;†&lt;/sup&gt;, Li F&lt;sup&gt;†&lt;/sup&gt;, Qin Y, Bo X&lt;sup&gt;*&lt;/sup&gt;, Wu Y and Wang S&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/26/7/976&#34;&gt;GOSemSim: an R package for measuring semantic similarity among GO terms and gene products&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt;. 2010, 26(7):976-978.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;100979&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, QY He&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E#!divAbstract&#34;&gt;ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Molecular BioSystems&lt;/em&gt;&lt;/strong&gt; 2016, 12(2):477-479.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;4796667&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     

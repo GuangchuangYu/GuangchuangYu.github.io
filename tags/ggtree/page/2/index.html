@@ -74,6 +74,24 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a></h2>
+        <div class="article-style"><p><p>I extended the <a href="http://guangchuangyu.github.io/2015/08/subview/">subview</a> function to support embed image file in a <code>ggplot</code> object.</p>
+
+<pre><code>set.seed(123)
+d = data.frame(x=rnorm(10), y=rnorm(10))
+
+imgfile &lt;- tempfile(, fileext=&quot;.png&quot;)
+download.file(&quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;s=140&quot;,
+              destfile=imgfile, mode='wb')
+
+p = ggplot(d, aes(x, y))
+subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
+</code></pre>
+</p></div>
+
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/02/tweets-of-ggtree">tweets of ggtree</a></h2>
         <div class="article-style"><p><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Treespace visualization of a heuristic best tree search in <a href="https://twitter.com/hashtag/R?src=hash">#R</a> package <a href="https://twitter.com/hashtag/ggtree?src=hash">#ggtree</a> <a href="https://twitter.com/hashtag/phylogenetics?src=hash">#phylogenetics</a> <a href="https://t.co/hnSJpIABql">pic.twitter.com/hnSJpIABql</a></p>&mdash; Alex Damián (@antropoteuthis) <a href="https://twitter.com/antropoteuthis/status/693123105707986944">January 29, 2016</a></blockquote>
 
@@ -203,40 +221,6 @@ with <a href="https://github.com/timelyportfolio/comicR">comicR</a>, which is a
 funny package to generate comic (xkcd-like) graph in R. Have fun with
 <a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
 and <a href="https://github.com/timelyportfolio/comicR">comicR</a>.</p>
-</p></div>
-
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2015/08/subview">subview</a></h2>
-        <div class="article-style"><p><p>I implemented a function, <em>subview</em>, in
-<a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
-that make it easy to embed a subplot in ggplot.</p>
-
-<p>An example is shown below:</p>
-
-<pre><code>library(ggplot2)
-library(ggtree)
-
-dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
-pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
-    geom_bar(stat=&quot;identity&quot;, width=1) + 
-    coord_polar(theta=&quot;y&quot;) + theme_tree() + 
-    xlab(NULL) + ylab(NULL) + 
-    theme_transparent()
-
-x &lt;- sample(2:9)
-y &lt;- sample(2:9)
-width &lt;- sample(seq(0.05, 0.15, length.out=length(x)))
-height &lt;- width
-
-p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
-print(p)
-for (i in seq_along(x)) {
-    p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
-    print(p)
-}
-</code></pre>
 </p></div>
 
     </div>

@@ -7,8 +7,152 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 03 Nov 2016 10:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 15 Nov 2016 20:10:48 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>align genomic features with phylogenetic tree</title>
+      <link>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree</link>
+      <pubDate>Tue, 15 Nov 2016 20:10:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://www.biostars.org/p/218591/&#34;&gt;A question&lt;/a&gt; on biostars asking how to generate the following figure:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/218591.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This can be quite easy to implement in &lt;a href=&#34;https://guangchuangyu.github.io&#34;&gt;ggtree&lt;/a&gt;, I can write a &lt;code&gt;geom&lt;/code&gt; layer to layout the alignment. As &lt;a href=&#34;https://bioconductor.org/packages/ggbio/&#34;&gt;ggbio&lt;/a&gt; already provides many &lt;code&gt;geom&lt;/code&gt; for genomic data and I don&amp;rsquo;t want to re-invent the wheel, I decided to try &lt;code&gt;ggtree+ggbio&lt;/code&gt;. This is also the beauty of &lt;code&gt;R&lt;/code&gt; that packages complete each others.&lt;/p&gt;
+
+&lt;p&gt;Here is a sample data presented in &lt;code&gt;ggbio&lt;/code&gt; vignette:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggbio)
+library(biovizBase) 
+library(Homo.sapiens)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb &amp;lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+
+data(genesymbol, package = &amp;quot;biovizBase&amp;quot;)
+wh &amp;lt;- genesymbol[c(&amp;quot;BRCA1&amp;quot;, &amp;quot;NBR1&amp;quot;)]
+wh &amp;lt;- range(wh, ignore.strand = TRUE)
+
+gr.txdb &amp;lt;- crunch(txdb, which = wh)
+## change column to  model 
+colnames(values(gr.txdb))[4] &amp;lt;- &amp;quot;model&amp;quot;
+grl &amp;lt;- split(gr.txdb, gr.txdb$tx_id)
+set.seed(2016-10-25)
+names(grl) &amp;lt;- sample(LETTERS, size = length(grl), replace = TRUE)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; print(grl)
+GRangesList object of length 32:
+$J 
+GRanges object with 7 ranges and 4 metadata columns:
+      seqnames               ranges strand |    tx_id    tx_name
+         &amp;lt;Rle&amp;gt;            &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt; | &amp;lt;factor&amp;gt;   &amp;lt;factor&amp;gt;
+  [1]    chr17 [41277600, 41277787]      + |    61241 uc002idf.3
+  [2]    chr17 [41283225, 41283287]      + |    61241 uc002idf.3
+  [3]    chr17 [41284973, 41285154]      + |    61241 uc002idf.3
+  [4]    chr17 [41290674, 41292342]      + |    61241 uc002idf.3
+  [5]    chr17 [41277788, 41283224]      * |    61241 uc002idf.3
+  [6]    chr17 [41283288, 41284972]      * |    61241 uc002idf.3
+  [7]    chr17 [41285155, 41290673]      * |    61241 uc002idf.3
+       gene_id    model
+      &amp;lt;factor&amp;gt; &amp;lt;factor&amp;gt;
+  [1]    10230     exon
+  [2]    10230     exon
+  [3]    10230     exon
+  [4]    10230     exon
+  [5]    10230      gap
+  [6]    10230      gap
+  [7]    10230      gap
+
+$U 
+GRanges object with 3 ranges and 4 metadata columns:
+      seqnames               ranges strand | tx_id    tx_name
+  [1]    chr17 [41277600, 41277787]      + | 61242 uc010czb.2
+  [2]    chr17 [41290674, 41292342]      + | 61242 uc010czb.2
+  [3]    chr17 [41277788, 41290673]      * | 61242 uc010czb.2
+      gene_id model
+  [1]   10230  exon
+  [2]   10230  exon
+  [3]   10230   gap
+
+$D 
+GRanges object with 9 ranges and 4 metadata columns:
+      seqnames               ranges strand | tx_id    tx_name
+  [1]    chr17 [41277600, 41277787]      + | 61243 uc002idg.3
+  [2]    chr17 [41283225, 41283287]      + | 61243 uc002idg.3
+  [3]    chr17 [41290674, 41290939]      + | 61243 uc002idg.3
+  [4]    chr17 [41291833, 41292300]      + | 61243 uc002idg.3
+  [5]    chr17 [41296745, 41297125]      + | 61243 uc002idg.3
+  [6]    chr17 [41277788, 41283224]      * | 61243 uc002idg.3
+  [7]    chr17 [41283288, 41290673]      * | 61243 uc002idg.3
+  [8]    chr17 [41290940, 41291832]      * | 61243 uc002idg.3
+  [9]    chr17 [41292301, 41296744]      * | 61243 uc002idg.3
+      gene_id model
+  [1]   10230  exon
+  [2]   10230  exon
+  [3]   10230  exon
+  [4]   10230  exon
+  [5]   10230  exon
+  [6]   10230   gap
+  [7]   10230   gap
+  [8]   10230   gap
+  [9]   10230   gap
+
+...
+&amp;lt;29 more elements&amp;gt;
+-------
+seqinfo: 1 sequence from hg19 genome
+```	
+	
+We can visualize the alignment simply using:
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ggplot() + geom_alignment(grl, alpha=.5)
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggbio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The input data for &lt;code&gt;geom_alignment&lt;/code&gt; is a &lt;code&gt;GRangesList&lt;/code&gt; object, while &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/&#34;&gt;facet_plot&lt;/a&gt; defined in &lt;code&gt;ggtree&lt;/code&gt; expect the input data as a &lt;code&gt;data.frame&lt;/code&gt;. I extend the &lt;code&gt;facet_plot&lt;/code&gt; to work with &lt;code&gt;geom_alignment&lt;/code&gt;. In doing this, I find a bug of the &lt;code&gt;geom_alignment&lt;/code&gt; function and send a &lt;a href=&#34;https://github.com/tengfei/ggbio/issues/83#issuecomment-256284645&#34;&gt;patch&lt;/a&gt; to Michael. My patch was incorporated in &lt;code&gt;ggbio 1.23.2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;With the updates of both &lt;code&gt;ggtree&lt;/code&gt; and &lt;code&gt;ggbio&lt;/code&gt;, we can use &lt;code&gt;facet_plot&lt;/code&gt; to align alignment with phylogenetic tree.&lt;/p&gt;
+
+&lt;p&gt;Suppose we have the following tree:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggtree)
+n &amp;lt;- names(grl) %&amp;gt;% unique %&amp;gt;% length
+set.seed(2016-10-25)
+tr = rtree(n)
+set.seed(2016-10-25)
+tr$tip.label = sample(unique(names(grl)), n)
+
+p &amp;lt;- ggtree(tr) + geom_tiplab()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/random_tree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It is quite easy to use &lt;code&gt;facet_plot&lt;/code&gt; to visualize the above alignment with this tree:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;facet_plot(p, &#39;alignment&#39;, grl, geom_alignment, inherit.aes=FALSE, mapping=aes())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggtree_ggbio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Beware of &lt;code&gt;mapping=aes()&lt;/code&gt; is required as &lt;code&gt;ggbio&lt;/code&gt; can&amp;rsquo;t accept &lt;code&gt;mapping=NULL&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;PS: I only test &lt;code&gt;geom_alignment&lt;/code&gt; which works with &lt;code&gt;GRanges&lt;/code&gt; and &lt;code&gt;GRangesList&lt;/code&gt;. Other &lt;code&gt;geoms&lt;/code&gt; defined in &lt;code&gt;ggbio&lt;/code&gt; may not be supported. If you find &lt;code&gt;facet_plot&lt;/code&gt; fail to work with other &lt;code&gt;geoms&lt;/code&gt;, please open an &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues&#34;&gt;issue&lt;/a&gt; in github.  Feature requests are welcome.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:0a3dec613b797c00359e5a4e7fa12428&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>showCategory parameter for visualizing compareCluster output</title>
@@ -1957,86 +2101,6 @@ head(summary(y))
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;citation:ea0718166651864960b492e0d7486a4f&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>KEGG Module Enrichment Analysis</title>
-      <link>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis</link>
-      <pubDate>Wed, 13 Apr 2016 20:48:15 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis</guid>
-      <description>
-
-&lt;blockquote&gt;
-&lt;p&gt;KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;pathway modules – representing tight functional units in KEGG metabolic pathway maps, such as M00002 (Glycolysis, core module involving three-carbon compounds)&lt;/li&gt;
-&lt;li&gt;structural complexes – often forming molecular machineries, such as M00072 (Oligosaccharyltransferase)&lt;/li&gt;
-&lt;li&gt;functional sets – for other types of essential sets, such as M00360 (Aminoacyl-tRNA synthases, prokaryotes)&lt;/li&gt;
-&lt;li&gt;signature modules – as markers of phenotypes, such as M00363 (EHEC pathogenicity signature, Shiga toxin)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.genome.jp/kegg/module.html&#34;&gt;KEGG Modules&lt;/a&gt; have a much more straightforwared interpretation in many situations and there was a &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/37&#34;&gt;feature request&lt;/a&gt; for implementing an enrichment test from clusterProfiler user. Both hypergeometric test and GSEA of KEGG Module are now supported in &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;. Just like &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG Pathway Analysis&lt;/a&gt;, clusterProfiler accesses latest online data and supports more than 2000 species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To prevent confusing new users who may not fammiliar with KEGG, I created two new functions, &lt;em&gt;enrichMKEGG&lt;/em&gt; and &lt;em&gt;gseMKEGG&lt;/em&gt; for enrichment test of KEGG Module and keep the original functions, &lt;em&gt;enrichKEGG&lt;/em&gt; and &lt;em&gt;gseKEGG&lt;/em&gt; for KEGG pathway analysis only.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
-
-data(geneList)
-de &amp;lt;- names(geneList)[1:100]
-xx &amp;lt;- enrichMKEGG(de, organism=&#39;hsa&#39;, minGSSize=1)
-head(summary(xx))
-
-##            ID
-## M00693 M00693
-## M00286 M00286
-## M00067 M00067
-## M00691 M00691
-##                                                                                    Description
-## M00693                                                            Cell cycle - G2/M transition
-## M00286                                                                            GINS complex
-## M00067 Sulfoglycolipids biosynthesis, ceramide/1-alkyl-2-acylglycerol =&amp;gt; sulfatide/seminolipid
-## M00691                                               DNA damage-induced cell cycle checkpoints
-##        GeneRatio BgRatio       pvalue     p.adjust       qvalue
-## M00693       3/8 10/1528 0.0000111304 5.565199e-05 1.171621e-05
-## M00286       2/8  4/1528 0.0001432508 3.581269e-04 7.539514e-05
-## M00067       1/8  2/1528 0.0104472034 1.741201e-02 3.665685e-03
-## M00691       1/8  7/1528 0.0361484900 4.518561e-02 9.512761e-03
-##              geneID Count
-## M00693 9133/890/983     3
-## M00286   9837/51659     2
-## M00067         7368     1
-## M00691         1111     1
-
-yy &amp;lt;- gseMKEGG(geneList)
-
-## [1] &amp;quot;calculating observed enrichment scores...&amp;quot;
-## [1] &amp;quot;calculating permutation scores...&amp;quot;
-## [1] &amp;quot;calculating p values...&amp;quot;
-## [1] &amp;quot;done...&amp;quot;
-
-head(summary(yy))
-
-##            ID                     Description setSize enrichmentScore
-## M00337 M00337                Immunoproteasome      15       0.7583644
-## M00340 M00340   Proteasome, 20S core particle      13       0.7935026
-## M00354 M00354 Spliceosome, U4/U6.U5 tri-snRNP      29       0.6053503
-##             NES      pvalue   p.adjust    qvalues
-## M00337 2.063359 0.002298851 0.03675214 0.02968961
-## M00340 2.047060 0.002409639 0.03675214 0.02968961
-## M00354 1.913834 0.002564103 0.03675214 0.02968961
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Please refer to &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html&#34;&gt;vignette&lt;/a&gt; for more details.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:b7c5743556f4771ecf9cca8abe8d99c7&#34;&gt;Citation&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
 

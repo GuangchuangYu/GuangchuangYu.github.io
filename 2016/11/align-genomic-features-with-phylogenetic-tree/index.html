@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree">
 
-    <title>showCategory parameter for visualizing compareCluster output | Guangchuang YU</title>
+    <title>align genomic features with phylogenetic tree | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">showCategory parameter for visualizing compareCluster output</h1>
+        <h1 itemprop="name">align genomic features with phylogenetic tree</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2016-11-03 10:30:00 &#43;0800 CST" itemprop="datePublished">Thu, Nov 3, 2016</time>
+        <time datetime="2016-11-15 20:10:48 &#43;0800 CST" itemprop="datePublished">Tue, Nov 15, 2016</time>
     </span>
 
     
@@ -88,9 +88,11 @@
     <span class="article-tags">
         <i class="fa fa-tags"></i>
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>, 
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/dotplot">dotplot</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggbio">ggbio</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/tree">tree</a>
         
     </span>
     
@@ -124,58 +126,139 @@
 
           
 
-<blockquote>
-<p>I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().</p>
+<p><a href="https://www.biostars.org/p/218591/">A question</a> on biostars asking how to generate the following figure:</p>
 
-<p>In my case, I use compareCluster() on a list of 3 elements:</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/218591.png" alt="" /></p>
 
-<pre><code>str(ClusterList)
-List of 3
- $ All : chr [1:1450] &quot;89886&quot; &quot;29923&quot; &quot;100132891&quot; &quot;101410536&quot; ...
- $ g1  : chr [1:858] &quot;89886&quot; &quot;29923&quot; &quot;100132891&quot; &quot;101410536&quot; ...
- $ g2: chr [1:592] &quot;5325&quot; &quot;170691&quot; &quot;29953&quot; &quot;283392&quot; ...
-CompareGO_BP=compareCluster(ClusterList, fun=&quot;enrichGO&quot;, pvalueCutoff=0.01, pAdjustMethod=&quot;BH&quot;, OrgDb=org.Hs.eg.db,ont=&quot;BP&quot;,readable=T)
+<p>This can be quite easy to implement in <a href="https://guangchuangyu.github.io">ggtree</a>, I can write a <code>geom</code> layer to layout the alignment. As <a href="https://bioconductor.org/packages/ggbio/">ggbio</a> already provides many <code>geom</code> for genomic data and I don&rsquo;t want to re-invent the wheel, I decided to try <code>ggtree+ggbio</code>. This is also the beauty of <code>R</code> that packages complete each others.</p>
 
-dotplot(CompareGO_BP, showCategory=10, title=&quot;GO - Biological Process&quot;)
+<p>Here is a sample data presented in <code>ggbio</code> vignette:</p>
+
+<pre><code>library(ggbio)
+library(biovizBase) 
+library(Homo.sapiens)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+
+data(genesymbol, package = &quot;biovizBase&quot;)
+wh &lt;- genesymbol[c(&quot;BRCA1&quot;, &quot;NBR1&quot;)]
+wh &lt;- range(wh, ignore.strand = TRUE)
+
+gr.txdb &lt;- crunch(txdb, which = wh)
+## change column to  model 
+colnames(values(gr.txdb))[4] &lt;- &quot;model&quot;
+grl &lt;- split(gr.txdb, gr.txdb$tx_id)
+set.seed(2016-10-25)
+names(grl) &lt;- sample(LETTERS, size = length(grl), replace = TRUE)
 </code></pre>
 
-<p>I ask for 10 categories, but I get 15 categories in All, 8 categories in g1 and 12 categories in g2. None of the categories, neither the sum of the categories are 10&hellip;</p>
+<pre><code>&gt; print(grl)
+GRangesList object of length 32:
+$J 
+GRanges object with 7 ranges and 4 metadata columns:
+      seqnames               ranges strand |    tx_id    tx_name
+         &lt;Rle&gt;            &lt;IRanges&gt;  &lt;Rle&gt; | &lt;factor&gt;   &lt;factor&gt;
+  [1]    chr17 [41277600, 41277787]      + |    61241 uc002idf.3
+  [2]    chr17 [41283225, 41283287]      + |    61241 uc002idf.3
+  [3]    chr17 [41284973, 41285154]      + |    61241 uc002idf.3
+  [4]    chr17 [41290674, 41292342]      + |    61241 uc002idf.3
+  [5]    chr17 [41277788, 41283224]      * |    61241 uc002idf.3
+  [6]    chr17 [41283288, 41284972]      * |    61241 uc002idf.3
+  [7]    chr17 [41285155, 41290673]      * |    61241 uc002idf.3
+       gene_id    model
+      &lt;factor&gt; &lt;factor&gt;
+  [1]    10230     exon
+  [2]    10230     exon
+  [3]    10230     exon
+  [4]    10230     exon
+  [5]    10230      gap
+  [6]    10230      gap
+  [7]    10230      gap
 
-<p>Is the option showCategory working in the case of comparison? Am I missing something here?</p>
+$U 
+GRanges object with 3 ranges and 4 metadata columns:
+      seqnames               ranges strand | tx_id    tx_name
+  [1]    chr17 [41277600, 41277787]      + | 61242 uc010czb.2
+  [2]    chr17 [41290674, 41292342]      + | 61242 uc010czb.2
+  [3]    chr17 [41277788, 41290673]      * | 61242 uc010czb.2
+      gene_id model
+  [1]   10230  exon
+  [2]   10230  exon
+  [3]   10230   gap
 
-<p>And which categories precisely will it plot? the most significant whatever my 3 cases or the most significant of each case?</p>
-</blockquote>
+$D 
+GRanges object with 9 ranges and 4 metadata columns:
+      seqnames               ranges strand | tx_id    tx_name
+  [1]    chr17 [41277600, 41277787]      + | 61243 uc002idg.3
+  [2]    chr17 [41283225, 41283287]      + | 61243 uc002idg.3
+  [3]    chr17 [41290674, 41290939]      + | 61243 uc002idg.3
+  [4]    chr17 [41291833, 41292300]      + | 61243 uc002idg.3
+  [5]    chr17 [41296745, 41297125]      + | 61243 uc002idg.3
+  [6]    chr17 [41277788, 41283224]      * | 61243 uc002idg.3
+  [7]    chr17 [41283288, 41290673]      * | 61243 uc002idg.3
+  [8]    chr17 [41290940, 41291832]      * | 61243 uc002idg.3
+  [9]    chr17 [41292301, 41296744]      * | 61243 uc002idg.3
+      gene_id model
+  [1]   10230  exon
+  [2]   10230  exon
+  [3]   10230  exon
+  [4]   10230  exon
+  [5]   10230  exon
+  [6]   10230   gap
+  [7]   10230   gap
+  [8]   10230   gap
+  [9]   10230   gap
 
-<p>The question was <a href="https://support.bioconductor.org/p/88965/">posted</a> in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.</p>
+...
+&lt;29 more elements&gt;
+-------
+seqinfo: 1 sequence from hg19 genome
+```	
+	
+We can visualize the alignment simply using:
 
-<p>In this case, we expect to get <code>&lt;= 10 of most significant categories</code> for each  <code>Cluster</code> as the user specify <code>showCategory=10</code>. This is exactly the way of <code>dotplot</code> and <code>barplot</code> methods do for <code>compareClusterResult</code>. <code>8</code> categories for <code>g1</code> is obvious that there are only <code>8</code> enriched terms found for <code>g1</code>.</p>
-
-<p>But why there are <code>15</code> for <code>All</code> and <code>12</code> for <code>g2</code>?</p>
-
-<p><code>dotplot</code> and <code>barplot</code> methods implemented in <code>clusterProfiler</code> try to make the comparison among clusters more informative and reasonable. After extracting e.g. 10 categories for each cluster, <code>clusterProfiler</code> try to collect overlap of these categories among clusters.</p>
-
-<p>For example, <code>term A</code> is enriched in all the clusters (<code>All</code>, <code>g1</code> and <code>g2</code>) and is in the 10 most significant categories for <code>g1</code> but not <code>All</code> and <code>g2</code>. <code>clusterProfiler</code> try to capture these information and include <code>term A</code> in <code>All</code> and <code>g2</code> clusters and making the comparison in <code>dotplot</code>/<code>barplot</code> more reasonable.</p>
-
-<p>If users want to ignore these information, they can use <code>dotplot(..., includeAll=FALSE)</code>, which is actually not recommended.</p>
-
-<p>See the difference to the following example:</p>
-
-<pre><code>library(clusterProfiler)
-data(gcSample)
-x=compareCluster(gcSample, fun='enrichDO')
-dotplot(x, showCategory=5, includeAll=FALSE)
-dotplot(x, showCategory=5)
 </code></pre>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png" alt="" /></p>
+<p>ggplot() + geom_alignment(grl, alpha=.5)
+```</p>
 
-<p>In the first figure, it seems that all these clusters are very different, with no overlapping terms enriched. This is not true as demonstrated in the second figure.</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggbio.png" alt="" /></p>
 
-<h2 id="citation:ed24f58e5bddc900e749131b9fdda3b1">Citation</h2>
+<p>The input data for <code>geom_alignment</code> is a <code>GRangesList</code> object, while <a href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/">facet_plot</a> defined in <code>ggtree</code> expect the input data as a <code>data.frame</code>. I extend the <code>facet_plot</code> to work with <code>geom_alignment</code>. In doing this, I find a bug of the <code>geom_alignment</code> function and send a <a href="https://github.com/tengfei/ggbio/issues/83#issuecomment-256284645">patch</a> to Michael. My patch was incorporated in <code>ggbio 1.23.2</code>.</p>
 
-<p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
+<p>With the updates of both <code>ggtree</code> and <code>ggbio</code>, we can use <code>facet_plot</code> to align alignment with phylogenetic tree.</p>
 
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
+<p>Suppose we have the following tree:</p>
+
+<pre><code>library(ggtree)
+n &lt;- names(grl) %&gt;% unique %&gt;% length
+set.seed(2016-10-25)
+tr = rtree(n)
+set.seed(2016-10-25)
+tr$tip.label = sample(unique(names(grl)), n)
+
+p &lt;- ggtree(tr) + geom_tiplab()
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/random_tree.png" alt="" /></p>
+
+<p>It is quite easy to use <code>facet_plot</code> to visualize the above alignment with this tree:</p>
+
+<pre><code>facet_plot(p, 'alignment', grl, geom_alignment, inherit.aes=FALSE, mapping=aes())
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggtree_ggbio.png" alt="" /></p>
+
+<p>Beware of <code>mapping=aes()</code> is required as <code>ggbio</code> can&rsquo;t accept <code>mapping=NULL</code>.</p>
+
+<p>PS: I only test <code>geom_alignment</code> which works with <code>GRanges</code> and <code>GRangesList</code>. Other <code>geoms</code> defined in <code>ggbio</code> may not be supported. If you find <code>facet_plot</code> fail to work with other <code>geoms</code>, please open an <a href="https://github.com/GuangchuangYu/ggtree/issues">issue</a> in github.  Feature requests are welcome.</p>
+
+<h2 id="citation:0a3dec613b797c00359e5a4e7fa12428">Citation</h2>
+
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
 
 
 	  
@@ -187,11 +270,9 @@ dotplot(x, showCategory=5)
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel"><span aria-hidden="true">&larr;</span> xlim_tree: set x axis limits for only Tree panel</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output"><span aria-hidden="true">&larr;</span> showCategory parameter for visualizing compareCluster output</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree">align genomic features with phylogenetic tree <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
