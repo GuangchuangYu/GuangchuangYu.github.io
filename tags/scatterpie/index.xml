@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scatterpie on Guangchuang YU</title>
+    <link>https://guangchuangyu.github.io/tags/scatterpie/</link>
+    <description>Recent content in Scatterpie on Guangchuang YU</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
+    <lastBuildDate>Wed, 07 Dec 2016 00:53:00 +0800</lastBuildDate>
+    <atom:link href="https://guangchuangyu.github.io/tags/scatterpie/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>scatterpie for plotting pies on ggplot</title>
+      <link>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot</link>
+      <pubDate>Wed, 07 Dec 2016 00:53:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/so.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Plotting pies on ggplot/ggmap is not an easy task, as ggplot2 doesn&amp;rsquo;t provide native pie geom. The pie we produced in ggplot2 is actually a barplot transform to polar coordination. This make it difficult if we want to produce a map like the above screenshot, which was posted by Tyler Rinker, the author of R package pacman.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/twitter.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The question remained unsolved until he discover that ggtree can do it. The ggtree solution is to use the &lt;code&gt;subview&lt;/code&gt; function, which is good for embed subplots and can embed different types of plots and even user&amp;rsquo;s own image files.&lt;/p&gt;
+
+&lt;p&gt;But it has its own drawback for plotting pies on map. First, it render plots as raster image make it slow to render when we plotting a lot of pies. Second we need some hack to add legend.&lt;/p&gt;
+
+&lt;p&gt;Thanks to the &lt;code&gt;ggforce&lt;/code&gt; package, which provide a native implementation of the pie geom, we can plot pies on cartesian coordination.&lt;/p&gt;
+
+&lt;p&gt;I created a wrapper function to make it more easy to plot a set of pies.&lt;/p&gt;
+
+&lt;p&gt;For example, suppose we have the following data:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(123)
+long &amp;lt;- rnorm(50, sd=100)
+lat &amp;lt;- rnorm(50, sd=50)
+d &amp;lt;- data.frame(long=long, lat=lat)
+d &amp;lt;- with(d, d[abs(long) &amp;lt; 150 &amp;amp; abs(lat) &amp;lt; 70,])
+n &amp;lt;- nrow(d)
+d$region &amp;lt;- factor(1:n)
+d$A &amp;lt;- abs(rnorm(n, sd=1))
+d$B &amp;lt;- abs(rnorm(n, sd=2))
+d$C &amp;lt;- abs(rnorm(n, sd=3))
+d$D &amp;lt;- abs(rnorm(n, sd=4))
+d$radius &amp;lt;- 6 * abs(rnorm(n))
+head(d)
+
+##          long        lat region          A        B        C        D
+## 1  -56.047565  12.665926      1 0.71040656 2.887786 1.309570 2.892264
+## 2  -23.017749  -1.427338      2 0.25688371 1.403569 1.375096 4.945092
+## 4    7.050839  68.430114      3 0.24669188 0.524395 3.189978 5.138863
+## 5   12.928774 -11.288549      4 0.34754260 3.144288 3.789556 2.295894
+## 8 -126.506123  29.230687      5 0.95161857 3.029335 1.048951 2.471943
+## 9  -68.685285   6.192712      6 0.04502772 3.203072 2.596539 4.439393
+##      radius
+## 1 6.4847970
+## 2 3.7845247
+## 4 0.6818394
+## 5 9.1974120
+## 8 3.1267039
+## 9 2.9392227
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It is very easy to draw the pies on the map by the &lt;code&gt;geom_scatterpie&lt;/code&gt; layer.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggplot2)
+library(scatterpie)
+
+world &amp;lt;- map_data(&#39;world&#39;)
+p &amp;lt;- ggplot(world, aes(long, lat)) +
+    geom_map(map=world, aes(map_id=region), fill=NA, color=&amp;quot;black&amp;quot;) +
+    coord_quickmap()
+p + geom_scatterpie(aes(x=long, y=lat, group=region, r=radius),
+                    data=d, cols=LETTERS[1:4], color=NA, alpha=.8) +
+    geom_scatterpie_legend(d$radius, x=-160, y=-55)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/scatterpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is just a simple application of the &lt;code&gt;ggforce&lt;/code&gt;, and I find many people like it. They even asked me to implement the pie size legend. I do implemented a &lt;code&gt;geom_scatterpie_legend&lt;/code&gt; layer and as the name indicated, it add a legend of the pie sizes as demonstrated in the above figure.&lt;/p&gt;
+
+&lt;p&gt;The source code is quite simple, and it is impossible without &lt;code&gt;ggforce&lt;/code&gt;. Now this package is availabel on &lt;a href=&#34;https://cran.r-project.org/package=scatterpie&#34;&gt;CRAN&lt;/a&gt;, you can use &lt;code&gt;install.packages(&#39;scatterpie&#39;)&lt;/code&gt; to install it and visit the &lt;a href=&#34;https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

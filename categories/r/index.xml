@@ -7,8 +7,82 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Tue, 15 Nov 2016 20:10:48 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 07 Dec 2016 00:53:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>scatterpie for plotting pies on ggplot</title>
+      <link>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot</link>
+      <pubDate>Wed, 07 Dec 2016 00:53:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/so.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Plotting pies on ggplot/ggmap is not an easy task, as ggplot2 doesn&amp;rsquo;t provide native pie geom. The pie we produced in ggplot2 is actually a barplot transform to polar coordination. This make it difficult if we want to produce a map like the above screenshot, which was posted by Tyler Rinker, the author of R package pacman.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/twitter.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The question remained unsolved until he discover that ggtree can do it. The ggtree solution is to use the &lt;code&gt;subview&lt;/code&gt; function, which is good for embed subplots and can embed different types of plots and even user&amp;rsquo;s own image files.&lt;/p&gt;
+
+&lt;p&gt;But it has its own drawback for plotting pies on map. First, it render plots as raster image make it slow to render when we plotting a lot of pies. Second we need some hack to add legend.&lt;/p&gt;
+
+&lt;p&gt;Thanks to the &lt;code&gt;ggforce&lt;/code&gt; package, which provide a native implementation of the pie geom, we can plot pies on cartesian coordination.&lt;/p&gt;
+
+&lt;p&gt;I created a wrapper function to make it more easy to plot a set of pies.&lt;/p&gt;
+
+&lt;p&gt;For example, suppose we have the following data:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(123)
+long &amp;lt;- rnorm(50, sd=100)
+lat &amp;lt;- rnorm(50, sd=50)
+d &amp;lt;- data.frame(long=long, lat=lat)
+d &amp;lt;- with(d, d[abs(long) &amp;lt; 150 &amp;amp; abs(lat) &amp;lt; 70,])
+n &amp;lt;- nrow(d)
+d$region &amp;lt;- factor(1:n)
+d$A &amp;lt;- abs(rnorm(n, sd=1))
+d$B &amp;lt;- abs(rnorm(n, sd=2))
+d$C &amp;lt;- abs(rnorm(n, sd=3))
+d$D &amp;lt;- abs(rnorm(n, sd=4))
+d$radius &amp;lt;- 6 * abs(rnorm(n))
+head(d)
+
+##          long        lat region          A        B        C        D
+## 1  -56.047565  12.665926      1 0.71040656 2.887786 1.309570 2.892264
+## 2  -23.017749  -1.427338      2 0.25688371 1.403569 1.375096 4.945092
+## 4    7.050839  68.430114      3 0.24669188 0.524395 3.189978 5.138863
+## 5   12.928774 -11.288549      4 0.34754260 3.144288 3.789556 2.295894
+## 8 -126.506123  29.230687      5 0.95161857 3.029335 1.048951 2.471943
+## 9  -68.685285   6.192712      6 0.04502772 3.203072 2.596539 4.439393
+##      radius
+## 1 6.4847970
+## 2 3.7845247
+## 4 0.6818394
+## 5 9.1974120
+## 8 3.1267039
+## 9 2.9392227
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It is very easy to draw the pies on the map by the &lt;code&gt;geom_scatterpie&lt;/code&gt; layer.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggplot2)
+library(scatterpie)
+
+world &amp;lt;- map_data(&#39;world&#39;)
+p &amp;lt;- ggplot(world, aes(long, lat)) +
+    geom_map(map=world, aes(map_id=region), fill=NA, color=&amp;quot;black&amp;quot;) +
+    coord_quickmap()
+p + geom_scatterpie(aes(x=long, y=lat, group=region, r=radius),
+                    data=d, cols=LETTERS[1:4], color=NA, alpha=.8) +
+    geom_scatterpie_legend(d$radius, x=-160, y=-55)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/scatterpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is just a simple application of the &lt;code&gt;ggforce&lt;/code&gt;, and I find many people like it. They even asked me to implement the pie size legend. I do implemented a &lt;code&gt;geom_scatterpie_legend&lt;/code&gt; layer and as the name indicated, it add a legend of the pie sizes as demonstrated in the above figure.&lt;/p&gt;
+
+&lt;p&gt;The source code is quite simple, and it is impossible without &lt;code&gt;ggforce&lt;/code&gt;. Now this package is availabel on &lt;a href=&#34;https://cran.r-project.org/package=scatterpie&#34;&gt;CRAN&lt;/a&gt;, you can use &lt;code&gt;install.packages(&#39;scatterpie&#39;)&lt;/code&gt; to install it and visit the &lt;a href=&#34;https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>align genomic features with phylogenetic tree</title>
@@ -1932,177 +2006,6 @@ CHANGES IN VERSION 1.3.1
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, QY He&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E#!divAbstract&#34;&gt;ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Molecular BioSystems&lt;/em&gt;&lt;/strong&gt; 2016, 12(2):477-479.&lt;/p&gt;
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;4796667&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>convert biological ID with KEGG API using clusterProfiler</title>
-      <link>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler</link>
-      <pubDate>Tue, 03 May 2016 17:00:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler</guid>
-      <description>
-
-&lt;h2 id=&#34;bitr-kegg:ea0718166651864960b492e0d7486a4f&#34;&gt;bitr_kegg&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; can convert biological IDs using &lt;code&gt;OrgDb&lt;/code&gt; object via the &lt;code&gt;bitr&lt;/code&gt; function. Now I implemented another function, &lt;code&gt;bitr_kegg&lt;/code&gt; for converting IDs through KEGG API.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
-data(gcSample)
-hg &amp;lt;- gcSample[[1]]
-head(hg)
-
-## [1] &amp;quot;4597&amp;quot;  &amp;quot;7111&amp;quot;  &amp;quot;5266&amp;quot;  &amp;quot;2175&amp;quot;  &amp;quot;755&amp;quot;   &amp;quot;23046&amp;quot;
-
-eg2np &amp;lt;- bitr_kegg(hg, fromType=&#39;kegg&#39;, toType=&#39;ncbi-proteinid&#39;, organism=&#39;hsa&#39;)
-
-## Warning in bitr_kegg(hg, fromType = &amp;quot;kegg&amp;quot;, toType = &amp;quot;ncbi-proteinid&amp;quot;,
-## organism = &amp;quot;hsa&amp;quot;): 3.7% of input gene IDs are fail to map...
-
-head(eg2np)
-
-##     kegg ncbi-proteinid
-## 1   8326      NP_003499
-## 2  58487   NP_001034707
-## 3 139081      NP_619647
-## 4  59272      NP_068576
-## 5    993      NP_001780
-## 6   2676      NP_001487
-
-np2up &amp;lt;- bitr_kegg(eg2np[,2], fromType=&#39;ncbi-proteinid&#39;, toType=&#39;uniprot&#39;, organism=&#39;hsa&#39;)
-
-head(np2up)
-
-##   ncbi-proteinid uniprot
-## 1      NP_005457  O75586
-## 2      NP_005792  P41567
-## 3      NP_005792  Q6IAV3
-## 4      NP_037536  Q13421
-## 5      NP_006054  O60662
-## 6   NP_001092002  O95398
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The ID type (both fromType &amp;amp; toType) should be one of &amp;lsquo;kegg&amp;rsquo;, &amp;lsquo;ncbi-geneid&amp;rsquo;, &amp;lsquo;ncbi-proteinid&amp;rsquo; or &amp;lsquo;uniprot&amp;rsquo;. The &amp;lsquo;kegg&amp;rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &amp;lsquo;kegg&amp;rsquo; ID is &lt;code&gt;entrezgene&lt;/code&gt; ID for eukaryote species and &lt;code&gt;Locus&lt;/code&gt; ID for prokaryotes.&lt;/p&gt;
-
-&lt;p&gt;Many prokaryote species don&amp;rsquo;t have entrezgene ID available. For example we can check the gene information of &lt;code&gt;ece:Z5100&lt;/code&gt; in &lt;a href=&#34;http://www.genome.jp/dbget-bin/www_bget?ece:Z5100&#34;&gt;http://www.genome.jp/dbget-bin/www_bget?ece:Z5100&lt;/a&gt;, which have &lt;code&gt;NCBI-ProteinID&lt;/code&gt; and &lt;code&gt;UnitProt&lt;/code&gt; links in the &lt;code&gt;Other DBs&lt;/code&gt; Entry, but not &lt;code&gt;NCBI-GeneID&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;If we try to convert &lt;code&gt;Z5100&lt;/code&gt; to &lt;code&gt;ncbi-geneid&lt;/code&gt;, &lt;code&gt;bitr_kegg&lt;/code&gt; will throw error of &lt;code&gt;ncbi-geneid is not supported&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&#39;ncbi-geneid&#39;, organism=&#39;ece&#39;)
-
-## Error in KEGG_convert(fromType, toType, organism) :
-## ncbi-geneid is not supported for ece ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We can of course convert it to &lt;code&gt;ncbi-proteinid&lt;/code&gt; and &lt;code&gt;uniprot&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&#39;ncbi-proteinid&#39;, organism=&#39;ece&#39;)
-
-##    kegg ncbi-proteinid
-## 1 Z5100       AAG58814
-
-bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&#39;uniprot&#39;, organism=&#39;ece&#39;)
-
-##    kegg uniprot
-## 1 Z5100  Q7DB85
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;search-kegg-organism:ea0718166651864960b492e0d7486a4f&#34;&gt;search_kegg_organism&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; supports more than 4k species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt; for hypergeometric test (&lt;code&gt;enrichKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;enrichMKEGG&lt;/code&gt;) and GSEA (&lt;code&gt;gseKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;gseMKEGG&lt;/code&gt;). We can use &lt;code&gt;bitr_kegg&lt;/code&gt; to convert ID for all these 4k species. To facilitate searching scientific name abbreviate used in the &lt;code&gt;organism&lt;/code&gt; parameter of these functions, I implemented the &lt;code&gt;search_kegg_organism&lt;/code&gt; function. We can search by &lt;code&gt;kegg_code&lt;/code&gt;, &lt;code&gt;scientific_name&lt;/code&gt; or &lt;code&gt;common_name&lt;/code&gt; (which is not available for prokaryotes).&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;search_kegg_organism(&#39;ece&#39;, by=&#39;kegg_code&#39;)
-
-##     kegg_code                        scientific_name common_name
-## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &amp;lt;NA&amp;gt;
-
-ecoli &amp;lt;- search_kegg_organism(&#39;Escherichia coli&#39;, by=&#39;scientific_name&#39;)
-dim(ecoli)
-
-## [1] 64  3
-
-head(ecoli)
-
-##     kegg_code                        scientific_name common_name
-## 329       eco           Escherichia coli K-12 MG1655        &amp;lt;NA&amp;gt;
-## 330       ecj            Escherichia coli K-12 W3110        &amp;lt;NA&amp;gt;
-## 331       ecd            Escherichia coli K-12 DH10B        &amp;lt;NA&amp;gt;
-## 332       ebw                Escherichia coli BW2952        &amp;lt;NA&amp;gt;
-## 333      ecok            Escherichia coli K-12 MDS42        &amp;lt;NA&amp;gt;
-## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &amp;lt;NA&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;keytype-parameter:ea0718166651864960b492e0d7486a4f&#34;&gt;keyType parameter&lt;/h2&gt;
-
-&lt;p&gt;With the ID conversion utilities built in &lt;code&gt;clusterProfiler&lt;/code&gt;, I add a parameter &lt;code&gt;keyType&lt;/code&gt; in &lt;code&gt;enrichKEGG&lt;/code&gt;, &lt;code&gt;enrichMKEGG&lt;/code&gt;, &lt;code&gt;gseKEGG&lt;/code&gt; and &lt;code&gt;gseMKEGG&lt;/code&gt;. Now we can use ID type that is not the primary ID in KEGG database.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;x &amp;lt;- enrichKEGG(np2up[,2], organism=&#39;hsa&#39;, keyType=&#39;uniprot&#39;)
-head(summary(x))
-
-##                ID                            Description GeneRatio
-## hsa04072 hsa04072      Phospholipase D signaling pathway    11/133
-## hsa04060 hsa04060 Cytokine-cytokine receptor interaction    14/133
-## hsa04390 hsa04390                Hippo signaling pathway    10/133
-## hsa04975 hsa04975           Fat digestion and absorption     5/133
-## hsa05221 hsa05221                 Acute myeloid leukemia     6/133
-##           BgRatio       pvalue   p.adjust     qvalue
-## hsa04072 216/9275 0.0002654190 0.03901659 0.03240905
-## hsa04060 354/9275 0.0005349245 0.03931695 0.03265855
-## hsa04390 213/9275 0.0009536247 0.04199404 0.03488227
-## hsa04975  58/9275 0.0014014886 0.04199404 0.03488227
-## hsa05221  86/9275 0.0014283687 0.04199404 0.03488227
-##                                                                                                         geneID
-## hsa04072                      O95398/Q99777/P49619/Q6FGP0/Q8WVM9/O14807/P41594/A8K5P7/P10145/A0A024RDA5/P16234
-## hsa04060 A0N0N3/O00574/P19876/P01589/P10145/A0A024RDA5/B4DGA4/Q99665/P16234/P78556/Q6I9S7/P42830/P27930/Q9UBN6
-## hsa04390                             Q8WW10/A8K141/Q9UI47/P35240/A0A024R1J8/Q659G9/Q9UJU2/P22003/M9VUD0/O00144
-## hsa04975                                                            Q9UNK4/A0A087WZT4/A0A0C4DFX6/Q9UHC9/P04054
-## hsa05221                                                         Q659G9/Q9UJU2/Q03181/A0A024RCW6/Q06455/B2R6I9
-##          Count
-## hsa04072    11
-## hsa04060    14
-## hsa04390    10
-## hsa04975     5
-## hsa05221     6
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;setreadable:ea0718166651864960b492e0d7486a4f&#34;&gt;setReadable&lt;/h2&gt;
-
-&lt;p&gt;For GO analysis, we have a &lt;code&gt;readable&lt;/code&gt; parameter to control whether traslating the IDs to human readable gene name. This parameter is not available for KEGG analysis. But we still have the ability to translate input gene IDs to gene name using &lt;code&gt;setReadable&lt;/code&gt; function if and only if corresponding &lt;code&gt;OrgDb&lt;/code&gt; object is available.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;y &amp;lt;- setReadable(x, &#39;org.Hs.eg.db&#39;, keytype=&amp;quot;UNIPROT&amp;quot;)
-head(summary(y))
-
-##                ID                            Description GeneRatio
-## hsa04072 hsa04072      Phospholipase D signaling pathway    11/133
-## hsa04060 hsa04060 Cytokine-cytokine receptor interaction    14/133
-## hsa04390 hsa04390                Hippo signaling pathway    10/133
-## hsa04975 hsa04975           Fat digestion and absorption     5/133
-## hsa05221 hsa05221                 Acute myeloid leukemia     6/133
-##           BgRatio       pvalue   p.adjust     qvalue
-## hsa04072 216/9275 0.0002654190 0.03901659 0.03240905
-## hsa04060 354/9275 0.0005349245 0.03931695 0.03265855
-## hsa04390 213/9275 0.0009536247 0.04199404 0.03488227
-## hsa04975  58/9275 0.0014014886 0.04199404 0.03488227
-## hsa05221  86/9275 0.0014283687 0.04199404 0.03488227
-##                                                                                                geneID
-## hsa04072                             RAPGEF3/RAPGEF3/DGKG/MRAS/MRAS/MRAS/GRM5/GRM5/CXCL8/CXCL8/PDGFRA
-## hsa04060 CXCR6/CXCR6/CXCL3/IL2RA/CXCL8/CXCL8/IL12RB2/IL12RB2/PDGFRA/CCL20/CXCL5/CXCL5/IL1R2/TNFRSF10D
-## hsa04390                                        CTNNA3/CTNNA3/CTNNA3/NF2/NF2/LEF1/LEF1/BMP5/BMP5/FZD9
-## hsa04975                                                        PLA2G2D/PLA2G2D/NPC1L1/NPC1L1/PLA2G1B
-## hsa05221                                                        LEF1/LEF1/PPARD/PPARD/RUNX1T1/RUNX1T1
-##          Count
-## hsa04072    11
-## hsa04060    14
-## hsa04390    10
-## hsa04975     5
-## hsa05221     6
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;citation:ea0718166651864960b492e0d7486a4f&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     
