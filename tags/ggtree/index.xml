@@ -7,8 +7,54 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Tue, 15 Nov 2016 20:10:48 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 12 Dec 2016 00:53:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Edge coloring with user data</title>
+      <link>https://guangchuangyu.github.io/2016/12/edge-coloring-with-user-data</link>
+      <pubDate>Mon, 12 Dec 2016 00:53:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/12/edge-coloring-with-user-data</guid>
+      <description>&lt;p&gt;Coloring edges in ggtree is quite easy, as we can map the color to numerical or categorical values via the &lt;code&gt;aes(color=VAR)&lt;/code&gt; syntax. For user&amp;rsquo;s own data, it is also easy as &lt;code&gt;ggtree&lt;/code&gt; provide the &lt;code&gt;%&amp;lt;+%&lt;/code&gt; operator to attach user data.&lt;/p&gt;
+
+&lt;p&gt;But as it seems not so obviously for &lt;code&gt;ggtree&lt;/code&gt; users, see question &lt;a href=&#34;https://groups.google.com/forum/#!topic/bioc-ggtree/4GgivKqVjB8&#34;&gt;1&lt;/a&gt;, &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues/76&#34;&gt;2&lt;/a&gt;, and &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues/105&#34;&gt;3&lt;/a&gt;, I will demonstrate how to color edges using user data here.&lt;/p&gt;
+
+&lt;p&gt;There are several solutions to this question. Let&amp;rsquo;s first start with a hard one by using &lt;code&gt;phylo4d&lt;/code&gt; class defined by &lt;code&gt;phylobase&lt;/code&gt; package:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(ggtree)
+require(phylobase)
+
+set.seed(123)
+tr = rtree(30)
+g1 = as(tr, &#39;phylo4&#39;)
+d = data.frame(color=sample(c(&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;), 30, replace=T))
+rownames(d) = tr$tip.label
+g2 = phylo4d(g1, d)
+
+rNodeData &amp;lt;- data.frame(randomTrait = rnorm(nNodes(g1)),
+                        color = sample(c(&#39;purple&#39;, &#39;yellow&#39;, &#39;black&#39;), nNodes(g1), replace=T),
+                        row.names = nodeId(g1, &amp;quot;internal&amp;quot;))
+
+nodeData(g2) &amp;lt;- rNodeData
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can store the information in a &lt;code&gt;phylo4d&lt;/code&gt; object and as this object is supported by &lt;code&gt;ggtree&lt;/code&gt;. We can directly coloring the tree by mapping the color to specific variable.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ggtree(g2, aes(color=I(color)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/color_edge_with_user_data/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ggtree&lt;/code&gt; itself also provide solution by using the operator, &lt;code&gt;%&amp;lt;+%&lt;/code&gt; to attach user data. After attaching, we can re-scale edge color by &lt;code&gt;aes&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d = data.frame(node=1:59, color=sample(c(&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;), 59, replace=T))
+ggtree(tr) %&amp;lt;+% d + aes(color=I(color))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/color_edge_with_user_data/unnamed-chunk-1-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>align genomic features with phylogenetic tree</title>
@@ -1696,140 +1742,6 @@ p %&amp;lt;+% edge + geom_label(aes(x=branch, label=edge_num))
 &lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-edgelabel_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;citation:d0198e3a54b8342c02a99035967fc376&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Annotate a phylogenetic tree with insets</title>
-      <link>https://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets</link>
-      <pubDate>Mon, 11 Jan 2016 19:36:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets</guid>
-      <description>
-
-&lt;p&gt;&lt;code&gt;ggtree&lt;/code&gt; implemented a function, &lt;code&gt;subview&lt;/code&gt;, that can add subplots on a
-ggplot2 object. It had successful applied to &lt;a href=&#34;http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396&#34;&gt;plot pie graphs on map&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(2016-01-04)
-tr &amp;lt;- rtree(30)
-tr &amp;lt;- groupClade(tr, node=45)
-p &amp;lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
-cpos &amp;lt;- get_clade_position(p, node=45)
-p1 &amp;lt;- p + geom_hilight(node=45)
-p2 &amp;lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
-with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To make it more easy to use subview function for annotating taxa with
-subplots, &lt;em&gt;ggtree&lt;/em&gt; provides a function, &lt;code&gt;inset&lt;/code&gt;, for adding subplots to
-a phylogenetic tree. The input is a tree graphic object and a named list
-of ggplot graphic objects (can be any kind of charts), these objects
-should named by node numbers. To facilitate adding bar and pie charts
-(e.g. summarized stats of results from ancestral reconstruction) to
-phylogenetic tree, &lt;em&gt;ggtree&lt;/em&gt; provides &lt;code&gt;nodepie&lt;/code&gt; and &lt;code&gt;nodebar&lt;/code&gt; functions
-to create a list of pie or bar charts.&lt;/p&gt;
-
-&lt;h2 id=&#34;annotate-with-bar-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with bar charts&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
-tr &amp;lt;- rtree(15)
-p &amp;lt;- ggtree(tr)
-
-a &amp;lt;- runif(14, 0, 0.33)
-b &amp;lt;- runif(14, 0, 0.33)
-c &amp;lt;- runif(14, 0, 0.33)
-d &amp;lt;- 1 - a - b - c
-dat &amp;lt;- data.frame(a=a, b=b, c=c, d=d)
-## input data should have a column of `node` that store the node number
-dat$node &amp;lt;- 15+1:14
-
-## cols parameter indicate which columns store stats (a, b, c and d in this example)
-bars &amp;lt;- nodebar(dat, cols=1:4)
-
-inset(p, bars)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
- The sizes of the insets can be ajusted by the paramter &lt;em&gt;width&lt;/em&gt; and
-&lt;em&gt;height&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;inset(p, bars, width=.03, height=.06)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;br /&gt;
- Users can set the color via the parameter &lt;em&gt;color&lt;/em&gt;. The &lt;em&gt;x&lt;/em&gt; position can
-be one of &amp;lsquo;node&amp;rsquo; or &amp;lsquo;branch&amp;rsquo; and can be adjusted by the parameter
-&lt;em&gt;hjust&lt;/em&gt; and &lt;em&gt;vjust&lt;/em&gt; for horizontal and vertical adjustment respecitvely.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bars2 &amp;lt;- nodebar(dat, cols=1:4, position=&#39;dodge&#39;,
-                 color=c(a=&#39;blue&#39;, b=&#39;red&#39;, c=&#39;green&#39;, d=&#39;cyan&#39;))
-p2 &amp;lt;- inset(p, bars2, x=&#39;branch&#39;, width=.03, vjust=-.3)
-print(p2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;annotate-with-pie-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with pie charts&lt;/h2&gt;
-
-&lt;p&gt;Similarly, users can use &lt;code&gt;nodepie&lt;/code&gt; function to generate a list of pie
-charts and place these charts to annotate corresponding nodes. Both
-&lt;code&gt;nodebar&lt;/code&gt; and &lt;code&gt;nodepie&lt;/code&gt; accepts parameter &lt;em&gt;alpha&lt;/em&gt; to allow transparency.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pies &amp;lt;- nodepie(dat, cols=1:4, alpha=.6)
-inset(p, pies)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;inset(p, pies, hjust=-.06)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;annotate-with-other-types-of-charts:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Annotate with other types of charts&lt;/h2&gt;
-
-&lt;p&gt;The &lt;code&gt;inset&lt;/code&gt; function accepts a list of ggplot graphic objects and these
-input objects are not restricted to pie or bar charts. They can be any
-kinds of charts and hybrid of these charts.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;pies_and_bars &amp;lt;- bars2
-pies_and_bars[9:14] &amp;lt;- pies[9:14]
-inset(p, pies_and_bars)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;d &amp;lt;- lapply(1:15, rnorm, n=100)
-ylim &amp;lt;- range(unlist(d))
-bx &amp;lt;- lapply(d, function(y) {
-    dd &amp;lt;- data.frame(y=y)
-    ggplot(dd, aes(x=1, y=y))+geom_boxplot() + ylim(ylim) + theme_inset()
-})
-names(bx) &amp;lt;- 1:15
-inset(p, bx, width=.03, height=.1, hjust=-.05)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-9-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;After annotating with insets, users can further annotate the tree with
-another layer of insets.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p2 &amp;lt;- inset(p, bars2, x=&#39;branch&#39;, width=.03, vjust=-.4)
-p2 &amp;lt;- inset(p2, pies, x=&#39;branch&#39;, vjust=.4)
-bx2 &amp;lt;- lapply(bx, function(g) g+coord_flip())
-inset(p2, bx2, width=.2, height=.03, vjust=.04, hjust=p2$data$x[1:15]-4) + xlim(NA, 4.5)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-10-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:94c165ad3f1a57afa6b70fe6932c98e6&#34;&gt;Citation&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 
