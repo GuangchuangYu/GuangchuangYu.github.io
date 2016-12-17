@@ -76,6 +76,66 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a></h2>
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-03-20 10:50:00 &#43;0800 CST" itemprop="datePublished">Sun, Mar 20, 2016</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>
+        
+    </span>
+    
+    
+
+    
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="//www.addtoany.com/share"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+<a class="a2a_button_pinterest"></a>
+<a class="a2a_button_reddit"></a>
+<a class="a2a_button_sina_weibo"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_douban"></a>
+</div>
+<script async src="//static.addtoany.com/menu/page.js"></script>
+
+
+
+ 
+
+</div>
+
+
+        <div class="article-style"><p><p>I extended the <a href="http://guangchuangyu.github.io/2015/08/subview/">subview</a> function to support embed image file in a <code>ggplot</code> object.</p>
+
+<pre><code>set.seed(123)
+d = data.frame(x=rnorm(10), y=rnorm(10))
+
+imgfile &lt;- tempfile(, fileext=&quot;.png&quot;)
+download.file(&quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;s=140&quot;,
+              destfile=imgfile, mode='wb')
+
+p = ggplot(d, aes(x, y))
+subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
+</code></pre>
+</p></div>
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont">Font Awesome supported in emojifont</a></h2>
         
 
@@ -573,67 +633,6 @@ users can build <code>OrgDb</code> via <code>AnnotationHub</code>.</p>
 <p>Some functions, <em>add_legend</em>, <em>hilight</em>, <em>annotation_clade</em> and <em>annotation_clade2</em> were removed. Instead we provide layer functions, <code>geom_treescale</code>, <code>geom_hilight</code> and <code>geom_cladelabel</code>. You can use <code>+</code> operator to add layers using these layer functions.</p>
 
 <p>In addtion, we provide <code>geom_point2</code>, <code>geom_text2</code> and <code>geom_segment2</code> which works exactly as <code>geom_point</code>, <code>geom_text</code> and <code>geom_segment</code> except they allow ggtree users to do <a href="http://guangchuangyu.github.io/2015/09/subsetting-data-in-ggtree/">subsetting</a>.</p>
-</p></div>
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r">use emoji font in R</a></h2>
-        
-
-<div class="article-metadata">
-
-    <span class="article-date">
-        <time datetime="2015-12-16 11:11:11 &#43;0800 CST" itemprop="datePublished">Wed, Dec 16, 2015</time>
-    </span>
-
-    
-    
-    
-    <span class="article-tags">
-        <i class="fa fa-tags"></i>
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>, 
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/emoji">emoji</a>, 
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/emojifont">emojifont</a>
-        
-    </span>
-    
-    
-
-    
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-<a class="a2a_dd" href="//www.addtoany.com/share"></a>
-<a class="a2a_button_facebook"></a>
-<a class="a2a_button_twitter"></a>
-<a class="a2a_button_google_plus"></a>
-<a class="a2a_button_pinterest"></a>
-<a class="a2a_button_reddit"></a>
-<a class="a2a_button_sina_weibo"></a>
-<a class="a2a_button_wechat"></a>
-<a class="a2a_button_douban"></a>
-</div>
-<script async src="//static.addtoany.com/menu/page.js"></script>
-
-
-
- 
-
-</div>
-
-
-        <div class="article-style"><p><p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot 2015-12-16 10.55.49.png" alt="" /></p>
-
-<p>I have played with emoji in <code>R</code> for a while. My solution of using it is different from what implemented in <a href="https://github.com/dill/emoGG/">emoGG</a>.</p>
-
-<p><code>emoGG</code> is a good attemp to add <code>emoji</code> in <code>ggplot2</code>. It render <code>emoji</code> picture (png) and creat a layer, <code>geom_emoji</code>, to add emoji.</p>
-
-<p>In my opinion, <code>emoji</code> should be treated as ordinary font in user interface, albeit it maynot be true internally.</p>
-
-<p>It would be more flexible if we can use emoji as ordinary font and in this way user don&rsquo;t need to learn extra stuff.</p>
 </p></div>
     </div>
     
