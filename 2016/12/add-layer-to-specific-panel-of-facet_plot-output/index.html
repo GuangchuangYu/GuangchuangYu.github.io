@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/categories/evolution/">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output">
 
-    <title>Evolution | Guangchuang YU</title>
+    <title>add layer to specific panel of facet_plot output | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -71,11 +71,60 @@
 
 <div class="container">
 
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">add layer to specific panel of facet_plot output</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-12-28 20:30:00 &#43;0800 CST" itemprop="datePublished">Wed, Dec 28, 2016</time>
+    </span>
+
     
     
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output">add layer to specific panel of facet_plot output</a></h2>
-        <div class="article-style"><p><p>This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ">ggtree google group</a>:</p>
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>
+        
+    </span>
+    
+    
+
+    
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="//www.addtoany.com/share"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+<a class="a2a_button_pinterest"></a>
+<a class="a2a_button_reddit"></a>
+<a class="a2a_button_sina_weibo"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_douban"></a>
+</div>
+<script async src="//static.addtoany.com/menu/page.js"></script>
+
+
+
+ 
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+
+	  
+        <div class="article-style" itemprop="articleBody">
+
+          
+
+<p>This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ">ggtree google group</a>:</p>
 
 <blockquote>
 <p>Dear ggtree team,</p>
@@ -99,64 +148,73 @@ Andreas</p>
 </blockquote>
 
 <p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">comprehensive tree plots</a>.</p>
-</p></div>
 
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel">xlim_tree: set x axis limits for only Tree panel</a></h2>
-        <div class="article-style"><p><p>A <a href="https://guangchuangyu.github.io/ggtree">ggtree</a> user recently asked me the following question in <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ">google group</a>:</p>
+<p>In fact, it&rsquo;s quite easy to do. In <code>facet_plot</code>, <code>ggtree</code> used a variable <code>.panel</code> to store the panel information. We can add a dummy column <code>.panel</code> to our data and pass it to  <code>geom</code> layer function and the layer will be added to selected panel we specify in the <code>.panel</code> column.</p>
 
-<blockquote>
-<p>I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.</p>
+<p>To follow up the above example, we can create a <code>data.frame</code> that contains <code>y</code> and <code>.panel=&quot;dot&quot;</code> as we want to add horizontal lines in <code>dot</code> panel.</p>
 
-<p>Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?</p>
-</blockquote>
+<pre><code>d=data.frame(y=1:30, .panel='dot')
+p3 + geom_hline(data=d, aes(yintercept=y))
+</code></pre>
 
-<p>This is indeed a desire feature, as <code>ggplot2</code> can&rsquo;t automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
-</p></div>
+<p>Here is what we can get:</p>
 
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree">facet_plot: a general solution to associate data with phylogenetic tree</a></h2>
-        <div class="article-style"><p><p><a href="https://guangchuangyu.github.io/ggtree">ggtree</a> provides <code>gheatmap</code> for visualizing heatmap and <code>msaplot</code> for visualizing multiple sequence alignment with phylogenetic tree.</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-12-28-005010_1280x800_scrot.png" alt="" /></p>
 
-<p>We may have different data types and want to visualize and align them with the tree. For example, <code>dotplot</code> of SNP site (e.g. using <code>geom_point(shape='|')</code>), <code>barplot</code> of trait values (e.g. using <code>geom_barh(stat='identity')</code>) <em>et al</em>.</p>
+<p>The <a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/">xlim_expand</a> is actually adding a <code>geom_blank</code> layer to selected panel for setting x-axis limits of that panel.</p>
 
-<p>To make it easy to associate different types of data with phylogenetic tree, I implemented the <code>facet_plot</code> function which accepts a <code>geom</code> function to draw the input <code>data.frame</code> and display it in an additional <code>panel</code>.</p>
+<h2 id="citation:bfadbdc12716687f5c4d4358a2d1a5cd">Citation</h2>
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">associate tree with different type of data by <a href="https://twitter.com/hashtag/ggtree?src=hash">#ggtree</a> <a href="https://t.co/6w755VWytZ">https://t.co/6w755VWytZ</a> <a href="https://t.co/K8WViEi13E">pic.twitter.com/K8WViEi13E</a></p>&mdash; Guangchuang Yu (@guangchuangyu) <a href="https://twitter.com/guangchuangyu/status/773359054924095488">September 7, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-</p></div>
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
 
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2015/04/an-example-of-drawing-beast-tree-using-ggtree">an example of drawing beast tree using ggtree</a></h2>
-        <div class="article-style"><p><p><a href="http://beast.bio.ed.ac.uk/figtree">FigTree</a> is designed for viewing
-beast output as demonstrated by their example data:
-<img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.15.57.png" alt="" /></p>
-</p></div>
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
 
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree">viewing and annotating phylogenetic tree with ggtree</a></h2>
-        <div class="article-style"><p><p>When I need to annotate nucleotide substitutions in the phylogenetic
-tree, I found that all the software are designed to display the tree but
-not annotating it. Some of them may support annotating the tree with
-specific data such as bootstrap values, but they are restricted to a few
-supported data types. It is hard/impossible to inject user specific
-data.</p>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/12/2014-12-21-145753_579x436_scrot.png" alt="" /></p>
-</p></div>
+	  
 
-    </div>
-    
+	  <img src="//guangchuangyu.github.io/blog_images/biobabble.jpg" width="250" height="250"/>
+	  <p align="center">关注Y叔微信公众号biobabble</p>
+	</div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree"><span aria-hidden="true">&larr;</span> ggtree version of plotTree</a></li>
+        
+
+        
+    </ul>
+</nav>
 
     
+<section id="comments">
+  <div id="disqus_thread">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gcyu';
+    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  </div>
+</section>
+
+
+
 
 
 </div>

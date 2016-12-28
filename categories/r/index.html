@@ -74,6 +74,36 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output">add layer to specific panel of facet_plot output</a></h2>
+        <div class="article-style"><p><p>This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ">ggtree google group</a>:</p>
+
+<blockquote>
+<p>Dear ggtree team,</p>
+
+<p>how can I apply a geom_xxx to only one facet panel? For example if i want to get <code>geom_hline(yintersect=1:30)</code> or a <code>geom_text()</code> in the dot panel?
+I cant see the <code>facet_grid(. ~ var)</code> function call, so I don&rsquo;t know which subsetting to use. I have already read <a href="http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working">http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working</a></p>
+
+<pre><code>  tr &lt;- rtree(30)
+  
+  d1 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+  p &lt;- ggtree(tr)
+  
+  p2 &lt;- facet_plot(p, panel=&quot;dot&quot;, data=d1, geom=geom_point, aes(x=val), color='firebrick')
+  d2 &lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
+  
+  p3 &lt;- facet_plot(p2, panel='bar', data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color='steelblue') + theme_tree2()
+</code></pre>
+
+<p>Thanks!
+Andreas</p>
+</blockquote>
+
+<p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">comprehensive tree plots</a>.</p>
+</p></div>
+
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree">ggtree version of plotTree</a></h2>
         <div class="article-style"><p><p><a href="https://holtlab.net/2015/10/03/plotting-trees-data/">PLOTTING TREES + DATA</a> is difficult. <a href="http://holtlab.net/">@DrKatHolt</a> developed <a href="https://github.com/katholt/plotTree">plotTree</a> (R and Python scripts) to visualize associated data with trees, <em>e.g.</em> heatmap, horizontal bar <em>etc</em>.</p>
 
@@ -197,28 +227,6 @@ dotplot(CompareGO_BP, showCategory=10, title=&quot;GO - Biological Process&quot;
 <p>Here, as examples, I used <code>ggtree</code> to draw capital character <code>G</code> and <code>C</code>, which are first letter of my name :-).</p>
 
 <p>To draw a tree in such shape, we need <code>fan</code> layout (<code>circular</code> layout with open angle) and then rotating the tree to let the open space on the correct position. Here are the source codes to produce the <code>G</code> and <code>C</code> shapes of tree. I am thinking about using the <code>G</code> shaped tree as <code>ggtree</code> logo. Have fun with <code>ggtree</code> :-)</p>
-</p></div>
-
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data">ggtree for outbreak data</a></h2>
-        <div class="article-style"><p><p><a href="https://cran.r-project.org/package=OutbreakTools">OutbreakTools</a> implements basic tools for the analysis of Disease Outbreaks.</p>
-
-<p>It defines <code>S4</code> class <code>obkData</code> to store case-base outbreak data. It also provides a function, <code>plotggphy</code>, to visualize such data on the phylogenetic tree.</p>
-
-<pre><code>library(OutbreakTools)
-data(FluH1N1pdm2009)
-attach(FluH1N1pdm2009)
-
-
-x &lt;- new(&quot;obkData&quot;, individuals = individuals, dna = FluH1N1pdm2009$dna,
-         dna.individualID = samples$individualID, dna.date = samples$date,
-         trees = FluH1N1pdm2009$trees)
-
-plotggphy(x, ladderize = TRUE, branch.unit = &quot;year&quot;,
-          tip.color = &quot;location&quot;, tip.size = 3, tip.alpha = 0.75)
-</code></pre>
 </p></div>
 
     </div>

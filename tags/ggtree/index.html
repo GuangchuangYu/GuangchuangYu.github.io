@@ -74,6 +74,36 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output">add layer to specific panel of facet_plot output</a></h2>
+        <div class="article-style"><p><p>This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ">ggtree google group</a>:</p>
+
+<blockquote>
+<p>Dear ggtree team,</p>
+
+<p>how can I apply a geom_xxx to only one facet panel? For example if i want to get <code>geom_hline(yintersect=1:30)</code> or a <code>geom_text()</code> in the dot panel?
+I cant see the <code>facet_grid(. ~ var)</code> function call, so I don&rsquo;t know which subsetting to use. I have already read <a href="http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working">http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working</a></p>
+
+<pre><code>  tr &lt;- rtree(30)
+  
+  d1 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+  p &lt;- ggtree(tr)
+  
+  p2 &lt;- facet_plot(p, panel=&quot;dot&quot;, data=d1, geom=geom_point, aes(x=val), color='firebrick')
+  d2 &lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
+  
+  p3 &lt;- facet_plot(p2, panel='bar', data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color='steelblue') + theme_tree2()
+</code></pre>
+
+<p>Thanks!
+Andreas</p>
+</blockquote>
+
+<p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">comprehensive tree plots</a>.</p>
+</p></div>
+
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree">ggtree version of plotTree</a></h2>
         <div class="article-style"><p><p><a href="https://holtlab.net/2015/10/03/plotting-trees-data/">PLOTTING TREES + DATA</a> is difficult. <a href="http://holtlab.net/">@DrKatHolt</a> developed <a href="https://github.com/katholt/plotTree">plotTree</a> (R and Python scripts) to visualize associated data with trees, <em>e.g.</em> heatmap, horizontal bar <em>etc</em>.</p>
 
@@ -192,16 +222,6 @@ plotggphy(x, ladderize = TRUE, branch.unit = &quot;year&quot;,
 <h2 id="phyloseq-for-microbiome-data:0985290eee60ca4c9cf6b9ed3f5a6bdf">phyloseq for microbiome data</h2>
 
 <p><code>phyloseq</code> class defined in the <a href="https://www.bioconductor.org/package/phyloseq">phyloseq</a> package was designed for microbiome data. <code>phyloseq</code> package implemented <code>plot_tree</code> function using <code>ggplot2</code>. Although the function was implemented by <code>ggplot2</code> and we can use <code>theme</code>, <code>scale_color_manual</code> etc for customization, the most valuable part of <code>ggplot2</code>, adding layer, is missing. <code>plot_tree</code> only provides limited parameters to control the output graph and it is hard to add layer unless user has expertise in both <code>phyloseq</code> and <code>ggplot2</code>.</p>
-</p></div>
-
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/08/ggtree-paper-published">ggtree paper published</a></h2>
-        <div class="article-style"><p><p>Today <a href="https://guangchuangyu.github.io/ggtree"><code>ggtree</code></a> received <a href="https://github.com/GuangchuangYu/ggtree/stargazers">100 stars</a> on <i class="fa fa-github"></i> and I found the paper was <a href="http://dx.doi.org/10.1111/2041-210X.12628">online</a> at the same day by the tweet:</p>
-
-<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。<a href="https://t.co/JlET18BSZv">https://t.co/JlET18BSZv</a></p>&mdash; Hoxo_Mass_Spectrum (@siero5335) <a href="https://twitter.com/siero5335/status/765521239146233856">August 16, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 </p></div>
 
     </div>

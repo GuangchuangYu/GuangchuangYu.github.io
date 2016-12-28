@@ -7,8 +7,64 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Sat, 17 Dec 2016 13:53:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 28 Dec 2016 20:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>add layer to specific panel of facet_plot output</title>
+      <link>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output</link>
+      <pubDate>Wed, 28 Dec 2016 20:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output</guid>
+      <description>
+
+&lt;p&gt;This is a question from &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ&#34;&gt;ggtree google group&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear ggtree team,&lt;/p&gt;
+
+&lt;p&gt;how can I apply a geom_xxx to only one facet panel? For example if i want to get &lt;code&gt;geom_hline(yintersect=1:30)&lt;/code&gt; or a &lt;code&gt;geom_text()&lt;/code&gt; in the dot panel?
+I cant see the &lt;code&gt;facet_grid(. ~ var)&lt;/code&gt; function call, so I don&amp;rsquo;t know which subsetting to use. I have already read &lt;a href=&#34;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&#34;&gt;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  tr &amp;lt;- rtree(30)
+  
+  d1 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+  p &amp;lt;- ggtree(tr)
+  
+  p2 &amp;lt;- facet_plot(p, panel=&amp;quot;dot&amp;quot;, data=d1, geom=geom_point, aes(x=val), color=&#39;firebrick&#39;)
+  d2 &amp;lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
+  
+  p3 &amp;lt;- facet_plot(p2, panel=&#39;bar&#39;, data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color=&#39;steelblue&#39;) + theme_tree2()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Thanks!
+Andreas&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If this can be done, we can create even more &lt;a href=&#34;https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/&#34;&gt;comprehensive tree plots&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In fact, it&amp;rsquo;s quite easy to do. In &lt;code&gt;facet_plot&lt;/code&gt;, &lt;code&gt;ggtree&lt;/code&gt; used a variable &lt;code&gt;.panel&lt;/code&gt; to store the panel information. We can add a dummy column &lt;code&gt;.panel&lt;/code&gt; to our data and pass it to  &lt;code&gt;geom&lt;/code&gt; layer function and the layer will be added to selected panel we specify in the &lt;code&gt;.panel&lt;/code&gt; column.&lt;/p&gt;
+
+&lt;p&gt;To follow up the above example, we can create a &lt;code&gt;data.frame&lt;/code&gt; that contains &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;.panel=&amp;quot;dot&amp;quot;&lt;/code&gt; as we want to add horizontal lines in &lt;code&gt;dot&lt;/code&gt; panel.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d=data.frame(y=1:30, .panel=&#39;dot&#39;)
+p3 + geom_hline(data=d, aes(yintercept=y))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is what we can get:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-12-28-005010_1280x800_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/&#34;&gt;xlim_expand&lt;/a&gt; is actually adding a &lt;code&gt;geom_blank&lt;/code&gt; layer to selected panel for setting x-axis limits of that panel.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:bfadbdc12716687f5c4d4358a2d1a5cd&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ggtree version of plotTree</title>
@@ -446,6 +502,8 @@ facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) +
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Actually, you can set &lt;code&gt;xlim&lt;/code&gt; for selected panel by using &lt;code&gt;+xlim_expand(xlim, panel)&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&#34;citation:565f912a5bd07d30f545ae1274a89a8f&#34;&gt;Citation&lt;/h2&gt;
 
@@ -1637,58 +1695,6 @@ cnetplot(y, foldChange=geneList, showCategory=up)
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, LG Wang, GR Yan, QY He. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/4/608&#34;&gt;DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(4):608-609.&lt;/p&gt;
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;2788597&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>How to bug author</title>
-      <link>https://guangchuangyu.github.io/2016/07/how-to-bug-author</link>
-      <pubDate>Tue, 05 Jul 2016 20:13:35 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/07/how-to-bug-author</guid>
-      <description>
-
-&lt;p&gt;As an author of several Bioconductor packages. I found many questions from users are quite annoying. Some of them never use google and they are reluctant to read vignettes.&lt;/p&gt;
-
-&lt;h3 id=&#34;step-1-make-sure-you-are-using-the-latest-release:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 1: make sure you are using the latest release&lt;/h3&gt;
-
-&lt;p&gt;I found many peoples are using out-of-date packages. When they got an issue of an out-dated package, they never check whether the issue still exists in latest release.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screenshot 2016-07-05 19.48.59.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; rvcheck::check_bioc(&amp;quot;clusterProfiler&amp;quot;)
-package is up-to-date release version
-$installed_version
-[1] &amp;quot;3.0.4&amp;quot;
-
-$latest_version
-[1] &amp;quot;3.0.4&amp;quot;
-
-$up_to_date
-[1] TRUE
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;step-2-read-the-vignettes:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 2: read the vignettes&lt;/h3&gt;
-
-&lt;p&gt;All Bioconductor packages contains a least one vignette and some of them are in very details. Most of the user questions can be solved if user go through the vignette carefully.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://imgs.xkcd.com/comics/rtfm.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;step-3-ask-google:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 3: ask google&lt;/h3&gt;
-
-&lt;p&gt;I received several emails asking why my Bioconductor package is not available when they try to install it using &lt;code&gt;install.packages()&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;If they google search the package name, they can reach the landing page of the package. Then they will find installation guide of using &lt;code&gt;biocLite()&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;User question may already have an answer posted in Bioconductor support site, Biostars or somewhere. Just google search it before bugging the author.&lt;/p&gt;
-
-&lt;h3 id=&#34;step-4-make-a-reproducible-example:53bda2482f1e2f0789bac3a1e6986818&#34;&gt;Step 4: make a reproducible example&lt;/h3&gt;
-
-&lt;p&gt;If there is indeed an issue exists in latest release and it is not documented in vignette and google can&amp;rsquo;t answer it, then you need to make a reproducible example for package author to reproduce your issue.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://gist.github.com/talonsensei/e1fad082657054207f249ec98f0920eb&#34;&gt;A question&lt;/a&gt; from &lt;code&gt;ggtree&lt;/code&gt; user is a good example. For more details, please follow the advice from &lt;a href=&#34;http://adv-r.had.co.nz/Reproducibility.html&#34;&gt;http://adv-r.had.co.nz/Reproducibility.html&lt;/a&gt; or &lt;a href=&#34;http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example&#34;&gt;http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Then post the reproducible example on &lt;a href=&#34;https://support.bioconductor.org/&#34;&gt;Bioconductor support site&lt;/a&gt; or &lt;a href=&#34;https://www.biostars.org/&#34;&gt;Biostars&lt;/a&gt; tag with package name. Disucssion in public forum is useful since it may help other users.&lt;/p&gt;
 </description>
     </item>
     

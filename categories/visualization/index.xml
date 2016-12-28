@@ -7,8 +7,64 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Tue, 15 Nov 2016 20:10:48 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 28 Dec 2016 20:30:00 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/visualization/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>add layer to specific panel of facet_plot output</title>
+      <link>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output</link>
+      <pubDate>Wed, 28 Dec 2016 20:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output</guid>
+      <description>
+
+&lt;p&gt;This is a question from &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ&#34;&gt;ggtree google group&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear ggtree team,&lt;/p&gt;
+
+&lt;p&gt;how can I apply a geom_xxx to only one facet panel? For example if i want to get &lt;code&gt;geom_hline(yintersect=1:30)&lt;/code&gt; or a &lt;code&gt;geom_text()&lt;/code&gt; in the dot panel?
+I cant see the &lt;code&gt;facet_grid(. ~ var)&lt;/code&gt; function call, so I don&amp;rsquo;t know which subsetting to use. I have already read &lt;a href=&#34;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&#34;&gt;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  tr &amp;lt;- rtree(30)
+  
+  d1 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+  p &amp;lt;- ggtree(tr)
+  
+  p2 &amp;lt;- facet_plot(p, panel=&amp;quot;dot&amp;quot;, data=d1, geom=geom_point, aes(x=val), color=&#39;firebrick&#39;)
+  d2 &amp;lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
+  
+  p3 &amp;lt;- facet_plot(p2, panel=&#39;bar&#39;, data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color=&#39;steelblue&#39;) + theme_tree2()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Thanks!
+Andreas&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If this can be done, we can create even more &lt;a href=&#34;https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/&#34;&gt;comprehensive tree plots&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In fact, it&amp;rsquo;s quite easy to do. In &lt;code&gt;facet_plot&lt;/code&gt;, &lt;code&gt;ggtree&lt;/code&gt; used a variable &lt;code&gt;.panel&lt;/code&gt; to store the panel information. We can add a dummy column &lt;code&gt;.panel&lt;/code&gt; to our data and pass it to  &lt;code&gt;geom&lt;/code&gt; layer function and the layer will be added to selected panel we specify in the &lt;code&gt;.panel&lt;/code&gt; column.&lt;/p&gt;
+
+&lt;p&gt;To follow up the above example, we can create a &lt;code&gt;data.frame&lt;/code&gt; that contains &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;.panel=&amp;quot;dot&amp;quot;&lt;/code&gt; as we want to add horizontal lines in &lt;code&gt;dot&lt;/code&gt; panel.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;d=data.frame(y=1:30, .panel=&#39;dot&#39;)
+p3 + geom_hline(data=d, aes(yintercept=y))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is what we can get:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-12-28-005010_1280x800_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/&#34;&gt;xlim_expand&lt;/a&gt; is actually adding a &lt;code&gt;geom_blank&lt;/code&gt; layer to selected panel for setting x-axis limits of that panel.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation:bfadbdc12716687f5c4d4358a2d1a5cd&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>align genomic features with phylogenetic tree</title>
@@ -266,6 +322,8 @@ facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) +
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Actually, you can set &lt;code&gt;xlim&lt;/code&gt; for selected panel by using &lt;code&gt;+xlim_expand(xlim, panel)&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&#34;citation:565f912a5bd07d30f545ae1274a89a8f&#34;&gt;Citation&lt;/h2&gt;
 
@@ -959,50 +1017,6 @@ doi:&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34;&gt;10.1093
 &lt;li&gt;Conway Jake, and Gehlenborg Nils, &amp;ldquo;UpSetR&amp;rdquo;,
 &lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;https://github.com/cran/UpSetR&lt;/a&gt;.&lt;/li&gt;
 &lt;/ol&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>dotplot for enrichment result</title>
-      <link>https://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result</link>
-      <pubDate>Tue, 23 Jun 2015 05:37:09 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result</guid>
-      <description>
-
-&lt;p&gt;This is a feature request from &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
-user. It&amp;rsquo;s similar to what I implemented in
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
-for comparing biological themes. For comparing different enrichment
-results, the x-axis represent different gene clusters while for a single
-enrichment result, the x-axis can be gene count or gene ratio. This is
-actually similar to traditional barplot, with dot position as bar height
-and dot color as bar color. But dotplot can represent one more feature
-nicely by dot size and it can be a good alternative to barplot.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(DOSE)
-deg = names(geneList)[abs(geneList) &amp;gt; 1]
-do = enrichDO(deg)
-dotplot(do, showCategory=20)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot_geneRatio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We can set the x-axis to use gene count and dot color by one of
-&amp;lsquo;pvalue&amp;rsquo;, &amp;lsquo;p.adjust&amp;rsquo; or &amp;lsquo;qvalue&amp;rsquo;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;dotplot(do, x=&amp;quot;count&amp;quot;, showCategory=20, colorBy=&amp;quot;qvalue&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot_count.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The dotplot function is also available in &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt; and &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:4ed13e854bd559b2166ddd8c410f2f16&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     
