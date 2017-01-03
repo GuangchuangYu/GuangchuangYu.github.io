@@ -76,6 +76,94 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler">convert biological ID with KEGG API using clusterProfiler</a></h2>
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2016-05-03 17:00:00 &#43;0800 CST" itemprop="datePublished">Tue, May 3, 2016</time>
+    </span>
+
+    
+    
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/kegg">KEGG</a>
+        
+    </span>
+    
+    
+
+    
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="//www.addtoany.com/share"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+<a class="a2a_button_pinterest"></a>
+<a class="a2a_button_reddit"></a>
+<a class="a2a_button_sina_weibo"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_douban"></a>
+</div>
+<script async src="//static.addtoany.com/menu/page.js"></script>
+
+
+
+ 
+
+</div>
+
+
+        <div class="article-style"><p><h2 id="bitr-kegg:ea0718166651864960b492e0d7486a4f">bitr_kegg</h2>
+
+<p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
+
+<pre><code>library(clusterProfiler)
+data(gcSample)
+hg &lt;- gcSample[[1]]
+head(hg)
+
+## [1] &quot;4597&quot;  &quot;7111&quot;  &quot;5266&quot;  &quot;2175&quot;  &quot;755&quot;   &quot;23046&quot;
+
+eg2np &lt;- bitr_kegg(hg, fromType='kegg', toType='ncbi-proteinid', organism='hsa')
+
+## Warning in bitr_kegg(hg, fromType = &quot;kegg&quot;, toType = &quot;ncbi-proteinid&quot;,
+## organism = &quot;hsa&quot;): 3.7% of input gene IDs are fail to map...
+
+head(eg2np)
+
+##     kegg ncbi-proteinid
+## 1   8326      NP_003499
+## 2  58487   NP_001034707
+## 3 139081      NP_619647
+## 4  59272      NP_068576
+## 5    993      NP_001780
+## 6   2676      NP_001487
+
+np2up &lt;- bitr_kegg(eg2np[,2], fromType='ncbi-proteinid', toType='uniprot', organism='hsa')
+
+head(np2up)
+
+##   ncbi-proteinid uniprot
+## 1      NP_005457  O75586
+## 2      NP_005792  P41567
+## 3      NP_005792  Q6IAV3
+## 4      NP_037536  Q13421
+## 5      NP_006054  O60662
+## 6   NP_001092002  O95398
+</code></pre>
+
+<p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
+</p></div>
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis">KEGG Module Enrichment Analysis</a></h2>
         
 
@@ -573,64 +661,6 @@ tr = rtree(30)
 library(ape)
 plot(tr, main=&quot;ape&quot;)
 edgelabels()
-</code></pre>
-</p></div>
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets">Annotate a phylogenetic tree with insets</a></h2>
-        
-
-<div class="article-metadata">
-
-    <span class="article-date">
-        <time datetime="2016-01-11 19:36:00 &#43;0800 CST" itemprop="datePublished">Mon, Jan 11, 2016</time>
-    </span>
-
-    
-    
-    
-    <span class="article-tags">
-        <i class="fa fa-tags"></i>
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>
-        
-    </span>
-    
-    
-
-    
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-<a class="a2a_dd" href="//www.addtoany.com/share"></a>
-<a class="a2a_button_facebook"></a>
-<a class="a2a_button_twitter"></a>
-<a class="a2a_button_google_plus"></a>
-<a class="a2a_button_pinterest"></a>
-<a class="a2a_button_reddit"></a>
-<a class="a2a_button_sina_weibo"></a>
-<a class="a2a_button_wechat"></a>
-<a class="a2a_button_douban"></a>
-</div>
-<script async src="//static.addtoany.com/menu/page.js"></script>
-
-
-
- 
-
-</div>
-
-
-        <div class="article-style"><p><p><code>ggtree</code> implemented a function, <code>subview</code>, that can add subplots on a
-ggplot2 object. It had successful applied to <a href="http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396">plot pie graphs on map</a>.</p>
-
-<pre><code>set.seed(2016-01-04)
-tr &lt;- rtree(30)
-tr &lt;- groupClade(tr, node=45)
-p &lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
-cpos &lt;- get_clade_position(p, node=45)
-p1 &lt;- p + geom_hilight(node=45)
-p2 &lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
-with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
 </code></pre>
 </p></div>
     </div>

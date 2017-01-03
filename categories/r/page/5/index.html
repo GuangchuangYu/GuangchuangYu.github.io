@@ -74,6 +74,40 @@
     
     
     <div>
+        <h2><a href="https://guangchuangyu.github.io/2015/08/subview">subview</a></h2>
+        <div class="article-style"><p><p>I implemented a function, <em>subview</em>, in
+<a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
+that make it easy to embed a subplot in ggplot.</p>
+
+<p>An example is shown below:</p>
+
+<pre><code>library(ggplot2)
+library(ggtree)
+
+dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
+pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
+    geom_bar(stat=&quot;identity&quot;, width=1) + 
+    coord_polar(theta=&quot;y&quot;) + theme_tree() + 
+    xlab(NULL) + ylab(NULL) + 
+    theme_transparent()
+
+x &lt;- sample(2:9)
+y &lt;- sample(2:9)
+width &lt;- sample(seq(0.05, 0.15, length.out=length(x)))
+height &lt;- width
+
+p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
+print(p)
+for (i in seq_along(x)) {
+    p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
+    print(p)
+}
+</code></pre>
+</p></div>
+
+    </div>
+    
+    <div>
         <h2><a href="https://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data">functional enrichment analysis with NGS data</a></h2>
         <div class="article-style"><p><p>I found a Bioconductor package,
 <a href="http://www.bioconductor.org/packages/seq2pathway/">seq2pathway</a>, that
@@ -233,21 +267,6 @@ theme(axis.text.y=element_text(size=rel(4), family=&quot;wmpeople1&quot;, color=
 annotate(&quot;text&quot;, x=2, y=18, label=&quot;Have fun with ggtree!&quot;,
 family=&quot;rock&quot;, angle=30, size=12, color=&quot;steelblue&quot;)
 </code></pre>
-</p></div>
-
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2015/05/bmc-favors-source-code-plagiarism">BMC favors source code plagiarism</a></h2>
-        <div class="article-style"><p><p>I found source code plagiarism a year ago and reported this case to <a href="http://www.biomedcentral.com/bmcsystbiol">BMC Systems Biology</a>:</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot 2015-05-27 19.56.58.png" alt="" /></p>
-
-<p>I listed source code of many functions that are exactly copied from
-<a href="http://www.bioconductor.org/packages/release/bioc/html/GOSemSim.html">GOSemSim</a>
-with only function name changed in my email. The detail of source code
-plagiarism can also be found at <strong><a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">Proper use of
-GOSemSim</a></strong>.</p>
 </p></div>
 
     </div>

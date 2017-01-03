@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio">
 
-    <title>dotplot for GSEA result | Guangchuang YU</title>
+    <title>convert graphic object to tree object using treeio | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">dotplot for GSEA result</h1>
+        <h1 itemprop="name">convert graphic object to tree object using treeio</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2016-12-30 12:58:10 &#43;0800 CST" itemprop="datePublished">Fri, Dec 30, 2016</time>
+        <time datetime="2017-01-03 14:58:10 &#43;0800 CST" itemprop="datePublished">Tue, Jan 3, 2017</time>
     </span>
 
     
@@ -88,13 +88,9 @@
     <span class="article-tags">
         <i class="fa fa-tags"></i>
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/dose">DOSE</a>, 
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/clusterprofiler">clusterProfiler</a>, 
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/reactomepa">ReactomePA</a>, 
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/gsea">GSEA</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/treeio">treeio</a>
         
     </span>
     
@@ -126,37 +122,87 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          
+          <p>I have splitted <code>ggtree</code> to 2 packages, <code>treeio</code> and <code>ggtree</code>. Now <code>ggtree</code> is mainly focus on visualization and annotation, while <code>treeio</code> focus on parsing and exporting tree files. Here is a welcome message from <code>treeio</code> that you can convert <code>ggtree</code> output to tree object which can be exported as newick or nexus file if you want.</p>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png" alt="" /></p>
+<p>Thanks to <code>ggplot2</code>, output of <code>ggtree</code> is actually a <code>ggplot</code> object. The <code>ggtree</code> object can be rendered as graph by <code>print</code> method, but internally it is an object that contains data. <code>treeio</code> defines <code>as.phylo</code> and <code>as.treedata</code> to convert <code>ggtree</code> object to <code>phylo</code> or <code>treedata</code> object.</p>
 
-<p>For GSEA analysis, we are familar with the above figure which shows the running enrichment score. But for most of the software, it lack of visualization method to summarize the whole enrichment result.</p>
+<pre><code>require(ggtree)
+nhxfile &lt;- system.file(&quot;extdata/NHX&quot;, &quot;ADH.nhx&quot;, package=&quot;treeio&quot;)
+nhx &lt;- read.nhx(nhxfile)
+p &lt;- ggtree(nhx)
+</code></pre>
 
-<p>In <a href="https://guangchuangyu.github.io/DOSE">DOSE</a> (and related tools including <a href="https://guangchuangyu.github.io/clusterProfiler">clusterProfiler</a>, <a href="https://guangchuangyu.github.io/ReactomePA">ReactomePA</a> and <a href="https://guangchuangyu.github.io/meshes">meshes</a>), we provide <code>enrichMap</code> and <code>cnetplot</code> to summarize GSEA result.</p>
+<p>After parsing the NHX file via <code>read.nhx</code> function, we can visualize it using <code>ggtree</code>, and the output <code>ggtree</code> object can be converted back as a <code>phylo</code> object using <code>as.phylo</code> method:</p>
 
-<p><img src="https://raw.githubusercontent.com/GuangchuangYu/DOSE/master/vignettes/figures/enrichMap_gseNCG.png" alt="" /></p>
+<blockquote>
+<p>as.phylo(p)</p>
 
-<p>Here is an example of using <code>enrichMap</code> which is good to visualize relationship among enriched gene sets.</p>
+<p>Phylogenetic tree with 8 tips and 4 internal nodes.</p>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/cnetplot_up.png" alt="" /></p>
+<p>Tip labels:
+    ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &hellip;</p>
 
-<p><code>cnetplot</code> excel on visualizing relationship among gene sets and corresponding core genes.</p>
+<p>Rooted; includes branch lengths.</p>
+</blockquote>
 
-<p>Now <a href="https://guangchuangyu.github.io/DOSE">DOSE</a> support visualize GSEA result using <code>dotplot</code> which can visualize more enriched gene sets in one figure. This is a <a href="https://github.com/GuangchuangYu/DOSE/issues/20">feature request</a> from <a href="https://github.com/guidohooiveld">@guidohooiveld</a>.</p>
+<p>The output <code>phylo</code> object contains the tree structure.</p>
 
-<p><code>dotplot</code> was previously implemented in <code>DOSE</code> to visualize hypergeometric test result. I modified it to support GSEA result.</p>
+<p>If we want to also save associated annotation data, we can use <code>as.treedata</code> method:</p>
 
-<p>Internally, <code>.sign</code> was reserved for the sign of <code>NES</code> (activated for NES &gt; 0 and suppressed for NES &lt; 0). We can pass <code>split</code> parameter and then it will apply <code>showCategory</code> by splitting the results. The following example plot 30 activated and 30 suppressed enriched disease sets.</p>
+<blockquote>
+<p>as.treedata(p)
+&lsquo;treedata&rsquo; S4 object that stored information of
+     &ldquo;.</p>
 
-<p><img src="https://cloud.githubusercontent.com/assets/626539/21432102/fe02fe6e-c8a4-11e6-9ddb-f4d952792ba3.png" alt="" /></p>
+<p>&hellip;@ tree:
+Phylogenetic tree with 8 tips and 4 internal nodes.</p>
 
-<p>PS: <code>Count</code> is the number of core genes and <code>GeneRatio</code> is <code>Count/setSize</code>.</p>
+<p>Tip labels:
+    ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &hellip;</p>
 
-<h2 id="citation:7aaaba0bf202685d2a448f7f8a33fc47">Citation</h2>
+<p>Rooted; includes branch lengths.</p>
 
-<p><strong><em>G Yu</em></strong>, LG Wang, GR Yan, QY He. <a href="http://bioinformatics.oxfordjournals.org/content/31/4/608">DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis</a>. <strong><em>Bioinformatics</em></strong> 2015, 31(4):608-609.</p>
+<p>with the following features available:
+     &rsquo;S&rsquo;,    &rsquo;D&rsquo;,    &lsquo;B&rsquo;.</p>
+</blockquote>
 
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-popover="right" data-badge-type="donut" data-altmetric-id="2788597"></div></p>
+<p>In <code>ggtree</code>, we can use <code>%&lt;+%</code> operator to attach user&rsquo;s own data to graphic object and then use it to annotate the tree. <code>as.treedata</code> can also export these attached data to the tree object.</p>
+
+<blockquote>
+<p>d = data.frame(label=as.phylo(nhx)$tip.label, <strong>trait</strong>=abs(rnorm(Ntip(nhx))))
+p = p %&lt;+% d
+as.treedata(p)
+&lsquo;treedata&rsquo; S4 object that stored information of
+     &ldquo;.</p>
+
+<p>&hellip;@ tree:
+Phylogenetic tree with 8 tips and 4 internal nodes.</p>
+
+<p>Tip labels:
+    ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &hellip;</p>
+
+<p>Rooted; includes branch lengths.</p>
+
+<p>with the following features available:
+     &rsquo;S&rsquo;,    &rsquo;D&rsquo;,    &lsquo;B&rsquo;,    &lsquo;<strong>trait</strong>&rsquo;.</p>
+</blockquote>
+
+<p>Here as an example, the <strong>trait</strong> variable was attached and exported to the tree object.</p>
+
+<p>This <strong>trait</strong> variable can also be used in tree annotation.</p>
+
+<pre><code>x &lt;- as.treedata(p)
+
+ggtree(x) + geom_tiplab(align=T, offset=.005) + 
+    geom_tippoint(aes(size=trait)) + xlim(NA, 0.28) + 
+        geom_label(aes(x=branch, label=S)) 
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/treeio/nhx.jpg" alt="" /></p>
+
+<p>We can visualize the tree by <code>ggtree(tree_object)</code> and we can convert the <code>ggtree</code> object back to tree object via <code>as.treedata(ggtree_object)</code>.</p>
+
+<p>If you lost your tree file but have the ggtree object saved, you can convert it back to tree object and export the tree object to newick or nexus file.</p>
 
 
 	  
@@ -169,11 +215,9 @@
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output"><span aria-hidden="true">&larr;</span> add layer to specific panel of facet_plot output</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result"><span aria-hidden="true">&larr;</span> dotplot for GSEA result</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio">convert graphic object to tree object using treeio <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
