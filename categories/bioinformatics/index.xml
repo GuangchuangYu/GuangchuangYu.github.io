@@ -626,20 +626,14 @@ obtained by DOSE are more interpretable.&lt;/p&gt;
       <guid>https://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails</guid>
       <description>
 
-&lt;p&gt;Recently, there are some
-&lt;a href=&#34;http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/&#34;&gt;comments&lt;/a&gt;
-said that sometimes clusterProfiler failed in KEGG enrichment analysis.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/kaji331&#34;&gt;@kaji331&lt;/a&gt;
+compared &lt;code&gt;cluserProfiler&lt;/code&gt; with &lt;code&gt;GeneAnswers&lt;/code&gt; and found that clusterProfiler
+gives larger p values.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;
-compared cluserProfiler with GeneAnswers and found that clusterProfiler
-gives larger p values. The result forces me to test it.&lt;/p&gt;
+&lt;p&gt;It eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used an &lt;strong&gt;old&lt;/strong&gt; version of &lt;code&gt;clusterProfiler&lt;/code&gt; which didn&amp;rsquo;t use &lt;code&gt;as.character&lt;/code&gt; to coerce the input&lt;/p&gt;
 
-&lt;blockquote&gt;
-&lt;p&gt;it eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used
-an old version of clusterProfiler which didn&amp;rsquo;t use &lt;em&gt;as.character&lt;/em&gt; to
-coerce the input&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;But his comment forces me to test it.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;require(GeneAnswers)
 data(&#39;humanGeneInput&#39;)
@@ -668,7 +662,7 @@ p.GeneAnswers &amp;lt;- yy[id[idx],]$&amp;quot;p value&amp;quot;
 [16] -5.560738e-04 -5.884079e-04  2.011138e-03
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Here, I used the dataset, humanGeneInput, provided by GeneAnswers. There
+&lt;p&gt;Here, I used the dataset, &lt;code&gt;humanGeneInput&lt;/code&gt;, provided by &lt;code&gt;GeneAnswers&lt;/code&gt;. There
 are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
 have p values below 0.1 by clusterProfiler. 18 of them are the same and
 p values are highly correlated with very small differences. &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34;&gt;Enrichment
@@ -748,7 +742,7 @@ setting 20000 or even more as background of human genes, definitely we
 will get significant result! But it is man-made significant.&lt;/p&gt;
 
 &lt;p&gt;As I replied to
-&lt;a href=&#34;http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/&#34;&gt;kaji331&lt;/a&gt;,
+&lt;a href=&#34;https://github.com/kaji331&#34;&gt;@kaji331&lt;/a&gt;,
 if p values obtained by different software are different, trust the one
 produce larger p values. Many user will choose a software give a more
 &amp;ldquo;significant&amp;rdquo; result, but trust me, you are making type I error.

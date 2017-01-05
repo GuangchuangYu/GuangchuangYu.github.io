@@ -122,20 +122,14 @@
 
           
 
-<p>Recently, there are some
-<a href="http://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">comments</a>
-said that sometimes clusterProfiler failed in KEGG enrichment analysis.</p>
+<p><a href="https://github.com/kaji331">@kaji331</a>
+compared <code>cluserProfiler</code> with <code>GeneAnswers</code> and found that clusterProfiler
+gives larger p values.</p>
 
-<p><a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">kaji331</a>
-compared cluserProfiler with GeneAnswers and found that clusterProfiler
-gives larger p values. The result forces me to test it.</p>
+<p>It eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used an <strong>old</strong> version of <code>clusterProfiler</code> which didn&rsquo;t use <code>as.character</code> to coerce the input</p>
 
-<blockquote>
-<p>it eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used
-an old version of clusterProfiler which didn&rsquo;t use <em>as.character</em> to
-coerce the input</p>
-</blockquote>
+<p>But his comment forces me to test it.</p>
 
 <pre><code>require(GeneAnswers)
 data('humanGeneInput')
@@ -164,7 +158,7 @@ p.GeneAnswers &lt;- yy[id[idx],]$&quot;p value&quot;
 [16] -5.560738e-04 -5.884079e-04  2.011138e-03
 </code></pre>
 
-<p>Here, I used the dataset, humanGeneInput, provided by GeneAnswers. There
+<p>Here, I used the dataset, <code>humanGeneInput</code>, provided by <code>GeneAnswers</code>. There
 are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
 have p values below 0.1 by clusterProfiler. 18 of them are the same and
 p values are highly correlated with very small differences. <a href="http://guangchuangyu.github.io/2012/04/enrichment-analysis/">Enrichment
@@ -244,7 +238,7 @@ setting 20000 or even more as background of human genes, definitely we
 will get significant result! But it is man-made significant.</p>
 
 <p>As I replied to
-<a href="http://guangchuangyu.github.io/2013/07/permanent-head-damage-to-be/">kaji331</a>,
+<a href="https://github.com/kaji331">@kaji331</a>,
 if p values obtained by different software are different, trust the one
 produce larger p values. Many user will choose a software give a more
 &ldquo;significant&rdquo; result, but trust me, you are making type I error.
