@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2017/01/cs0-chipseq%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83">
 
-    <title>convert graphic object to tree object using treeio | Guangchuang YU</title>
+    <title>[CS0] ChIPseq从入门到放弃 | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -72,14 +72,14 @@
 <div class="container">
 
     <article class="article" itemscope itemtype="http://schema.org/Article">
-        <h1 itemprop="name">convert graphic object to tree object using treeio</h1>
+        <h1 itemprop="name">[CS0] ChIPseq从入门到放弃</h1>
 
         
 
 <div class="article-metadata">
 
     <span class="article-date">
-        <time datetime="2017-01-03 14:58:10 &#43;0800 CST" itemprop="datePublished">Tue, Jan 3, 2017</time>
+        <time datetime="2017-01-08 22:53:00 &#43;0800 CST" itemprop="datePublished">Sun, Jan 8, 2017</time>
     </span>
 
     
@@ -88,9 +88,7 @@
     <span class="article-tags">
         <i class="fa fa-tags"></i>
         
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
-        
-        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/treeio">treeio</a>
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/chipseeker">ChIPseeker</a>
         
     </span>
     
@@ -122,94 +120,41 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          <p>I have splitted <code>ggtree</code> to 2 packages, <code>treeio</code> and <code>ggtree</code>. Now <code>ggtree</code> is mainly focus on visualization and annotation, while <code>treeio</code> focus on parsing and exporting tree files. Here is a welcome message from <code>treeio</code> that you can convert <code>ggtree</code> output to tree object which can be exported as newick or nexus file if you want.</p>
+          <p>接下来要出一个ChIPseq系列，讲一讲ChIPseq和我的ChIPseeker包，从入门到放弃是我自己的个人写照。我做ChIPseq总共也就3个月的时间，做的事情并不多，在一知半解的情况下写下了ChIPseeker包。</p>
 
-<p>Thanks to <code>ggplot2</code>, output of <code>ggtree</code> is actually a <code>ggplot</code> object. The <code>ggtree</code> object can be rendered as graph by <code>print</code> method, but internally it is an object that contains data. <code>treeio</code> defines <code>as.phylo</code> and <code>as.treedata</code> to convert <code>ggtree</code> object to <code>phylo</code> or <code>treedata</code> object.</p>
+<p>我当时被要求做ChIPseq分析是为他人做嫁衣，而且是完全白干那种，但做为学生，白干也得干。</p>
 
-<pre><code>require(ggtree)
-nhxfile &lt;- system.file(&quot;extdata/NHX&quot;, &quot;ADH.nhx&quot;, package=&quot;treeio&quot;)
-nhx &lt;- read.nhx(nhxfile)
-p &lt;- ggtree(nhx)
-</code></pre>
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/1487166664.jpg" alt="" /></p>
 
-<p>After parsing the NHX file via <code>read.nhx</code> function, we can visualize it using <code>ggtree</code>, and the output <code>ggtree</code> object can be converted back as a <code>phylo</code> object using <code>as.phylo</code> method:</p>
+<p>当时一开始使用ChIPpeakAnno做注释，但用UCSC genome browser检验结果的时候，发现对不上。在对ChIPpeakAnno包不满意的情况下，开始着手写ChIPseeker，其实在使用ChIPpeakAnno的时候，我就有写代码对结果做一些可视化，所以未有ChIPseeker先有ChIPseeker的部分可视化功能。当时写了篇博客文说ChIPpeakAnno的问题，一个月后就在Bioconductor上发表了ChIPseeker，这包完全是我半夜在宿舍里写出来的。</p>
 
-<blockquote>
-<p>as.phylo(p)</p>
+<p>当时还在生物系，被我炒掉的前老板每天要求必须起码在实验室待够12小时，我每天都待到10点半左右才回宿舍，日常在实验室里啥都干不了，白天各种瞎折腾，晚上还要陪他聊天，但说来说去，每天几乎都差不多，无非是他很牛逼，我们这帮人读他phd实在太幸运，日复一日传销式洗脑。而我因为结婚了，家又离得近，周末回家，白天经常多一段单独对我的洗脑，做为一个PhD学生，在发表文章之前是不能够有周末的。每天10半从实验室里出来，回到宿舍11点，跟老婆打电话再洗澡，12点。然后从12点开始写代码到2点睡觉，才有了这个包。</p>
 
-<p>Phylogenetic tree with 8 tips and 4 internal nodes.</p>
+<p>虽然是一知半解的时候开发的，但还是受到大家的欢迎，半年前Matt邀请我去人大做报告时，也专门提到了ChIPseeker。</p>
 
-<p>Tip labels:
-    ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &hellip;</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/2017-01-08-212729_758x479_scrot.png" alt="" /></p>
 
-<p>Rooted; includes branch lengths.</p>
-</blockquote>
+<p>也有美国的助理教授，跟我要paper，说是上课的时候，要给学生读的，这广告效果我给满分。</p>
 
-<p>The output <code>phylo</code> object contains the tree structure.</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/2017-01-08-213021_777x396_scrot.png" alt="" /></p>
 
-<p>If we want to also save associated annotation data, we can use <code>as.treedata</code> method:</p>
+<p>文章发表了一年，已经被33篇文章引用，其中不乏有影响因子比较高的杂志：</p>
 
-<blockquote>
-<p>as.treedata(p)</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/2017-01-08-213354_874x413_scrot.png" alt="" /></p>
 
-<p>&lsquo;treedata&rsquo; S4 object that stored information of
-     &ldquo;.</p>
+<p>下面是其中一些引用文章的图：</p>
 
-<p>&hellip;@ tree:
-Phylogenetic tree with 8 tips and 4 internal nodes.</p>
+<p><img src="https://guangchuangyu.github.io/featured_img/ChIPseeker/journal.pcbi.1004751.g003.PNG" alt="" /></p>
 
-<p>Tip labels:</p>
+<p><img src="https://guangchuangyu.github.io/featured_img/ChIPseeker/F9.large.jpg" alt="" /></p>
 
-<p>ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &hellip;</p>
+<p><img src="https://guangchuangyu.github.io/featured_img/ChIPseeker/heatmap2016.gif" alt="" /></p>
 
-<p>Rooted; includes branch lengths.</p>
+<p>虽然ChIPseeker是我写给自己做ChIPseq注释的，但Ming Tang (<a href="https://github.com/crazyhottommy/ChIP-seq-analysis）用它去做DNA">https://github.com/crazyhottommy/ChIP-seq-analysis）用它去做DNA</a> breakdown注释，当然像lincRNA注释也是有人做并且完全是支持的。有一些我以前从没在文档里提到的东西，也应该会在这个系列里写出来。</p>
 
-<p>with the following features available:
-     &rsquo;S&rsquo;,    &rsquo;D&rsquo;,    &lsquo;B&rsquo;.</p>
-</blockquote>
+<p>这个系列基本上是围绕着ChIPseeker的功能而来，名副其实从入门到放弃，因为我自己也是入了门然后放弃，如果想看从入门到精通的，这显然不适合你。</p>
 
-<p>In <code>ggtree</code>, we can use <code>%&lt;+%</code> operator to attach user&rsquo;s own data to graphic object and then use it to annotate the tree. <code>as.treedata</code> can also export these attached data to the tree object.</p>
-
-<blockquote>
-<p>d = data.frame(label=as.phylo(nhx)$tip.label, <strong>trait</strong>=abs(rnorm(Ntip(nhx))))</p>
-
-<p>p = p %&lt;+% d</p>
-
-<p>as.treedata(p)</p>
-
-<p>&lsquo;treedata&rsquo; S4 object that stored information of
-     &ldquo;.</p>
-
-<p>&hellip;@ tree:</p>
-
-<p>Phylogenetic tree with 8 tips and 4 internal nodes.</p>
-
-<p>Tip labels:</p>
-
-<p>ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &hellip;</p>
-
-<p>Rooted; includes branch lengths.</p>
-
-<p>with the following features available:
-     &rsquo;S&rsquo;,    &rsquo;D&rsquo;,    &lsquo;B&rsquo;,    &lsquo;<strong>trait</strong>&rsquo;.</p>
-</blockquote>
-
-<p>Here as an example, the <strong>trait</strong> variable was attached and exported to the tree object.</p>
-
-<p>This <strong>trait</strong> variable can also be used in tree annotation.</p>
-
-<pre><code>x &lt;- as.treedata(p)
-
-ggtree(x) + geom_tiplab(align=T, offset=.005) + 
-    geom_tippoint(aes(size=trait)) + xlim(NA, 0.28) + 
-        geom_label(aes(x=branch, label=S)) 
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/treeio/nhx.jpg" alt="" /></p>
-
-<p>We can visualize the tree by <code>ggtree(tree_object)</code> and we can convert the <code>ggtree</code> object back to tree object via <code>as.treedata(ggtree_object)</code>.</p>
-
-<p>If you lost your tree file but have the ggtree object saved, you can convert it back to tree object and export the tree object to newick or nexus file.</p>
+<p>然而今天只是个剧透，敬请期待。</p>
 
 
 	  
@@ -222,11 +167,9 @@ ggtree(x) + geom_tiplab(align=T, offset=.005) +
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result"><span aria-hidden="true">&larr;</span> dotplot for GSEA result</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio"><span aria-hidden="true">&larr;</span> convert graphic object to tree object using treeio</a></li>
         
 
-        
-        <li class="next"><a href="https://guangchuangyu.github.io/2017/01/cs0-chipseq%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83">[CS0] ChIPseq从入门到放弃 <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
