@@ -163,6 +163,37 @@ p3 + geom_hline(data=d, aes(yintercept=y))
 
 <p>The <a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/">xlim_expand</a> is actually adding a <code>geom_blank</code> layer to selected panel for setting x-axis limits of that panel.</p>
 
+<hr />
+
+<p>Here is another example posted in <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/2zAyBqa-CnM/NXWgmGKWDwAJ">google group</a>:</p>
+
+<pre><code>library(dplyr)
+library(ggstance)
+library(ggtree)
+
+tr &lt;- rtree(30)
+p &lt;- ggtree(tr) + theme_tree2() 
+
+df &lt;- data.frame(id = rep(tr$tip.label, each=2),
+                 value = abs(rnorm(60, mean=100, sd=50)),
+                 category = rep(LETTERS[1:2], 30))
+
+sum_value &lt;- df %&gt;%
+    group_by(id) %&gt;%
+    summarize(total = sum(value))
+
+p2 &lt;- facet_plot(p, panel = 'Stacked Barplot', 
+                 data = df, geom = geom_barh,
+                 mapping = aes(x = value, fill = as.factor(category)),
+                 stat='identity' ) 
+
+facet_plot(p2, panel='Stacked Barplot',
+           data=sum_value, geom=geom_text, 
+           mapping=aes(x=total+20, label=round(total)))                     
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_panel.png" alt="" /></p>
+
 <h2 id="citation:bfadbdc12716687f5c4d4358a2d1a5cd">Citation</h2>
 
 <p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>

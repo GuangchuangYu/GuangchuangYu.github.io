@@ -194,6 +194,37 @@ p3 + geom_hline(data=d, aes(yintercept=y))
 
 &lt;p&gt;The &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/&#34;&gt;xlim_expand&lt;/a&gt; is actually adding a &lt;code&gt;geom_blank&lt;/code&gt; layer to selected panel for setting x-axis limits of that panel.&lt;/p&gt;
 
+&lt;hr /&gt;
+
+&lt;p&gt;Here is another example posted in &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/2zAyBqa-CnM/NXWgmGKWDwAJ&#34;&gt;google group&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(dplyr)
+library(ggstance)
+library(ggtree)
+
+tr &amp;lt;- rtree(30)
+p &amp;lt;- ggtree(tr) + theme_tree2() 
+
+df &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
+                 value = abs(rnorm(60, mean=100, sd=50)),
+                 category = rep(LETTERS[1:2], 30))
+
+sum_value &amp;lt;- df %&amp;gt;%
+    group_by(id) %&amp;gt;%
+    summarize(total = sum(value))
+
+p2 &amp;lt;- facet_plot(p, panel = &#39;Stacked Barplot&#39;, 
+                 data = df, geom = geom_barh,
+                 mapping = aes(x = value, fill = as.factor(category)),
+                 stat=&#39;identity&#39; ) 
+
+facet_plot(p2, panel=&#39;Stacked Barplot&#39;,
+           data=sum_value, geom=geom_text, 
+           mapping=aes(x=total+20, label=round(total)))                     
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_panel.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;citation:bfadbdc12716687f5c4d4358a2d1a5cd&#34;&gt;Citation&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
