@@ -74,28 +74,6 @@
     
     
     <div>
-        <h2><a href="https://guangchuangyu.github.io/2017/05/enrichdavid%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E8%83%8C%E6%99%AF">enrichDAVID支持自定义背景</a></h2>
-        <div class="article-style"><p><p>虽然我不喜欢DAVID，但很多用户喜欢，所以clusterProfiler也支持了，最近github上又有人<a href="https://github.com/GuangchuangYu/clusterProfiler/issues/87">要求支持自定义背景</a>。</p>
-
-<blockquote>
-<p>Dear Guangchuang,</p>
-
-<p>I am using clusterProfiler in Kegg pathway enrichment analysis, it is useful and nice. I am looking for a function which accept background and has ability to deal with Ensembl gene ID.</p>
-
-<p>In a function enrichDAVID it can takes ensembl gene id as an input format, but not allows to enter background.
-<code>enrichDAVID(gene = gene, idType=&quot;ENSEMBL_GENE_ID&quot;, annotation=&quot;KEGG_PATHWAY&quot;, species= &quot;hsa&quot;)</code></p>
-
-<p>Other command enrichKEGG has a background input but only takes entrez gene id,
-<code>enrichKEGG(gene, organism = &quot;hsa&quot;, keyType = &quot;kegg&quot;, universe)</code></p>
-
-<p>I have tried to convert my ensembl gene IDs to entrez gene id, but some ensembl gene IDs represent more than one entrez gene ID.
-I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are in entrez ID and i am still dont know how to convert.</p>
-</blockquote>
-</p></div>
-
-    </div>
-    
-    <div>
         <h2><a href="https://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result">dotplot for GSEA result</a></h2>
         <div class="article-style"><p><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png" alt="" /></p>
 
@@ -286,6 +264,30 @@ collections.</p>
 <p>First of all, the gene set collections are very different. The GMT file
 used in his test is <em>c5.cc.v5.0.symbols.gmt</em>, which is a tiny subset of
 GO CC, while clusterProfiler used the whole GO CC corpus.</p>
+</p></div>
+
+    </div>
+    
+    <div>
+        <h2><a href="https://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms">use simplify to remove redundancy of enriched GO terms</a></h2>
+        <div class="article-style"><p><p>To simplify enriched GO result, we can use slim version of GO and use
+<em><a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">enricher</a></em>
+function to analyze.</p>
+
+<p>Another strategy is to use
+<a href="http://www.bioconductor.org/packages/GOSemSim">GOSemSim</a> to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+<a href="http://www.bioconductor.org/packages/clusterProfiler">clusterProfiler</a>
+users, I develop a <em>simplify</em> method to reduce redundant GO terms from
+output of <em>enrichGO</em> function.</p>
+
+<pre><code>require(clusterProfiler)
+data(geneList, package=&quot;DOSE&quot;)
+de &lt;- names(geneList)[abs(geneList) &gt; 2]
+bp &lt;- enrichGO(de, ont=&quot;BP&quot;)
+enrichMap(bp)
+</code></pre>
 </p></div>
 
     </div>
