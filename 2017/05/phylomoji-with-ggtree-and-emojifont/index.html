@@ -19,9 +19,9 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/tags/emoji/">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont">
 
-    <title>Emoji | Guangchuang YU</title>
+    <title>Phylomoji with ggtree and emojifont | Guangchuang YU</title>
 
 </head>
 <body id="top">
@@ -71,11 +71,64 @@
 
 <div class="container">
 
+    <article class="article" itemscope itemtype="http://schema.org/Article">
+        <h1 itemprop="name">Phylomoji with ggtree and emojifont</h1>
+
+        
+
+<div class="article-metadata">
+
+    <span class="article-date">
+        <time datetime="2017-05-17 11:11:11 &#43;0800 CST" itemprop="datePublished">Wed, May 17, 2017</time>
+    </span>
+
     
     
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont">Phylomoji with ggtree and emojifont</a></h2>
-        <div class="article-style"><p><p>With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
+    
+    <span class="article-tags">
+        <i class="fa fa-tags"></i>
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggplot2">ggplot2</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/ggtree">ggtree</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/emoji">emoji</a>, 
+        
+        <a class="article-tag-link" href="https://guangchuangyu.github.io/tags/emojifont">emojifont</a>
+        
+    </span>
+    
+    
+
+    
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="//www.addtoany.com/share"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+<a class="a2a_button_pinterest"></a>
+<a class="a2a_button_reddit"></a>
+<a class="a2a_button_sina_weibo"></a>
+<a class="a2a_button_wechat"></a>
+<a class="a2a_button_douban"></a>
+</div>
+<script async src="//static.addtoany.com/menu/page.js"></script>
+
+
+
+ 
+
+</div>
+
+
+        <div class="post" itemprop="articleBody">
+
+	  
+        <div class="article-style" itemprop="articleBody">
+
+          
+
+<p>With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
 
 <h2 id="use-emoji-in-taxa-labels:937cab5e53eff2bb1166e7a96bd30ff5">Use emoji in taxa labels</h2>
 
@@ -89,43 +142,113 @@ ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
 </code></pre>
 
 <p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="" /></p>
-</p></div>
 
-    </div>
-    
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2016/03/font-awesome-supported-in-emojifont">Font Awesome supported in emojifont</a></h2>
-        <div class="article-style"><p><p><a href="http://cran.r-project.org/package=emojifont"><img src="http://www.r-pkg.org/badges/version/emojifont" alt="CRAN_Status_Badge" /></a></p>
-
-<p><a href="https://cran.r-project.org/web/packages/emojifont/index.html"><code>emojifont</code></a> is available in CRAN, you can use the following command to install it.</p>
-
-<pre><code>install.packages(&quot;emojifont&quot;)
+<pre><code class="language-r">p &lt;- ggtree(x, layout='circular') +
+    geom_tiplab2(aes(color=label), parse='emoji', size=12, vjust=0.25)
+print(p)
 </code></pre>
 
-<p>An example of using emoji font in R plot is showed below:</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-3-1.png" alt="" /></p>
 
-<p><img src="http://guangchuangyu.github.io/blog_images/2016/douban_emoji.jpg" alt="" /></p>
-</p></div>
+<pre><code class="language-r">open_tree(p, angle=200)
+</code></pre>
 
-    </div>
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-4-1.png" alt="" /></p>
+
+<pre><code class="language-r">open_tree(p, angle=60) %&gt;% rotate_tree(-75)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-4-2.png" alt="" /></p>
+
+<h2 id="labeling-clades-using-emoji:937cab5e53eff2bb1166e7a96bd30ff5">Labeling clades using emoji</h2>
+
+<pre><code class="language-r">set.seed(123)
+tr &lt;- rtree(30)
+ggtree(tr) + xlim(NA, 5) +
+    geom_cladelabel(node=41, label=&quot;chicken&quot;, parse=&quot;emoji&quot;,
+                    fontsize=12, align=TRUE, color=&quot;firebrick&quot;) +
+    geom_cladelabel(node=51, label=&quot;duck&quot;, parse=&quot;emoji&quot;,
+                    fontsize=12, align=TRUE, color=&quot;steelblue&quot;) +
+    geom_cladelabel(node=32, label=&quot;family&quot;, parse=&quot;emoji&quot;,
+                    fontsize=12, align=TRUE, color=&quot;darkkhaki&quot;)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-5-1.png" alt="" /></p>
+
+<h2 id="apple-color-emoji:937cab5e53eff2bb1166e7a96bd30ff5">Apple Color Emoji</h2>
+
+<p>Although <code>R</code>&rsquo;s graphical devices don&rsquo;t support <code>AppleColorEmoji</code> font, it&rsquo;s still possible to use it. We can export the <code>plot</code> to <code>svg</code> file and render it in <code>Safari</code>.</p>
+
+<pre><code class="language-r">library(ggimage)
+library(gridSVG)
+p &lt;-  ggtree(x, size=2) + geom_tiplab(size=20, parse='emoji') +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_phylopic(image=&quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&quot;,
+                  color=&quot;firebrick&quot;, alpha = .3, size=Inf)
+
+p
+ps = grid.export(&quot;emoji.svg&quot;, addClass=T)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/apple_emoji2.png" alt="" /></p>
+
+<h2 id="further-reading:937cab5e53eff2bb1166e7a96bd30ff5">Further reading</h2>
+
+<p>Please visit ggtree homepage, <a href="https://guangchuangyu.github.io/ggtree">https://guangchuangyu.github.io/ggtree</a>, to find out more.</p>
+
+<h1 id="references:937cab5e53eff2bb1166e7a96bd30ff5">References</h1>
+
+<p>Yu, Guangchuang, David Smith, Huachen Zhu, Yi Guan, and Tommy Tsan-Yuk Lam. 2017. “Ggtree: An R Package for Visualization and Annotation of Phylogenetic Trees with Their Covariates and Other Associated Data.” <em>Methods in Ecology and Evolution</em> 8 (1): 28–36. doi:<a href="https://doi.org/10.1111/2041-210X.12628">10.<sup>1111</sup>&frasl;<sub>2041</sub>-210X.12628</a>.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+
+
+	  
+
+	  
+
+
+	</div>
+    </article>
+
+    <nav>
+    <ul class="pager">
+        
+        <li class="previous"><a href="https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio"><span aria-hidden="true">&larr;</span> convert graphic object to tree object using treeio</a></li>
+        
+
+        
+    </ul>
+</nav>
+
     
-    <div>
-        <h2><a href="https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r">use emoji font in R</a></h2>
-        <div class="article-style"><p><p><img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot 2015-12-16 10.55.49.png" alt="" /></p>
+<section id="comments">
+  <div id="disqus_thread">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
 
-<p>I have played with emoji in <code>R</code> for a while. My solution of using it is different from what implemented in <a href="https://github.com/dill/emoGG/">emoGG</a>.</p>
-
-<p><code>emoGG</code> is a good attemp to add <code>emoji</code> in <code>ggplot2</code>. It render <code>emoji</code> picture (png) and creat a layer, <code>geom_emoji</code>, to add emoji.</p>
-
-<p>In my opinion, <code>emoji</code> should be treated as ordinary font in user interface, albeit it maynot be true internally.</p>
-
-<p>It would be more flexible if we can use emoji as ordinary font and in this way user don&rsquo;t need to learn extra stuff.</p>
-</p></div>
-
-    </div>
+(function() {
     
-
     
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gcyu';
+    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  </div>
+</section>
+
+
+
 
 
 </div>

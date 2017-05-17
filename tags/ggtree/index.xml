@@ -7,8 +7,93 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Tue, 03 Jan 2017 14:58:10 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 17 May 2017 11:11:11 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/tags/ggtree/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Phylomoji with ggtree and emojifont</title>
+      <link>https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont</link>
+      <pubDate>Wed, 17 May 2017 11:11:11 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont</guid>
+      <description>
+
+&lt;p&gt;With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.&lt;/p&gt;
+
+&lt;h2 id=&#34;use-emoji-in-taxa-labels:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Use emoji in taxa labels&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(ggtree)
+tree_text &amp;lt;- &amp;quot;(((((cow, (whale, dolphin)), (pig2, boar)), camel), fish), seedling);&amp;quot;
+x &amp;lt;- read.tree(text=tree_text)
+ggtree(x, linetype=&amp;quot;dashed&amp;quot;, color=&#39;firebrick&#39;) +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_tiplab(aes(color=label), parse=&#39;emoji&#39;, size=14, vjust=0.25) +
+    labs(title=&amp;quot;phylomoji&amp;quot;, caption=&amp;quot;powered by ggtree + emojifont&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;p &amp;lt;- ggtree(x, layout=&#39;circular&#39;) +
+    geom_tiplab2(aes(color=label), parse=&#39;emoji&#39;, size=12, vjust=0.25)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;open_tree(p, angle=200)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;open_tree(p, angle=60) %&amp;gt;% rotate_tree(-75)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-4-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;labeling-clades-using-emoji:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Labeling clades using emoji&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;set.seed(123)
+tr &amp;lt;- rtree(30)
+ggtree(tr) + xlim(NA, 5) +
+    geom_cladelabel(node=41, label=&amp;quot;chicken&amp;quot;, parse=&amp;quot;emoji&amp;quot;,
+                    fontsize=12, align=TRUE, color=&amp;quot;firebrick&amp;quot;) +
+    geom_cladelabel(node=51, label=&amp;quot;duck&amp;quot;, parse=&amp;quot;emoji&amp;quot;,
+                    fontsize=12, align=TRUE, color=&amp;quot;steelblue&amp;quot;) +
+    geom_cladelabel(node=32, label=&amp;quot;family&amp;quot;, parse=&amp;quot;emoji&amp;quot;,
+                    fontsize=12, align=TRUE, color=&amp;quot;darkkhaki&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;apple-color-emoji:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Apple Color Emoji&lt;/h2&gt;
+
+&lt;p&gt;Although &lt;code&gt;R&lt;/code&gt;&amp;rsquo;s graphical devices don&amp;rsquo;t support &lt;code&gt;AppleColorEmoji&lt;/code&gt; font, it&amp;rsquo;s still possible to use it. We can export the &lt;code&gt;plot&lt;/code&gt; to &lt;code&gt;svg&lt;/code&gt; file and render it in &lt;code&gt;Safari&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(ggimage)
+library(gridSVG)
+p &amp;lt;-  ggtree(x, size=2) + geom_tiplab(size=20, parse=&#39;emoji&#39;) +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_phylopic(image=&amp;quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&amp;quot;,
+                  color=&amp;quot;firebrick&amp;quot;, alpha = .3, size=Inf)
+
+p
+ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/apple_emoji2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;further-reading:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Further reading&lt;/h2&gt;
+
+&lt;p&gt;Please visit ggtree homepage, &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;https://guangchuangyu.github.io/ggtree&lt;/a&gt;, to find out more.&lt;/p&gt;
+
+&lt;h1 id=&#34;references:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;References&lt;/h1&gt;
+
+&lt;p&gt;Yu, Guangchuang, David Smith, Huachen Zhu, Yi Guan, and Tommy Tsan-Yuk Lam. 2017. “Ggtree: An R Package for Visualization and Annotation of Phylogenetic Trees with Their Covariates and Other Associated Data.” &lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt; 8 (1): 28–36. doi:&lt;a href=&#34;https://doi.org/10.1111/2041-210X.12628&#34;&gt;10.&lt;sup&gt;1111&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2041&lt;/sub&gt;-210X.12628&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>convert graphic object to tree object using treeio</title>
@@ -1775,55 +1860,6 @@ CHANGES IN VERSION 1.3.1
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;G Yu&lt;/em&gt;&lt;/strong&gt;, QY He&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E#!divAbstract&#34;&gt;ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Molecular BioSystems&lt;/em&gt;&lt;/strong&gt; 2016, 12(2):477-479.&lt;/p&gt;
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-altmetric-id=&#34;4796667&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</title>
-      <link>https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function</link>
-      <pubDate>Sun, 20 Mar 2016 10:50:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function</guid>
-      <description>
-
-&lt;p&gt;I extended the &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/subview/&#34;&gt;subview&lt;/a&gt; function to support embed image file in a &lt;code&gt;ggplot&lt;/code&gt; object.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(123)
-d = data.frame(x=rnorm(10), y=rnorm(10))
-
-imgfile &amp;lt;- tempfile(, fileext=&amp;quot;.png&amp;quot;)
-download.file(&amp;quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;amp;s=140&amp;quot;,
-              destfile=imgfile, mode=&#39;wb&#39;)
-
-p = ggplot(d, aes(x, y))
-subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subview_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/&#34;&gt;previous post&lt;/a&gt;, I have introduced using &lt;code&gt;annotation_image&lt;/code&gt; function for annotating tips with local images.&lt;/p&gt;
-
-&lt;p&gt;Now with the updated &lt;code&gt;subview&lt;/code&gt; function, we can use &lt;a href=&#34;http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/&#34;&gt;inset&lt;/a&gt; function to annotate nodes/tips with image files and/or subplots.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
-tr &amp;lt;- rtree(15)
-p &amp;lt;- ggtree(tr)
-
-img &amp;lt;- list(imgfile, imgfile)
-names(img) &amp;lt;- c(&amp;quot;18&amp;quot;, &amp;quot;22&amp;quot;)
-inset(p, img)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/inset_with_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;PS: As I got more and more emails from ggtree users, I created a forum, &lt;a href=&#34;https://groups.google.com/forum/#!forum/bioc-ggtree&#34;&gt;https://groups.google.com/forum/#!forum/bioc-ggtree&lt;/a&gt;. With this forum, &lt;code&gt;ggtree&lt;/code&gt; users can help each others and also solutions posted in the forum can help other peoples when they google search their questions. Please join the forum and post your questions if you have any.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:1c4c5d115380b4d28b0083ed9bbc1b17&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     

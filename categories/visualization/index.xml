@@ -7,8 +7,93 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 28 Dec 2016 20:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 17 May 2017 11:11:11 +0800</lastBuildDate>
     <atom:link href="https://guangchuangyu.github.io/categories/visualization/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Phylomoji with ggtree and emojifont</title>
+      <link>https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont</link>
+      <pubDate>Wed, 17 May 2017 11:11:11 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont</guid>
+      <description>
+
+&lt;p&gt;With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.&lt;/p&gt;
+
+&lt;h2 id=&#34;use-emoji-in-taxa-labels:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Use emoji in taxa labels&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(ggtree)
+tree_text &amp;lt;- &amp;quot;(((((cow, (whale, dolphin)), (pig2, boar)), camel), fish), seedling);&amp;quot;
+x &amp;lt;- read.tree(text=tree_text)
+ggtree(x, linetype=&amp;quot;dashed&amp;quot;, color=&#39;firebrick&#39;) +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_tiplab(aes(color=label), parse=&#39;emoji&#39;, size=14, vjust=0.25) +
+    labs(title=&amp;quot;phylomoji&amp;quot;, caption=&amp;quot;powered by ggtree + emojifont&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;p &amp;lt;- ggtree(x, layout=&#39;circular&#39;) +
+    geom_tiplab2(aes(color=label), parse=&#39;emoji&#39;, size=12, vjust=0.25)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;open_tree(p, angle=200)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;open_tree(p, angle=60) %&amp;gt;% rotate_tree(-75)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-4-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;labeling-clades-using-emoji:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Labeling clades using emoji&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;set.seed(123)
+tr &amp;lt;- rtree(30)
+ggtree(tr) + xlim(NA, 5) +
+    geom_cladelabel(node=41, label=&amp;quot;chicken&amp;quot;, parse=&amp;quot;emoji&amp;quot;,
+                    fontsize=12, align=TRUE, color=&amp;quot;firebrick&amp;quot;) +
+    geom_cladelabel(node=51, label=&amp;quot;duck&amp;quot;, parse=&amp;quot;emoji&amp;quot;,
+                    fontsize=12, align=TRUE, color=&amp;quot;steelblue&amp;quot;) +
+    geom_cladelabel(node=32, label=&amp;quot;family&amp;quot;, parse=&amp;quot;emoji&amp;quot;,
+                    fontsize=12, align=TRUE, color=&amp;quot;darkkhaki&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;apple-color-emoji:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Apple Color Emoji&lt;/h2&gt;
+
+&lt;p&gt;Although &lt;code&gt;R&lt;/code&gt;&amp;rsquo;s graphical devices don&amp;rsquo;t support &lt;code&gt;AppleColorEmoji&lt;/code&gt; font, it&amp;rsquo;s still possible to use it. We can export the &lt;code&gt;plot&lt;/code&gt; to &lt;code&gt;svg&lt;/code&gt; file and render it in &lt;code&gt;Safari&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(ggimage)
+library(gridSVG)
+p &amp;lt;-  ggtree(x, size=2) + geom_tiplab(size=20, parse=&#39;emoji&#39;) +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_phylopic(image=&amp;quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&amp;quot;,
+                  color=&amp;quot;firebrick&amp;quot;, alpha = .3, size=Inf)
+
+p
+ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/apple_emoji2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;further-reading:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;Further reading&lt;/h2&gt;
+
+&lt;p&gt;Please visit ggtree homepage, &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;https://guangchuangyu.github.io/ggtree&lt;/a&gt;, to find out more.&lt;/p&gt;
+
+&lt;h1 id=&#34;references:937cab5e53eff2bb1166e7a96bd30ff5&#34;&gt;References&lt;/h1&gt;
+
+&lt;p&gt;Yu, Guangchuang, David Smith, Huachen Zhu, Yi Guan, and Tommy Tsan-Yuk Lam. 2017. “Ggtree: An R Package for Visualization and Annotation of Phylogenetic Trees with Their Covariates and Other Associated Data.” &lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt; 8 (1): 28–36. doi:&lt;a href=&#34;https://doi.org/10.1111/2041-210X.12628&#34;&gt;10.&lt;sup&gt;1111&lt;/sup&gt;&amp;frasl;&lt;sub&gt;2041&lt;/sub&gt;-210X.12628&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>add layer to specific panel of facet_plot output</title>
@@ -988,69 +1073,6 @@ Phylogenetics&lt;/a&gt;.
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
 &lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>upsetplot in ChIPseeker</title>
-      <link>https://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker</link>
-      <pubDate>Tue, 28 Jul 2015 06:45:01 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/&#34;&gt;ChIPseeker&lt;/a&gt;
-is an R package for ChIP peak annotation, comparison and visualization.&lt;/p&gt;
-
-&lt;p&gt;We have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;several visualization methods&lt;/a&gt;,
-including
-&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34;&gt;vennpie&lt;/a&gt;&lt;/em&gt;
-that was designed for viewing annotation overlap as shown below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Not all overlap information can be demonstrated in vennpie.
-&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html&#34;&gt;Upset&lt;/a&gt;
-is an effective way to visualize sets and intersections. We import
-&lt;em&gt;upset&lt;/em&gt; function from &lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;UpSetR&lt;/a&gt; package
-and implement &lt;em&gt;upsetplot&lt;/em&gt; function, that can visualize ChIP annotation
-overlap directly with output of &lt;em&gt;annotatePeak&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ChIPseeker)
-peak_file &amp;lt;- getSampleFiles()[[4]]
-x &amp;lt;- annotatePeak(peak_file)
-upsetplot(x)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We add a new parameter, &lt;em&gt;vennpie=FALSE&lt;/em&gt;, in upsetplot. If vennpie=TRUE,
-a vennpie will be added as show below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset_vennpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Although upset contains more information, vennpie is more intuitive and
-the final figure is more compact. More information is available at the
-&lt;a href=&#34;http://www.bioconductor.org/packages/3.2/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;reference:07e5a5bc7f123188a27a1c1e28238bcc&#34;&gt;Reference&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Alexander Lex, and Gehlenborg Nils. “Points of View: Sets and
-Intersections.” Nature Methods 11, no. 8 (August 2014): 779–779.
-doi:&lt;a href=&#34;http://doi.org/10.1038/nmeth.3033&#34;&gt;10.1038/nmeth.3033&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34;&gt;ChIPseeker: An
-R/Bioconductor Package for ChIP Peak Annotation, Comparison and
-Visualization&lt;/a&gt;. Bioinformatics 31, no. 14 (July 15, 2015): 2382–83.
-doi:&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Conway Jake, and Gehlenborg Nils, &amp;ldquo;UpSetR&amp;rdquo;,
-&lt;a href=&#34;https://github.com/cran/UpSetR&#34;&gt;https://github.com/cran/UpSetR&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
 </description>
     </item>
     
