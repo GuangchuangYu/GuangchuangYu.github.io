@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme" content="hugo-academic">
-    <meta name="generator" content="Hugo 0.15" />
+    <meta name="generator" content="Hugo 0.21" />
     <meta name="author" content="Guangchuang YU">
     <meta name="description" content="PhD student">
 
@@ -19,7 +19,7 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/">
 
     <title>convert biological ID with KEGG API using clusterProfiler | Guangchuang YU</title>
 
@@ -122,9 +122,7 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          
-
-<h2 id="bitr-kegg:ea0718166651864960b492e0d7486a4f">bitr_kegg</h2>
+          <h2 id="bitr-kegg">bitr_kegg</h2>
 
 <p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
 
@@ -163,7 +161,8 @@ head(np2up)
 ## 6   NP_001092002  O95398
 </code></pre>
 
-<p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
+<p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.
+</p>
 
 <p>Many prokaryote species don&rsquo;t have entrezgene ID available. For example we can check the gene information of <code>ece:Z5100</code> in <a href="http://www.genome.jp/dbget-bin/www_bget?ece:Z5100">http://www.genome.jp/dbget-bin/www_bget?ece:Z5100</a>, which have <code>NCBI-ProteinID</code> and <code>UnitProt</code> links in the <code>Other DBs</code> Entry, but not <code>NCBI-GeneID</code>.</p>
 
@@ -188,7 +187,7 @@ bitr_kegg(&quot;Z5100&quot;, fromType=&quot;kegg&quot;, toType='uniprot', organi
 ## 1 Z5100  Q7DB85
 </code></pre>
 
-<h2 id="search-kegg-organism:ea0718166651864960b492e0d7486a4f">search_kegg_organism</h2>
+<h2 id="search-kegg-organism">search_kegg_organism</h2>
 
 <p><code>clusterProfiler</code> supports more than 4k species listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a> for hypergeometric test (<code>enrichKEGG</code> &amp; <code>enrichMKEGG</code>) and GSEA (<code>gseKEGG</code> &amp; <code>gseMKEGG</code>). We can use <code>bitr_kegg</code> to convert ID for all these 4k species. To facilitate searching scientific name abbreviate used in the <code>organism</code> parameter of these functions, I implemented the <code>search_kegg_organism</code> function. We can search by <code>kegg_code</code>, <code>scientific_name</code> or <code>common_name</code> (which is not available for prokaryotes).</p>
 
@@ -213,7 +212,7 @@ head(ecoli)
 ## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &lt;NA&gt;
 </code></pre>
 
-<h2 id="keytype-parameter:ea0718166651864960b492e0d7486a4f">keyType parameter</h2>
+<h2 id="keytype-parameter">keyType parameter</h2>
 
 <p>With the ID conversion utilities built in <code>clusterProfiler</code>, I add a parameter <code>keyType</code> in <code>enrichKEGG</code>, <code>enrichMKEGG</code>, <code>gseKEGG</code> and <code>gseMKEGG</code>. Now we can use ID type that is not the primary ID in KEGG database.</p>
 
@@ -246,7 +245,7 @@ head(summary(x))
 ## hsa05221     6
 </code></pre>
 
-<h2 id="setreadable:ea0718166651864960b492e0d7486a4f">setReadable</h2>
+<h2 id="setreadable">setReadable</h2>
 
 <p>For GO analysis, we have a <code>readable</code> parameter to control whether traslating the IDs to human readable gene name. This parameter is not available for KEGG analysis. But we still have the ability to translate input gene IDs to gene name using <code>setReadable</code> function if and only if corresponding <code>OrgDb</code> object is available.</p>
 
@@ -279,12 +278,11 @@ head(summary(y))
 ## hsa05221     6
 </code></pre>
 
-<h2 id="citation:ea0718166651864960b492e0d7486a4f">Citation</h2>
+<h2 id="citation">Citation</h2>
 
 <p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
 
 <p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
-
 
 	  
 
@@ -297,11 +295,11 @@ head(summary(y))
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis"><span aria-hidden="true">&larr;</span> KEGG Module Enrichment Analysis</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/"><span aria-hidden="true">&larr;</span> KEGG Module Enrichment Analysis</a></li>
         
 
         
-        <li class="next"><a href="https://guangchuangyu.github.io/2016/05/bioc-33-news-of-my-bioc-packages">[Bioc 33] NEWS of my BioC packages <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="next"><a href="https://guangchuangyu.github.io/2016/05/bioc-33-news-of-my-bioc-packages/">[Bioc 33] NEWS of my BioC packages <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>

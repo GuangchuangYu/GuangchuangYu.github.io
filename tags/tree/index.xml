@@ -8,159 +8,32 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Tue, 15 Nov 2016 20:10:48 +0800</lastBuildDate>
-    <atom:link href="https://guangchuangyu.github.io/tags/tree/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/tree/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>align genomic features with phylogenetic tree</title>
-      <link>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree</link>
+      <link>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree/</link>
       <pubDate>Tue, 15 Nov 2016 20:10:48 +0800</pubDate>
       
-      <guid>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://www.biostars.org/p/218591/&#34;&gt;A question&lt;/a&gt; on biostars asking how to generate the following figure:&lt;/p&gt;
+      <guid>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.biostars.org/p/218591/&#34;&gt;A question&lt;/a&gt; on biostars asking how to generate the following figure:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/218591.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This can be quite easy to implement in &lt;a href=&#34;https://guangchuangyu.github.io&#34;&gt;ggtree&lt;/a&gt;, I can write a &lt;code&gt;geom&lt;/code&gt; layer to layout the alignment. As &lt;a href=&#34;https://bioconductor.org/packages/ggbio/&#34;&gt;ggbio&lt;/a&gt; already provides many &lt;code&gt;geom&lt;/code&gt; for genomic data and I don&amp;rsquo;t want to re-invent the wheel, I decided to try &lt;code&gt;ggtree+ggbio&lt;/code&gt;. This is also the beauty of &lt;code&gt;R&lt;/code&gt; that packages complete each others.&lt;/p&gt;
 
-&lt;p&gt;Here is a sample data presented in &lt;code&gt;ggbio&lt;/code&gt; vignette:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggbio)
-library(biovizBase) 
-library(Homo.sapiens)
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-txdb &amp;lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
-
-data(genesymbol, package = &amp;quot;biovizBase&amp;quot;)
-wh &amp;lt;- genesymbol[c(&amp;quot;BRCA1&amp;quot;, &amp;quot;NBR1&amp;quot;)]
-wh &amp;lt;- range(wh, ignore.strand = TRUE)
-
-gr.txdb &amp;lt;- crunch(txdb, which = wh)
-## change column to  model 
-colnames(values(gr.txdb))[4] &amp;lt;- &amp;quot;model&amp;quot;
-grl &amp;lt;- split(gr.txdb, gr.txdb$tx_id)
-set.seed(2016-10-25)
-names(grl) &amp;lt;- sample(LETTERS, size = length(grl), replace = TRUE)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; print(grl)
-GRangesList object of length 32:
-$J 
-GRanges object with 7 ranges and 4 metadata columns:
-      seqnames               ranges strand |    tx_id    tx_name
-         &amp;lt;Rle&amp;gt;            &amp;lt;IRanges&amp;gt;  &amp;lt;Rle&amp;gt; | &amp;lt;factor&amp;gt;   &amp;lt;factor&amp;gt;
-  [1]    chr17 [41277600, 41277787]      + |    61241 uc002idf.3
-  [2]    chr17 [41283225, 41283287]      + |    61241 uc002idf.3
-  [3]    chr17 [41284973, 41285154]      + |    61241 uc002idf.3
-  [4]    chr17 [41290674, 41292342]      + |    61241 uc002idf.3
-  [5]    chr17 [41277788, 41283224]      * |    61241 uc002idf.3
-  [6]    chr17 [41283288, 41284972]      * |    61241 uc002idf.3
-  [7]    chr17 [41285155, 41290673]      * |    61241 uc002idf.3
-       gene_id    model
-      &amp;lt;factor&amp;gt; &amp;lt;factor&amp;gt;
-  [1]    10230     exon
-  [2]    10230     exon
-  [3]    10230     exon
-  [4]    10230     exon
-  [5]    10230      gap
-  [6]    10230      gap
-  [7]    10230      gap
-
-$U 
-GRanges object with 3 ranges and 4 metadata columns:
-      seqnames               ranges strand | tx_id    tx_name
-  [1]    chr17 [41277600, 41277787]      + | 61242 uc010czb.2
-  [2]    chr17 [41290674, 41292342]      + | 61242 uc010czb.2
-  [3]    chr17 [41277788, 41290673]      * | 61242 uc010czb.2
-      gene_id model
-  [1]   10230  exon
-  [2]   10230  exon
-  [3]   10230   gap
-
-$D 
-GRanges object with 9 ranges and 4 metadata columns:
-      seqnames               ranges strand | tx_id    tx_name
-  [1]    chr17 [41277600, 41277787]      + | 61243 uc002idg.3
-  [2]    chr17 [41283225, 41283287]      + | 61243 uc002idg.3
-  [3]    chr17 [41290674, 41290939]      + | 61243 uc002idg.3
-  [4]    chr17 [41291833, 41292300]      + | 61243 uc002idg.3
-  [5]    chr17 [41296745, 41297125]      + | 61243 uc002idg.3
-  [6]    chr17 [41277788, 41283224]      * | 61243 uc002idg.3
-  [7]    chr17 [41283288, 41290673]      * | 61243 uc002idg.3
-  [8]    chr17 [41290940, 41291832]      * | 61243 uc002idg.3
-  [9]    chr17 [41292301, 41296744]      * | 61243 uc002idg.3
-      gene_id model
-  [1]   10230  exon
-  [2]   10230  exon
-  [3]   10230  exon
-  [4]   10230  exon
-  [5]   10230  exon
-  [6]   10230   gap
-  [7]   10230   gap
-  [8]   10230   gap
-  [9]   10230   gap
-
-...
-&amp;lt;29 more elements&amp;gt;
--------
-seqinfo: 1 sequence from hg19 genome
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We can visualize the alignment simply using:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ggplot() + geom_alignment(grl, alpha=.5)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggbio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The input data for &lt;code&gt;geom_alignment&lt;/code&gt; is a &lt;code&gt;GRangesList&lt;/code&gt; object, while &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/&#34;&gt;facet_plot&lt;/a&gt; defined in &lt;code&gt;ggtree&lt;/code&gt; expect the input data as a &lt;code&gt;data.frame&lt;/code&gt;. I extend the &lt;code&gt;facet_plot&lt;/code&gt; to work with &lt;code&gt;geom_alignment&lt;/code&gt;. In doing this, I find a bug of the &lt;code&gt;geom_alignment&lt;/code&gt; function and send a &lt;a href=&#34;https://github.com/tengfei/ggbio/issues/83#issuecomment-256284645&#34;&gt;patch&lt;/a&gt; to Michael. My patch was incorporated in &lt;code&gt;ggbio 1.23.2&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;With the updates of both &lt;code&gt;ggtree&lt;/code&gt; and &lt;code&gt;ggbio&lt;/code&gt;, we can use &lt;code&gt;facet_plot&lt;/code&gt; to align alignment with phylogenetic tree.&lt;/p&gt;
-
-&lt;p&gt;Suppose we have the following tree:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-n &amp;lt;- names(grl) %&amp;gt;% unique %&amp;gt;% length
-set.seed(2016-10-25)
-tr = rtree(n)
-set.seed(2016-10-25)
-tr$tip.label = sample(unique(names(grl)), n)
-
-p &amp;lt;- ggtree(tr) + geom_tiplab()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/random_tree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It is quite easy to use &lt;code&gt;facet_plot&lt;/code&gt; to visualize the above alignment with this tree:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;facet_plot(p, &#39;alignment&#39;, grl, geom_alignment, inherit.aes=FALSE, mapping=aes())
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggtree_ggbio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Beware of &lt;code&gt;mapping=aes()&lt;/code&gt; is required as &lt;code&gt;ggbio&lt;/code&gt; can&amp;rsquo;t accept &lt;code&gt;mapping=NULL&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;PS: I only test &lt;code&gt;geom_alignment&lt;/code&gt; which works with &lt;code&gt;GRanges&lt;/code&gt; and &lt;code&gt;GRangesList&lt;/code&gt;. Other &lt;code&gt;geoms&lt;/code&gt; defined in &lt;code&gt;ggbio&lt;/code&gt; may not be supported. If you find &lt;code&gt;facet_plot&lt;/code&gt; fail to work with other &lt;code&gt;geoms&lt;/code&gt;, please open an &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues&#34;&gt;issue&lt;/a&gt; in github.  Feature requests are welcome.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:0a3dec613b797c00359e5a4e7fa12428&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>ggtree for outbreak data</title>
-      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data</link>
+      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data/</link>
       <pubDate>Mon, 19 Sep 2016 20:10:48 +0800</pubDate>
       
-      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=OutbreakTools&#34;&gt;OutbreakTools&lt;/a&gt; implements basic tools for the analysis of Disease Outbreaks.&lt;/p&gt;
+      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=OutbreakTools&#34;&gt;OutbreakTools&lt;/a&gt; implements basic tools for the analysis of Disease Outbreaks.&lt;/p&gt;
 
 &lt;p&gt;It defines &lt;code&gt;S4&lt;/code&gt; class &lt;code&gt;obkData&lt;/code&gt; to store case-base outbreak data. It also provides a function, &lt;code&gt;plotggphy&lt;/code&gt;, to visualize such data on the phylogenetic tree.&lt;/p&gt;
 
@@ -177,93 +50,22 @@ plotggphy(x, ladderize = TRUE, branch.unit = &amp;quot;year&amp;quot;,
           tip.color = &amp;quot;location&amp;quot;, tip.size = 3, tip.alpha = 0.75)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-OutbreakTools_files/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As I mentioned in the post, &lt;a href=&#34;http://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data/&#34;&gt;ggtree for microbiome data&lt;/a&gt;, &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; fits the &lt;code&gt;R&lt;/code&gt; ecosystem in phylogenetic analysis. It serves as a general tools for annotating phylogenetic tree with different associated data from various sources. &lt;code&gt;obkData&lt;/code&gt; object is also supported by &lt;code&gt;ggtree&lt;/code&gt; and outbreak data stored in the object can be used to annotate the tree using grammar of graphics supported by &lt;code&gt;ggtree&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-ggtree(x, mrsd=&amp;quot;2009-09-30&amp;quot;, as.Date=TRUE) +
-    geom_tippoint(aes(color=location), size=3, alpha=.75) +
-    scale_color_brewer(&amp;quot;location&amp;quot;, palette=&amp;quot;Spectral&amp;quot;) +
-    theme_tree2(legend.position=&#39;right&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-OutbreakTools_files/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We can also associate the tree with other type of data that may come from experiments or evolution inference and use them to annotate the tree as demonstrated in the online vignettes.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:08ec7dd7b4f7196ea79d3e56f8bdb440&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>ggtree for microbiome data</title>
-      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</link>
+      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data/</link>
       <pubDate>Thu, 01 Sep 2016 03:17:48 +0800</pubDate>
       
-      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data</guid>
-      <description>
+      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.&lt;/p&gt;
-
-&lt;h2 id=&#34;phyloseq-for-microbiome-data:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;phyloseq for microbiome data&lt;/h2&gt;
+&lt;h2 id=&#34;phyloseq-for-microbiome-data&#34;&gt;phyloseq for microbiome data&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;phyloseq&lt;/code&gt; class defined in the &lt;a href=&#34;https://www.bioconductor.org/package/phyloseq&#34;&gt;phyloseq&lt;/a&gt; package was designed for microbiome data. &lt;code&gt;phyloseq&lt;/code&gt; package implemented &lt;code&gt;plot_tree&lt;/code&gt; function using &lt;code&gt;ggplot2&lt;/code&gt;. Although the function was implemented by &lt;code&gt;ggplot2&lt;/code&gt; and we can use &lt;code&gt;theme&lt;/code&gt;, &lt;code&gt;scale_color_manual&lt;/code&gt; etc for customization, the most valuable part of &lt;code&gt;ggplot2&lt;/code&gt;, adding layer, is missing. &lt;code&gt;plot_tree&lt;/code&gt; only provides limited parameters to control the output graph and it is hard to add layer unless user has expertise in both &lt;code&gt;phyloseq&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(phyloseq)
-
-data(GlobalPatterns)
-GP &amp;lt;- prune_taxa(taxa_sums(GlobalPatterns) &amp;gt; 0, GlobalPatterns)
-GP.chl &amp;lt;- subset_taxa(GP, Phylum==&amp;quot;Chlamydiae&amp;quot;)
-
-plot_tree(GP.chl, color=&amp;quot;SampleType&amp;quot;, shape=&amp;quot;Family&amp;quot;, label.tips=&amp;quot;Genus&amp;quot;, size=&amp;quot;Abundance&amp;quot;) + ggtitle(&amp;quot;tree annotation using phyloseq&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_phyloseq.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;PS: If we look at the plot careful, we will find that legend produce by &lt;code&gt;plot_tree&lt;/code&gt; is not correct (&lt;code&gt;plot_tree&lt;/code&gt; map &lt;code&gt;SampleType&lt;/code&gt; to color text which was shown in legend, but we can&amp;rsquo;t find the mapping in the plot).&lt;/p&gt;
-
-&lt;h2 id=&#34;ggtree-supports-phyloseq-object:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;ggtree supports phyloseq object&lt;/h2&gt;
-
-&lt;p&gt;One of the advantage of R is the community. R users develop packages that can work together and complete each other. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree&lt;/a&gt; fits the R ecosystem in phylogenetic analysis. It supports several classes defined in other R packages that designed for storing phylogenetic tree with associated data, including &lt;code&gt;phyloseq&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(scales)
-library(ggtree)
-p &amp;lt;- ggtree(GP.chl, ladderize = FALSE) + geom_text2(aes(subset=!isTip, label=label), hjust=-.2, size=4) +
-    geom_tiplab(aes(label=Genus), hjust=-.3) +
-    geom_point(aes(x=x+hjust, color=SampleType, shape=Family, size=Abundance),na.rm=TRUE) +
-    scale_size_continuous(trans=log_trans(5)) +
-    theme(legend.position=&amp;quot;right&amp;quot;) + ggtitle(&amp;quot;reproduce phyloseq by ggtree&amp;quot;)
-print(p)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;With &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt;, it would be more flexible to combine different layers using grammar of graphics syntax and more powerful since layers can be added without limitation (i.e. those predefined in &lt;code&gt;plot_tree&lt;/code&gt; function). As an example, I extract the barcode sequence from the tree object and use &lt;code&gt;msaplot&lt;/code&gt; to visualize the barcode sequence with the tree.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;df &amp;lt;- fortify(GP.chl)
-barcode &amp;lt;- as.character(df$Barcode_full_length)
-names(barcode) &amp;lt;- df$label
-barcode &amp;lt;- barcode[!is.na(barcode)]
-msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree_msaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;PS: I am thinking about writing a tutorial through examples. If you have any interesting topic, please let me know.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation:0985290eee60ca4c9cf6b9ed3f5a6bdf&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

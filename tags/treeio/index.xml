@@ -8,103 +8,21 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Tue, 03 Jan 2017 14:58:10 +0800</lastBuildDate>
-    <atom:link href="https://guangchuangyu.github.io/tags/treeio/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/treeio/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>convert graphic object to tree object using treeio</title>
-      <link>https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio</link>
+      <link>https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio/</link>
       <pubDate>Tue, 03 Jan 2017 14:58:10 +0800</pubDate>
       
-      <guid>https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio</guid>
+      <guid>https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio/</guid>
       <description>&lt;p&gt;I have splitted &lt;code&gt;ggtree&lt;/code&gt; to 2 packages, &lt;code&gt;treeio&lt;/code&gt; and &lt;code&gt;ggtree&lt;/code&gt;. Now &lt;code&gt;ggtree&lt;/code&gt; is mainly focus on visualization and annotation, while &lt;code&gt;treeio&lt;/code&gt; focus on parsing and exporting tree files. Here is a welcome message from &lt;code&gt;treeio&lt;/code&gt; that you can convert &lt;code&gt;ggtree&lt;/code&gt; output to tree object which can be exported as newick or nexus file if you want.&lt;/p&gt;
 
 &lt;p&gt;Thanks to &lt;code&gt;ggplot2&lt;/code&gt;, output of &lt;code&gt;ggtree&lt;/code&gt; is actually a &lt;code&gt;ggplot&lt;/code&gt; object. The &lt;code&gt;ggtree&lt;/code&gt; object can be rendered as graph by &lt;code&gt;print&lt;/code&gt; method, but internally it is an object that contains data. &lt;code&gt;treeio&lt;/code&gt; defines &lt;code&gt;as.phylo&lt;/code&gt; and &lt;code&gt;as.treedata&lt;/code&gt; to convert &lt;code&gt;ggtree&lt;/code&gt; object to &lt;code&gt;phylo&lt;/code&gt; or &lt;code&gt;treedata&lt;/code&gt; object.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;require(ggtree)
-nhxfile &amp;lt;- system.file(&amp;quot;extdata/NHX&amp;quot;, &amp;quot;ADH.nhx&amp;quot;, package=&amp;quot;treeio&amp;quot;)
-nhx &amp;lt;- read.nhx(nhxfile)
-p &amp;lt;- ggtree(nhx)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;After parsing the NHX file via &lt;code&gt;read.nhx&lt;/code&gt; function, we can visualize it using &lt;code&gt;ggtree&lt;/code&gt;, and the output &lt;code&gt;ggtree&lt;/code&gt; object can be converted back as a &lt;code&gt;phylo&lt;/code&gt; object using &lt;code&gt;as.phylo&lt;/code&gt; method:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;as.phylo(p)&lt;/p&gt;
-
-&lt;p&gt;Phylogenetic tree with 8 tips and 4 internal nodes.&lt;/p&gt;
-
-&lt;p&gt;Tip labels:
-    ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;Rooted; includes branch lengths.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The output &lt;code&gt;phylo&lt;/code&gt; object contains the tree structure.&lt;/p&gt;
-
-&lt;p&gt;If we want to also save associated annotation data, we can use &lt;code&gt;as.treedata&lt;/code&gt; method:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;as.treedata(p)&lt;/p&gt;
-
-&lt;p&gt;&amp;lsquo;treedata&amp;rsquo; S4 object that stored information of
-     &amp;ldquo;.&lt;/p&gt;
-
-&lt;p&gt;&amp;hellip;@ tree:
-Phylogenetic tree with 8 tips and 4 internal nodes.&lt;/p&gt;
-
-&lt;p&gt;Tip labels:&lt;/p&gt;
-
-&lt;p&gt;ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;Rooted; includes branch lengths.&lt;/p&gt;
-
-&lt;p&gt;with the following features available:
-     &amp;rsquo;S&amp;rsquo;,    &amp;rsquo;D&amp;rsquo;,    &amp;lsquo;B&amp;rsquo;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;In &lt;code&gt;ggtree&lt;/code&gt;, we can use &lt;code&gt;%&amp;lt;+%&lt;/code&gt; operator to attach user&amp;rsquo;s own data to graphic object and then use it to annotate the tree. &lt;code&gt;as.treedata&lt;/code&gt; can also export these attached data to the tree object.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;d = data.frame(label=as.phylo(nhx)$tip.label, &lt;strong&gt;trait&lt;/strong&gt;=abs(rnorm(Ntip(nhx))))&lt;/p&gt;
-
-&lt;p&gt;p = p %&amp;lt;+% d&lt;/p&gt;
-
-&lt;p&gt;as.treedata(p)&lt;/p&gt;
-
-&lt;p&gt;&amp;lsquo;treedata&amp;rsquo; S4 object that stored information of
-     &amp;ldquo;.&lt;/p&gt;
-
-&lt;p&gt;&amp;hellip;@ tree:&lt;/p&gt;
-
-&lt;p&gt;Phylogenetic tree with 8 tips and 4 internal nodes.&lt;/p&gt;
-
-&lt;p&gt;Tip labels:&lt;/p&gt;
-
-&lt;p&gt;ADH2, ADH1, ADHY, ADHX, ADH4, ADH3, &amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;Rooted; includes branch lengths.&lt;/p&gt;
-
-&lt;p&gt;with the following features available:
-     &amp;rsquo;S&amp;rsquo;,    &amp;rsquo;D&amp;rsquo;,    &amp;lsquo;B&amp;rsquo;,    &amp;lsquo;&lt;strong&gt;trait&lt;/strong&gt;&amp;rsquo;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here as an example, the &lt;strong&gt;trait&lt;/strong&gt; variable was attached and exported to the tree object.&lt;/p&gt;
-
-&lt;p&gt;This &lt;strong&gt;trait&lt;/strong&gt; variable can also be used in tree annotation.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;x &amp;lt;- as.treedata(p)
-
-ggtree(x) + geom_tiplab(align=T, offset=.005) + 
-    geom_tippoint(aes(size=trait)) + xlim(NA, 0.28) + 
-        geom_label(aes(x=branch, label=S)) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/treeio/nhx.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We can visualize the tree by &lt;code&gt;ggtree(tree_object)&lt;/code&gt; and we can convert the &lt;code&gt;ggtree&lt;/code&gt; object back to tree object via &lt;code&gt;as.treedata(ggtree_object)&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;If you lost your tree file but have the ggtree object saved, you can convert it back to tree object and export the tree object to newick or nexus file.&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
