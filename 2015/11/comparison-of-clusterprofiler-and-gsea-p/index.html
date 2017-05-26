@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme" content="hugo-academic">
-    <meta name="generator" content="Hugo 0.21" />
+    <meta name="generator" content="Hugo 0.15" />
     <meta name="author" content="Guangchuang YU">
     <meta name="description" content="PhD student">
 
@@ -19,7 +19,7 @@
 
 
     <link rel="shortcut icon" href="https://guangchuangyu.github.io/img/favicon.ico" type="image/x-icon">
-    <link rel="canonical" href="https://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/">
+    <link rel="canonical" href="https://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p">
 
     <title>Comparison of clusterProfiler and GSEA-P | Guangchuang YU</title>
 
@@ -120,7 +120,9 @@
 	  
         <div class="article-style" itemprop="articleBody">
 
-          <p>Thanks <a href="https://github.com/mevers">@mevers</a> for raising <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/31">the issue</a> to me
+          
+
+<p>Thanks <a href="https://github.com/mevers">@mevers</a> for raising <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/31">the issue</a> to me
 and his efforts in benchmarking
 <a href="https://github.com/GuangchuangYu/clusterProfiler">clusterProfiler</a>.</p>
 
@@ -137,8 +139,7 @@ collections.</p>
 
 <p>First of all, the gene set collections are very different. The GMT file
 used in his test is <em>c5.cc.v5.0.symbols.gmt</em>, which is a tiny subset of
-GO CC, while clusterProfiler used the whole GO CC corpus.
-</p>
+GO CC, while clusterProfiler used the whole GO CC corpus.</p>
 
 <p>For instance, with his gene list as input, clusterProfiler annotates 195
 genes as ribosome, while GSEA-P (using c5.cc.v5.0.symbols.gmt) only
@@ -153,7 +154,7 @@ gene list and gene sets) and then benchmarking will be valuable for
 detecting issues that exclusively attributed to the implementation of
 GSEA algorithm.</p>
 
-<h3 id="clusterprofiler-supports-gmt-file">clusterProfiler supports GMT file</h3>
+<h3 id="clusterprofiler-supports-gmt-file:140b254f6d6e22f5c796e058ac8120af">clusterProfiler supports GMT file</h3>
 
 <p>Currently clusterProfiler supports <a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">user&rsquo;s own annotations</a>
 via <em>enricher</em> and <em>GSEA</em> functions which require users provide their
@@ -179,7 +180,7 @@ users can use it for testing/practice.</p>
 &gt; c5 &lt;- read.gmt(gmtfile)
 </code></pre>
 
-<h4 id="hypergeometric-test-with-gmt-annotation">hypergeometric test with GMT annotation</h4>
+<h4 id="hypergeometric-test-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af">hypergeometric test with GMT annotation</h4>
 
 <pre><code>&gt; require(clusterProfiler)
 &gt; data(geneList, package=&quot;DOSE&quot;)
@@ -199,7 +200,7 @@ MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
 CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
 </code></pre>
 
-<h4 id="gene-set-enrichment-analysis-with-gmt-annotation">gene set enrichment analysis with GMT annotation</h4>
+<h4 id="gene-set-enrichment-analysis-with-gmt-annotation:140b254f6d6e22f5c796e058ac8120af">gene set enrichment analysis with GMT annotation</h4>
 
 <pre><code>&gt; y &lt;- GSEA(geneList, TERM2GENE=c5)
 &gt; head(summary(y)[, -c(1,2)], 2)
@@ -211,7 +212,7 @@ EXTRACELLULAR_REGION      0.03047874 0.02316228
 EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
 </code></pre>
 
-<h3 id="comparison-of-clusterprofiler-and-gsea-p">Comparison of clusterProfiler and GSEA-P</h3>
+<h3 id="comparison-of-clusterprofiler-and-gsea-p:140b254f6d6e22f5c796e058ac8120af">Comparison of clusterProfiler and GSEA-P</h3>
 
 <p>Now with <em>read.gmt</em>, we can compare clusterProfiler and GSEA-P with the
 same input.</p>
@@ -273,7 +274,7 @@ permutation to generate a null ES distribution. pvalue = (sum(ES &gt;=
 permES)+1)/(nPerm+1), for greater side as an example, is calculated.</p>
 </blockquote>
 
-<h3 id="fixed-bug-of-dose">fixed bug of DOSE</h3>
+<h3 id="fixed-bug-of-dose:140b254f6d6e22f5c796e058ac8120af">fixed bug of DOSE</h3>
 
 <p>Eventually I figured out that the way we calculate pvalue is not
 correct. As presented in
@@ -290,11 +291,11 @@ identical.</p>
 <p>This bug was fixed in both release (&gt;=2.8.1) and devel (&gt;=2.9.1)
 branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.</p>
 
-<h3 id="other-concerns">other concerns</h3>
+<h3 id="other-concerns:140b254f6d6e22f5c796e058ac8120af">other concerns</h3>
 
 <p>There are other differences between clusterProfiler and GSEA-P.</p>
 
-<h4 id="clusterprofiler-never-produce-pvalue-0">clusterProfiler never produce pvalue=0</h4>
+<h4 id="clusterprofiler-never-produce-pvalue-0:140b254f6d6e22f5c796e058ac8120af">clusterProfiler never produce pvalue=0</h4>
 
 <p>For calculating pvalues, GSEA-P may produce pvalue=0, while
 clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
@@ -302,7 +303,7 @@ both numerator and demoninator. Some software may not accept pvalue=0,
 for example if you want to use topGO to visualize enrichment with GO
 topology, the result can&rsquo;t contain any pvalue=0.</p>
 
-<h4 id="clusterprofiler-test-whole-gene-set-collections">clusterProfiler test whole gene set collections</h4>
+<h4 id="clusterprofiler-test-whole-gene-set-collections:140b254f6d6e22f5c796e058ac8120af">clusterProfiler test whole gene set collections</h4>
 
 <pre><code>&gt; g=read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
 &gt; dim(g)
@@ -330,11 +331,12 @@ users to switch between two modes (full sets or subset). This is still
 an open issue/question. If you have any idea, don&rsquo;t hesitate to let me
 know. :)</p>
 
-<h2 id="citation">Citation</h2>
+<h2 id="citation:140b254f6d6e22f5c796e058ac8120af">Citation</h2>
 
 <p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
 
 <p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
+
 
 	  
 
@@ -347,11 +349,11 @@ know. :)</p>
     <nav>
     <ul class="pager">
         
-        <li class="previous"><a href="https://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/"><span aria-hidden="true">&larr;</span> use simplify to remove redundancy of enriched GO terms</a></li>
+        <li class="previous"><a href="https://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms"><span aria-hidden="true">&larr;</span> use simplify to remove redundancy of enriched GO terms</a></li>
         
 
         
-        <li class="next"><a href="https://guangchuangyu.github.io/2015/11/r-kernel-in-jupyter-notebook-3/">R kernel in Jupyter notebook 3 <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="next"><a href="https://guangchuangyu.github.io/2015/11/r-kernel-in-jupyter-notebook-3">R kernel in Jupyter notebook 3 <span aria-hidden="true">&rarr;</span></a></li>
         
     </ul>
 </nav>
