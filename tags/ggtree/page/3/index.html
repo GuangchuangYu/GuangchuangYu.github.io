@@ -180,6 +180,28 @@
   
   
   <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/">Annotate a phylogenetic tree with insets</a></h2>
+    <div class="article-style">
+      
+      <code>ggtree</code> implemented a function, <code>subview</code>, that can add subplots on a
+ggplot2 object. It had successful applied to <a href="http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396" target="_blank">plot pie graphs on map</a>.</p>
+
+<pre><code>set.seed(2016-01-04)
+tr &lt;- rtree(30)
+tr &lt;- groupClade(tr, node=45)
+p &lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
+cpos &lt;- get_clade_position(p, node=45)
+p1 &lt;- p + geom_hilight(node=45)
+p2 &lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
+with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
+</code></pre>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="https://guangchuangyu.github.io/2015/12/news-of-ggtree/">News of ggtree</a></h2>
     <div class="article-style">
       
@@ -390,28 +412,6 @@ theme(axis.text.y=element_text(size=rel(4), family=&quot;wmpeople1&quot;, color=
 annotate(&quot;text&quot;, x=2, y=18, label=&quot;Have fun with ggtree!&quot;,
 family=&quot;rock&quot;, angle=30, size=12, color=&quot;steelblue&quot;)
 </code></pre>
-
-<p>
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="https://guangchuangyu.github.io/2015/04/bioc-31-news-of-my-bioc-packages/">[Bioc 31] NEWS of my BioC packages</a></h2>
-    <div class="article-style">
-      
-      <img src="http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-12%2019.05.54.png" alt="" /></p>
-
-<h3 id="gosemsim">GOSemSim</h3>
-
-<p><a href="www.bioconductor.org/packages/release/bioc/html/GOSemSim.html" target="_blank">GOSemSim</a>
-was first implemented in <a href="http://guangchuangyu.github.io/2008/08/gosemsim/" target="_blank">2008</a>
-and published in
-<a href="http://bioinformatics.oxfordjournals.org/content/26/7/976" target="_blank">Bioinformatics</a>
-in 2010. It&rsquo;s now a mature package with no bugs found in the past half
-year. Only vignette and Information content data were updated.</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/GOSemSim/gosemsim_stats.png" alt="" /></p>
 
 <p>
       

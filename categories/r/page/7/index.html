@@ -180,6 +180,49 @@
   
   
   <div>
+    <h2><a href="https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/">KEGG enrichment analysis with latest online data using clusterProfiler</a></h2>
+    <div class="article-style">
+      
+      <em>KEGG.db</em> is not updated since 2012. The data is now pretty old, but
+many of the Bioconductor packages still using it for KEGG annotation and
+enrichment analysis. As pointed out in &lsquo;<a href="http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases" target="_blank">Are there too many biological databases</a>&rsquo;,
+there is a problem that many out of date biological databases often
+don&rsquo;t get offline. This issue also exists in web-server or software that
+using out-of-date data. For example, the
+<a href="http://wego.genomics.org.cn/cgi-bin/wego/index.pl" target="_blank">WEGO</a> web-server
+stopped updating GO annotation data since 2009, and WEGO still online
+with <a href="https://scholar.google.com.hk/scholar?as_ylo=2015&amp;hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&amp;cites=13025429171853466135&amp;scipsc=" target="_blank">many people using it</a>.
+The biological story may changed totally if using a recently updated
+data. Seriously, We should keep an eye on this issue.</p>
+
+<p>Now <em>enrichKEGG</em> function is reloaded with a new parameter <em>use_internal_data</em>. This
+parameter is by default setting to FALSE, and <em>enrichKEGG</em> function will
+download the latest KEGG data for enrichment analysis. If the parameter
+<em>use_internal_data</em> is explicitly setting to TRUE, it will use the
+<em>KEGG.db</em> which is still supported but not recommended. With this new
+feature, supported species is unlimited if only there are KEGG
+annotations available in KEGG database. You can access the full list of
+species supported by KEGG via:
+<a href="http://www.genome.jp/kegg/catalog/org_list.html" target="_blank">http://www.genome.jp/kegg/catalog/org_list.html</a> Now the <em>organism</em>
+parameter in <em>enrichKEGG</em> should be abbreviation of academic name, for
+example &lsquo;hsa&rsquo; for human and &lsquo;mmu&rsquo; for mouse. It accepts any species
+listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html" target="_blank">http://www.genome.jp/kegg/catalog/org_list.html</a>. In the
+current release version of
+<a href="http://bioconductor.org/packages/3.0/bioc/html/clusterProfiler.html" target="_blank">clusterProfiler</a>
+(in Bioconductor 3.0), <em>enrichKEGG</em> supports about 20 species, and the
+<em>organism</em> parameter accept common name of species, for instance &ldquo;human&rdquo;
+and &ldquo;mouse&rdquo;. For these previously supported species, common name is also
+supported. So that you script is still working with new version of
+<a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html" target="_blank">clusterProfiler</a>.
+For other species, common name is not supported, since I don&rsquo;t want to
+maintain such a long mapping list with many species have no common name
+available and it may also introduce unexpected bugs.
+
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="https://guangchuangyu.github.io/2015/01/ggtree-in-bioconductor-3.1/">ggtree in Bioconductor 3.1</a></h2>
     <div class="article-style">
       
@@ -365,27 +408,6 @@ RangedData with 1 row and 9 value columns across 1 space
                                                 
 1 ENSG00000001461             -5527             4756             NearestStart
 </code></pre>
-
-<p>
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="https://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</a></h2>
-    <div class="article-style">
-      
-      Increasing quantitative data generated from transcriptomics and
-proteomics require integrative strategies for analysis. Here, we present
-an R package, clusterProfiler that automates the process of
-biological-term classification and the enrichment analysis of gene
-clusters. The analysis module and visualization module were combined
-into a reusable workflow. Currently, clusterProfiler supports three
-species, including humans, mice, and yeast. Methods provided in this
-package can be easily extended to other species and ontologies. The
-clusterProfiler package is released under Artistic-2.0 License within
-Bioconductor project. The source code and vignette are freely available
-at <a href="http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html" target="_blank">http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html</a></p>
 
 <p>
       
