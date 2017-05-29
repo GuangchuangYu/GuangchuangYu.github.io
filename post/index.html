@@ -176,6 +176,205 @@
   
   <div>
     
+    <h2><a href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/">Phylomoji with ggtree and emojifont</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-05-17 11:11:11 &#43;0800 CST" itemprop="datePublished">
+      Wed, May 17, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >, 
+    
+    <a href="/categories/visualization">Visualization</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/ggplot2">ggplot2</a
+    >, 
+    
+    <a href="/tags/ggtree">ggtree</a
+    >, 
+    
+    <a href="/tags/emoji">emoji</a
+    >, 
+    
+    <a href="/tags/emojifont">emojifont</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
+
+<h2 id="use-emoji-in-taxa-labels">Use emoji in taxa labels</h2>
+
+<pre><code class="language-r">library(ggtree)
+tree_text &lt;- &quot;(((((cow, (whale, dolphin)), (pig2, boar)), camel), fish), seedling);&quot;
+x &lt;- read.tree(text=tree_text)
+ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_tiplab(aes(color=label), parse='emoji', size=14, vjust=0.25) +
+    labs(title=&quot;phylomoji&quot;, caption=&quot;powered by ggtree + emojifont&quot;)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p>
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio/">convert graphic object to tree object using treeio</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-01-03 14:58:10 &#43;0800 CST" itemprop="datePublished">
+      Tue, Jan 3, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/ggtree">ggtree</a
+    >, 
+    
+    <a href="/tags/treeio">treeio</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      I have splitted <code>ggtree</code> to 2 packages, <code>treeio</code> and <code>ggtree</code>. Now <code>ggtree</code> is mainly focus on visualization and annotation, while <code>treeio</code> focus on parsing and exporting tree files. Here is a welcome message from <code>treeio</code> that you can convert <code>ggtree</code> output to tree object which can be exported as newick or nexus file if you want.</p>
+
+<p>Thanks to <code>ggplot2</code>, output of <code>ggtree</code> is actually a <code>ggplot</code> object. The <code>ggtree</code> object can be rendered as graph by <code>print</code> method, but internally it is an object that contains data. <code>treeio</code> defines <code>as.phylo</code> and <code>as.treedata</code> to convert <code>ggtree</code> object to <code>phylo</code> or <code>treedata</code> object.</p>
+
+<p>
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result/">dotplot for GSEA result</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2016-12-30 12:58:10 &#43;0800 CST" itemprop="datePublished">
+      Fri, Dec 30, 2016
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/dose">DOSE</a
+    >, 
+    
+    <a href="/tags/clusterprofiler">clusterProfiler</a
+    >, 
+    
+    <a href="/tags/reactomepa">ReactomePA</a
+    >, 
+    
+    <a href="/tags/gsea">GSEA</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png" alt="" /></p>
+
+<p>For GSEA analysis, we are familar with the above figure which shows the running enrichment score. But for most of the software, it lack of visualization method to summarize the whole enrichment result.</p>
+
+<p>In <a href="https://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a> (and related tools including <a href="https://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a>, <a href="https://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a> and <a href="https://guangchuangyu.github.io/meshes" target="_blank">meshes</a>), we provide <code>enrichMap</code> and <code>cnetplot</code> to summarize GSEA result.</p>
+
+<p>
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
     <h2><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/">add layer to specific panel of facet_plot output</a></h2>
     
 
@@ -252,6 +451,235 @@ Andreas</p>
 </blockquote>
 
 <p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/" target="_blank">comprehensive tree plots</a>.</p>
+
+<p>
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">ggtree version of plotTree</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2016-12-17 13:53:00 &#43;0800 CST" itemprop="datePublished">
+      Sat, Dec 17, 2016
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/ggtree">ggtree</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <a href="https://holtlab.net/2015/10/03/plotting-trees-data/" target="_blank">PLOTTING TREES + DATA</a> is difficult. <a href="http://holtlab.net/" target="_blank">@DrKatHolt</a> developed <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> (R and Python scripts) to visualize associated data with trees, <em>e.g.</em> heatmap, horizontal bar <em>etc</em>.</p>
+
+<p>I reproduced the examples presented in the <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> repo using <a href="https://guangchuangyu.github.io" target="_blank">ggtree</a>. Source code is freely available in <a href="https://github.com/GuangchuangYu/plotTree-ggtree" target="_blank">https://github.com/GuangchuangYu/plotTree-ggtree</a>.</p>
+
+<p>Here are the outputs produced by <code>ggtree</code>:</p>
+
+<p>
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2016/12/edge-coloring-with-user-data/">Edge coloring with user data</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2016-12-12 00:53:00 &#43;0800 CST" itemprop="datePublished">
+      Mon, Dec 12, 2016
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/ggtree">ggtree</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      Coloring edges in ggtree is quite easy, as we can map the color to numerical or categorical values via the <code>aes(color=VAR)</code> syntax. For user&rsquo;s own data, it is also easy as <code>ggtree</code> provide the <code>%&lt;+%</code> operator to attach user data.</p>
+
+<p>But as it seems not so obviously for <code>ggtree</code> users, see question <a href="https://groups.google.com/forum/#!topic/bioc-ggtree/4GgivKqVjB8" target="_blank">1</a>, <a href="https://github.com/GuangchuangYu/ggtree/issues/76" target="_blank">2</a>, and <a href="https://github.com/GuangchuangYu/ggtree/issues/105" target="_blank">3</a>, I will demonstrate how to color edges using user data here.</p>
+
+<p>
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/">scatterpie for plotting pies on ggplot</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2016-12-07 00:53:00 &#43;0800 CST" itemprop="datePublished">
+      Wed, Dec 7, 2016
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/scatterpie">scatterpie</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <img src="https://guangchuangyu.github.io/blog_images/R/scatterpie_files/so.png" alt="" /></p>
+
+<p>Plotting pies on ggplot/ggmap is not an easy task, as ggplot2 doesn&rsquo;t provide native pie geom. The pie we produced in ggplot2 is actually a barplot transform to polar coordination. This make it difficult if we want to produce a map like the above screenshot, which was posted by Tyler Rinker, the author of R package pacman.</p>
+
+<p>
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree/">align genomic features with phylogenetic tree</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2016-11-15 20:10:48 &#43;0800 CST" itemprop="datePublished">
+      Tue, Nov 15, 2016
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/visualization">Visualization</a
+    >, 
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/ggtree">ggtree</a
+    >, 
+    
+    <a href="/tags/ggbio">ggbio</a
+    >, 
+    
+    <a href="/tags/tree">tree</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <a href="https://www.biostars.org/p/218591/" target="_blank">A question</a> on biostars asking how to generate the following figure:</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/218591.png" alt="" /></p>
+
+<p>This can be quite easy to implement in <a href="https://guangchuangyu.github.io" target="_blank">ggtree</a>, I can write a <code>geom</code> layer to layout the alignment. As <a href="https://bioconductor.org/packages/ggbio/" target="_blank">ggbio</a> already provides many <code>geom</code> for genomic data and I don&rsquo;t want to re-invent the wheel, I decided to try <code>ggtree+ggbio</code>. This is also the beauty of <code>R</code> that packages complete each others.</p>
 
 <p>
       
@@ -410,284 +838,17 @@ dotplot(CompareGO_BP, showCategory=10, title=&quot;GO - Biological Process&quot;
     </p></div>
   </div>
   
-  <div>
+
+  
+<nav>
+  <ul class="pager">
     
-    <h2><a href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/">facet_plot: a general solution to associate data with phylogenetic tree</a></h2>
     
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2016-10-26 16:30:00 &#43;0800 CST" itemprop="datePublished">
-      Wed, Oct 26, 2016
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
+    <li><a href="/post/page/2/">Next &raquo;</a></li>
     
-    <a href="/categories/r">R</a
-    >, 
-    
-    <a href="/categories/visualization">Visualization</a
-    >, 
-    
-    <a href="/categories/evolution">Evolution</a
-    >
-    
-  </span>
-  
-  
+  </ul>
+</nav>
 
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggtree">ggtree</a
-    >, 
-    
-    <a href="/tags/ggplot2">ggplot2</a
-    >, 
-    
-    <a href="/tags/ggstance">ggstance</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      <a href="https://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a> provides <code>gheatmap</code> for visualizing heatmap and <code>msaplot</code> for visualizing multiple sequence alignment with phylogenetic tree.</p>
-
-<p>We may have different data types and want to visualize and align them with the tree. For example, <code>dotplot</code> of SNP site (e.g. using <code>geom_point(shape='|')</code>), <code>barplot</code> of trait values (e.g. using <code>geom_barh(stat='identity')</code>) <em>et al</em>.</p>
-
-<p>To make it easy to associate different types of data with phylogenetic tree, I implemented the <code>facet_plot</code> function which accepts a <code>geom</code> function to draw the input <code>data.frame</code> and display it in an additional <code>panel</code>.</p>
-
-<p><blockquote class="twitter-tweet"><p lang="en" dir="ltr">associate tree with different type of data by <a href="https://twitter.com/hashtag/ggtree?src=hash">#ggtree</a> <a href="https://t.co/6w755VWytZ">https://t.co/6w755VWytZ</a> <a href="https://t.co/K8WViEi13E">pic.twitter.com/K8WViEi13E</a></p>&mdash; Guangchuang Yu (@guangchuangyu) <a href="https://twitter.com/guangchuangyu/status/773359054924095488">September 7, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
-
-<p>
-      
-    </p></div>
-  </div>
-  
-  <div>
-    
-    <h2><a href="https://guangchuangyu.github.io/2016/10/reproducible-logo-generated-by-ggtree/">reproducible logo generated by ggtree</a></h2>
-    
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2016-10-14 21:50:00 &#43;0800 CST" itemprop="datePublished">
-      Fri, Oct 14, 2016
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >, 
-    
-    <a href="/categories/visualization">Visualization</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggtree">ggtree</a
-    >, 
-    
-    <a href="/tags/ggplot2">ggplot2</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      <a href="https://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a> provides many helper functions for manupulating phylogenetic trees and make it easy to explore tree structure visually.</p>
-
-<p>Here, as examples, I used <code>ggtree</code> to draw capital character <code>G</code> and <code>C</code>, which are first letter of my name :-).</p>
-
-<p>To draw a tree in such shape, we need <code>fan</code> layout (<code>circular</code> layout with open angle) and then rotating the tree to let the open space on the correct position. Here are the source codes to produce the <code>G</code> and <code>C</code> shapes of tree. I am thinking about using the <code>G</code> shaped tree as <code>ggtree</code> logo. Have fun with <code>ggtree</code> :-)</p>
-
-<p>
-      
-    </p></div>
-  </div>
-  
-  <div>
-    
-    <h2><a href="https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a></h2>
-    
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2016-03-20 10:50:00 &#43;0800 CST" itemprop="datePublished">
-      Sun, Mar 20, 2016
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >, 
-    
-    <a href="/categories/visualization">Visualization</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggtree">ggtree</a
-    >, 
-    
-    <a href="/tags/ggplot2">ggplot2</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      I extended the <a href="http://guangchuangyu.github.io/2015/08/subview/" target="_blank">subview</a> function to support embed image file in a <code>ggplot</code> object.</p>
-
-<pre><code>set.seed(123)
-d = data.frame(x=rnorm(10), y=rnorm(10))
-
-imgfile &lt;- tempfile(, fileext=&quot;.png&quot;)
-download.file(&quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;s=140&quot;,
-              destfile=imgfile, mode='wb')
-
-p = ggplot(d, aes(x, y))
-subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
-</code></pre>
-
-<p>
-      
-    </p></div>
-  </div>
-  
-  <div>
-    
-    <h2><a href="https://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/">ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization</a></h2>
-    
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2015-07-13 08:14:50 &#43;0800 CST" itemprop="datePublished">
-      Mon, Jul 13, 2015
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/bioinformatics">Bioinformatics</a
-    >, 
-    
-    <a href="/categories/genomics">Genomics</a
-    >, 
-    
-    <a href="/categories/publication">Publication</a
-    >, 
-    
-    <a href="/categories/r">R</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/chipseeker">ChIPseeker</a
-    >, 
-    
-    <a href="/tags/chipseq">ChIPseq</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      My R/Bioconductor package,
-<a href="http://www.bioconductor.org/packages/ChIPseeker" target="_blank">ChIPseeker</a>, published
-in
-<a href="http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btv145" target="_blank">Bioinformatics</a>.</p>
-
-<p><a href="http://www.bioconductor.org/packages/ChIPseeker" target="_blank">ChIPseeker</a> had been
-cited by <a href="http://www.biomedcentral.com/1471-2164/16/292" target="_blank">http://www.biomedcentral.com/1471-2164/16/292</a> and
-<a href="http://www.jbc.org/content/early/2015/06/18/jbc.M115.668558.short" target="_blank">http://www.jbc.org/content/early/2015/06/18/jbc.M115.668558.short</a>, and
-was used (not cited) in
-<a href="http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract" target="_blank">http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract</a>
-and
-<a href="http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract" target="_blank">http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract</a>.
-
-      
-    </p></div>
-  </div>
-  
-
-  
 
 
 </div>

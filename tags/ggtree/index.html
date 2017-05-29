@@ -180,6 +180,43 @@
   
   
   <div>
+    <h2><a href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/">Phylomoji with ggtree and emojifont</a></h2>
+    <div class="article-style">
+      
+      With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
+
+<h2 id="use-emoji-in-taxa-labels">Use emoji in taxa labels</h2>
+
+<pre><code class="language-r">library(ggtree)
+tree_text &lt;- &quot;(((((cow, (whale, dolphin)), (pig2, boar)), camel), fish), seedling);&quot;
+x &lt;- read.tree(text=tree_text)
+ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_tiplab(aes(color=label), parse='emoji', size=14, vjust=0.25) +
+    labs(title=&quot;phylomoji&quot;, caption=&quot;powered by ggtree + emojifont&quot;)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio/">convert graphic object to tree object using treeio</a></h2>
+    <div class="article-style">
+      
+      I have splitted <code>ggtree</code> to 2 packages, <code>treeio</code> and <code>ggtree</code>. Now <code>ggtree</code> is mainly focus on visualization and annotation, while <code>treeio</code> focus on parsing and exporting tree files. Here is a welcome message from <code>treeio</code> that you can convert <code>ggtree</code> output to tree object which can be exported as newick or nexus file if you want.</p>
+
+<p>Thanks to <code>ggplot2</code>, output of <code>ggtree</code> is actually a <code>ggplot</code> object. The <code>ggtree</code> object can be rendered as graph by <code>print</code> method, but internally it is an object that contains data. <code>treeio</code> defines <code>as.phylo</code> and <code>as.treedata</code> to convert <code>ggtree</code> object to <code>phylo</code> or <code>treedata</code> object.</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/">add layer to specific panel of facet_plot output</a></h2>
     <div class="article-style">
       
@@ -207,6 +244,49 @@ Andreas</p>
 </blockquote>
 
 <p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/" target="_blank">comprehensive tree plots</a>.</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">ggtree version of plotTree</a></h2>
+    <div class="article-style">
+      
+      <a href="https://holtlab.net/2015/10/03/plotting-trees-data/" target="_blank">PLOTTING TREES + DATA</a> is difficult. <a href="http://holtlab.net/" target="_blank">@DrKatHolt</a> developed <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> (R and Python scripts) to visualize associated data with trees, <em>e.g.</em> heatmap, horizontal bar <em>etc</em>.</p>
+
+<p>I reproduced the examples presented in the <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> repo using <a href="https://guangchuangyu.github.io" target="_blank">ggtree</a>. Source code is freely available in <a href="https://github.com/GuangchuangYu/plotTree-ggtree" target="_blank">https://github.com/GuangchuangYu/plotTree-ggtree</a>.</p>
+
+<p>Here are the outputs produced by <code>ggtree</code>:</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/12/edge-coloring-with-user-data/">Edge coloring with user data</a></h2>
+    <div class="article-style">
+      
+      Coloring edges in ggtree is quite easy, as we can map the color to numerical or categorical values via the <code>aes(color=VAR)</code> syntax. For user&rsquo;s own data, it is also easy as <code>ggtree</code> provide the <code>%&lt;+%</code> operator to attach user data.</p>
+
+<p>But as it seems not so obviously for <code>ggtree</code> users, see question <a href="https://groups.google.com/forum/#!topic/bioc-ggtree/4GgivKqVjB8" target="_blank">1</a>, <a href="https://github.com/GuangchuangYu/ggtree/issues/76" target="_blank">2</a>, and <a href="https://github.com/GuangchuangYu/ggtree/issues/105" target="_blank">3</a>, I will demonstrate how to color edges using user data here.</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree/">align genomic features with phylogenetic tree</a></h2>
+    <div class="article-style">
+      
+      <a href="https://www.biostars.org/p/218591/" target="_blank">A question</a> on biostars asking how to generate the following figure:</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/218591.png" alt="" /></p>
+
+<p>This can be quite easy to implement in <a href="https://guangchuangyu.github.io" target="_blank">ggtree</a>, I can write a <code>geom</code> layer to layout the alignment. As <a href="https://bioconductor.org/packages/ggbio/" target="_blank">ggbio</a> already provides many <code>geom</code> for genomic data and I don&rsquo;t want to re-invent the wheel, I decided to try <code>ggtree+ggbio</code>. This is also the beauty of <code>R</code> that packages complete each others.</p>
 
 <p>
       
@@ -251,6 +331,29 @@ Andreas</p>
   </div>
   
   <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/10/bioc-34-news-of-my-bioc-packages/">[Bioc 34] NEWS of my BioC packages</a></h2>
+    <div class="article-style">
+      
+      I have 7 packages published within the <code>Bioconductor</code> project.</p>
+
+<ul>
+<li><a href="http://guangchuangyu.github.io/ChIPseeker" target="_blank">ChIPseeker</a></li>
+<li><a href="http://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a></li>
+<li><a href="http://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a></li>
+<li><a href="http://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a></li>
+<li><a href="http://guangchuangyu.github.io/GOSemSim" target="_blank">GOSemSim</a></li>
+<li><a href="http://guangchuangyu.github.io/meshes" target="_blank">meshes</a></li>
+<li><a href="http://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a></li>
+</ul>
+
+<p>A new package <a href="http://guangchuangyu.github.io/meshes" target="_blank">meshes</a> was included in BioC 3.4 release.</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="https://guangchuangyu.github.io/2016/10/reproducible-logo-generated-by-ggtree/">reproducible logo generated by ggtree</a></h2>
     <div class="article-style">
       
@@ -265,30 +368,17 @@ Andreas</p>
     </div>
   </div>
   
-  <div>
-    <h2><a href="https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/">embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</a></h2>
-    <div class="article-style">
-      
-      I extended the <a href="http://guangchuangyu.github.io/2015/08/subview/" target="_blank">subview</a> function to support embed image file in a <code>ggplot</code> object.</p>
-
-<pre><code>set.seed(123)
-d = data.frame(x=rnorm(10), y=rnorm(10))
-
-imgfile &lt;- tempfile(, fileext=&quot;.png&quot;)
-download.file(&quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;s=140&quot;,
-              destfile=imgfile, mode='wb')
-
-p = ggplot(d, aes(x, y))
-subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
-</code></pre>
-
-<p>
-      
-    </div>
-  </div>
-  
 
   
+<nav>
+  <ul class="pager">
+    
+    
+    <li><a href="/tags/ggtree/page/2/">Next &raquo;</a></li>
+    
+  </ul>
+</nav>
+
 
 
 </div>

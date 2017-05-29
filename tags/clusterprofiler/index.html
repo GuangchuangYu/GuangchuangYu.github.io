@@ -180,6 +180,21 @@
   
   
   <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result/">dotplot for GSEA result</a></h2>
+    <div class="article-style">
+      
+      <img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png" alt="" /></p>
+
+<p>For GSEA analysis, we are familar with the above figure which shows the running enrichment score. But for most of the software, it lack of visualization method to summarize the whole enrichment result.</p>
+
+<p>In <a href="https://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a> (and related tools including <a href="https://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a>, <a href="https://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a> and <a href="https://guangchuangyu.github.io/meshes" target="_blank">meshes</a>), we provide <code>enrichMap</code> and <code>cnetplot</code> to summarize GSEA result.</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/">showCategory parameter for visualizing compareCluster output</a></h2>
     <div class="article-style">
       
@@ -212,8 +227,225 @@ dotplot(CompareGO_BP, showCategory=10, title=&quot;GO - Biological Process&quot;
     </div>
   </div>
   
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/10/bioc-34-news-of-my-bioc-packages/">[Bioc 34] NEWS of my BioC packages</a></h2>
+    <div class="article-style">
+      
+      I have 7 packages published within the <code>Bioconductor</code> project.</p>
+
+<ul>
+<li><a href="http://guangchuangyu.github.io/ChIPseeker" target="_blank">ChIPseeker</a></li>
+<li><a href="http://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a></li>
+<li><a href="http://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a></li>
+<li><a href="http://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a></li>
+<li><a href="http://guangchuangyu.github.io/GOSemSim" target="_blank">GOSemSim</a></li>
+<li><a href="http://guangchuangyu.github.io/meshes" target="_blank">meshes</a></li>
+<li><a href="http://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a></li>
+</ul>
+
+<p>A new package <a href="http://guangchuangyu.github.io/meshes" target="_blank">meshes</a> was included in BioC 3.4 release.</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/07/leading-edge-analysis/">leading edge analysis</a></h2>
+    <div class="article-style">
+      
+      <h2 id="leading-edge-and-core-enrichment">leading edge and core enrichment</h2>
+
+<p>Leading edge analysis reports <code>Tags</code> to indicate the percentage of genes contributing to the enrichment score, <code>List</code> to indicate where in the list the enrichment score is attained and <code>Signal</code> for enrichment signal strength.</p>
+
+<p>It would also be very interesting to get the core enriched genes that contribute to the enrichment.</p>
+
+<p>Now <a href="https://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a>, <a href="https://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a> and <a href="https://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a> all support leading edge analysis and report core enriched genes.</p>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/05/bioc-33-news-of-my-bioc-packages/">[Bioc 33] NEWS of my BioC packages</a></h2>
+    <div class="article-style">
+      
+      <img src="http://guangchuangyu.github.io/blog_images/MISC/ke.jpg" width=600></p>
+
+<p>Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&rsquo;s again the time to reflect what I&rsquo;ve done in the past year.</p>
+
+<ul>
+<li><a href="http://guangchuangyu.github.io/ChIPseeker" target="_blank">ChIPseeker</a></li>
+<li><a href="http://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a></li>
+<li><a href="http://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a></li>
+<li><a href="http://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a></li>
+<li><a href="http://guangchuangyu.github.io/GOSemSim" target="_blank">GOSemSim</a></li>
+<li><a href="http://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a></li>
+</ul>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/">convert biological ID with KEGG API using clusterProfiler</a></h2>
+    <div class="article-style">
+      
+      <h2 id="bitr-kegg">bitr_kegg</h2>
+
+<p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
+
+<pre><code>library(clusterProfiler)
+data(gcSample)
+hg &lt;- gcSample[[1]]
+head(hg)
+
+## [1] &quot;4597&quot;  &quot;7111&quot;  &quot;5266&quot;  &quot;2175&quot;  &quot;755&quot;   &quot;23046&quot;
+
+eg2np &lt;- bitr_kegg(hg, fromType='kegg', toType='ncbi-proteinid', organism='hsa')
+
+## Warning in bitr_kegg(hg, fromType = &quot;kegg&quot;, toType = &quot;ncbi-proteinid&quot;,
+## organism = &quot;hsa&quot;): 3.7% of input gene IDs are fail to map...
+
+head(eg2np)
+
+##     kegg ncbi-proteinid
+## 1   8326      NP_003499
+## 2  58487   NP_001034707
+## 3 139081      NP_619647
+## 4  59272      NP_068576
+## 5    993      NP_001780
+## 6   2676      NP_001487
+
+np2up &lt;- bitr_kegg(eg2np[,2], fromType='ncbi-proteinid', toType='uniprot', organism='hsa')
+
+head(np2up)
+
+##   ncbi-proteinid uniprot
+## 1      NP_005457  O75586
+## 2      NP_005792  P41567
+## 3      NP_005792  Q6IAV3
+## 4      NP_037536  Q13421
+## 5      NP_006054  O60662
+## 6   NP_001092002  O95398
+</code></pre>
+
+<p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.
+
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/">KEGG Module Enrichment Analysis</a></h2>
+    <div class="article-style">
+      
+      <blockquote>
+<p>KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:</p>
+
+<ul>
+<li>pathway modules – representing tight functional units in KEGG metabolic pathway maps, such as M00002 (Glycolysis, core module involving three-carbon compounds)</li>
+<li>structural complexes – often forming molecular machineries, such as M00072 (Oligosaccharyltransferase)</li>
+<li>functional sets – for other types of essential sets, such as M00360 (Aminoacyl-tRNA synthases, prokaryotes)</li>
+<li>signature modules – as markers of phenotypes, such as M00363 (EHEC pathogenicity signature, Shiga toxin)</li>
+</ul>
+</blockquote>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/">GO analysis using clusterProfiler</a></h2>
+    <div class="article-style">
+      
+      <code>clusterProfiler</code> supports over-representation test and gene set
+enrichment analysis of Gene Ontology. It supports GO annotation from
+OrgDb object, GMT file and user&rsquo;s own data.</p>
+
+<h2 id="support-many-species">support many species</h2>
+
+<p>In github version of clusterProfiler, <code>enrichGO</code> and <code>gseGO</code> functions
+removed the parameter <em>organism</em> and add another parameter <em>OrgDb</em>, so
+that any species that have <code>OrgDb</code> object available can be analyzed in
+<strong>clusterProfiler</strong>. Bioconductor have already provide OrgDb for about
+20 species, see
+<a href="http://bioconductor.org/packages/release/BiocViews.html#___OrgDb" target="_blank">http://bioconductor.org/packages/release/BiocViews.html#___OrgDb</a>, and
+users can build <code>OrgDb</code> via <code>AnnotationHub</code>.
+
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/">Comparison of clusterProfiler and GSEA-P</a></h2>
+    <div class="article-style">
+      
+      Thanks <a href="https://github.com/mevers" target="_blank">@mevers</a> for raising <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/31" target="_blank">the issue</a> to me
+and his efforts in benchmarking
+<a href="https://github.com/GuangchuangYu/clusterProfiler" target="_blank">clusterProfiler</a>.</p>
+
+<p>He pointed out two issues:</p>
+
+<ul>
+<li>outputs from gseGO and GSEA-P are poorly overlap.</li>
+<li>pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
+variation</li>
+</ul>
+
+<p>For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.</p>
+
+<p>First of all, the gene set collections are very different. The GMT file
+used in his test is <em>c5.cc.v5.0.symbols.gmt</em>, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.
+
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="https://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/">use simplify to remove redundancy of enriched GO terms</a></h2>
+    <div class="article-style">
+      
+      To simplify enriched GO result, we can use slim version of GO and use
+<em><a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/" target="_blank">enricher</a></em>
+function to analyze.</p>
+
+<p>Another strategy is to use
+<a href="http://www.bioconductor.org/packages/GOSemSim" target="_blank">GOSemSim</a> to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+<a href="http://www.bioconductor.org/packages/clusterProfiler" target="_blank">clusterProfiler</a>
+users, I develop a <em>simplify</em> method to reduce redundant GO terms from
+output of <em>enrichGO</em> function.</p>
+
+<pre><code>require(clusterProfiler)
+data(geneList, package=&quot;DOSE&quot;)
+de &lt;- names(geneList)[abs(geneList) &gt; 2]
+bp &lt;- enrichGO(de, ont=&quot;BP&quot;)
+enrichMap(bp)
+</code></pre>
+
+<p>
+      
+    </div>
+  </div>
+  
 
   
+<nav>
+  <ul class="pager">
+    
+    
+    <li><a href="/tags/clusterprofiler/page/2/">Next &raquo;</a></li>
+    
+  </ul>
+</nav>
+
 
 
 </div>
