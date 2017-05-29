@@ -8,17 +8,15 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Tue, 03 May 2016 17:00:00 +0800</lastBuildDate>
-    <atom:link href="https://guangchuangyu.github.io/tags/kegg/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/kegg/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>convert biological ID with KEGG API using clusterProfiler</title>
-      <link>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler</link>
+      <link>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/</link>
       <pubDate>Tue, 03 May 2016 17:00:00 +0800</pubDate>
       
-      <guid>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler</guid>
-      <description>
-
-&lt;h2 id=&#34;bitr-kegg:ea0718166651864960b492e0d7486a4f&#34;&gt;bitr_kegg&lt;/h2&gt;
+      <guid>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/</guid>
+      <description>&lt;h2 id=&#34;bitr-kegg&#34;&gt;bitr_kegg&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; can convert biological IDs using &lt;code&gt;OrgDb&lt;/code&gt; object via the &lt;code&gt;bitr&lt;/code&gt; function. Now I implemented another function, &lt;code&gt;bitr_kegg&lt;/code&gt; for converting IDs through KEGG API.&lt;/p&gt;
 
@@ -57,7 +55,8 @@ head(np2up)
 ## 6   NP_001092002  O95398
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The ID type (both fromType &amp;amp; toType) should be one of &amp;lsquo;kegg&amp;rsquo;, &amp;lsquo;ncbi-geneid&amp;rsquo;, &amp;lsquo;ncbi-proteinid&amp;rsquo; or &amp;lsquo;uniprot&amp;rsquo;. The &amp;lsquo;kegg&amp;rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &amp;lsquo;kegg&amp;rsquo; ID is &lt;code&gt;entrezgene&lt;/code&gt; ID for eukaryote species and &lt;code&gt;Locus&lt;/code&gt; ID for prokaryotes.&lt;/p&gt;
+&lt;p&gt;The ID type (both fromType &amp;amp; toType) should be one of &amp;lsquo;kegg&amp;rsquo;, &amp;lsquo;ncbi-geneid&amp;rsquo;, &amp;lsquo;ncbi-proteinid&amp;rsquo; or &amp;lsquo;uniprot&amp;rsquo;. The &amp;lsquo;kegg&amp;rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &amp;lsquo;kegg&amp;rsquo; ID is &lt;code&gt;entrezgene&lt;/code&gt; ID for eukaryote species and &lt;code&gt;Locus&lt;/code&gt; ID for prokaryotes.
+&lt;/p&gt;
 
 &lt;p&gt;Many prokaryote species don&amp;rsquo;t have entrezgene ID available. For example we can check the gene information of &lt;code&gt;ece:Z5100&lt;/code&gt; in &lt;a href=&#34;http://www.genome.jp/dbget-bin/www_bget?ece:Z5100&#34;&gt;http://www.genome.jp/dbget-bin/www_bget?ece:Z5100&lt;/a&gt;, which have &lt;code&gt;NCBI-ProteinID&lt;/code&gt; and &lt;code&gt;UnitProt&lt;/code&gt; links in the &lt;code&gt;Other DBs&lt;/code&gt; Entry, but not &lt;code&gt;NCBI-GeneID&lt;/code&gt;.&lt;/p&gt;
 
@@ -82,7 +81,7 @@ bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&
 ## 1 Z5100  Q7DB85
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;search-kegg-organism:ea0718166651864960b492e0d7486a4f&#34;&gt;search_kegg_organism&lt;/h2&gt;
+&lt;h2 id=&#34;search-kegg-organism&#34;&gt;search_kegg_organism&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; supports more than 4k species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt; for hypergeometric test (&lt;code&gt;enrichKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;enrichMKEGG&lt;/code&gt;) and GSEA (&lt;code&gt;gseKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;gseMKEGG&lt;/code&gt;). We can use &lt;code&gt;bitr_kegg&lt;/code&gt; to convert ID for all these 4k species. To facilitate searching scientific name abbreviate used in the &lt;code&gt;organism&lt;/code&gt; parameter of these functions, I implemented the &lt;code&gt;search_kegg_organism&lt;/code&gt; function. We can search by &lt;code&gt;kegg_code&lt;/code&gt;, &lt;code&gt;scientific_name&lt;/code&gt; or &lt;code&gt;common_name&lt;/code&gt; (which is not available for prokaryotes).&lt;/p&gt;
 
@@ -107,7 +106,7 @@ head(ecoli)
 ## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &amp;lt;NA&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;keytype-parameter:ea0718166651864960b492e0d7486a4f&#34;&gt;keyType parameter&lt;/h2&gt;
+&lt;h2 id=&#34;keytype-parameter&#34;&gt;keyType parameter&lt;/h2&gt;
 
 &lt;p&gt;With the ID conversion utilities built in &lt;code&gt;clusterProfiler&lt;/code&gt;, I add a parameter &lt;code&gt;keyType&lt;/code&gt; in &lt;code&gt;enrichKEGG&lt;/code&gt;, &lt;code&gt;enrichMKEGG&lt;/code&gt;, &lt;code&gt;gseKEGG&lt;/code&gt; and &lt;code&gt;gseMKEGG&lt;/code&gt;. Now we can use ID type that is not the primary ID in KEGG database.&lt;/p&gt;
 
@@ -140,7 +139,7 @@ head(summary(x))
 ## hsa05221     6
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;setreadable:ea0718166651864960b492e0d7486a4f&#34;&gt;setReadable&lt;/h2&gt;
+&lt;h2 id=&#34;setreadable&#34;&gt;setReadable&lt;/h2&gt;
 
 &lt;p&gt;For GO analysis, we have a &lt;code&gt;readable&lt;/code&gt; parameter to control whether traslating the IDs to human readable gene name. This parameter is not available for KEGG analysis. But we still have the ability to translate input gene IDs to gene name using &lt;code&gt;setReadable&lt;/code&gt; function if and only if corresponding &lt;code&gt;OrgDb&lt;/code&gt; object is available.&lt;/p&gt;
 
@@ -173,23 +172,20 @@ head(summary(y))
 ## hsa05221     6
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;citation:ea0718166651864960b492e0d7486a4f&#34;&gt;Citation&lt;/h2&gt;
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
 
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>KEGG Module Enrichment Analysis</title>
-      <link>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis</link>
+      <link>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/</link>
       <pubDate>Wed, 13 Apr 2016 20:48:15 +0800</pubDate>
       
-      <guid>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis</guid>
-      <description>
-
-&lt;blockquote&gt;
+      <guid>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/</guid>
+      <description>&lt;blockquote&gt;
 &lt;p&gt;KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -199,6 +195,8 @@ head(summary(y))
 &lt;li&gt;signature modules – as markers of phenotypes, such as M00363 (EHEC pathogenicity signature, Shiga toxin)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.genome.jp/kegg/module.html&#34;&gt;KEGG Modules&lt;/a&gt; have a much more straightforwared interpretation in many situations and there was a &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/37&#34;&gt;feature request&lt;/a&gt; for implementing an enrichment test from clusterProfiler user. Both hypergeometric test and GSEA of KEGG Module are now supported in &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;. Just like &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34;&gt;KEGG Pathway Analysis&lt;/a&gt;, clusterProfiler accesses latest online data and supports more than 2000 species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;.&lt;/p&gt;
 
@@ -253,23 +251,20 @@ head(summary(yy))
 
 &lt;p&gt;Please refer to &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html&#34;&gt;vignette&lt;/a&gt; for more details.&lt;/p&gt;
 
-&lt;h2 id=&#34;citation:b7c5743556f4771ecf9cca8abe8d99c7&#34;&gt;Citation&lt;/h2&gt;
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
 
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>KEGG enrichment analysis with latest online data using clusterProfiler</title>
-      <link>https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler</link>
+      <link>https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/</link>
       <pubDate>Sun, 01 Feb 2015 12:38:27 +0800</pubDate>
       
-      <guid>https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler</guid>
-      <description>
-
-&lt;p&gt;&lt;em&gt;KEGG.db&lt;/em&gt; is not updated since 2012. The data is now pretty old, but
+      <guid>https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/</guid>
+      <description>&lt;p&gt;&lt;em&gt;KEGG.db&lt;/em&gt; is not updated since 2012. The data is now pretty old, but
 many of the Bioconductor packages still using it for KEGG annotation and
 enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological databases&lt;/a&gt;&amp;rsquo;,
 there is a problem that many out of date biological databases often
@@ -302,9 +297,10 @@ supported. So that you script is still working with new version of
 &lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.
 For other species, common name is not supported, since I don&amp;rsquo;t want to
 maintain such a long mapping list with many species have no common name
-available and it may also introduce unexpected bugs.&lt;/p&gt;
+available and it may also introduce unexpected bugs.
+&lt;/p&gt;
 
-&lt;h3 id=&#34;example-1-using-online-kegg-annotation:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
+&lt;h3 id=&#34;example-1-using-online-kegg-annotation&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;library(DOSE)
 data(geneList)
@@ -356,7 +352,7 @@ species that has an annotation db. For example, for human we use
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html&#34;&gt;org.Hs.eg.db&lt;/a&gt;
 for mapping gene ID to Symbol.&lt;/p&gt;
 
-&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported:68582cae05851901beab2a74a03ade4b&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
+&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
 
 &lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34;&gt;Streptococcus pneumoniae D39&lt;/a&gt;
 to demonstrate using &lt;em&gt;enrichKEGG&lt;/em&gt; with species that are not supported
@@ -393,7 +389,7 @@ spd01100    28
 spd00520     9
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;summary:68582cae05851901beab2a74a03ade4b&#34;&gt;Summary&lt;/h3&gt;
+&lt;h3 id=&#34;summary&#34;&gt;Summary&lt;/h3&gt;
 
 &lt;p&gt;To summarize,
 &lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
@@ -401,12 +397,11 @@ supports downloading the latest KEGG annotation for enrichment analysis
 and it supports all species that have KEGG annotation available in KEGG
 database.&lt;/p&gt;
 
-&lt;h2 id=&#34;citation:68582cae05851901beab2a74a03ade4b&#34;&gt;Citation&lt;/h2&gt;
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
 
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
