@@ -27,11 +27,9 @@
 &lt;p&gt;Here is an example using the Turkey shape:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;Turkey &amp;lt;- read.csv(&amp;quot;http://pages.iu.edu/~cdesante/turkey.csv&amp;quot;)
-Turkey = Turkey[, -3]
 colnames(Turkey)[2:1] = c(&amp;quot;row&amp;quot;, &amp;quot;col&amp;quot;)
 Turkey$row = max(Turkey$row) - Turkey$row +1
 Turkey$name &amp;lt;- Turkey$code &amp;lt;- paste0(&#39;turkey&#39;, 1:nrow(Turkey))
-
 require(ggplot2)
 require(geofacet)
 x &amp;lt;- split(eu_gdp, eu_gdp$code)
@@ -41,17 +39,22 @@ for (i in 1:length(x)) {
 }
 y &amp;lt;-  do.call(rbind, x)
 
-p1 &amp;lt;- ggplot(y, aes(gdp_pc, year))+ geom_line(color=&amp;quot;steelblue&amp;quot;) +
+color = Turkey$Turkey.Colors
+names(color) = Turkey$code
+y$color = color[y$code]
+Turkey = Turkey[, -3]
+
+p1 &amp;lt;- ggplot(y, aes(gdp_pc, year))+ geom_line() +
   facet_geo(~code, grid=Turkey, scales=&#39;free&#39;)
 print(p1)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 14.00.53.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;p1 + theme_void() + theme(strip.text.x = element_blank())
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;p1 + theme_void() + aes(color=color) + theme(strip.text.x = element_blank(), legend.position=&#39;none&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 14.01.12.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 19.44.30.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
     <item>

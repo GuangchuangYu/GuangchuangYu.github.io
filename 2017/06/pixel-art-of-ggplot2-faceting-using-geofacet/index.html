@@ -275,11 +275,9 @@
 <p>Here is an example using the Turkey shape:</p>
 
 <pre><code class="language-r">Turkey &lt;- read.csv(&quot;http://pages.iu.edu/~cdesante/turkey.csv&quot;)
-Turkey = Turkey[, -3]
 colnames(Turkey)[2:1] = c(&quot;row&quot;, &quot;col&quot;)
 Turkey$row = max(Turkey$row) - Turkey$row +1
 Turkey$name &lt;- Turkey$code &lt;- paste0('turkey', 1:nrow(Turkey))
-
 require(ggplot2)
 require(geofacet)
 x &lt;- split(eu_gdp, eu_gdp$code)
@@ -289,17 +287,22 @@ for (i in 1:length(x)) {
 }
 y &lt;-  do.call(rbind, x)
 
-p1 &lt;- ggplot(y, aes(gdp_pc, year))+ geom_line(color=&quot;steelblue&quot;) +
+color = Turkey$Turkey.Colors
+names(color) = Turkey$code
+y$color = color[y$code]
+Turkey = Turkey[, -3]
+
+p1 &lt;- ggplot(y, aes(gdp_pc, year))+ geom_line() +
   facet_geo(~code, grid=Turkey, scales='free')
 print(p1)
 </code></pre>
 
 <p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 14.00.53.png" alt="" /></p>
 
-<pre><code class="language-r">p1 + theme_void() + theme(strip.text.x = element_blank())
+<pre><code class="language-r">p1 + theme_void() + aes(color=color) + theme(strip.text.x = element_blank(), legend.position='none')
 </code></pre>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 14.01.12.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 19.44.30.png" alt="" /></p>
     </div>
   </div>
 
