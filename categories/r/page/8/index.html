@@ -180,6 +180,38 @@
   
   
   <div>
+    <h2><a href="https://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/">Bug of R package ChIPpeakAnno</a></h2>
+    <div class="article-style">
+      
+      I used R package <strong>ChIPpeakAnno</strong> for annotating peaks, and found that
+it handle the DNA strand in the wrong way. Maybe the developers were
+from the computer science but not biology background.</p>
+
+<pre><code>&gt; require(ChIPpeakAnno)
+&gt; packageVersion(&quot;ChIPpeakAnno&quot;)
+[1] '2.10.0'
+&gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528))
+&gt; data(TSS.human.GRCh37)
+&gt; ap &lt;- annotatePeakInBatch(peak, Annotation=TSS.human.GRCh37)
+&gt; ap
+RangedData with 1 row and 9 value columns across 1 space
+                     space               ranges |        peak      strand
+                               |  
+1 ENSG00000001461        1 [24736757, 24737528] |           1           +
+                          feature start_position end_position insideFeature
+                                   
+1 ENSG00000001461 ENSG00000001461       24742284     24799466      upstream
+                  distancetoFeature shortestDistance fromOverlappingOrNearest
+                                                
+1 ENSG00000001461             -5527             4756             NearestStart
+</code></pre>
+
+<p>
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="https://guangchuangyu.github.io/2012/05/clusterprofiler-an-r-package-for-comparing-biological-themes-among-gene-clusters/">clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</a></h2>
     <div class="article-style">
       
