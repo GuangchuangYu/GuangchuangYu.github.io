@@ -34,11 +34,11 @@
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
 
-  <link rel="canonical" href="https://guangchuangyu.github.io/2017/08/joyplot-for-gsea-result/">
+  <link rel="canonical" href="https://guangchuangyu.github.io/2017/10/creat-meme-in-r/">
 
   
 
-  <title>joyplot for GSEA result | Guangchuang YU</title>
+  <title>creat meme in R | Guangchuang YU</title>
 
 
 </head>
@@ -175,14 +175,14 @@
   
 
   <div class="article-container">
-    <h1 itemprop="name">joyplot for GSEA result</h1>
+    <h1 itemprop="name">creat meme in R</h1>
     
 
 <div class="article-metadata">
 
   <span class="article-date">
-    <time datetime="2017-08-20 20:51:00 &#43;0800 CST" itemprop="datePublished">
-      Sun, Aug 20, 2017
+    <time datetime="2017-10-25 15:13:35 &#43;0800 CST" itemprop="datePublished">
+      Wed, Oct 25, 2017
     </time>
   </span>
 
@@ -193,6 +193,9 @@
     <i class="fa fa-folder"></i>
     
     <a href="/categories/r">R</a
+    >, 
+    
+    <a href="/categories/visualization">Visualization</a
     >
     
   </span>
@@ -205,16 +208,10 @@
   <span class="article-tags">
     <i class="fa fa-tags"></i>
     
-    <a href="/tags/dose">DOSE</a
+    <a href="/tags/grid">grid</a
     >, 
     
-    <a href="/tags/clusterprofiler">clusterProfiler</a
-    >, 
-    
-    <a href="/tags/reactomepa">ReactomePA</a
-    >, 
-    
-    <a href="/tags/meshes">meshes</a
+    <a href="/tags/meme">meme</a
     >
     
   </span>
@@ -227,35 +224,35 @@
   <ul class="share">
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f08%2fjoyplot-for-gsea-result%2f"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f10%2fcreat-meme-in-r%2f"
          target="_blank">
         <i class="fa fa-facebook"></i>
       </a>
     </li>
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=joyplot%20for%20GSEA%20result&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f08%2fjoyplot-for-gsea-result%2f"
+         href="https://twitter.com/intent/tweet?text=creat%20meme%20in%20R&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f10%2fcreat-meme-in-r%2f"
          target="_blank">
         <i class="fa fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f08%2fjoyplot-for-gsea-result%2f&amp;title=joyplot%20for%20GSEA%20result"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f10%2fcreat-meme-in-r%2f&amp;title=creat%20meme%20in%20R"
          target="_blank">
         <i class="fa fa-linkedin"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f08%2fjoyplot-for-gsea-result%2f&amp;title=joyplot%20for%20GSEA%20result"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f10%2fcreat-meme-in-r%2f&amp;title=creat%20meme%20in%20R"
          target="_blank">
         <i class="fa fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=joyplot%20for%20GSEA%20result&amp;body=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f08%2fjoyplot-for-gsea-result%2f">
+         href="mailto:?subject=creat%20meme%20in%20R&amp;body=https%3a%2f%2fguangchuangyu.github.io%2f2017%2f10%2fcreat-meme-in-r%2f">
         <i class="fa fa-envelope"></i>
       </a>
     </li>
@@ -268,45 +265,131 @@
 </div>
 
     <div class="article-style" itemprop="articleBody">
-      <p>I am very glad to find that someone figure out <a href="https://stackoverflow.com/questions/45384281/ggjoy-facet-with-ggtree" target="_blank">how to use ggjoy with ggtree</a>.</p>
+      <p>I developed a tiny toy package, <code>meme</code>, which was now on CRAN. As it&rsquo;s name indicated, it was designed to create memes, which are captioned photos that are intended to be funny, riduculous.</p>
 
-<p><img src="https://i.stack.imgur.com/U7D3j.png" alt="" /></p>
+<h2 id="meme"><code>meme()</code></h2>
 
-<p>I really love ggjoy and believe it can be a good tool to visualize gene set enrichment (GSEA) result. DOSE/clusterProfiler support several visualization methods.</p>
+<p>The package is quite simple. You can use <code>meme()</code> function to add meme captions, and this is all the package supposed to do:</p>
+
+<pre><code class="language-r">library(meme)
+u &lt;- &quot;http://www.happyfamilyneeds.com/wp-content/uploads/2017/08/angry8.jpg&quot;
+meme(u, &quot;code&quot;, &quot;all the things!&quot;)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-2-1.png" alt="" /></p>
 
 <p></p>
 
-<p><strong>running score:</strong></p>
+<h2 id="the-grammar">the grammar 🙈</h2>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/mesh_gsea.png" alt="" /></p>
+<p>The <code>meme</code> package was implemented using <code>grid</code> graphic system. Since <code>grid</code> is the most flexible graphic system in R, I try to mimic <code>ggplot2</code> (although very superficial) for practice.</p>
 
-<p><strong>enrichment map:</strong></p>
+<p>User can use <code>mmplot()</code> to read and plot the input image and then using <code>+ mm_caption()</code> to add meme captions.</p>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ReactomePA/c5mb00663e-f1_hi-res.gif" alt="" /></p>
+<pre><code class="language-r">mmplot(u) + mm_caption(&quot;calm down&quot;, &quot;and RTFM&quot;, color=&quot;purple&quot;)
+</code></pre>
 
-<p><strong>category-gene-network:</strong></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-3-1.png" alt="" /></p>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/2016_GO_analysis_using_clusterProfiler_files/figure-markdown_strict/unnamed-chunk-4-3.png" alt="" /></p>
+<h2 id="meme-save"><code>meme_save()</code></h2>
 
-<p><strong>dotplot:</strong></p>
+<p>The <code>meme</code> output can be saved as an object, and can be exported to file using <code>ggsave()</code>. Since we would like to keep the original figure aspection ratio for output meme figure, I provide a helper function, <code>meme_save()</code>, which takes care of the figure aspection ratio and then called <code>ggsave()</code> to export the figure.</p>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot_geneRatio.png" alt="" /></p>
+<pre><code class="language-r">u2 &lt;- &quot;http://i0.kym-cdn.com/entries/icons/mobile/000/000/745/success.jpg&quot;
+x &lt;- meme(u2, &quot;please&quot;, &quot;tell me more&quot;)
+meme_save(x, file=&quot;https://guangchuangyu.github.io/blog_images/R/meme/Figs/meme.png&quot;)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/meme.png" width="672"/></p>
+
+<h2 id="the-plot-method">the <code>plot</code> method</h2>
+
+<p>Users can <code>plot</code> the <code>meme()</code> output and change the caption or other parameters in real time.</p>
+
+<pre><code class="language-r">plot(x, size = 2, &quot;happy friday!&quot;, &quot;wait, sorry, it's monday&quot;, color = &quot;firebrick&quot;, font = &quot;Courier&quot;)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-5-1.png" alt="" /></p>
+
+<h2 id="the-method">the <code>+</code> method</h2>
+
+<p>Instead of using parameters in <code>plot()</code> explictely, Users can use <code>+ aes()</code> to set the plot parameters:</p>
+
+<pre><code class="language-r">x + aes(upper = &quot;#barbarplots&quot;,
+        lower = &quot;friends don't let friends make bar plots&quot;,
+        color = firebrick, font = Courier, size=1.5)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-6-1.png" alt="" /></p>
+
+<p>or using <code>+ list()</code>. The following command will also generate the figure displayed above.</p>
+
+<pre><code class="language-r">x + list(upper = &quot;#barbarplots&quot;,
+        lower = &quot;friends don't let friends make bar plots&quot;,
+        color = &quot;firebrick&quot;, font = &quot;Courier&quot;, size=1.5)
+</code></pre>
+
+<h2 id="multi-language-support">multi-language support</h2>
+
+<p>I didn&rsquo;t do anything about it. Multi-language was supported internally. Just simply select a font for your language.</p>
+
+<pre><code class="language-r">y &lt;- meme(u, &quot;卧槽&quot;, &quot;听说你想用中文&quot;, font=&quot;STHeiti&quot;)
+y
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-8-1.png" alt="" /></p>
 
 <hr />
 
-<p>These visualization methods are designed for visualizing/summarizing enrichment results and none of them can incoporate expression values.</p>
+<p>As the <code>meme</code> package was developed using <code>grid</code>, It would be better to provide function to convert the output object to <code>grob</code>. Similar to <code>ggplotGrob()</code> for <code>ggplot</code> object, I provide <code>memeGrob()</code> for the <code>meme</code> object and this making it possible to edit the details of the graph and compatible with the <code>grid</code> ecosystem.</p>
 
-<p>In DOSE v&gt;=3.3.2, I defined a <code>joyplot</code> function, which can visualize GSEA result with expression distribution of the enriched categories.</p>
+<p>Here are the examples of using <code>meme</code> in <code>grid</code>, <code>ggplot2</code> and <code>cowplot</code>.</p>
 
-<p>Here is an example:</p>
+<h2 id="grid-support">grid support</h2>
 
-<pre><code class="language-r">require(clusterProfiler)
-data(geneList)
-x &lt;- gseKEGG(geneList)
-joyplot(x)
+<pre><code class="language-r">library(grid)
+mm &lt;- meme(u, &quot;code&quot;, &quot;all the things!&quot;, size=.3, color='firebrick')
+
+grid.newpage()
+pushViewport(viewport(width=.9, height=.9))
+grid.rect(gp = gpar(lty=&quot;dashed&quot;))
+
+xx &lt;- seq(0, 2*pi , length.out=10)
+yy &lt;- sin(xx)
+
+for (i in seq_along(xx)) {
+    vp &lt;- viewport(x = xx[i]/(2*pi), y = (yy[i]-min(yy))/2, width=.05, height=.05)
+    print(mm, vp = vp)
+}
 </code></pre>
 
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/joyplot_gsea.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-9-1.png" alt="" /></p>
+
+<h2 id="ggplot2-support">ggplot2 support</h2>
+
+<pre><code class="language-r">library(ggplot2)
+library(ggimage)
+
+d &lt;- data.frame(x = xx, y = yy)
+ggplot(d, aes(x, y)) + geom_line() +
+    geom_subview(mm, x = xx, y = yy, width=.3, height=.15)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-10-1.png" alt="" /></p>
+
+<pre><code class="language-r">ggplot(d, aes(x, y)) +
+    geom_subview(mm+aes(size=3), x=0, y=0, width=Inf, height=Inf) +
+    geom_point() + geom_line()
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-10-2.png" alt="" /></p>
+
+<h2 id="cowplot-support">cowplot support</h2>
+
+<pre><code class="language-r">cowplot::plot_grid(x, y, ncol=1, labels = c(&quot;A&quot;, &quot;B&quot;))
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-11-1.png" alt="" /></p>
     </div>
   </div>
 
@@ -316,13 +399,10 @@ joyplot(x)
   <nav>
   <ul class="pager">
     
-    <li class="previous"><a href="https://guangchuangyu.github.io/2017/06/pixel-art-of-ggplot2-faceting-using-geofacet/"><span
-      aria-hidden="true">&larr;</span> pixel art of ggplot2 faceting using geofacet</a></li>
+    <li class="previous"><a href="https://guangchuangyu.github.io/2017/08/joyplot-for-gsea-result/"><span
+      aria-hidden="true">&larr;</span> joyplot for GSEA result</a></li>
     
 
-    
-    <li class="next"><a href="https://guangchuangyu.github.io/2017/10/creat-meme-in-r/">creat meme in R <span
-      aria-hidden="true">&rarr;</span></a></li>
     
   </ul>
 </nav>
@@ -336,9 +416,9 @@ joyplot(x)
     <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'gcyu';
-    var disqus_identifier = 'https:\/\/guangchuangyu.github.io\/2017\/08\/joyplot-for-gsea-result\/';
-    var disqus_title = 'joyplot for GSEA result';
-    var disqus_url = 'https:\/\/guangchuangyu.github.io\/2017\/08\/joyplot-for-gsea-result\/';
+    var disqus_identifier = 'https:\/\/guangchuangyu.github.io\/2017\/10\/creat-meme-in-r\/';
+    var disqus_title = 'creat meme in R';
+    var disqus_url = 'https:\/\/guangchuangyu.github.io\/2017\/10\/creat-meme-in-r\/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
