@@ -181,6 +181,55 @@
   
   
   <div>
+    <h2><a href="https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/">visualizing reassortment history using seqcombo</a></h2>
+    <div class="article-style">
+      
+      <p>Reassortment is an important strategy for influenza A viruses to
+introduce a HA subtype that is new to human populations, which creates
+the possibilities of pandemic.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/seqcombo/master/vignettes/figures/srep25549-f2.jpg" alt="" /></p>
+
+<p>A diagram showed above (Figure 2 of <code>doi:10.1038/srep25549</code>) is widely
+used to illustrate the reassortment events. While such diagrams are
+mostly manually draw and edit without software tool to automatically
+generate. Here, I implemented the <code>hybrid_plot</code> function for producing
+publication quality figure of reassortment events.</p>
+
+<pre><code>library(tibble)
+library(ggplot2)
+
+
+n &lt;- 8
+
+virus_info &lt;- tibble(
+    id = 1:7,
+    x = c(rep(1990, 4), rep(2000, 2), 2009),
+    y = c(1,2,3,5, 1.5, 3, 4),
+    segment_color = list(
+        rep('purple', n),
+        rep('red', n),
+        rep('darkgreen', n),
+        rep('lightgreen', n),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'red', 'purple', 'red', 'purple'),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'),
+        c('darkgreen', 'lightgreen', 'lightgreen', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'))
+)
+
+flow_info &lt;- tibble(from = c(1,2,3,3,4,5,6),
+                    to = c(5,5,5,6,7,6,7))
+hybrid_plot(virus_info, flow_info)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p></p>
+
+      
+    </div>
+  </div>
+  
+  <div>
     <h2><a href="https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/">shadow text effect in grid and ggplot2 graphics</a></h2>
     <div class="article-style">
       
@@ -376,22 +425,6 @@ Andreas</p>
 </blockquote>
 
 <p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/" target="_blank">comprehensive tree plots</a>.</p>
-
-<p></p>
-
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">ggtree version of plotTree</a></h2>
-    <div class="article-style">
-      
-      <p><a href="https://holtlab.net/2015/10/03/plotting-trees-data/" target="_blank">PLOTTING TREES + DATA</a> is difficult. <a href="http://holtlab.net/" target="_blank">@DrKatHolt</a> developed <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> (R and Python scripts) to visualize associated data with trees, <em>e.g.</em> heatmap, horizontal bar <em>etc</em>.</p>
-
-<p>I reproduced the examples presented in the <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> repo using <a href="https://guangchuangyu.github.io" target="_blank">ggtree</a>. Source code is freely available in <a href="https://github.com/GuangchuangYu/plotTree-ggtree" target="_blank">https://github.com/GuangchuangYu/plotTree-ggtree</a>.</p>
-
-<p>Here are the outputs produced by <code>ggtree</code>:</p>
 
 <p></p>
 

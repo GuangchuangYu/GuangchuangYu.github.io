@@ -11,6 +11,180 @@
     <atom:link href="/post/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>visualizing reassortment history using seqcombo</title>
+      <link>https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/</link>
+      <pubDate>Tue, 05 Dec 2017 11:09:07 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/</guid>
+      <description>&lt;p&gt;Reassortment is an important strategy for influenza A viruses to
+introduce a HA subtype that is new to human populations, which creates
+the possibilities of pandemic.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/seqcombo/master/vignettes/figures/srep25549-f2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A diagram showed above (Figure 2 of &lt;code&gt;doi:10.1038/srep25549&lt;/code&gt;) is widely
+used to illustrate the reassortment events. While such diagrams are
+mostly manually draw and edit without software tool to automatically
+generate. Here, I implemented the &lt;code&gt;hybrid_plot&lt;/code&gt; function for producing
+publication quality figure of reassortment events.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(tibble)
+library(ggplot2)
+
+
+n &amp;lt;- 8
+
+virus_info &amp;lt;- tibble(
+    id = 1:7,
+    x = c(rep(1990, 4), rep(2000, 2), 2009),
+    y = c(1,2,3,5, 1.5, 3, 4),
+    segment_color = list(
+        rep(&#39;purple&#39;, n),
+        rep(&#39;red&#39;, n),
+        rep(&#39;darkgreen&#39;, n),
+        rep(&#39;lightgreen&#39;, n),
+        c(&#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;red&#39;, &#39;darkgreen&#39;, &#39;red&#39;, &#39;purple&#39;, &#39;red&#39;, &#39;purple&#39;),
+        c(&#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;red&#39;, &#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;purple&#39;, &#39;red&#39;, &#39;purple&#39;),
+        c(&#39;darkgreen&#39;, &#39;lightgreen&#39;, &#39;lightgreen&#39;, &#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;purple&#39;, &#39;red&#39;, &#39;purple&#39;))
+)
+
+flow_info &amp;lt;- tibble(from = c(1,2,3,3,4,5,6),
+                    to = c(5,5,5,6,7,6,7))
+hybrid_plot(virus_info, flow_info)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;hybrid_plot&lt;/code&gt; requires two tibble data frame of virus information
+and genetic flow information.&lt;/p&gt;
+
+&lt;p&gt;Users need to provide &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; positions to plot the virus, this make
+sense for geographically and temporally information are usually
+available in such phylodynamic study and can be employed to set &lt;code&gt;x&lt;/code&gt; or
+&lt;code&gt;y&lt;/code&gt; to provide more information and help interpretation of the
+reassortment events.&lt;/p&gt;
+
+&lt;p&gt;We use hexagon to represent virus. Users can set the virus outer
+boundary color by &lt;code&gt;v_color&lt;/code&gt; and fill the virus by &lt;code&gt;v_fill&lt;/code&gt;. Color of
+line segments that indicate the genetic flow relationship can be specify
+via &lt;code&gt;l_color&lt;/code&gt; parameter.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=&#39;firebrick&#39;, v_fill=&#39;darkgreen&#39;, l_color=&#39;steelblue&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We usually have more information to present, for example host
+information and HA subtype &lt;em&gt;etc.&lt;/em&gt; and these information can be used to
+color the virus either by &lt;code&gt;v_color&lt;/code&gt; or &lt;code&gt;v_fill&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$Host = c(&amp;quot;Avian&amp;quot;, &amp;quot;Human&amp;quot;, rep(&amp;quot;Swine&amp;quot;, 4), &amp;quot;Human&amp;quot;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The relative virus size can also be specify if a &lt;code&gt;virus_size&lt;/code&gt; column is
+available in the input &lt;code&gt;virus_info&lt;/code&gt; data.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$virus_size &amp;lt;- c(rep(1, 3), 2, 1, 1, 1.5)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If &lt;code&gt;label&lt;/code&gt; and &lt;code&gt;label_position&lt;/code&gt; coloumns are available, the virus labels
+(virus name or other information) will be added automatically.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;Avian&amp;quot;, &amp;quot;Human\nH3N2&amp;quot;, &amp;quot;Classic\nswine\nH1N1&amp;quot;, &amp;quot;Eurasian swine&amp;quot;,
+                      &amp;quot;North American swine\n triple reassrotant H3N2&amp;quot;,
+                      &amp;quot;North American swine\n triple reassortant H1N2&amp;quot;, &amp;quot;2009 Human H1N1&amp;quot;)
+virus_info$label_position &amp;lt;- c(&#39;left&#39;, &#39;left&#39;, &#39;left&#39;, &#39;below&#39;, &#39;below&#39;, &#39;upper&#39;, &#39;below&#39;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can use &lt;code&gt;asp&lt;/code&gt; to set the aspect ratio of hexagons, &lt;code&gt;asp &amp;lt; 1&lt;/code&gt; for
+thick/short and &lt;code&gt;asp &amp;gt; 1&lt;/code&gt; for thin/tall.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host, asp=2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The output of &lt;code&gt;hybrid_plot&lt;/code&gt; is a &lt;code&gt;ggplot&lt;/code&gt; object and users can use
+&lt;code&gt;ggplot2&lt;/code&gt; to modify the details.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;title &amp;lt;- &amp;quot;Reassortment events in evolution of the 2009 influenza A (H1N1) virus&amp;quot;
+caption &amp;lt;- &#39;Gene segments: PB2, PB1, PA, HA, NP, NA, M, NS&#39;
+color &amp;lt;- c(Avian=&amp;quot;purple&amp;quot;, Human=&amp;quot;red&amp;quot;, Swine=&amp;quot;darkgreen&amp;quot;)
+
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
+    labs(caption=caption, title=title) +
+    scale_color_manual(values=color) + scale_fill_manual(values=color) +
+    scale_x_continuous(breaks=c(1990, 2000, 2009)) +
+    xlab(NULL) + ylab(NULL) + theme_minimal() +
+    theme(axis.line.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          panel.grid.minor=element_blank(),
+          panel.grid.major.y=element_blank(),
+          legend.position = c(.95, .1)
+          )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Top-down or bottom-up style is also supported.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;x &amp;lt;- virus_info$x
+virus_info$x &amp;lt;- virus_info$y
+virus_info$y &amp;lt;- x
+virus_info$label_position &amp;lt;- c(rep(&amp;quot;right&amp;quot;, 3), &amp;quot;left&amp;quot;, &amp;quot;left&amp;quot;, &amp;quot;right&amp;quot;, &amp;quot;right&amp;quot;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
+    scale_y_reverse() + scale_x_continuous(limits=c(0, 5.5))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-9-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can also use Emoji to label the virus (host information in this
+example):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;chicken&amp;quot;, &amp;quot;woman&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;woman&amp;quot;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host,
+              parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;) +
+    scale_y_reverse()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-10-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In case you don&amp;rsquo;t have xy-coordination information, you can use
+&lt;code&gt;set_layout&lt;/code&gt; function to auto setting the xy position using selected
+layout function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.kamada.kawai&amp;quot;)
+hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.fruchterman.reingold&amp;quot;)
+hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Please let me know if you saw any published reassortment data that have
+spatial information, I will demonstrate how to visualize reassortment
+history on a map.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>BMC journal protects paper of plagiarism</title>
       <link>https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/</link>
       <pubDate>Thu, 09 Nov 2017 21:51:43 +0800</pubDate>
@@ -1120,68 +1294,6 @@ p &amp;lt;- ggtree(tr) + geom_tiplab()
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
 &lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>showCategory parameter for visualizing compareCluster output</title>
-      <link>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/</link>
-      <pubDate>Thu, 03 Nov 2016 10:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().&lt;/p&gt;
-
-&lt;p&gt;In my case, I use compareCluster() on a list of 3 elements:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;str(ClusterList)
-List of 3
- $ All : chr [1:1450] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
- $ g1  : chr [1:858] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
- $ g2: chr [1:592] &amp;quot;5325&amp;quot; &amp;quot;170691&amp;quot; &amp;quot;29953&amp;quot; &amp;quot;283392&amp;quot; ...
-CompareGO_BP=compareCluster(ClusterList, fun=&amp;quot;enrichGO&amp;quot;, pvalueCutoff=0.01, pAdjustMethod=&amp;quot;BH&amp;quot;, OrgDb=org.Hs.eg.db,ont=&amp;quot;BP&amp;quot;,readable=T)
-
-dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;I ask for 10 categories, but I get 15 categories in All, 8 categories in g1 and 12 categories in g2. None of the categories, neither the sum of the categories are 10&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;Is the option showCategory working in the case of comparison? Am I missing something here?&lt;/p&gt;
-
-&lt;p&gt;And which categories precisely will it plot? the most significant whatever my 3 cases or the most significant of each case?&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The question was &lt;a href=&#34;https://support.bioconductor.org/p/88965/&#34; target=&#34;_blank&#34;&gt;posted&lt;/a&gt; in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;In this case, we expect to get &lt;code&gt;&amp;lt;= 10 of most significant categories&lt;/code&gt; for each  &lt;code&gt;Cluster&lt;/code&gt; as the user specify &lt;code&gt;showCategory=10&lt;/code&gt;. This is exactly the way of &lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods do for &lt;code&gt;compareClusterResult&lt;/code&gt;. &lt;code&gt;8&lt;/code&gt; categories for &lt;code&gt;g1&lt;/code&gt; is obvious that there are only &lt;code&gt;8&lt;/code&gt; enriched terms found for &lt;code&gt;g1&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;But why there are &lt;code&gt;15&lt;/code&gt; for &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;12&lt;/code&gt; for &lt;code&gt;g2&lt;/code&gt;?&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods implemented in &lt;code&gt;clusterProfiler&lt;/code&gt; try to make the comparison among clusters more informative and reasonable. After extracting e.g. 10 categories for each cluster, &lt;code&gt;clusterProfiler&lt;/code&gt; try to collect overlap of these categories among clusters.&lt;/p&gt;
-
-&lt;p&gt;For example, &lt;code&gt;term A&lt;/code&gt; is enriched in all the clusters (&lt;code&gt;All&lt;/code&gt;, &lt;code&gt;g1&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;) and is in the 10 most significant categories for &lt;code&gt;g1&lt;/code&gt; but not &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;. &lt;code&gt;clusterProfiler&lt;/code&gt; try to capture these information and include &lt;code&gt;term A&lt;/code&gt; in &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt; clusters and making the comparison in &lt;code&gt;dotplot&lt;/code&gt;/&lt;code&gt;barplot&lt;/code&gt; more reasonable.&lt;/p&gt;
-
-&lt;p&gt;If users want to ignore these information, they can use &lt;code&gt;dotplot(..., includeAll=FALSE)&lt;/code&gt;, which is actually not recommended.&lt;/p&gt;
-
-&lt;p&gt;See the difference to the following example:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
-data(gcSample)
-x=compareCluster(gcSample, fun=&#39;enrichDO&#39;)
-dotplot(x, showCategory=5, includeAll=FALSE)
-dotplot(x, showCategory=5)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In the first figure, it seems that all these clusters are very different, with no overlapping terms enriched. This is not true as demonstrated in the second figure.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

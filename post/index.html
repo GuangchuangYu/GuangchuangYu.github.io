@@ -177,6 +177,102 @@
   
   <div>
     
+    <h2><a href="https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/">visualizing reassortment history using seqcombo</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-12-05 11:09:07 &#43;0800 HKT" itemprop="datePublished">
+      Tue, Dec 5, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/genomics">Genomics</a
+    >, 
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/seqcombo">seqcombo</a
+    >, 
+    
+    <a href="/tags/influenza">influenza</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <p>Reassortment is an important strategy for influenza A viruses to
+introduce a HA subtype that is new to human populations, which creates
+the possibilities of pandemic.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/seqcombo/master/vignettes/figures/srep25549-f2.jpg" alt="" /></p>
+
+<p>A diagram showed above (Figure 2 of <code>doi:10.1038/srep25549</code>) is widely
+used to illustrate the reassortment events. While such diagrams are
+mostly manually draw and edit without software tool to automatically
+generate. Here, I implemented the <code>hybrid_plot</code> function for producing
+publication quality figure of reassortment events.</p>
+
+<pre><code>library(tibble)
+library(ggplot2)
+
+
+n &lt;- 8
+
+virus_info &lt;- tibble(
+    id = 1:7,
+    x = c(rep(1990, 4), rep(2000, 2), 2009),
+    y = c(1,2,3,5, 1.5, 3, 4),
+    segment_color = list(
+        rep('purple', n),
+        rep('red', n),
+        rep('darkgreen', n),
+        rep('lightgreen', n),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'red', 'purple', 'red', 'purple'),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'),
+        c('darkgreen', 'lightgreen', 'lightgreen', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'))
+)
+
+flow_info &lt;- tibble(from = c(1,2,3,3,4,5,6),
+                    to = c(5,5,5,6,7,6,7))
+hybrid_plot(virus_info, flow_info)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p></p>
+
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
     <h2><a href="https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/">BMC journal protects paper of plagiarism</a></h2>
     
 
@@ -820,91 +916,6 @@ ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
 <p>For GSEA analysis, we are familar with the above figure which shows the running enrichment score. But for most of the software, it lack of visualization method to summarize the whole enrichment result.</p>
 
 <p>In <a href="https://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a> (and related tools including <a href="https://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a>, <a href="https://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a> and <a href="https://guangchuangyu.github.io/meshes" target="_blank">meshes</a>), we provide <code>enrichMap</code> and <code>cnetplot</code> to summarize GSEA result.</p>
-
-<p></p>
-
-      
-    </p></div>
-  </div>
-  
-  <div>
-    
-    <h2><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/">add layer to specific panel of facet_plot output</a></h2>
-    
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2016-12-28 20:30:00 &#43;0800 HKT" itemprop="datePublished">
-      Wed, Dec 28, 2016
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >, 
-    
-    <a href="/categories/visualization">Visualization</a
-    >, 
-    
-    <a href="/categories/evolution">Evolution</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggtree">ggtree</a
-    >, 
-    
-    <a href="/tags/ggplot2">ggplot2</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      <p>This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ" target="_blank">ggtree google group</a>:</p>
-
-<blockquote>
-<p>Dear ggtree team,</p>
-
-<p>how can I apply a geom_xxx to only one facet panel? For example if i want to get <code>geom_hline(yintersect=1:30)</code> or a <code>geom_text()</code> in the dot panel?
-I cant see the <code>facet_grid(. ~ var)</code> function call, so I don&rsquo;t know which subsetting to use. I have already read <a href="http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working" target="_blank">http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working</a></p>
-
-<pre><code>  tr &lt;- rtree(30)
-  
-  d1 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-  p &lt;- ggtree(tr)
-  
-  p2 &lt;- facet_plot(p, panel=&quot;dot&quot;, data=d1, geom=geom_point, aes(x=val), color='firebrick')
-  d2 &lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
-  
-  p3 &lt;- facet_plot(p2, panel='bar', data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color='steelblue') + theme_tree2()
-</code></pre>
-
-<p>Thanks!
-Andreas</p>
-</blockquote>
-
-<p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/" target="_blank">comprehensive tree plots</a>.</p>
 
 <p></p>
 
