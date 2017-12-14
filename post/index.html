@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.24.1" />
+  <meta name="generator" content="Hugo 0.30.2" />
   <meta name="author" content="Guangchuang YU">
   <meta name="description" content="Postdoc researcher">
 
@@ -34,7 +34,6 @@
   
 
   <title>Posts | Guangchuang YU</title>
-
 
 </head>
 <body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
@@ -177,6 +176,263 @@
   
   <div>
     
+    <h2><a href="https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/">visualizing reassortment history using seqcombo</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-12-05 11:09:07 &#43;0800 CST" itemprop="datePublished">
+      Tue, Dec 5, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/genomics">Genomics</a
+    >, 
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/seqcombo">seqcombo</a
+    >, 
+    
+    <a href="/tags/influenza">influenza</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <p>Reassortment is an important strategy for influenza A viruses to
+introduce a HA subtype that is new to human populations, which creates
+the possibilities of pandemic.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/seqcombo/master/vignettes/figures/srep25549-f2.jpg" alt="" /></p>
+
+<p>A diagram showed above (Figure 2 of <code>doi:10.1038/srep25549</code>) is widely
+used to illustrate the reassortment events. While such diagrams are
+mostly manually draw and edit without software tool to automatically
+generate. Here, I implemented the <code>hybrid_plot</code> function for producing
+publication quality figure of reassortment events.</p>
+
+<pre><code>library(tibble)
+library(ggplot2)
+
+
+n &lt;- 8
+
+virus_info &lt;- tibble(
+    id = 1:7,
+    x = c(rep(1990, 4), rep(2000, 2), 2009),
+    y = c(1,2,3,5, 1.5, 3, 4),
+    segment_color = list(
+        rep('purple', n),
+        rep('red', n),
+        rep('darkgreen', n),
+        rep('lightgreen', n),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'red', 'purple', 'red', 'purple'),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'),
+        c('darkgreen', 'lightgreen', 'lightgreen', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'))
+)
+
+flow_info &lt;- tibble(from = c(1,2,3,3,4,5,6),
+                    to = c(5,5,5,6,7,6,7))
+hybrid_plot(virus_info, flow_info)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p></p>
+
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/">BMC journal protects paper of plagiarism</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-11-09 21:51:43 &#43;0800 CST" itemprop="datePublished">
+      Thu, Nov 9, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/biology">Biology</a
+    >, 
+    
+    <a href="/categories/research">Research</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/bmc">BMC</a
+    >, 
+    
+    <a href="/tags/plagiarism">plagiarism</a
+    >, 
+    
+    <a href="/tags/gosemsim">GOSemSim</a
+    >, 
+    
+    <a href="/tags/ppipre">ppiPre</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <p>My friend who doing his PhD study at Johns Hopkins just send me the link about <a href="https://retractionwatch.com/2017/11/07/17-johns-hopkins-researchers-resign-protest-ed-board-nature-journal/" target="_blank">a SR paper of plagiarism</a>. I have very similar experence of <a href="https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-7-S2-S8" target="_blank">a paper published on BMC Systems Biology</a>, which plagiarized <a href="https://www.ncbi.nlm.nih.gov/pubmed/20179076" target="_blank">my work</a> and the editor just decided to publish an erratum.</p>
+
+<p>Deng <em>etc.</em> published an R package, ppiPre, that copied source code of my package, GOSemSim, and pretended that they developed these algorithms by themselves in their paper.</p>
+
+<p>Here is the screenshot of the source code (left: ppiPre, right: GOSemSim).</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/screenshots/Screenshot 2017-07-17 19.43.51.png" alt="" /></p>
+
+<p>You can find out more on <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/" target="_blank">my blog post</a>.</p>
+
+<p>As a developer of several open source software, I am glad that someone find my source code useful and happy if someone use my source code to make something better. But I am not happy if someone copies my source code by removing author information and changing function names to pretend the code was developed by himself. The situation is even worse in academic. Taking someone else&rsquo;s works and passing it off as one&rsquo;s own is definitely plagiarism and not allow in academic.</p>
+
+<p></p>
+
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
+    <h2><a href="https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/">shadow text effect in grid and ggplot2 graphics</a></h2>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-11-02 15:30:00 &#43;0800 CST" itemprop="datePublished">
+      Thu, Nov 2, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >, 
+    
+    <a href="/categories/visualization">Visualization</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/shadowtext">shadowtext</a
+    >, 
+    
+    <a href="/tags/meme">meme</a
+    >, 
+    
+    <a href="/tags/grid">grid</a
+    >, 
+    
+    <a href="/tags/ggplot2">ggplot2</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style"><p>
+      
+      <p>After the release of <code>meme</code> package, I received several feedbacks from users.</p>
+
+<p>The most usefule one is <a href="http://disq.us/p/1n9zi69" target="_blank">the comment</a> on my blog post:</p>
+
+<blockquote>
+<p>Sercan Kahveci</p>
+
+<p>Greetings Mr. Yu,</p>
+
+<p>I am very happy that this package exists. Thank you for making it! I would like to request a feature, to ensure the package is able to compete with professional meme-creation tools like memegenerator and paint.net. Since memes often use the font Impact, in white and with black outline, I believe the package would be more powerful if it also did that automatically.</p>
+
+<p>Regards,</p>
+
+<p>Sercan Kahveci, MSc</p>
+
+<p>Content creator at Questionable Research Memes on Facebook
+<a href="https://www.facebook.com/QResearchMemes/" target="_blank">https://www.facebook.com/QResearchMemes/</a></p>
+</blockquote>
+
+<p>The words, &lsquo;compete with professional meme-creation tools&rsquo;, stimulated me to develop text plotting with background outline effect.</p>
+
+<p>Now this feature is available in <a href="https://cran.r-project.org/package=meme" target="_blank">meme</a> v&gt;=0.0.7, which can be downloaded from CRAN.</p>
+
+<p></p>
+
+      
+    </p></div>
+  </div>
+  
+  <div>
+    
     <h2><a href="https://guangchuangyu.github.io/2017/10/create-meme-in-r/">create meme in R</a></h2>
     
 
@@ -226,7 +482,7 @@
 
     <div class="article-style"><p>
       
-      I developed a tiny toy package, <code>meme</code>, which is now on CRAN. As it&rsquo;s name indicated, it was designed to create memes, which are captioned photos that are intended to be funny, riduculous.</p>
+      <p>I developed a tiny toy package, <code>meme</code>, which is now on CRAN. As it&rsquo;s name indicated, it was designed to create memes, which are captioned photos that are intended to be funny, riduculous.</p>
 
 <h2 id="meme"><code>meme()</code></h2>
 
@@ -239,7 +495,8 @@ meme(u, &quot;code&quot;, &quot;all the things!&quot;)
 
 <p><img src="https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-2-1.png" alt="" /></p>
 
-<p>
+<p></p>
+
       
     </p></div>
   </div>
@@ -298,13 +555,14 @@ meme(u, &quot;code&quot;, &quot;all the things!&quot;)
 
     <div class="article-style"><p>
       
-      I am very glad to find that someone figure out <a href="https://stackoverflow.com/questions/45384281/ggjoy-facet-with-ggtree" target="_blank">how to use ggjoy with ggtree</a>.</p>
+      <p>I am very glad to find that someone figure out <a href="https://stackoverflow.com/questions/45384281/ggjoy-facet-with-ggtree" target="_blank">how to use ggjoy with ggtree</a>.</p>
 
 <p><img src="https://i.stack.imgur.com/U7D3j.png" alt="" /></p>
 
 <p>I really love ggjoy and believe it can be a good tool to visualize gene set enrichment (GSEA) result. DOSE/clusterProfiler support several visualization methods.</p>
 
-<p>
+<p></p>
+
       
     </p></div>
   </div>
@@ -360,13 +618,14 @@ meme(u, &quot;code&quot;, &quot;all the things!&quot;)
 
     <div class="article-style"><p>
       
-      I just discovered an interesting <code>ggplot2</code> extension, <code>geofacet</code>, that supports arranging facet panels that mimics geographic topoloty.</p>
+      <p>I just discovered an interesting <code>ggplot2</code> extension, <code>geofacet</code>, that supports arranging facet panels that mimics geographic topoloty.</p>
 
 <p>After playing with it, I realized that it is not only for visualizing <code>geo</code>-related data, but also can be fun for presenting data to mimics pixel art.</p>
 
 <p><img src="https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png" alt="" /></p>
 
-<p>
+<p></p>
+
       
     </p></div>
   </div>
@@ -440,7 +699,7 @@ meme(u, &quot;code&quot;, &quot;all the things!&quot;)
 
     <div class="article-style"><p>
       
-      I have 8 packages published within the <code>Bioconductor</code> project.</p>
+      <p>I have 8 packages published within the <code>Bioconductor</code> project.</p>
 
 <ul>
 <li><a href="http://guangchuangyu.github.io/ChIPseeker" target="_blank">ChIPseeker</a></li>
@@ -455,7 +714,8 @@ meme(u, &quot;code&quot;, &quot;all the things!&quot;)
 
 <p>A new package <a href="http://guangchuangyu.github.io/treeio" target="_blank">treeio</a> was included in BioC 3.5 release.</p>
 
-<p>
+<p></p>
+
       
     </p></div>
   </div>
@@ -517,7 +777,7 @@ meme(u, &quot;code&quot;, &quot;all the things!&quot;)
 
     <div class="article-style"><p>
       
-      With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
+      <p>With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
 
 <h2 id="use-emoji-in-taxa-labels">Use emoji in taxa labels</h2>
 
@@ -532,7 +792,8 @@ ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
 
 <p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="" /></p>
 
-<p>
+<p></p>
+
       
     </p></div>
   </div>
@@ -585,11 +846,12 @@ ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
 
     <div class="article-style"><p>
       
-      I have splitted <code>ggtree</code> to 2 packages, <code>treeio</code> and <code>ggtree</code>. Now <code>ggtree</code> is mainly focus on visualization and annotation, while <code>treeio</code> focus on parsing and exporting tree files. Here is a welcome message from <code>treeio</code> that you can convert <code>ggtree</code> output to tree object which can be exported as newick or nexus file if you want.</p>
+      <p>I have splitted <code>ggtree</code> to 2 packages, <code>treeio</code> and <code>ggtree</code>. Now <code>ggtree</code> is mainly focus on visualization and annotation, while <code>treeio</code> focus on parsing and exporting tree files. Here is a welcome message from <code>treeio</code> that you can convert <code>ggtree</code> output to tree object which can be exported as newick or nexus file if you want.</p>
 
 <p>Thanks to <code>ggplot2</code>, output of <code>ggtree</code> is actually a <code>ggplot</code> object. The <code>ggtree</code> object can be rendered as graph by <code>print</code> method, but internally it is an object that contains data. <code>treeio</code> defines <code>as.phylo</code> and <code>as.treedata</code> to convert <code>ggtree</code> object to <code>phylo</code> or <code>treedata</code> object.</p>
 
-<p>
+<p></p>
+
       
     </p></div>
   </div>
@@ -648,207 +910,14 @@ ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
 
     <div class="article-style"><p>
       
-      <img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png" alt="" /></p>
+      <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png" alt="" /></p>
 
 <p>For GSEA analysis, we are familar with the above figure which shows the running enrichment score. But for most of the software, it lack of visualization method to summarize the whole enrichment result.</p>
 
 <p>In <a href="https://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a> (and related tools including <a href="https://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a>, <a href="https://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a> and <a href="https://guangchuangyu.github.io/meshes" target="_blank">meshes</a>), we provide <code>enrichMap</code> and <code>cnetplot</code> to summarize GSEA result.</p>
 
-<p>
-      
-    </p></div>
-  </div>
-  
-  <div>
-    
-    <h2><a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/">add layer to specific panel of facet_plot output</a></h2>
-    
+<p></p>
 
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2016-12-28 20:30:00 &#43;0800 CST" itemprop="datePublished">
-      Wed, Dec 28, 2016
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >, 
-    
-    <a href="/categories/visualization">Visualization</a
-    >, 
-    
-    <a href="/categories/evolution">Evolution</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggtree">ggtree</a
-    >, 
-    
-    <a href="/tags/ggplot2">ggplot2</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ" target="_blank">ggtree google group</a>:</p>
-
-<blockquote>
-<p>Dear ggtree team,</p>
-
-<p>how can I apply a geom_xxx to only one facet panel? For example if i want to get <code>geom_hline(yintersect=1:30)</code> or a <code>geom_text()</code> in the dot panel?
-I cant see the <code>facet_grid(. ~ var)</code> function call, so I don&rsquo;t know which subsetting to use. I have already read <a href="http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working" target="_blank">http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working</a></p>
-
-<pre><code>  tr &lt;- rtree(30)
-  
-  d1 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-  p &lt;- ggtree(tr)
-  
-  p2 &lt;- facet_plot(p, panel=&quot;dot&quot;, data=d1, geom=geom_point, aes(x=val), color='firebrick')
-  d2 &lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
-  
-  p3 &lt;- facet_plot(p2, panel='bar', data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color='steelblue') + theme_tree2()
-</code></pre>
-
-<p>Thanks!
-Andreas</p>
-</blockquote>
-
-<p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/" target="_blank">comprehensive tree plots</a>.</p>
-
-<p>
-      
-    </p></div>
-  </div>
-  
-  <div>
-    
-    <h2><a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">ggtree version of plotTree</a></h2>
-    
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2016-12-17 13:53:00 &#43;0800 CST" itemprop="datePublished">
-      Sat, Dec 17, 2016
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggtree">ggtree</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      <a href="https://holtlab.net/2015/10/03/plotting-trees-data/" target="_blank">PLOTTING TREES + DATA</a> is difficult. <a href="http://holtlab.net/" target="_blank">@DrKatHolt</a> developed <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> (R and Python scripts) to visualize associated data with trees, <em>e.g.</em> heatmap, horizontal bar <em>etc</em>.</p>
-
-<p>I reproduced the examples presented in the <a href="https://github.com/katholt/plotTree" target="_blank">plotTree</a> repo using <a href="https://guangchuangyu.github.io" target="_blank">ggtree</a>. Source code is freely available in <a href="https://github.com/GuangchuangYu/plotTree-ggtree" target="_blank">https://github.com/GuangchuangYu/plotTree-ggtree</a>.</p>
-
-<p>Here are the outputs produced by <code>ggtree</code>:</p>
-
-<p>
-      
-    </p></div>
-  </div>
-  
-  <div>
-    
-    <h2><a href="https://guangchuangyu.github.io/2016/12/edge-coloring-with-user-data/">Edge coloring with user data</a></h2>
-    
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2016-12-12 00:53:00 &#43;0800 CST" itemprop="datePublished">
-      Mon, Dec 12, 2016
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggtree">ggtree</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-    <div class="article-style"><p>
-      
-      Coloring edges in ggtree is quite easy, as we can map the color to numerical or categorical values via the <code>aes(color=VAR)</code> syntax. For user&rsquo;s own data, it is also easy as <code>ggtree</code> provide the <code>%&lt;+%</code> operator to attach user data.</p>
-
-<p>But as it seems not so obviously for <code>ggtree</code> users, see question <a href="https://groups.google.com/forum/#!topic/bioc-ggtree/4GgivKqVjB8" target="_blank">1</a>, <a href="https://github.com/GuangchuangYu/ggtree/issues/76" target="_blank">2</a>, and <a href="https://github.com/GuangchuangYu/ggtree/issues/105" target="_blank">3</a>, I will demonstrate how to color edges using user data here.</p>
-
-<p>
       
     </p></div>
   </div>

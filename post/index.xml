@@ -11,6 +11,318 @@
     <atom:link href="/post/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>visualizing reassortment history using seqcombo</title>
+      <link>https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/</link>
+      <pubDate>Tue, 05 Dec 2017 11:09:07 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/</guid>
+      <description>&lt;p&gt;Reassortment is an important strategy for influenza A viruses to
+introduce a HA subtype that is new to human populations, which creates
+the possibilities of pandemic.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/seqcombo/master/vignettes/figures/srep25549-f2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A diagram showed above (Figure 2 of &lt;code&gt;doi:10.1038/srep25549&lt;/code&gt;) is widely
+used to illustrate the reassortment events. While such diagrams are
+mostly manually draw and edit without software tool to automatically
+generate. Here, I implemented the &lt;code&gt;hybrid_plot&lt;/code&gt; function for producing
+publication quality figure of reassortment events.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(tibble)
+library(ggplot2)
+
+
+n &amp;lt;- 8
+
+virus_info &amp;lt;- tibble(
+    id = 1:7,
+    x = c(rep(1990, 4), rep(2000, 2), 2009),
+    y = c(1,2,3,5, 1.5, 3, 4),
+    segment_color = list(
+        rep(&#39;purple&#39;, n),
+        rep(&#39;red&#39;, n),
+        rep(&#39;darkgreen&#39;, n),
+        rep(&#39;lightgreen&#39;, n),
+        c(&#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;red&#39;, &#39;darkgreen&#39;, &#39;red&#39;, &#39;purple&#39;, &#39;red&#39;, &#39;purple&#39;),
+        c(&#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;red&#39;, &#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;purple&#39;, &#39;red&#39;, &#39;purple&#39;),
+        c(&#39;darkgreen&#39;, &#39;lightgreen&#39;, &#39;lightgreen&#39;, &#39;darkgreen&#39;, &#39;darkgreen&#39;, &#39;purple&#39;, &#39;red&#39;, &#39;purple&#39;))
+)
+
+flow_info &amp;lt;- tibble(from = c(1,2,3,3,4,5,6),
+                    to = c(5,5,5,6,7,6,7))
+hybrid_plot(virus_info, flow_info)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;hybrid_plot&lt;/code&gt; requires two tibble data frame of virus information
+and genetic flow information.&lt;/p&gt;
+
+&lt;p&gt;Users need to provide &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; positions to plot the virus, this make
+sense for geographically and temporally information are usually
+available in such phylodynamic study and can be employed to set &lt;code&gt;x&lt;/code&gt; or
+&lt;code&gt;y&lt;/code&gt; to provide more information and help interpretation of the
+reassortment events.&lt;/p&gt;
+
+&lt;p&gt;We use hexagon to represent virus. Users can set the virus outer
+boundary color by &lt;code&gt;v_color&lt;/code&gt; and fill the virus by &lt;code&gt;v_fill&lt;/code&gt;. Color of
+line segments that indicate the genetic flow relationship can be specify
+via &lt;code&gt;l_color&lt;/code&gt; parameter.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=&#39;firebrick&#39;, v_fill=&#39;darkgreen&#39;, l_color=&#39;steelblue&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We usually have more information to present, for example host
+information and HA subtype &lt;em&gt;etc.&lt;/em&gt; and these information can be used to
+color the virus either by &lt;code&gt;v_color&lt;/code&gt; or &lt;code&gt;v_fill&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$Host = c(&amp;quot;Avian&amp;quot;, &amp;quot;Human&amp;quot;, rep(&amp;quot;Swine&amp;quot;, 4), &amp;quot;Human&amp;quot;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The relative virus size can also be specify if a &lt;code&gt;virus_size&lt;/code&gt; column is
+available in the input &lt;code&gt;virus_info&lt;/code&gt; data.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$virus_size &amp;lt;- c(rep(1, 3), 2, 1, 1, 1.5)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If &lt;code&gt;label&lt;/code&gt; and &lt;code&gt;label_position&lt;/code&gt; coloumns are available, the virus labels
+(virus name or other information) will be added automatically.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;Avian&amp;quot;, &amp;quot;Human\nH3N2&amp;quot;, &amp;quot;Classic\nswine\nH1N1&amp;quot;, &amp;quot;Eurasian swine&amp;quot;,
+                      &amp;quot;North American swine\n triple reassrotant H3N2&amp;quot;,
+                      &amp;quot;North American swine\n triple reassortant H1N2&amp;quot;, &amp;quot;2009 Human H1N1&amp;quot;)
+virus_info$label_position &amp;lt;- c(&#39;left&#39;, &#39;left&#39;, &#39;left&#39;, &#39;below&#39;, &#39;below&#39;, &#39;upper&#39;, &#39;below&#39;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can use &lt;code&gt;asp&lt;/code&gt; to set the aspect ratio of hexagons, &lt;code&gt;asp &amp;lt; 1&lt;/code&gt; for
+thick/short and &lt;code&gt;asp &amp;gt; 1&lt;/code&gt; for thin/tall.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host, asp=2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The output of &lt;code&gt;hybrid_plot&lt;/code&gt; is a &lt;code&gt;ggplot&lt;/code&gt; object and users can use
+&lt;code&gt;ggplot2&lt;/code&gt; to modify the details.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;title &amp;lt;- &amp;quot;Reassortment events in evolution of the 2009 influenza A (H1N1) virus&amp;quot;
+caption &amp;lt;- &#39;Gene segments: PB2, PB1, PA, HA, NP, NA, M, NS&#39;
+color &amp;lt;- c(Avian=&amp;quot;purple&amp;quot;, Human=&amp;quot;red&amp;quot;, Swine=&amp;quot;darkgreen&amp;quot;)
+
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
+    labs(caption=caption, title=title) +
+    scale_color_manual(values=color) + scale_fill_manual(values=color) +
+    scale_x_continuous(breaks=c(1990, 2000, 2009)) +
+    xlab(NULL) + ylab(NULL) + theme_minimal() +
+    theme(axis.line.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          panel.grid.minor=element_blank(),
+          panel.grid.major.y=element_blank(),
+          legend.position = c(.95, .1)
+          )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Top-down or bottom-up style is also supported.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;x &amp;lt;- virus_info$x
+virus_info$x &amp;lt;- virus_info$y
+virus_info$y &amp;lt;- x
+virus_info$label_position &amp;lt;- c(rep(&amp;quot;right&amp;quot;, 3), &amp;quot;left&amp;quot;, &amp;quot;left&amp;quot;, &amp;quot;right&amp;quot;, &amp;quot;right&amp;quot;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
+    scale_y_reverse() + scale_x_continuous(limits=c(0, 5.5))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-9-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;User can also use Emoji to label the virus (host information in this
+example):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;chicken&amp;quot;, &amp;quot;woman&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;woman&amp;quot;)
+hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host,
+              parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;) +
+    scale_y_reverse()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-10-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In case you don&amp;rsquo;t have xy-coordination information, you can use
+&lt;code&gt;set_layout&lt;/code&gt; function to auto setting the xy position using selected
+layout function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.kamada.kawai&amp;quot;)
+hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.fruchterman.reingold&amp;quot;)
+hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Please let me know if you know any published reassortment data that contain
+spatial information, I will demonstrate how to visualize reassortment
+history on a map.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>BMC journal protects paper of plagiarism</title>
+      <link>https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/</link>
+      <pubDate>Thu, 09 Nov 2017 21:51:43 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/</guid>
+      <description>&lt;p&gt;My friend who doing his PhD study at Johns Hopkins just send me the link about &lt;a href=&#34;https://retractionwatch.com/2017/11/07/17-johns-hopkins-researchers-resign-protest-ed-board-nature-journal/&#34; target=&#34;_blank&#34;&gt;a SR paper of plagiarism&lt;/a&gt;. I have very similar experence of &lt;a href=&#34;https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-7-S2-S8&#34; target=&#34;_blank&#34;&gt;a paper published on BMC Systems Biology&lt;/a&gt;, which plagiarized &lt;a href=&#34;https://www.ncbi.nlm.nih.gov/pubmed/20179076&#34; target=&#34;_blank&#34;&gt;my work&lt;/a&gt; and the editor just decided to publish an erratum.&lt;/p&gt;
+
+&lt;p&gt;Deng &lt;em&gt;etc.&lt;/em&gt; published an R package, ppiPre, that copied source code of my package, GOSemSim, and pretended that they developed these algorithms by themselves in their paper.&lt;/p&gt;
+
+&lt;p&gt;Here is the screenshot of the source code (left: ppiPre, right: GOSemSim).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/screenshots/Screenshot 2017-07-17 19.43.51.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can find out more on &lt;a href=&#34;http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/&#34; target=&#34;_blank&#34;&gt;my blog post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As a developer of several open source software, I am glad that someone find my source code useful and happy if someone use my source code to make something better. But I am not happy if someone copies my source code by removing author information and changing function names to pretend the code was developed by himself. The situation is even worse in academic. Taking someone else&amp;rsquo;s works and passing it off as one&amp;rsquo;s own is definitely plagiarism and not allow in academic.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;After I found ppiPre plagiarized my work, I contacted the editor:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot 2015-05-27 19.56.58.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Very quickly, the editor replied my email:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-05-27%2019.58.16.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;He told me that they &amp;ldquo;do take cases of plagiarism very seriously&amp;rdquo;. I don&amp;rsquo;t know how long their &amp;ldquo;due course&amp;rdquo; is and waited for the editor&amp;rsquo;s reply for 5 months without receiving any updated information. I then contacted CRAN for the issue of the ppiPre that copied source code without acknowledgement and the package was removed from CRAN at that time. After that I sent another email to the editor to ask for update.&lt;/p&gt;
+
+&lt;p&gt;Here is the reply:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-05-27%2020.11.54.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the passed 5 months, they never even contacted the authors.&lt;/p&gt;
+
+&lt;p&gt;I waited for 2 more months and also didn&amp;rsquo;t receive any information. I sent them email to complain that they are ruining the reputation of their journal.&lt;/p&gt;
+
+&lt;p&gt;At this time, the editor told me he had contacted the author and we can &amp;ldquo;expect an update soon&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-05-27%2020.33.30.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I waited for another 3 months and as usual without any update received. I sent another email to ask for update.&lt;/p&gt;
+
+&lt;p&gt;Here is the reply of the editor:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-04-23%2021.31.55.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The author said that they just &amp;ldquo;failing to cite my work&amp;rdquo;. Of course this is not an issue of citation as they pretended that they implemented several algorithms that were actually developed by me in their paper. This is definitely plagiarism. The editor&amp;rsquo;s words, &amp;ldquo;submit a correction&amp;rdquo; and &amp;ldquo;within our policy&amp;rdquo;, indicate that the editor is totally fine for a paper of plagiarism to say sorry and publish a correction. (BTW: this is the last email I received from the editor)&lt;/p&gt;
+
+&lt;p&gt;Of course I can&amp;rsquo;t accept this, and here is my repsponse:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-04-23%2021.45.33.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Ignorance of the law is no defence, for otherwise anyone can choose not to know the law and have a defence in committing an offence. The same applies to plagiarism.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ignorance of GPL license is also not an defence of publishing someone else&amp;rsquo;s work in a scientific journal to claim that they did it themselves.&lt;/p&gt;
+
+&lt;p&gt;AND AGAIN, the editor just disappear. I sent emails several times to several editors and they just ignore my emails.&lt;/p&gt;
+
+&lt;p&gt;I wrote &lt;a href=&#34;https://guangchuangyu.github.io/2015/05/bmc-favors-source-code-plagiarism/&#34; target=&#34;_blank&#34;&gt;blog post&lt;/a&gt; and asked peoples to share it on twitter and weibo. Then the first author contacted me. After &lt;a href=&#34;https://guangchuangyu.github.io/cn/2017/07/un-fucking-believable/&#34; target=&#34;_blank&#34;&gt;severl emails&amp;rsquo; communication&lt;/a&gt;, he promised to retract his paper and even send me a statement:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/GOSemSim/2017-07-20-002402_683x584_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I never know how they interact with the editors. It was totally a black box for me as I never receive any email from both sides after the email above. They did not keep me updated. Even after they decided to publish an erratum, they didn&amp;rsquo;t notify me of their decision.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Here is their &lt;a href=&#34;https://bmcsystbiol.biomedcentral.com/articles/10.1186/s12918-015-0196-5&#34; target=&#34;_blank&#34;&gt;erratum&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The authors wish to acknowledge that the software package associated with our Research Article [1], under the name ‘ppiPre’, re-used software code for some of its functions from an existing software package, GOSemSim [2], without proper attribution and in breach of the software’s licencing terms. Additionally we neglected to cite the article by Yu et al. [3] describing the GoSemSim software.&lt;/p&gt;
+
+&lt;p&gt;The software code from GoSemSim [2] is used in the implementation of two GO semantic similarity measures, TCSS and IntelliGO. ppiPre additionally implements a KEGG-based similarity measure and three topological similarity measures, and integrates features with a support vector machine.&lt;/p&gt;
+
+&lt;p&gt;We have now updated our software package such that it is licensed under a compatible GPL version 2 licence, and revised the package to give the appropriate attribution.&lt;/p&gt;
+
+&lt;p&gt;We apologize for any inconvenience this oversight may have caused.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;They just &lt;strong&gt;&amp;ldquo;re-used&amp;rdquo;&lt;/strong&gt; source code &lt;strong&gt;&amp;ldquo;without proper attribution&amp;rdquo;&lt;/strong&gt; and these source code &amp;ldquo;&lt;strong&gt;is used in the implementation&lt;/strong&gt; of two GO semantic similarity measures&amp;rdquo;. It seems that they implemented these methods themselves. Of course the paper is not only an issue of source code plagiarism, but also an issue of publication ethics. The ppiPre paper intended to introduce my implementation of GO semantic similarity measurement as their own to cheat reviewers and readers. They did not say a word about publication ethics and the editors also ignore such issue.&lt;/p&gt;
+
+&lt;p&gt;The case is very clear that they copied my source code and intended to pretend that&amp;rsquo;s their original work and use it to publish a paper. That&amp;rsquo;s definitely plagiarism. I am very disappointed! The editors are protecting paper of plagiarism and encouraging people to steal other&amp;rsquo;s work and publish on BMC.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>shadow text effect in grid and ggplot2 graphics</title>
+      <link>https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/</link>
+      <pubDate>Thu, 02 Nov 2017 15:30:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/</guid>
+      <description>&lt;p&gt;After the release of &lt;code&gt;meme&lt;/code&gt; package, I received several feedbacks from users.&lt;/p&gt;
+
+&lt;p&gt;The most usefule one is &lt;a href=&#34;http://disq.us/p/1n9zi69&#34; target=&#34;_blank&#34;&gt;the comment&lt;/a&gt; on my blog post:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Sercan Kahveci&lt;/p&gt;
+
+&lt;p&gt;Greetings Mr. Yu,&lt;/p&gt;
+
+&lt;p&gt;I am very happy that this package exists. Thank you for making it! I would like to request a feature, to ensure the package is able to compete with professional meme-creation tools like memegenerator and paint.net. Since memes often use the font Impact, in white and with black outline, I believe the package would be more powerful if it also did that automatically.&lt;/p&gt;
+
+&lt;p&gt;Regards,&lt;/p&gt;
+
+&lt;p&gt;Sercan Kahveci, MSc&lt;/p&gt;
+
+&lt;p&gt;Content creator at Questionable Research Memes on Facebook
+&lt;a href=&#34;https://www.facebook.com/QResearchMemes/&#34; target=&#34;_blank&#34;&gt;https://www.facebook.com/QResearchMemes/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The words, &amp;lsquo;compete with professional meme-creation tools&amp;rsquo;, stimulated me to develop text plotting with background outline effect.&lt;/p&gt;
+
+&lt;p&gt;Now this feature is available in &lt;a href=&#34;https://cran.r-project.org/package=meme&#34; target=&#34;_blank&#34;&gt;meme&lt;/a&gt; v&amp;gt;=0.0.7, which can be downloaded from CRAN.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is an example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(meme)
+u &amp;lt;- system.file(&amp;quot;angry8.jpg&amp;quot;, package=&amp;quot;meme&amp;quot;)
+meme(u, &amp;quot;code&amp;quot;, &amp;quot;all the things!&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/meme/shadowtext.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;To make this &lt;strong&gt;shadow text&lt;/strong&gt; feature available to the R community, I created another package, &lt;a href=&#34;https://cran.r-project.org/web/packages/shadowtext/&#34; target=&#34;_blank&#34;&gt;shadowtext&lt;/a&gt;, that creates/draws text grob with background shadow for &lt;code&gt;grid&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt;. If you are interesting, please refer to the &lt;a href=&#34;https://cran.r-project.org/web/packages/shadowtext/vignettes/shadowtext.html&#34; target=&#34;_blank&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/shadowtext/shadowtext_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/shadowtext/shadowtext_files/figure-markdown_strict/unnamed-chunk-3-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>create meme in R</title>
       <link>https://guangchuangyu.github.io/2017/10/create-meme-in-r/</link>
       <pubDate>Wed, 25 Oct 2017 15:13:35 +0800</pubDate>
@@ -975,204 +1287,6 @@ p &amp;lt;- ggtree(tr) + geom_tiplab()
 &lt;p&gt;Beware of &lt;code&gt;mapping=aes()&lt;/code&gt; is required as &lt;code&gt;ggbio&lt;/code&gt; can&amp;rsquo;t accept &lt;code&gt;mapping=NULL&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;PS: I only test &lt;code&gt;geom_alignment&lt;/code&gt; which works with &lt;code&gt;GRanges&lt;/code&gt; and &lt;code&gt;GRangesList&lt;/code&gt;. Other &lt;code&gt;geoms&lt;/code&gt; defined in &lt;code&gt;ggbio&lt;/code&gt; may not be supported. If you find &lt;code&gt;facet_plot&lt;/code&gt; fail to work with other &lt;code&gt;geoms&lt;/code&gt;, please open an &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/issues&#34; target=&#34;_blank&#34;&gt;issue&lt;/a&gt; in github.  Feature requests are welcome.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>showCategory parameter for visualizing compareCluster output</title>
-      <link>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/</link>
-      <pubDate>Thu, 03 Nov 2016 10:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().&lt;/p&gt;
-
-&lt;p&gt;In my case, I use compareCluster() on a list of 3 elements:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;str(ClusterList)
-List of 3
- $ All : chr [1:1450] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
- $ g1  : chr [1:858] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
- $ g2: chr [1:592] &amp;quot;5325&amp;quot; &amp;quot;170691&amp;quot; &amp;quot;29953&amp;quot; &amp;quot;283392&amp;quot; ...
-CompareGO_BP=compareCluster(ClusterList, fun=&amp;quot;enrichGO&amp;quot;, pvalueCutoff=0.01, pAdjustMethod=&amp;quot;BH&amp;quot;, OrgDb=org.Hs.eg.db,ont=&amp;quot;BP&amp;quot;,readable=T)
-
-dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;I ask for 10 categories, but I get 15 categories in All, 8 categories in g1 and 12 categories in g2. None of the categories, neither the sum of the categories are 10&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;Is the option showCategory working in the case of comparison? Am I missing something here?&lt;/p&gt;
-
-&lt;p&gt;And which categories precisely will it plot? the most significant whatever my 3 cases or the most significant of each case?&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The question was &lt;a href=&#34;https://support.bioconductor.org/p/88965/&#34; target=&#34;_blank&#34;&gt;posted&lt;/a&gt; in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;In this case, we expect to get &lt;code&gt;&amp;lt;= 10 of most significant categories&lt;/code&gt; for each  &lt;code&gt;Cluster&lt;/code&gt; as the user specify &lt;code&gt;showCategory=10&lt;/code&gt;. This is exactly the way of &lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods do for &lt;code&gt;compareClusterResult&lt;/code&gt;. &lt;code&gt;8&lt;/code&gt; categories for &lt;code&gt;g1&lt;/code&gt; is obvious that there are only &lt;code&gt;8&lt;/code&gt; enriched terms found for &lt;code&gt;g1&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;But why there are &lt;code&gt;15&lt;/code&gt; for &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;12&lt;/code&gt; for &lt;code&gt;g2&lt;/code&gt;?&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods implemented in &lt;code&gt;clusterProfiler&lt;/code&gt; try to make the comparison among clusters more informative and reasonable. After extracting e.g. 10 categories for each cluster, &lt;code&gt;clusterProfiler&lt;/code&gt; try to collect overlap of these categories among clusters.&lt;/p&gt;
-
-&lt;p&gt;For example, &lt;code&gt;term A&lt;/code&gt; is enriched in all the clusters (&lt;code&gt;All&lt;/code&gt;, &lt;code&gt;g1&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;) and is in the 10 most significant categories for &lt;code&gt;g1&lt;/code&gt; but not &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;. &lt;code&gt;clusterProfiler&lt;/code&gt; try to capture these information and include &lt;code&gt;term A&lt;/code&gt; in &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt; clusters and making the comparison in &lt;code&gt;dotplot&lt;/code&gt;/&lt;code&gt;barplot&lt;/code&gt; more reasonable.&lt;/p&gt;
-
-&lt;p&gt;If users want to ignore these information, they can use &lt;code&gt;dotplot(..., includeAll=FALSE)&lt;/code&gt;, which is actually not recommended.&lt;/p&gt;
-
-&lt;p&gt;See the difference to the following example:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
-data(gcSample)
-x=compareCluster(gcSample, fun=&#39;enrichDO&#39;)
-dotplot(x, showCategory=5, includeAll=FALSE)
-dotplot(x, showCategory=5)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In the first figure, it seems that all these clusters are very different, with no overlapping terms enriched. This is not true as demonstrated in the second figure.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>xlim_tree: set x axis limits for only Tree panel</title>
-      <link>https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/</link>
-      <pubDate>Mon, 31 Oct 2016 12:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/</guid>
-      <description>&lt;p&gt;A &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; user recently asked me the following question in &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ&#34; target=&#34;_blank&#34;&gt;google group&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.&lt;/p&gt;
-
-&lt;p&gt;Is it possible to work around this and only affect the tree and it&amp;rsquo;s tip labels leaving the other plots in facet_plot unaffected?&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This is indeed a desire feature, as &lt;code&gt;ggplot2&lt;/code&gt; can&amp;rsquo;t automatically adjust &lt;code&gt;xlim&lt;/code&gt; for text since the units are in two different spaces (data and pixel).&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;Here is an example, the tip labels are truncated.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-set.seed(2016-10-31)
-tr =rtree(50)
-tr$tip.label = paste(tr$tip.label, tr$tip.label, sep=&amp;quot;_&amp;quot;)
-p &amp;lt;- ggtree(tr) + geom_tiplab(align=TRUE) + theme_tree2()
-d = data.frame(id = tr$tip.label, v= rnorm(50))
-
-facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&amp;quot;truncated tip labels&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.31.39 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we only visualize the tree, it is easy to solve by using &lt;code&gt;xlim()&lt;/code&gt; to allocate more space for the lables. But &lt;code&gt;xlim()&lt;/code&gt; works for all panels. Combination of &lt;code&gt;facet_plot()&lt;/code&gt; and &lt;code&gt;xlim()&lt;/code&gt; will produce figure with many spaces.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;facet_plot(p+xlim(NA, 6), geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&amp;quot;xlim applies to all panels&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.33.05 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To overcome this issue, &lt;code&gt;ggtree&lt;/code&gt; provides &lt;code&gt;xlim_tree&lt;/code&gt; to set &lt;code&gt;x&lt;/code&gt; axis limits for only the &lt;code&gt;Tree&lt;/code&gt; panel.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;facet_plot(p+xlim_tree(6), geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&#39;*xlim_tree* only change x axis limits of *Tree* panel&#39;)
-
-# or using:
-# facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + xlim_tree(6)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Actually, you can set &lt;code&gt;xlim&lt;/code&gt; for selected panel by using &lt;code&gt;+xlim_expand(xlim, panel)&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>facet_plot: a general solution to associate data with phylogenetic tree</title>
-      <link>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/</link>
-      <pubDate>Wed, 26 Oct 2016 16:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; provides &lt;code&gt;gheatmap&lt;/code&gt; for visualizing heatmap and &lt;code&gt;msaplot&lt;/code&gt; for visualizing multiple sequence alignment with phylogenetic tree.&lt;/p&gt;
-
-&lt;p&gt;We may have different data types and want to visualize and align them with the tree. For example, &lt;code&gt;dotplot&lt;/code&gt; of SNP site (e.g. using &lt;code&gt;geom_point(shape=&#39;|&#39;)&lt;/code&gt;), &lt;code&gt;barplot&lt;/code&gt; of trait values (e.g. using &lt;code&gt;geom_barh(stat=&#39;identity&#39;)&lt;/code&gt;) &lt;em&gt;et al&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;To make it easy to associate different types of data with phylogenetic tree, I implemented the &lt;code&gt;facet_plot&lt;/code&gt; function which accepts a &lt;code&gt;geom&lt;/code&gt; function to draw the input &lt;code&gt;data.frame&lt;/code&gt; and display it in an additional &lt;code&gt;panel&lt;/code&gt;.&lt;/p&gt;
-
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;associate tree with different type of data by &lt;a href=&#34;https://twitter.com/hashtag/ggtree?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ggtree&lt;/a&gt; &lt;a href=&#34;https://t.co/6w755VWytZ&#34;&gt;https://t.co/6w755VWytZ&lt;/a&gt; &lt;a href=&#34;https://t.co/K8WViEi13E&#34;&gt;pic.twitter.com/K8WViEi13E&lt;/a&gt;&lt;/p&gt;&amp;mdash; Guangchuang Yu (@guangchuangyu) &lt;a href=&#34;https://twitter.com/guangchuangyu/status/773359054924095488?ref_src=twsrc%5Etfw&#34;&gt;September 7, 2016&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tr &amp;lt;- rtree(30)
-p &amp;lt;- ggtree(tr)
-d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;quot;GZ&amp;quot;, &amp;quot;HK&amp;quot;, &amp;quot;CZ&amp;quot;), 30, replace=TRUE))
-p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
-d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-p2 &amp;lt;- facet_plot(p1, panel=&amp;quot;dot&amp;quot;, data=d2, geom=geom_point, 
-                aes(x=val), color=&#39;firebrick&#39;) + theme_tree2()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Most of the &lt;code&gt;geom&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt; draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have &lt;a href=&#34;https://github.com/lionel-/ggstance&#34; target=&#34;_blank&#34;&gt;ggstance&lt;/a&gt; which provides horizontal versions of &lt;code&gt;geoms&lt;/code&gt;, including:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;geom_barh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_histogramh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_linerangeh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_pointrangeh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_errorbarh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_crossbarh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_boxploth()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_violinh()&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;With &lt;code&gt;ggstance&lt;/code&gt;, we can associate &lt;code&gt;barplot&lt;/code&gt;, &lt;code&gt;boxplot&lt;/code&gt; or other graphs to phylogenetic trees.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggstance)
-d3 &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
-                    value = abs(rnorm(60, mean=100, sd=50)),
-                    category = rep(LETTERS[1:2], 30))
-p3 &amp;lt;- facet_plot(p2, panel = &#39;Stacked Barplot&#39;, data = d3, 
-                geom = geom_barh, 
-                mapping = aes(x = value, fill = as.factor(category)), 
-                stat=&#39;identity&#39; ) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;d4 = data.frame(id=rep(tr$tip.label, each=20), 
-                val=as.vector(sapply(1:30, function(i) 
-                                rnorm(20, mean=i)))
-                )               
-p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_boxploth, 
-            mapping = aes(x=val, group=label, color=location))                                  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
 

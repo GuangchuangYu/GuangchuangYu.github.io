@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.24.1" />
+  <meta name="generator" content="Hugo 0.30.2" />
   <meta name="author" content="Guangchuang YU">
   <meta name="description" content="Postdoc researcher">
 
@@ -39,7 +39,6 @@
   
 
   <title>Guangchuang YU</title>
-
 
 </head>
 <body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
@@ -950,6 +949,299 @@ to the community.</p>
   
   
   <h3 class="article-title" itemprop="name">
+    <a href="https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/" itemprop="url">visualizing reassortment history using seqcombo</a>
+  </h3>
+  
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-12-05 11:09:07 &#43;0800 CST" itemprop="datePublished">
+      Tue, Dec 5, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/genomics">Genomics</a
+    >, 
+    
+    <a href="/categories/r">R</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/seqcombo">seqcombo</a
+    >, 
+    
+    <a href="/tags/influenza">influenza</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+  <div class="article-style" itemprop="articleBody">
+    
+    <p>Reassortment is an important strategy for influenza A viruses to
+introduce a HA subtype that is new to human populations, which creates
+the possibilities of pandemic.</p>
+
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/seqcombo/master/vignettes/figures/srep25549-f2.jpg" alt="" /></p>
+
+<p>A diagram showed above (Figure 2 of <code>doi:10.1038/srep25549</code>) is widely
+used to illustrate the reassortment events. While such diagrams are
+mostly manually draw and edit without software tool to automatically
+generate. Here, I implemented the <code>hybrid_plot</code> function for producing
+publication quality figure of reassortment events.</p>
+
+<pre><code>library(tibble)
+library(ggplot2)
+
+
+n &lt;- 8
+
+virus_info &lt;- tibble(
+    id = 1:7,
+    x = c(rep(1990, 4), rep(2000, 2), 2009),
+    y = c(1,2,3,5, 1.5, 3, 4),
+    segment_color = list(
+        rep('purple', n),
+        rep('red', n),
+        rep('darkgreen', n),
+        rep('lightgreen', n),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'red', 'purple', 'red', 'purple'),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'),
+        c('darkgreen', 'lightgreen', 'lightgreen', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'))
+)
+
+flow_info &lt;- tibble(from = c(1,2,3,3,4,5,6),
+                    to = c(5,5,5,6,7,6,7))
+hybrid_plot(virus_info, flow_info)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p></p>
+    
+  </div>
+  <p class="read-more">
+    <a href="https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/" class="btn btn-primary btn-outline">
+      CONTINUE READING
+    </a>
+  </p>
+</div>
+
+      
+        
+        
+
+
+<div class="article-list-item" itemscope itemprop="blogPost">
+  
+  
+  <h3 class="article-title" itemprop="name">
+    <a href="https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/" itemprop="url">BMC journal protects paper of plagiarism</a>
+  </h3>
+  
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-11-09 21:51:43 &#43;0800 CST" itemprop="datePublished">
+      Thu, Nov 9, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/biology">Biology</a
+    >, 
+    
+    <a href="/categories/research">Research</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/bmc">BMC</a
+    >, 
+    
+    <a href="/tags/plagiarism">plagiarism</a
+    >, 
+    
+    <a href="/tags/gosemsim">GOSemSim</a
+    >, 
+    
+    <a href="/tags/ppipre">ppiPre</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+  <div class="article-style" itemprop="articleBody">
+    
+    <p>My friend who doing his PhD study at Johns Hopkins just send me the link about <a href="https://retractionwatch.com/2017/11/07/17-johns-hopkins-researchers-resign-protest-ed-board-nature-journal/" target="_blank">a SR paper of plagiarism</a>. I have very similar experence of <a href="https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-7-S2-S8" target="_blank">a paper published on BMC Systems Biology</a>, which plagiarized <a href="https://www.ncbi.nlm.nih.gov/pubmed/20179076" target="_blank">my work</a> and the editor just decided to publish an erratum.</p>
+
+<p>Deng <em>etc.</em> published an R package, ppiPre, that copied source code of my package, GOSemSim, and pretended that they developed these algorithms by themselves in their paper.</p>
+
+<p>Here is the screenshot of the source code (left: ppiPre, right: GOSemSim).</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/screenshots/Screenshot 2017-07-17 19.43.51.png" alt="" /></p>
+
+<p>You can find out more on <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/" target="_blank">my blog post</a>.</p>
+
+<p>As a developer of several open source software, I am glad that someone find my source code useful and happy if someone use my source code to make something better. But I am not happy if someone copies my source code by removing author information and changing function names to pretend the code was developed by himself. The situation is even worse in academic. Taking someone else&rsquo;s works and passing it off as one&rsquo;s own is definitely plagiarism and not allow in academic.</p>
+
+<p></p>
+    
+  </div>
+  <p class="read-more">
+    <a href="https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/" class="btn btn-primary btn-outline">
+      CONTINUE READING
+    </a>
+  </p>
+</div>
+
+      
+        
+        
+
+
+<div class="article-list-item" itemscope itemprop="blogPost">
+  
+  
+  <h3 class="article-title" itemprop="name">
+    <a href="https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/" itemprop="url">shadow text effect in grid and ggplot2 graphics</a>
+  </h3>
+  
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-11-02 15:30:00 &#43;0800 CST" itemprop="datePublished">
+      Thu, Nov 2, 2017
+    </time>
+  </span>
+
+  
+  
+  
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/categories/r">R</a
+    >, 
+    
+    <a href="/categories/visualization">Visualization</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/shadowtext">shadowtext</a
+    >, 
+    
+    <a href="/tags/meme">meme</a
+    >, 
+    
+    <a href="/tags/grid">grid</a
+    >, 
+    
+    <a href="/tags/ggplot2">ggplot2</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+  <div class="article-style" itemprop="articleBody">
+    
+    <p>After the release of <code>meme</code> package, I received several feedbacks from users.</p>
+
+<p>The most usefule one is <a href="http://disq.us/p/1n9zi69" target="_blank">the comment</a> on my blog post:</p>
+
+<blockquote>
+<p>Sercan Kahveci</p>
+
+<p>Greetings Mr. Yu,</p>
+
+<p>I am very happy that this package exists. Thank you for making it! I would like to request a feature, to ensure the package is able to compete with professional meme-creation tools like memegenerator and paint.net. Since memes often use the font Impact, in white and with black outline, I believe the package would be more powerful if it also did that automatically.</p>
+
+<p>Regards,</p>
+
+<p>Sercan Kahveci, MSc</p>
+
+<p>Content creator at Questionable Research Memes on Facebook
+<a href="https://www.facebook.com/QResearchMemes/" target="_blank">https://www.facebook.com/QResearchMemes/</a></p>
+</blockquote>
+
+<p>The words, &lsquo;compete with professional meme-creation tools&rsquo;, stimulated me to develop text plotting with background outline effect.</p>
+
+<p>Now this feature is available in <a href="https://cran.r-project.org/package=meme" target="_blank">meme</a> v&gt;=0.0.7, which can be downloaded from CRAN.</p>
+
+<p></p>
+    
+  </div>
+  <p class="read-more">
+    <a href="https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/" class="btn btn-primary btn-outline">
+      CONTINUE READING
+    </a>
+  </p>
+</div>
+
+      
+        
+        
+
+
+<div class="article-list-item" itemscope itemprop="blogPost">
+  
+  
+  <h3 class="article-title" itemprop="name">
     <a href="https://guangchuangyu.github.io/2017/10/create-meme-in-r/" itemprop="url">create meme in R</a>
   </h3>
   
@@ -1096,273 +1388,6 @@ meme(u, &quot;code&quot;, &quot;all the things!&quot;)
   </div>
   <p class="read-more">
     <a href="https://guangchuangyu.github.io/2017/08/joyplot-for-gsea-result/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-      
-        
-        
-
-
-<div class="article-list-item" itemscope itemprop="blogPost">
-  
-  
-  <h3 class="article-title" itemprop="name">
-    <a href="https://guangchuangyu.github.io/2017/06/pixel-art-of-ggplot2-faceting-using-geofacet/" itemprop="url">pixel art of ggplot2 faceting using geofacet</a>
-  </h3>
-  
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2017-06-26 20:13:35 &#43;0800 CST" itemprop="datePublished">
-      Mon, Jun 26, 2017
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >, 
-    
-    <a href="/categories/visualization">Visualization</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggplot2">ggplot2</a
-    >, 
-    
-    <a href="/tags/geofacet">geofacet</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-  <div class="article-style" itemprop="articleBody">
-    
-    <p>I just discovered an interesting <code>ggplot2</code> extension, <code>geofacet</code>, that supports arranging facet panels that mimics geographic topoloty.</p>
-
-<p>After playing with it, I realized that it is not only for visualizing <code>geo</code>-related data, but also can be fun for presenting data to mimics pixel art.</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png" alt="" /></p>
-
-<p></p>
-    
-  </div>
-  <p class="read-more">
-    <a href="https://guangchuangyu.github.io/2017/06/pixel-art-of-ggplot2-faceting-using-geofacet/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-      
-        
-        
-
-
-<div class="article-list-item" itemscope itemprop="blogPost">
-  
-  
-  <h3 class="article-title" itemprop="name">
-    <a href="https://guangchuangyu.github.io/2017/05/bioc-3.5-news-of-my-bioc-packages/" itemprop="url">[Bioc 3.5] NEWS of my BioC packages</a>
-  </h3>
-  
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2017-05-19 18:13:57 &#43;0800 CST" itemprop="datePublished">
-      Fri, May 19, 2017
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/bioc">BioC</a
-    >, 
-    
-    <a href="/tags/gosemsim">GOSemSim</a
-    >, 
-    
-    <a href="/tags/clusterprofiler">clusterProfiler</a
-    >, 
-    
-    <a href="/tags/dose">DOSE</a
-    >, 
-    
-    <a href="/tags/reactomepa">ReactomePA</a
-    >, 
-    
-    <a href="/tags/ggtree">ggtree</a
-    >, 
-    
-    <a href="/tags/chipseeker">ChIPseeker</a
-    >, 
-    
-    <a href="/tags/meshes">meshes</a
-    >, 
-    
-    <a href="/tags/treeio">treeio</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-  <div class="article-style" itemprop="articleBody">
-    
-    <p>I have 8 packages published within the <code>Bioconductor</code> project.</p>
-
-<ul>
-<li><a href="http://guangchuangyu.github.io/ChIPseeker" target="_blank">ChIPseeker</a></li>
-<li><a href="http://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a></li>
-<li><a href="http://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a></li>
-<li><a href="http://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a></li>
-<li><a href="http://guangchuangyu.github.io/GOSemSim" target="_blank">GOSemSim</a></li>
-<li><a href="http://guangchuangyu.github.io/meshes" target="_blank">meshes</a></li>
-<li><a href="http://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a></li>
-<li><a href="http://guangchuangyu.github.io/treeio" target="_blank">treeio</a></li>
-</ul>
-
-<p>A new package <a href="http://guangchuangyu.github.io/treeio" target="_blank">treeio</a> was included in BioC 3.5 release.</p>
-
-<p></p>
-    
-  </div>
-  <p class="read-more">
-    <a href="https://guangchuangyu.github.io/2017/05/bioc-3.5-news-of-my-bioc-packages/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-      
-        
-        
-
-
-<div class="article-list-item" itemscope itemprop="blogPost">
-  
-  
-  <h3 class="article-title" itemprop="name">
-    <a href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/" itemprop="url">Phylomoji with ggtree and emojifont</a>
-  </h3>
-  
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    <time datetime="2017-05-17 11:11:11 &#43;0800 CST" itemprop="datePublished">
-      Wed, May 17, 2017
-    </time>
-  </span>
-
-  
-  
-  
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/r">R</a
-    >, 
-    
-    <a href="/categories/visualization">Visualization</a
-    >
-    
-  </span>
-  
-  
-
-  
-  
-  
-  <span class="article-tags">
-    <i class="fa fa-tags"></i>
-    
-    <a href="/tags/ggplot2">ggplot2</a
-    >, 
-    
-    <a href="/tags/ggtree">ggtree</a
-    >, 
-    
-    <a href="/tags/emoji">emoji</a
-    >, 
-    
-    <a href="/tags/emojifont">emojifont</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-  <div class="article-style" itemprop="articleBody">
-    
-    <p>With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
-
-<h2 id="use-emoji-in-taxa-labels">Use emoji in taxa labels</h2>
-
-<pre><code class="language-r">library(ggtree)
-tree_text &lt;- &quot;(((((cow, (whale, dolphin)), (pig2, boar)), camel), fish), seedling);&quot;
-x &lt;- read.tree(text=tree_text)
-ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
-    xlim(NA, 7) + ylim(NA, 8.5) +
-    geom_tiplab(aes(color=label), parse='emoji', size=14, vjust=0.25) +
-    labs(title=&quot;phylomoji&quot;, caption=&quot;powered by ggtree + emojifont&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="" /></p>
-
-<p></p>
-    
-  </div>
-  <p class="read-more">
-    <a href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/" class="btn btn-primary btn-outline">
       CONTINUE READING
     </a>
   </p>
