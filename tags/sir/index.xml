@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sir on Guangchuang YU</title>
+    <link>https://guangchuangyu.github.io/tags/sir/</link>
+    <description>Recent content in Sir on Guangchuang YU</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
+    <lastBuildDate>Mon, 13 Oct 2014 05:57:22 +0800</lastBuildDate>
+    <atom:link href="/tags/sir/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SIR Model of Epidemics</title>
+      <link>https://guangchuangyu.github.io/2014/10/sir-model-of-epidemics/</link>
+      <pubDate>Mon, 13 Oct 2014 05:57:22 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2014/10/sir-model-of-epidemics/</guid>
+      <description>&lt;p&gt;The SIR model divides the population to three compartments:
+&lt;strong&gt;S&lt;/strong&gt;usceptible, &lt;strong&gt;I&lt;/strong&gt;nfected and &lt;strong&gt;R&lt;/strong&gt;ecovered. If the disease dynamic
+fits the SIR model, then the flow of individuals is one direction from
+the susceptible group to infected group and then to the recovered group.
+All individuals are assumed to be identical in terms of their
+susceptibility to infection, infectiousness if infected and mixing
+behaviour associated with disease transmission.&lt;/p&gt;
+
+&lt;p&gt;We defined: $S_t$ = the number of susceptible individuals at time t&lt;/p&gt;
+
+&lt;p&gt;$I_t$ = the number of infected individuals at time t&lt;/p&gt;
+
+&lt;p&gt;$R_t$ = the number of recovered individuals at time t&lt;/p&gt;
+
+&lt;p&gt;Suppose on average every infected individual will contact $\gamma$
+person, and $\kappa$ percent of these $\gamma$ person will be
+infected. Then on average there are $\beta = \gamma \times \kappa$
+person will be infected an infected individual.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;So with infected number $I_t$, they will infected $\beta I_t$
+individuals. Since not all people are susceptible, this number should
+multiple to the percentage of susceptible individuals. Therefore,
+$I_t$ infected individuals will infect $\beta \frac{S_t}{N}
+I_t$ individuals.&lt;/p&gt;
+
+&lt;p&gt;Another parameter $\alpha$ describes the percentage of infected
+individuals to recover in a time period. That is on average, it takes
+$1/\alpha$ periods for an infected person to recover.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(reshape2)
+require(ggplot2)
+require(gridExtra)
+
+SIR &amp;lt;- function(N, S0, I0, beta, alpha, t) {
+    S &amp;lt;- numeric(t)
+    I &amp;lt;- numeric(t)
+    S[1] &amp;lt;- S0
+    I[1] &amp;lt;- I0
+
+    for (i in 2:t) {
+        S[i] &amp;lt;- S[i-1] - beta*S[i-1]/N*I[i-1]
+        I[i] &amp;lt;- I[i-1] + beta*S[i-1]/N*I[i-1] - alpha * I[i-1]
+        if (I[i] &amp;lt; 1 || S[i] &amp;lt; 1)
+            break
+    }
+    df &amp;lt;- data.frame(time=1:t, S=S, I=I, R=N-S-I)
+    df &amp;lt;- df[S&amp;gt;1&amp;amp;I&amp;gt;1,]
+
+    df$AR &amp;lt;- (df$I+df$R)/N
+    nr &amp;lt;- nrow(df)
+    rate &amp;lt;- df$I[2:nr]/df$I[1:(nr-1)]
+    df$rate &amp;lt;- c(rate[1], rate)
+    return(df)
+}
+
+plotSIR &amp;lt;- function(df) {
+    nr &amp;lt;- nrow(df)
+    p1 &amp;lt;- ggplot(df, aes(time, I))+geom_line()
+
+    p1 &amp;lt;- p1+ggtitle(&amp;quot;No. of Infections&amp;quot;)
+    p1 &amp;lt;- p1+geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;I&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+    p2 &amp;lt;- ggplot(df, aes(time, AR))+geom_line()+xlab(&amp;quot;&amp;quot;)
+
+    p2 &amp;lt;- p2 + ggtitle(&amp;quot;Attack rate increases&amp;quot;)
+    p2 &amp;lt;- p2 + geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;AR&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+    p3 &amp;lt;- ggplot(df, aes(time, S))+geom_line()
+    p3 &amp;lt;- p3 +ggtitle(&amp;quot;Depletion of susceptibles&amp;quot;)
+    p3 &amp;lt;- p3+ylim(0, max(df$S)) +
+        geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;S&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+
+    p4 &amp;lt;- ggplot(df, aes(time, rate))+geom_line()
+    p4 &amp;lt;- p4 + ggtitle(&amp;quot;R&amp;quot;)+ ylim(range(df$rate)+c(-.2, .2)) + 
+        geom_hline(yintercept=1, color=&amp;quot;steelblue&amp;quot;, linetype=&amp;quot;dashed&amp;quot;)
+    p4 &amp;lt;- p4+geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;rate&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+
+    grid.arrange(p1,p2,p3,p4, ncol=1)
+    invisible(list(p1=p1, p2=p2, p3=p3, p4=p4))
+}
+
+
+df &amp;lt;- SIR(1e6, 1e6-1, 1, 0.3, 0.1, 300)
+plotSIR(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/10/SIRplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
