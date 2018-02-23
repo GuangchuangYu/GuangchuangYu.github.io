@@ -8,7 +8,9 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Thu, 21 Nov 2013 10:40:22 +0800</lastBuildDate>
-    <atom:link href="/tags/blast/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/blast/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>local blast</title>
@@ -16,132 +18,8 @@
       <pubDate>Thu, 21 Nov 2013 10:40:22 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2013/11/local-blast/</guid>
-      <description>&lt;p&gt;I was asked to set up a local blast for the lab. Blast can be installed
-directly using apt in debian and it turns out to be easy.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;bash&amp;quot;&#34;&gt;root@jz:/ssd/genomes# apt-get install ncbi-blast+
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-The following NEW packages will be installed:
-  ncbi-blast+
-0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded.
-Need to get 11.2 MB of archives.
-After this operation, 32.8 MB of additional disk space will be used.
-Get:1 http://ftp.hk.debian.org/debian/ wheezy/main ncbi-blast+ amd64 2.2.26-3 [11.2 MB]
-Fetched 11.2 MB in 1min 16s (146 kB/s)
-Selecting previously unselected package ncbi-blast+.
-(Reading database ... 252681 files and directories currently installed.)
-Unpacking ncbi-blast+ (from .../ncbi-blast+_2.2.26-3_amd64.deb) ...
-Processing triggers for man-db ...
-Setting up ncbi-blast+ (2.2.26-3) ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Before the program can be used for sequence alignment, we should prepare
-the db files:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;bash&amp;quot;&#34;&gt;root@jz:/ssd/genomes/blast/db# makeblastdb -in ../../hg19.fa -out hg19 -dbtype nucl
-Building a new DB, current time: 11/21/2013 16:03:05
-New DB name:   hg19
-New DB title:  ../../hg19.fa
-Sequence type: Nucleotide
-Keep Linkouts: T
-Keep MBits: T
-Maximum file size: 1073741824B
-Adding sequences from FASTA; added 25 sequences in 27.7084 seconds.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;That&amp;rsquo;s it. Now blast is supported in the lab server. I tested blastn
-with the &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;amp;from=62184015&amp;amp;to=62331329&amp;amp;strand=true&#34; target=&#34;_blank&#34;&gt;AHANAK
-sequence&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;bash&amp;quot;&#34;&gt;ygc@jz:~$ date; blastn -num_threads 8 -query sequence.fasta -db /ssd/genomes/blast/db/hg19 &amp;gt;&amp;gt; testblast.txt ; date
-Thu Nov 21 16:19:19 HKT 2013
-Thu Nov 21 17:19:45 HKT 2013
-ygc@jz:~$ wc -c sequence.fasta
-149510 sequence.fasta
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Blast search has three distinctive stages: word matching with database
-scan, ungapped alignment, gapped alignment with traceback. Only word
-matching stage is multi-threaded. So it tooks 1 hour to align this long
-gene.&lt;/p&gt;
-
-&lt;p&gt;The most significant hit of the blast result indicated that the sequence
-is located at chr11:62331329-62184015, which is consistent with the
-information presented in the &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;amp;from=62184015&amp;amp;to=62331329&amp;amp;strand=true&#34; target=&#34;_blank&#34;&gt;AHANAK sequence
-link&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ygc@jz:~$ cat testblast.txt
-BLASTN 2.2.26+
-
-
-Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb
-Miller (2000), &amp;quot;A greedy algorithm for aligning DNA sequences&amp;quot;, J
-Comput Biol 2000; 7(1-2):203-14.
-
-
-
-Database: ../../hg19.fa
-           25 sequences; 3,095,693,983 total letters
-
-
-
-Query= gi|224589802:c62331329-62184015 Homo sapiens chromosome 11,
-GRCh37.p13 Primary Assembly
-
-Length=147315
-                                                                      Score        E
-Sequences producing significant alignments:                          (Bits)     Value
-
-  chr11                                                               2.720e+05  0.0
-  chr14                                                                941       0.0
-
-...
-
-&amp;gt; chr11
-Length=135006516
-
- Score = 2.720e+05 bits (147315),  Expect = 0.0
- Identities = 147315/147315 (100%), Gaps = 0/147315 (0%)
- Strand=Plus/Minus
-
-Query  1         CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  60
-                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-Sbjct  62331329  CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  62331270
-
-Query  61        TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  120
-                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-Sbjct  62331269  TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  62331210
-
-...
-
-  Database: ../../hg19.fa
-    Posted date:  Nov 21, 2013  4:03 PM
-  Number of letters in database: 3,095,693,983
-  Number of sequences in database:  25
-
-
-
-Matrix: blastn matrix 1 -2
-Gap Penalties: Existence: 0, Extension: 2.5
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In addition to the species-specific sequence file, we should download
-the non-redundent gene and protein sequences from
-&lt;a href=&#34;ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz&#34; target=&#34;_blank&#34;&gt;ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz&lt;/a&gt; and
-&lt;a href=&#34;ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz&#34; target=&#34;_blank&#34;&gt;ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz&lt;/a&gt; respectively.&lt;/p&gt;
-
-&lt;p&gt;nt contains all nucleotide sequences of GenBank, RefSeq Nucleotides,
-EMBL, DDBJ and PDB, while nr contains all non-redundant peptide
-sequences from GenBank CDS translations, RefSeq Proteins, PDB,
-SwissProt, PIR and PRF. After generating the db files, we can blast a
-sequence to multiple species.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;bash&amp;quot;&#34;&gt;makeblastdb -in ../../nr/nr -out nr -dbtype prot
-makeblastdb -in ../../nr/nt -out nt -dbtype nucl
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <description>I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
+root@jz:/ssd/genomes# apt-get install ncbi-blast+ Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast+ 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.</description>
     </item>
     
   </channel>

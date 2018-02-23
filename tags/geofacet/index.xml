@@ -8,7 +8,9 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Mon, 26 Jun 2017 20:13:35 +0800</lastBuildDate>
-    <atom:link href="/tags/geofacet/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/geofacet/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>pixel art of ggplot2 faceting using geofacet</title>
@@ -22,39 +24,7 @@
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;Here is an example using the Turkey shape:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;Turkey &amp;lt;- read.csv(&amp;quot;http://pages.iu.edu/~cdesante/turkey.csv&amp;quot;)
-colnames(Turkey)[2:1] = c(&amp;quot;row&amp;quot;, &amp;quot;col&amp;quot;)
-Turkey$row = max(Turkey$row) - Turkey$row +1
-Turkey$name &amp;lt;- Turkey$code &amp;lt;- paste0(&#39;turkey&#39;, 1:nrow(Turkey))
-require(ggplot2)
-require(geofacet)
-x &amp;lt;- split(eu_gdp, eu_gdp$code)
-x &amp;lt;- x[sample.int(length(x), nrow(Turkey), replace=T)]
-for (i in 1:length(x)) {
-  x[[i]]$code = Turkey$code[i]
-}
-y &amp;lt;-  do.call(rbind, x)
-
-color = Turkey$Turkey.Colors
-names(color) = Turkey$code
-y$color = color[y$code]
-Turkey = Turkey[, -3]
-
-p1 &amp;lt;- ggplot(y, aes(gdp_pc, year))+ geom_line() +
-  facet_geo(~code, grid=Turkey, scales=&#39;free&#39;)
-print(p1)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 14.00.53.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;p1 + theme_void() + aes(color=color) + theme(strip.text.x = element_blank(), legend.position=&#39;none&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 19.44.30.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

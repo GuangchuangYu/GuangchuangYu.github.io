@@ -8,7 +8,9 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Wed, 28 Dec 2016 20:30:00 +0800</lastBuildDate>
-    <atom:link href="/categories/evolution/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/categories/evolution/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>add layer to specific panel of facet_plot output</title>
@@ -41,61 +43,7 @@ Andreas&lt;/p&gt;
 
 &lt;p&gt;If this can be done, we can create even more &lt;a href=&#34;https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/&#34; target=&#34;_blank&#34;&gt;comprehensive tree plots&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;In fact, it&amp;rsquo;s quite easy to do. In &lt;code&gt;facet_plot&lt;/code&gt;, &lt;code&gt;ggtree&lt;/code&gt; used a variable &lt;code&gt;.panel&lt;/code&gt; to store the panel information. We can add a dummy column &lt;code&gt;.panel&lt;/code&gt; to our data and pass it to  &lt;code&gt;geom&lt;/code&gt; layer function and the layer will be added to selected panel we specify in the &lt;code&gt;.panel&lt;/code&gt; column.&lt;/p&gt;
-
-&lt;p&gt;To follow up the above example, we can create a &lt;code&gt;data.frame&lt;/code&gt; that contains &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;.panel=&amp;quot;dot&amp;quot;&lt;/code&gt; as we want to add horizontal lines in &lt;code&gt;dot&lt;/code&gt; panel.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;d=data.frame(y=1:30, .panel=&#39;dot&#39;)
-p3 + geom_hline(data=d, aes(yintercept=y))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Here is what we can get:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-12-28-005010_1280x800_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/&#34; target=&#34;_blank&#34;&gt;xlim_expand&lt;/a&gt; is actually adding a &lt;code&gt;geom_blank&lt;/code&gt; layer to selected panel for setting x-axis limits of that panel.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Another approach is using &lt;code&gt;facet_plot&lt;/code&gt; with &lt;strong&gt;panel&lt;/strong&gt; parameter setting to existing one.&lt;/p&gt;
-
-&lt;p&gt;An example is posted in &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/2zAyBqa-CnM/NXWgmGKWDwAJ&#34; target=&#34;_blank&#34;&gt;google group&lt;/a&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(dplyr)
-library(ggstance)
-library(ggtree)
-
-tr &amp;lt;- rtree(30)
-p &amp;lt;- ggtree(tr) + theme_tree2() 
-
-df &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
-                 value = abs(rnorm(60, mean=100, sd=50)),
-                 category = rep(LETTERS[1:2], 30))
-
-sum_value &amp;lt;- df %&amp;gt;%
-    group_by(id) %&amp;gt;%
-    summarize(total = sum(value))
-
-p2 &amp;lt;- facet_plot(p, panel = &#39;Stacked Barplot&#39;, 
-                 data = df, geom = geom_barh,
-                 mapping = aes(x = value, fill = as.factor(category)),
-                 stat=&#39;identity&#39; ) 
-
-facet_plot(p2, panel=&#39;Stacked Barplot&#39;,
-           data=sum_value, geom=geom_text, 
-           mapping=aes(x=total+20, label=round(total)))                     
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_panel.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -114,50 +62,7 @@ facet_plot(p2, panel=&#39;Stacked Barplot&#39;,
 
 &lt;p&gt;This is indeed a desire feature, as &lt;code&gt;ggplot2&lt;/code&gt; can&amp;rsquo;t automatically adjust &lt;code&gt;xlim&lt;/code&gt; for text since the units are in two different spaces (data and pixel).&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;Here is an example, the tip labels are truncated.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-set.seed(2016-10-31)
-tr =rtree(50)
-tr$tip.label = paste(tr$tip.label, tr$tip.label, sep=&amp;quot;_&amp;quot;)
-p &amp;lt;- ggtree(tr) + geom_tiplab(align=TRUE) + theme_tree2()
-d = data.frame(id = tr$tip.label, v= rnorm(50))
-
-facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&amp;quot;truncated tip labels&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.31.39 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we only visualize the tree, it is easy to solve by using &lt;code&gt;xlim()&lt;/code&gt; to allocate more space for the lables. But &lt;code&gt;xlim()&lt;/code&gt; works for all panels. Combination of &lt;code&gt;facet_plot()&lt;/code&gt; and &lt;code&gt;xlim()&lt;/code&gt; will produce figure with many spaces.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;facet_plot(p+xlim(NA, 6), geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&amp;quot;xlim applies to all panels&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.33.05 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To overcome this issue, &lt;code&gt;ggtree&lt;/code&gt; provides &lt;code&gt;xlim_tree&lt;/code&gt; to set &lt;code&gt;x&lt;/code&gt; axis limits for only the &lt;code&gt;Tree&lt;/code&gt; panel.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;facet_plot(p+xlim_tree(6), geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&#39;*xlim_tree* only change x axis limits of *Tree* panel&#39;)
-
-# or using:
-# facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + xlim_tree(6)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Actually, you can set &lt;code&gt;xlim&lt;/code&gt; for selected panel by using &lt;code&gt;+xlim_expand(xlim, panel)&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -176,62 +81,7 @@ facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) +
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tr &amp;lt;- rtree(30)
-p &amp;lt;- ggtree(tr)
-d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;quot;GZ&amp;quot;, &amp;quot;HK&amp;quot;, &amp;quot;CZ&amp;quot;), 30, replace=TRUE))
-p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
-d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-p2 &amp;lt;- facet_plot(p1, panel=&amp;quot;dot&amp;quot;, data=d2, geom=geom_point, 
-                aes(x=val), color=&#39;firebrick&#39;) + theme_tree2()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Most of the &lt;code&gt;geom&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt; draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have &lt;a href=&#34;https://github.com/lionel-/ggstance&#34; target=&#34;_blank&#34;&gt;ggstance&lt;/a&gt; which provides horizontal versions of &lt;code&gt;geoms&lt;/code&gt;, including:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;geom_barh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_histogramh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_linerangeh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_pointrangeh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_errorbarh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_crossbarh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_boxploth()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_violinh()&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;With &lt;code&gt;ggstance&lt;/code&gt;, we can associate &lt;code&gt;barplot&lt;/code&gt;, &lt;code&gt;boxplot&lt;/code&gt; or other graphs to phylogenetic trees.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggstance)
-d3 &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
-                    value = abs(rnorm(60, mean=100, sd=50)),
-                    category = rep(LETTERS[1:2], 30))
-p3 &amp;lt;- facet_plot(p2, panel = &#39;Stacked Barplot&#39;, data = d3, 
-                geom = geom_barh, 
-                mapping = aes(x = value, fill = as.factor(category)), 
-                stat=&#39;identity&#39; ) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;d4 = data.frame(id=rep(tr$tip.label, each=20), 
-                val=as.vector(sapply(1:30, function(i) 
-                                rnorm(20, mean=i)))
-                )               
-p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_boxploth, 
-            mapping = aes(x=val, group=label, color=location))                                  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -244,38 +94,7 @@ p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_box
 beast output as demonstrated by their example data:
 &lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.15.57.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;BEAST output is well supported by
-&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; and it&amp;rsquo;s easy to
-reproduce such a tree view.
-&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; supports parsing beast
-output by read.beast function. We can visualize the tree directly by
-using ggtree function. Since this is a time scale tree, we can set the
-parameter &lt;strong&gt;&lt;em&gt;mrsd&lt;/em&gt;&lt;/strong&gt; to most recent sampling date.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require(ggplot2)
-require(ggtree)
-x &amp;lt;- read.beast(&amp;quot;/Applications/FigTree/influenza.tree&amp;quot;)
-cols &amp;lt;- scale_color(x, by=&amp;quot;height&amp;quot;)
-ggtree(x, right=TRUE, mrsd=&amp;quot;2005-04-02&amp;quot;, color=cols) + theme_tree2() +
-    geom_text(aes(x=max(x), label=label), size=1, color=cols, hjust=-.3) +
-        scale_x_continuous(breaks=c(1992, 1995, 1997, 2000, 2002, 2005), minor_breaks=seq(1992, 2005, 1)) +
-            geom_segment(aes(xend=max(x)+.20, yend=y), linetype=&amp;quot;dotted&amp;quot;, size=.1, color=cols) +
-                theme(panel.grid.major   = element_line(color=&amp;quot;black&amp;quot;, size=.2),
-                      panel.grid.minor   = element_line(color=&amp;quot;grey&amp;quot;, size=.2),
-                      panel.grid.major.y = element_blank(),
-                      panel.grid.minor.y = element_blank()) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.16.14.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -292,114 +111,7 @@ supported data types. It is hard/impossible to inject user specific
 data.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;I decided to implement my own one by extending the ggplot2 package.
-There are other R packages that implemented tree viewer using ggplot2,
-including OutbreakTools, phyloseq and ggphylo, but all of them only
-create complex tree view function for their specific needs. They are
-just classical tree viewers that only viewing the tree or annotating a
-specific data type. The good parts of ggplot2 are not available in these
-packages. They lack of flexibilities of annotating phylogenetic tree by
-diverse user inputs. I develop ggtree, which is based on grammar of
-graphics and will takes all the good parts of ggplot2.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;nwk &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.nwk&amp;quot;, package = &amp;quot;ggtree&amp;quot;)
-library(ape)
-tree &amp;lt;- read.tree(nwk)
-library(ggplot2)
-library(ggtree)
-ggplot(tree, aes(x, y)) + geom_tree() + theme_tree() + xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It extends ggplot2 to support tree objects and implements a geom_tree()
-layer to draw the tree.&lt;/p&gt;
-
-&lt;p&gt;The ggtree package provides a function, ggtree, for shortcut of
-&lt;code&gt;ggplot()+geom_tree()+theme_tree()&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;It supports several tree objects including phylo that defined in ape,
-phylo4 that defined in phylobase and jplace that defined within the
-ggtree package.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p1 &amp;lt;- ggtree(tree) + ggtitle(&amp;quot;tree of phylo object&amp;quot;)
-tr2 &amp;lt;- as(tree, &amp;quot;phylo4&amp;quot;)
-p2 &amp;lt;- ggtree(tr2) + ggtitle(&amp;quot;tree of phylo4 object&amp;quot;)
-jpf &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.jplace&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
-jp &amp;lt;- read.jplace(jpf)
-p3 &amp;lt;- ggtree(jp) + ggtitle(&amp;quot;tree of jplace object&amp;quot;)
-library(gridExtra)
-grid.arrange(p1, p2, p3, ncol=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_objects.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;With this implementation, it is possible to inject user input. But is it
-easy? The answer is yes and no. It may depends on user&amp;rsquo;s ggplot2
-experiences. To place the input data at the correct position, you should
-know how the tree was layout. It may be easy for an experienced user,
-but hard for newbie. Most of us are impatient and reluctant to learn, so
-I should create a way that is easy to follow. It&amp;rsquo;s not a good idea to
-implement unnecessary geom_XXX layer, for it violates the great idea of
-taking all the good parts of ggplot2, and it will violate the consistent
-function calls of &lt;code&gt;geom_XXX&lt;/code&gt;. Thanks to my sleep disorder, I came out
-with an operator &lt;strong&gt;&lt;code&gt;%&amp;lt;+%&lt;/code&gt;&lt;/strong&gt; for injecting input data to the tree view.
-After the injection, the data is visible to all the geom_XXX layers.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p &amp;lt;- ggtree(tree)
-
-print(dd)
-taxa    place   value
-M   NA  55.9
-A   GZ  65.6
-C   GZ  59.3
-I   CZ  78.5
-E   GZ  62.9
-D   GZ  64.1
-J   CZ  62.3
-K   CZ  79.1
-B   GZ  89.0
-L   CZ  57.1
-G   HK  66.4
-H   HK  61.6
-F   HK  59.9
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Suppose we have a tree view p, and input data dd, we can attach the data
-to the tree and add a layer of tip labels and colored by place.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p &amp;lt;- p %&amp;lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
-print(p)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_place.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Once the data is attached, it is always attached, and we can add more
-layers easily.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
-  geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_place2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The package is now available via github,
-&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;https://github.com/GuangchuangYu/ggtree&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Suggestions, comments and feature request are all welcome. Let&amp;rsquo;s make it
-an easy to use and feature-riched package for viewing and annotating
-phylogenetic trees.&lt;/p&gt;
-
-&lt;p&gt;At last, wish you a merry christmas :)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;/p&gt;</description>
     </item>
     
   </channel>

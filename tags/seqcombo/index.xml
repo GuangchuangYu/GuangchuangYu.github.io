@@ -8,7 +8,9 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Tue, 05 Dec 2017 11:09:07 +0800</lastBuildDate>
-    <atom:link href="/tags/seqcombo/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/seqcombo/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>visualizing reassortment history using seqcombo</title>
@@ -55,133 +57,7 @@ hybrid_plot(virus_info, flow_info)
 
 &lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;hybrid_plot&lt;/code&gt; requires two tibble data frame of virus information
-and genetic flow information.&lt;/p&gt;
-
-&lt;p&gt;Users need to provide &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; positions to plot the virus, this make
-sense for geographically and temporally information are usually
-available in such phylodynamic study and can be employed to set &lt;code&gt;x&lt;/code&gt; or
-&lt;code&gt;y&lt;/code&gt; to provide more information and help interpretation of the
-reassortment events.&lt;/p&gt;
-
-&lt;p&gt;We use hexagon to represent virus. Users can set the virus outer
-boundary color by &lt;code&gt;v_color&lt;/code&gt; and fill the virus by &lt;code&gt;v_fill&lt;/code&gt;. Color of
-line segments that indicate the genetic flow relationship can be specify
-via &lt;code&gt;l_color&lt;/code&gt; parameter.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=&#39;firebrick&#39;, v_fill=&#39;darkgreen&#39;, l_color=&#39;steelblue&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We usually have more information to present, for example host
-information and HA subtype &lt;em&gt;etc.&lt;/em&gt; and these information can be used to
-color the virus either by &lt;code&gt;v_color&lt;/code&gt; or &lt;code&gt;v_fill&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$Host = c(&amp;quot;Avian&amp;quot;, &amp;quot;Human&amp;quot;, rep(&amp;quot;Swine&amp;quot;, 4), &amp;quot;Human&amp;quot;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The relative virus size can also be specify if a &lt;code&gt;virus_size&lt;/code&gt; column is
-available in the input &lt;code&gt;virus_info&lt;/code&gt; data.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$virus_size &amp;lt;- c(rep(1, 3), 2, 1, 1, 1.5)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If &lt;code&gt;label&lt;/code&gt; and &lt;code&gt;label_position&lt;/code&gt; coloumns are available, the virus labels
-(virus name or other information) will be added automatically.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;Avian&amp;quot;, &amp;quot;Human\nH3N2&amp;quot;, &amp;quot;Classic\nswine\nH1N1&amp;quot;, &amp;quot;Eurasian swine&amp;quot;,
-                      &amp;quot;North American swine\n triple reassrotant H3N2&amp;quot;,
-                      &amp;quot;North American swine\n triple reassortant H1N2&amp;quot;, &amp;quot;2009 Human H1N1&amp;quot;)
-virus_info$label_position &amp;lt;- c(&#39;left&#39;, &#39;left&#39;, &#39;left&#39;, &#39;below&#39;, &#39;below&#39;, &#39;upper&#39;, &#39;below&#39;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;User can use &lt;code&gt;asp&lt;/code&gt; to set the aspect ratio of hexagons, &lt;code&gt;asp &amp;lt; 1&lt;/code&gt; for
-thick/short and &lt;code&gt;asp &amp;gt; 1&lt;/code&gt; for thin/tall.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host, asp=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The output of &lt;code&gt;hybrid_plot&lt;/code&gt; is a &lt;code&gt;ggplot&lt;/code&gt; object and users can use
-&lt;code&gt;ggplot2&lt;/code&gt; to modify the details.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;title &amp;lt;- &amp;quot;Reassortment events in evolution of the 2009 influenza A (H1N1) virus&amp;quot;
-caption &amp;lt;- &#39;Gene segments: PB2, PB1, PA, HA, NP, NA, M, NS&#39;
-color &amp;lt;- c(Avian=&amp;quot;purple&amp;quot;, Human=&amp;quot;red&amp;quot;, Swine=&amp;quot;darkgreen&amp;quot;)
-
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
-    labs(caption=caption, title=title) +
-    scale_color_manual(values=color) + scale_fill_manual(values=color) +
-    scale_x_continuous(breaks=c(1990, 2000, 2009)) +
-    xlab(NULL) + ylab(NULL) + theme_minimal() +
-    theme(axis.line.y = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          panel.grid.minor=element_blank(),
-          panel.grid.major.y=element_blank(),
-          legend.position = c(.95, .1)
-          )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Top-down or bottom-up style is also supported.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;x &amp;lt;- virus_info$x
-virus_info$x &amp;lt;- virus_info$y
-virus_info$y &amp;lt;- x
-virus_info$label_position &amp;lt;- c(rep(&amp;quot;right&amp;quot;, 3), &amp;quot;left&amp;quot;, &amp;quot;left&amp;quot;, &amp;quot;right&amp;quot;, &amp;quot;right&amp;quot;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
-    scale_y_reverse() + scale_x_continuous(limits=c(0, 5.5))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-9-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;User can also use Emoji to label the virus (host information in this
-example):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;chicken&amp;quot;, &amp;quot;woman&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;woman&amp;quot;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host,
-              parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;) +
-    scale_y_reverse()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-10-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In case you don&amp;rsquo;t have xy-coordination information, you can use
-&lt;code&gt;set_layout&lt;/code&gt; function to auto setting the xy position using selected
-layout function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.kamada.kawai&amp;quot;)
-hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.fruchterman.reingold&amp;quot;)
-hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Please let me know if you know any published reassortment data that contain
-spatial information, I will demonstrate how to visualize reassortment
-history on a map.&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

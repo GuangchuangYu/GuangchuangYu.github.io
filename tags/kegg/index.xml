@@ -8,7 +8,9 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Tue, 03 May 2016 17:00:00 +0800</lastBuildDate>
-    <atom:link href="/tags/kegg/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/kegg/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>convert biological ID with KEGG API using clusterProfiler</title>
@@ -56,127 +58,7 @@ head(np2up)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The ID type (both fromType &amp;amp; toType) should be one of &amp;lsquo;kegg&amp;rsquo;, &amp;lsquo;ncbi-geneid&amp;rsquo;, &amp;lsquo;ncbi-proteinid&amp;rsquo; or &amp;lsquo;uniprot&amp;rsquo;. The &amp;lsquo;kegg&amp;rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &amp;lsquo;kegg&amp;rsquo; ID is &lt;code&gt;entrezgene&lt;/code&gt; ID for eukaryote species and &lt;code&gt;Locus&lt;/code&gt; ID for prokaryotes.
-&lt;/p&gt;
-
-&lt;p&gt;Many prokaryote species don&amp;rsquo;t have entrezgene ID available. For example we can check the gene information of &lt;code&gt;ece:Z5100&lt;/code&gt; in &lt;a href=&#34;http://www.genome.jp/dbget-bin/www_bget?ece:Z5100&#34; target=&#34;_blank&#34;&gt;http://www.genome.jp/dbget-bin/www_bget?ece:Z5100&lt;/a&gt;, which have &lt;code&gt;NCBI-ProteinID&lt;/code&gt; and &lt;code&gt;UnitProt&lt;/code&gt; links in the &lt;code&gt;Other DBs&lt;/code&gt; Entry, but not &lt;code&gt;NCBI-GeneID&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;If we try to convert &lt;code&gt;Z5100&lt;/code&gt; to &lt;code&gt;ncbi-geneid&lt;/code&gt;, &lt;code&gt;bitr_kegg&lt;/code&gt; will throw error of &lt;code&gt;ncbi-geneid is not supported&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&#39;ncbi-geneid&#39;, organism=&#39;ece&#39;)
-
-## Error in KEGG_convert(fromType, toType, organism) :
-## ncbi-geneid is not supported for ece ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We can of course convert it to &lt;code&gt;ncbi-proteinid&lt;/code&gt; and &lt;code&gt;uniprot&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&#39;ncbi-proteinid&#39;, organism=&#39;ece&#39;)
-
-##    kegg ncbi-proteinid
-## 1 Z5100       AAG58814
-
-bitr_kegg(&amp;quot;Z5100&amp;quot;, fromType=&amp;quot;kegg&amp;quot;, toType=&#39;uniprot&#39;, organism=&#39;ece&#39;)
-
-##    kegg uniprot
-## 1 Z5100  Q7DB85
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;search-kegg-organism&#34;&gt;search_kegg_organism&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; supports more than 4k species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34; target=&#34;_blank&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt; for hypergeometric test (&lt;code&gt;enrichKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;enrichMKEGG&lt;/code&gt;) and GSEA (&lt;code&gt;gseKEGG&lt;/code&gt; &amp;amp; &lt;code&gt;gseMKEGG&lt;/code&gt;). We can use &lt;code&gt;bitr_kegg&lt;/code&gt; to convert ID for all these 4k species. To facilitate searching scientific name abbreviate used in the &lt;code&gt;organism&lt;/code&gt; parameter of these functions, I implemented the &lt;code&gt;search_kegg_organism&lt;/code&gt; function. We can search by &lt;code&gt;kegg_code&lt;/code&gt;, &lt;code&gt;scientific_name&lt;/code&gt; or &lt;code&gt;common_name&lt;/code&gt; (which is not available for prokaryotes).&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;search_kegg_organism(&#39;ece&#39;, by=&#39;kegg_code&#39;)
-
-##     kegg_code                        scientific_name common_name
-## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &amp;lt;NA&amp;gt;
-
-ecoli &amp;lt;- search_kegg_organism(&#39;Escherichia coli&#39;, by=&#39;scientific_name&#39;)
-dim(ecoli)
-
-## [1] 64  3
-
-head(ecoli)
-
-##     kegg_code                        scientific_name common_name
-## 329       eco           Escherichia coli K-12 MG1655        &amp;lt;NA&amp;gt;
-## 330       ecj            Escherichia coli K-12 W3110        &amp;lt;NA&amp;gt;
-## 331       ecd            Escherichia coli K-12 DH10B        &amp;lt;NA&amp;gt;
-## 332       ebw                Escherichia coli BW2952        &amp;lt;NA&amp;gt;
-## 333      ecok            Escherichia coli K-12 MDS42        &amp;lt;NA&amp;gt;
-## 334       ece Escherichia coli O157:H7 EDL933 (EHEC)        &amp;lt;NA&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;keytype-parameter&#34;&gt;keyType parameter&lt;/h2&gt;
-
-&lt;p&gt;With the ID conversion utilities built in &lt;code&gt;clusterProfiler&lt;/code&gt;, I add a parameter &lt;code&gt;keyType&lt;/code&gt; in &lt;code&gt;enrichKEGG&lt;/code&gt;, &lt;code&gt;enrichMKEGG&lt;/code&gt;, &lt;code&gt;gseKEGG&lt;/code&gt; and &lt;code&gt;gseMKEGG&lt;/code&gt;. Now we can use ID type that is not the primary ID in KEGG database.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;x &amp;lt;- enrichKEGG(np2up[,2], organism=&#39;hsa&#39;, keyType=&#39;uniprot&#39;)
-head(summary(x))
-
-##                ID                            Description GeneRatio
-## hsa04072 hsa04072      Phospholipase D signaling pathway    11/133
-## hsa04060 hsa04060 Cytokine-cytokine receptor interaction    14/133
-## hsa04390 hsa04390                Hippo signaling pathway    10/133
-## hsa04975 hsa04975           Fat digestion and absorption     5/133
-## hsa05221 hsa05221                 Acute myeloid leukemia     6/133
-##           BgRatio       pvalue   p.adjust     qvalue
-## hsa04072 216/9275 0.0002654190 0.03901659 0.03240905
-## hsa04060 354/9275 0.0005349245 0.03931695 0.03265855
-## hsa04390 213/9275 0.0009536247 0.04199404 0.03488227
-## hsa04975  58/9275 0.0014014886 0.04199404 0.03488227
-## hsa05221  86/9275 0.0014283687 0.04199404 0.03488227
-##                                                                                                         geneID
-## hsa04072                      O95398/Q99777/P49619/Q6FGP0/Q8WVM9/O14807/P41594/A8K5P7/P10145/A0A024RDA5/P16234
-## hsa04060 A0N0N3/O00574/P19876/P01589/P10145/A0A024RDA5/B4DGA4/Q99665/P16234/P78556/Q6I9S7/P42830/P27930/Q9UBN6
-## hsa04390                             Q8WW10/A8K141/Q9UI47/P35240/A0A024R1J8/Q659G9/Q9UJU2/P22003/M9VUD0/O00144
-## hsa04975                                                            Q9UNK4/A0A087WZT4/A0A0C4DFX6/Q9UHC9/P04054
-## hsa05221                                                         Q659G9/Q9UJU2/Q03181/A0A024RCW6/Q06455/B2R6I9
-##          Count
-## hsa04072    11
-## hsa04060    14
-## hsa04390    10
-## hsa04975     5
-## hsa05221     6
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;setreadable&#34;&gt;setReadable&lt;/h2&gt;
-
-&lt;p&gt;For GO analysis, we have a &lt;code&gt;readable&lt;/code&gt; parameter to control whether traslating the IDs to human readable gene name. This parameter is not available for KEGG analysis. But we still have the ability to translate input gene IDs to gene name using &lt;code&gt;setReadable&lt;/code&gt; function if and only if corresponding &lt;code&gt;OrgDb&lt;/code&gt; object is available.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;y &amp;lt;- setReadable(x, &#39;org.Hs.eg.db&#39;, keytype=&amp;quot;UNIPROT&amp;quot;)
-head(summary(y))
-
-##                ID                            Description GeneRatio
-## hsa04072 hsa04072      Phospholipase D signaling pathway    11/133
-## hsa04060 hsa04060 Cytokine-cytokine receptor interaction    14/133
-## hsa04390 hsa04390                Hippo signaling pathway    10/133
-## hsa04975 hsa04975           Fat digestion and absorption     5/133
-## hsa05221 hsa05221                 Acute myeloid leukemia     6/133
-##           BgRatio       pvalue   p.adjust     qvalue
-## hsa04072 216/9275 0.0002654190 0.03901659 0.03240905
-## hsa04060 354/9275 0.0005349245 0.03931695 0.03265855
-## hsa04390 213/9275 0.0009536247 0.04199404 0.03488227
-## hsa04975  58/9275 0.0014014886 0.04199404 0.03488227
-## hsa05221  86/9275 0.0014283687 0.04199404 0.03488227
-##                                                                                                geneID
-## hsa04072                             RAPGEF3/RAPGEF3/DGKG/MRAS/MRAS/MRAS/GRM5/GRM5/CXCL8/CXCL8/PDGFRA
-## hsa04060 CXCR6/CXCR6/CXCL3/IL2RA/CXCL8/CXCL8/IL12RB2/IL12RB2/PDGFRA/CCL20/CXCL5/CXCL5/IL1R2/TNFRSF10D
-## hsa04390                                        CTNNA3/CTNNA3/CTNNA3/NF2/NF2/LEF1/LEF1/BMP5/BMP5/FZD9
-## hsa04975                                                        PLA2G2D/PLA2G2D/NPC1L1/NPC1L1/PLA2G1B
-## hsa05221                                                        LEF1/LEF1/PPARD/PPARD/RUNX1T1/RUNX1T1
-##          Count
-## hsa04072    11
-## hsa04060    14
-## hsa04390    10
-## hsa04975     5
-## hsa05221     6
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -196,66 +78,7 @@ head(summary(y))
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.genome.jp/kegg/module.html&#34; target=&#34;_blank&#34;&gt;KEGG Modules&lt;/a&gt; have a much more straightforwared interpretation in many situations and there was a &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/37&#34; target=&#34;_blank&#34;&gt;feature request&lt;/a&gt; for implementing an enrichment test from clusterProfiler user. Both hypergeometric test and GSEA of KEGG Module are now supported in &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;. Just like &lt;a href=&#34;http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/&#34; target=&#34;_blank&#34;&gt;KEGG Pathway Analysis&lt;/a&gt;, clusterProfiler accesses latest online data and supports more than 2000 species listed in &lt;a href=&#34;http://www.genome.jp/kegg/catalog/org_list.html&#34; target=&#34;_blank&#34;&gt;http://www.genome.jp/kegg/catalog/org_list.html&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To prevent confusing new users who may not fammiliar with KEGG, I created two new functions, &lt;em&gt;enrichMKEGG&lt;/em&gt; and &lt;em&gt;gseMKEGG&lt;/em&gt; for enrichment test of KEGG Module and keep the original functions, &lt;em&gt;enrichKEGG&lt;/em&gt; and &lt;em&gt;gseKEGG&lt;/em&gt; for KEGG pathway analysis only.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
-
-data(geneList)
-de &amp;lt;- names(geneList)[1:100]
-xx &amp;lt;- enrichMKEGG(de, organism=&#39;hsa&#39;, minGSSize=1)
-head(summary(xx))
-
-##            ID
-## M00693 M00693
-## M00286 M00286
-## M00067 M00067
-## M00691 M00691
-##                                                                                    Description
-## M00693                                                            Cell cycle - G2/M transition
-## M00286                                                                            GINS complex
-## M00067 Sulfoglycolipids biosynthesis, ceramide/1-alkyl-2-acylglycerol =&amp;gt; sulfatide/seminolipid
-## M00691                                               DNA damage-induced cell cycle checkpoints
-##        GeneRatio BgRatio       pvalue     p.adjust       qvalue
-## M00693       3/8 10/1528 0.0000111304 5.565199e-05 1.171621e-05
-## M00286       2/8  4/1528 0.0001432508 3.581269e-04 7.539514e-05
-## M00067       1/8  2/1528 0.0104472034 1.741201e-02 3.665685e-03
-## M00691       1/8  7/1528 0.0361484900 4.518561e-02 9.512761e-03
-##              geneID Count
-## M00693 9133/890/983     3
-## M00286   9837/51659     2
-## M00067         7368     1
-## M00691         1111     1
-
-yy &amp;lt;- gseMKEGG(geneList)
-
-## [1] &amp;quot;calculating observed enrichment scores...&amp;quot;
-## [1] &amp;quot;calculating permutation scores...&amp;quot;
-## [1] &amp;quot;calculating p values...&amp;quot;
-## [1] &amp;quot;done...&amp;quot;
-
-head(summary(yy))
-
-##            ID                     Description setSize enrichmentScore
-## M00337 M00337                Immunoproteasome      15       0.7583644
-## M00340 M00340   Proteasome, 20S core particle      13       0.7935026
-## M00354 M00354 Spliceosome, U4/U6.U5 tri-snRNP      29       0.6053503
-##             NES      pvalue   p.adjust    qvalues
-## M00337 2.063359 0.002298851 0.03675214 0.02968961
-## M00340 2.047060 0.002409639 0.03675214 0.02968961
-## M00354 1.913834 0.002564103 0.03675214 0.02968961
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Please refer to &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;vignette&lt;/a&gt; for more details.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -298,110 +121,7 @@ supported. So that you script is still working with new version of
 For other species, common name is not supported, since I don&amp;rsquo;t want to
 maintain such a long mapping list with many species have no common name
 available and it may also introduce unexpected bugs.
-&lt;/p&gt;
-
-&lt;h3 id=&#34;example-1-using-online-kegg-annotation&#34;&gt;Example 1: Using online KEGG annotation&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;library(DOSE)
-data(geneList)
-de &amp;lt;- names(geneList)[geneList &amp;gt; 1]
-
-library(clusterProfiler)
-kk &amp;lt;- enrichKEGG(de, organism=&amp;quot;hsa&amp;quot;, pvalueCutoff=0.05, pAdjustMethod=&amp;quot;BH&amp;quot;, 
-                 qvalueCutoff=0.1, readable=TRUE)
-head(summary(kk))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; head(summary(kk))
-               ID                            Description GeneRatio  BgRatio
-hsa04110 hsa04110                             Cell cycle    31/247 124/6861
-hsa03030 hsa03030                        DNA replication     9/247  36/6861
-hsa04060 hsa04060 Cytokine-cytokine receptor interaction    25/247 265/6861
-hsa04114 hsa04114                         Oocyte meiosis    14/247 113/6861
-hsa04115 hsa04115                  p53 signaling pathway    10/247  68/6861
-hsa04062 hsa04062            Chemokine signaling pathway    18/247 189/6861
-               pvalue     p.adjust       qvalue
-hsa04110 2.280256e-18 9.349050e-17 5.280593e-17
-hsa03030 3.527197e-06 7.230753e-05 4.084123e-05
-hsa04060 8.404037e-06 1.148552e-04 6.487326e-05
-hsa04114 4.827484e-05 4.948171e-04 2.794859e-04
-hsa04115 1.406946e-04 9.801620e-04 5.536217e-04
-hsa04062 1.434383e-04 9.801620e-04 5.536217e-04
-                                                                                                                                                                              geneID
-hsa04110 CDC45/CDC20/CCNB2/CCNA2/CDK1/MAD2L1/TTK/CHEK1/CCNB1/MCM5/PTTG1/MCM2/CDC25A/CDC6/PLK1/BUB1B/ESPL1/CCNE1/ORC6/ORC1/CCNE2/MCM6/MCM4/DBF4/SKP2/CDC25B/BUB1/MYC/PCNA/E2F1/CDKN2A
-hsa03030                                                                                                                            MCM5/MCM2/MCM6/MCM4/FEN1/RFC4/PCNA/RNASEH2A/DNA2
-hsa04060                           CXCL10/CXCL13/CXCL11/CXCL9/CCL18/IL1R2/CCL8/CXCL3/CCL20/IL12RB2/CXCL8/TNFRSF11A/CCL5/CXCR6/IL2RA/CCR1/CCL2/IL2RG/CCL4/CCR8/CCR7/GDF5/IL24/LTB/IL7
-hsa04114                                                                                          CDC20/CCNB2/CDK1/MAD2L1/CALML5/AURKA/CCNB1/PTTG1/PLK1/ESPL1/CCNE1/CCNE2/BUB1/FBXO5
-hsa04115                                                                                                               CCNB2/RRM2/CDK1/CHEK1/CCNB1/GTSE1/CCNE1/CCNE2/SERPINB5/CDKN2A
-hsa04062                                                                       CXCL10/CXCL13/CXCL11/CXCL9/CCL18/CCL8/CXCL3/CCL20/CXCL8/CCL5/CXCR6/CCR1/STAT1/CCL2/CCL4/HCK/CCR8/CCR7
-         Count
-hsa04110    31
-hsa03030     9
-hsa04060    25
-hsa04114    14
-hsa04115    10
-hsa04062    18
-&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In the KEGG.db, there are only 5894 human genes annotated. With current
-online data, the number of annotated gene increase to 6861 as shown
-above and of course, p-values changed. User should pay attention to
-another issue that &lt;em&gt;readable&lt;/em&gt; parameter is only available for those
-species that has an annotation db. For example, for human we use
-&lt;a href=&#34;http://www.bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html&#34; target=&#34;_blank&#34;&gt;org.Hs.eg.db&lt;/a&gt;
-for mapping gene ID to Symbol.&lt;/p&gt;
-
-&lt;h3 id=&#34;example-2-enrichment-analysis-of-species-which-are-not-previously-supported&#34;&gt;Example 2: enrichment analysis of species which are not previously supported&lt;/h3&gt;
-
-&lt;p&gt;Here, I use a gene list of &lt;a href=&#34;http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&amp;amp;org=spd&#34; target=&#34;_blank&#34;&gt;Streptococcus pneumoniae D39&lt;/a&gt;
-to demonstrate using &lt;em&gt;enrichKEGG&lt;/em&gt; with species that are not supported
-previously.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; gene
- [1] &amp;quot;SPD_0065&amp;quot; &amp;quot;SPD_0071&amp;quot; &amp;quot;SPD_0293&amp;quot; &amp;quot;SPD_0295&amp;quot; &amp;quot;SPD_0296&amp;quot; &amp;quot;SPD_0297&amp;quot;
- [7] &amp;quot;SPD_0327&amp;quot; &amp;quot;SPD_0426&amp;quot; &amp;quot;SPD_0427&amp;quot; &amp;quot;SPD_0428&amp;quot; &amp;quot;SPD_0559&amp;quot; &amp;quot;SPD_0560&amp;quot;
-[13] &amp;quot;SPD_0561&amp;quot; &amp;quot;SPD_0562&amp;quot; &amp;quot;SPD_0580&amp;quot; &amp;quot;SPD_0789&amp;quot; &amp;quot;SPD_1046&amp;quot; &amp;quot;SPD_1047&amp;quot;
-[19] &amp;quot;SPD_1048&amp;quot; &amp;quot;SPD_1050&amp;quot; &amp;quot;SPD_1051&amp;quot; &amp;quot;SPD_1052&amp;quot; &amp;quot;SPD_1053&amp;quot; &amp;quot;SPD_1057&amp;quot;
-[25] &amp;quot;SPD_1326&amp;quot; &amp;quot;SPD_1432&amp;quot; &amp;quot;SPD_1534&amp;quot; &amp;quot;SPD_1582&amp;quot; &amp;quot;SPD_1612&amp;quot; &amp;quot;SPD_1613&amp;quot;
-[31] &amp;quot;SPD_1633&amp;quot; &amp;quot;SPD_1634&amp;quot; &amp;quot;SPD_1648&amp;quot; &amp;quot;SPD_1678&amp;quot; &amp;quot;SPD_1919&amp;quot;
-&amp;gt; spdKEGG = enrichKEGG(gene, organism=&amp;quot;spd&amp;quot;)
-&amp;gt; summary(spdKEGG)
-               ID                                 Description GeneRatio BgRatio
-spd00052 spd00052                        Galactose metabolism     35/35  35/752
-spd02060 spd02060             Phosphotransferase system (PTS)     12/35  47/752
-spd01100 spd01100                          Metabolic pathways     28/35 341/752
-spd00520 spd00520 Amino sugar and nucleotide sugar metabolism      9/35  43/752
-               pvalue     p.adjust       qvalue
-spd00052 4.961477e-61 2.480739e-60 5.222608e-61
-spd02060 2.470177e-07 6.175443e-07 1.300093e-07
-spd01100 1.958319e-05 3.263866e-05 6.871296e-06
-spd00520 6.534975e-05 8.168718e-05 1.719730e-05
-                                                                                                                                                                                                                                                                                                                             geneID
-spd00052 SPD_0065/SPD_0071/SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0327/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1678/SPD_1919
-spd02060                                                                                                                                                                                                                SPD_0293/SPD_0295/SPD_0296/SPD_0297/SPD_0426/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_1047/SPD_1048/SPD_1057
-spd01100                                                                SPD_0071/SPD_0426/SPD_0427/SPD_0428/SPD_0559/SPD_0560/SPD_0561/SPD_0562/SPD_0580/SPD_0789/SPD_1046/SPD_1047/SPD_1048/SPD_1050/SPD_1051/SPD_1052/SPD_1053/SPD_1057/SPD_1326/SPD_1432/SPD_1534/SPD_1582/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
-spd00520                                                                                                                                                                                                                                           SPD_0580/SPD_1326/SPD_1432/SPD_1612/SPD_1613/SPD_1633/SPD_1634/SPD_1648/SPD_1919
-         Count
-spd00052    35
-spd02060    12
-spd01100    28
-spd00520     9
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;summary&#34;&gt;Summary&lt;/h3&gt;
-
-&lt;p&gt;To summarize,
-&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;
-supports downloading the latest KEGG annotation for enrichment analysis
-and it supports all species that have KEGG annotation available in KEGG
-database.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;/p&gt;</description>
     </item>
     
   </channel>

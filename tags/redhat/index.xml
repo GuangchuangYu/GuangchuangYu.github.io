@@ -8,7 +8,9 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Thu, 04 Sep 2014 15:38:44 +0800</lastBuildDate>
-    <atom:link href="/tags/redhat/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/redhat/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>install 454 GS Data Analysis Software on ubuntu</title>
@@ -16,68 +18,8 @@
       <pubDate>Thu, 04 Sep 2014 15:38:44 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2014/09/install-454-gs-data-analysis-software-on-ubuntu/</guid>
-      <description>
-
-&lt;p&gt;Usually Roche&amp;rsquo;s installer is a catastrophe, they only provides &lt;code&gt;rpm&lt;/code&gt;
-packages of the &lt;a href=&#34;http://454.com/products/analysis-software/index.asp&#34; target=&#34;_blank&#34;&gt;software for 454 GS FLX&lt;/a&gt; (version 2.9).
-Although the package contains setup.sh, the script is useless since it
-is actually a binary payload.&lt;/p&gt;
-
-&lt;p&gt;I run the setup.sh, and it throw error of not finding &lt;code&gt;/sbin/lspci&lt;/code&gt;. In
-debian derived distribution, lspci command is located in /bin folder.
-This issue is easy to solve by adding a soft link to &lt;code&gt;/sbin/lspci&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;The second error message popping up says: &lt;code&gt;&amp;quot;Error: Could not execute
-command: type rocks 2&amp;gt;&amp;amp;1&amp;quot;&lt;/code&gt;, and I used the command, sudo ln -s
-/bin/true /bin/rocks, to solve it.&lt;/p&gt;
-
-&lt;p&gt;The third error is lack of libraries &lt;code&gt;zlib.i386&lt;/code&gt;, &lt;code&gt;libXi.i386&lt;/code&gt;,
-&lt;code&gt;libXtst.i386&lt;/code&gt;, and &lt;code&gt;libXaw.i386&lt;/code&gt;. Since my OS is 64bit ubuntu 14.04 LTS, I
-used, &lt;code&gt;sudo apt-get install ia32-libs&lt;/code&gt;, to install all the 32bit
-compatible libraries.&lt;/p&gt;
-
-&lt;p&gt;The fourth error is weird for it can&amp;rsquo;t found &lt;code&gt;/bin/sh&lt;/code&gt; which is available
-for all unix-like systems. Since debian links sh to dash, while most of
-the Linux distributions links to bash, I changed the link to bash but
-the error still exists.&lt;/p&gt;
-
-&lt;p&gt;I can&amp;rsquo;t figure out how to solve the fourth error and tried to install
-the rpm packages by using &lt;code&gt;rpm -ivh&lt;/code&gt; command but the error doesn&amp;rsquo;t change.&lt;/p&gt;
-
-&lt;p&gt;Although I can&amp;rsquo;t install the software using setup.sh, it install java6
-successfully. I do believe I can install the software since it is java
-program. I start to extract the contents of these rpm packages and then
-it is very clear. Some programs, mostly tools of &lt;code&gt;gsSeqTools&lt;/code&gt;, are binary
-files that needs shared libs and it is the reason why it throw error of
-lacking libraries. This issue had been solved.&lt;/p&gt;
-
-&lt;p&gt;Most of the programs are jar files, and shell scripts that wrap the
-calling of these jar files. All these jar and shell script files can run
-properly by copying them to the right place.&lt;/p&gt;
-
-&lt;p&gt;The contents of rpm file can be extracted using the command like:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;rpm2cpio gsAmplicons-2.9-1.noarch.rpm| cpio -idmv
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This is the key point of successfully installing 454 GS Data Analysis
-Software. I believe it can be installed on most of the Unix-like system.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2014/08/screenshot-2014-08-29-165830.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;update&#34;&gt;update&lt;/h2&gt;
-
-&lt;p&gt;When I upgrade Ubuntu to 16.04, I found that ia-32 is no more exist in package repo.&lt;/p&gt;
-
-&lt;p&gt;So, we need to download corresponding old packages:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://launchpadlibrarian.net/105344356/ia32-libs-multiarch_20090808ubuntu36_i386.deb&#34; target=&#34;_blank&#34;&gt;http://launchpadlibrarian.net/105344356/ia32-libs-multiarch_20090808ubuntu36_i386.deb&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://mirrors.kernel.org/ubuntu/pool/universe/i/ia32-libs/ia32-libs_20090808ubuntu36_amd64.deb&#34; target=&#34;_blank&#34;&gt;http://mirrors.kernel.org/ubuntu/pool/universe/i/ia32-libs/ia32-libs_20090808ubuntu36_amd64.deb&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Then, use &lt;code&gt;sudo dpkg --force-all -i&lt;/code&gt; to install them and &lt;code&gt;sudo apt-get install -f --fix-missing&lt;/code&gt; to install corresponding &lt;code&gt;i386&lt;/code&gt; packages.&lt;/p&gt;
-</description>
+      <description>Usually Roche&amp;rsquo;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
+I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian derived distribution, lspci command is located in /bin folder. This issue is easy to solve by adding a soft link to /sbin/lspci.</description>
     </item>
     
   </channel>
