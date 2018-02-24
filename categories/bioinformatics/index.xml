@@ -8,9 +8,7 @@
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
     <lastBuildDate>Thu, 03 Nov 2016 10:30:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://guangchuangyu.github.io/categories/bioinformatics/index.xml" rel="self" type="application/rss+xml" />
-    
+    <atom:link href="/categories/bioinformatics/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>showCategory parameter for visualizing compareCluster output</title>
@@ -42,7 +40,36 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
 
 &lt;p&gt;The question was &lt;a href=&#34;https://support.bioconductor.org/p/88965/&#34; target=&#34;_blank&#34;&gt;posted&lt;/a&gt; in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;In this case, we expect to get &lt;code&gt;&amp;lt;= 10 of most significant categories&lt;/code&gt; for each  &lt;code&gt;Cluster&lt;/code&gt; as the user specify &lt;code&gt;showCategory=10&lt;/code&gt;. This is exactly the way of &lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods do for &lt;code&gt;compareClusterResult&lt;/code&gt;. &lt;code&gt;8&lt;/code&gt; categories for &lt;code&gt;g1&lt;/code&gt; is obvious that there are only &lt;code&gt;8&lt;/code&gt; enriched terms found for &lt;code&gt;g1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But why there are &lt;code&gt;15&lt;/code&gt; for &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;12&lt;/code&gt; for &lt;code&gt;g2&lt;/code&gt;?&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods implemented in &lt;code&gt;clusterProfiler&lt;/code&gt; try to make the comparison among clusters more informative and reasonable. After extracting e.g. 10 categories for each cluster, &lt;code&gt;clusterProfiler&lt;/code&gt; try to collect overlap of these categories among clusters.&lt;/p&gt;
+
+&lt;p&gt;For example, &lt;code&gt;term A&lt;/code&gt; is enriched in all the clusters (&lt;code&gt;All&lt;/code&gt;, &lt;code&gt;g1&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;) and is in the 10 most significant categories for &lt;code&gt;g1&lt;/code&gt; but not &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt;. &lt;code&gt;clusterProfiler&lt;/code&gt; try to capture these information and include &lt;code&gt;term A&lt;/code&gt; in &lt;code&gt;All&lt;/code&gt; and &lt;code&gt;g2&lt;/code&gt; clusters and making the comparison in &lt;code&gt;dotplot&lt;/code&gt;/&lt;code&gt;barplot&lt;/code&gt; more reasonable.&lt;/p&gt;
+
+&lt;p&gt;If users want to ignore these information, they can use &lt;code&gt;dotplot(..., includeAll=FALSE)&lt;/code&gt;, which is actually not recommended.&lt;/p&gt;
+
+&lt;p&gt;See the difference to the following example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(clusterProfiler)
+data(gcSample)
+x=compareCluster(gcSample, fun=&#39;enrichDO&#39;)
+dotplot(x, showCategory=5, includeAll=FALSE)
+dotplot(x, showCategory=5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the first figure, it seems that all these clusters are very different, with no overlapping terms enriched. This is not true as demonstrated in the second figure.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -59,7 +86,13 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
 
 &lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, QY He. &lt;strong&gt;&lt;em&gt;Molecular BioSystems&lt;/em&gt;&lt;/strong&gt; 2016, 12:477-479&lt;/p&gt;
 
-&lt;p&gt;Received: 05 Oct 2015 Accepted: 20 Nov 2015 Online: 23 Nov 2015&lt;/p&gt;</description>
+&lt;p&gt;Received: 05 Oct 2015 Accepted: 20 Nov 2015 Online: 23 Nov 2015&lt;/p&gt;
+
+&lt;p&gt;DOI: &lt;a href=&#34;http://dx.doi.org/10.1039/C5MB00663E&#34; target=&#34;_blank&#34;&gt;10.1039/C5MB00663E&lt;/a&gt;
+
+Reactome is a manually curated pathway annotation database for unveiling high-order biological pathways from high-throughput data. ReactomePA is an R/Bioconductor package providing enrichment analyses, including hypergeometric test and gene set enrichment analyses. A functional analysis can be applied to the genomic coordination obtained from a sequencing experiment to analyze the functional significance of genomic loci including cis-regulatory elements and non-coding regions. Comparison among different experiments is also supported. Moreover, ReactomePA provides several visualization functions to produce highly customizable, publication-quality figures. The source code and documents of ReactomePA are freely available through Bioconductor (&lt;a href=&#34;http://www.bioconductor.org/packages/ReactomePA&#34; target=&#34;_blank&#34;&gt;http://www.bioconductor.org/packages/ReactomePA&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ReactomePA/c5mb00663e-f1_hi-res.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -79,7 +112,52 @@ at gene level.&lt;/p&gt;
 clusterProfiler. But it fail to run due to it call absolute path of
 python installed in the author&amp;rsquo;s computer.
 &lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png&#34; alt=&#34;&#34; /&gt;
-&lt;/p&gt;</description>
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/emotion_icons/surprise.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;THIS should never be happened in a Bioconductor package since
+Bioconductor requires every package to have a least one vignette and
+runnable examples in man files. It turns out that there is no runnable
+example in either the vignette or man files. This package was compiled
+successfully in all platforms but it actually can only be run in windows
+platform with python installed exactly in the same path of the author. I
+don&amp;rsquo;t know why Bioconductor core team didn&amp;rsquo;t detect this issue when
+reviewing this package and why reviewers of &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/early/2015/05/27/bioinformatics.btv289.full&#34; target=&#34;_blank&#34;&gt;Bioinformatics&lt;/a&gt; didn&amp;rsquo;t test the package.&lt;/p&gt;
+
+&lt;p&gt;I modified &amp;lsquo;C:/Python27/python&amp;rsquo;, to &amp;lsquo;python&amp;rsquo;. But it still throw error:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.51.48.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is due to the author used &amp;lsquo;\\&amp;rsquo; as folder separator which is Windows platform specific.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;command &amp;lt;- paste(&amp;quot;C:/Python27/python &amp;quot;, tempdir(),&amp;quot;\\&amp;quot;,name,sep=&amp;quot;&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;AND I found that there are many &amp;lsquo;\\&amp;rsquo; in the source code.&lt;/p&gt;
+
+&lt;p&gt;So I gave up to try this package and reinvented the wheel.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/MISC/evolution_of_the_wheel_by_echoes93-d4owse1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s not difficult to implement a &lt;em&gt;seq2gene&lt;/em&gt; function using internal functions already available in my package &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;. It only took me half hour and was available since version 1.5.5.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/Screenshot%202015-08-21%2011.08.46.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;seq2gene&lt;/em&gt; provided by &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt; considers host gene (exon/intron), promoter region and flanking gene from intergenomic region.&lt;/p&gt;
+
+&lt;p&gt;With &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;, user can annotates genomic coordination by nearest gene, host gene, flanking genes or consider all of them by &lt;em&gt;seq2gene&lt;/em&gt; and performs GO/KEGG/DO/Reactome analysis with &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34; target=&#34;_blank&#34;&gt;DOSE&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34; target=&#34;_blank&#34;&gt;ReactomePA&lt;/a&gt; at gene level. A scenario can be found in &lt;a href=&#34;https://support.bioconductor.org/p/70227/&#34; target=&#34;_blank&#34;&gt;Bioconductor support site&lt;/a&gt;, that used ChIPseeker to retrieve 5 genes flanking of each enhancer followed by GO analysis.&lt;/p&gt;
+
+&lt;h4 id=&#34;note&#34;&gt;Note:&lt;/h4&gt;
+
+&lt;p&gt;seq2pathway, &lt;a href=&#34;https://github.com/Bioconductor-mirror/seq2pathway&#34; target=&#34;_blank&#34;&gt;https://github.com/Bioconductor-mirror/seq2pathway&lt;/a&gt;,
+version 1.1.2, access date 21 Aug, 2015&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -99,7 +177,36 @@ including &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; t
 &lt;p&gt;Although I found that the chromStart positions in HOMER output have a +1
 shift compare to other software, I did not realize this issue since all
 other software are consistent.
-&lt;/p&gt;</description>
+&lt;/p&gt;
+
+&lt;p&gt;Until recently, I found BAM, BCF, BED and PSL formats are using the
+0-based coordinate system, while SAM, VCF, GFF and Wiggle formats are
+using the 1-based coordinate system.&lt;/p&gt;
+
+&lt;p&gt;For BED file format, we can refer to
+&lt;a href=&#34;http://asia.ensembl.org/info/website/upload/bed.html&#34; target=&#34;_blank&#34;&gt;http://asia.ensembl.org/info/website/upload/bed.html&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot 2015-07-07 16.47.04.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In addition, the 0-based coordinate system is specified by a
+half-closed-half-open interval. For example, the first 100 bases of a
+chromosome are defined as &lt;code&gt;[0, 100)&lt;/code&gt;, that span the bases numbered 0-99.
+While the 1-based coordinate system is specified by a closed interval,
+for example the above region is &lt;code&gt;[1, 100]&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Most of the software for ChIP annotation doesn&amp;rsquo;t considered this issue
+when annotating peak (0-based) to transcript (1-based). To my knowledge,
+only HOMER consider this issue. After I figure this out, I have updated
+&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt; (version
+&lt;code&gt;&amp;gt;= 1.4.3&lt;/code&gt;) to fix the issue.&lt;/p&gt;
+
+&lt;p&gt;Please bare in mind that chromStart in &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt; has +1bp shift compare to the number recorded in BED file.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -120,7 +227,28 @@ was used (not cited) in
 &lt;a href=&#34;http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract&#34; target=&#34;_blank&#34;&gt;http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract&lt;/a&gt;
 and
 &lt;a href=&#34;http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract&#34; target=&#34;_blank&#34;&gt;http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract&lt;/a&gt;.
-&lt;/p&gt;</description>
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/bioinfo_2015.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation,
+comparison and visualization&lt;/strong&gt; &lt;strong&gt;G Yu&lt;/strong&gt;, LG Wang, QY He.
+&lt;strong&gt;Bioinformatics&lt;/strong&gt; 2015, 31(14):2382-2383 DOI:
+&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34; target=&#34;_blank&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt; ChIPseeker is an R package for annotating ChIP-seq data
+analysis. It supports annotating ChIP peaks and provides functions to
+visualize ChIP peaks coverage over chromosomes and profiles of peaks
+binding to TSS regions. Comparison of ChIP peak profiles and annotation
+are also supported. Moreover, it supports evaluating significant overlap
+among ChIP-seq datasets. Currently, ChIPseeker contains 15 000 bed file
+information from GEO database. These datasets can be downloaded and
+compare with user’s own data to explore significant overlap datasets for
+inferring co-regulation or transcription factor complex for further
+investigation. &lt;strong&gt;Availability and implementation:&lt;/strong&gt; ChIPseeker is
+released under Artistic-2.0 License. The source code and documents are
+freely available through Bioconductor
+(&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34; target=&#34;_blank&#34;&gt;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&lt;/a&gt;).&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -139,7 +267,164 @@ with only function name changed in my email. The detail of source code
 plagiarism can also be found at &lt;strong&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/&#34; target=&#34;_blank&#34;&gt;Proper use of
 GOSemSim&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;I got reply from the Editor 3 days after (see
+&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-05-27%2019.58.16.png&#34; target=&#34;_blank&#34;&gt;screenshot&lt;/a&gt;).&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;MS: 1069569029107167
+Research
+ppiPre: predicting protein-protein interactions by combining heterogeneous features
+BMC Systems Biology 2013, 7:S8&lt;/p&gt;
+
+&lt;p&gt;Dear Dr Yu,&lt;/p&gt;
+
+&lt;p&gt;Thank you for your message and bringing this to our attention. Firstly I would like to assure you that we do take cases of plagiarism very seriously. We are members of the Committee on Publication Ethics (&lt;a href=&#34;http://publicationethics.org&#34; target=&#34;_blank&#34;&gt;http://publicationethics.org&lt;/a&gt;) follow their guidelines for circumstances such as this.&lt;/p&gt;
+
+&lt;p&gt;As a first step we will be investigating the overlap between this publication in BMC Systems Biology and your previously published work, to establish the extent of the duplication.&lt;/p&gt;
+
+&lt;p&gt;Could I just check, have you compared all the code in the ppiPRE article for similarity with your own code? That is, is there any possibility that more of your code has been duplicated without attribution? We will of course have to examine the code for unattributed use of other authors code in addition to your own&lt;/p&gt;
+
+&lt;p&gt;Please do let us know if there are more relevant details you are aware of. We will be in contact again in due course as our investigations proceed, but do not hesitate to contact me in the meantime if you would like an update&lt;/p&gt;
+
+&lt;p&gt;Best wishes,
+Tim&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The editor assured me that they &amp;lsquo;&lt;strong&gt;do take cases of plagiarism very
+seriously&lt;/strong&gt;&amp;rsquo; and will investigate the overlap. I was waiting for their
+update. But 5 months passed, I never receive any reply from them even I
+sent several emails to ask for updates. I have no idea how long their
+&amp;lsquo;&lt;strong&gt;due course&lt;/strong&gt;&amp;rsquo; is. As I did not receive any reply, I wrote a blog post
+(see &lt;a href=&#34;http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/&#34; target=&#34;_blank&#34;&gt;Proper use of
+GOSemSim&lt;/a&gt;) to bring
+this to the R community and CRAN did remove the ppiPre package at that
+time. I told the Editor that this package had been removed from CRAN and
+again asked for update. This time, he did reply me (see
+&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-05-27%2020.11.54.png&#34; target=&#34;_blank&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;MS: 1069569029107167
+Research
+ppiPre: predicting protein-protein interactions by combining heterogeneous features
+BMC Systems Biology 2013, 7:S8&lt;/p&gt;
+
+&lt;p&gt;Dear Guangchuang,&lt;/p&gt;
+
+&lt;p&gt;Thank you for your message and my apologies for the delay in this investigation. We had been trying to identify if any other code had also been plagiarised in the publication, although we did not find any evidence of this. Thank you also for drawing our attention to the removal of ppiPre from CRAN. We will be in touch with the article authors and will let you know when there is a further update.&lt;/p&gt;
+
+&lt;p&gt;Regards,
+Tim&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As we can find in the editor&amp;rsquo;s email, &amp;lsquo;&lt;strong&gt;We will be in touch with the
+article authors&lt;/strong&gt;&amp;rsquo;, they never contact the authors after 5 months passed
+from my report. In the following 2 months, I never receive any reply
+again. I was angry and sent an email to several Editors of BMC to
+complain that they are ruinning the reputation of BMC. Then again as
+expected, I got email (see
+&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-05-27%2020.33.30.png&#34; target=&#34;_blank&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear Guangchuang,&lt;/p&gt;
+
+&lt;p&gt;We are continuing to pursue this case. As you will understand, as well as the clear evidence of plagiarism of your code, we are concerned about possible unacknowledged reuse of other code as well. We have been trying to contact the authors for a full explanation, as this will affect how we can address the issue. Until very recently we had not been successful in contacting them, although they have very recently got back to us  and have said that they are considering their response, so we expect an update soon. From our perspective it is highly preferable for the authors to come clean about the issues and for any correction or retraction notice to come from them rather than from the editors, and for this reason it is often a drawn out process.&lt;/p&gt;
+
+&lt;p&gt;Thank you for your patience, and I can again assure you that this will be addressed formally in due course.&lt;/p&gt;
+
+&lt;p&gt;Yours sincerely,
+Tim&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I am very happy to see this as the editor told me they have contacted
+the authors and will have an update soon. I wait another 3 months
+without any update as usual. I asked for update again and this time they
+did give me an update (see
+&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-04-23%2021.31.55.png&#34; target=&#34;_blank&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear Guangchuang,&lt;/p&gt;
+
+&lt;p&gt;Looking back through my emails, I did receive a response back from the authors previously. They in turn said that the email address I had originally been trying to contact them with earlier last year was no longer in use, so they only received my emails when I found an additional alternative email address for the authors in my more recent emails.&lt;/p&gt;
+
+&lt;p&gt;Their explanation for the use of your code was that as the similarity measures were not their main focus of their study they had intended to either implement existing methods themselves or as in the case of GoSemSim, import the packages. However they had some problems with this and instead utilised the source code directly. Their rationale was that as the code was GPL licenced that this was acceptable, without realising that it was also required to cite the original source.&lt;/p&gt;
+
+&lt;p&gt;They say they have now created an updated version which they say has the following changes:&lt;/p&gt;
+
+&lt;p&gt;(1) ppiPre imports GOSemSim.
+(2) ppiPre calls function geneSim() exported by GOSemSim to calculate Wang’s measure, instead of deriving code from GOSemSim directly.
+(3) Several internal functions of ppiPre (TCSSGetAncestors, GetOntology, GetGOParents, GetLatestCommonAncestor, TCSSCompute_ICA) are derived from GOSemSim since GOSemSim don’t export them. In source code (.R) and manuals (.RD), acknowledgement has been added including the information of author and publication of GOSemSim.
+(4) The author of GOSemSim (Guangchuang Yu) has been added in the ‘Author’ filed as contributor, as required by CRAN Repository Policy.
+(5) All the information content data in \data directory of ppiPre have been removed. ppiPre directly obtained data from GOSemSim.&lt;/p&gt;
+
+&lt;p&gt;This version has been available in SourceForge (&lt;a href=&#34;https://sourceforge.net/p/ppipre/&#34; target=&#34;_blank&#34;&gt;https://sourceforge.net/p/ppipre/&lt;/a&gt;). And we are submitting ppiPre to CRAN. We will notify you after ppiPre is available on CRAN.&lt;/p&gt;
+
+&lt;p&gt;They also apologise for failing to cite you correctly and have asked if they may submit a correction to their article to rectify this. This would be within our policy if this sounds acceptable to you. Please let me know if you would need more details or if you need to get in touch with the authors&lt;/p&gt;
+
+&lt;p&gt;Best wishes,
+Tim&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;After the changes, ppiPre is back to CRAN. Now in CRAN, what we can find
+is that ppiPre use source code from GOSemSim properly with
+acknowledgement. They removed all previous source tarball so that their
+source code plagiarism was gone. Fortunately, github recorded all the
+&lt;a href=&#34;https://github.com/cran/ppiPre/commit/c267700ca09a599dab77326959a0aa6a2980ceed&#34; target=&#34;_blank&#34;&gt;changes&lt;/a&gt;.
+The editor delay the processing to give the authors enough time to
+remove their bad records. I think CRAN shouldn&amp;rsquo;t accept re-submitted
+package if it was removed for plagiarism issue. In the email, the editor
+not only conveyed explanation from the author, but also have expressed
+their opinion: &amp;lsquo;&lt;strong&gt;They also apologise for failing to cite you correctly
+and have asked if they may submit a correction to their article to
+rectify this. This would be within our policy if this sounds acceptable
+to you&lt;/strong&gt;&amp;rsquo;. This is why I think BMC do favor source code plagiarism.
+Their judgement/opinion is not fair! I can&amp;rsquo;t accept their explanation
+and replied to the editor (see
+&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2015/plagiarism/Screenshot%202015-04-23%2021.45.33.png&#34; target=&#34;_blank&#34;&gt;screenshot&lt;/a&gt;):&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear Prof. Sands,&lt;/p&gt;
+
+&lt;p&gt;Thanks for your email. That makes it more clear.&lt;/p&gt;
+
+&lt;p&gt;I can&amp;rsquo;t accept their explanation.&lt;/p&gt;
+
+&lt;p&gt;The ppiPre is a die package, they didn&amp;rsquo;t update any source code or IC data after publication, with the fact that annotation packages for calculating IC data have updated several times. The recent changes were forced by my report of plagiarism.&lt;/p&gt;
+
+&lt;p&gt;The recent update follows the requirement of GPL license which requires the derivative work also GPL licensed and acknowledge original works. That&amp;rsquo;s good, but remember it was forced to happen after my report of source code plagiarism.&lt;/p&gt;
+
+&lt;p&gt;In the version they published the paper, it is indeed source codes copied without any acknowledgement and the proportion is very large (about &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; of ppiPre was copied from GOSemSim).&lt;/p&gt;
+
+&lt;p&gt;In their explanation, the author claimed that similarity measures were not their main focus. Can I ask what&amp;rsquo;s their main focus? SVM for protein-pretein interaction prediction as indicated in the title of the paper and in the package name? The SVM in that package is less than 80 lines, &lt;a href=&#34;https://github.com/cran/ppiPre/blob/master/R/SVMPredict.r&#34; target=&#34;_blank&#34;&gt;https://github.com/cran/ppiPre/blob/master/R/SVMPredict.r&lt;/a&gt; with more than half in calling similarity measures, and several empty lines, paramter checking and preparing input and output. They did nothing in svm; they just call e1071::svm in line 28 and and e1071::predict in line 16 with default parameters (users even don&amp;rsquo;t have chance to change kernel function in their package). If that&amp;rsquo;s their main focus, what&amp;rsquo;s their contribution of their paper? In the Method session, their only use a small paragraph, Prediction framework, that only mention they used svm for prediction but with many paragraphs emphasizing they have implemented many GO semantic similarity measures. They call svm implemented in e1071 package to train features calculated by source codes from GOSemSim. How do they explain this?  I do have no idea of their so call main focus.&lt;/p&gt;
+
+&lt;p&gt;They also mentioned that they had problems in importing GOSemSim. This is also un-acceptable. As they copied most of the functions without any change, it is easy to import these functions using GOSemSim:::un-exported_function if the function is not exported. If they don&amp;rsquo;t know this feature and did not google search how to do it. They should contact me for help or ask for my permission of re-using my codes. But they didn&amp;rsquo;t. They may believe they can use my source code freely as it is GPL licensed, they should know that open source license also have requirement of acknowledgement. Even that&amp;rsquo;s due to their ignorance, why they only change the function names to pretend that&amp;rsquo;s their own functions? If these are not their main focus, why more than half of the text in the paper explaining the calculation of these algorithms and claim they were implemented in their package?&lt;/p&gt;
+
+&lt;p&gt;If they are not intended to do this, they will have acknowledgement in their source code, they will have citation in their paper and they will not just change function name that was copied without other changes. They intended to do so to cheat editor, reviewers and readers.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;(2) ppiPre calls function geneSim() exported by GOSemSim to calculate Wang’s measure, instead of deriving code from GOSemSim directly.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Besides, most of the source code is not &amp;lsquo;derived&amp;rsquo; but copied from GOSemSim with only function name changed which can still be detected in the updated version, &lt;a href=&#34;https://github.com/cran/ppiPre/blob/master/R/GOKEGGSims.r&#34; target=&#34;_blank&#34;&gt;https://github.com/cran/ppiPre/blob/master/R/GOKEGGSims.r&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Best Regards,
+Guangchuang&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;AND again, the editor just ignore my email!&lt;/strong&gt; 1 year passed and the
+case is very clear that they copied my source code and intended to
+pretend that&amp;rsquo;s their original work and use it to publish a paper. That&amp;rsquo;s
+definitely plagiarism. The editor replied me very quickly at the
+beginning and assured me that BMC do take cases like this seriously. I
+don&amp;rsquo;t know what happened after they contacted the authors. The editor
+always ignore my email except I put some pressure to them, they delay
+the process and try to persuade me that this is due to the author&amp;rsquo;s
+ignorance of open source license and an apology from the author is
+enough to solve this issue. If you see this post, you are welcome to
+comment and please help share it to social media. This will helps to
+give BMC some pressure and I will contact COPE if they won&amp;rsquo;t addressing
+this.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -172,7 +457,111 @@ data.frame with first column of term ID and second column of
 corresponding mapped gene and TERM2NAME is a data.frame with first
 column of term ID and second column of corresponding term name.
 TERM2NAME is optional.
-&lt;/p&gt;</description>
+&lt;/p&gt;
+
+&lt;p&gt;Here I used
+&lt;a href=&#34;http://www.disgenet.org/web/DisGeNET/menu/home&#34; target=&#34;_blank&#34;&gt;DisGeNET&lt;/a&gt; which
+contains 381056 associations, between 16666 genes and 13172 diseases, as
+an example to demonstrate the usage of &lt;em&gt;enricher&lt;/em&gt; and &lt;em&gt;GSEA&lt;/em&gt; functions.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; require(DOSE)
+&amp;gt; require(clusterProfiler)
+&amp;gt; data(geneList)
+&amp;gt; deg &amp;lt;- names(geneList)[abs(geneList)&amp;gt;2]
+
+## downloaded from http://www.disgenet.org/ds/DisGeNET/results/all_gene_disease_associations.tar.gz
+&amp;gt; gda &amp;lt;- read.delim(&amp;quot;all_gene_disease_associations.txt&amp;quot;)
+&amp;gt; dim(gda)
+[1] 415681      9
+&amp;gt; head(gda)
+  geneId geneSymbol                                    geneName     diseaseId
+1    540      ATP7B ATPase, Cu++ transporting, beta polypeptide umls:C0019202
+2    540      ATP7B ATPase, Cu++ transporting, beta polypeptide umls:C0019202
+3    540      ATP7B ATPase, Cu++ transporting, beta polypeptide umls:C0019202
+4   4160       MC4R                     melanocortin 4 receptor umls:C0028754
+5   4160       MC4R                     melanocortin 4 receptor umls:C0028754
+6   3667       IRS1                insulin receptor substrate 1 umls:C0011860
+                    diseaseName     score NumberOfPubmeds   associationType
+1 Hepatolenticular Degeneration 0.9898764             229  GeneticVariation
+2 Hepatolenticular Degeneration 0.9898764             229         Biomarker
+3 Hepatolenticular Degeneration 0.9898764             229 AlteredExpression
+4                       Obesity 0.9400000             234  GeneticVariation
+5                       Obesity 0.9400000             234         Biomarker
+6     Diabetes Mellitus, Type 2 0.9077659             106  GeneticVariation
+                                            source
+1 UNIPROT, CTD_human, MGD, RGD, GAD, LHGDN, BeFree
+2 UNIPROT, CTD_human, MGD, RGD, GAD, LHGDN, BeFree
+3 UNIPROT, CTD_human, MGD, RGD, GAD, LHGDN, BeFree
+4        UNIPROT, CTD_human, MGD, RGD, GAD, BeFree
+5        UNIPROT, CTD_human, MGD, RGD, GAD, BeFree
+6        UNIPROT, CTD_human, MGD, RGD, GAD, BeFree
+&amp;gt;
+&amp;gt; disease2gene=gda[, c(&amp;quot;diseaseId&amp;quot;, &amp;quot;geneId&amp;quot;)]
+&amp;gt; disease2name=gda[, c(&amp;quot;diseaseId&amp;quot;, &amp;quot;diseaseName&amp;quot;)]
+
+&amp;gt; x = enricher(deg, TERM2GENE=disease2gene, TERM2NAME=disease2name)
+&amp;gt; head(summary(x))
+                         ID                  Description GeneRatio    BgRatio
+umls:C0006142 umls:C0006142    Malignant neoplasm breast    89/196 3324/16666
+umls:C0006826 umls:C0006826           NEOPLASM MALIGNANT   113/196 5102/16666
+umls:C0678222 umls:C0678222             Breast Carcinoma    83/196 3072/16666
+umls:C1458156 umls:C1458156 Recurrent Malignant Neoplasm    47/196 1158/16666
+umls:C1458155 umls:C1458155             Breast Neoplasms    60/196 1981/16666
+umls:C0600139 umls:C0600139           prostate carcinoma    56/196 2033/16666
+                    pvalue     p.adjust       qvalue
+umls:C0006142 4.934860e-16 9.845045e-13 8.249008e-13
+umls:C0006826 3.071791e-15 3.064112e-12 2.567371e-12
+umls:C0678222 5.894907e-15 3.920113e-12 3.284601e-12
+umls:C1458156 3.230248e-14 1.611086e-11 1.349904e-11
+umls:C1458155 1.724317e-12 6.880024e-10 5.764664e-10
+umls:C0600139 5.025005e-10 1.670814e-07 1.399949e-07
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             geneID
+umls:C0006142                                                                                                                                    4312/10874/991/6280/2305/9493/1062/4605/9833/9133/6279/10403/8685/597/7153/6278/259266/3627/27074/6241/7368/11065/55355/9582/55872/51203/3669/22974/10460/10563/4751/820/27338/890/983/4085/6362/9837/5918/332/3832/6286/5163/2146/3002/50852/7272/2568/9212/51659/1111/9055/4321/3620/6790/891/4174/9232/9370/1602/4629/771/3117/80129/23158/125/1311/5174/4250/2167/652/4036/4137/8839/2066/4693/3158/3169/1408/9547/2922/10647/5304/8614/2625/7802/9/5241/10551
+umls:C0006826 4312/10874/55388/991/6280/2305/1062/3868/4605/9833/6279/10403/597/7153/6278/79733/3627/27074/6241/55165/9787/7368/11065/9582/55872/51203/3669/83461/22974/10460/10563/4751/6373/8140/1844/4283/27299/27338/890/9415/983/10232/4085/6362/5080/5918/81620/332/3832/6286/5163/2146/3002/50852/7272/2568/2842/9212/8715/1111/9055/3833/4321/11182/10112/3902/3620/3887/51514/6790/4521/891/8544/24137/10578/9232/9370/1602/3708/9122/10699/4629/771/3117/23158/125/4958/1311/2018/1308/4250/652/80736/4036/8839/2066/4693/3169/1408/9547/2922/1524/1580/10647/5304/8614/2625/7802/11122/9/5241/10551/4969
+umls:C0678222                                                                                                                                                                    4312/10874/6280/2305/4605/9833/9133/6279/10403/8685/597/7153/6278/259266/3627/27074/6241/55165/11065/55355/9582/55872/51203/3669/10563/4751/820/27338/890/983/4085/6362/9837/5918/332/6286/5163/2146/3002/50852/7272/2568/9212/1111/9055/4321/3620/6790/891/9232/9370/1602/3708/4629/771/3117/23158/125/1311/5174/2532/4250/2167/652/4036/4137/8839/2066/4693/3158/3169/9547/2922/1524/10647/5304/8614/2625/7021/7802/9/5241/10551
+umls:C1458156                                                                                                                                                                                                                                                                                                                                                           4312/991/6280/6279/8685/7153/6278/259266/3627/27074/6241/55165/9787/3669/22974/983/10232/4085/5080/332/2146/3002/50852/2568/9212/4321/3620/3887/6790/891/4174/9232/3708/4629/771/3117/23158/730/2018/4036/2066/9547/2625/9/5241/10551/57758
+umls:C1458155                                                                                                                                                                                                                                                                                        4312/10874/2305/4605/9833/9133/10403/597/7153/6278/259266/3627/11065/9582/3669/10563/8140/820/1844/27338/890/9415/983/81620/332/2146/3002/2568/9212/51659/1111/9055/11182/3620/51514/6790/4521/891/8544/9232/9370/1602/771/23158/125/4250/2167/652/8839/2066/3169/10647/5304/8614/2625/7021/9/5241/10551/57758
+umls:C0600139                                                                                                                                                                                                                                                                                                           4312/6280/2305/4605/9833/6279/7153/3627/6241/55165/11065/22974/10563/8140/1844/890/983/5080/5918/6286/5163/2146/9212/1111/4321/3620/6790/891/8544/9232/9370/8857/1602/3708/23090/4629/3117/23158/2532/2167/652/80736/4036/3169/9547/2922/11283/1524/5304/8614/2625/79689/11122/9/5241/10551
+              Count
+umls:C0006142    89
+umls:C0006826   113
+umls:C0678222    83
+umls:C1458156    47
+umls:C1458155    60
+umls:C0600139    56
+&amp;gt; 
+&amp;gt; barplot(x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/DisGeNET_barplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; y = GSEA(geneList, TERM2GENE=disease2gene, TERM2NAME=disease2name)
+&amp;gt; head(summary(y))
+                         ID           Description setSize enrichmentScore
+umls:C0001418 umls:C0001418        Adenocarcinoma    1224       0.2431172
+umls:C0001973 umls:C0001973            Alcoholism     548      -0.3213479
+umls:C0002171 umls:C0002171       Alopecia Areata      74       0.5122605
+umls:C0003864 umls:C0003864             Arthritis     447       0.3140411
+umls:C0003872 umls:C0003872  Arthritis, Psoriatic     122       0.4311280
+umls:C0003873 umls:C0003873 Arthritis, Rheumatoid    1186       0.2855594
+              pvalue p.adjust qvalues
+umls:C0001418      0        0       0
+umls:C0001973      0        0       0
+umls:C0002171      0        0       0
+umls:C0003864      0        0       0
+umls:C0003872      0        0       0
+umls:C0003873      0        0       0
+
+&amp;gt; gseaplot(y, &amp;quot;umls:C0003872&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/DisGeNET_gseaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -187,7 +576,40 @@ TERM2NAME is optional.
 
 &lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-01%2012.44.07.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;DOSE: an R/Bioconductor package for Disease Ontology Semantic and
+Enrichment analysis&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, LG Wang, GR Yan, QY He. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(4):608-609&lt;/p&gt;
+
+&lt;p&gt;Received: 7 May 2014 Accepted: 14 October 2014 Online: 17 October 2014&lt;/p&gt;
+
+&lt;p&gt;DOI:&lt;a href=&#34;http://dx.doi.org/10.1093/bioinformatics/btu684&#34; target=&#34;_blank&#34;&gt;10.1093/bioinformatics/btu684&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Summary&lt;/strong&gt;: Disease ontology (DO) annotates human genes in the context
+of disease. DO is important annotation in translating molecular findings
+from high-throughput data to clinical relevance. DOSE is an R package
+providing semantic similarity computations among DO terms and genes
+which allows biologists to explore the similarities of diseases and of
+gene functions in disease perspective. Enrichment analyses including
+hypergeometric model and gene set enrichment analysis are also
+implemented to support discovering disease associations of
+high-throughput biological data. This allows biologists to verify
+disease relevance in a biological experiment and identify unexpected
+disease associations. Comparison among gene clusters is also supported.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Availability and implementation&lt;/strong&gt;: DOSE is released under Artistic-2.0
+License. The source code and documents are freely available through
+Bioconductor
+(&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34; target=&#34;_blank&#34;&gt;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/dose_fig4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;More importantly, DOSE provides several visualization functions to
+produce highly customizable, publication-quality figures of similarity
+and enrichment analyses. With these visualization tools, the results
+obtained by DOSE are more interpretable.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -205,7 +627,128 @@ gene as numeric vector, which was supposed to be character and he used an &lt;st
 
 &lt;p&gt;But his comment forces me to test it.&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(GeneAnswers)
+data(&#39;humanGeneInput&#39;)
+y &amp;lt;- geneAnswersBuilder(humanGeneInput, &#39;org.Hs.eg.db&#39;, 
+                        categoryType=&#39;KEGG&#39;, testType=&#39;hyperG&#39;, 
+                        pvalueT=0.1, geneExpressionProfile=humanExpr, 
+                        verbose=FALSE)
+yy &amp;lt;- y@enrichmentInfo
+
+require(clusterProfiler)
+x &amp;lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, 
+                qvalueCutoff=0.2, minGSSize=1)
+xx &amp;lt;- summary(x)
+
+id &amp;lt;- sub(&amp;quot;hsa&amp;quot;, &amp;quot;&amp;quot;, xx$ID)
+idx &amp;lt;- id %in% rownames(yy)
+
+p.clusterProfiler &amp;lt;- xx$pvalue[idx]
+p.GeneAnswers &amp;lt;- yy[id[idx],]$&amp;quot;p value&amp;quot;
+&amp;gt; cor(p.clusterProfiler, p.GeneAnswers)
+[1] 0.9996165
+&amp;gt; p.clusterProfiler - p.GeneAnswers
+ [1]  1.029789e-04 -3.588252e-05 -4.623010e-05  1.079117e-04 -1.075746e-04
+ [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04  7.588155e-04
+[11] -3.702141e-04  2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04
+[16] -5.560738e-04 -5.884079e-04  2.011138e-03
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, I used the dataset, &lt;code&gt;humanGeneInput&lt;/code&gt;, provided by &lt;code&gt;GeneAnswers&lt;/code&gt;. There
+are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
+have p values below 0.1 by clusterProfiler. 18 of them are the same and
+p values are highly correlated with very small differences. &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34; target=&#34;_blank&#34;&gt;Enrichment
+analyses&lt;/a&gt; are tested by
+geometric model, I believe all packages do it in the same way. The
+difference should be attributed to annotation file and I found
+background ratio are different.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; xx[1,]
+               ID Description GeneRatio  BgRatio     pvalue   p.adjust
+hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
+             qvalue                      geneID Count
+hsa04110 0.01683117 894/595/4175/6502/4173/9134     6
+&amp;gt; yy[1,]
+      genes in Category percent in the observed List percent in the genome
+04110                 6                    0.1176471            0.02112436
+      fold of overrepresents odds ratio      p value
+04110                5.56926   6.441808 0.0006512612
+
+
+&amp;gt; allEG = unique(unlist(as.list(org.Hs.egPATH2EG)))
+&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))
+[1] 124
+&amp;gt; length(allEG)
+[1] 5870
+&amp;gt; length(get(&amp;quot;04110&amp;quot;, org.Hs.egPATH2EG))/length(allEG)
+[1] 0.02112436
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the above example, the BgRatio of clusterProfiler is &lt;sup&gt;128&lt;/sup&gt;&amp;frasl;&lt;sub&gt;5894&lt;/sub&gt;,
+slightly larger than 0.02112436 calculated by GeneAnswers. This is why
+clusterProfiler gives a p value larger than GeneAnswers (In this
+particular pathway of this particular example, clusterProfiler not
+always produce larger p values). The annotation file used by
+clusterProfiler is KEGG.db, while GeneAnswers uses org.Hs.eg.db. This is
+the reason of the difference and it&amp;rsquo;s not a big deal.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s not a good idea to give the background ratio in decimal format as
+GeneAnswers does. We have no idea of the number of total genes in
+background with ratio like 0.02112436. Some software packages may use
+the gene number of the whole genome as background. If the total gene
+number is setting to 18000, the background ratio turn out to be
+&lt;sup&gt;124&lt;/sup&gt;&amp;frasl;&lt;sub&gt;18000&lt;/sub&gt;=0.006888889. With 0.006888889, it&amp;rsquo;s hard to detect the
+background gene number was set to a larger number. In this scenario, all
+the p values will become very small, and many false positive were
+reported.&lt;/p&gt;
+
+&lt;p&gt;clusterProfiler and GeneAnswers estimate the total genes in the right
+way, but there are many packages may setting it to all the genes, no
+matter they have annotation or not. For instance, some software may
+setting the background to 20,000 when testing human genes.&lt;/p&gt;
+
+&lt;p&gt;I still remember in 2007, I used princeton&amp;rsquo;s web server,
+&lt;a href=&#34;http://go.princeton.edu/cgi-bin/GOTermFinder&#34; target=&#34;_blank&#34;&gt;http://go.princeton.edu/cgi-bin/GOTermFinder&lt;/a&gt;, to test GO enrichment. I
+found the background gene number was set to a very large number and all
+the p values were extremely small. When writing this blog post, I submit
+a job to this web server and found the gene number of human is setting
+to 45758. After I found this, I never use this web server again. The
+result is extremely &amp;ldquo;significant&amp;rdquo;! The web sever has an option, &amp;ldquo;Enter
+the number of products estimated for your organism&amp;rdquo;. This is ridiculous.
+It&amp;rsquo;s hard to estimate for ordinary users and it is impossible to
+estimate it correctly since we don&amp;rsquo;t know the annotation file in used.
+The default number, 45758 for human, is too large, result in many false
+positive.&lt;/p&gt;
+
+&lt;p&gt;Input a gene list as background is useful, for instance we may use all
+genes that are detected in microarray experiment or all proteins
+identified by MS as background. This is an effective way to eliminate
+bias of using the whole genome. Use the whole genome is not mean to use
+the total number of gene in the genome as background. By default, KEGG
+enrichment analyses of clusterProfiler and GeneAnswers are using the
+whole genome, that is about 5900 genes for human, which are all genes
+have pathway annotation in the whole genome. Others without annotation
+are abandoned. This itself is a bias actually, but it&amp;rsquo;s the realistic.
+If we include all genes no matter they have annotation or not, and
+setting 20000 or even more as background of human genes, definitely we
+will get significant result! But it is man-made significant.&lt;/p&gt;
+
+&lt;p&gt;As I replied to
+&lt;a href=&#34;https://github.com/kaji331&#34; target=&#34;_blank&#34;&gt;@kaji331&lt;/a&gt;,
+if p values obtained by different software are different, trust the one
+produce larger p values. Many user will choose a software give a more
+&amp;ldquo;significant&amp;rdquo; result, but trust me, you are making type I error.
+Conservatively, always choose the one give you larger p-values if you
+know nothing about the calculation. Software that never &amp;ldquo;fail&amp;rdquo; is
+untrustable.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
