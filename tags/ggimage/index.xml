@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ggimage on Guangchuang YU</title>
+    <link>https://guangchuangyu.github.io/tags/ggimage/</link>
+    <description>Recent content in Ggimage on Guangchuang YU</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
+    <lastBuildDate>Thu, 01 Mar 2018 11:10:48 +0800</lastBuildDate>
+    <atom:link href="/tags/ggimage/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Annotating phylogenetic tree with images using ggtree and ggimage</title>
+      <link>https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/</link>
+      <pubDate>Thu, 01 Mar 2018 11:10:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/</guid>
+      <description>&lt;p&gt;With &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt;, we are able to plot images using grammar of graphics. The layers defined in &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt; can be directly applied to &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; to annotate phylogenetic tree using local/online image files.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; seamlessly work with &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt;. The &lt;code&gt;geom_tiplab&lt;/code&gt; and &lt;code&gt;geom_nodelab&lt;/code&gt; can accept parameter of &lt;code&gt;geom=&amp;quot;image&amp;quot;&lt;/code&gt; to parse taxa labels as image files and use them to “label” the taxa using image instead of text string. Here are some examples for demonstrations.&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;div id=&#34;annotate-tips&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Annotate tips&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggimage)
+library(ggtree)
+url &amp;lt;- paste0(&amp;quot;https://raw.githubusercontent.com/TreeViz/&amp;quot;,
+            &amp;quot;metastyle/master/design/viz_targets_exercise/&amp;quot;)
+x &amp;lt;- read.tree(paste0(url, &amp;quot;tree_boots.nwk&amp;quot;))
+info &amp;lt;- read.csv(paste0(url, &amp;quot;tip_data.csv&amp;quot;))
+p &amp;lt;- ggtree(x) %&amp;lt;+% info + xlim(NA, 6)
+p + geom_tiplab(aes(image= imageURL), geom=&amp;quot;image&amp;quot;, offset=2, align=T, size=.16, hjust=0) +
+    geom_tiplab(geom=&amp;quot;label&amp;quot;, offset=1, hjust=.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;729.6&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;annotate-internal-nodes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Annotate internal nodes&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## example from https://rgriff23.github.io/2017/05/11/primate-phylogeny-ggtree.html
+library(ape)
+tree &amp;lt;- read.nexus(&amp;quot;https://raw.githubusercontent.com/rgriff23/Dissertation/master/Chapter_2/data/tree.nex&amp;quot;)
+phylopic_info &amp;lt;- data.frame(node = c(124, 113, 110, 96, 89, 70),
+                            phylopic = c(&amp;quot;7fb9bea8-e758-4986-afb2-95a2c3bf983d&amp;quot;,
+                                        &amp;quot;bac25f49-97a4-4aec-beb6-f542158ebd23&amp;quot;,
+                                        &amp;quot;f598fb39-facf-43ea-a576-1861304b2fe4&amp;quot;,
+                                        &amp;quot;aceb287d-84cf-46f1-868c-4797c4ac54a8&amp;quot;,
+                                        &amp;quot;0174801d-15a6-4668-bfe0-4c421fbe51e8&amp;quot;,
+                                        &amp;quot;72f2f854-f3cd-4666-887c-35d5c256ab0f&amp;quot;),
+                            species = c(&amp;quot;galagoids&amp;quot;, &amp;quot;lemurs&amp;quot;, &amp;quot;tarsiers&amp;quot;,
+                                        &amp;quot;cebids&amp;quot;, &amp;quot;hominoids&amp;quot;, &amp;quot;cercopithecoids&amp;quot;))
+pg &amp;lt;- ggtree(tree)
+pg %&amp;lt;+% phylopic_info + geom_nodelab(aes(image=phylopic), geom=&amp;quot;phylopic&amp;quot;, alpha=.5, color=&amp;#39;steelblue&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- data.frame(node = c(&amp;quot;70&amp;quot;,&amp;quot;89&amp;quot;,&amp;quot;96&amp;quot;,&amp;quot;110&amp;quot;,&amp;quot;113&amp;quot;,&amp;quot;124&amp;quot;),
+                images = c(&amp;quot;https://i.imgur.com/8VA9cYw.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/XYM1T2x.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/EQs5ZZe.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/2xin0UK.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/hbftayl.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/3wDHW8n.png&amp;quot;))
+pg %&amp;lt;+% d + geom_nodelab(aes(image=images), geom=&amp;quot;image&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;use-image-as-background&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Use image as background&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pg + geom_phylopic(image=&amp;quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&amp;quot;, size=Inf, alpha=.5, color=&amp;#39;firebrick&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Here is another example that use &lt;code&gt;Tabikaeru&lt;/code&gt; (known as traveling frog, a popular mobile game) image to decorate a phylogenetic tree of frog, see reproducible source code on &lt;a href=&#34;https://github.com/GuangchuangYu/frog_tree&#34; class=&#34;uri&#34;&gt;https://github.com/GuangchuangYu/frog_tree&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -11,6 +11,65 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Annotating phylogenetic tree with images using ggtree and ggimage</title>
+      <link>https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/</link>
+      <pubDate>Thu, 01 Mar 2018 11:10:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/</guid>
+      <description>&lt;p&gt;With &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt;, we are able to plot images using grammar of graphics. The layers defined in &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt; can be directly applied to &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; to annotate phylogenetic tree using local/online image files.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; seamlessly work with &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt;. The &lt;code&gt;geom_tiplab&lt;/code&gt; and &lt;code&gt;geom_nodelab&lt;/code&gt; can accept parameter of &lt;code&gt;geom=&amp;quot;image&amp;quot;&lt;/code&gt; to parse taxa labels as image files and use them to “label” the taxa using image instead of text string. Here are some examples for demonstrations.&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;div id=&#34;annotate-tips&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Annotate tips&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggimage)
+library(ggtree)
+url &amp;lt;- paste0(&amp;quot;https://raw.githubusercontent.com/TreeViz/&amp;quot;,
+            &amp;quot;metastyle/master/design/viz_targets_exercise/&amp;quot;)
+x &amp;lt;- read.tree(paste0(url, &amp;quot;tree_boots.nwk&amp;quot;))
+info &amp;lt;- read.csv(paste0(url, &amp;quot;tip_data.csv&amp;quot;))
+p &amp;lt;- ggtree(x) %&amp;lt;+% info + xlim(NA, 6)
+p + geom_tiplab(aes(image= imageURL), geom=&amp;quot;image&amp;quot;, offset=2, align=T, size=.16, hjust=0) +
+    geom_tiplab(geom=&amp;quot;label&amp;quot;, offset=1, hjust=.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;729.6&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;annotate-internal-nodes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Annotate internal nodes&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## example from https://rgriff23.github.io/2017/05/11/primate-phylogeny-ggtree.html
+library(ape)
+tree &amp;lt;- read.nexus(&amp;quot;https://raw.githubusercontent.com/rgriff23/Dissertation/master/Chapter_2/data/tree.nex&amp;quot;)
+phylopic_info &amp;lt;- data.frame(node = c(124, 113, 110, 96, 89, 70),
+                            phylopic = c(&amp;quot;7fb9bea8-e758-4986-afb2-95a2c3bf983d&amp;quot;,
+                                        &amp;quot;bac25f49-97a4-4aec-beb6-f542158ebd23&amp;quot;,
+                                        &amp;quot;f598fb39-facf-43ea-a576-1861304b2fe4&amp;quot;,
+                                        &amp;quot;aceb287d-84cf-46f1-868c-4797c4ac54a8&amp;quot;,
+                                        &amp;quot;0174801d-15a6-4668-bfe0-4c421fbe51e8&amp;quot;,
+                                        &amp;quot;72f2f854-f3cd-4666-887c-35d5c256ab0f&amp;quot;),
+                            species = c(&amp;quot;galagoids&amp;quot;, &amp;quot;lemurs&amp;quot;, &amp;quot;tarsiers&amp;quot;,
+                                        &amp;quot;cebids&amp;quot;, &amp;quot;hominoids&amp;quot;, &amp;quot;cercopithecoids&amp;quot;))
+pg &amp;lt;- ggtree(tree)
+pg %&amp;lt;+% phylopic_info + geom_nodelab(aes(image=phylopic), geom=&amp;quot;phylopic&amp;quot;, alpha=.5, color=&amp;#39;steelblue&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d &amp;lt;- data.frame(node = c(&amp;quot;70&amp;quot;,&amp;quot;89&amp;quot;,&amp;quot;96&amp;quot;,&amp;quot;110&amp;quot;,&amp;quot;113&amp;quot;,&amp;quot;124&amp;quot;),
+                images = c(&amp;quot;https://i.imgur.com/8VA9cYw.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/XYM1T2x.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/EQs5ZZe.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/2xin0UK.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/hbftayl.png&amp;quot;,
+                            &amp;quot;https://i.imgur.com/3wDHW8n.png&amp;quot;))
+pg %&amp;lt;+% d + geom_nodelab(aes(image=images), geom=&amp;quot;image&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;use-image-as-background&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Use image as background&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pg + geom_phylopic(image=&amp;quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&amp;quot;, size=Inf, alpha=.5, color=&amp;#39;firebrick&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Here is another example that use &lt;code&gt;Tabikaeru&lt;/code&gt; (known as traveling frog, a popular mobile game) image to decorate a phylogenetic tree of frog, see reproducible source code on &lt;a href=&#34;https://github.com/GuangchuangYu/frog_tree&#34; class=&#34;uri&#34;&gt;https://github.com/GuangchuangYu/frog_tree&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>visualizing reassortment history using seqcombo</title>
       <link>https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/</link>
       <pubDate>Tue, 05 Dec 2017 11:09:07 +0800</pubDate>
@@ -1088,81 +1147,6 @@ ggtree(tr) %&amp;lt;+% d + aes(color=I(color))
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
 &lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>scatterpie for plotting pies on ggplot</title>
-      <link>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/</link>
-      <pubDate>Wed, 07 Dec 2016 00:53:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/so.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Plotting pies on ggplot/ggmap is not an easy task, as ggplot2 doesn&amp;rsquo;t provide native pie geom. The pie we produced in ggplot2 is actually a barplot transform to polar coordination. This make it difficult if we want to produce a map like the above screenshot, which was posted by Tyler Rinker, the author of R package pacman.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/twitter.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The question remained unsolved until he discovered that ggtree can do it. The ggtree solution is to use the &lt;code&gt;subview&lt;/code&gt; function, which is good for embeding subplots and can embed different types of plots and even user&amp;rsquo;s own image files.&lt;/p&gt;
-
-&lt;p&gt;But it has its own drawbacks for plotting pies on map. First, it render plots as raster image make it slow to render when we plotting a lot of pies. Second we need some hacks to add legend.&lt;/p&gt;
-
-&lt;p&gt;Thanks to the &lt;code&gt;ggforce&lt;/code&gt; package, which provides a native implementation of the pie geom, we can plot pies on cartesian coordination.&lt;/p&gt;
-
-&lt;p&gt;I created a wrapper function to make it more easy to plot a set of pies.&lt;/p&gt;
-
-&lt;p&gt;For example, suppose we have the following data:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(123)
-long &amp;lt;- rnorm(50, sd=100)
-lat &amp;lt;- rnorm(50, sd=50)
-d &amp;lt;- data.frame(long=long, lat=lat)
-d &amp;lt;- with(d, d[abs(long) &amp;lt; 150 &amp;amp; abs(lat) &amp;lt; 70,])
-n &amp;lt;- nrow(d)
-d$region &amp;lt;- factor(1:n)
-d$A &amp;lt;- abs(rnorm(n, sd=1))
-d$B &amp;lt;- abs(rnorm(n, sd=2))
-d$C &amp;lt;- abs(rnorm(n, sd=3))
-d$D &amp;lt;- abs(rnorm(n, sd=4))
-d$radius &amp;lt;- 6 * abs(rnorm(n))
-head(d)
-
-##          long        lat region          A        B        C        D
-## 1  -56.047565  12.665926      1 0.71040656 2.887786 1.309570 2.892264
-## 2  -23.017749  -1.427338      2 0.25688371 1.403569 1.375096 4.945092
-## 4    7.050839  68.430114      3 0.24669188 0.524395 3.189978 5.138863
-## 5   12.928774 -11.288549      4 0.34754260 3.144288 3.789556 2.295894
-## 8 -126.506123  29.230687      5 0.95161857 3.029335 1.048951 2.471943
-## 9  -68.685285   6.192712      6 0.04502772 3.203072 2.596539 4.439393
-##      radius
-## 1 6.4847970
-## 2 3.7845247
-## 4 0.6818394
-## 5 9.1974120
-## 8 3.1267039
-## 9 2.9392227
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It is very easy to draw the pies on the map by the &lt;code&gt;geom_scatterpie&lt;/code&gt; layer.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggplot2)
-library(scatterpie)
-
-world &amp;lt;- map_data(&#39;world&#39;)
-p &amp;lt;- ggplot(world, aes(long, lat)) +
-    geom_map(map=world, aes(map_id=region), fill=NA, color=&amp;quot;black&amp;quot;) +
-    coord_quickmap()
-p + geom_scatterpie(aes(x=long, y=lat, group=region, r=radius),
-                    data=d, cols=LETTERS[1:4], color=NA, alpha=.8) +
-    geom_scatterpie_legend(d$radius, x=-160, y=-55)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/scatterpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is just a simple application of the &lt;code&gt;ggforce&lt;/code&gt;, and I find many people like it. They even asked me to implement the pie size legend. I do implemented a &lt;code&gt;geom_scatterpie_legend&lt;/code&gt; layer and as the name indicated, it add a legend of the pie sizes as demonstrated in the above figure.&lt;/p&gt;
-
-&lt;p&gt;The source code is quite simple, and it is impossible without &lt;code&gt;ggforce&lt;/code&gt;. Now this package is availabel on &lt;a href=&#34;https://cran.r-project.org/package=scatterpie&#34; target=&#34;_blank&#34;&gt;CRAN&lt;/a&gt;, you can use &lt;code&gt;install.packages(&#39;scatterpie&#39;)&lt;/code&gt; to install it and visit the &lt;a href=&#34;https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html&#34; target=&#34;_blank&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
   </channel>
