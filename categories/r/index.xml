@@ -58,6 +58,60 @@ cowplot::plot_grid(p1, p2, p3, ncol=3)&lt;/code&gt;&lt;/pre&gt;
     </item>
     
     <item>
+      <title>setting ggplot2 background with ggbackground</title>
+      <link>https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/</link>
+      <pubDate>Wed, 18 Apr 2018 21:00:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34; target=&#34;_blank&#34;&gt;ggimage&lt;/a&gt; 0.1.4 is available on CRAN.&lt;/p&gt;
+
+&lt;p&gt;This release introduces a new function called &lt;code&gt;ggbackground&lt;/code&gt; for setting image background as &lt;code&gt;ggplot&lt;/code&gt; canvas.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r include=FALSE&#34;&gt;require(magick)
+require(ggplot2)
+require(ggimage) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggplot2)
+p &amp;lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
+    geom_point(size=5) + theme_classic()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Suppose we have the above &lt;code&gt;ggplot&lt;/code&gt; object, &lt;code&gt;p&lt;/code&gt;, the only thing we need to do is passing the &lt;code&gt;p&lt;/code&gt; with a image file name (local or remote) to &lt;code&gt;ggbackground&lt;/code&gt;, as demonstrated below:&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggimage) 
+img = &amp;quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&amp;quot;
+ggbackground(p, img)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This image file is too colorful and we can even see the data points. We can manipulate the image using the functions provided by &lt;code&gt;magick&lt;/code&gt; package. For example, the following function emulate a classic high-pass filter from photoshop:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(magick)
+ggbackground(p, img, 
+    image_fun = function(x) image_negate(image_convolve(x, &#39;DoG:0,0,2&#39;)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here are examples of setting transparency and color:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r fig.asp=.3&#34;&gt;img = &amp;quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&amp;quot;
+p1 = ggbackground(p, img) + ggtitle(&amp;quot;ggbackground(p, img)&amp;quot;)
+p2 = ggbackground(p, img, alpha=.3) + ggtitle(&amp;quot;ggbackground(p, img, alpha=.3)&amp;quot;)
+p3 = ggbackground(p, img, alpha=.3, color=&amp;quot;steelblue&amp;quot;) + ggtitle(&#39;ggbackground(p, img, alpha=.3, color=&amp;quot;steelblue&amp;quot;)&#39;)
+cowplot::plot_grid(p1, p2, p3, ncol=3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;links&#34;&gt;Links&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ggimage package: &lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34; target=&#34;_blank&#34;&gt;CRAN&lt;/a&gt;, &lt;a href=&#34;https://github.com/GuangchuangYu/ggimage&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/vignettes/ggimage.html&#34; target=&#34;_blank&#34;&gt;ggimage introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://guangchuangyu.github.io/software/ggtree/vignettes/ggtree-ggimage.html&#34; target=&#34;_blank&#34;&gt;Annotating phylogenetic tree with images using ggtree and ggimage&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>Annotating phylogenetic tree with images using ggtree and ggimage</title>
       <link>https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/</link>
       <pubDate>Thu, 01 Mar 2018 11:10:48 +0800</pubDate>
@@ -1100,81 +1154,6 @@ ggtree(tr) %&amp;lt;+% d + aes(color=I(color))
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
 &lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>scatterpie for plotting pies on ggplot</title>
-      <link>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/</link>
-      <pubDate>Wed, 07 Dec 2016 00:53:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/so.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Plotting pies on ggplot/ggmap is not an easy task, as ggplot2 doesn&amp;rsquo;t provide native pie geom. The pie we produced in ggplot2 is actually a barplot transform to polar coordination. This make it difficult if we want to produce a map like the above screenshot, which was posted by Tyler Rinker, the author of R package pacman.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/twitter.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The question remained unsolved until he discovered that ggtree can do it. The ggtree solution is to use the &lt;code&gt;subview&lt;/code&gt; function, which is good for embeding subplots and can embed different types of plots and even user&amp;rsquo;s own image files.&lt;/p&gt;
-
-&lt;p&gt;But it has its own drawbacks for plotting pies on map. First, it render plots as raster image make it slow to render when we plotting a lot of pies. Second we need some hacks to add legend.&lt;/p&gt;
-
-&lt;p&gt;Thanks to the &lt;code&gt;ggforce&lt;/code&gt; package, which provides a native implementation of the pie geom, we can plot pies on cartesian coordination.&lt;/p&gt;
-
-&lt;p&gt;I created a wrapper function to make it more easy to plot a set of pies.&lt;/p&gt;
-
-&lt;p&gt;For example, suppose we have the following data:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(123)
-long &amp;lt;- rnorm(50, sd=100)
-lat &amp;lt;- rnorm(50, sd=50)
-d &amp;lt;- data.frame(long=long, lat=lat)
-d &amp;lt;- with(d, d[abs(long) &amp;lt; 150 &amp;amp; abs(lat) &amp;lt; 70,])
-n &amp;lt;- nrow(d)
-d$region &amp;lt;- factor(1:n)
-d$A &amp;lt;- abs(rnorm(n, sd=1))
-d$B &amp;lt;- abs(rnorm(n, sd=2))
-d$C &amp;lt;- abs(rnorm(n, sd=3))
-d$D &amp;lt;- abs(rnorm(n, sd=4))
-d$radius &amp;lt;- 6 * abs(rnorm(n))
-head(d)
-
-##          long        lat region          A        B        C        D
-## 1  -56.047565  12.665926      1 0.71040656 2.887786 1.309570 2.892264
-## 2  -23.017749  -1.427338      2 0.25688371 1.403569 1.375096 4.945092
-## 4    7.050839  68.430114      3 0.24669188 0.524395 3.189978 5.138863
-## 5   12.928774 -11.288549      4 0.34754260 3.144288 3.789556 2.295894
-## 8 -126.506123  29.230687      5 0.95161857 3.029335 1.048951 2.471943
-## 9  -68.685285   6.192712      6 0.04502772 3.203072 2.596539 4.439393
-##      radius
-## 1 6.4847970
-## 2 3.7845247
-## 4 0.6818394
-## 5 9.1974120
-## 8 3.1267039
-## 9 2.9392227
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It is very easy to draw the pies on the map by the &lt;code&gt;geom_scatterpie&lt;/code&gt; layer.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggplot2)
-library(scatterpie)
-
-world &amp;lt;- map_data(&#39;world&#39;)
-p &amp;lt;- ggplot(world, aes(long, lat)) +
-    geom_map(map=world, aes(map_id=region), fill=NA, color=&amp;quot;black&amp;quot;) +
-    coord_quickmap()
-p + geom_scatterpie(aes(x=long, y=lat, group=region, r=radius),
-                    data=d, cols=LETTERS[1:4], color=NA, alpha=.8) +
-    geom_scatterpie_legend(d$radius, x=-160, y=-55)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/scatterpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is just a simple application of the &lt;code&gt;ggforce&lt;/code&gt;, and I find many people like it. They even asked me to implement the pie size legend. I do implemented a &lt;code&gt;geom_scatterpie_legend&lt;/code&gt; layer and as the name indicated, it add a legend of the pie sizes as demonstrated in the above figure.&lt;/p&gt;
-
-&lt;p&gt;The source code is quite simple, and it is impossible without &lt;code&gt;ggforce&lt;/code&gt;. Now this package is availabel on &lt;a href=&#34;https://cran.r-project.org/package=scatterpie&#34; target=&#34;_blank&#34;&gt;CRAN&lt;/a&gt;, you can use &lt;code&gt;install.packages(&#39;scatterpie&#39;)&lt;/code&gt; to install it and visit the &lt;a href=&#34;https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html&#34; target=&#34;_blank&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
   </channel>
