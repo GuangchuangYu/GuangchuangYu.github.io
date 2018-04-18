@@ -262,52 +262,39 @@
 </div>
 
     <div class="article-style" itemprop="articleBody">
-        <p><a href="https://cran.r-project.org/package=ggimage" target="_blank">ggimage</a> 0.1.4 is available on CRAN.</p>
-
+        <p><a href="https://cran.r-project.org/package=ggimage">ggimage</a> 0.1.4 is available on CRAN.</p>
 <p>This release introduces a new function called <code>ggbackground</code> for setting image background as <code>ggplot</code> canvas.</p>
-
-<pre><code class="language-r echo=FALSE, message=FALSE, result=FALSE">require(magick)
-require(ggplot2)
-require(ggimage) 
-</code></pre>
-
-<pre><code class="language-r">require(ggplot2)
+<pre><code>## Warning: package &#39;magick&#39; was built under R version 3.4.4</code></pre>
+<pre class="r"><code>require(ggplot2)
 p &lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
-    geom_point(size=5) + theme_classic()
-</code></pre>
-
+    geom_point(size=5) + theme_classic()</code></pre>
 <p>Suppose we have the above <code>ggplot</code> object, <code>p</code>, the only thing we need to do is passing the <code>p</code> with a image file name (local or remote) to <code>ggbackground</code>, as demonstrated below:</p>
-
-<p></p>
-
-<pre><code class="language-r">require(ggimage) 
+<!--more-->
+<pre class="r"><code>require(ggimage) 
 img = &quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&quot;
-ggbackground(p, img)
-</code></pre>
-
+ggbackground(p, img)</code></pre>
+<p><img src="/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>This image file is too colorful and we can even see the data points. We can manipulate the image using the functions provided by <code>magick</code> package. For example, the following function emulate a classic high-pass filter from photoshop:</p>
-
-<pre><code class="language-r">require(magick)
+<pre class="r"><code>require(magick)
 ggbackground(p, img, 
-    image_fun = function(x) image_negate(image_convolve(x, 'DoG:0,0,2')))
-</code></pre>
-
+    image_fun = function(x) image_negate(image_convolve(x, &#39;DoG:0,0,2&#39;)))</code></pre>
+<p><img src="/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Here are examples of setting transparency and color:</p>
-
-<pre><code class="language-r fig.asp=.3">img = &quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&quot;
+<pre class="r"><code>img = &quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&quot;
 p1 = ggbackground(p, img) + ggtitle(&quot;ggbackground(p, img)&quot;)
 p2 = ggbackground(p, img, alpha=.3) + ggtitle(&quot;ggbackground(p, img, alpha=.3)&quot;)
-p3 = ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;) + ggtitle('ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;)')
-cowplot::plot_grid(p1, p2, p3, ncol=3)
-</code></pre>
-
-<h2 id="links">Links</h2>
-
+p3 = ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;) + ggtitle(&#39;ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;)&#39;)
+cowplot::plot_grid(p1, p2, p3, ncol=3)</code></pre>
+<p><img src="/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div id="links" class="section level2">
+<h2>Links</h2>
 <ul>
-<li>ggimage package: <a href="https://cran.r-project.org/package=ggimage" target="_blank">CRAN</a>, <a href="https://github.com/GuangchuangYu/ggimage" target="_blank">GitHub</a></li>
-<li><a href="https://cran.r-project.org/web/packages/ggimage/vignettes/ggimage.html" target="_blank">ggimage introduction</a></li>
-<li><a href="https://guangchuangyu.github.io/software/ggtree/vignettes/ggtree-ggimage.html" target="_blank">Annotating phylogenetic tree with images using ggtree and ggimage</a></li>
+<li>ggimage package: <a href="https://cran.r-project.org/package=ggimage">CRAN</a>, <a href="https://github.com/GuangchuangYu/ggimage">GitHub</a></li>
+<li><a href="https://cran.r-project.org/web/packages/ggimage/vignettes/ggimage.html">ggimage introduction</a></li>
+<li><a href="https://guangchuangyu.github.io/software/ggtree/vignettes/ggtree-ggimage.html">Annotating phylogenetic tree with images using ggtree and ggimage</a></li>
 </ul>
+</div>
+
     </div>
   </div>
 
@@ -324,9 +311,6 @@ cowplot::plot_grid(p1, p2, p3, ncol=3)
       aria-hidden="true">&larr;</span> Annotating phylogenetic tree with images using ggtree and ggimage</a></li>
     
 
-    
-    <li class="next"><a href="https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/">setting ggplot2 background with ggbackground <span
-      aria-hidden="true">&rarr;</span></a></li>
     
   </ul>
 </nav>
