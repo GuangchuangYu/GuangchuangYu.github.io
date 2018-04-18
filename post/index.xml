@@ -16,47 +16,45 @@
       <pubDate>Wed, 18 Apr 2018 21:00:00 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34; target=&#34;_blank&#34;&gt;ggimage&lt;/a&gt; 0.1.4 is available on CRAN.&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34;&gt;ggimage&lt;/a&gt; 0.1.4 is available on CRAN.&lt;/p&gt;
 &lt;p&gt;This release introduces a new function called &lt;code&gt;ggbackground&lt;/code&gt; for setting image background as &lt;code&gt;ggplot&lt;/code&gt; canvas.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggplot2)
-p &amp;lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
-    geom_point(size=5) + theme_classic()
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggplot2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: ggplot2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p &amp;lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
+    geom_point(size=5) + theme_classic()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Suppose we have the above &lt;code&gt;ggplot&lt;/code&gt; object, &lt;code&gt;p&lt;/code&gt;, the only thing we need to do is passing the &lt;code&gt;p&lt;/code&gt; with a image file name (local or remote) to &lt;code&gt;ggbackground&lt;/code&gt;, as demonstrated below:&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggimage) 
-img = &amp;quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&amp;quot;
-ggbackground(p, img)
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;!--more--&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggimage) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: ggimage&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;img = &amp;quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&amp;quot;
+ggbackground(p, img)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This image file is too colorful and we can even see the data points. We can manipulate the image using the functions provided by &lt;code&gt;magick&lt;/code&gt; package. For example, the following function emulate a classic high-pass filter from photoshop:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(magick)
-ggbackground(p, img, 
-    image_fun = function(x) image_negate(image_convolve(x, &#39;DoG:0,0,2&#39;)))
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(magick)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: magick&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;magick&amp;#39; was built under R version 3.4.4&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Linking to ImageMagick 6.9.9.39
+## Enabled features: cairo, fontconfig, freetype, lcms, pango, rsvg, webp
+## Disabled features: fftw, ghostscript, x11&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggbackground(p, img, 
+    image_fun = function(x) image_negate(image_convolve(x, &amp;#39;DoG:0,0,2&amp;#39;)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Here are examples of setting transparency and color:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r fig.asp=3&#34;&gt;img = &amp;quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&amp;quot;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;img = &amp;quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&amp;quot;
 p1 = ggbackground(p, img) + ggtitle(&amp;quot;ggbackground(p, img)&amp;quot;)
 p2 = ggbackground(p, img, alpha=.3) + ggtitle(&amp;quot;ggbackground(p, img, alpha=.3)&amp;quot;)
-p3 = ggbackground(p, img, alpha=.3, color=&amp;quot;steelblue&amp;quot;) + ggtitle(&#39;ggbackground(p, img, alpha=.3, color=&amp;quot;steelblue&amp;quot;)&#39;)
-cowplot::plot_grid(p1, p2, p3, ncol=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;links&#34;&gt;Links&lt;/h2&gt;
-
+p3 = ggbackground(p, img, alpha=.3, color=&amp;quot;steelblue&amp;quot;) + ggtitle(&amp;#39;ggbackground(p, img, alpha=.3, color=&amp;quot;steelblue&amp;quot;)&amp;#39;)
+cowplot::plot_grid(p1, p2, p3, ncol=3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;links&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;ggimage package: &lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34; target=&#34;_blank&#34;&gt;CRAN&lt;/a&gt;, &lt;a href=&#34;https://github.com/GuangchuangYu/ggimage&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/vignettes/ggimage.html&#34; target=&#34;_blank&#34;&gt;ggimage introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://guangchuangyu.github.io/software/ggtree/vignettes/ggtree-ggimage.html&#34; target=&#34;_blank&#34;&gt;Annotating phylogenetic tree with images using ggtree and ggimage&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;li&gt;ggimage package: &lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34;&gt;CRAN&lt;/a&gt;, &lt;a href=&#34;https://github.com/GuangchuangYu/ggimage&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/vignettes/ggimage.html&#34;&gt;ggimage introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://guangchuangyu.github.io/software/ggtree/vignettes/ggtree-ggimage.html&#34;&gt;Annotating phylogenetic tree with images using ggtree and ggimage&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
