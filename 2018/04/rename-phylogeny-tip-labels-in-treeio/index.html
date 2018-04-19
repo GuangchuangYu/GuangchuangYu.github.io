@@ -285,7 +285,13 @@ species &lt;- c(&quot;gorilla&quot;, &quot;spp.&quot;, &quot;sapiens&quot;, &quo
 geo &lt;- c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;World&quot;, &quot;Asia&quot;)
 d &lt;- data.frame(label = tr$tip.label, genus = genus,
                 species = species, geo = geo)
-ggtree(tr) %&lt;+% d + xlim(NA, 5) +
+d</code></pre>
+<pre><code>##   label   genus  species    geo
+## 1     a Gorilla  gorilla Africa
+## 2     b     Pan     spp. Africa
+## 3     c    Homo  sapiens  World
+## 4     d   Pongo pygmaeus   Asia</code></pre>
+<pre class="r"><code>ggtree(tr) %&lt;+% d + xlim(NA, 5) +
     geom_tiplab(aes(label=paste0(&#39;italic(&#39;, genus, &#39;)~bolditalic(&#39;, species, &#39;)~&#39;, geo)), parse=T)</code></pre>
 <pre><code>## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4</code></pre>
 <p><img src="/post/R/ggtree/treeio/rename_taxa_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
@@ -294,7 +300,13 @@ ggtree(tr) %&lt;+% d + xlim(NA, 5) +
 write.tree(tr2)</code></pre>
 <pre><code>## [1] &quot;((Gorilla,(Pan,Homo)),Pongo);&quot;</code></pre>
 <pre class="r"><code>d2 = dplyr::mutate(d, newlab = paste(genus, species, sep=&#39;|&#39;))
-tr3 = rename_taxa(tr, d2, label, newlab)
+d2</code></pre>
+<pre><code>##   label   genus  species    geo          newlab
+## 1     a Gorilla  gorilla Africa Gorilla|gorilla
+## 2     b     Pan     spp. Africa        Pan|spp.
+## 3     c    Homo  sapiens  World    Homo|sapiens
+## 4     d   Pongo pygmaeus   Asia  Pongo|pygmaeus</code></pre>
+<pre class="r"><code>tr3 = rename_taxa(tr, d2, label, newlab)
 write.tree(tr3)</code></pre>
 <pre><code>## [1] &quot;((Gorilla|gorilla,(Pan|spp.,Homo|sapiens)),Pongo|pygmaeus);&quot;</code></pre>
 <p>If the input tree object is a <code>treedata</code> instance, you can use <code>write.beast</code> to export the tree with associated data to a BEAST compatible NEXUS file.</p>
