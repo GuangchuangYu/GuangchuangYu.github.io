@@ -7,8 +7,54 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 01 Mar 2018 11:10:48 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 19 Apr 2018 11:00:08 +0800</lastBuildDate>
     <atom:link href="/tags/ggtree/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>rename phylogeny tip labels in treeio</title>
+      <link>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</link>
+      <pubDate>Thu, 19 Apr 2018 11:00:08 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</guid>
+      <description>&lt;p&gt;I don’t know whether ‘rename taxa’ is a common task or not. It seems not a good idea to rename taxa in Newick tree text, since it may introduce problems when mapping the original sequence alignment to the tree.&lt;/p&gt;
+&lt;p&gt;If you just want to show different or additional information when plotting the tree, it is fine and easy to do it using &lt;code&gt;ggtree&lt;/code&gt;:&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(treeio)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: treeio&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggtree)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: ggtree&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ggtree v1.11.6  For help: https://guangchuangyu.github.io/software/ggtree
+## 
+## If you use ggtree in published research, please cite:
+## Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr &amp;lt;- read.tree(text = &amp;quot;((a,(b,c)),d);&amp;quot;)
+genus &amp;lt;- c(&amp;quot;Gorilla&amp;quot;, &amp;quot;Pan&amp;quot;, &amp;quot;Homo&amp;quot;, &amp;quot;Pongo&amp;quot;)
+species &amp;lt;- c(&amp;quot;gorilla&amp;quot;, &amp;quot;spp.&amp;quot;, &amp;quot;sapiens&amp;quot;, &amp;quot;pygmaeus&amp;quot;)
+geo &amp;lt;- c(&amp;quot;Africa&amp;quot;, &amp;quot;Africa&amp;quot;, &amp;quot;World&amp;quot;, &amp;quot;Asia&amp;quot;)
+d &amp;lt;- data.frame(label = tr$tip.label, genus = genus,
+                species = species, geo = geo)
+ggtree(tr) %&amp;lt;+% d + xlim(NA, 5) +
+    geom_tiplab(aes(label=paste0(&amp;#39;italic(&amp;#39;, genus, &amp;#39;)~bolditalic(&amp;#39;, species, &amp;#39;)~&amp;#39;, geo)), parse=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;bindrcpp&amp;#39; was built under R version 3.4.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/treeio/rename_taxa_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;However, it is also possible to rename taxa of the tree object (either &lt;code&gt;treedata&lt;/code&gt; or &lt;code&gt;phylo&lt;/code&gt;) in &lt;code&gt;treeio&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr2 = rename_taxa(tr, d, label, genus)
+write.tree(tr2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla,(Pan,Homo)),Pongo);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d2 = dplyr::mutate(d, newlab = paste(genus, species, sep=&amp;#39;|&amp;#39;))
+tr3 = rename_taxa(tr, d2, label, newlab)
+write.tree(tr3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla|gorilla,(Pan|spp.,Homo|sapiens)),Pongo|pygmaeus);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the input tree object is a &lt;code&gt;treedata&lt;/code&gt; instance, you can use &lt;code&gt;write.beast&lt;/code&gt; to export the tree with associated data to a BEAST compatible NEXUS file.&lt;/p&gt;
+&lt;div id=&#34;vignettes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Vignettes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Importer.html&#34;&gt;Importing trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Exporter.html&#34;&gt;Exporting trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Annotating phylogenetic tree with images using ggtree and ggimage</title>
@@ -1527,84 +1573,6 @@ msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree_msaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;PS: I am thinking about writing a tutorial through examples. If you have any interesting topic, please let me know.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>ggtree paper published</title>
-      <link>https://guangchuangyu.github.io/2016/08/ggtree-paper-published/</link>
-      <pubDate>Tue, 16 Aug 2016 22:10:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/08/ggtree-paper-published/</guid>
-      <description>&lt;p&gt;Today &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;ggtree&lt;/code&gt;&lt;/a&gt; received &lt;a href=&#34;https://github.com/GuangchuangYu/ggtree/stargazers&#34; target=&#34;_blank&#34;&gt;100 stars&lt;/a&gt; on &lt;i class=&#34;fa fa-github&#34;&gt;&lt;/i&gt; and I found the paper was &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;online&lt;/a&gt; at the same day by the tweet:&lt;/p&gt;
-
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;ggtree, Methods in Ecology and Evolutionに掲載されたのか。オープンアクセスっぽいな。&lt;a href=&#34;https://t.co/JlET18BSZv&#34;&gt;https://t.co/JlET18BSZv&lt;/a&gt;&lt;/p&gt;&amp;mdash; Hoxo_Mass_Spectrum (@siero5335) &lt;a href=&#34;https://twitter.com/siero5335/status/765521239146233856?ref_src=twsrc%5Etfw&#34;&gt;August 16, 2016&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
-
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;I am quite exciting about it. Now ggtree is citable by doi:&lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In the review period, &lt;code&gt;ggtree&lt;/code&gt; had already been cited by several papers:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;1&lt;/code&gt;. &lt;a href=&#34;https://doi.org/10.7717/peerj.976&#34; target=&#34;_blank&#34;&gt;https://doi.org/10.7717/peerj.976&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Annotating phylogenetic tree with image files (i.e. secondary structure).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/ggtree/featured_img/2015_peerJ_fig-9-2x.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;2&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1016/j.meegid.2015.12.006&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1016/j.meegid.2015.12.006&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Highlight clades and annotate phylogenetic tree with genotype table.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/ggtree/featured_img/2015_peiyu_1-s2.0-S1567134815300721-gr1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;3&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.3389%2Ffcimb.2016.00036&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.3389%2Ffcimb.2016.00036&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Annotate phylogenetic tree with binary matrix.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/ggtree/featured_img/2016_fcimb-06-00036-g003.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;4&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1104/pp.16.00359&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1104/pp.16.00359&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Annotate phylogenetic tree with sequence features.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/ggtree/featured_img/2016_PlantPhysiology.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;5&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1101/067207&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1101/067207&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Annotate with bootstrap values.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/17700401/273895c6-63f8-11e6-91da-7431b78b22af.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;6&lt;/code&gt;. &lt;a href=&#34;http://www.nature.com/articles/srep30158&#34; target=&#34;_blank&#34;&gt;http://www.nature.com/articles/srep30158&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Visualize bootstrap value infer by RAxML and phyml on the same tree.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://cloud.githubusercontent.com/assets/626539/17127143/de15b7c0-5335-11e6-8621-edce0e581308.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;7&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1101/053371&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1101/053371&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;8&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1105/tpc.16.00053&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1105/tpc.16.00053&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;9&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/mec.13474&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1111/mec.13474&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;10&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1371/journal.pone.0160958&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1371/journal.pone.0160958&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;11&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12593&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1111/2041-210X.12593&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;12&lt;/code&gt;. &lt;a href=&#34;http://dx.doi.org/10.1101/053371&#34; target=&#34;_blank&#34;&gt;http://dx.doi.org/10.1101/053371&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;ggtree paper&lt;/a&gt; provides several comprehensive and reproducible examples. It can be a good reference for complex tree annotation. &lt;a href=&#34;https://guangchuangyu.github.io/presentation/2016-ggtree-chinar/&#34; target=&#34;_blank&#34;&gt;My slides&lt;/a&gt; in 9&lt;sup&gt;th&lt;/sup&gt; China R conference summarized the functionalities that &lt;code&gt;ggtree&lt;/code&gt; provided.&lt;/p&gt;
-
-&lt;p&gt;More information can be found in &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree homepage&lt;/a&gt;. Hope you have fun with &lt;code&gt;ggtree&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
 

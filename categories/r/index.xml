@@ -7,8 +7,54 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 18 Apr 2018 21:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 19 Apr 2018 11:00:08 +0800</lastBuildDate>
     <atom:link href="/categories/r/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>rename phylogeny tip labels in treeio</title>
+      <link>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</link>
+      <pubDate>Thu, 19 Apr 2018 11:00:08 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</guid>
+      <description>&lt;p&gt;I don’t know whether ‘rename taxa’ is a common task or not. It seems not a good idea to rename taxa in Newick tree text, since it may introduce problems when mapping the original sequence alignment to the tree.&lt;/p&gt;
+&lt;p&gt;If you just want to show different or additional information when plotting the tree, it is fine and easy to do it using &lt;code&gt;ggtree&lt;/code&gt;:&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(treeio)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: treeio&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggtree)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: ggtree&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ggtree v1.11.6  For help: https://guangchuangyu.github.io/software/ggtree
+## 
+## If you use ggtree in published research, please cite:
+## Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr &amp;lt;- read.tree(text = &amp;quot;((a,(b,c)),d);&amp;quot;)
+genus &amp;lt;- c(&amp;quot;Gorilla&amp;quot;, &amp;quot;Pan&amp;quot;, &amp;quot;Homo&amp;quot;, &amp;quot;Pongo&amp;quot;)
+species &amp;lt;- c(&amp;quot;gorilla&amp;quot;, &amp;quot;spp.&amp;quot;, &amp;quot;sapiens&amp;quot;, &amp;quot;pygmaeus&amp;quot;)
+geo &amp;lt;- c(&amp;quot;Africa&amp;quot;, &amp;quot;Africa&amp;quot;, &amp;quot;World&amp;quot;, &amp;quot;Asia&amp;quot;)
+d &amp;lt;- data.frame(label = tr$tip.label, genus = genus,
+                species = species, geo = geo)
+ggtree(tr) %&amp;lt;+% d + xlim(NA, 5) +
+    geom_tiplab(aes(label=paste0(&amp;#39;italic(&amp;#39;, genus, &amp;#39;)~bolditalic(&amp;#39;, species, &amp;#39;)~&amp;#39;, geo)), parse=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;bindrcpp&amp;#39; was built under R version 3.4.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/treeio/rename_taxa_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;However, it is also possible to rename taxa of the tree object (either &lt;code&gt;treedata&lt;/code&gt; or &lt;code&gt;phylo&lt;/code&gt;) in &lt;code&gt;treeio&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr2 = rename_taxa(tr, d, label, genus)
+write.tree(tr2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla,(Pan,Homo)),Pongo);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d2 = dplyr::mutate(d, newlab = paste(genus, species, sep=&amp;#39;|&amp;#39;))
+tr3 = rename_taxa(tr, d2, label, newlab)
+write.tree(tr3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla|gorilla,(Pan|spp.,Homo|sapiens)),Pongo|pygmaeus);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the input tree object is a &lt;code&gt;treedata&lt;/code&gt; instance, you can use &lt;code&gt;write.beast&lt;/code&gt; to export the tree with associated data to a BEAST compatible NEXUS file.&lt;/p&gt;
+&lt;div id=&#34;vignettes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Vignettes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Importer.html&#34;&gt;Importing trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Exporter.html&#34;&gt;Exporting trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>setting ggplot2 background with ggbackground</title>
@@ -1093,81 +1139,6 @@ ggtree(tr) %&amp;lt;+% d + aes(color=I(color))
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
 &lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>scatterpie for plotting pies on ggplot</title>
-      <link>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/</link>
-      <pubDate>Wed, 07 Dec 2016 00:53:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/so.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Plotting pies on ggplot/ggmap is not an easy task, as ggplot2 doesn&amp;rsquo;t provide native pie geom. The pie we produced in ggplot2 is actually a barplot transform to polar coordination. This make it difficult if we want to produce a map like the above screenshot, which was posted by Tyler Rinker, the author of R package pacman.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/twitter.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The question remained unsolved until he discovered that ggtree can do it. The ggtree solution is to use the &lt;code&gt;subview&lt;/code&gt; function, which is good for embeding subplots and can embed different types of plots and even user&amp;rsquo;s own image files.&lt;/p&gt;
-
-&lt;p&gt;But it has its own drawbacks for plotting pies on map. First, it render plots as raster image make it slow to render when we plotting a lot of pies. Second we need some hacks to add legend.&lt;/p&gt;
-
-&lt;p&gt;Thanks to the &lt;code&gt;ggforce&lt;/code&gt; package, which provides a native implementation of the pie geom, we can plot pies on cartesian coordination.&lt;/p&gt;
-
-&lt;p&gt;I created a wrapper function to make it more easy to plot a set of pies.&lt;/p&gt;
-
-&lt;p&gt;For example, suppose we have the following data:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(123)
-long &amp;lt;- rnorm(50, sd=100)
-lat &amp;lt;- rnorm(50, sd=50)
-d &amp;lt;- data.frame(long=long, lat=lat)
-d &amp;lt;- with(d, d[abs(long) &amp;lt; 150 &amp;amp; abs(lat) &amp;lt; 70,])
-n &amp;lt;- nrow(d)
-d$region &amp;lt;- factor(1:n)
-d$A &amp;lt;- abs(rnorm(n, sd=1))
-d$B &amp;lt;- abs(rnorm(n, sd=2))
-d$C &amp;lt;- abs(rnorm(n, sd=3))
-d$D &amp;lt;- abs(rnorm(n, sd=4))
-d$radius &amp;lt;- 6 * abs(rnorm(n))
-head(d)
-
-##          long        lat region          A        B        C        D
-## 1  -56.047565  12.665926      1 0.71040656 2.887786 1.309570 2.892264
-## 2  -23.017749  -1.427338      2 0.25688371 1.403569 1.375096 4.945092
-## 4    7.050839  68.430114      3 0.24669188 0.524395 3.189978 5.138863
-## 5   12.928774 -11.288549      4 0.34754260 3.144288 3.789556 2.295894
-## 8 -126.506123  29.230687      5 0.95161857 3.029335 1.048951 2.471943
-## 9  -68.685285   6.192712      6 0.04502772 3.203072 2.596539 4.439393
-##      radius
-## 1 6.4847970
-## 2 3.7845247
-## 4 0.6818394
-## 5 9.1974120
-## 8 3.1267039
-## 9 2.9392227
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It is very easy to draw the pies on the map by the &lt;code&gt;geom_scatterpie&lt;/code&gt; layer.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggplot2)
-library(scatterpie)
-
-world &amp;lt;- map_data(&#39;world&#39;)
-p &amp;lt;- ggplot(world, aes(long, lat)) +
-    geom_map(map=world, aes(map_id=region), fill=NA, color=&amp;quot;black&amp;quot;) +
-    coord_quickmap()
-p + geom_scatterpie(aes(x=long, y=lat, group=region, r=radius),
-                    data=d, cols=LETTERS[1:4], color=NA, alpha=.8) +
-    geom_scatterpie_legend(d$radius, x=-160, y=-55)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/scatterpie_files/scatterpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is just a simple application of the &lt;code&gt;ggforce&lt;/code&gt;, and I find many people like it. They even asked me to implement the pie size legend. I do implemented a &lt;code&gt;geom_scatterpie_legend&lt;/code&gt; layer and as the name indicated, it add a legend of the pie sizes as demonstrated in the above figure.&lt;/p&gt;
-
-&lt;p&gt;The source code is quite simple, and it is impossible without &lt;code&gt;ggforce&lt;/code&gt;. Now this package is availabel on &lt;a href=&#34;https://cran.r-project.org/package=scatterpie&#34; target=&#34;_blank&#34;&gt;CRAN&lt;/a&gt;, you can use &lt;code&gt;install.packages(&#39;scatterpie&#39;)&lt;/code&gt; to install it and visit the &lt;a href=&#34;https://cran.r-project.org/web/packages/scatterpie/vignettes/scatterpie.html&#34; target=&#34;_blank&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
   </channel>

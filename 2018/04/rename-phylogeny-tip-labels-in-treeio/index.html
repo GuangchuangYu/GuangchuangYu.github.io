@@ -34,11 +34,11 @@
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
 
-  <link rel="canonical" href="https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/">
+  <link rel="canonical" href="https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/">
 
   
 
-  <title>setting ggplot2 background with ggbackground | Guangchuang YU</title>
+  <title>rename phylogeny tip labels in treeio | Guangchuang YU</title>
 
 
 </head>
@@ -175,14 +175,14 @@
   
 
   <div class="article-container">
-    <h1 itemprop="name">setting ggplot2 background with ggbackground</h1>
+    <h1 itemprop="name">rename phylogeny tip labels in treeio</h1>
     
 
 <div class="article-metadata">
 
   <span class="article-date">
-    <time datetime="2018-04-18 21:00:00 &#43;0800 HKT" itemprop="datePublished">
-      Wed, Apr 18, 2018
+    <time datetime="2018-04-19 11:00:08 &#43;0800 HKT" itemprop="datePublished">
+      Thu, Apr 19, 2018
     </time>
   </span>
 
@@ -192,10 +192,13 @@
   <span class="article-categories">
     <i class="fa fa-folder"></i>
     
-    <a href="/categories/r">R</a
+    <a href="/categories/evolution">Evolution</a
     >, 
     
     <a href="/categories/visualization">Visualization</a
+    >, 
+    
+    <a href="/categories/r">R</a
     >
     
   </span>
@@ -208,7 +211,10 @@
   <span class="article-tags">
     <i class="fa fa-tags"></i>
     
-    <a href="/tags/ggimage">ggimage</a
+    <a href="/tags/ggtree">ggtree</a
+    >, 
+    
+    <a href="/tags/treeio">treeio</a
     >
     
   </span>
@@ -221,35 +227,35 @@
   <ul class="share">
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2fsetting-ggplot2-background-with-ggbackground%2f"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2frename-phylogeny-tip-labels-in-treeio%2f"
          target="_blank">
         <i class="fa fa-facebook"></i>
       </a>
     </li>
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=setting%20ggplot2%20background%20with%20ggbackground&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2fsetting-ggplot2-background-with-ggbackground%2f"
+         href="https://twitter.com/intent/tweet?text=rename%20phylogeny%20tip%20labels%20in%20treeio&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2frename-phylogeny-tip-labels-in-treeio%2f"
          target="_blank">
         <i class="fa fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2fsetting-ggplot2-background-with-ggbackground%2f&amp;title=setting%20ggplot2%20background%20with%20ggbackground"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2frename-phylogeny-tip-labels-in-treeio%2f&amp;title=rename%20phylogeny%20tip%20labels%20in%20treeio"
          target="_blank">
         <i class="fa fa-linkedin"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2fsetting-ggplot2-background-with-ggbackground%2f&amp;title=setting%20ggplot2%20background%20with%20ggbackground"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2frename-phylogeny-tip-labels-in-treeio%2f&amp;title=rename%20phylogeny%20tip%20labels%20in%20treeio"
          target="_blank">
         <i class="fa fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=setting%20ggplot2%20background%20with%20ggbackground&amp;body=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2fsetting-ggplot2-background-with-ggbackground%2f">
+         href="mailto:?subject=rename%20phylogeny%20tip%20labels%20in%20treeio&amp;body=https%3a%2f%2fguangchuangyu.github.io%2f2018%2f04%2frename-phylogeny-tip-labels-in-treeio%2f">
         <i class="fa fa-envelope"></i>
       </a>
     </li>
@@ -262,35 +268,41 @@
 </div>
 
     <div class="article-style" itemprop="articleBody">
-        <p><a href="https://cran.r-project.org/package=ggimage">ggimage</a> 0.1.4 is available on CRAN.</p>
-<p>This release introduces a new function called <code>ggbackground</code> for setting image background as <code>ggplot</code> canvas.</p>
-<pre class="r"><code>require(ggplot2)
-p &lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
-    geom_point(size=5) + theme_classic()</code></pre>
-<p>Suppose we have the above <code>ggplot</code> object, <code>p</code>, the only thing we need to do is passing the <code>p</code> with an image file name (local or remote) to <code>ggbackground</code>, as demonstrated below:</p>
+        <p>I don’t know whether ‘rename taxa’ is a common task or not. It seems not a good idea to rename taxa in Newick tree text, since it may introduce problems when mapping the original sequence alignment to the tree.</p>
+<p>If you just want to show different or additional information when plotting the tree, it is fine and easy to do it using <code>ggtree</code>:</p>
 <!--more-->
-<pre class="r"><code>require(ggimage) 
-img = &quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&quot;
-ggbackground(p, img)</code></pre>
-<p><img src="/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>This image file is too colorful and it is hard to see the patterns of the data points. We can manipulate the image using the functions provided by <code>magick</code> package. For example, the following function emulate a classic high-pass filter from photoshop:</p>
-<pre class="r"><code>require(magick)
-ggbackground(p, img, 
-    image_fun = function(x) image_negate(image_convolve(x, &#39;DoG:0,0,2&#39;)))</code></pre>
-<p><img src="/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>Here are examples of setting transparency and color:</p>
-<pre class="r"><code>img = &quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&quot;
-p1 = ggbackground(p, img) + ggtitle(&quot;ggbackground(p, img)&quot;)
-p2 = ggbackground(p, img, alpha=.3) + ggtitle(&quot;ggbackground(p, img, alpha=.3)&quot;)
-p3 = ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;) + ggtitle(&#39;ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;)&#39;)
-cowplot::plot_grid(p1, p2, p3, ncol=3)</code></pre>
-<p><img src="/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-5-1.png" width="1152" /></p>
-<div id="links" class="section level2">
-<h2>Links</h2>
+<pre class="r"><code>require(treeio)</code></pre>
+<pre><code>## Loading required package: treeio</code></pre>
+<pre class="r"><code>require(ggtree)</code></pre>
+<pre><code>## Loading required package: ggtree</code></pre>
+<pre><code>## ggtree v1.11.6  For help: https://guangchuangyu.github.io/software/ggtree
+## 
+## If you use ggtree in published research, please cite:
+## Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628</code></pre>
+<pre class="r"><code>tr &lt;- read.tree(text = &quot;((a,(b,c)),d);&quot;)
+genus &lt;- c(&quot;Gorilla&quot;, &quot;Pan&quot;, &quot;Homo&quot;, &quot;Pongo&quot;)
+species &lt;- c(&quot;gorilla&quot;, &quot;spp.&quot;, &quot;sapiens&quot;, &quot;pygmaeus&quot;)
+geo &lt;- c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;World&quot;, &quot;Asia&quot;)
+d &lt;- data.frame(label = tr$tip.label, genus = genus,
+                species = species, geo = geo)
+ggtree(tr) %&lt;+% d + xlim(NA, 5) +
+    geom_tiplab(aes(label=paste0(&#39;italic(&#39;, genus, &#39;)~bolditalic(&#39;, species, &#39;)~&#39;, geo)), parse=T)</code></pre>
+<pre><code>## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4</code></pre>
+<p><img src="/post/R/ggtree/treeio/rename_taxa_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>However, it is also possible to rename taxa of the tree object (either <code>treedata</code> or <code>phylo</code>) in <code>treeio</code>:</p>
+<pre class="r"><code>tr2 = rename_taxa(tr, d, label, genus)
+write.tree(tr2)</code></pre>
+<pre><code>## [1] &quot;((Gorilla,(Pan,Homo)),Pongo);&quot;</code></pre>
+<pre class="r"><code>d2 = dplyr::mutate(d, newlab = paste(genus, species, sep=&#39;|&#39;))
+tr3 = rename_taxa(tr, d2, label, newlab)
+write.tree(tr3)</code></pre>
+<pre><code>## [1] &quot;((Gorilla|gorilla,(Pan|spp.,Homo|sapiens)),Pongo|pygmaeus);&quot;</code></pre>
+<p>If the input tree object is a <code>treedata</code> instance, you can use <code>write.beast</code> to export the tree with associated data to a BEAST compatible NEXUS file.</p>
+<div id="vignettes" class="section level2">
+<h2>Vignettes</h2>
 <ul>
-<li>ggimage package: <a href="https://cran.r-project.org/package=ggimage">CRAN</a>, <a href="https://github.com/GuangchuangYu/ggimage">GitHub</a></li>
-<li><a href="https://cran.r-project.org/web/packages/ggimage/vignettes/ggimage.html">ggimage introduction</a></li>
-<li><a href="https://guangchuangyu.github.io/software/ggtree/vignettes/ggtree-ggimage.html">Annotating phylogenetic tree with images using ggtree and ggimage</a></li>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Importer.html">Importing trees with data</a></li>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Exporter.html">Exporting trees with data</a></li>
 </ul>
 </div>
 
@@ -306,13 +318,10 @@ cowplot::plot_grid(p1, p2, p3, ncol=3)</code></pre>
   <nav>
   <ul class="pager">
     
-    <li class="previous"><a href="https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/"><span
-      aria-hidden="true">&larr;</span> Annotating phylogenetic tree with images using ggtree and ggimage</a></li>
+    <li class="previous"><a href="https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/"><span
+      aria-hidden="true">&larr;</span> setting ggplot2 background with ggbackground</a></li>
     
 
-    
-    <li class="next"><a href="https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/">rename phylogeny tip labels in treeio <span
-      aria-hidden="true">&rarr;</span></a></li>
     
   </ul>
 </nav>

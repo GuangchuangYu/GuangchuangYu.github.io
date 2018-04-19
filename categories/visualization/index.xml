@@ -7,8 +7,54 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Wed, 18 Apr 2018 21:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 19 Apr 2018 11:00:08 +0800</lastBuildDate>
     <atom:link href="/categories/visualization/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>rename phylogeny tip labels in treeio</title>
+      <link>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</link>
+      <pubDate>Thu, 19 Apr 2018 11:00:08 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</guid>
+      <description>&lt;p&gt;I don’t know whether ‘rename taxa’ is a common task or not. It seems not a good idea to rename taxa in Newick tree text, since it may introduce problems when mapping the original sequence alignment to the tree.&lt;/p&gt;
+&lt;p&gt;If you just want to show different or additional information when plotting the tree, it is fine and easy to do it using &lt;code&gt;ggtree&lt;/code&gt;:&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(treeio)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: treeio&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggtree)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: ggtree&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ggtree v1.11.6  For help: https://guangchuangyu.github.io/software/ggtree
+## 
+## If you use ggtree in published research, please cite:
+## Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr &amp;lt;- read.tree(text = &amp;quot;((a,(b,c)),d);&amp;quot;)
+genus &amp;lt;- c(&amp;quot;Gorilla&amp;quot;, &amp;quot;Pan&amp;quot;, &amp;quot;Homo&amp;quot;, &amp;quot;Pongo&amp;quot;)
+species &amp;lt;- c(&amp;quot;gorilla&amp;quot;, &amp;quot;spp.&amp;quot;, &amp;quot;sapiens&amp;quot;, &amp;quot;pygmaeus&amp;quot;)
+geo &amp;lt;- c(&amp;quot;Africa&amp;quot;, &amp;quot;Africa&amp;quot;, &amp;quot;World&amp;quot;, &amp;quot;Asia&amp;quot;)
+d &amp;lt;- data.frame(label = tr$tip.label, genus = genus,
+                species = species, geo = geo)
+ggtree(tr) %&amp;lt;+% d + xlim(NA, 5) +
+    geom_tiplab(aes(label=paste0(&amp;#39;italic(&amp;#39;, genus, &amp;#39;)~bolditalic(&amp;#39;, species, &amp;#39;)~&amp;#39;, geo)), parse=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;bindrcpp&amp;#39; was built under R version 3.4.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/treeio/rename_taxa_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;However, it is also possible to rename taxa of the tree object (either &lt;code&gt;treedata&lt;/code&gt; or &lt;code&gt;phylo&lt;/code&gt;) in &lt;code&gt;treeio&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr2 = rename_taxa(tr, d, label, genus)
+write.tree(tr2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla,(Pan,Homo)),Pongo);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d2 = dplyr::mutate(d, newlab = paste(genus, species, sep=&amp;#39;|&amp;#39;))
+tr3 = rename_taxa(tr, d2, label, newlab)
+write.tree(tr3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla|gorilla,(Pan|spp.,Homo|sapiens)),Pongo|pygmaeus);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the input tree object is a &lt;code&gt;treedata&lt;/code&gt; instance, you can use &lt;code&gt;write.beast&lt;/code&gt; to export the tree with associated data to a BEAST compatible NEXUS file.&lt;/p&gt;
+&lt;div id=&#34;vignettes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Vignettes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Importer.html&#34;&gt;Importing trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Exporter.html&#34;&gt;Exporting trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>setting ggplot2 background with ggbackground</title>
@@ -1007,54 +1053,6 @@ msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree_msaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;PS: I am thinking about writing a tutorial through examples. If you have any interesting topic, please let me know.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</title>
-      <link>https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/</link>
-      <pubDate>Sun, 20 Mar 2016 10:50:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/</guid>
-      <description>&lt;p&gt;I extended the &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/subview/&#34; target=&#34;_blank&#34;&gt;subview&lt;/a&gt; function to support embed image file in a &lt;code&gt;ggplot&lt;/code&gt; object.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(123)
-d = data.frame(x=rnorm(10), y=rnorm(10))
-
-imgfile &amp;lt;- tempfile(, fileext=&amp;quot;.png&amp;quot;)
-download.file(&amp;quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;amp;s=140&amp;quot;,
-              destfile=imgfile, mode=&#39;wb&#39;)
-
-p = ggplot(d, aes(x, y))
-subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subview_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/&#34; target=&#34;_blank&#34;&gt;previous post&lt;/a&gt;, I have introduced using &lt;code&gt;annotation_image&lt;/code&gt; function for annotating tips with local images.&lt;/p&gt;
-
-&lt;p&gt;Now with the updated &lt;code&gt;subview&lt;/code&gt; function, we can use &lt;a href=&#34;http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/&#34; target=&#34;_blank&#34;&gt;inset&lt;/a&gt; function to annotate nodes/tips with image files and/or subplots.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
-tr &amp;lt;- rtree(15)
-p &amp;lt;- ggtree(tr)
-
-img &amp;lt;- list(imgfile, imgfile)
-names(img) &amp;lt;- c(&amp;quot;18&amp;quot;, &amp;quot;22&amp;quot;)
-inset(p, img)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/inset_with_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;PS: As I got more and more emails from ggtree users, I created a forum, &lt;a href=&#34;https://groups.google.com/forum/#!forum/bioc-ggtree&#34; target=&#34;_blank&#34;&gt;https://groups.google.com/forum/#!forum/bioc-ggtree&lt;/a&gt;. With this forum, &lt;code&gt;ggtree&lt;/code&gt; users can help each others and also solutions posted in the forum can help other peoples when they google search their questions. Please join the forum and post your questions if you have any.&lt;/p&gt;
 
 &lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
 

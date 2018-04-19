@@ -11,6 +11,52 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>rename phylogeny tip labels in treeio</title>
+      <link>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</link>
+      <pubDate>Thu, 19 Apr 2018 11:00:08 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</guid>
+      <description>&lt;p&gt;I don’t know whether ‘rename taxa’ is a common task or not. It seems not a good idea to rename taxa in Newick tree text, since it may introduce problems when mapping the original sequence alignment to the tree.&lt;/p&gt;
+&lt;p&gt;If you just want to show different or additional information when plotting the tree, it is fine and easy to do it using &lt;code&gt;ggtree&lt;/code&gt;:&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(treeio)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: treeio&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggtree)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: ggtree&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ggtree v1.11.6  For help: https://guangchuangyu.github.io/software/ggtree
+## 
+## If you use ggtree in published research, please cite:
+## Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr &amp;lt;- read.tree(text = &amp;quot;((a,(b,c)),d);&amp;quot;)
+genus &amp;lt;- c(&amp;quot;Gorilla&amp;quot;, &amp;quot;Pan&amp;quot;, &amp;quot;Homo&amp;quot;, &amp;quot;Pongo&amp;quot;)
+species &amp;lt;- c(&amp;quot;gorilla&amp;quot;, &amp;quot;spp.&amp;quot;, &amp;quot;sapiens&amp;quot;, &amp;quot;pygmaeus&amp;quot;)
+geo &amp;lt;- c(&amp;quot;Africa&amp;quot;, &amp;quot;Africa&amp;quot;, &amp;quot;World&amp;quot;, &amp;quot;Asia&amp;quot;)
+d &amp;lt;- data.frame(label = tr$tip.label, genus = genus,
+                species = species, geo = geo)
+ggtree(tr) %&amp;lt;+% d + xlim(NA, 5) +
+    geom_tiplab(aes(label=paste0(&amp;#39;italic(&amp;#39;, genus, &amp;#39;)~bolditalic(&amp;#39;, species, &amp;#39;)~&amp;#39;, geo)), parse=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;bindrcpp&amp;#39; was built under R version 3.4.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/treeio/rename_taxa_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;However, it is also possible to rename taxa of the tree object (either &lt;code&gt;treedata&lt;/code&gt; or &lt;code&gt;phylo&lt;/code&gt;) in &lt;code&gt;treeio&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr2 = rename_taxa(tr, d, label, genus)
+write.tree(tr2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla,(Pan,Homo)),Pongo);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d2 = dplyr::mutate(d, newlab = paste(genus, species, sep=&amp;#39;|&amp;#39;))
+tr3 = rename_taxa(tr, d2, label, newlab)
+write.tree(tr3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla|gorilla,(Pan|spp.,Homo|sapiens)),Pongo|pygmaeus);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the input tree object is a &lt;code&gt;treedata&lt;/code&gt; instance, you can use &lt;code&gt;write.beast&lt;/code&gt; to export the tree with associated data to a BEAST compatible NEXUS file.&lt;/p&gt;
+&lt;div id=&#34;vignettes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Vignettes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Importer.html&#34;&gt;Importing trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Exporter.html&#34;&gt;Exporting trees with data&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>setting ggplot2 background with ggbackground</title>
       <link>https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/</link>
       <pubDate>Wed, 18 Apr 2018 21:00:00 +0800</pubDate>
@@ -1081,56 +1127,6 @@ facet_plot(p2, panel=&#39;Stacked Barplot&#39;,
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_panel.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>ggtree version of plotTree</title>
-      <link>https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/</link>
-      <pubDate>Sat, 17 Dec 2016 13:53:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://holtlab.net/2015/10/03/plotting-trees-data/&#34; target=&#34;_blank&#34;&gt;PLOTTING TREES + DATA&lt;/a&gt; is difficult. &lt;a href=&#34;http://holtlab.net/&#34; target=&#34;_blank&#34;&gt;@DrKatHolt&lt;/a&gt; developed &lt;a href=&#34;https://github.com/katholt/plotTree&#34; target=&#34;_blank&#34;&gt;plotTree&lt;/a&gt; (R and Python scripts) to visualize associated data with trees, &lt;em&gt;e.g.&lt;/em&gt; heatmap, horizontal bar &lt;em&gt;etc&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;I reproduced the examples presented in the &lt;a href=&#34;https://github.com/katholt/plotTree&#34; target=&#34;_blank&#34;&gt;plotTree&lt;/a&gt; repo using &lt;a href=&#34;https://guangchuangyu.github.io&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt;. Source code is freely available in &lt;a href=&#34;https://github.com/GuangchuangYu/plotTree-ggtree&#34; target=&#34;_blank&#34;&gt;https://github.com/GuangchuangYu/plotTree-ggtree&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here are the outputs produced by &lt;code&gt;ggtree&lt;/code&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;tree-with-basic-strain-info&#34;&gt;Tree with basic strain info&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://github.com/GuangchuangYu/plotTree-ggtree/raw/master/README_files/figure-markdown_strict/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;pan-genome-heatmap&#34;&gt;Pan genome heatmap&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://github.com/GuangchuangYu/plotTree-ggtree/raw/master/README_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;curated-genes-coloured&#34;&gt;Curated genes, coloured&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://github.com/GuangchuangYu/plotTree-ggtree/raw/master/README_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It can be very easy to produce a circular/fan layout version, and the tree was used to generate the ggtree hex sticker.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://github.com/GuangchuangYu/ggtree/raw/master/logo.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;general-solution-with-facet-plot&#34;&gt;General solution with &lt;code&gt;facet_plot&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;ggtree&lt;/code&gt; provide the &lt;code&gt;facet_plot&lt;/code&gt; function which can be used to associate different types of data to the tree. With &lt;code&gt;ggtree&lt;/code&gt; we can associate more data (can be different types) and combine them freely.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://github.com/GuangchuangYu/plotTree-ggtree/raw/master/README_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/ggtree_ggbio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;see also examples in &lt;a href=&#34;http://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/&#34; target=&#34;_blank&#34;&gt;1&lt;/a&gt; and &lt;a href=&#34;http://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree/&#34; target=&#34;_blank&#34;&gt;2&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
 
