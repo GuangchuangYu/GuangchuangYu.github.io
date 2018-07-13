@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Programming on Guangchuang YU</title>
+    <link>https://guangchuangyu.github.io/categories/programming/</link>
+    <description>Recent content in Programming on Guangchuang YU</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
+    <lastBuildDate>Sat, 04 Dec 2010 10:40:22 +0800</lastBuildDate>
+    <atom:link href="/categories/programming/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Root finding</title>
+      <link>https://guangchuangyu.github.io/2010/12/root-finding/</link>
+      <pubDate>Sat, 04 Dec 2010 10:40:22 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2010/12/root-finding/</guid>
+      <description>&lt;p&gt;Numerical root finding methods use iteration, producing a sequence of numbers that hopefully converge towards a limits which is a root. This post only focuses four basic algorithms on root finding, and covers bisection method, fixed point method, Newton-Raphson method, and secant method.&lt;/p&gt;
+
+&lt;p&gt;The simplest root finding algorithms is the &lt;a href=&#34;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&#34; target=&#34;_blank&#34;&gt;bisection method&lt;/a&gt;. It works when &lt;code&gt;f&lt;/code&gt; is a continuous function and it requires previous knowledge of two initial gueeses, &lt;code&gt;u&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt;, such that &lt;code&gt;f(u)&lt;/code&gt; and &lt;code&gt;f(v)&lt;/code&gt; have opposite signs. This method is reliable, but converges slowly. For detail, see &lt;a href=&#34;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&#34; target=&#34;_blank&#34;&gt;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&lt;/a&gt; .&lt;/p&gt;
+
+&lt;p&gt;Root finding can be reduced to the problem of finding fixed points of the function &lt;code&gt;g(x) = c*f(x) +x&lt;/code&gt;, where &lt;code&gt;c&lt;/code&gt; is a non-zero constant. It is clearly that &lt;code&gt;f(a) = 0&lt;/code&gt; if and only if &lt;code&gt;g(a) = a&lt;/code&gt;. This is the so called fixed point algorithm.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;fixedpoint &amp;lt;- function(fun, x0, tol=1e-07, niter=500){
+    ## fixed-point algorithm to find x such that fun(x) == x
+    ## assume that fun is a function of a single variable
+    ## x0 is the initial guess at the fixed point
+ 
+    xold &amp;lt;- x0
+    xnew &amp;lt;- fun(xold)
+    for (i in 1:niter) {
+        xold &amp;lt;- xnew
+        xnew &amp;lt;- fun(xold)
+        if ( abs((xnew-xold)) &amp;lt; tol )
+            return(xnew)
+        }
+    stop(&amp;quot;exceeded allowed number of iterations&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; f &amp;lt;- function(x) log(x) - exp(-x)
+&amp;gt; gfun &amp;lt;- function(x) x - log(x) + exp(-x)
+&amp;gt; fixedpoint(gfun, 2)
+[1] 1.309800
+&amp;gt; x=fixedpoint(gfun, 2)
+&amp;gt; f(x)
+[1] 3.260597e-09
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The fixed point algorithm is not reliable, since it cannot guaranteed to
+converge. Another disavantage of this method is that the speed is relatively slow.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/&#34; target=&#34;_blank&#34;&gt;Newtom-Raphson method&lt;/a&gt; converge more quickly than bisection method and fixed point method. It assumes the function &lt;code&gt;f&lt;/code&gt; to have a continuous derivative. For detail, see &lt;a href=&#34;http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/&#34; target=&#34;_blank&#34;&gt;http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/&lt;/a&gt; .&lt;/p&gt;
+
+&lt;p&gt;The secant method does not require the computation of a derivative, it only requires that the function &lt;code&gt;f&lt;/code&gt; is continuous. The secant method is based on a linear approximation to the function &lt;code&gt;f&lt;/code&gt;. The convergence properties of the secant method are similar to those of the Newton-Raphson method.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;secant &amp;lt;- function(fun, x0, x1, tol=1e-07, niter=500){
+    for ( i in 1:niter ) {
+        x2 &amp;lt;- x1-fun(x1)*(x1-x0)/(fun(x1)-fun(x0))
+        if (abs(fun(x2)) &amp;lt; tol)
+            return(x2)
+        x0 &amp;lt;- x1
+        x1 &amp;lt;- x2
+    }
+    stop(&amp;quot;exceeded allowed number of iteractions&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; f &amp;lt;- function(x) log(x) - exp(-x)
+&amp;gt; secant(f, x0=1, x1=2)
+[1] 1.309800
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
