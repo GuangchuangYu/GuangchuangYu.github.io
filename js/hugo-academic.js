@@ -10,7 +10,7 @@
    * --------------------------------------------------------------------------- */
 
   // Dynamically get responsive navigation bar offset.
-  let $navbar = $('.navbar-header');
+  let $navbar = $('.navbar');
   let navbar_offset = $navbar.innerHeight();
 
   /**
@@ -41,7 +41,7 @@
     let $body = $('body');
     let data = $body.data('bs.scrollspy');
     if (data) {
-      data.options.offset = navbar_offset;
+      data._config.offset = navbar_offset;
       $body.data('bs.scrollspy', data);
       $body.scrollspy('refresh');
     }
@@ -54,7 +54,7 @@
    * Add smooth scrolling to all links inside the main navbar.
    * --------------------------------------------------------------------------- */
 
-  $('#navbar-main li.nav-item a').on('click', function(event) {
+  $('#navbar-main li.nav-item a.nav-link').on('click', function(event) {
     // Store requested URL hash.
     let hash = this.hash;
 
@@ -88,31 +88,13 @@
    * Hide mobile collapsable menu on clicking a link.
    * --------------------------------------------------------------------------- */
 
-  $(document).on('click', '.navbar-collapse.in', function(e) {
-    if ( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+  $(document).on('click', '.navbar-collapse.show', function(e) {
+    //get the <a> element that was clicked, even if the <span> element that is inside the <a> element is e.target
+    let targetElement = $(e.target).is('a') ? $(e.target) : $(e.target).parent();
+
+    if (targetElement.is('a') && targetElement.attr('class') != 'dropdown-toggle') {
       $(this).collapse('hide');
     }
-  });
-
-  /* ---------------------------------------------------------------------------
-   * Filter projects.
-   * --------------------------------------------------------------------------- */
-
-  let $grid_projects = $('#container-projects');
-  $grid_projects.imagesLoaded(function () {
-    // Initialize Isotope after all images have loaded.
-    $grid_projects.isotope({
-      itemSelector: '.isotope-item',
-      layoutMode: 'masonry'
-    });
-
-    // Filter items when filter link is clicked.
-    $('#filters a').click(function () {
-      let selector = $(this).attr('data-filter');
-      $grid_projects.isotope({filter: selector});
-      $(this).removeClass('active').addClass('active').siblings().removeClass('active all');
-      return false;
-    });
   });
 
   /* ---------------------------------------------------------------------------
@@ -129,19 +111,42 @@
     }
   });
 
-  // Bind publication filter on dropdown change.
-  $('.pub-filters-select').on('change', function() {
-    // Get filter value from option value.
-    let filterValue = this.value;
-    // Apply filter to Isotope.
-    $grid_pubs.isotope({ filter: filterValue });
+  // Active publication filters.
+  let pubFilters = {};
 
-    // Set hash URL to current filter.
-    let url = $(this).val();
-    if (url.substr(0, 9) == '.pubtype-') {
-      window.location.hash = url.substr(9);
-    } else {
-      window.location.hash = '';
+  // Flatten object by concatenating values.
+  function concatValues( obj ) {
+    let value = '';
+    for ( let prop in obj ) {
+      value += obj[ prop ];
+    }
+    return value;
+  }
+
+  $('.pub-filters').on( 'change', function() {
+    let $this = $(this);
+
+    // Get group key.
+    let filterGroup = $this[0].getAttribute('data-filter-group');
+
+    // Set filter for group.
+    pubFilters[ filterGroup ] = this.value;
+
+    // Combine filters.
+    let filterValues = concatValues( pubFilters );
+
+    // Activate filters.
+    $grid_pubs.isotope({ filter: filterValues });
+
+    // If filtering by publication type, update the URL hash to enable direct linking to results.
+    if (filterGroup == "pubtype") {
+      // Set hash URL to current filter.
+      let url = $(this).val();
+      if (url.substr(0, 9) == '.pubtype-') {
+        window.location.hash = url.substr(9);
+      } else {
+        window.location.hash = '';
+      }
     }
   });
 
@@ -155,8 +160,79 @@
       filterValue = '.pubtype-' + urlHash;
     }
 
-    $('.pub-filters-select').val(filterValue);
-    $grid_pubs.isotope({ filter: filterValue });
+    // Set filter.
+    let filterGroup = 'pubtype';
+    pubFilters[ filterGroup ] = filterValue;
+    let filterValues = concatValues( pubFilters );
+
+    // Activate filters.
+    $grid_pubs.isotope({ filter: filterValues });
+
+    // Set selected option.
+    $('.pubtype-select').val(filterValue);
+  }
+
+  /* ---------------------------------------------------------------------------
+  * Google Maps or OpenStreetMap via Leaflet.
+  * --------------------------------------------------------------------------- */
+
+  function initMap () {
+    if ($('#map').length) {
+      let map_provider = $('#map-provider').val();
+      let lat = $('#map-lat').val();
+      let lng = $('#map-lng').val();
+      let zoom = parseInt($('#map-zoom').val());
+      let address = $('#map-dir').val();
+      let api_key = $('#map-api-key').val();
+
+      if ( map_provider == 1 ) {
+        let map = new GMaps({
+          div: '#map',
+          lat: lat,
+          lng: lng,
+          zoom: zoom,
+          zoomControl: true,
+          zoomControlOpt: {
+            style: 'SMALL',
+            position: 'TOP_LEFT'
+          },
+          panControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          overviewMapControl: false,
+          scrollwheel: true,
+          draggable: true
+        });
+
+        map.addMarker({
+          lat: lat,
+          lng: lng,
+          click: function (e) {
+            let url = 'https://www.google.com/maps/place/' + encodeURIComponent(address) + '/@' + lat + ',' + lng +'/';
+            window.open(url, '_blank')
+          },
+          title: address
+        })
+      } else {
+          let map = new L.map('map').setView([lat, lng], zoom);
+          if ( map_provider == 3 && api_key.length ) {
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+              maxZoom: 18,
+              id: 'mapbox.streets',
+              accessToken: api_key
+            }).addTo(map);
+          } else {
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+          }
+          let marker = L.marker([lat, lng]).addTo(map);
+          let url = lat + ',' + lng +'#map='+ zoom +'/'+ lat +'/'+ lng +'&layers=N';
+          marker.bindPopup(address + '<p><a href="https://www.openstreetmap.org/directions?engine=osrm_car&route='+ url +'">Routing via OpenStreetMap</a></p>');
+      }
+    }
   }
 
   /* ---------------------------------------------------------------------------
@@ -164,7 +240,6 @@
    * --------------------------------------------------------------------------- */
 
   $(window).on('load', function() {
-
     if (window.location.hash) {
       // When accessing homepage from another page and `#top` hash is set, show top of page (no hash).
       if (window.location.hash == "#top") {
@@ -186,6 +261,32 @@
       resizeTimer = setTimeout(fixScrollspy, 200);
     });
 
+    // Filter projects.
+    $('.projects-container').each(function(index, container) {
+      let $container = $(container);
+      let $section = $container.closest('section');
+      let layout = 'masonry';
+      if ($section.find('.isotope').hasClass('js-layout-row')) {
+        layout = 'fitRows';
+      }
+
+      $container.imagesLoaded(function() {
+        // Initialize Isotope after all images have loaded.
+        $container.isotope({
+          itemSelector: '.isotope-item',
+          layoutMode: layout,
+          filter: $section.find('.default-project-filter').text()
+        });
+        // Filter items when filter link is clicked.
+        $section.find('.project-filters a').click(function() {
+          let selector = $(this).attr('data-filter');
+          $container.isotope({filter: selector});
+          $(this).removeClass('active').addClass('active').siblings().removeClass('active all');
+          return false;
+        });
+      });
+    });
+
     // Enable publication filter for publication index page.
     if ($('.pub-filters-select')) {
       filter_publications();
@@ -193,6 +294,45 @@
       // window.addEventListener('hashchange', filter_publications, false);
     }
 
+    // Load citation modal on 'Cite' click.
+    $('.js-cite-modal').click(function(e) {
+      e.preventDefault();
+      let filename = $(this).attr('data-filename');
+      let modal = $('#modal');
+      modal.find('.modal-body code').load( filename , function( response, status, xhr ) {
+        if ( status == 'error' ) {
+          let msg = "Error: ";
+          $('#modal-error').html( msg + xhr.status + " " + xhr.statusText );
+        } else {
+          $('.js-download-cite').attr('href', filename);
+        }
+      });
+      modal.modal('show');
+    });
+
+    // Copy citation text on 'Copy' click.
+    $('.js-copy-cite').click(function(e) {
+      e.preventDefault();
+      // Get selection.
+      let range = document.createRange();
+      let code_node = document.querySelector('#modal .modal-body');
+      range.selectNode(code_node);
+      window.getSelection().addRange(range);
+      try {
+        // Execute the copy command.
+        document.execCommand('copy');
+      } catch(e) {
+        console.log('Error: citation copy failed.');
+      }
+      // Remove selection.
+      window.getSelection().removeRange(range);
+    });
+
+    // Initialise Google Maps if necessary.
+    initMap();
+
+    // Fix Hugo's inbuilt Table of Contents.
+    $('#TableOfContents > ul > li > ul').unwrap().unwrap();
   });
 
 })(jQuery);
