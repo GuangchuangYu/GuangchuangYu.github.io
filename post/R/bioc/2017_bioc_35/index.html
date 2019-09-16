@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.1.1">
+  <meta name="generator" content="Hugo 0.57.2" />
+  
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="I have 8 packages published within the Bioconductor project.
+
+
+ChIPseeker
+clusterProfiler
+DOSE
+ggtree
+GOSemSim
+meshes
+ReactomePA
+treeio
+
+
+A new package treeio was included in BioC 3.5 release.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://guangchuangyu.github.io/post/r/bioc/2017_bioc_35/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-77901140-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+  <link rel="alternate" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  <link rel="feed" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://guangchuangyu.github.io/post/r/bioc/2017_bioc_35/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@guangchuangyu">
+  <meta property="twitter:creator" content="@guangchuangyu">
+  
+  <meta property="og:site_name" content="Guangchuang YU">
+  <meta property="og:url" content="https://guangchuangyu.github.io/post/r/bioc/2017_bioc_35/">
+  <meta property="og:title" content="[Bioc 3.5] NEWS of my BioC packages | Guangchuang YU">
+  <meta property="og:description" content="I have 8 packages published within the Bioconductor project.
+
+
+ChIPseeker
+clusterProfiler
+DOSE
+ggtree
+GOSemSim
+meshes
+ReactomePA
+treeio
+
+
+A new package treeio was included in BioC 3.5 release.">
+  
+  
+    
+  <meta property="og:image" content="https://guangchuangyu.github.io/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2017-05-19T18:13:57&#43;08:00">
+  
+  <meta property="article:modified_time" content="2017-05-19T18:13:57&#43;08:00">
+  
+
+  
+
+  
+
+  <title>[Bioc 3.5] NEWS of my BioC packages | Guangchuang YU</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header fixed-top">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Guangchuang YU</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#publications_selected">
+            
+            <span>Publications</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#teaching">
+            
+            <span>Teaching</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/resume">
+            
+            <span>Resume</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/cn">
+            
+            <span>中文入口</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">[Bioc 3.5] NEWS of my BioC packages</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2017-05-19 18:13:57 &#43;0800 CST" itemprop="datePublished">
+    <time datetime="2017-05-19 18:13:57 &#43;0800 CST" itemprop="dateModified">
+      May 19, 2017
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/r/">R</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=%5bBioc%203.5%5d%20NEWS%20of%20my%20BioC%20packages&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2017_bioc_35%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2017_bioc_35%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2017_bioc_35%2f&amp;title=%5bBioc%203.5%5d%20NEWS%20of%20my%20BioC%20packages"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2017_bioc_35%2f&amp;title=%5bBioc%203.5%5d%20NEWS%20of%20my%20BioC%20packages"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=%5bBioc%203.5%5d%20NEWS%20of%20my%20BioC%20packages&amp;body=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2017_bioc_35%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p>I have 8 packages published within the <code>Bioconductor</code> project.</p>
+
+<ul>
+<li><a href="http://guangchuangyu.github.io/ChIPseeker" target="_blank">ChIPseeker</a></li>
+<li><a href="http://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a></li>
+<li><a href="http://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a></li>
+<li><a href="http://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a></li>
+<li><a href="http://guangchuangyu.github.io/GOSemSim" target="_blank">GOSemSim</a></li>
+<li><a href="http://guangchuangyu.github.io/meshes" target="_blank">meshes</a></li>
+<li><a href="http://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a></li>
+<li><a href="http://guangchuangyu.github.io/treeio" target="_blank">treeio</a></li>
+</ul>
+
+<p>A new package <a href="http://guangchuangyu.github.io/treeio" target="_blank">treeio</a> was included in BioC 3.5 release.</p>
+
+<h2 id="chipseeker">ChIPseeker</h2>
+
+<p>Bug fixed of <a href="https://github.com/GuangchuangYu/ChIPseeker/issues/54" target="_blank">intron rank</a> and optimized <code>getGeneAnno</code> function.</p>
+
+<h2 id="clusterprofiler">clusterProfiler</h2>
+
+<ol>
+<li>Defined <code>simplify</code> generics as it was removed from IRanges.</li>
+<li><code>enrichGO</code> now supports <code>ont=&quot;ALL&quot;</code> and will test three GO ontologies simultaneously.</li>
+<li><code>dotplot</code> for <code>compareClusterResult</code> not supports three GO sub-ontologies.</li>
+<li><code>bitr_kegg</code> supports converting Path/Module to geneID and vice versa.</li>
+<li><code>plotGOgraph</code> supports <code>gseGO</code> output by using core enriched gene.</li>
+<li>see the updates of <code>DOSE</code> for other updates.</li>
+</ol>
+
+<h2 id="dose">DOSE</h2>
+
+<ul>
+<li>Now user can use <code>options(mc.cores=x)</code> to specify x cores for GSEA analysis.</li>
+<li>throw more friendly error msg if <code>setReadable</code> function fail to determine <code>setType</code> automatically.</li>
+<li>Call <code>grid.newpage</code> in <code>gseaplot</code> only if <code>dev.interactive()</code> is TRUE.</li>
+<li><a href="http://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result/" target="_blank"><code>dotplot</code> now supports <code>gseaResult</code></a>.</li>
+<li>Output expected sample gene ID (sample from background) when input gene ID type not match.</li>
+</ul>
+
+<h2 id="ggtree">ggtree</h2>
+
+<p>Now <code>ggtree</code> was splitted to <code>treeio</code> for tree input and output, and <code>ggtree</code> for tree visualization and annotation.</p>
+
+<ul>
+<li><code>facet_plot</code> supports <code>ggbio::geom_alignment</code>.</li>
+<li><a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/" target="_blank">support setting x axis limits of Tree panel via <code>xlim_tree</code></a>.</li>
+<li><a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/" target="_blank"><code>xlim_expand</code> for setting x axis limits of any specific panel</a>.</li>
+<li><code>revts</code> for <a href="https://github.com/GuangchuangYu/ggtree/issues/87" target="_blank">reverse time scale</a>.</li>
+<li><a href="https://groups.google.com/forum/#!topic/bioc-ggtree/Q4LnwoTf1DM" target="_blank"><code>groupOTU</code> method now accept &lsquo;overlap = c(&ldquo;overwrite&rdquo;, &ldquo;origin&rdquo;, &ldquo;abandon&rdquo;)&rsquo; parameter</a></li>
+<li><a href="https://github.com/GuangchuangYu/ggtree/issues/98" target="_blank">2-dimensional tree layout supports <code>phylo4d</code> object</a></li>
+<li><code>aes(subset)</code> now support logical vector contains NA</li>
+<li><a href="https://cran.r-project.org/web/packages/emojifont/vignettes/phylomoji.html" target="_blank">supports parse=&ldquo;emoji&rdquo; in geom_cladelabel, geom_text2, geom_label2, geom_tiplab, geom_tiplab2</a></li>
+<li>unrooted layout now supports &lsquo;daylight&rsquo; algorithm</li>
+</ul>
+
+<h2 id="gosemsim">GOSemSim</h2>
+
+<p>only documentation update.</p>
+
+<h2 id="meshes">meshes</h2>
+
+<p>no update</p>
+
+<h2 id="reactomepa">ReactomePA</h2>
+
+<p>only documentation update.</p>
+
+<h2 id="treeio">treeio</h2>
+
+<ul>
+<li>defined new tree class <code>treedata</code>.</li>
+<li><a href="http://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio/" target="_blank"><code>as.treeedata.ggtree</code> can convert <code>ggtree</code> output to <code>treedata</code> object</a>.</li>
+<li><a href="http://guangchuangyu.github.io/2017/01/convert-graphic-object-to-tree-object-using-treeio/" target="_blank"><code>as.phylo.ggtree</code> can convert <code>ggtree</code> output to <code>phylo</code> object</a>.</li>
+<li><code>as.treedata.phylo4</code> &amp; as.treedata.phylo4d for converting <code>phylo4</code> and <code>phylo4d</code> object to <code>treedata</code> object.</li>
+<li><code>read.beast</code> now also supports MrBayes output</li>
+<li><code>read.newick</code> for parsing <code>node.label</code> as support values.</li>
+<li><code>drop.tip</code> method for `treedata object.
+<br /></li>
+</ul>
+
+<h2 id="citation">Citation</h2>
+
+<p><strong><em>Yu G</em></strong>, Wang LG and He QY<sup>*</sup>. <a href="http://bioinformatics.oxfordjournals.org/content/31/14/2382" target="_blank">ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization</a>. <strong><em>Bioinformatics</em></strong> 2015, 31(14):2382-2383.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="3781087"></div></p>
+
+<p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118" target="_blank">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
+
+<p><strong><em>G Yu</em></strong>, LG Wang, GR Yan, QY He. <a href="http://bioinformatics.oxfordjournals.org/content/31/4/608" target="_blank">DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis</a>. <strong><em>Bioinformatics</em></strong> 2015, 31(4):608-609.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-popover="right" data-badge-type="donut" data-altmetric-id="2788597"></div></p>
+
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract" target="_blank">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628" target="_blank"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+
+<p><strong>Yu G</strong><sup>†</sup>, Li F<sup>†</sup>, Qin Y, Bo X<sup>*</sup>, Wu Y and Wang S<sup>*</sup>. <a href="http://bioinformatics.oxfordjournals.org/content/26/7/976" target="_blank">GOSemSim: an R package for measuring semantic similarity among GO terms and gene products</a>. <strong><em>Bioinformatics</em></strong>. 2010, 26(7):976-978.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div class="altmetric-embed" data-badge-popover="right" data-badge-type="donut" data-altmetric-id="100979"></div></p>
+
+<p><strong><em>G Yu</em></strong>, QY He<sup>*</sup>. <a href="http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E#!divAbstract" target="_blank">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a>. <strong><em>Molecular BioSystems</em></strong> 2016, 12(2):477-479.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-popover="right" data-badge-type="donut" data-altmetric-id="4796667"></div></p>
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/bioc/">BioC</a>
+  
+  <a class="badge badge-light" href="/tags/gosemsim/">GOSemSim</a>
+  
+  <a class="badge badge-light" href="/tags/clusterprofiler/">clusterProfiler</a>
+  
+  <a class="badge badge-light" href="/tags/dose/">DOSE</a>
+  
+  <a class="badge badge-light" href="/tags/reactomepa/">ReactomePA</a>
+  
+  <a class="badge badge-light" href="/tags/ggtree/">ggtree</a>
+  
+  <a class="badge badge-light" href="/tags/chipseeker/">ChIPseeker</a>
+  
+  <a class="badge badge-light" href="/tags/meshes/">meshes</a>
+  
+  <a class="badge badge-light" href="/tags/treeio/">treeio</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/"></a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/post/r/bioc/2016_bioc_34/">[Bioc 34] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/bioc/2016_bioc-3.3/">[Bioc 33] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/bioc/2015_bioc-3.2-news-of-my-bioc-packages/">[Bioc 32] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/bioc/2015_bioc-3.1-news-of-my-bioc-packages/">[Bioc 31] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/dose/2016_dotplot_gsea/">dotplot for GSEA result</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    &copy; {year} Guangchuang YU &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/academic.min.c45052ed2c5a2349273f02aeb6adb37d.js"></script>
+
+    
+
+  </body>
+</html>
+

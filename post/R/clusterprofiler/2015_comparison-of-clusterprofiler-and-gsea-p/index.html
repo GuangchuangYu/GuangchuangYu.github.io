@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.1.1">
+  <meta name="generator" content="Hugo 0.57.2" />
+  
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="Thanks @mevers for raising the issue to me
+and his efforts in benchmarking
+clusterProfiler.
+
+He pointed out two issues:
+
+
+outputs from gseGO and GSEA-P are poorly overlap.
+pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
+variation
+
+
+For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.
+
+First of all, the gene set collections are very different. The GMT file
+used in his test is c5.cc.v5.0.symbols.gmt, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://guangchuangyu.github.io/post/r/clusterprofiler/2015_comparison-of-clusterprofiler-and-gsea-p/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-77901140-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+  <link rel="alternate" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  <link rel="feed" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://guangchuangyu.github.io/post/r/clusterprofiler/2015_comparison-of-clusterprofiler-and-gsea-p/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@guangchuangyu">
+  <meta property="twitter:creator" content="@guangchuangyu">
+  
+  <meta property="og:site_name" content="Guangchuang YU">
+  <meta property="og:url" content="https://guangchuangyu.github.io/post/r/clusterprofiler/2015_comparison-of-clusterprofiler-and-gsea-p/">
+  <meta property="og:title" content="Comparison of clusterProfiler and GSEA-P | Guangchuang YU">
+  <meta property="og:description" content="Thanks @mevers for raising the issue to me
+and his efforts in benchmarking
+clusterProfiler.
+
+He pointed out two issues:
+
+
+outputs from gseGO and GSEA-P are poorly overlap.
+pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
+variation
+
+
+For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.
+
+First of all, the gene set collections are very different. The GMT file
+used in his test is c5.cc.v5.0.symbols.gmt, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.">
+  
+  
+    
+  <meta property="og:image" content="https://guangchuangyu.github.io/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2015-11-02T11:50:29&#43;08:00">
+  
+  <meta property="article:modified_time" content="2015-11-02T11:50:29&#43;08:00">
+  
+
+  
+
+  
+
+  <title>Comparison of clusterProfiler and GSEA-P | Guangchuang YU</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header fixed-top">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Guangchuang YU</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#publications_selected">
+            
+            <span>Publications</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#teaching">
+            
+            <span>Teaching</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/resume">
+            
+            <span>Resume</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/cn">
+            
+            <span>中文入口</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Comparison of clusterProfiler and GSEA-P</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2015-11-02 11:50:29 &#43;0800 CST" itemprop="datePublished">
+    <time datetime="2015-11-02 11:50:29 &#43;0800 CST" itemprop="dateModified">
+      Nov 2, 2015
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/r/">R</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Comparison%20of%20clusterProfiler%20and%20GSEA-P&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2015_comparison-of-clusterprofiler-and-gsea-p%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2015_comparison-of-clusterprofiler-and-gsea-p%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2015_comparison-of-clusterprofiler-and-gsea-p%2f&amp;title=Comparison%20of%20clusterProfiler%20and%20GSEA-P"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2015_comparison-of-clusterprofiler-and-gsea-p%2f&amp;title=Comparison%20of%20clusterProfiler%20and%20GSEA-P"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Comparison%20of%20clusterProfiler%20and%20GSEA-P&amp;body=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2015_comparison-of-clusterprofiler-and-gsea-p%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p>Thanks <a href="https://github.com/mevers" target="_blank">@mevers</a> for raising <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/31" target="_blank">the issue</a> to me
+and his efforts in benchmarking
+<a href="https://github.com/GuangchuangYu/clusterProfiler" target="_blank">clusterProfiler</a>.</p>
+
+<p>He pointed out two issues:</p>
+
+<ul>
+<li>outputs from gseGO and GSEA-P are poorly overlap.</li>
+<li>pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
+variation</li>
+</ul>
+
+<p>For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.</p>
+
+<p>First of all, the gene set collections are very different. The GMT file
+used in his test is <em>c5.cc.v5.0.symbols.gmt</em>, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.</p>
+
+<p>For instance, with his gene list as input, clusterProfiler annotates 195
+genes as ribosome, while GSEA-P (using c5.cc.v5.0.symbols.gmt) only
+annotates 38 genes.</p>
+
+<p>As the gene set collections is so different, I don&rsquo;t believe the
+comparison can produce any valuable results.</p>
+
+<p>The first step should be extending clusterProfiler to support using GMT
+file as gene set annotation, thereafter we can use identical input (both
+gene list and gene sets) and then benchmarking will be valuable for
+detecting issues that exclusively attributed to the implementation of
+GSEA algorithm.</p>
+
+<h3 id="clusterprofiler-supports-gmt-file">clusterProfiler supports GMT file</h3>
+
+<p>Currently clusterProfiler supports <a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/" target="_blank">user&rsquo;s own annotations</a>
+via <em>enricher</em> and <em>GSEA</em> functions which require users provide their
+own annotation in a <em>data.frame</em>. This is a general interface for using
+user&rsquo;s own annotation.</p>
+
+<p>To support GMT file, we only need a function, <em>read.gmt</em>, to parse GMT
+file and output a <em>data.frame</em> that is suitable for <em>enricher</em> and
+<em>GSEA</em>. Now this function is available in devel branch (in BioC 3.3 or
+<a href="https://github.com/GuangchuangYu/clusterProfiler" target="_blank">github</a>) of
+clusterProfiler.</p>
+
+<p>As <a href="https://github.com/mevers" target="_blank">@mevers</a> used <em>c5.cc</em>, I also use it for
+further comparison. I have packed the file into clusterProfiler, so that
+users can use it for testing/practice.</p>
+
+<pre><code>&gt; gmtfile &lt;- system.file(&quot;extdata&quot;, &quot;c5.cc.v5.0.entrez.gmt&quot;, 
+                         package=&quot;clusterProfiler&quot;)
+## only 207K.
+## It's indeed a tiny subset of CC.
+&gt; file.size(gmtfile)/1000
+[1] 207.608
+&gt; c5 &lt;- read.gmt(gmtfile)
+</code></pre>
+
+<h4 id="hypergeometric-test-with-gmt-annotation">hypergeometric test with GMT annotation</h4>
+
+<pre><code>&gt; require(clusterProfiler)
+&gt; data(geneList, package=&quot;DOSE&quot;)
+&gt; de &lt;- names(geneList)[abs(geneList) &gt; 2]
+&gt; head(de)
+[1] &quot;4312&quot;  &quot;8318&quot;  &quot;10874&quot; &quot;55143&quot; &quot;55388&quot; &quot;991&quot;  
+&gt; x &lt;- enricher(de, TERM2GENE=c5)
+## omit some columns to make it more readable
+&gt; head(summary(x)[, c(1, 3:7)], 3)
+                                               ID GeneRatio  BgRatio
+SPINDLE                                   SPINDLE     11/82  39/5270
+MICROTUBULE_CYTOSKELETON MICROTUBULE_CYTOSKELETON     16/82 152/5270
+CYTOSKELETAL_PART               CYTOSKELETAL_PART     15/82 235/5270
+                               pvalue     p.adjust       qvalue
+SPINDLE                  7.667674e-12 6.594200e-10 5.327016e-10
+MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
+CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
+</code></pre>
+
+<h4 id="gene-set-enrichment-analysis-with-gmt-annotation">gene set enrichment analysis with GMT annotation</h4>
+
+<pre><code>&gt; y &lt;- GSEA(geneList, TERM2GENE=c5)
+&gt; head(summary(y)[, -c(1,2)], 2)
+                          setSize enrichmentScore       NES      pvalue
+EXTRACELLULAR_REGION          401      -0.3860230 -1.694322 0.001237624
+EXTRACELLULAR_REGION_PART     310      -0.4101043 -1.765775 0.001269036
+                            p.adjust    qvalues
+EXTRACELLULAR_REGION      0.03047874 0.02316228
+EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
+</code></pre>
+
+<h3 id="comparison-of-clusterprofiler-and-gsea-p">Comparison of clusterProfiler and GSEA-P</h3>
+
+<p>Now with <em>read.gmt</em>, we can compare clusterProfiler and GSEA-P with the
+same input.</p>
+
+<p>First of all, I export <em>geneList</em> to a <em>rnk</em> file.</p>
+
+<pre><code>data(geneList, package=&quot;DOSE&quot;)
+d=data.frame(gene=names(geneList), FC=geneList)
+write.table(d, row.names=F,col.names=F, quote=F, file=&quot;geneList.rnk&quot;, sep=&quot;\t&quot;)
+</code></pre>
+
+<p>And run GSEA-P with the following parameters:</p>
+
+<pre><code>producer_class  xtools.gsea.GseaPreranked
+producer_timestamp  1445941169480
+param   collapse    false
+param   plot_top_x  20
+param   rnk /Users/guangchuangyu/Downloads/geneList.rnk
+param   norm    meandiv
+param   scoring_scheme  weighted
+param   make_sets   true
+param   mode    Max_probe
+param   gmx /Users/guangchuangyu/Downloads/c5.cc.v5.0.entrez.gmt
+param   gui false
+param   rpt_label   my_analysis
+param   help    false
+param   out /Users/guangchuangyu/gsea_home/output/oct27
+param   include_only_symbols    true
+param   set_min 15
+param   nperm   1000
+param   rnd_seed    timestamp
+param   zip_report  false
+param   set_max 500
+</code></pre>
+
+<p>Re-run clusterProfiler::GSEA with pvalueCutoff=1.</p>
+
+<pre><code>g &lt;- read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
+xx &lt;- GSEA(geneList, TERM2GENE=c5, nPerm=1000, pvalueCutoff=1)
+gy = merge(g, summary(xx), by.x=&quot;NAME&quot;, by.y=&quot;ID&quot;)
+ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
+</code></pre>
+
+<p><img src="https://cloud.githubusercontent.com/assets/626539/10757414/e8d4f490-7ce5-11e5-9027-1dbe81e66329.png" alt="" /></p>
+
+<p>Now the comparison tells! clusterProfiler indeed produce smaller
+pvalues. As I said in <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/" target="_blank">why clusterProfiler fails</a>, in
+general software produce more conservative result is more trustable.
+This is indeed an issue I couldn&rsquo;t omit.</p>
+
+<p>This issue is attributed to DOSE package, which serves as a backend of
+both clusterProfiler and ReactomePA.</p>
+
+<p>In DOSE, we calculate the pvalue in the following way:</p>
+
+<blockquote>
+<p>For each geneList, we calculate the observed ES, and then perform
+permutation to generate a null ES distribution. pvalue = (sum(ES &gt;=
+permES)+1)/(nPerm+1), for greater side as an example, is calculated.</p>
+</blockquote>
+
+<h3 id="fixed-bug-of-dose">fixed bug of DOSE</h3>
+
+<p>Eventually I figured out that the way we calculate pvalue is not
+correct. As presented in
+<a href="http://www.pnas.org/content/102/43/15545.abstract" target="_blank">Subramaniam</a> <em>et
+al</em>, the distribution of ES is bimodal. Positive and negative ES values
+should be separated when calculating pvalues.</p>
+
+<p>After I changed the <a href="https://github.com/GuangchuangYu/DOSE/commit/12a35b7ff31d3dfd51d81d0f6a6e1afaa24a9823" target="_blank">source code</a>,
+the pvalues generated by clusterProfiler::GSEA and GSEA-P are almost
+identical.</p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/626539/10787607/34fd8716-7dad-11e5-9f43-6433b574b77b.png" alt="" /></p>
+
+<p>This bug was fixed in both release (&gt;=2.8.1) and devel (&gt;=2.9.1)
+branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.</p>
+
+<h3 id="other-concerns">other concerns</h3>
+
+<p>There are other differences between clusterProfiler and GSEA-P.</p>
+
+<h4 id="clusterprofiler-never-produce-pvalue-0">clusterProfiler never produce pvalue=0</h4>
+
+<p>For calculating pvalues, GSEA-P may produce pvalue=0, while
+clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
+both numerator and demoninator. Some software may not accept pvalue=0,
+for example if you want to use topGO to visualize enrichment with GO
+topology, the result can&rsquo;t contain any pvalue=0.</p>
+
+<h4 id="clusterprofiler-test-whole-gene-set-collections">clusterProfiler test whole gene set collections</h4>
+
+<pre><code>&gt; g=read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
+&gt; dim(g)
+[1] 56 12
+&gt; yy = summary(xx)
+&gt; yy = yy[with(yy, setSize &gt;= 15 &amp; setSize &lt;=500),]
+&gt; dim(yy)
+[1] 152   8
+&gt; all(g$NAME %in% yy$ID)
+[1] TRUE
+</code></pre>
+
+<p>GSEA-P didn&rsquo;t filter result by pvalues, as it reported pvalues ranging
+from 0 to 1.</p>
+
+<p>We cut our result by setSize in $[15, 500]$ as default parameter of
+GSEA-P.</p>
+
+<p>clusterProfiler tests all the gene sets while GSEA-P only tests a
+subset.</p>
+
+<p>If I have some free time, I will figure out how they select gene sets to
+test. If it&rsquo;s reasonable, we can add a parameter for clusterProfiler
+users to switch between two modes (full sets or subset). This is still
+an open issue/question. If you have any idea, don&rsquo;t hesitate to let me
+know. :)</p>
+
+<h2 id="citation">Citation</h2>
+
+<p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118" target="_blank">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/clusterprofiler/">clusterProfiler</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/"></a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/post/r/clusterprofiler/2015_use-simplify-to-remove-redundancy-of-enriched-go-terms/">use simplify to remove redundancy of enriched GO terms</a></li>
+        
+        <li><a href="/post/r/bioc/2015_bioc-3.2-news-of-my-bioc-packages/">[Bioc 32] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/chipseeker/2015_functional-enrichment-analysis-with-ngs-data/">functional enrichment analysis with NGS data</a></li>
+        
+        <li><a href="/post/r/clusterprofiler/2015_functional-enrichment-for-gtex-paper/">functional enrichment for GTEx paper</a></li>
+        
+        <li><a href="/post/r/clusterprofiler/2015_dotplot-for-enrichment-result/">dotplot for enrichment result</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    &copy; {year} Guangchuang YU &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/academic.min.c45052ed2c5a2349273f02aeb6adb37d.js"></script>
+
+    
+
+  </body>
+</html>
+

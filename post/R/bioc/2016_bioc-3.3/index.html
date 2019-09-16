@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.1.1">
+  <meta name="generator" content="Hugo 0.57.2" />
+  
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="
+
+Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&rsquo;s again the time to reflect what I&rsquo;ve done in the past year.
+
+
+ChIPseeker
+clusterProfiler
+DOSE
+ggtree
+GOSemSim
+ReactomePA
+">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://guangchuangyu.github.io/post/r/bioc/2016_bioc-3.3/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-77901140-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+  <link rel="alternate" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  <link rel="feed" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://guangchuangyu.github.io/post/r/bioc/2016_bioc-3.3/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@guangchuangyu">
+  <meta property="twitter:creator" content="@guangchuangyu">
+  
+  <meta property="og:site_name" content="Guangchuang YU">
+  <meta property="og:url" content="https://guangchuangyu.github.io/post/r/bioc/2016_bioc-3.3/">
+  <meta property="og:title" content="[Bioc 33] NEWS of my BioC packages | Guangchuang YU">
+  <meta property="og:description" content="
+
+Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&rsquo;s again the time to reflect what I&rsquo;ve done in the past year.
+
+
+ChIPseeker
+clusterProfiler
+DOSE
+ggtree
+GOSemSim
+ReactomePA
+">
+  
+  
+    
+  <meta property="og:image" content="https://guangchuangyu.github.io/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2016-05-05T20:13:57&#43;08:00">
+  
+  <meta property="article:modified_time" content="2016-05-05T20:13:57&#43;08:00">
+  
+
+  
+
+  
+
+  <title>[Bioc 33] NEWS of my BioC packages | Guangchuang YU</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header fixed-top">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Guangchuang YU</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#publications_selected">
+            
+            <span>Publications</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#teaching">
+            
+            <span>Teaching</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/resume">
+            
+            <span>Resume</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/cn">
+            
+            <span>中文入口</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">[Bioc 33] NEWS of my BioC packages</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2016-05-05 20:13:57 &#43;0800 CST" itemprop="datePublished">
+    <time datetime="2016-05-05 20:13:57 &#43;0800 CST" itemprop="dateModified">
+      May 5, 2016
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    11 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/r/">R</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=%5bBioc%2033%5d%20NEWS%20of%20my%20BioC%20packages&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2016_bioc-3.3%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2016_bioc-3.3%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2016_bioc-3.3%2f&amp;title=%5bBioc%2033%5d%20NEWS%20of%20my%20BioC%20packages"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2016_bioc-3.3%2f&amp;title=%5bBioc%2033%5d%20NEWS%20of%20my%20BioC%20packages"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=%5bBioc%2033%5d%20NEWS%20of%20my%20BioC%20packages&amp;body=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fbioc%2f2016_bioc-3.3%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p><img src="http://guangchuangyu.github.io/blog_images/MISC/ke.jpg" width=600></p>
+
+<p>Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&rsquo;s again the time to reflect what I&rsquo;ve done in the past year.</p>
+
+<ul>
+<li><a href="http://guangchuangyu.github.io/ChIPseeker" target="_blank">ChIPseeker</a></li>
+<li><a href="http://guangchuangyu.github.io/clusterProfiler" target="_blank">clusterProfiler</a></li>
+<li><a href="http://guangchuangyu.github.io/DOSE" target="_blank">DOSE</a></li>
+<li><a href="http://guangchuangyu.github.io/ggtree" target="_blank">ggtree</a></li>
+<li><a href="http://guangchuangyu.github.io/GOSemSim" target="_blank">GOSemSim</a></li>
+<li><a href="http://guangchuangyu.github.io/ReactomePA" target="_blank">ReactomePA</a></li>
+</ul>
+
+<h2 id="chipseeker">ChIPseeker</h2>
+
+<p>Although ChIPseeker was designed for ChIP-seq annotation, I am very glad to find that someone else use it to annotate other data including <a href="https://github.com/GuangchuangYu/ChIPseeker/issues/32" target="_blank">copy number variants</a> and <a href="https://github.com/GuangchuangYu/ChIPseeker/issues/17" target="_blank">DNA breakpoints</a>.</p>
+
+<h3 id="annotatepeak">annotatePeak</h3>
+
+<p>Several parameters including <code>sameStrand</code>,<code>ignoreOverlap</code>, <code>ignoreUpstream</code> and <code>ignoreDownstream</code> were added in <code>annotatePeak</code> requested by <a href="https://github.com/crazyhottommy" target="_blank">@crazyhottommy</a> for using ChIPseeker to annotate breakpoints from whole genome sequencing data.</p>
+
+<p>Another parameter <code>overlap</code> was also introduced. By default <code>overlap=&quot;TSS&quot;</code> and only overlap with TSS will be reported as the nearest gene. If <code>overlap=&quot;all&quot;</code>, then gene overlap with peak will be reported as nearest gene, no matter the overlap is at TSS region or not.</p>
+
+<p>Now <code>annotatePeak</code> also support using user&rsquo;s customize regions to annotate their data by passing <code>TxDb=user_defined_GRanges</code>.</p>
+
+<h3 id="getbioregion">getBioRegion</h3>
+
+<p><code>getPromoters()</code> function prepare a <code>GRanges</code> object of promoter regions by user specific upstream and downstream distance from Transcript Start Site (TSS). Then we can align the peaks that are mapping to these regions and visualize the profile or heatmap of ChIP binding to the TSS regions.</p>
+
+<p>Users (<a href="https://support.bioconductor.org/p/73069/#73157" target="_blank">1</a> and <a href="https://support.bioconductor.org/p/73377/" target="_blank">2</a>) are interesting in the intensity of peaks binding to the start of intron/exon, and ChIPseeker provides a new function <code>getBioRegion</code> to output <code>GRanges</code> object of Intron/Exon start regions.</p>
+
+<h3 id="visualization">visualization</h3>
+
+<ul>
+<li><p><code>upsetplot</code> was implemented to visualize <a href="http://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/" target="_blank">ChIP annotation overlap</a>.</p></li>
+
+<li><p><code>covplot</code> now support <a href="http://guangchuangyu.github.io/2016/02/covplot-supports-grangeslist/" target="_blank">GRangesList</a>.</p></li>
+</ul>
+
+<h3 id="geo-data-mining">GEO data mining</h3>
+
+<p>ChIPseeker incorporates GEO database and supports data mining to infer cooperative regulation. The data was updated and now ChIPseeker contains 19348 bed file information.</p>
+
+<h2 id="clusterprofiler">clusterProfiler</h2>
+
+<p>We compare clusterProfiler with GSEA-P (which released by broad institute), the p-values calculated by these two software are <a href="http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/" target="_blank">almost identical</a>.</p>
+
+<p>For comparing biological themes, <code>clusterProfiler</code> supports formula to express complex conditions and facet is supported to <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/32" target="_blank">visualize complex result</a>.</p>
+
+<p><code>read.gmt</code> function for parsing GMT file format from <a href="http://software.broadinstitute.org/gsea/msigdb" target="_blank">Molecular Signatures Database</a>, so that gene set collections in this database can be used in <code>clusterProfiler</code> for both hypergeometric test and GSEA.</p>
+
+<p><a href="http://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/" target="_blank">KEGG Module</a> was supported just like the KEGG Pathway, <code>clusterProfiler</code> will query the online annotation data which keep the annotation data alwasy updated.</p>
+
+<p>The KEGG database was updated quite frequently. The <code>KEGG.db</code> which was not updated since 2012, it contains annotation of <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/" target="_blank">5894 human genes</a>. In Feb. 2015, when <code>clusterProfiler</code> first supports querying online KEGG data, KEGG contains annotation of <a href="http://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/" target="_blank">6861 human genes</a> and today it has <strong>7018</strong> human genes annotated. Most of the tools/webservers used out-dated data (e.g. DAVID not updated since 2010, 5085 human genes annotated by KEGG), the analyzed result may totally changed if we use a recently updated data. Indeed <code>clusterProfiler</code> is more reliable as we always use the latest data.</p>
+
+<p>In addition to <code>bitr</code> function that can translate biological ID using <code>OrgDb</code> object, we provides <a href="http://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/" target="_blank">bitr_kegg</a> that uses KEGG API for translating biological ID. It supports more than 4000 species (can be search via the <code>search_kegg_species</code> function) as in KEGG Pathway and Module analyses.</p>
+
+<p>The function called of <a href="http://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/" target="_blank">enrichGO and gseGO</a> was changed. Now not only species that have OrgDb available in Bioconductor can be analyzed but also all species that have an OrgDb can be analyzed which can be query online via <code>AnnotationHub</code> or build with user&rsquo;s own data. With this update, <code>enrichGO</code> and <code>gseGO</code> can input any gene ID type if only the ID type was supported in the <code>OrgDb</code>.</p>
+
+<p>GO enrichment analysis alwasy output redundant terms, we implemented a <code>simplify</code> function to remove redundant terms by calculating GO semantic similarity using <code>GOSemSim</code>. Several useful utilities include <code>dropGO</code>, <code>go2ont</code>, <code>go2term</code>, <code>gofilter</code> and <code>gsfilter</code> are also provided.</p>
+
+<p>I bump the version to 3.0.0 the following three reasons:</p>
+
+<ul>
+<li>the changes of function calls</li>
+<li>can analyze any ontology/pathway annotation (supports user&rsquo;s customize annotation data)</li>
+<li>can analyze all speices that have annotation available (e.g. more than 4000 species for KEGG)</li>
+</ul>
+
+<p>Although the package is very simple when I published it, I keep update and add new features from my own idea or user&rsquo;s request. Now this package is indeed in good shape. Here is the summary.</p>
+
+<p>This package implements methods to analyze and visualize functional profiles of genomic coordinates (supported by <a href="http://www.bioconductor.org/packages/ChIPseeker" target="_blank">ChIPseeker</a>), gene and gene clusters.</p>
+
+<p>clusterProfiler supports both <em>hypergeometric test</em> and <em>Gene Set Enrichment Analysis</em> for many ontologies/pathways, including:</p>
+
+<ul>
+<li>Disease Ontology (via <a href="http://www.bioconductor.org/packages/DOSE" target="_blank">DOSE</a>)</li>
+<li><a href="http://ncg.kcl.ac.uk/" target="_blank">Network of Cancer Gene</a> (via <a href="http://www.bioconductor.org/packages/DOSE" target="_blank">DOSE</a>)</li>
+<li>Gene Ontology (supports many species with GO annotation query online via <a href="https://bioconductor.org/packages/AnnotationHub/" target="_blank">AnnotationHub</a>)</li>
+<li>KEGG Pathway and Module with latest online data (supports more than 4000 species listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html" target="_blank">http://www.genome.jp/kegg/catalog/org_list.html</a>)</li>
+<li>Reactome Pathway (via <a href="http://www.bioconductor.org/packages/ReactomePA" target="_blank">ReactomePA</a>)</li>
+<li>DAVID (via <a href="http://www.bioconductor.org/packages/RDAVIDWebService" target="_blank">RDAVIDWebService</a>)</li>
+<li><a href="http://software.broadinstitute.org/gsea/msigdb" target="_blank">Molecular Signatures Database</a>
+
+<ul>
+<li>hallmark gene sets</li>
+<li>positional gene sets</li>
+<li>curated gene sets</li>
+<li>motif gene sets</li>
+<li>computational gene sets</li>
+<li>GO gene sets</li>
+<li>oncogenic signatures</li>
+<li>immunologic signatures</li>
+</ul></li>
+<li>Other Annotations
+
+<ul>
+<li>from other sources (e.g. <a href="http://www.disgenet.org/web/DisGeNET/menu/home" target="_blank">DisGeNET</a> as <a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/" target="_blank">an example</a>)</li>
+<li>user&rsquo;s annotation</li>
+<li>customized ontology</li>
+<li>and many others
+<br /></li>
+</ul></li>
+</ul>
+
+<p><em>clusterProfiler</em> also provides several visualization methods to help interpreting enriched results, including:</p>
+
+<ul>
+<li>barplot</li>
+<li>cnetplot</li>
+<li>dotplot</li>
+<li>enrichMap</li>
+<li>gseaplot</li>
+<li>plotGOgraph (via <a href="http://www.bioconductor.org/packages/topGO" target="_blank">topGO</a> package)</li>
+<li>upsetplot (via <a href="https://github.com/cran/UpSetR" target="_blank">UpSetR</a> package)
+<br /></li>
+</ul>
+
+<p>and several useful utilities:</p>
+
+<ul>
+<li>bitr (Biological Id TranslatoR)</li>
+<li>bitr_kegg (bitr using KEGG source)</li>
+<li>compareCluster (biological theme comparison)</li>
+<li>dropGO (screen out GO term of specific level or specific term)</li>
+<li>go2ont (convert GO ID to Ontology)</li>
+<li>go2term (convert GO ID to descriptive term)</li>
+<li>gofilter (restrict result at specific GO level)</li>
+<li>gsfilter (restrict result by gene set size)</li>
+<li>search_kegg_organism (search kegg supported organism)</li>
+<li>setReadable (convert IDs stored <code>enrichResult</code> object to gene symbol)</li>
+<li>simplify (remove redundant GO terms, supported via <a href="http://www.bioconductor.org/packages/GOSemSim" target="_blank">GOSemSim</a>)</li>
+</ul>
+
+<h2 id="dose">DOSE</h2>
+
+<p>DOSE now test bimodal separately in GSEA and the output pvalues are [more conserved]((<a href="http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/" target="_blank">http://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/</a>).</p>
+
+<p><code>maxGSSize</code> parameter was added, with default value of <code>500</code>. Usually if the geneset &gt; 500, its probability of being called significant by GSEA rises quite dramatically.</p>
+
+<p><code>gsfilter</code> function for restricting enriched results with minimal and maximal gene set sizes.</p>
+
+<p><code>upsetplot</code> was implemented to visualize overlap of enriched gene sets.</p>
+
+<p>The dot sizes in <code>enrichMap</code> now scaled by category sizes</p>
+
+<p>All these changes also affect <code>clusterProfiler</code> and <code>ReactomePA</code>.</p>
+
+<h2 id="ggtree">ggtree</h2>
+
+<p>I put more efforts to extend <code>ggtree</code> than the sum of all other packages. Here listed the major new features while small improvement and bug fixed can be found in the NEWS file.</p>
+
+<h3 id="io">IO</h3>
+
+<ul>
+<li>supports <a href="http://guangchuangyu.github.io/2015/12/news-of-ggtree/" target="_blank">NHX</a> file format via <code>read.nhx</code> function</li>
+<li>supports <a href="http://guangchuangyu.github.io/2016/01/ggtree-supports-phylip-tree-format/" target="_blank">phylip</a> tree format via <code>read.phylip</code> function</li>
+<li>raxml2nwk for converting raxml bootstrap tree to newick text</li>
+<li>all parser functions support passing <code>textConnection(text_string)</code> as a file</li>
+<li>supports <code>ape</code> bootstrap analysis</li>
+<li>supports annotating tree with ancestral sequences inferred by <code>phangorn</code></li>
+<li>supports <code>obkData</code> object defined by <code>OutbreakTools</code> package</li>
+<li>supports <code>phyloseq</code> object defined by <code>phyloseq</code> package</li>
+</ul>
+
+<h3 id="layers">layers</h3>
+
+<ul>
+<li>geom_point2,geom_text2, geom_segment2 and geom_label2 to <a href="http://guangchuangyu.github.io/2015/09/subsetting-data-in-ggtree/" target="_blank">support subsetting</a></li>
+<li>geom_treescale for adding scale of branch length</li>
+<li>geom_cladelabel for labeling selected clade</li>
+<li>geom_tiplab2 for adding tiplab of circular tree</li>
+<li>geom_taxalink for connecting related taxa</li>
+<li>geom_range for adding range to present uncertainty of branch lengths</li>
+<li>subview and inset now support annotating with <a href="http://guangchuangyu.github.io/2016/03/embed-images-in-ggplot2-via-subview-and-annotate-a-phylogenetic-tree-with-images-using-inset-function/" target="_blank">image files</a></li>
+</ul>
+
+<h3 id="utilities">utilities</h3>
+
+<ul>
+<li><a href="http://guangchuangyu.github.io/2015/12/news-of-ggtree/" target="_blank">rescale_tree</a> function to rescale branch lengths using numerical variable</li>
+<li>MRCA for finding Most Recent Common Ancestor among a vector of tips</li>
+<li>viewClade to zoom in a selected clade</li>
+</ul>
+
+<h3 id="vignettes">vignettes</h3>
+
+<p>Split the long vignette to several small ones and add more examples.</p>
+
+<ul>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/ggtree.html" target="_blank">ggtree</a></li>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeImport.html" target="_blank">Tree Data Import</a></li>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeVisualization.html" target="_blank">Tree Visualization</a></li>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeAnnotation.html" target="_blank">Tree Annotation</a></li>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/treeManipulation.html" target="_blank">Tree Manipulation</a></li>
+<li><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ggtree/inst/doc/advanceTreeAnnotation.html" target="_blank">Advance Tree Annotation</a></li>
+</ul>
+
+<p>Here is the NEWS record:</p>
+
+<pre><code>CHANGES IN VERSION 1.3.16
+------------------------
+ o geom_treescale() supports family argument &lt;2016-04-27, Wed&gt;
+   + https://github.com/GuangchuangYu/ggtree/issues/56
+ o update fortify.phylo to work with phylo that has missing value of edge length &lt;2016-04-21, Thu&gt;
+   + https://github.com/GuangchuangYu/ggtree/issues/54
+ o support passing textConnection(text_string) as a file &lt;2016-04-21, Thu&gt;
+   + contributed by Casey Dunn &lt;casey_dunn@brown.edu&gt;
+   + https://github.com/GuangchuangYu/ggtree/pull/55#issuecomment-212859693
+ 
+CHANGES IN VERSION 1.3.15
+------------------------
+ o geom_tiplab2 supports parameter hjust &lt;2016-04-18, Mon&gt;
+ o geom_tiplab and geom_tiplab2 support using geom_label2 by passing geom=&quot;label&quot; &lt;2016-04-07, Thu&gt;
+ o geom_label2 that support subsetting &lt;2016-04-07, Thu&gt;
+ o geom_tiplab2 for adding tip label of circular layout &lt;2016-04-06, Wed&gt;
+ o use plot$plot_env to access ggplot2 parameter &lt;2016-04-06, Wed&gt;
+ o geom_taxalink for connecting related taxa &lt;2016-04-01, Fri&gt; 
+ o geom_range for adding range of HPD to present uncertainty of evolutionary inference &lt;2016-04-01, Fri&gt;
+ 
+CHANGES IN VERSION 1.3.14
+------------------------
+ o geom_tiplab works with NA values, compatible with collapse &lt;2016-03-05, Sat&gt;
+ o update theme_tree2 due to the issue of https://github.com/hadley/ggplot2/issues/1567 &lt;2016-03-05, Sat&gt;
+ o offset works in `align=FFALSE` with `annotation_image` function &lt;2016-02-23, Tue&gt;
+   + see https://github.com/GuangchuangYu/ggtree/issues/46
+ o subview and inset now supports annotating with img files &lt;2016-02-23, Tue&gt;
+ 
+CHANGES IN VERSION 1.3.13
+------------------------
+ o add example of rescale_tree function in treeAnnotation.Rmd &lt;2016-02-07, Sun&gt;
+ o geom_cladelabel works with collapse &lt;2016-02-07, Sun&gt;
+   + see https://github.com/GuangchuangYu/ggtree/issues/38 
+
+CHANGES IN VERSION 1.3.12
+------------------------
+ o exchange function name of geom_tree and geom_tree2  &lt;2016-01-25, Mon&gt;
+ o solved issues of geom_tree2 &lt;2016-01-25, Mon&gt;
+   + https://github.com/hadley/ggplot2/issues/1512
+ o colnames_level parameter in gheatmap &lt;2016-01-25, Mon&gt;
+ o raxml2nwk function for converting raxml bootstrap tree to newick format &lt;2016-01-25, Mon&gt; 
+ 
+CHANGES IN VERSION 1.3.11
+------------------------
+ o solved issues of geom_tree2 &lt;2016-01-25, Mon&gt;
+   + https://github.com/GuangchuangYu/ggtree/issues/36
+ o change compute_group() to compute_panel in geom_tree2() &lt;2016-01-21, Thu&gt;
+   + fixed issue, https://github.com/GuangchuangYu/ggtree/issues/36
+ o support phyloseq object &lt;2016-01-21, Thu&gt;
+ o update geom_point2, geom_text2 and geom_segment2 to support setup_tree_data &lt;2016-01-21, Thu&gt;
+ o implement geom_tree2 layer that support duplicated node records via the setup_tree_data function &lt;2016-01-21, Thu&gt;
+ o rescale_tree function for rescaling branch length of tree object &lt;2016-01-20, Wed&gt;
+ o upgrade set_branch_length, now branch can be rescaled using feature in extraInfo slot &lt;2016-01-20, Wed&gt;
+ 
+CHANGES IN VERSION 1.3.10
+------------------------
+ o remove dependency of gridExtra by implementing multiplot function instead of using grid.arrange &lt;2016-01-20, Wed&gt;
+ o remove dependency of colorspace &lt;2016-01-20, Wed&gt;
+ o support phylip tree format and update vignette of phylip example &lt;2016-01-15, Fri&gt;
+
+CHANGES IN VERSION 1.3.9
+------------------------
+ o optimize getYcoord &lt;2016-01-14, Thu&gt;
+ o add 'multiPhylo' example in 'Tree Visualization' vignette &lt;2016-01-13, Wed&gt;
+ o viewClade, scaleClade, collapse, expand, rotate, flip, get_taxa_name and scale_x_ggtree accepts input tree_view=NULL.
+   these function will access the last plot if tree_view=NULL. &lt;2016-01-13, Wed&gt;
+   + &gt; ggtree(rtree(30)); viewClade(node=35) works. no need to pipe.
+ 
+CHANGES IN VERSION 1.3.8
+------------------------
+ o add example of viewClade in 'Tree Manipulation' vignette &lt;2016-01-13, Wed&gt;
+ o add viewClade function &lt;2016-01-12, Tue&gt;
+ o support obkData object defined by OutbreakTools &lt;2016-01-12, Tue&gt;
+ o update vignettes &lt;2016-01-07, Thu&gt;
+ o 05 advance tree annotation vignette &lt;2016-01-04, Mon&gt;
+ o export theme_inset &lt;2016-01-04, Mon&gt;
+ o inset, nodebar, nodepie functions &lt;2015-12-31, Thu&gt;
+ 
+CHANGES IN VERSION 1.3.7
+------------------------
+ o split the long vignette to several vignettes
+   + 00 ggtree &lt;2015-12-29, Tue&gt;
+   + 01 tree data import &lt;2015-12-28, Mon&gt;
+   + 02 tree visualization &lt;2015-12-28, Mon&gt;
+   + 03 tree manipulation &lt;2015-12-28, Mon&gt;
+   + 04 tree annotation &lt;2015-12-29, Tue&gt;
+ 
+CHANGES IN VERSION 1.3.6
+------------------------
+ o MRCA function for finding Most Recent Common Ancestor among a vector of tips &lt;2015-12-22, Tue&gt;
+ o geom_cladelabel: add bar and label to annotate a clade &lt;2015-12-21, Mon&gt;
+   - remove annotation_clade and annotation_clade2 functions.
+ o geom_treescale: tree scale layer. (add_legend was removed) &lt;2015-12-21, Mon&gt;
+ 
+CHANGES IN VERSION 1.3.5
+------------------------
+ o bug fixed, read.nhx now works with scientific notation &lt;2015-11-30, Mon&gt;
+   + see https://github.com/GuangchuangYu/ggtree/issues/30
+
+CHANGES IN VERSION 1.3.4
+------------------------
+ o rename beast feature when name conflict with reserve keywords (label, branch, etc) &lt;2015-11-27, Fri&gt;
+ o get_clade_position function &lt;2015-11-26, Thu&gt;
+   + https://github.com/GuangchuangYu/ggtree/issues/28
+ o get_heatmap_column_position function &lt;2015-11-25, Wed&gt;
+   + see https://github.com/GuangchuangYu/ggtree/issues/26
+ o support NHX (New Hampshire X) format via read.nhx function &lt;2015-11-17, Tue&gt;
+ o bug fixed in extract.treeinfo.jplace &lt;2015-11-17, Thu&gt;
+ 
+CHANGES IN VERSION 1.3.3
+------------------------
+ o support color=NULL in gheatmap, then no colored line will draw within the heatmap &lt;2015-10-30, Fri&gt;
+ o add `angle` for also rectangular, so that it will be available for layout='rectangular' following by coord_polar() &lt;2015-10-27, Tue&gt;
+ 
+CHANGES IN VERSION 1.3.2
+------------------------
+ o update vignette, add example of ape bootstrap and phangorn ancestral sequences &lt;2015-10-26, Mon&gt;
+ o add support of ape bootstrap analysis &lt;2015-10-26, Mon&gt;
+   see https://github.com/GuangchuangYu/ggtree/issues/20
+ o add support of ancestral sequences inferred by phangorn &lt;2015-10-26, Mon&gt;
+   see https://github.com/GuangchuangYu/ggtree/issues/21
+ 
+CHANGES IN VERSION 1.3.1
+------------------------
+ o change angle to angle + 90, so that label will in radial direction &lt;2015-10-22, Thu&gt;
+   + see https://github.com/GuangchuangYu/ggtree/issues/17
+ o na.rm should be always passed to layer(), fixed it in geom_hilight and geom_text2 &lt;2015-10-21, Wed&gt;
+   + see https://github.com/hadley/ggplot2/issues/1380
+ o matching beast stats with tree using internal node number instead of label &lt;2015-10-20, Tue&gt;
+</code></pre>
+
+<h2 id="gosemsim">GOSemSim</h2>
+
+<p>update IC data using update OrgDb packages.</p>
+
+<h2 id="reactomepa">ReactomePA</h2>
+
+<p>We published ReactomePA in <a href="http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E" target="_blank">Molecular BioSystems</a>.</p>
+
+<h2 id="citation">Citation</h2>
+
+<p><strong><em>Yu G</em></strong>, Wang LG and He QY<sup>*</sup>. <a href="http://bioinformatics.oxfordjournals.org/content/31/14/2382" target="_blank">ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization</a>. <strong><em>Bioinformatics</em></strong> 2015, 31(14):2382-2383.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="3781087"></div></p>
+
+<p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118" target="_blank">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
+
+<p><strong><em>G Yu</em></strong>, LG Wang, GR Yan, QY He. <a href="http://bioinformatics.oxfordjournals.org/content/31/4/608" target="_blank">DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis</a>. <strong><em>Bioinformatics</em></strong> 2015, 31(4):608-609.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-popover="right" data-badge-type="donut" data-altmetric-id="2788597"></div></p>
+
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract" target="_blank">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628" target="_blank"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+
+<p><strong>Yu G</strong><sup>†</sup>, Li F<sup>†</sup>, Qin Y, Bo X<sup>*</sup>, Wu Y and Wang S<sup>*</sup>. <a href="http://bioinformatics.oxfordjournals.org/content/26/7/976" target="_blank">GOSemSim: an R package for measuring semantic similarity among GO terms and gene products</a>. <strong><em>Bioinformatics</em></strong>. 2010, 26(7):976-978.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div class="altmetric-embed" data-badge-popover="right" data-badge-type="donut" data-altmetric-id="100979"></div></p>
+
+<p><strong><em>G Yu</em></strong>, QY He<sup>*</sup>. <a href="http://pubs.rsc.org/en/Content/ArticleLanding/2016/MB/C5MB00663E#!divAbstract" target="_blank">ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization</a>. <strong><em>Molecular BioSystems</em></strong> 2016, 12(2):477-479.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-popover="right" data-badge-type="donut" data-altmetric-id="4796667"></div></p>
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/bioc/">BioC</a>
+  
+  <a class="badge badge-light" href="/tags/gosemsim/">GOSemSim</a>
+  
+  <a class="badge badge-light" href="/tags/clusterprofiler/">clusterProfiler</a>
+  
+  <a class="badge badge-light" href="/tags/dose/">DOSE</a>
+  
+  <a class="badge badge-light" href="/tags/reactomepa/">ReactomePA</a>
+  
+  <a class="badge badge-light" href="/tags/ggtree/">ggtree</a>
+  
+  <a class="badge badge-light" href="/tags/chipseeker/">ChIPseeker</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/"></a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/post/r/bioc/2015_bioc-3.2-news-of-my-bioc-packages/">[Bioc 32] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/bioc/2015_bioc-3.1-news-of-my-bioc-packages/">[Bioc 31] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/clusterprofiler/2015_functional-enrichment-for-gtex-paper/">functional enrichment for GTEx paper</a></li>
+        
+        <li><a href="/post/r/clusterprofiler/2015_dotplot-for-enrichment-result/">dotplot for enrichment result</a></li>
+        
+        <li><a href="/post/r/chipseeker/2015_functional-enrichment-analysis-with-ngs-data/">functional enrichment analysis with NGS data</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    &copy; {year} Guangchuang YU &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/academic.min.c45052ed2c5a2349273f02aeb6adb37d.js"></script>
+
+    
+
+  </body>
+</html>
+

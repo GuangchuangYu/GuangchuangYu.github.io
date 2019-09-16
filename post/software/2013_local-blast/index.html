@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.1.1">
+  <meta name="generator" content="Hugo 0.57.2" />
+  
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
+root@jz:/ssd/genomes# apt-get install ncbi-blast&#43; Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast&#43; 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://guangchuangyu.github.io/post/software/2013_local-blast/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-77901140-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+  <link rel="alternate" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  <link rel="feed" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://guangchuangyu.github.io/post/software/2013_local-blast/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@guangchuangyu">
+  <meta property="twitter:creator" content="@guangchuangyu">
+  
+  <meta property="og:site_name" content="Guangchuang YU">
+  <meta property="og:url" content="https://guangchuangyu.github.io/post/software/2013_local-blast/">
+  <meta property="og:title" content="local blast | Guangchuang YU">
+  <meta property="og:description" content="I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
+root@jz:/ssd/genomes# apt-get install ncbi-blast&#43; Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast&#43; 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.">
+  
+  
+    
+  <meta property="og:image" content="https://guangchuangyu.github.io/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2013-11-21T10:40:22&#43;08:00">
+  
+  <meta property="article:modified_time" content="2013-11-21T10:40:22&#43;08:00">
+  
+
+  
+
+  
+
+  <title>local blast | Guangchuang YU</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header fixed-top">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Guangchuang YU</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#publications_selected">
+            
+            <span>Publications</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#teaching">
+            
+            <span>Teaching</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/resume">
+            
+            <span>Resume</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/cn">
+            
+            <span>中文入口</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">local blast</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2013-11-21 10:40:22 &#43;0800 CST" itemprop="datePublished">
+    <time datetime="2013-11-21 10:40:22 &#43;0800 CST" itemprop="dateModified">
+      Nov 21, 2013
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/biology/">Biology</a>, 
+    
+    <a href="/categories/software/">Software</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=local%20blast&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fsoftware%2f2013_local-blast%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fsoftware%2f2013_local-blast%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fsoftware%2f2013_local-blast%2f&amp;title=local%20blast"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fsoftware%2f2013_local-blast%2f&amp;title=local%20blast"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=local%20blast&amp;body=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fsoftware%2f2013_local-blast%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p>I was asked to set up a local blast for the lab. Blast can be installed
+directly using apt in debian and it turns out to be easy.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">root@jz:/ssd/genomes# apt-get install ncbi-blast+
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  ncbi-blast+
+0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded.
+Need to get 11.2 MB of archives.
+After this operation, 32.8 MB of additional disk space will be used.
+Get:1 http://ftp.hk.debian.org/debian/ wheezy/main ncbi-blast+ amd64 2.2.26-3 [11.2 MB]
+Fetched 11.2 MB in 1min 16s (146 kB/s)
+Selecting previously unselected package ncbi-blast+.
+(Reading database ... 252681 files and directories currently installed.)
+Unpacking ncbi-blast+ (from .../ncbi-blast+_2.2.26-3_amd64.deb) ...
+Processing triggers for man-db ...
+Setting up ncbi-blast+ (2.2.26-3) ...
+</code></pre>
+
+<p>Before the program can be used for sequence alignment, we should prepare
+the db files:</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">root@jz:/ssd/genomes/blast/db# makeblastdb -in ../../hg19.fa -out hg19 -dbtype nucl
+Building a new DB, current time: 11/21/2013 16:03:05
+New DB name:   hg19
+New DB title:  ../../hg19.fa
+Sequence type: Nucleotide
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1073741824B
+Adding sequences from FASTA; added 25 sequences in 27.7084 seconds.
+</code></pre>
+
+<p>That&rsquo;s it. Now blast is supported in the lab server. I tested blastn
+with the <a href="http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;from=62184015&amp;to=62331329&amp;strand=true" target="_blank">AHANAK
+sequence</a>.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">ygc@jz:~$ date; blastn -num_threads 8 -query sequence.fasta -db /ssd/genomes/blast/db/hg19 &gt;&gt; testblast.txt ; date
+Thu Nov 21 16:19:19 HKT 2013
+Thu Nov 21 17:19:45 HKT 2013
+ygc@jz:~$ wc -c sequence.fasta
+149510 sequence.fasta
+</code></pre>
+
+<p>Blast search has three distinctive stages: word matching with database
+scan, ungapped alignment, gapped alignment with traceback. Only word
+matching stage is multi-threaded. So it tooks 1 hour to align this long
+gene.</p>
+
+<p>The most significant hit of the blast result indicated that the sequence
+is located at chr11:62331329-62184015, which is consistent with the
+information presented in the <a href="http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;from=62184015&amp;to=62331329&amp;strand=true" target="_blank">AHANAK sequence
+link</a>.</p>
+
+<pre><code>ygc@jz:~$ cat testblast.txt
+BLASTN 2.2.26+
+
+
+Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb
+Miller (2000), &quot;A greedy algorithm for aligning DNA sequences&quot;, J
+Comput Biol 2000; 7(1-2):203-14.
+
+
+
+Database: ../../hg19.fa
+           25 sequences; 3,095,693,983 total letters
+
+
+
+Query= gi|224589802:c62331329-62184015 Homo sapiens chromosome 11,
+GRCh37.p13 Primary Assembly
+
+Length=147315
+                                                                      Score        E
+Sequences producing significant alignments:                          (Bits)     Value
+
+  chr11                                                               2.720e+05  0.0
+  chr14                                                                941       0.0
+
+...
+
+&gt; chr11
+Length=135006516
+
+ Score = 2.720e+05 bits (147315),  Expect = 0.0
+ Identities = 147315/147315 (100%), Gaps = 0/147315 (0%)
+ Strand=Plus/Minus
+
+Query  1         CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  60
+                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  62331329  CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  62331270
+
+Query  61        TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  120
+                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  62331269  TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  62331210
+
+...
+
+  Database: ../../hg19.fa
+    Posted date:  Nov 21, 2013  4:03 PM
+  Number of letters in database: 3,095,693,983
+  Number of sequences in database:  25
+
+
+
+Matrix: blastn matrix 1 -2
+Gap Penalties: Existence: 0, Extension: 2.5
+</code></pre>
+
+<p>In addition to the species-specific sequence file, we should download
+the non-redundent gene and protein sequences from
+<a href="ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz" target="_blank">ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz</a> and
+<a href="ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz" target="_blank">ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz</a> respectively.</p>
+
+<p>nt contains all nucleotide sequences of GenBank, RefSeq Nucleotides,
+EMBL, DDBJ and PDB, while nr contains all non-redundant peptide
+sequences from GenBank CDS translations, RefSeq Proteins, PDB,
+SwissProt, PIR and PRF. After generating the db files, we can blast a
+sequence to multiple species.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">makeblastdb -in ../../nr/nr -out nr -dbtype prot
+makeblastdb -in ../../nr/nt -out nt -dbtype nucl
+</code></pre>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/blast/">blast</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/"></a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    &copy; {year} Guangchuang YU &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/academic.min.c45052ed2c5a2349273f02aeb6adb37d.js"></script>
+
+    
+
+  </body>
+</html>
+

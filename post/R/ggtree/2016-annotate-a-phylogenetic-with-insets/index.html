@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.1.1">
+  <meta name="generator" content="Hugo 0.57.2" />
+  
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="ggtree implemented a function, subview, that can add subplots on a
+ggplot2 object. It had successful applied to plot pie graphs on map.
+
+set.seed(2016-01-04)
+tr &lt;- rtree(30)
+tr &lt;- groupClade(tr, node=45)
+p &lt;- ggtree(tr, aes(color=group)) &#43; geom_tippoint()
+cpos &lt;- get_clade_position(p, node=45)
+p1 &lt;- p &#43; geom_hilight(node=45)
+p2 &lt;- with(cpos, p&#43;xlim(xmin, xmax*1.01)&#43;ylim(ymin, ymax))
+with(cpos, subview(p2&#43;geom_tiplab(), p1&#43;theme_transparent(), x=xmin&#43;(xmax-xmin)*.15, y=ymin&#43;(ymax-ymin)*.85))
+">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://guangchuangyu.github.io/post/r/ggtree/2016-annotate-a-phylogenetic-with-insets/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-77901140-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+  <link rel="alternate" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  <link rel="feed" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://guangchuangyu.github.io/post/r/ggtree/2016-annotate-a-phylogenetic-with-insets/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@guangchuangyu">
+  <meta property="twitter:creator" content="@guangchuangyu">
+  
+  <meta property="og:site_name" content="Guangchuang YU">
+  <meta property="og:url" content="https://guangchuangyu.github.io/post/r/ggtree/2016-annotate-a-phylogenetic-with-insets/">
+  <meta property="og:title" content="Annotate a phylogenetic tree with insets | Guangchuang YU">
+  <meta property="og:description" content="ggtree implemented a function, subview, that can add subplots on a
+ggplot2 object. It had successful applied to plot pie graphs on map.
+
+set.seed(2016-01-04)
+tr &lt;- rtree(30)
+tr &lt;- groupClade(tr, node=45)
+p &lt;- ggtree(tr, aes(color=group)) &#43; geom_tippoint()
+cpos &lt;- get_clade_position(p, node=45)
+p1 &lt;- p &#43; geom_hilight(node=45)
+p2 &lt;- with(cpos, p&#43;xlim(xmin, xmax*1.01)&#43;ylim(ymin, ymax))
+with(cpos, subview(p2&#43;geom_tiplab(), p1&#43;theme_transparent(), x=xmin&#43;(xmax-xmin)*.15, y=ymin&#43;(ymax-ymin)*.85))
+">
+  
+  
+    
+  <meta property="og:image" content="https://guangchuangyu.github.io/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2016-01-11T19:36:00&#43;08:00">
+  
+  <meta property="article:modified_time" content="2016-01-11T19:36:00&#43;08:00">
+  
+
+  
+
+  
+
+  <title>Annotate a phylogenetic tree with insets | Guangchuang YU</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header fixed-top">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Guangchuang YU</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#publications_selected">
+            
+            <span>Publications</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#teaching">
+            
+            <span>Teaching</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/resume">
+            
+            <span>Resume</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/cn">
+            
+            <span>中文入口</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Annotate a phylogenetic tree with insets</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2016-01-11 19:36:00 &#43;0800 CST" itemprop="datePublished">
+    <time datetime="2016-01-11 19:36:00 &#43;0800 CST" itemprop="dateModified">
+      Jan 11, 2016
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/r/">R</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Annotate%20a%20phylogenetic%20tree%20with%20insets&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fggtree%2f2016-annotate-a-phylogenetic-with-insets%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fggtree%2f2016-annotate-a-phylogenetic-with-insets%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fggtree%2f2016-annotate-a-phylogenetic-with-insets%2f&amp;title=Annotate%20a%20phylogenetic%20tree%20with%20insets"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fggtree%2f2016-annotate-a-phylogenetic-with-insets%2f&amp;title=Annotate%20a%20phylogenetic%20tree%20with%20insets"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Annotate%20a%20phylogenetic%20tree%20with%20insets&amp;body=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fggtree%2f2016-annotate-a-phylogenetic-with-insets%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p><code>ggtree</code> implemented a function, <code>subview</code>, that can add subplots on a
+ggplot2 object. It had successful applied to <a href="http://stackoverflow.com/questions/10368180/plotting-pie-graphs-on-map-in-ggplot/32380396#32380396" target="_blank">plot pie graphs on map</a>.</p>
+
+<pre><code>set.seed(2016-01-04)
+tr &lt;- rtree(30)
+tr &lt;- groupClade(tr, node=45)
+p &lt;- ggtree(tr, aes(color=group)) + geom_tippoint()
+cpos &lt;- get_clade_position(p, node=45)
+p1 &lt;- p + geom_hilight(node=45)
+p2 &lt;- with(cpos, p+xlim(xmin, xmax*1.01)+ylim(ymin, ymax))
+with(cpos, subview(p2+geom_tiplab(), p1+theme_transparent(), x=xmin+(xmax-xmin)*.15, y=ymin+(ymax-ymin)*.85))
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt="" /></p>
+
+<p>To make it more easy to use subview function for annotating taxa with
+subplots, <em>ggtree</em> provides a function, <code>inset</code>, for adding subplots to
+a phylogenetic tree. The input is a tree graphic object and a named list
+of ggplot graphic objects (can be any kind of charts), these objects
+should named by node numbers. To facilitate adding bar and pie charts
+(e.g. summarized stats of results from ancestral reconstruction) to
+phylogenetic tree, <em>ggtree</em> provides <code>nodepie</code> and <code>nodebar</code> functions
+to create a list of pie or bar charts.</p>
+
+<h2 id="annotate-with-bar-charts">Annotate with bar charts</h2>
+
+<pre><code>set.seed(2015-12-31)
+tr &lt;- rtree(15)
+p &lt;- ggtree(tr)
+
+a &lt;- runif(14, 0, 0.33)
+b &lt;- runif(14, 0, 0.33)
+c &lt;- runif(14, 0, 0.33)
+d &lt;- 1 - a - b - c
+dat &lt;- data.frame(a=a, b=b, c=c, d=d)
+## input data should have a column of `node` that store the node number
+dat$node &lt;- 15+1:14
+
+## cols parameter indicate which columns store stats (a, b, c and d in this example)
+bars &lt;- nodebar(dat, cols=1:4)
+
+inset(p, bars)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-3-1.png" alt="" /><br />
+ The sizes of the insets can be ajusted by the paramter <em>width</em> and
+<em>height</em>.</p>
+
+<pre><code>inset(p, bars, width=.03, height=.06)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-4-1.png" alt="" /><br />
+ Users can set the color via the parameter <em>color</em>. The <em>x</em> position can
+be one of &lsquo;node&rsquo; or &lsquo;branch&rsquo; and can be adjusted by the parameter
+<em>hjust</em> and <em>vjust</em> for horizontal and vertical adjustment respecitvely.</p>
+
+<pre><code>bars2 &lt;- nodebar(dat, cols=1:4, position='dodge',
+                 color=c(a='blue', b='red', c='green', d='cyan'))
+p2 &lt;- inset(p, bars2, x='branch', width=.03, vjust=-.3)
+print(p2)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-5-1.png" alt="" /></p>
+
+<h2 id="annotate-with-pie-charts">Annotate with pie charts</h2>
+
+<p>Similarly, users can use <code>nodepie</code> function to generate a list of pie
+charts and place these charts to annotate corresponding nodes. Both
+<code>nodebar</code> and <code>nodepie</code> accepts parameter <em>alpha</em> to allow transparency.</p>
+
+<pre><code>pies &lt;- nodepie(dat, cols=1:4, alpha=.6)
+inset(p, pies)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-6-1.png" alt="" /></p>
+
+<pre><code>inset(p, pies, hjust=-.06)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-7-1.png" alt="" /></p>
+
+<h2 id="annotate-with-other-types-of-charts">Annotate with other types of charts</h2>
+
+<p>The <code>inset</code> function accepts a list of ggplot graphic objects and these
+input objects are not restricted to pie or bar charts. They can be any
+kinds of charts and hybrid of these charts.</p>
+
+<pre><code>pies_and_bars &lt;- bars2
+pies_and_bars[9:14] &lt;- pies[9:14]
+inset(p, pies_and_bars)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-8-1.png" alt="" /></p>
+
+<pre><code>d &lt;- lapply(1:15, rnorm, n=100)
+ylim &lt;- range(unlist(d))
+bx &lt;- lapply(d, function(y) {
+    dd &lt;- data.frame(y=y)
+    ggplot(dd, aes(x=1, y=y))+geom_boxplot() + ylim(ylim) + theme_inset()
+})
+names(bx) &lt;- 1:15
+inset(p, bx, width=.03, height=.1, hjust=-.05)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-9-1.png" alt="" /></p>
+
+<p>After annotating with insets, users can further annotate the tree with
+another layer of insets.</p>
+
+<pre><code>p2 &lt;- inset(p, bars2, x='branch', width=.03, vjust=-.4)
+p2 &lt;- inset(p2, pies, x='branch', vjust=.4)
+bx2 &lt;- lapply(bx, function(g) g+coord_flip())
+inset(p2, bx2, width=.2, height=.03, vjust=.04, hjust=p2$data$x[1:15]-4) + xlim(NA, 4.5)
+</code></pre>
+
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/advanceTreeAnnotation_files/figure-markdown_strict/unnamed-chunk-10-1.png" alt="" /></p>
+
+<h2 id="citation">Citation</h2>
+
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract" target="_blank">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628" target="_blank"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/ggtree/">ggtree</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/"></a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/post/r/ggtree/2015-news_of_ggtree/">News of ggtree</a></li>
+        
+        <li><a href="/post/r/emojifont/emojifont/">use emoji font in R</a></li>
+        
+        <li><a href="/post/r/bioc/2015_bioc-3.2-news-of-my-bioc-packages/">[Bioc 32] NEWS of my BioC packages</a></li>
+        
+        <li><a href="/post/r/ggtree/2015_subsetting-data-in-ggtree/">subsetting data in ggtree</a></li>
+        
+        <li><a href="/post/r/ggtree/2015_comic-phylogenetic-tree-with-ggtree-and-comicr/">comic phylogenetic tree with ggtree and comicR</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    &copy; {year} Guangchuang YU &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/academic.min.c45052ed2c5a2349273f02aeb6adb37d.js"></script>
+
+    
+
+  </body>
+</html>
+

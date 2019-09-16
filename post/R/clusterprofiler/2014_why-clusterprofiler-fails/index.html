@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.1.1">
+  <meta name="generator" content="Hugo 0.57.2" />
+  
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="@kaji331
+compared cluserProfiler with GeneAnswers and found that clusterProfiler
+gives larger p values.
+
+It eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input
+
+But his comment forces me to test it.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://guangchuangyu.github.io/post/r/clusterprofiler/2014_why-clusterprofiler-fails/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-77901140-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+  <link rel="alternate" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  <link rel="feed" href="https://guangchuangyu.github.io/index.xml" type="application/rss+xml" title="Guangchuang YU">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://guangchuangyu.github.io/post/r/clusterprofiler/2014_why-clusterprofiler-fails/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@guangchuangyu">
+  <meta property="twitter:creator" content="@guangchuangyu">
+  
+  <meta property="og:site_name" content="Guangchuang YU">
+  <meta property="og:url" content="https://guangchuangyu.github.io/post/r/clusterprofiler/2014_why-clusterprofiler-fails/">
+  <meta property="og:title" content="why clusterProfiler fails | Guangchuang YU">
+  <meta property="og:description" content="@kaji331
+compared cluserProfiler with GeneAnswers and found that clusterProfiler
+gives larger p values.
+
+It eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input
+
+But his comment forces me to test it.">
+  
+  
+    
+  <meta property="og:image" content="https://guangchuangyu.github.io/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2014-08-07T05:46:35&#43;08:00">
+  
+  <meta property="article:modified_time" content="2014-08-07T05:46:35&#43;08:00">
+  
+
+  
+
+  
+
+  <title>why clusterProfiler fails | Guangchuang YU</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header fixed-top">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Guangchuang YU</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#publications_selected">
+            
+            <span>Publications</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#teaching">
+            
+            <span>Teaching</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/resume">
+            
+            <span>Resume</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/cn">
+            
+            <span>中文入口</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">why clusterProfiler fails</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2014-08-07 05:46:35 &#43;0800 CST" itemprop="datePublished">
+    <time datetime="2014-08-07 05:46:35 &#43;0800 CST" itemprop="dateModified">
+      Aug 7, 2014
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/r/">R</a>, 
+    
+    <a href="/categories/bioinformatics/">Bioinformatics</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=why%20clusterProfiler%20fails&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2014_why-clusterprofiler-fails%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2014_why-clusterprofiler-fails%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2014_why-clusterprofiler-fails%2f&amp;title=why%20clusterProfiler%20fails"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2014_why-clusterprofiler-fails%2f&amp;title=why%20clusterProfiler%20fails"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=why%20clusterProfiler%20fails&amp;body=https%3a%2f%2fguangchuangyu.github.io%2fpost%2fr%2fclusterprofiler%2f2014_why-clusterprofiler-fails%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p><a href="https://github.com/kaji331" target="_blank">@kaji331</a>
+compared <code>cluserProfiler</code> with <code>GeneAnswers</code> and found that clusterProfiler
+gives larger p values.</p>
+
+<p>It eventually came out that he passed the input
+gene as numeric vector, which was supposed to be character and he used an <strong>old</strong> version of <code>clusterProfiler</code> which didn&rsquo;t use <code>as.character</code> to coerce the input</p>
+
+<p>But his comment forces me to test it.</p>
+
+<pre><code>require(GeneAnswers)
+data('humanGeneInput')
+y &lt;- geneAnswersBuilder(humanGeneInput, 'org.Hs.eg.db', 
+                        categoryType='KEGG', testType='hyperG', 
+                        pvalueT=0.1, geneExpressionProfile=humanExpr, 
+                        verbose=FALSE)
+yy &lt;- y@enrichmentInfo
+
+require(clusterProfiler)
+x &lt;- enrichKEGG(humanGeneInput$GeneID, pvalueCutoff=0.2, 
+                qvalueCutoff=0.2, minGSSize=1)
+xx &lt;- summary(x)
+
+id &lt;- sub(&quot;hsa&quot;, &quot;&quot;, xx$ID)
+idx &lt;- id %in% rownames(yy)
+
+p.clusterProfiler &lt;- xx$pvalue[idx]
+p.GeneAnswers &lt;- yy[id[idx],]$&quot;p value&quot;
+&gt; cor(p.clusterProfiler, p.GeneAnswers)
+[1] 0.9996165
+&gt; p.clusterProfiler - p.GeneAnswers
+ [1]  1.029789e-04 -3.588252e-05 -4.623010e-05  1.079117e-04 -1.075746e-04
+ [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04  7.588155e-04
+[11] -3.702141e-04  2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04
+[16] -5.560738e-04 -5.884079e-04  2.011138e-03
+</code></pre>
+
+<p>Here, I used the dataset, <code>humanGeneInput</code>, provided by <code>GeneAnswers</code>. There
+are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
+have p values below 0.1 by clusterProfiler. 18 of them are the same and
+p values are highly correlated with very small differences. <a href="http://guangchuangyu.github.io/2012/04/enrichment-analysis/" target="_blank">Enrichment
+analyses</a> are tested by
+geometric model, I believe all packages do it in the same way. The
+difference should be attributed to annotation file and I found
+background ratio are different.</p>
+
+<pre><code>&gt; xx[1,]
+               ID Description GeneRatio  BgRatio     pvalue   p.adjust
+hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
+             qvalue                      geneID Count
+hsa04110 0.01683117 894/595/4175/6502/4173/9134     6
+&gt; yy[1,]
+      genes in Category percent in the observed List percent in the genome
+04110                 6                    0.1176471            0.02112436
+      fold of overrepresents odds ratio      p value
+04110                5.56926   6.441808 0.0006512612
+
+
+&gt; allEG = unique(unlist(as.list(org.Hs.egPATH2EG)))
+&gt; length(get(&quot;04110&quot;, org.Hs.egPATH2EG))
+[1] 124
+&gt; length(allEG)
+[1] 5870
+&gt; length(get(&quot;04110&quot;, org.Hs.egPATH2EG))/length(allEG)
+[1] 0.02112436
+</code></pre>
+
+<p>In the above example, the BgRatio of clusterProfiler is <sup>128</sup>&frasl;<sub>5894</sub>,
+slightly larger than 0.02112436 calculated by GeneAnswers. This is why
+clusterProfiler gives a p value larger than GeneAnswers (In this
+particular pathway of this particular example, clusterProfiler not
+always produce larger p values). The annotation file used by
+clusterProfiler is KEGG.db, while GeneAnswers uses org.Hs.eg.db. This is
+the reason of the difference and it&rsquo;s not a big deal.</p>
+
+<p>It&rsquo;s not a good idea to give the background ratio in decimal format as
+GeneAnswers does. We have no idea of the number of total genes in
+background with ratio like 0.02112436. Some software packages may use
+the gene number of the whole genome as background. If the total gene
+number is setting to 18000, the background ratio turn out to be
+<sup>124</sup>&frasl;<sub>18000</sub>=0.006888889. With 0.006888889, it&rsquo;s hard to detect the
+background gene number was set to a larger number. In this scenario, all
+the p values will become very small, and many false positive were
+reported.</p>
+
+<p>clusterProfiler and GeneAnswers estimate the total genes in the right
+way, but there are many packages may setting it to all the genes, no
+matter they have annotation or not. For instance, some software may
+setting the background to 20,000 when testing human genes.</p>
+
+<p>I still remember in 2007, I used princeton&rsquo;s web server,
+<a href="http://go.princeton.edu/cgi-bin/GOTermFinder" target="_blank">http://go.princeton.edu/cgi-bin/GOTermFinder</a>, to test GO enrichment. I
+found the background gene number was set to a very large number and all
+the p values were extremely small. When writing this blog post, I submit
+a job to this web server and found the gene number of human is setting
+to 45758. After I found this, I never use this web server again. The
+result is extremely &ldquo;significant&rdquo;! The web sever has an option, &ldquo;Enter
+the number of products estimated for your organism&rdquo;. This is ridiculous.
+It&rsquo;s hard to estimate for ordinary users and it is impossible to
+estimate it correctly since we don&rsquo;t know the annotation file in used.
+The default number, 45758 for human, is too large, result in many false
+positive.</p>
+
+<p>Input a gene list as background is useful, for instance we may use all
+genes that are detected in microarray experiment or all proteins
+identified by MS as background. This is an effective way to eliminate
+bias of using the whole genome. Use the whole genome is not mean to use
+the total number of gene in the genome as background. By default, KEGG
+enrichment analyses of clusterProfiler and GeneAnswers are using the
+whole genome, that is about 5900 genes for human, which are all genes
+have pathway annotation in the whole genome. Others without annotation
+are abandoned. This itself is a bias actually, but it&rsquo;s the realistic.
+If we include all genes no matter they have annotation or not, and
+setting 20000 or even more as background of human genes, definitely we
+will get significant result! But it is man-made significant.</p>
+
+<p>As I replied to
+<a href="https://github.com/kaji331" target="_blank">@kaji331</a>,
+if p values obtained by different software are different, trust the one
+produce larger p values. Many user will choose a software give a more
+&ldquo;significant&rdquo; result, but trust me, you are making type I error.
+Conservatively, always choose the one give you larger p-values if you
+know nothing about the calculation. Software that never &ldquo;fail&rdquo; is
+untrustable.</p>
+
+<h2 id="citation">Citation</h2>
+
+<p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118" target="_blank">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
+
+<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/clusterprofiler/">clusterProfiler</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/"></a></h5>
+    
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/post/r/clusterprofiler/2014_enrichment-map/">enrichment map</a></li>
+        
+        <li><a href="/post/mypaper/2012_clusterprofiler-package-comparing-biological-themes-gene-clusters/">clusterProfiler: an R Package for Comparing Biological Themes Among Gene Clusters</a></li>
+        
+        <li><a href="/post/r/clusterprofiler/2011_clusterprofiler-bioconductor/">clusterProfiler in Bioconductor 2.8</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    &copy; {year} Guangchuang YU &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/academic.min.c45052ed2c5a2349273f02aeb6adb37d.js"></script>
+
+    
+
+  </body>
+</html>
+
