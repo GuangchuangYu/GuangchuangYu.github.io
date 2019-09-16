@@ -1,32 +1,63 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Visualization on Guangchuang YU</title>
+    <title>Visualization | Guangchuang YU</title>
     <link>https://guangchuangyu.github.io/categories/visualization/</link>
-    <description>Recent content in Visualization on Guangchuang YU</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>&amp;copy; 2016 Guangchuang YU</copyright>
-    <lastBuildDate>Thu, 19 Apr 2018 11:00:08 +0800</lastBuildDate>
-    <atom:link href="/categories/visualization/" rel="self" type="application/rss+xml" />
+      <atom:link href="https://guangchuangyu.github.io/categories/visualization/index.xml" rel="self" type="application/rss+xml" />
+    <description>Visualization</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Guangchuang YU</copyright><lastBuildDate>Mon, 10 Sep 2018 11:00:08 +0800</lastBuildDate>
+    <image>
+      <url>https://guangchuangyu.github.io/img/icon-192.png</url>
+      <title>Visualization</title>
+      <link>https://guangchuangyu.github.io/categories/visualization/</link>
+    </image>
+    
+    <item>
+      <title>separating legends of heatmaps in ggtree</title>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/multiple_color_palette/</link>
+      <pubDate>Mon, 10 Sep 2018 11:00:08 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/multiple_color_palette/</guid>
+      <description>&lt;p&gt;Applying different color palettes is also easy using &lt;code&gt;scale_fill_manual&lt;/code&gt; to manually specify color to fill the heatmaps. However, the legends of different heatmaps (different rings here) are mixed together.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(RColorBrewer)
+col &amp;lt;- c(brewer.pal(5, &amp;quot;Dark2&amp;quot;), brewer.pal(4, &amp;quot;Pastel1&amp;quot;))
+names(col) = c(letters[1:6], letters[24:26])
+
+pp &amp;lt;- p2 + scale_fill_manual(values=col)
+print(pp)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/multiple_color_palette_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;It is possible/tricky to separate them, by overriding aes. Here I introduce a solution that is easy to understand and follow. We can plot the tree with each individual heatmap and extract each of the legend. Then we can use &lt;code&gt;cowplot&lt;/code&gt; to combine our tree (without legend) and all the separated legends.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1x &amp;lt;- p1 + scale_fill_manual(values=col)
+p2x &amp;lt;- gheatmap(circ, df[, &amp;quot;second&amp;quot;, drop=F], offset=5, width=.1) +
+    scale_fill_manual(values=col) 
+
+require(cowplot)
+leg1 &amp;lt;- get_legend(p1x)
+leg2 &amp;lt;- get_legend(p2x)
+
+pp &amp;lt;- pp + theme(legend.position=&amp;quot;none&amp;quot;)
+plot_grid(pp, leg1, leg2, ncol=3, rel_widths=c(1, .1, .1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/multiple_color_palette_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>rename phylogeny tip labels in treeio</title>
-      <link>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/treeio/rename_taxa/</link>
       <pubDate>Thu, 19 Apr 2018 11:00:08 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</guid>
-      <description>&lt;p&gt;I don’t know whether ‘rename taxa’ is a common task or not. It seems not a good idea to rename taxa in Newick tree text, since it may introduce problems when mapping the original sequence alignment to the tree.&lt;/p&gt;
-&lt;p&gt;If you just want to show different or additional information when plotting the tree, it is fine and easy to do it using &lt;code&gt;ggtree&lt;/code&gt;:&lt;/p&gt;
-&lt;!--more--&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(treeio)&lt;/code&gt;&lt;/pre&gt;
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/treeio/rename_taxa/</guid>
+      <description>&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(treeio)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Loading required package: treeio&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Registered S3 method overwritten by &amp;#39;treeio&amp;#39;:
+##   method     from
+##   root.phylo ape&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggtree)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Loading required package: ggtree&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## ggtree v1.13.1.9002  For help: https://guangchuangyu.github.io/software/ggtree
+&lt;pre&gt;&lt;code&gt;## ggtree v1.99.1  For help: https://yulab-smu.github.io/treedata-book/
 ## 
-## If you use ggtree in published research, please cite:
-## Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/pre&gt;
+## If you use ggtree in published research, please cite the most appropriate paper(s):
+## 
+## [36m-[39m Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution 2018, 35(12):3041-3043. doi: 10.1093/molbev/msy194
+## [36m-[39m Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr &amp;lt;- read.tree(text = &amp;quot;((a,(b,c)),d);&amp;quot;)
 genus &amp;lt;- c(&amp;quot;Gorilla&amp;quot;, &amp;quot;Pan&amp;quot;, &amp;quot;Homo&amp;quot;, &amp;quot;Pongo&amp;quot;)
 species &amp;lt;- c(&amp;quot;gorilla&amp;quot;, &amp;quot;spp.&amp;quot;, &amp;quot;sapiens&amp;quot;, &amp;quot;pygmaeus&amp;quot;)
@@ -69,18 +100,10 @@ write.tree(tr3)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>setting ggplot2 background with ggbackground</title>
-      <link>https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggimage/ggbackground/</link>
       <pubDate>Wed, 18 Apr 2018 21:00:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34;&gt;ggimage&lt;/a&gt; 0.1.4 is available on CRAN.&lt;/p&gt;
-&lt;p&gt;This release introduces a new function called &lt;code&gt;ggbackground&lt;/code&gt; for setting image background as &lt;code&gt;ggplot&lt;/code&gt; canvas.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggplot2)
-p &amp;lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
-    geom_point(size=5) + theme_classic()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Suppose we have the above &lt;code&gt;ggplot&lt;/code&gt; object, &lt;code&gt;p&lt;/code&gt;, the only thing we need to do is passing the &lt;code&gt;p&lt;/code&gt; with an image file name (local or remote) to &lt;code&gt;ggbackground&lt;/code&gt;, as demonstrated below:&lt;/p&gt;
-&lt;!--more--&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggimage) 
+      <guid>https://guangchuangyu.github.io/post/r/ggimage/ggbackground/</guid>
+      <description>&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggimage) 
 img = &amp;quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&amp;quot;
 ggbackground(p, img)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggimage/ggbackground_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
@@ -109,14 +132,10 @@ cowplot::plot_grid(p1, p2, p3, ncol=3)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Annotating phylogenetic tree with images using ggtree and ggimage</title>
-      <link>https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/ggtree-ggimage/</link>
       <pubDate>Thu, 01 Mar 2018 11:10:48 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2018/03/annotating-phylogenetic-tree-with-images-using-ggtree-and-ggimage/</guid>
-      <description>&lt;p&gt;With &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt;, we are able to plot images using grammar of graphics. The layers defined in &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt; can be directly applied to &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; to annotate phylogenetic tree using local/online image files.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; seamlessly work with &lt;a href=&#34;https://cran.r-project.org/web/packages/ggimage/index.html&#34;&gt;ggimage&lt;/a&gt;. The &lt;code&gt;geom_tiplab&lt;/code&gt; and &lt;code&gt;geom_nodelab&lt;/code&gt; can accept parameter of &lt;code&gt;geom=&amp;quot;image&amp;quot;&lt;/code&gt; to parse taxa labels as image files and use them to “label” the taxa using images instead of text strings. Here are some examples for demonstration.&lt;/p&gt;
-&lt;!--more--&gt;
-&lt;div id=&#34;annotate-tips&#34; class=&#34;section level2&#34;&gt;
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/ggtree-ggimage/</guid>
+      <description>&lt;div id=&#34;annotate-tips&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Annotate tips&lt;/h2&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggimage)
 library(ggtree)
@@ -162,20 +181,16 @@ pg %&amp;lt;+% d + geom_nodelab(aes(image=images), geom=&amp;quot;image&amp;quot
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/ggtree-ggimage_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;Here is another example that uses &lt;code&gt;Tabikaeru&lt;/code&gt; (known as traveling frog, a popular mobile game) image to decorate a phylogenetic tree of frog, see reproducible source code on &lt;a href=&#34;https://github.com/GuangchuangYu/frog_tree&#34; class=&#34;uri&#34;&gt;https://github.com/GuangchuangYu/frog_tree&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/frog_tree/master/ggtree_frog.png&#34; /&gt;
-
-&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/frog_tree/master/ggtree_frog.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
     
     <item>
       <title>shadow text effect in grid and ggplot2 graphics</title>
-      <link>https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/</link>
+      <link>https://guangchuangyu.github.io/post/r/shadowtext/meme-shadowtext/</link>
       <pubDate>Thu, 02 Nov 2017 15:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/shadowtext/meme-shadowtext/</guid>
       <description>&lt;p&gt;After the release of &lt;code&gt;meme&lt;/code&gt; package, I received several feedbacks from users.&lt;/p&gt;
 
 &lt;p&gt;The most usefule one is &lt;a href=&#34;http://disq.us/p/1n9zi69&#34; target=&#34;_blank&#34;&gt;the comment&lt;/a&gt; on my blog post:&lt;/p&gt;
@@ -199,8 +214,6 @@ pg %&amp;lt;+% d + geom_nodelab(aes(image=images), geom=&amp;quot;image&amp;quot
 
 &lt;p&gt;Now this feature is available in &lt;a href=&#34;https://cran.r-project.org/package=meme&#34; target=&#34;_blank&#34;&gt;meme&lt;/a&gt; v&amp;gt;=0.0.7, which can be downloaded from CRAN.&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-
 &lt;p&gt;Here is an example:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;library(meme)
@@ -221,10 +234,9 @@ meme(u, &amp;quot;code&amp;quot;, &amp;quot;all the things!&amp;quot;)
     
     <item>
       <title>create meme in R</title>
-      <link>https://guangchuangyu.github.io/2017/10/create-meme-in-r/</link>
+      <link>https://guangchuangyu.github.io/post/r/meme2017/</link>
       <pubDate>Wed, 25 Oct 2017 15:13:35 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2017/10/create-meme-in-r/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/meme2017/</guid>
       <description>&lt;p&gt;I developed a tiny toy package, &lt;code&gt;meme&lt;/code&gt;, which is now on CRAN. As it&amp;rsquo;s name indicated, it was designed to create memes, which are captioned photos that are intended to be funny, riduculous.&lt;/p&gt;
 
 &lt;h2 id=&#34;meme&#34;&gt;&lt;code&gt;meme()&lt;/code&gt;&lt;/h2&gt;
@@ -237,8 +249,6 @@ meme(u, &amp;quot;code&amp;quot;, &amp;quot;all the things!&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/meme/Figs/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;the-grammar&#34;&gt;the grammar 🙈&lt;/h2&gt;
 
@@ -354,17 +364,14 @@ ggplot(d, aes(x, y)) + geom_line() +
     
     <item>
       <title>pixel art of ggplot2 faceting using geofacet</title>
-      <link>https://guangchuangyu.github.io/2017/06/pixel-art-of-ggplot2-faceting-using-geofacet/</link>
+      <link>https://guangchuangyu.github.io/post/r/pixel-art-geofacet/</link>
       <pubDate>Mon, 26 Jun 2017 20:13:35 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2017/06/pixel-art-of-ggplot2-faceting-using-geofacet/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/pixel-art-geofacet/</guid>
       <description>&lt;p&gt;I just discovered an interesting &lt;code&gt;ggplot2&lt;/code&gt; extension, &lt;code&gt;geofacet&lt;/code&gt;, that supports arranging facet panels that mimics geographic topoloty.&lt;/p&gt;
 
 &lt;p&gt;After playing with it, I realized that it is not only for visualizing &lt;code&gt;geo&lt;/code&gt;-related data, but also can be fun for presenting data to mimics pixel art.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Here is an example using the Turkey shape:&lt;/p&gt;
 
@@ -401,10 +408,9 @@ print(p1)
     
     <item>
       <title>Phylomoji with ggtree and emojifont</title>
-      <link>https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/</link>
+      <link>https://guangchuangyu.github.io/post/r/emojifont/phylomoji/</link>
       <pubDate>Wed, 17 May 2017 11:11:11 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/emojifont/phylomoji/</guid>
       <description>&lt;p&gt;With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.&lt;/p&gt;
 
 &lt;h2 id=&#34;use-emoji-in-taxa-labels&#34;&gt;Use emoji in taxa labels&lt;/h2&gt;
@@ -419,8 +425,6 @@ ggtree(x, linetype=&amp;quot;dashed&amp;quot;, color=&#39;firebrick&#39;) +
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;p &amp;lt;- ggtree(x, layout=&#39;circular&#39;) +
     geom_tiplab2(aes(color=label), parse=&#39;emoji&#39;, size=12, vjust=0.25)
@@ -485,10 +489,9 @@ ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
     
     <item>
       <title>add layer to specific panel of facet_plot output</title>
-      <link>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2016_layer_facet_plot/</link>
       <pubDate>Wed, 28 Dec 2016 20:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2016_layer_facet_plot/</guid>
       <description>&lt;p&gt;This is a question from &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ&#34; target=&#34;_blank&#34;&gt;ggtree google group&lt;/a&gt;:&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -513,8 +516,6 @@ Andreas&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;If this can be done, we can create even more &lt;a href=&#34;https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/&#34; target=&#34;_blank&#34;&gt;comprehensive tree plots&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;In fact, it&amp;rsquo;s quite easy to do. In &lt;code&gt;facet_plot&lt;/code&gt;, &lt;code&gt;ggtree&lt;/code&gt; used a variable &lt;code&gt;.panel&lt;/code&gt; to store the panel information. We can add a dummy column &lt;code&gt;.panel&lt;/code&gt; to our data and pass it to  &lt;code&gt;geom&lt;/code&gt; layer function and the layer will be added to selected panel we specify in the &lt;code&gt;.panel&lt;/code&gt; column.&lt;/p&gt;
 
@@ -573,17 +574,14 @@ facet_plot(p2, panel=&#39;Stacked Barplot&#39;,
     
     <item>
       <title>align genomic features with phylogenetic tree</title>
-      <link>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/align-genomic-features-with-phylogenetic-tree/</link>
       <pubDate>Tue, 15 Nov 2016 20:10:48 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/11/align-genomic-features-with-phylogenetic-tree/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/align-genomic-features-with-phylogenetic-tree/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://www.biostars.org/p/218591/&#34; target=&#34;_blank&#34;&gt;A question&lt;/a&gt; on biostars asking how to generate the following figure:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_ggbio/218591.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This can be quite easy to implement in &lt;a href=&#34;https://guangchuangyu.github.io&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt;, I can write a &lt;code&gt;geom&lt;/code&gt; layer to layout the alignment. As &lt;a href=&#34;https://bioconductor.org/packages/ggbio/&#34; target=&#34;_blank&#34;&gt;ggbio&lt;/a&gt; already provides many &lt;code&gt;geom&lt;/code&gt; for genomic data and I don&amp;rsquo;t want to re-invent the wheel, I decided to try &lt;code&gt;ggtree+ggbio&lt;/code&gt;. This is also the beauty of &lt;code&gt;R&lt;/code&gt; that packages complete each others.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Here is a sample data presented in &lt;code&gt;ggbio&lt;/code&gt; vignette:&lt;/p&gt;
 
@@ -714,10 +712,9 @@ p &amp;lt;- ggtree(tr) + geom_tiplab()
     
     <item>
       <title>showCategory parameter for visualizing compareCluster output</title>
-      <link>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/</link>
+      <link>https://guangchuangyu.github.io/post/r/clusterprofiler/2016_showcategory/</link>
       <pubDate>Thu, 03 Nov 2016 10:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/clusterprofiler/2016_showcategory/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().&lt;/p&gt;
 
@@ -741,8 +738,6 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
 &lt;/blockquote&gt;
 
 &lt;p&gt;The question was &lt;a href=&#34;https://support.bioconductor.org/p/88965/&#34; target=&#34;_blank&#34;&gt;posted&lt;/a&gt; in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;In this case, we expect to get &lt;code&gt;&amp;lt;= 10 of most significant categories&lt;/code&gt; for each  &lt;code&gt;Cluster&lt;/code&gt; as the user specify &lt;code&gt;showCategory=10&lt;/code&gt;. This is exactly the way of &lt;code&gt;dotplot&lt;/code&gt; and &lt;code&gt;barplot&lt;/code&gt; methods do for &lt;code&gt;compareClusterResult&lt;/code&gt;. &lt;code&gt;8&lt;/code&gt; categories for &lt;code&gt;g1&lt;/code&gt; is obvious that there are only &lt;code&gt;8&lt;/code&gt; enriched terms found for &lt;code&gt;g1&lt;/code&gt;.&lt;/p&gt;
 
@@ -776,10 +771,9 @@ dotplot(x, showCategory=5)
     
     <item>
       <title>xlim_tree: set x axis limits for only Tree panel</title>
-      <link>https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2016_xlim_tree/</link>
       <pubDate>Mon, 31 Oct 2016 12:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2016_xlim_tree/</guid>
       <description>&lt;p&gt;A &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; user recently asked me the following question in &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ&#34; target=&#34;_blank&#34;&gt;google group&lt;/a&gt;:&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -789,8 +783,6 @@ dotplot(x, showCategory=5)
 &lt;/blockquote&gt;
 
 &lt;p&gt;This is indeed a desire feature, as &lt;code&gt;ggplot2&lt;/code&gt; can&amp;rsquo;t automatically adjust &lt;code&gt;xlim&lt;/code&gt; for text since the units are in two different spaces (data and pixel).&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Here is an example, the tip labels are truncated.&lt;/p&gt;
 
@@ -838,10 +830,9 @@ facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) +
     
     <item>
       <title>facet_plot: a general solution to associate data with phylogenetic tree</title>
-      <link>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2016_facet_plot/</link>
       <pubDate>Wed, 26 Oct 2016 16:30:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2016_facet_plot/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; provides &lt;code&gt;gheatmap&lt;/code&gt; for visualizing heatmap and &lt;code&gt;msaplot&lt;/code&gt; for visualizing multiple sequence alignment with phylogenetic tree.&lt;/p&gt;
 
 &lt;p&gt;We may have different data types and want to visualize and align them with the tree. For example, &lt;code&gt;dotplot&lt;/code&gt; of SNP site (e.g. using &lt;code&gt;geom_point(shape=&#39;|&#39;)&lt;/code&gt;), &lt;code&gt;barplot&lt;/code&gt; of trait values (e.g. using &lt;code&gt;geom_barh(stat=&#39;identity&#39;)&lt;/code&gt;) &lt;em&gt;et al&lt;/em&gt;.&lt;/p&gt;
@@ -852,16 +843,13 @@ facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) +
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tr &amp;lt;- rtree(30)
-p &amp;lt;- ggtree(tr)
-d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;quot;GZ&amp;quot;, &amp;quot;HK&amp;quot;, &amp;quot;CZ&amp;quot;), 30, replace=TRUE))
-p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
-d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-p2 &amp;lt;- facet_plot(p1, panel=&amp;quot;dot&amp;quot;, data=d2, geom=geom_point, 
-                aes(x=val), color=&#39;firebrick&#39;) + theme_tree2()
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;tr &amp;lt;- rtree(30)
+    p &amp;lt;- ggtree(tr)
+    d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;ldquo;GZ&amp;rdquo;, &amp;ldquo;HK&amp;rdquo;, &amp;ldquo;CZ&amp;rdquo;), 30, replace=TRUE))
+    p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
+    d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+    p2 &amp;lt;- facet_plot(p1, panel=&amp;ldquo;dot&amp;rdquo;, data=d2, geom=geom_point,
+                    aes(x=val), color=&amp;lsquo;firebrick&amp;rsquo;) + theme_tree2()&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
@@ -912,21 +900,18 @@ p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_box
     
     <item>
       <title>reproducible logo generated by ggtree</title>
-      <link>https://guangchuangyu.github.io/2016/10/reproducible-logo-generated-by-ggtree/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2016_logo/</link>
       <pubDate>Fri, 14 Oct 2016 21:50:00 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/10/reproducible-logo-generated-by-ggtree/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2016_logo/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; provides many helper functions for manupulating phylogenetic trees and make it easy to explore tree structure visually.&lt;/p&gt;
 
 &lt;p&gt;Here, as examples, I used &lt;code&gt;ggtree&lt;/code&gt; to draw capital character &lt;code&gt;G&lt;/code&gt; and &lt;code&gt;C&lt;/code&gt;, which are first letter of my name :-).&lt;/p&gt;
 
 &lt;p&gt;To draw a tree in such shape, we need &lt;code&gt;fan&lt;/code&gt; layout (&lt;code&gt;circular&lt;/code&gt; layout with open angle) and then rotating the tree to let the open space on the correct position. Here are the source codes to produce the &lt;code&gt;G&lt;/code&gt; and &lt;code&gt;C&lt;/code&gt; shapes of tree. I am thinking about using the &lt;code&gt;G&lt;/code&gt; shaped tree as &lt;code&gt;ggtree&lt;/code&gt; logo. Have fun with &lt;code&gt;ggtree&lt;/code&gt; :-)&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;library(ggtree)&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-
-beast_file &amp;lt;- system.file(&amp;quot;examples/MCC_FluA_H3.tree&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+&lt;pre&gt;&lt;code&gt;beast_file &amp;lt;- system.file(&amp;quot;examples/MCC_FluA_H3.tree&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
 beast_tree &amp;lt;- read.beast(beast_file)
 
 genotype_file &amp;lt;- system.file(&amp;quot;examples/Genotype.txt&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
@@ -962,10 +947,9 @@ open_tree(p2, 90) %&amp;gt;% rotate_tree(50)
     
     <item>
       <title>ggtree for outbreak data</title>
-      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2016-ggtree-outbreaktools/</link>
       <pubDate>Mon, 19 Sep 2016 20:10:48 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-outbreak-data/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2016-ggtree-outbreaktools/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=OutbreakTools&#34; target=&#34;_blank&#34;&gt;OutbreakTools&lt;/a&gt; implements basic tools for the analysis of Disease Outbreaks.&lt;/p&gt;
 
 &lt;p&gt;It defines &lt;code&gt;S4&lt;/code&gt; class &lt;code&gt;obkData&lt;/code&gt; to store case-base outbreak data. It also provides a function, &lt;code&gt;plotggphy&lt;/code&gt;, to visualize such data on the phylogenetic tree.&lt;/p&gt;
@@ -982,8 +966,6 @@ x &amp;lt;- new(&amp;quot;obkData&amp;quot;, individuals = individuals, dna = Fl
 plotggphy(x, ladderize = TRUE, branch.unit = &amp;quot;year&amp;quot;,
           tip.color = &amp;quot;location&amp;quot;, tip.size = 3, tip.alpha = 0.75)
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-ggtree-OutbreakTools_files/unnamed-chunk-1-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
@@ -1010,17 +992,14 @@ ggtree(x, mrsd=&amp;quot;2009-09-30&amp;quot;, as.Date=TRUE) +
     
     <item>
       <title>ggtree for microbiome data</title>
-      <link>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data/</link>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2016_phyloseq_ggtree/</link>
       <pubDate>Thu, 01 Sep 2016 03:17:48 +0800</pubDate>
-      
-      <guid>https://guangchuangyu.github.io/2016/09/ggtree-for-microbiome-data/</guid>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2016_phyloseq_ggtree/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.&lt;/p&gt;
 
 &lt;h2 id=&#34;phyloseq-for-microbiome-data&#34;&gt;phyloseq for microbiome data&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;phyloseq&lt;/code&gt; class defined in the &lt;a href=&#34;https://www.bioconductor.org/package/phyloseq&#34; target=&#34;_blank&#34;&gt;phyloseq&lt;/a&gt; package was designed for microbiome data. &lt;code&gt;phyloseq&lt;/code&gt; package implemented &lt;code&gt;plot_tree&lt;/code&gt; function using &lt;code&gt;ggplot2&lt;/code&gt;. Although the function was implemented by &lt;code&gt;ggplot2&lt;/code&gt; and we can use &lt;code&gt;theme&lt;/code&gt;, &lt;code&gt;scale_color_manual&lt;/code&gt; etc for customization, the most valuable part of &lt;code&gt;ggplot2&lt;/code&gt;, adding layer, is missing. &lt;code&gt;plot_tree&lt;/code&gt; only provides limited parameters to control the output graph and it is hard to add layer unless user has expertise in both &lt;code&gt;phyloseq&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(phyloseq)
 
@@ -1070,6 +1049,1272 @@ msaplot(p, Biostrings::BStringSet(barcode), width=.3, offset=.05)
 
 &lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
 &lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>embed images in ggplot2 via subview and annotate a phylogenetic tree with images using inset function</title>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2016_inset_img/</link>
+      <pubDate>Sun, 20 Mar 2016 10:50:00 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2016_inset_img/</guid>
+      <description>&lt;p&gt;I extended the &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/subview/&#34; target=&#34;_blank&#34;&gt;subview&lt;/a&gt; function to support embed image file in a &lt;code&gt;ggplot&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(123)
+d = data.frame(x=rnorm(10), y=rnorm(10))
+
+imgfile &amp;lt;- tempfile(, fileext=&amp;quot;.png&amp;quot;)
+download.file(&amp;quot;https://avatars1.githubusercontent.com/u/626539?v=3&amp;amp;u=e731426406dd3f45a73d96dd604bc45ae2e7c36f&amp;amp;s=140&amp;quot;,
+              destfile=imgfile, mode=&#39;wb&#39;)
+
+p = ggplot(d, aes(x, y))
+subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subview_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href=&#34;http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/&#34; target=&#34;_blank&#34;&gt;previous post&lt;/a&gt;, I have introduced using &lt;code&gt;annotation_image&lt;/code&gt; function for annotating tips with local images.&lt;/p&gt;
+
+&lt;p&gt;Now with the updated &lt;code&gt;subview&lt;/code&gt; function, we can use &lt;a href=&#34;http://guangchuangyu.github.io/2016/01/annotate-a-phylogenetic-tree-with-insets/&#34; target=&#34;_blank&#34;&gt;inset&lt;/a&gt; function to annotate nodes/tips with image files and/or subplots.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(2015-12-31)
+tr &amp;lt;- rtree(15)
+p &amp;lt;- ggtree(tr)
+
+img &amp;lt;- list(imgfile, imgfile)
+names(img) &amp;lt;- c(&amp;quot;18&amp;quot;, &amp;quot;22&amp;quot;)
+inset(p, img)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/inset_with_img.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: As I got more and more emails from ggtree users, I created a forum, &lt;a href=&#34;https://groups.google.com/forum/#!forum/bioc-ggtree&#34; target=&#34;_blank&#34;&gt;https://groups.google.com/forum/#!forum/bioc-ggtree&lt;/a&gt;. With this forum, &lt;code&gt;ggtree&lt;/code&gt; users can help each others and also solutions posted in the forum can help other peoples when they google search their questions. Please join the forum and post your questions if you have any.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Font Awesome supported in emojifont</title>
+      <link>https://guangchuangyu.github.io/post/r/emojifont/emojifont-fontawesome/</link>
+      <pubDate>Mon, 14 Mar 2016 16:21:11 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/emojifont/emojifont-fontawesome/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://cran.r-project.org/package=emojifont&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://www.r-pkg.org/badges/version/emojifont&#34; alt=&#34;CRAN_Status_Badge&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/web/packages/emojifont/index.html&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;emojifont&lt;/code&gt;&lt;/a&gt; is available in CRAN, you can use the following command to install it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;install.packages(&amp;quot;emojifont&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;An example of using emoji font in R plot is showed below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2016/douban_emoji.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;More examples can be found in &lt;a href=&#34;http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/&#34; target=&#34;_blank&#34;&gt;the post&lt;/a&gt; and online &lt;a href=&#34;https://cran.r-project.org/web/packages/emojifont/vignettes/emojifont.html&#34; target=&#34;_blank&#34;&gt;vignette&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I found &lt;a href=&#34;http://fontawesome.io/cheatsheet/&#34; target=&#34;_blank&#34;&gt;FontAwesome&lt;/a&gt; is quite interesting especially in technical world. In &lt;code&gt;emojifont&lt;/code&gt; (version &amp;gt;= 0.3), I have packed the &lt;code&gt;Font Awesome&lt;/code&gt;. So that we can use this fancy font in both base and ggplot2 graphics.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;load.fontawesome()
+
+set.seed(2016-03-09)
+fa &amp;lt;- fontawesome(c(&#39;fa-github&#39;, &#39;fa-weibo&#39;, &#39;fa-twitter&#39;, &#39;fa-android&#39;, &#39;fa-coffee&#39;))
+d &amp;lt;- data.frame(x=rnorm(20), 
+                y=rnorm(20), 
+                label=sample(fa, 20, replace=T))
+
+ggplot(d, aes(x, y, color=label)) + 
+    geom_text(aes(label=label), family=&#39;fontawesome-webfont&#39;)+
+    xlab(NULL)+ylab(NULL)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/fontawesome.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Have fun with &lt;code&gt;emojifont&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://twitter.com/drob?ref_src=twsrc%5Etfw&#34;&gt;@drob&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/guangchuangyu?ref_src=twsrc%5Etfw&#34;&gt;@guangchuangyu&lt;/a&gt;, this is data surfing (air quality data from Lima, Peru) / fun with your cool pkgs. Thx! &lt;a href=&#34;https://t.co/ikinjxDDZL&#34;&gt;pic.twitter.com/ikinjxDDZL&lt;/a&gt;&lt;/p&gt;&amp;mdash; Maëlle Salmon 🐟 (@ma_salmon) &lt;a href=&#34;https://twitter.com/ma_salmon/status/706490090609106944?ref_src=twsrc%5Etfw&#34;&gt;March 6, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;</description>
+    </item>
+    
+    <item>
+      <title>covplot supports GRangesList</title>
+      <link>https://guangchuangyu.github.io/post/r/chipseeker/2016_chipseeker_covplot/</link>
+      <pubDate>Mon, 29 Feb 2016 11:45:08 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/chipseeker/2016_chipseeker_covplot/</guid>
+      <description>&lt;p&gt;To answer the &lt;a href=&#34;https://github.com/GuangchuangYu/ChIPseeker/issues/27&#34; target=&#34;_blank&#34;&gt;issue&lt;/a&gt;, I extend the &lt;code&gt;covplot&lt;/code&gt; function to support viewing coverage of a list of &lt;code&gt;GRanges&lt;/code&gt; objects or &lt;code&gt;bed&lt;/code&gt; files.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ChIPseeker)
+files &amp;lt;- getSampleFiles()
+peak=GenomicRanges::GRangesList(CBX6=readPeakFile(files[[4]]),
+                                CBX7=readPeakFile(files[[5]]))
+
+p &amp;lt;- covplot(peak)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/2016_ChIPseeker_covplot_files/unnamed-chunk-1-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By default, The coverage plots are merged together with different colors. Users can separate them to different panels using &lt;code&gt;facet_grid&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggplot2)
+col &amp;lt;- c(CBX6=&#39;red&#39;, CBX7=&#39;green&#39;)
+p + facet_grid(chr ~ .id) + scale_color_manual(values=col) + scale_fill_manual(values=col)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/2016_ChIPseeker_covplot_files/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>use emoji font in R</title>
+      <link>https://guangchuangyu.github.io/post/r/emojifont/emojifont/</link>
+      <pubDate>Wed, 16 Dec 2015 11:11:11 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/emojifont/emojifont/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot 2015-12-16 10.55.49.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I have played with emoji in &lt;code&gt;R&lt;/code&gt; for a while. My solution of using it is different from what implemented in &lt;a href=&#34;https://github.com/dill/emoGG/&#34; target=&#34;_blank&#34;&gt;emoGG&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;emoGG&lt;/code&gt; is a good attemp to add &lt;code&gt;emoji&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt;. It render &lt;code&gt;emoji&lt;/code&gt; picture (png) and creat a layer, &lt;code&gt;geom_emoji&lt;/code&gt;, to add emoji.&lt;/p&gt;
+
+&lt;p&gt;In my opinion, &lt;code&gt;emoji&lt;/code&gt; should be treated as ordinary font in user interface, albeit it maynot be true internally.&lt;/p&gt;
+
+&lt;p&gt;It would be more flexible if we can use emoji as ordinary font and in this way user don&amp;rsquo;t need to learn extra stuff.&lt;/p&gt;
+
+&lt;p&gt;I implemented my solution of using &lt;code&gt;emoji&lt;/code&gt; in the R package &lt;a href=&#34;https://github.com/GuangchuangYu/emojifont&#34; target=&#34;_blank&#34;&gt;emojifont&lt;/a&gt;. The package is very simple, pack some emoji fonts (currently only &lt;a href=&#34;https://github.com/MorbZ/OpenSansEmoji&#34; target=&#34;_blank&#34;&gt;OpenSansEmoji.ttf&lt;/a&gt;) and use &lt;a href=&#34;https://github.com/yixuan/showtext&#34; target=&#34;_blank&#34;&gt;showtext&lt;/a&gt; to render the fonts, then we can use the font in either base plot or ggplot2.&lt;/p&gt;
+
+&lt;h1 id=&#34;emojifont&#34;&gt;emojifont&lt;/h1&gt;
+
+&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;devtools::install_github(&amp;quot;GuangchuangYu/emojifont&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;load-emoji-font&#34;&gt;load Emoji font&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;library(emojifont)
+## list available emoji fonts
+list.emojifonts()
+
+## [1] &amp;quot;OpenSansEmoji.ttf&amp;quot;
+
+## load selected emoji font
+load.emojifont(&#39;OpenSansEmoji.ttf&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;emoji-characters&#34;&gt;Emoji characters&lt;/h1&gt;
+
+&lt;p&gt;To use &lt;code&gt;emoji&lt;/code&gt;, we need to use their corresponding unicode. Emoji unicode can be found in &lt;a href=&#34;http://apps.timwhitlock.info/emoji/tables/unicode&#34; target=&#34;_blank&#34;&gt;http://apps.timwhitlock.info/emoji/tables/unicode&lt;/a&gt;, or searched using &lt;a href=&#34;https://github.com/richfitz/remoji&#34; target=&#34;_blank&#34;&gt;remoji&lt;/a&gt; package.&lt;/p&gt;
+
+&lt;h1 id=&#34;emoji-in-r-plot&#34;&gt;Emoji in R plot&lt;/h1&gt;
+
+&lt;h2 id=&#34;base-plot&#34;&gt;base plot&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;set.seed(123)
+x &amp;lt;- rnorm(10)
+set.seed(321)
+y &amp;lt;- rnorm(10)
+plot(x, y, cex=0)
+text(x, y, labels=emoji(&#39;cow&#39;), cex=1.5, col=&#39;steelblue&#39;, family=&#39;OpenSansEmoji&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/base_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ggplot2&#34;&gt;ggplot2&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;d &amp;lt;- data.frame(x=x, y=y,
+     label = sample(c(emoji(&#39;cow&#39;), emoji(&#39;camel&#39;)), 10, replace=TRUE),
+     type = sample(LETTERS[1:3], 10, replace=TRUE))
+require(ggplot2)
+ggplot(d, aes(x, y, color=type, label=label)) + 
+    geom_text(family=&amp;quot;OpenSansEmoji&amp;quot;, size=5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/ggplot_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can also use &lt;code&gt;emoji&lt;/code&gt; in title, legend or axis label.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dd=data.frame(x=emoji(c(&amp;quot;satisfied&amp;quot;, &amp;quot;disapointed&amp;quot;)), y=c(50, 10))
+emoji_text=element_text(family=&amp;quot;OpenSansEmoji&amp;quot;, size=20)
+ggplot(dd, aes(x, y)) + geom_bar(stat=&#39;identity&#39;, aes(fill=x)) + 
+     ggtitle(paste(emoji(c(&amp;quot;+1&amp;quot;, &amp;quot;-1&amp;quot;)), collapse=&amp;quot; &amp;quot;))+ 
+        theme(axis.text.x = emoji_text, legend.text=emoji_text, title=emoji_text) + 
+            xlab(NULL)+ylab(NULL)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot 2015-12-16 11.10.51.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ggtree&#34;&gt;ggtree&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;require(ggtree)
+require(colorspace)
+
+tree_text=paste0(
+    &amp;quot;(&amp;quot;,&amp;quot;(&amp;quot;,&amp;quot;(&amp;quot;,
+       &amp;quot;(&amp;quot;,
+            &amp;quot;(&amp;quot;,
+               emoji(&amp;quot;cow&amp;quot;), &amp;quot;,&amp;quot;,
+               &amp;quot;(&amp;quot;,
+                  emoji(&amp;quot;whale&amp;quot;),&amp;quot;,&amp;quot;,
+                  emoji(&amp;quot;dolphin&amp;quot;),
+               &amp;quot;)&amp;quot;,
+            &amp;quot;),&amp;quot;,
+            &amp;quot;(&amp;quot;,
+               emoji(&#39;pig2&#39;),&amp;quot;,&amp;quot;,
+               emoji(&#39;boar&#39;),
+            &amp;quot;)&amp;quot;,
+       &amp;quot;),&amp;quot;,
+       emoji(&amp;quot;camel&amp;quot;),
+    &amp;quot;),&amp;quot;, emoji(&amp;quot;fish&amp;quot;), &amp;quot;),&amp;quot;, 
+emoji(&amp;quot;seedling&amp;quot;), &amp;quot;);&amp;quot;)
+
+ggtree(read.tree(text=tree_text)) + xlim(NA, 7) +
+   geom_tiplab(family=&amp;quot;OpenSansEmoji&amp;quot;, size=10,
+               color=rainbow_hcl(8))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/ggtree_emoji-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;apple-color-emoji&#34;&gt;Apple Color Emoji&lt;/h1&gt;
+
+&lt;p&gt;Although &lt;code&gt;R&lt;/code&gt;&amp;rsquo;s graphical devices don&amp;rsquo;t support &lt;code&gt;AppleColorEmoji&lt;/code&gt; font, it&amp;rsquo;s still possible to use it. We can export the &lt;code&gt;plot&lt;/code&gt; to &lt;code&gt;svg&lt;/code&gt; file and render it in &lt;code&gt;Safari&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(gridSVG)
+p &amp;lt;-  ggtree(read.tree(text=tree_text), size=2) + geom_tiplab(size=20)
+p &amp;lt;- p %&amp;gt;% phylopic(&amp;quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&amp;quot;, color=&amp;quot;firebrick&amp;quot;, alpha = .3)
+p &amp;lt;- p + xlim(NA, 7) + ylim(NA, 8.5)
+p
+ps = grid.export(&amp;quot;emoji.svg&amp;quot;, addClass=T)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/GuangchuangYu/emojifont/master/vignettes/figures/apple_emoji.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>use simplify to remove redundancy of enriched GO terms</title>
+      <link>https://guangchuangyu.github.io/post/r/clusterprofiler/2015_use-simplify-to-remove-redundancy-of-enriched-go-terms/</link>
+      <pubDate>Wed, 21 Oct 2015 09:37:11 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/clusterprofiler/2015_use-simplify-to-remove-redundancy-of-enriched-go-terms/</guid>
+      <description>&lt;p&gt;To simplify enriched GO result, we can use slim version of GO and use
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34; target=&#34;_blank&#34;&gt;enricher&lt;/a&gt;&lt;/em&gt;
+function to analyze.&lt;/p&gt;
+
+&lt;p&gt;Another strategy is to use
+&lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34; target=&#34;_blank&#34;&gt;GOSemSim&lt;/a&gt; to calculate
+similarity of GO terms and remove those highly similar terms by keeping
+one representative term. To make this feature available to
+&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;
+users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
+output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(clusterProfiler)
+data(geneList, package=&amp;quot;DOSE&amp;quot;)
+de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
+bp &amp;lt;- enrichGO(de, ont=&amp;quot;BP&amp;quot;)
+enrichMap(bp)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/bp1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;enrichMap&lt;/em&gt; doesn&amp;rsquo;t display the whole picture as we use the default
+value &lt;em&gt;n=50&lt;/em&gt; to only show 50 highly significant terms. In the
+&lt;em&gt;enrichMap&lt;/em&gt;, we can found that there are many redundant terms form a
+highly condense network.&lt;/p&gt;
+
+&lt;p&gt;Now with the &lt;em&gt;simplify&lt;/em&gt; method, we can remove redundant terms.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;bp2 &amp;lt;- simplify(bp, cutoff=0.7, by=&amp;quot;p.adjust&amp;quot;, select_fun=min)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;em&gt;simplify&lt;/em&gt; method apply &lt;em&gt;&amp;lsquo;select_fun&amp;rsquo;&lt;/em&gt; (which can be a user defined
+function) to feature &amp;lsquo;&lt;em&gt;by&lt;/em&gt;&amp;rsquo; to select one representative terms from
+redundant terms (which have similarity higher than &amp;lsquo;&lt;em&gt;cutoff&lt;/em&gt;&amp;rsquo;).
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/bp2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The simplified version of enriched result is more clear and give us a
+more comprehensive view of the whole story.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;enrichGO&lt;/em&gt; test the whole GO corpus and enriched result may contains
+very general terms.
+&lt;em&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/em&gt;
+contains a &lt;em&gt;dropGO&lt;/em&gt; function to remove specific GO terms or GO level,
+see &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/26&#34; target=&#34;_blank&#34;&gt;the
+issue&lt;/a&gt;. With
+&lt;em&gt;simplify&lt;/em&gt; and &lt;em&gt;dropGO&lt;/em&gt;, enriched result can be more specific and more
+easy to interpret. Both of these functions work fine with outputs
+obtained from both &lt;em&gt;enrichGO&lt;/em&gt; and &lt;em&gt;compareCluster&lt;/em&gt;.🍻&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>subview</title>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2015_subview/</link>
+      <pubDate>Mon, 31 Aug 2015 03:17:48 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2015_subview/</guid>
+      <description>&lt;p&gt;I implemented a function, &lt;em&gt;subview&lt;/em&gt;, in
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ggtree.html&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt;
+that make it easy to embed a subplot in ggplot.&lt;/p&gt;
+
+&lt;p&gt;An example is shown below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ggplot2)
+library(ggtree)
+
+dd &amp;lt;- data.frame(x=LETTERS[1:3], y=1:3)
+pie &amp;lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
+    geom_bar(stat=&amp;quot;identity&amp;quot;, width=1) + 
+    coord_polar(theta=&amp;quot;y&amp;quot;) + theme_tree() + 
+    xlab(NULL) + ylab(NULL) + 
+    theme_transparent()
+
+x &amp;lt;- sample(2:9)
+y &amp;lt;- sample(2:9)
+width &amp;lt;- sample(seq(0.05, 0.15, length.out=length(x)))
+height &amp;lt;- width
+
+p &amp;lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
+print(p)
+for (i in seq_along(x)) {
+    p %&amp;lt;&amp;gt;% subview(pie, x[i], y[i], width[i], height[i])
+    print(p)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subview.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With this function, we can plot a specific clade and add a subplot of
+the whole topology; we can also add relative statistic graph above the
+tree or to a specific node. It&amp;rsquo;s not specific to phylogenetic tree, it
+works with all ggplot objects as demonstrated in the example.&lt;/p&gt;
+
+&lt;p&gt;PS: &lt;a href=&#34;http://www.bioconductor.org/packages/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; is now
+presented in &lt;a href=&#34;https://cran.r-project.org/web/views/Phylogenetics.html&#34; target=&#34;_blank&#34;&gt;CRAN Task View:
+Phylogenetics&lt;/a&gt;.
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/taskview_cran.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;AND get its first citation.
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screenshot%202015-08-04%2021.49.27.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>upsetplot in ChIPseeker</title>
+      <link>https://guangchuangyu.github.io/post/r/chipseeker/2015_upsetplot-in-chipseeker/</link>
+      <pubDate>Tue, 28 Jul 2015 06:45:01 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/chipseeker/2015_upsetplot-in-chipseeker/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;
+is an R package for ChIP peak annotation, comparison and visualization.&lt;/p&gt;
+
+&lt;p&gt;We have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34; target=&#34;_blank&#34;&gt;several visualization methods&lt;/a&gt;,
+including
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34; target=&#34;_blank&#34;&gt;vennpie&lt;/a&gt;&lt;/em&gt;
+that was designed for viewing annotation overlap as shown below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Not all overlap information can be demonstrated in vennpie.
+&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html&#34; target=&#34;_blank&#34;&gt;Upset&lt;/a&gt;
+is an effective way to visualize sets and intersections. We import
+&lt;em&gt;upset&lt;/em&gt; function from &lt;a href=&#34;https://github.com/cran/UpSetR&#34; target=&#34;_blank&#34;&gt;UpSetR&lt;/a&gt; package
+and implement &lt;em&gt;upsetplot&lt;/em&gt; function, that can visualize ChIP annotation
+overlap directly with output of &lt;em&gt;annotatePeak&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(ChIPseeker)
+peak_file &amp;lt;- getSampleFiles()[[4]]
+x &amp;lt;- annotatePeak(peak_file)
+upsetplot(x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We add a new parameter, &lt;em&gt;vennpie=FALSE&lt;/em&gt;, in upsetplot. If vennpie=TRUE,
+a vennpie will be added as show below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset_vennpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Although upset contains more information, vennpie is more intuitive and
+the final figure is more compact. More information is available at the
+&lt;a href=&#34;http://www.bioconductor.org/packages/3.2/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html&#34; target=&#34;_blank&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Alexander Lex, and Gehlenborg Nils. “Points of View: Sets and
+Intersections.” Nature Methods 11, no. 8 (August 2014): 779–779.
+doi:&lt;a href=&#34;http://doi.org/10.1038/nmeth.3033&#34; target=&#34;_blank&#34;&gt;10.1038/nmeth.3033&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: An
+R/Bioconductor Package for ChIP Peak Annotation, Comparison and
+Visualization&lt;/a&gt;. Bioinformatics 31, no. 14 (July 15, 2015): 2382–83.
+doi:&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34; target=&#34;_blank&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Conway Jake, and Gehlenborg Nils, &amp;ldquo;UpSetR&amp;rdquo;,
+&lt;a href=&#34;https://github.com/cran/UpSetR&#34; target=&#34;_blank&#34;&gt;https://github.com/cran/UpSetR&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>dotplot for enrichment result</title>
+      <link>https://guangchuangyu.github.io/post/r/clusterprofiler/2015_dotplot-for-enrichment-result/</link>
+      <pubDate>Tue, 23 Jun 2015 05:37:09 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/clusterprofiler/2015_dotplot-for-enrichment-result/</guid>
+      <description>&lt;p&gt;This is a feature request from &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;
+user. It&amp;rsquo;s similar to what I implemented in
+&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;
+for comparing biological themes. For comparing different enrichment
+results, the x-axis represent different gene clusters while for a single
+enrichment result, the x-axis can be gene count or gene ratio. This is
+actually similar to traditional barplot, with dot position as bar height
+and dot color as bar color. But dotplot can represent one more feature
+nicely by dot size and it can be a good alternative to barplot.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;library(DOSE)
+deg = names(geneList)[abs(geneList) &amp;gt; 1]
+do = enrichDO(deg)
+dotplot(do, showCategory=20)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot_geneRatio.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can set the x-axis to use gene count and dot color by one of
+&amp;lsquo;pvalue&amp;rsquo;, &amp;lsquo;p.adjust&amp;rsquo; or &amp;lsquo;qvalue&amp;rsquo;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dotplot(do, x=&amp;quot;count&amp;quot;, showCategory=20, colorBy=&amp;quot;qvalue&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot_count.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The dotplot function is also available in &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt; and &lt;a href=&#34;http://www.bioconductor.org/packages/devel/bioc/html/ReactomePA.html&#34; target=&#34;_blank&#34;&gt;ReactomePA&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>an example of drawing beast tree using ggtree</title>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2015_an-example-of-drawing-beast-tree-using-ggtree/</link>
+      <pubDate>Wed, 01 Apr 2015 01:50:04 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2015_an-example-of-drawing-beast-tree-using-ggtree/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://beast.bio.ed.ac.uk/figtree&#34; target=&#34;_blank&#34;&gt;FigTree&lt;/a&gt; is designed for viewing
+beast output as demonstrated by their example data:
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.15.57.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;BEAST output is well supported by
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; and it&amp;rsquo;s easy to
+reproduce such a tree view.
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; supports parsing beast
+output by read.beast function. We can visualize the tree directly by
+using ggtree function. Since this is a time scale tree, we can set the
+parameter &lt;strong&gt;&lt;em&gt;mrsd&lt;/em&gt;&lt;/strong&gt; to most recent sampling date.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(ggplot2)
+require(ggtree)
+x &amp;lt;- read.beast(&amp;quot;/Applications/FigTree/influenza.tree&amp;quot;)
+cols &amp;lt;- scale_color(x, by=&amp;quot;height&amp;quot;)
+ggtree(x, right=TRUE, mrsd=&amp;quot;2005-04-02&amp;quot;, color=cols) + theme_tree2() +
+    geom_text(aes(x=max(x), label=label), size=1, color=cols, hjust=-.3) +
+        scale_x_continuous(breaks=c(1992, 1995, 1997, 2000, 2002, 2005), minor_breaks=seq(1992, 2005, 1)) +
+            geom_segment(aes(xend=max(x)+.20, yend=y), linetype=&amp;quot;dotted&amp;quot;, size=.1, color=cols) +
+                theme(panel.grid.major   = element_line(color=&amp;quot;black&amp;quot;, size=.2),
+                      panel.grid.minor   = element_line(color=&amp;quot;grey&amp;quot;, size=.2),
+                      panel.grid.major.y = element_blank(),
+                      panel.grid.minor.y = element_blank()) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.16.14.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>viewing and annotating phylogenetic tree with ggtree</title>
+      <link>https://guangchuangyu.github.io/post/r/ggtree/2014_ggtree/</link>
+      <pubDate>Sun, 21 Dec 2014 08:00:08 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggtree/2014_ggtree/</guid>
+      <description>&lt;p&gt;When I need to annotate nucleotide substitutions in the phylogenetic
+tree, I found that all the software are designed to display the tree but
+not annotating it. Some of them may support annotating the tree with
+specific data such as bootstrap values, but they are restricted to a few
+supported data types. It is hard/impossible to inject user specific
+data.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I decided to implement my own one by extending the ggplot2 package.
+There are other R packages that implemented tree viewer using ggplot2,
+including OutbreakTools, phyloseq and ggphylo, but all of them only
+create complex tree view function for their specific needs. They are
+just classical tree viewers that only viewing the tree or annotating a
+specific data type. The good parts of ggplot2 are not available in these
+packages. They lack of flexibilities of annotating phylogenetic tree by
+diverse user inputs. I develop ggtree, which is based on grammar of
+graphics and will takes all the good parts of ggplot2.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nwk &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.nwk&amp;quot;, package = &amp;quot;ggtree&amp;quot;)
+library(ape)
+tree &amp;lt;- read.tree(nwk)
+library(ggplot2)
+library(ggtree)
+ggplot(tree, aes(x, y)) + geom_tree() + theme_tree() + xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It extends ggplot2 to support tree objects and implements a geom_tree()
+layer to draw the tree.&lt;/p&gt;
+
+&lt;p&gt;The ggtree package provides a function, ggtree, for shortcut of
+&lt;code&gt;ggplot()+geom_tree()+theme_tree()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It supports several tree objects including phylo that defined in ape,
+phylo4 that defined in phylobase and jplace that defined within the
+ggtree package.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p1 &amp;lt;- ggtree(tree) + ggtitle(&amp;quot;tree of phylo object&amp;quot;)
+tr2 &amp;lt;- as(tree, &amp;quot;phylo4&amp;quot;)
+p2 &amp;lt;- ggtree(tr2) + ggtitle(&amp;quot;tree of phylo4 object&amp;quot;)
+jpf &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.jplace&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
+jp &amp;lt;- read.jplace(jpf)
+p3 &amp;lt;- ggtree(jp) + ggtitle(&amp;quot;tree of jplace object&amp;quot;)
+library(gridExtra)
+grid.arrange(p1, p2, p3, ncol=3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_objects.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With this implementation, it is possible to inject user input. But is it
+easy? The answer is yes and no. It may depends on user&amp;rsquo;s ggplot2
+experiences. To place the input data at the correct position, you should
+know how the tree was layout. It may be easy for an experienced user,
+but hard for newbie. Most of us are impatient and reluctant to learn, so
+I should create a way that is easy to follow. It&amp;rsquo;s not a good idea to
+implement unnecessary geom_XXX layer, for it violates the great idea of
+taking all the good parts of ggplot2, and it will violate the consistent
+function calls of &lt;code&gt;geom_XXX&lt;/code&gt;. Thanks to my sleep disorder, I came out
+with an operator &lt;strong&gt;&lt;code&gt;%&amp;lt;+%&lt;/code&gt;&lt;/strong&gt; for injecting input data to the tree view.
+After the injection, the data is visible to all the geom_XXX layers.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p &amp;lt;- ggtree(tree)
+
+print(dd)
+taxa    place   value
+M   NA  55.9
+A   GZ  65.6
+C   GZ  59.3
+I   CZ  78.5
+E   GZ  62.9
+D   GZ  64.1
+J   CZ  62.3
+K   CZ  79.1
+B   GZ  89.0
+L   CZ  57.1
+G   HK  66.4
+H   HK  61.6
+F   HK  59.9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Suppose we have a tree view p, and input data dd, we can attach the data
+to the tree and add a layer of tip labels and colored by place.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p &amp;lt;- p %&amp;lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
+print(p)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_place.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the data is attached, it is always attached, and we can add more
+layers easily.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
+  geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_place2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The package is now available via github,
+&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;https://github.com/GuangchuangYu/ggtree&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Suggestions, comments and feature request are all welcome. Let&amp;rsquo;s make it
+an easy to use and feature-riched package for viewing and annotating
+phylogenetic trees.&lt;/p&gt;
+
+&lt;p&gt;At last, wish you a merry christmas :)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
+&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SIR Model of Epidemics</title>
+      <link>https://guangchuangyu.github.io/post/r/2014_sir-model-of-epidemics/</link>
+      <pubDate>Mon, 13 Oct 2014 05:57:22 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/2014_sir-model-of-epidemics/</guid>
+      <description>&lt;p&gt;The SIR model divides the population to three compartments:
+&lt;strong&gt;S&lt;/strong&gt;usceptible, &lt;strong&gt;I&lt;/strong&gt;nfected and &lt;strong&gt;R&lt;/strong&gt;ecovered. If the disease dynamic
+fits the SIR model, then the flow of individuals is one direction from
+the susceptible group to infected group and then to the recovered group.
+All individuals are assumed to be identical in terms of their
+susceptibility to infection, infectiousness if infected and mixing
+behaviour associated with disease transmission.&lt;/p&gt;
+
+&lt;p&gt;We defined: $S_t$ = the number of susceptible individuals at time t&lt;/p&gt;
+
+&lt;p&gt;$ I_t $ = the number of infected individuals at time t&lt;/p&gt;
+
+&lt;p&gt;$R_t$ = the number of recovered individuals at time t&lt;/p&gt;
+
+&lt;p&gt;Suppose on average every infected individual will contact $\gamma$
+person, and $\kappa$ percent of these $\gamma$ person will be
+infected. Then on average there are $\beta = \gamma \times \kappa$
+person will be infected an infected individual.&lt;/p&gt;
+
+&lt;p&gt;So with infected number $I_t$, they will infected $\beta I_t$
+individuals. Since not all people are susceptible, this number should
+multiple to the percentage of susceptible individuals. Therefore,
+$I_t$ infected individuals will infect $\beta \frac{S_t}{N}
+I_t$ individuals.&lt;/p&gt;
+
+&lt;p&gt;Another parameter $\alpha$ describes the percentage of infected
+individuals to recover in a time period. That is on average, it takes
+$1/\alpha$ periods for an infected person to recover.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-lang=&amp;quot;rsplus&amp;quot;&#34;&gt;require(reshape2)
+require(ggplot2)
+require(gridExtra)
+
+SIR &amp;lt;- function(N, S0, I0, beta, alpha, t) {
+    S &amp;lt;- numeric(t)
+    I &amp;lt;- numeric(t)
+    S[1] &amp;lt;- S0
+    I[1] &amp;lt;- I0
+
+    for (i in 2:t) {
+        S[i] &amp;lt;- S[i-1] - beta*S[i-1]/N*I[i-1]
+        I[i] &amp;lt;- I[i-1] + beta*S[i-1]/N*I[i-1] - alpha * I[i-1]
+        if (I[i] &amp;lt; 1 || S[i] &amp;lt; 1)
+            break
+    }
+    df &amp;lt;- data.frame(time=1:t, S=S, I=I, R=N-S-I)
+    df &amp;lt;- df[S&amp;gt;1&amp;amp;I&amp;gt;1,]
+
+    df$AR &amp;lt;- (df$I+df$R)/N
+    nr &amp;lt;- nrow(df)
+    rate &amp;lt;- df$I[2:nr]/df$I[1:(nr-1)]
+    df$rate &amp;lt;- c(rate[1], rate)
+    return(df)
+}
+
+plotSIR &amp;lt;- function(df) {
+    nr &amp;lt;- nrow(df)
+    p1 &amp;lt;- ggplot(df, aes(time, I))+geom_line()
+
+    p1 &amp;lt;- p1+ggtitle(&amp;quot;No. of Infections&amp;quot;)
+    p1 &amp;lt;- p1+geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;I&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+    p2 &amp;lt;- ggplot(df, aes(time, AR))+geom_line()+xlab(&amp;quot;&amp;quot;)
+
+    p2 &amp;lt;- p2 + ggtitle(&amp;quot;Attack rate increases&amp;quot;)
+    p2 &amp;lt;- p2 + geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;AR&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+    p3 &amp;lt;- ggplot(df, aes(time, S))+geom_line()
+    p3 &amp;lt;- p3 +ggtitle(&amp;quot;Depletion of susceptibles&amp;quot;)
+    p3 &amp;lt;- p3+ylim(0, max(df$S)) +
+        geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;S&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+
+    p4 &amp;lt;- ggplot(df, aes(time, rate))+geom_line()
+    p4 &amp;lt;- p4 + ggtitle(&amp;quot;R&amp;quot;)+ ylim(range(df$rate)+c(-.2, .2)) + 
+        geom_hline(yintercept=1, color=&amp;quot;steelblue&amp;quot;, linetype=&amp;quot;dashed&amp;quot;)
+    p4 &amp;lt;- p4+geom_point(x=df[nr, &amp;quot;time&amp;quot;], y=df[nr, &amp;quot;rate&amp;quot;], color=&amp;quot;red&amp;quot;, size=3)
+
+    grid.arrange(p1,p2,p3,p4, ncol=1)
+    invisible(list(p1=p1, p2=p2, p3=p3, p4=p4))
+}
+
+
+df &amp;lt;- SIR(1e6, 1e6-1, 1, 0.3, 0.1, 300)
+plotSIR(df)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/10/SIRplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>multiple annotation in ChIPseeker</title>
+      <link>https://guangchuangyu.github.io/post/r/chipseeker/2014_multiple-annotation-in-chipseeker/</link>
+      <pubDate>Wed, 01 Oct 2014 13:00:33 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/chipseeker/2014_multiple-annotation-in-chipseeker/</guid>
+      <description>&lt;h3 id=&#34;nearest-gene-annotation&#34;&gt;Nearest gene annotation&lt;/h3&gt;
+
+&lt;p&gt;Almost all annotation software calculate the distance of a peak to the
+nearest TSS and assign the peak to that gene. This can be misleading, as
+binding sites might be located between two start sites of different
+genes or hit different genes which have the same TSS location in the
+genome.&lt;/p&gt;
+
+&lt;p&gt;The function &lt;em&gt;annotatePeak&lt;/em&gt; provides option to assign genes with a max
+distance cutoff and all genes within this distance were reported for
+each peak.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; anno = annotatePeak(getSampleFiles()[[4]], addFlankGeneInfo=TRUE, flankDistance=5000)
+&amp;gt;&amp;gt; loading peak file...              2014-09-30 01:12:09 PM 
+&amp;gt;&amp;gt; preparing features information...         2014-09-30 01:12:09 PM 
+&amp;gt;&amp;gt; identifying nearest features...       2014-09-30 01:12:10 PM 
+&amp;gt;&amp;gt; calculating distance from peak to TSS...  2014-09-30 01:12:11 PM 
+&amp;gt;&amp;gt; assigning genomic annotation...       2014-09-30 01:12:11 PM 
+&amp;gt;&amp;gt; adding flank feature information from peaks...2014-09-30 01:12:37 PM 
+&amp;gt;&amp;gt; assigning chromosome lengths          2014-09-30 01:12:39 PM 
+&amp;gt;&amp;gt; done...                   2014-09-30 01:12:39 PM 
+&amp;gt; head(as.GRanges(anno))
+GRanges object with 6 ranges and 14 metadata columns:
+      seqnames             ranges strand |          V4        V5
+                      |     
+  [1]     chr1 [ 815092,  817883]      * | MACS_peak_1    295.76
+  [2]     chr1 [1243287, 1244338]      * | MACS_peak_2     63.19
+  [3]     chr1 [2979976, 2981228]      * | MACS_peak_3    100.16
+  [4]     chr1 [3566181, 3567876]      * | MACS_peak_4    558.89
+  [5]     chr1 [3816545, 3818111]      * | MACS_peak_5     57.57
+  [6]     chr1 [6304864, 6305704]      * | MACS_peak_6     54.57
+             annotation  geneChr geneStart   geneEnd geneLength geneStrand
+                    
+  [1] Distal Intergenic     chr1    803451    812182       8732          -
+  [2]  Promoter (&amp;lt;=1kb)     chr1   1243994   1247057       3064          +
+  [3]  Promoter (&amp;lt;=1kb)     chr1   2976181   2980350       4170          -
+  [4]  Promoter (&amp;lt;=1kb)     chr1   3547331   3566671      19341          -
+  [5]  Promoter (&amp;lt;=1kb)     chr1   3816968   3832011      15044          +
+  [6]  Promoter (1-2kb)     chr1   6304252   6305638       1387          +
+           geneId transcriptId distanceToTSS
+             
+  [1]      284593   uc001abt.4         -5701
+  [2]      126789   uc001aed.3             0
+  [3]      440556   uc001aka.3             0
+  [4]       49856   uc001ako.3             0
+  [5]   100133612   uc001alg.3             0
+  [6]      390992   uc009vly.2          1452
+                                                                                                                                                               flank_txIds
+                                                                                                                                                               
+  [1]                                                                                                                                                           uc001abt.4
+  [2] uc001aea.2;uc001aeb.2;uc001aec.1;uc001aed.3;uc010nyi.2;uc009vjx.3;uc009vjy.1;uc001aee.2;uc001aef.2;uc001aeg.2;uc001aeh.2;uc001aei.2;uc001aek.2;uc009vjz.2;uc010nyj.2
+  [3]                                                                                                    uc001aka.3;uc010nzg.1;uc001akc.3;uc001ake.3;uc001akf.3;uc009vlh.3
+  [4]                                                                   uc001ako.3;uc001akn.3;uc010nzi.2;uc001akp.3;uc021ofb.1;uc021ofc.1;uc021ofd.1;uc021ofe.1;uc021off.1
+  [5]                                                                                                    uc001alg.3;uc010nzo.2;uc001alh.4;uc001alf.3;uc009vls.3;uc031pkz.1
+  [6]                                                                                                                                                uc001amp.2;uc009vly.2
+                                                                                        flank_geneIds
+                                                                                          
+  [1]                                                                                          284593
+  [2] 116983;116983;116983;126789;126789;126789;54973;54973;54973;54973;54973;54973;54973;54973;54973
+  [3]                                                           440556;440556;63976;63976;63976;63976
+  [4]                                                 49856;49856;49856;7161;7161;7161;7161;7161;7161
+  [5]                                              100133612;100133612;100133612;339448;339448;339448
+  [6]                                                                                   387509;390992
+                                                           flank_gene_distances
+                                                                    
+  [1]                                                                     -2910
+  [2] -1978;-18;0;0;0;-128;8492;15729;15729;15729;15729;15729;15729;15729;15729
+  [3]                                               0;0;-4514;-4514;-4514;-4514
+  [4]                                 0;0;0;-1253;-1253;-1253;-1253;-1253;-1253
+  [5]                                                               0;0;0;0;0;0
+  [6]                                                                   15331;0
+  -------
+  seqinfo: 24 sequences from hg19 genome
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Three extra columns, &lt;em&gt;flank_txIds&lt;/em&gt;, &lt;em&gt;flank_geneIds&lt;/em&gt;,
+&lt;em&gt;flank_gene_distances&lt;/em&gt; were added if parameter &lt;em&gt;addFlankGeneInfo&lt;/em&gt; is
+set to &lt;em&gt;TRUE&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;genomic-annotation&#34;&gt;Genomic annotation&lt;/h3&gt;
+
+&lt;p&gt;The annotation column annotates the genomic location of a given peak.
+Since some annotations overlap, they are assigned based on the following
+priority.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Promoter (defined by tssRegion parameter)&lt;/li&gt;
+&lt;li&gt;5&amp;rsquo; UTR&lt;/li&gt;
+&lt;li&gt;3&amp;rsquo; UTR&lt;/li&gt;
+&lt;li&gt;Exon&lt;/li&gt;
+&lt;li&gt;Intron&lt;/li&gt;
+&lt;li&gt;Downstream (immediate downstream of a gene, within 3kb)&lt;/li&gt;
+&lt;li&gt;Distal Intergenic&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34; target=&#34;_blank&#34;&gt;plotAnnoPie and plotAnnoBar&lt;/a&gt;
+to visualize their distribution. I am wondering how to visualize the
+annotation overlap and found &lt;a href=&#34;http://onetipperday.blogspot.hk/2014/09/how-to-draw-venn-pie-agram-multi-layer.html&#34; target=&#34;_blank&#34;&gt;venn pie-agram&lt;/a&gt;
+can partially solve this issue. It&amp;rsquo;s hard/impossible to visualize all
+the overlap information within one vennpie plot.&lt;/p&gt;
+
+&lt;p&gt;I employed the vennpie to ChIPseeker, and now with the vennpie function,
+we can visualize some of the overlap annotations.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vennpie(anno)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In order to manage complex data, &lt;em&gt;annotatePeak&lt;/em&gt; now output a S4 object.
+Users can use &lt;em&gt;as.GRanges&lt;/em&gt; to convert it to &lt;em&gt;as.GRanges&lt;/em&gt; object or
+&lt;em&gt;as.data.frame&lt;/em&gt; to convert it to &lt;em&gt;data.frame&lt;/em&gt; and then the output can be
+exported by &lt;em&gt;write.table&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>enrichment map</title>
+      <link>https://guangchuangyu.github.io/post/r/clusterprofiler/2014_enrichment-map/</link>
+      <pubDate>Sun, 03 Aug 2014 12:48:15 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/clusterprofiler/2014_enrichment-map/</guid>
+      <description>&lt;p&gt;In &lt;a href=&#34;http://www.plob.org/&#34; target=&#34;_blank&#34;&gt;PLOB&lt;/a&gt;&amp;rsquo;s QQ group, someone asked how to change
+the color of enrichment map in &lt;a href=&#34;http://cytoscape.org/&#34; target=&#34;_blank&#34;&gt;Cytoscape&lt;/a&gt;. I am
+very curious how enrichment map can helps to interpret enrichment
+results. It took me 2 hours to implement it using R and I am surprised
+that the enrichment map is better than anticipated.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/08/Screenshot-2014-07-30-22.20.07.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now in the development version of &lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;, &lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/DOSE.html&#34; target=&#34;_blank&#34;&gt;DOSE&lt;/a&gt;, and
+&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/ReactomePA.html&#34; target=&#34;_blank&#34;&gt;ReactomePA&lt;/a&gt;, you can use &lt;strong&gt;&lt;em&gt;enrichmap&lt;/em&gt;&lt;/strong&gt; function to generate the enrichment map of enrichment results obtained by &lt;a href=&#34;http://guangchuangyu.github.io/2012/04/enrichment-analysis/&#34; target=&#34;_blank&#34;&gt;hypergeometric
+test&lt;/a&gt; or gene set enrichment analysis.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang L, Han Y and He Q&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118&#34; target=&#34;_blank&#34;&gt;clusterProfiler: an R package for comparing biological themes among gene clusters&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;OMICS: A Journal of Integrative Biology&lt;/em&gt;&lt;/strong&gt;. 2012, 16(5):284-287.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;681089&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>visualization methods in ChIPseeker</title>
+      <link>https://guangchuangyu.github.io/post/r/chipseeker/2014_visualization-methods-in-chipseeker/</link>
+      <pubDate>Wed, 30 Apr 2014 06:33:41 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/chipseeker/2014_visualization-methods-in-chipseeker/</guid>
+      <description>&lt;p&gt;After two weeks developed, I have added/updated some plot functions in
+&lt;a href=&#34;http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;
+(version &amp;gt;=1.0.1).&lt;/p&gt;
+
+&lt;h3 id=&#34;chip-peaks-over-chromosomes&#34;&gt;ChIP peaks over Chromosomes&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; files=getSampleFiles()
+&amp;gt; peak=readPeakFile(files[[4]])
+&amp;gt; peak
+GRanges object with 1331 ranges and 2 metadata columns:
+         seqnames                 ranges strand   |             V4        V5
+                               |        
+     [1]     chr1     [ 815092,  817883]      *   |    MACS_peak_1    295.76
+     [2]     chr1     [1243287, 1244338]      *   |    MACS_peak_2     63.19
+     [3]     chr1     [2979976, 2981228]      *   |    MACS_peak_3    100.16
+     [4]     chr1     [3566181, 3567876]      *   |    MACS_peak_4    558.89
+     [5]     chr1     [3816545, 3818111]      *   |    MACS_peak_5     57.57
+     ...      ...                    ...    ... ...            ...       ...
+  [1327]     chrX [135244782, 135245821]      *   | MACS_peak_1327     55.54
+  [1328]     chrX [139171963, 139173506]      *   | MACS_peak_1328    270.19
+  [1329]     chrX [139583953, 139586126]      *   | MACS_peak_1329    918.73
+  [1330]     chrX [139592001, 139593238]      *   | MACS_peak_1330    210.88
+  [1331]     chrY [ 13845133,  13845777]      *   | MACS_peak_1331     58.39
+  ---
+  seqlengths:
+    chr1 chr10 chr11 chr12 chr13 chr14 ...  chr6  chr7  chr8  chr9  chrX  chrY
+      NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA    NA
+&amp;gt; covplot(peak, weightCol=&amp;quot;V5&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/chrCoverage.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;heatmap-of-chip-binding-to-tss-regions&#34;&gt;Heatmap of ChIP binding to TSS regions&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb &amp;lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+peakHeatmap(files, weightCol=&amp;quot;V5&amp;quot;, TxDb=txdb, upstream=3000, downstream=3000, color=rainbow(length(files)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/peakHeat2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;average-profile-of-chip-peaks-binding-to-tss-region&#34;&gt;Average Profile of ChIP peaks binding to TSS region&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;plotAvgProf(files, TranscriptDb=txdb, weightCol=&amp;quot;V5&amp;quot;, upstream=3000, downstream=3000)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/avgProf2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;genomic-annotation&#34;&gt;Genomic Annotation&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;peakAnnoList=lapply(files, annotatePeak)
+plotAnnoPie(peakAnnoList[[1]])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/pieAnno.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;plotAnnoBar(peakAnnoList)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/barAnno.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;distance-to-tss&#34;&gt;Distance to TSS&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;plotDistToTSS(peakAnnoList)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/distTSS.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;overlap-of-peak-sets&#34;&gt;Overlap of peak sets&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;genes= lapply(peakAnnoList, function(i) as.data.frame(i)$geneId)
+vennplot(genes)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/venn.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the future version, ChIPseeker will support statistical comparison
+among ChIP peak sets, and incorporate open access database GEO for users
+to compare their own dataset to those deposited in database. Significant
+overlap among peak sets can be used to infer cooperative regulation.
+This feature will soon be available.&lt;/p&gt;
+
+&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>draw chinese character Jiong using ggplot2</title>
+      <link>https://guangchuangyu.github.io/post/r/ggplot2/2012_draw-chinese-character-jiong-ggplot2/</link>
+      <pubDate>Fri, 17 Feb 2012 09:26:50 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggplot2/2012_draw-chinese-character-jiong-ggplot2/</guid>
+      <description>&lt;p&gt;The Chinese character Jiong (囧) is now widely used for expressing ideas
+or feelings such as annoyance, shock, embarrassment, awkwardness, scorn.&lt;/p&gt;
+
+&lt;p&gt;The function plot of &lt;code&gt;y=1/(x^2-1)&lt;/code&gt; looks very similar of this symbol.&lt;/p&gt;
+
+&lt;p&gt;I use ggplot2 to draw the symbol of Jiong.&lt;/p&gt;
+
+&lt;p&gt;It looks like:
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2012/02/jiong.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The function line is very easy to draw, but the options to hone this graph need some tricky tips.&lt;/p&gt;
+
+&lt;p&gt;The source code for generating this plot can be found in &lt;a href=&#34;https://gist.github.com/1852074&#34; target=&#34;_blank&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ggplot2 Version of Figures in &lt;25 Recipes for Getting Started with R&gt;</title>
+      <link>https://guangchuangyu.github.io/post/r/ggplot2/2011_ggplot2-version-figures-25-recipes-started-r/</link>
+      <pubDate>Tue, 16 Aug 2011 18:26:36 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggplot2/2011_ggplot2-version-figures-25-recipes-started-r/</guid>
+      <description>&lt;p&gt;In order to provide an option to compare graphs produced by basic
+internal plot function and ggplot2, I have recreated the figures in the
+book, &lt;a href=&#34;http://book.douban.com/subject/5992544/&#34; target=&#34;_blank&#34;&gt;25 Recipes for Getting Started with
+R&lt;/a&gt;, with ggplot2.&lt;/p&gt;
+
+&lt;p&gt;The code used to create the images is in separate paragraphs, allowing
+easy comparison. &lt;strong&gt;1.16 Creating a Scatter Plot&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;plot(cars)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter1.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter1.png&#34; alt=&#34;&#34; title=&#34;scatter1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ggplot(cars,aes(speed,dist))+geom_point()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter2.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/scatter2.png&#34; alt=&#34;&#34; title=&#34;scatter2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.17 Creating a Bar Chart&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;heights &amp;lt;- tapply(airquality$Temp, airquality$Month, mean)
+par(mfrow=c(1,2))
+barplot(heights)
+barplot(heights,
+        main=&amp;quot;Mean Temp. by Month&amp;quot;,
+        names.arg=c(&amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;),
+        ylab=&amp;quot;Temp (deg. F)&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar1.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar1.png&#34; alt=&#34;&#34; title=&#34;bar1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(gridExtra)
+heights=ddply(airquality,.(Month), mean)
+heights$Month=as.character(heights$Month)
+p1 &amp;lt;- ggplot(heights, aes(x=Month,weight=Temp))+ geom_bar()
+p2 &amp;lt;- ggplot(heights, aes(x=factor(Month,
+                          labels=c(&amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;)),
+                          weight=Temp))+
+        geom_bar()+
+          ggtitle(&amp;quot;Mean Temp. By Month&amp;quot;) +
+            xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;Temp (deg. F)&amp;quot;)
+
+grid.arrange(p1,p2, ncol=2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar2.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/bar2.png&#34; alt=&#34;&#34; title=&#34;bar2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.18 Creating a Box Plot&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;y &amp;lt;- c(-5, rnorm(100), 5)
+boxplot(y)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box1.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box1.png&#34; alt=&#34;&#34; title=&#34;box1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ggplot()+geom_boxplot(aes(x=factor(1),y=y))+xlab(&amp;quot;&amp;quot;)+ylab(&amp;quot;&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box2.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/box2.png&#34; alt=&#34;&#34; title=&#34;box2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.19 Creating a Histogram&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;data(Cars93, package=&amp;quot;MASS&amp;quot;)
+par(mfrow=c(1,2))
+hist(Cars93$MPG.city)
+hist(Cars93$MPG.city, 20)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist1.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist1.png&#34; alt=&#34;&#34; title=&#34;hist1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p &amp;lt;- ggplot(Cars93, aes(MPG.city))
+p1 &amp;lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/5)
+p2 &amp;lt;- p + geom_histogram(binwidth=diff(range(Cars93$MPG.city))/20)
+grid.arrange(p1,p2, ncol=2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist2.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/hist2.png&#34; alt=&#34;&#34; title=&#34;hist2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.23 Diagnosing a Linear Regression&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;data(iris)
+m = lm( Sepal.Length ~ Sepal.Width, data=iris)
+par(mfrow=c(2,2))
+plot(m)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm1.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm1.png&#34; alt=&#34;&#34; title=&#34;lm1&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;r &amp;lt;- residuals(m)
+yh &amp;lt;- predict(m)
+scatterplot &amp;lt;- function(x,y,
+                        title=&amp;quot;&amp;quot;,
+                        xlab=&amp;quot;&amp;quot;,
+                        ylab=&amp;quot;&amp;quot;) {
+    d &amp;lt;- data.frame(x=x,y=y)
+    p &amp;lt;- ggplot(d, aes(x=x,y=y)) +
+            geom_point() +
+                ggtitle(title) +
+                    xlab(xlab) +
+                        ylab(ylab)
+    return(p)
+    }
+p1 &amp;lt;- scatterplot(yh,r,
+                  title=&amp;quot;Residuals vs Fitted&amp;quot;,
+                  xlab=&amp;quot;Fitted values&amp;quot;,
+                  ylab=&amp;quot;Residuals&amp;quot;)
+p1 &amp;lt;- p1 +geom_hline(yintercept=0)+geom_smooth()
+
+s &amp;lt;- sqrt(deviance(m)/df.residual(m))
+rs &amp;lt;- r/s
+
+qqplot &amp;lt;- function(y,
+                   distribution=qnorm,
+                   title=&amp;quot;Normal Q-Q&amp;quot;,
+                   xlab=&amp;quot;Theretical Quantiles&amp;quot;,
+                   ylab=&amp;quot;Sample Quantiles&amp;quot;) {
+    require(ggplot2)
+    x &amp;lt;- distribution(ppoints(y))
+    d &amp;lt;- data.frame(x=x, y=sort(y))
+    p &amp;lt;- ggplot(d, aes(x=x, y=y)) +
+        geom_point() +
+            geom_line(aes(x=x, y=x)) +
+                ggtitle(title=title) +
+                    xlab(xlab) +
+                        ylab(ylab)
+    return(p)
+}
+
+p2 &amp;lt;- qqplot(rs, ylab=&amp;quot;Standardized residuals&amp;quot;)
+
+sqrt.rs &amp;lt;- sqrt(abs(rs))
+p3 &amp;lt;- scatterplot(yh,sqrt.rs,
+                  title=&amp;quot;Scale-Location&amp;quot;,
+                  xlab=&amp;quot;Fitted values&amp;quot;,
+                  ylab=expression(sqrt(&amp;quot;Standardized residuals&amp;quot;)))
+p3 &amp;lt;- p3 + geom_smooth()
+
+hii &amp;lt;- lm.influence(m, do.coef = FALSE)$hat
+p4 &amp;lt;- scatterplot(hii,rs)
+p4 &amp;lt;- p4+
+    geom_hline(yintercept=0)+
+    geom_smooth() +
+    geom_text(aes(x=min(hii)+diff(range(hii))*0.3,
+                  y=min(rs)+diff(range(rs))*0.04,
+                  label=&amp;quot;--   Cook&#39;s distance&amp;quot;, size=3))+
+    theme(legend.position=&amp;quot;none&amp;quot;)
+
+grid.arrange(p1,p2,p3,p4, ncol=2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm2.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/lm2.png&#34; alt=&#34;&#34; title=&#34;lm2&#34; /&gt;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>the batman equation</title>
+      <link>https://guangchuangyu.github.io/post/r/ggplot2/2011_bat-man/</link>
+      <pubDate>Sat, 13 Aug 2011 17:44:42 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/ggplot2/2011_bat-man/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.hardocp.com/news/2011/07/29/batman_equation/&#34; target=&#34;_blank&#34;&gt;HardOCP&lt;/a&gt; has
+an image with an equation which apparently draws the Batman logo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://images.hardocp.com/images/news/1311973762NiYVK7SXvm_1_1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;$((\frac{x}{7})^2 \cdot \sqrt{\frac{||x|-3|}{(|x|-3)}}+
+(\frac{y}{3})^2 \cdot \sqrt{\frac{|y+3 \cdot
+\frac{\sqrt{33}}{7}|}{y+3 \cdot \frac{\sqrt{33}}{7}}}-1) \cdot
+(|\frac{x}{2}|-((3 \cdot \frac{\sqrt{33}-7)}{112}) \cdot
+x^2-3+\sqrt{1-(||x|-2|-1)^2}-y) \cdot (9 \cdot
+\sqrt{\frac{|(|x|-1) \cdot (|x|-0.75)|}{((1-|x|)*(|x|-0.75))}}-8
+\cdot |x|-y) \cdot (3 \cdot |x|+0.75 \cdot \sqrt{\frac{|(|x|-0.75)
+\cdot (|x|-0.5)|}{((0.75-|x|) \cdot (|x|-0.5))}}-y) \cdot (2.25
+\cdot \sqrt{\frac{|(x-0.5) \cdot (x+0.5)|}{((0.5-x) \cdot
+(0.5+x))}}-y) \cdot (\frac{6 \cdot \sqrt{10}}{7}+(1.5-0.5 \cdot
+|x|) \cdot \sqrt{\frac{||x|-1|}{|x|-1}}-(\frac{6 \cdot
+\sqrt{10}}{14}) \cdot \sqrt{4-(|x|-1)^2}-y) =0$&lt;/p&gt;
+
+&lt;p&gt;This function is very delightful for drawing such a graph, but write it
+down in latex is very tedious. As a product of factors is 0 if and only
+if any one of them is 0, multiplying these six factors puts the curves
+together. This graph is no more than the combination of six curves.&lt;/p&gt;
+
+&lt;p&gt;All these six curves are very simple, for instance, the first factor is
+the ellipse $(\frac{x}{7})^2 + (\frac{y}{3})^2 = 1 $, in the
+region where &lt;code&gt;|x|&amp;gt;3&lt;/code&gt; and $&lt;code&gt;y&amp;gt;-3 \frac{\sqrt{33}}{7}$&lt;/code&gt;; the region
+were restricted by $\sqrt{\frac{||x|-3|}{(|x|-3)}} $ and
+$\sqrt{\frac{|y+3 \cdot \frac{\sqrt{33}}{7}|}{y+3 \cdot \frac{\sqrt{33}}{7}}}$&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s what I got from the equation using ggplot2&amp;hellip;
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2011/08/X.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+require(ggplot2)
+
+f1 &amp;lt;- function(x) {
+    y1 &amp;lt;- 3*sqrt(1-(x/7)^2)
+    y2 &amp;lt;- -3*sqrt(1-(x/7)^2)
+    y &amp;lt;- c(y1,y2)
+    d &amp;lt;- data.frame(x=x,y=y)
+    d &amp;lt;- d[d$y &amp;gt; -3*sqrt(33)/7,]
+    return(d)
+}
+
+x1 &amp;lt;- c(seq(3, 7, 0.001), seq(-7, -3, 0.001))
+d1 &amp;lt;- f1(x1)
+p1 &amp;lt;- ggplot(d1,aes(x,y)) + geom_point(color=&amp;quot;red&amp;quot;)
+
+x2 &amp;lt;- seq(-4,4, 0.001)
+y2 &amp;lt;- abs(x2/2)-(3*sqrt(33)-7)*x2^2/112-3 + sqrt(1-(abs(abs(x2)-2)-1)^2)
+
+#only work with ggplot2 &amp;lt;= 0.8.9
+#p2 &amp;lt;- p1 + geom_point(aes(x=x2,y=y2), color=&amp;quot;yellow&amp;quot;) 
+
+# in ggplot2 0.9.0, should be:
+d2 &amp;lt;- data.frame(x2=x2, y2=y2)
+p2 &amp;lt;- p1 + geom_point(data=d2, aes(x=x2,y=y2), color=&amp;quot;yellow&amp;quot;)
+
+
+
+x3 &amp;lt;- c(seq(0.75,1,0.001), seq(-1,-0.75,0.001))
+y3 &amp;lt;- 9-8*abs(x3)
+#p3 &amp;lt;- p2+geom_point(aes(x=x3,y=y3), color=&amp;quot;green&amp;quot;)
+d3 &amp;lt;- data.frame(x3=x3, y3=y3)
+p3 &amp;lt;- p2+geom_point(data=d3, aes(x=x3,y=y3), color=&amp;quot;green&amp;quot;)
+
+
+x4 &amp;lt;- c(seq(0.5,0.75,0.001), seq(-0.75,-0.5,0.001))
+y4 &amp;lt;- 3*abs(x4)+0.75
+#p4 &amp;lt;- p3+geom_point(aes(x=x4,y=y4), color=&amp;quot;steelblue&amp;quot;)
+d4 &amp;lt;- data.frame(x4=x4,y4=y4)
+p4 &amp;lt;- p3+geom_point(data=d4, aes(x=x4,y=y4), color=&amp;quot;steelblue&amp;quot;)
+
+
+x5 &amp;lt;- seq(-0.5,0.5,0.001)
+y5 &amp;lt;- rep(2.25,length(x5))
+#p5 &amp;lt;- p4+geom_point(aes(x=x5,y=y5))
+d5 &amp;lt;- data.frame(x5=x5,y5=y5)
+p5 &amp;lt;- p4+geom_point(data=d5, aes(x=x5,y=y5))
+
+x6 &amp;lt;- c(seq(-3,-1,0.001), seq(1,3,0.001))
+y6 &amp;lt;- 6 * sqrt(10)/7 +
+    (1.5 - 0.5 * abs(x6)) * sqrt(abs(abs(x6)-1)/(abs(x6)-1)) -
+    6 * sqrt(10) * sqrt(4-(abs(x6)-1)^2)/14
+#p6 &amp;lt;- p5+geom_point(aes(x=x6,y=y6), colour=&amp;quot;blue&amp;quot;)
+d6 &amp;lt;- data.frame(x6=x6,y6=y6)
+p6 &amp;lt;- p5+geom_point(data=d6,aes(x=x6,y=y6), colour=&amp;quot;blue&amp;quot;)
+
+p &amp;lt;- p6+theme_bw()
+print(p)
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Assignment token of R</title>
+      <link>https://guangchuangyu.github.io/post/r/2009_assignment-token/</link>
+      <pubDate>Mon, 09 Mar 2009 13:35:24 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/2009_assignment-token/</guid>
+      <description>&lt;p&gt;when I recalled the &lt;em&gt;switch&lt;/em&gt; function, it always gave the first element, no matter what the parameter is.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2009/03/r-29-dev.png&#34; alt=&#34;r-29-dev&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;when &lt;em&gt;organism&lt;/em&gt; changed to &amp;ldquo;yeast&amp;rdquo;, and called &lt;em&gt;switch&lt;/em&gt; function, &lt;em&gt;species&lt;/em&gt; supposed to be changed to &amp;ldquo;Sc&amp;rdquo;, but it remains it&amp;rsquo;s original value.&lt;/p&gt;
+
+&lt;p&gt;After I read the manual, I change &amp;ldquo;&amp;lt;-&amp;rdquo; to &amp;ldquo;=&amp;rdquo;, and it works as I expected.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2009/03/r-29-switch.jpg&#34; alt=&#34;r-29-switch&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In R, the assignment token is &amp;ldquo;&amp;lt;-&amp;rdquo; but not &amp;ldquo;=&amp;rdquo;. &amp;ldquo;=&amp;rdquo; is equivalent to &amp;ldquo;&amp;lt;-&amp;rdquo; when assign a value. At this time, it&amp;rsquo;s not to assign a value but to name an alternative.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s curious but this is the syntax of R.&lt;/p&gt;
+
+&lt;p&gt;The authors of R once said: syntax is superficial.&lt;/p&gt;
+
+&lt;p&gt;I know syntax is not the essential of a language, but it&amp;rsquo;s the way how we express our ideas. At this point, it&amp;rsquo;s the most important thing. This maybe the reason why they chose S as the syntax of R, since S is
+designed for statistical computing.&lt;/p&gt;
+
+&lt;p&gt;I really hate the syntax sometimes.&lt;/p&gt;
+
+&lt;p&gt;Here is the explanation from &amp;lsquo;The R Inferno&amp;rsquo; page 78
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2009/03/assign.jpg&#34; alt=&#34;assign&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OOP | Guangchuang YU</title>
+    <link>https://guangchuangyu.github.io/tags/oop/</link>
+      <atom:link href="https://guangchuangyu.github.io/tags/oop/index.xml" rel="self" type="application/rss+xml" />
+    <description>OOP</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Guangchuang YU</copyright><lastBuildDate>Fri, 15 Oct 2010 07:24:30 +0800</lastBuildDate>
+    <image>
+      <url>https://guangchuangyu.github.io/img/icon-192.png</url>
+      <title>OOP</title>
+      <link>https://guangchuangyu.github.io/tags/oop/</link>
+    </image>
+    
+    <item>
+      <title>The S3 OOP system</title>
+      <link>https://guangchuangyu.github.io/post/r/spurs/2010_the-s3-oop-system/</link>
+      <pubDate>Fri, 15 Oct 2010 07:24:30 +0800</pubDate>
+      <guid>https://guangchuangyu.github.io/post/r/spurs/2010_the-s3-oop-system/</guid>
+      <description>&lt;p&gt;R currently supports two internal OOP systems (S3 and S4), and several
+others as add-on packages, such as
+&lt;a href=&#34;http://cran.r-project.org/web/packages/R.oo/index.html&#34; target=&#34;_blank&#34;&gt;R.oo&lt;/a&gt;, and
+&lt;a href=&#34;http://www.omegahat.org/OOP/&#34; target=&#34;_blank&#34;&gt;OOP&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&amp;rsquo;s a function centric system which is different from class centric system like JAVA.&lt;/p&gt;
+
+&lt;p&gt;Computations are carried out by methods. In many OOP languages, that is, a call to &lt;code&gt;obj.method()&lt;/code&gt; which will find the first ancestor class of &lt;code&gt;obj&lt;/code&gt; that has a method &lt;code&gt;.method()&lt;/code&gt;. R makes the same dicision in a different way, it turns the idea of inheritance &amp;ldquo;inside out&amp;rdquo;. In R, a special type of function called generic function decides which method to invoke. Methods are defined in the same way as a normal function, but with a tag describing what type of object they were designed to process.&lt;/p&gt;
+
+&lt;h2 id=&#34;object-class&#34;&gt;Object Class&lt;/h2&gt;
+
+&lt;p&gt;The class of an object is defined by a character vector of class names.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; x &amp;lt;- 1
+&amp;gt; class(x) &amp;lt;- &amp;quot;foo&amp;quot;
+#or 
+&amp;gt; attr(x, &amp;quot;class&amp;quot;) &amp;lt;- &amp;quot;foo&amp;quot;
+#or
+&amp;gt; x &amp;lt;- structure(1, class=&amp;quot;foo&amp;quot;)
+&amp;gt; x
+[1] 1
+attr(,&amp;quot;class&amp;quot;)
+[1] &amp;quot;foo&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Objects can have many classes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; class(x) &amp;lt;- c(&amp;quot;foo&amp;quot;, &amp;quot;bar&amp;quot;)
+&amp;gt; x
+[1] 1
+attr(,&amp;quot;class&amp;quot;)
+[1] &amp;quot;foo&amp;quot; &amp;quot;bar&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;generic-functions-and-method-dispatch&#34;&gt;Generic functions and method dispatch&lt;/h2&gt;
+
+&lt;p&gt;A generic function is a function that examines the class of its first argument, and thus decides which specific method to dispatch to.&lt;/p&gt;
+
+&lt;p&gt;Generic functions are defined by &lt;code&gt;UseMethod&lt;/code&gt; with the generic name and the object to dispatch on as its parameters.&lt;/p&gt;
+
+&lt;p&gt;The following example shows how to define a generic function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sound &amp;lt;- function(x) UseMethod(&amp;quot;sound&amp;quot;, x)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Methods are defined with a naming convention: &lt;code&gt;generic.class&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sound.dog &amp;lt;- function(x) &amp;quot;bark&amp;quot;
+sound.cow &amp;lt;- function(x) &amp;quot;moo&amp;quot;
+sound.default &amp;lt;- function(x) &amp;quot;animal sound&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;methods&lt;/code&gt; function can find out which classes a generic function was designed for.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; methods(&amp;quot;sound&amp;quot;)
+[1] sound.cow     sound.default sound.dog   
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;R looks for methods in the order in which they appear in the class vector until it found the appropriate method to operate on.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; x &amp;lt;- structure(&amp;quot;cat&amp;quot;, class = c(&amp;quot;cat&amp;quot;, &amp;quot;dog&amp;quot;, &amp;quot;cow&amp;quot;))
+&amp;gt; sound(x)
+[1] &amp;quot;bark&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;inheritance&#34;&gt;Inheritance&lt;/h2&gt;
+
+&lt;p&gt;In S3 system, evaluation may be passed to a less specific method by calling &lt;code&gt;NextMethod&lt;/code&gt; which provide a simple inheritance mechanism. &lt;code&gt;NextMethod&lt;/code&gt; will dispatch on the second element of the class vector:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; class(x) &amp;lt;- c(&amp;quot;dog&amp;quot;, &amp;quot;cow&amp;quot;)
+&amp;gt; sound(x)
+[1] &amp;quot;bark&amp;quot;
+&amp;gt; sound.dog &amp;lt;- function(x) NextMethod()
+&amp;gt; sound(x)
+[1] &amp;quot;moo&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
