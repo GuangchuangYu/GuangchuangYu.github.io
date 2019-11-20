@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="用Arch Linux就是每天睡觉关机前滚一下，然而有时候有些软件升级滚出问题，比如glibc-2.28就导致了R安装包有问题，会抛出下面的错误：
+
+terminate called after throwing an instance of &#39;std::runtime_error&#39;
+  what():  Mutex creation failed
+
+
+用blogdown编译博客也同样会抛出这个错误。
+
+然后electron也有问题，《开源的macOS和linux版微信》跑着跑着突然CPU就狂飙。
+
+解决办法就是安装回老版本，但pacman永远是最新的，当然可以去git/svn仓库里找老版本的PKGBUILD，然后再makepkg，但经常会在signature checking这步报错，你还得到导入keyring，挺麻烦。
+
+这时候我找到了downgrade脚本:
+
+
+Bash script for downgrading one or more packages to a version in your cache or the A.L.A.
+
+
+AUR有收录，安装非常简单：">
+
+
+<meta property="og:description" content="用Arch Linux就是每天睡觉关机前滚一下，然而有时候有些软件升级滚出问题，比如glibc-2.28就导致了R安装包有问题，会抛出下面的错误：
+
+terminate called after throwing an instance of &#39;std::runtime_error&#39;
+  what():  Mutex creation failed
+
+
+用blogdown编译博客也同样会抛出这个错误。
+
+然后electron也有问题，《开源的macOS和linux版微信》跑着跑着突然CPU就狂飙。
+
+解决办法就是安装回老版本，但pacman永远是最新的，当然可以去git/svn仓库里找老版本的PKGBUILD，然后再makepkg，但经常会在signature checking这步报错，你还得到导入keyring，挺麻烦。
+
+这时候我找到了downgrade脚本:
+
+
+Bash script for downgrading one or more packages to a version in your cache or the A.L.A.
+
+
+AUR有收录，安装非常简单：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arch之软件降级">
+<meta name="twitter:title" content="Arch之软件降级">
+<meta property="og:url" content="https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="用Arch Linux就是每天睡觉关机前滚一下，然而有时候有些软件升级滚出问题，比如glibc-2.28就导致了R安装包有问题，会抛出下面的错误：
+
+terminate called after throwing an instance of &#39;std::runtime_error&#39;
+  what():  Mutex creation failed
+
+
+用blogdown编译博客也同样会抛出这个错误。
+
+然后electron也有问题，《开源的macOS和linux版微信》跑着跑着突然CPU就狂飙。
+
+解决办法就是安装回老版本，但pacman永远是最新的，当然可以去git/svn仓库里找老版本的PKGBUILD，然后再makepkg，但经常会在signature checking这步报错，你还得到导入keyring，挺麻烦。
+
+这时候我找到了downgrade脚本:
+
+
+Bash script for downgrading one or more packages to a version in your cache or the A.L.A.
+
+
+AUR有收录，安装非常简单：">
+<meta name="twitter:description" content="用Arch Linux就是每天睡觉关机前滚一下，然而有时候有些软件升级滚出问题，比如glibc-2.28就导致了R安装包有问题，会抛出下面的错误：
+
+terminate called after throwing an instance of &#39;std::runtime_error&#39;
+  what():  Mutex creation failed
+
+
+用blogdown编译博客也同样会抛出这个错误。
+
+然后electron也有问题，《开源的macOS和linux版微信》跑着跑着突然CPU就狂飙。
+
+解决办法就是安装回老版本，但pacman永远是最新的，当然可以去git/svn仓库里找老版本的PKGBUILD，然后再makepkg，但经常会在signature checking这步报错，你还得到导入keyring，挺麻烦。
+
+这时候我找到了downgrade脚本:
+
+
+Bash script for downgrading one or more packages to a version in your cache or the A.L.A.
+
+
+AUR有收录，安装非常简单：">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-08-08T20:10:35">
+  
+  
+    <meta property="article:modified_time" content="2018-08-08T20:10:35">
+  
+  
+  
+    
+      <meta property="article:section" content="Linux">
+    
+  
+  
+    
+      <meta property="article:tag" content="downgrade">
+    
+      <meta property="article:tag" content="pacman">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>Arch之软件降级</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Arch之软件降级
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-08-08T20:10:35&#43;08:00">
+        
+  August 8, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/linux">Linux</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>用Arch Linux就是每天睡觉关机前滚一下，然而有时候有些软件升级滚出问题，比如<code>glibc-2.28</code>就导致了<code>R</code>安装包有问题，会抛出下面的错误：</p>
+
+<pre><code>terminate called after throwing an instance of 'std::runtime_error'
+  what():  Mutex creation failed
+</code></pre>
+
+<p>用<code>blogdown</code>编译博客也同样会抛出这个错误。</p>
+
+<p>然后<code>electron</code>也有问题，《<a href="http://mp.weixin.qq.com/s/L556YNtVSKf84cEFdEZVBQ">开源的macOS和linux版微信</a>》跑着跑着突然CPU就狂飙。</p>
+
+<p>解决办法就是安装回老版本，但<code>pacman</code>永远是最新的，当然可以去git/svn仓库里找老版本的<code>PKGBUILD</code>，然后再<code>makepkg</code>，但经常会在<code>signature checking</code>这步报错，你还得到导入<code>keyring</code>，挺麻烦。</p>
+
+<p>这时候我找到了<code>downgrade</code>脚本:</p>
+
+<blockquote>
+<p>Bash script for downgrading one or more packages to a version in your cache or the A.L.A.</p>
+</blockquote>
+
+<p>AUR有收录，安装非常简单：</p>
+
+<pre><code>~/github/PAM   master  yay -S downgrade 
+[sudo] password for ygc: 
+resolving dependencies...
+looking for conflicting packages...
+
+Packages (1) downgrade-6.0.0-2
+
+Total Download Size:   0.01 MiB
+Total Installed Size:  0.12 MiB
+
+:: Proceed with installation? [Y/n] 
+:: Retrieving packages...
+ downgrade-6.0.0-2-any      9.0 KiB   242K/s 00:00 [###########] 100%
+(1/1) checking keys in keyring                     [###########] 100%
+(1/1) checking package integrity                   [###########] 100%
+(1/1) loading package files                        [###########] 100%
+(1/1) checking for file conflicts                  [###########] 100%
+(1/1) checking available disk space                [###########] 100%
+:: Processing package changes...
+(1/1) installing downgrade                         [###########] 100%
+Optional dependencies for downgrade
+    sudo: for installation via sudo [installed]
+:: Running post-transaction hooks...
+(1/1) Arming ConditionNeedsUpdate...
+</code></pre>
+
+<p>这时候，我就可以用它来降低<code>glibc</code>的版本了，运行会列出各种版本：</p>
+
+<pre><code> ~/github/PAM   master  downgrade glibc
+Available packages:
+
+*  1) glibc-2.28-1-x86_64.pkg.tar.xz (remote)
+*  2) glibc-2.28-1-x86_64.pkg.tar.xz (local)
+   3) glibc-2.27-3-x86_64.pkg.tar.xz (remote)
+   4) glibc-2.27-2-x86_64.pkg.tar.xz (remote)
+   5) glibc-2.26-11-x86_64.pkg.tar.xz (remote)
+   6) glibc-2.26-10-x86_64.pkg.tar.xz (remote)
+   7) glibc-2.26-9-x86_64.pkg.tar.xz (remote)
+   8) glibc-2.26-8-x86_64.pkg.tar.xz (remote)
+   9) glibc-2.26-7-x86_64.pkg.tar.xz (remote)
+  10) glibc-2.26-6-x86_64.pkg.tar.xz (remote)
+  11) glibc-2.26-5-x86_64.pkg.tar.xz (remote)
+  12) glibc-2.26-4-x86_64.pkg.tar.xz (remote)
+  13) glibc-2.26-3-x86_64.pkg.tar.xz (remote)
+  14) glibc-2.26-2-x86_64.pkg.tar.xz (remote)
+  15) glibc-2.26-1-x86_64.pkg.tar.xz (remote)
+  16) glibc-2.25-7-x86_64.pkg.tar.xz (remote)
+  17) glibc-2.25-6-x86_64.pkg.tar.xz (remote)
+  18) glibc-2.25-5-x86_64.pkg.tar.xz (remote)
+  19) glibc-2.25-4-x86_64.pkg.tar.xz (remote)
+  20) glibc-2.25-3-x86_64.pkg.tar.xz (remote)
+  21) glibc-2.25-2-x86_64.pkg.tar.xz (remote)
+  22) glibc-2.25-1-x86_64.pkg.tar.xz (remote)
+  23) glibc-2.24-2-x86_64.pkg.tar.xz (remote)
+  24) glibc-2.24-1-x86_64.pkg.tar.xz (remote)
+  25) glibc-2.23-5-x86_64.pkg.tar.xz (remote)
+  26) glibc-2.23-4-x86_64.pkg.tar.xz (remote)
+  27) glibc-2.23-3-x86_64.pkg.tar.xz (remote)
+  28) glibc-2.23-2-x86_64.pkg.tar.xz (remote)
+  29) glibc-2.23-1-x86_64.pkg.tar.xz (remote)
+  30) glibc-2.22-4-x86_64.pkg.tar.xz (remote)
+</code></pre>
+
+<p>只需要选择其中某一个，就会自动下载安装：</p>
+
+<pre><code>select a package by number: 3
+ glibc-2.27-3-x86_64                                          9.1 MiB  4.68M/s 00:02 [#################################################] 100%
+ glibc-2.27-3-x86_64.sig                                    310.0   B  0.00B/s 00:00 [#################################################] 100%
+loading packages...
+warning: downgrading package glibc (2.28-1 =&gt; 2.27-3)
+resolving dependencies...
+looking for conflicting packages...
+
+Packages (1) glibc-2.27-3
+
+Total Installed Size:  41.40 MiB
+Net Upgrade Size:      -4.15 MiB
+
+:: Proceed with installation? [Y/n] 
+(1/1) checking keys in keyring                                                       [#################################################] 100%
+(1/1) checking package integrity                                                     [#################################################] 100%
+(1/1) loading package files                                                          [#################################################] 100%
+(1/1) checking for file conflicts                                                    [#################################################] 100%
+(1/1) checking available disk space                                                  [#################################################] 100%
+:: Processing package changes...
+(1/1) downgrading glibc                                                              [#################################################] 100%
+warning: /etc/locale.gen installed as /etc/locale.gen.pacnew
+Generating locales...
+  en_US.UTF-8... done
+  zh_CN.UTF-8... done
+Generation complete.
+:: Running post-transaction hooks...
+(1/4) Reloading system manager configuration...
+(2/4) Creating temporary files...
+(3/4) Arming ConditionNeedsUpdate...
+(4/4) Updating the info directory file...
+add glibc to IgnorePkg? [y/n] n
+ ~/github/PAM   master  
+</code></pre>
+
+<p>于是升级带来的各自烦人的bug，就没有了。</p>
+
+<hr />
+
+<p><strong>往期精彩</strong>
++ <a href="http://mp.weixin.qq.com/s/sd_z3doU4V05aKFekpQkrA">Support Vector Machine</a>
++ <a href="https://mp.weixin.qq.com/s/LzwSAYT7yyYTMrNnck9KCg">来香港读博其实是被逼的</a>
++ <a href="http://mp.weixin.qq.com/s/ARxyTRpMs6OeCqOQPp9OwA">emojifont新功能（有视频哦）</a>
++ <a href="https://mp.weixin.qq.com/s/UUf1hCAzNvQRII79vtI2Rg">单篇引用超过500了，来了解一下</a>
++ <a href="http://mp.weixin.qq.com/s/TR1zV8HLCV68vOg1tEBR7Q">你们想要的: Linux装windows的二逼</a>
++ <a href="http://mp.weixin.qq.com/s/hY38gr2x8AqRaTh4C7mrnA">facet_plot: 加图层到特定的分面上</a>
++ <a href="https://mp.weixin.qq.com/s/bnP2LGjEv8KopLxPtJZfdQ">就是这么简单，你也能够纯代码生成六角贴！</a>
++ <a href="https://mp.weixin.qq.com/s/lHKZtzpN2k9uPN7e6HjH3w">非模式基因GO富集分析：以玉米为例+使用OrgDb</a></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/downgrade/">downgrade</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/pacman/">pacman</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/08/ggplot-3d/" data-tooltip="用ggplot2画3D">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/08/pheatmap-class/" data-tooltip="pheatmap类属性：一个更好用的pheatmap">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/08/ggplot-3d/" data-tooltip="用ggplot2画3D">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/08/pheatmap-class/" data-tooltip="pheatmap类属性：一个更好用的pheatmap">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/08/arch-downgrade/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F08%2Farch-downgrade%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F08%2Farch-downgrade%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F08%2Farch-downgrade%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2018\/08\/arch-downgrade\/';
+          
+            this.page.identifier = '\/2018\/08\/arch-downgrade\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

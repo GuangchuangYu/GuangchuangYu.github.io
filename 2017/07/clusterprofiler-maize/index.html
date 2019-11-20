@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="模式生物做什么都简单，非模式生物则很多缺少注释，没有注释你就没法做，只能是借助于各种软件比如blastgo，自己跑电子注释。但今天要讲的不是这种情况，很多物种还是有注释的，只是你有时候不知道该去那里下载，或者你有数据，却不知道该怎么用！很多的软件都是针对模式生物的，或者针对某一些类型的非模式生物，能够支持多种非模式生物，能够支持用户自己的注释文件的软件相对来讲，就非常少有了，然而clusterProfiler就是这类少有的软件之一。
+
+获得OrgDb
+
+今天要讲的是通过OrgDb来做GO分析，这是clusterProfiler的enrichGO函数所支持的背景注释，Bioconductor自带20个OrgDb可供使用，多半是模式生物，难道我们要做的物种不在这20个里面就不行了吗？显然不是的，clusterProfiler能支持的物种我自己都数不过来。
+
+我们可以通过AnnotationHub在线检索并抓取OrgDb，比如这里以玉米为例：">
+
+
+<meta property="og:description" content="模式生物做什么都简单，非模式生物则很多缺少注释，没有注释你就没法做，只能是借助于各种软件比如blastgo，自己跑电子注释。但今天要讲的不是这种情况，很多物种还是有注释的，只是你有时候不知道该去那里下载，或者你有数据，却不知道该怎么用！很多的软件都是针对模式生物的，或者针对某一些类型的非模式生物，能够支持多种非模式生物，能够支持用户自己的注释文件的软件相对来讲，就非常少有了，然而clusterProfiler就是这类少有的软件之一。
+
+获得OrgDb
+
+今天要讲的是通过OrgDb来做GO分析，这是clusterProfiler的enrichGO函数所支持的背景注释，Bioconductor自带20个OrgDb可供使用，多半是模式生物，难道我们要做的物种不在这20个里面就不行了吗？显然不是的，clusterProfiler能支持的物种我自己都数不过来。
+
+我们可以通过AnnotationHub在线检索并抓取OrgDb，比如这里以玉米为例：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非模式基因GO富集分析：以玉米为例&#43;使用OrgDb">
+<meta name="twitter:title" content="非模式基因GO富集分析：以玉米为例&#43;使用OrgDb">
+<meta property="og:url" content="https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="模式生物做什么都简单，非模式生物则很多缺少注释，没有注释你就没法做，只能是借助于各种软件比如blastgo，自己跑电子注释。但今天要讲的不是这种情况，很多物种还是有注释的，只是你有时候不知道该去那里下载，或者你有数据，却不知道该怎么用！很多的软件都是针对模式生物的，或者针对某一些类型的非模式生物，能够支持多种非模式生物，能够支持用户自己的注释文件的软件相对来讲，就非常少有了，然而clusterProfiler就是这类少有的软件之一。
+
+获得OrgDb
+
+今天要讲的是通过OrgDb来做GO分析，这是clusterProfiler的enrichGO函数所支持的背景注释，Bioconductor自带20个OrgDb可供使用，多半是模式生物，难道我们要做的物种不在这20个里面就不行了吗？显然不是的，clusterProfiler能支持的物种我自己都数不过来。
+
+我们可以通过AnnotationHub在线检索并抓取OrgDb，比如这里以玉米为例：">
+<meta name="twitter:description" content="模式生物做什么都简单，非模式生物则很多缺少注释，没有注释你就没法做，只能是借助于各种软件比如blastgo，自己跑电子注释。但今天要讲的不是这种情况，很多物种还是有注释的，只是你有时候不知道该去那里下载，或者你有数据，却不知道该怎么用！很多的软件都是针对模式生物的，或者针对某一些类型的非模式生物，能够支持多种非模式生物，能够支持用户自己的注释文件的软件相对来讲，就非常少有了，然而clusterProfiler就是这类少有的软件之一。
+
+获得OrgDb
+
+今天要讲的是通过OrgDb来做GO分析，这是clusterProfiler的enrichGO函数所支持的背景注释，Bioconductor自带20个OrgDb可供使用，多半是模式生物，难道我们要做的物种不在这20个里面就不行了吗？显然不是的，clusterProfiler能支持的物种我自己都数不过来。
+
+我们可以通过AnnotationHub在线检索并抓取OrgDb，比如这里以玉米为例：">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2017-07-24T08:53:00">
+  
+  
+    <meta property="article:modified_time" content="2017-07-24T08:53:00">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="clusterProfiler">
+    
+      <meta property="article:tag" content="OrgDb">
+    
+      <meta property="article:tag" content="maize">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>非模式基因GO富集分析：以玉米为例&#43;使用OrgDb</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      非模式基因GO富集分析：以玉米为例&#43;使用OrgDb
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-07-24T08:53:00&#43;08:00">
+        
+  July 24, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>模式生物做什么都简单，非模式生物则很多缺少注释，没有注释你就没法做，只能是借助于各种软件比如blastgo，自己跑电子注释。但今天要讲的不是这种情况，很多物种还是有注释的，只是你有时候不知道该去那里下载，或者你有数据，却不知道该怎么用！很多的软件都是针对模式生物的，或者针对某一些类型的非模式生物，能够支持多种非模式生物，能够支持用户自己的注释文件的软件相对来讲，就非常少有了，然而clusterProfiler就是这类少有的软件之一。</p>
+
+<h2 id="获得orgdb">获得OrgDb</h2>
+
+<p>今天要讲的是通过OrgDb来做GO分析，这是clusterProfiler的<strong>enrichGO</strong>函数所支持的背景注释，Bioconductor自带20个OrgDb可供使用，多半是模式生物，难道我们要做的物种不在这20个里面就不行了吗？显然不是的，clusterProfiler能支持的物种我自己都数不过来。</p>
+
+<p>我们可以通过AnnotationHub在线检索并抓取OrgDb，比如这里以玉米为例：</p>
+
+<pre><code>&gt; require(AnnotationHub)
+&gt; hub &lt;- AnnotationHub()
+&gt; query(hub, &quot;zea&quot;)
+AnnotationHub with 2 records
+# snapshotDate(): 2017-04-25 
+# $dataprovider: Inparanoid8, ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/
+# $species: Gibberella zeae, Zea mays
+# $rdataclass: Inparanoid8Db, OrgDb
+# additional mcols(): taxonomyid, genome, description,
+#   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+#   rdatapath, sourceurl, sourcetype 
+# retrieve records with, e.g., 'object[[&quot;AH10514&quot;]]' 
+
+            title                          
+  AH10514 | hom.Gibberella_zeae.inp8.sqlite
+  AH55736 | org.Zea_mays.eg.sqlite   
+</code></pre>
+
+<p>通过检索，<code>org.Zea_mays.eg.sqlite</code>就是我们所要的OrgDb，可以通过相应的accession number, <strong>AH55736</strong>抓取文件，并存入了maize对象中，它包含了51097个基因的注释：</p>
+
+<pre><code>&gt; maize &lt;- hub[['AH55736']]
+&gt; length(keys(maize))
+[1] 51097
+</code></pre>
+
+<p>这个OrgDb，包含有以下一些注释信息：</p>
+
+<pre><code>&gt; columns(maize)
+ [1] &quot;ACCNUM&quot;      &quot;ALIAS&quot;       &quot;CHR&quot;         &quot;ENTREZID&quot;    &quot;EVIDENCE&quot;   
+ [6] &quot;EVIDENCEALL&quot; &quot;GENENAME&quot;    &quot;GID&quot;         &quot;GO&quot;          &quot;GOALL&quot;      
+[11] &quot;ONTOLOGY&quot;    &quot;ONTOLOGYALL&quot; &quot;PMID&quot;        &quot;REFSEQ&quot;      &quot;SYMBOL&quot;     
+[16] &quot;UNIGENE&quot;
+</code></pre>
+
+<h2 id="转换id">转换ID</h2>
+
+<p>我们可以使用bitr来转换ID，甚至于直接检索GO注释：</p>
+
+<pre><code>&gt; require(clusterProfiler)
+&gt; bitr(keys(maize)[1], 'ENTREZID', c(&quot;REFSEQ&quot;, &quot;GO&quot;, &quot;ONTOLOGY&quot;), maize)
+   ENTREZID         REFSEQ         GO ONTOLOGY
+1    541612 XP_008648268.1 GO:0009507       CC
+2    541612 XP_008648268.1 GO:0051537       MF
+3    541612 XP_008648268.1 GO:0009055       MF
+4    541612 XP_008648268.1 GO:0046872       MF
+5    541612 XP_008648268.1 GO:0022900       BP
+6    541612 NP_001104837.2 GO:0009507       CC
+7    541612 NP_001104837.2 GO:0051537       MF
+8    541612 NP_001104837.2 GO:0009055       MF
+9    541612 NP_001104837.2 GO:0046872       MF
+10   541612 NP_001104837.2 GO:0022900       BP
+11   541612 XM_008650046.2 GO:0009507       CC
+12   541612 XM_008650046.2 GO:0051537       MF
+13   541612 XM_008650046.2 GO:0009055       MF
+14   541612 XM_008650046.2 GO:0046872       MF
+15   541612 XM_008650046.2 GO:0022900       BP
+16   541612 NM_001111367.2 GO:0009507       CC
+17   541612 NM_001111367.2 GO:0051537       MF
+18   541612 NM_001111367.2 GO:0009055       MF
+19   541612 NM_001111367.2 GO:0046872       MF
+20   541612 NM_001111367.2 GO:0022900       BP
+</code></pre>
+
+<h2 id="go富集分析">GO富集分析</h2>
+
+<pre><code>&gt; sample_genes &lt;- keys(maize)[1:100]
+&gt; head(sample_genes)
+[1] &quot;541612&quot; &quot;541613&quot; &quot;541614&quot; &quot;541615&quot; &quot;541617&quot; &quot;541618&quot;
+</code></pre>
+
+<p>这里我只是简单地使用ID列表中前100个ENTREZ基因ID，也可以使用其它的ID，通过借助于<strong>bitr</strong>进行转换，或者通过给<strong>enrichGO</strong>指定ID类型(keyType参数）。</p>
+
+<p>有了OrgDb，使用起来，就跟文档中使用人类基因做为例子一样，用法一致，并且也可以通过clusterProfiler所提供的各种可视化函数对结果进行展示：</p>
+
+<pre><code>&gt; require(clusterProfiler)
+&gt; res = enrichGO(sample_genes, OrgDb=maize, pvalueCutoff=1, qvalueCutoff=1)
+&gt; res
+#
+# over-representation test
+#
+#...@organism 	 Zea mays 
+#...@ontology 	 MF 
+#...@keytype 	 ENTREZID 
+#...@gene 	 chr [1:100] &quot;541612&quot; &quot;541613&quot; &quot;541614&quot; &quot;541615&quot; &quot;541617&quot; &quot;541618&quot; &quot;541619&quot; ...
+#...pvalues adjusted by 'BH' with cutoff &lt;1 
+#...114 enriched terms found
+'data.frame':	114 obs. of  9 variables:
+ $ ID         : chr  &quot;GO:0004871&quot; &quot;GO:0000155&quot; &quot;GO:0004673&quot; &quot;GO:0016775&quot; ...
+ $ Description: chr  &quot;signal transducer activity&quot; &quot;phosphorelay sensor kinase activity&quot; &quot;protein histidine kinase activity&quot; &quot;phosphotransferase activity, nitrogenous group as acceptor&quot; ...
+ $ GeneRatio  : chr  &quot;9/80&quot; &quot;5/80&quot; &quot;5/80&quot; &quot;5/80&quot; ...
+ $ BgRatio    : chr  &quot;81/14230&quot; &quot;22/14230&quot; &quot;23/14230&quot; &quot;23/14230&quot; ...
+ $ pvalue     : num  6.65e-10 1.21e-07 1.54e-07 1.54e-07 1.90e-07 ...
+ $ p.adjust   : num  7.58e-08 3.60e-06 3.60e-06 3.60e-06 3.60e-06 ...
+ $ qvalue     : num  6.37e-08 3.03e-06 3.03e-06 3.03e-06 3.03e-06 ...
+ $ geneID     : chr  &quot;541618/541625/541627/541634/541636/541638/541641/541642/541663&quot; &quot;541627/541634/541641/541642/541663&quot; &quot;541627/541634/541641/541642/541663&quot; &quot;541627/541634/541641/541642/541663&quot; ...
+ $ Count      : int  9 5 5 5 4 4 4 5 5 5 ...
+#...Citation
+  Guangchuang Yu, Li-Gen Wang, Yanyan Han and Qing-Yu He.
+  clusterProfiler: an R package for comparing biological themes among
+  gene clusters. OMICS: A Journal of Integrative Biology
+  2012, 16(5):284-287 
+
+</code></pre>
+
+<p>如果你有表达谱数据，你也可以使用gseGO进行GSEA分析，这里我懒得上网找数据来演示了，用法反正跟文档里的一样，只不过换成了你自己的数据和相应物种的OrgDb对象而已。</p>
+
+<h2 id="如果没有orgdb怎么办">如果没有OrgDb怎么办？</h2>
+
+<p>必须也是可以做的，这个将在以后讲解！</p>
+
+<h2 id="相关阅读">相关阅读</h2>
+
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484398&amp;idx=1&amp;sn=718137b690949ea8e17ff245afa022a5&amp;chksm=ec43b2a9db343bbfc011f1832556320575733a858f4841f1ab8dec4868ca46f85cca0434f559#rd">富集分析</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484374&amp;idx=1&amp;sn=f946f3539a752b09a94b5e160e87368e&amp;chksm=ec43b291db343b871a1f10ca31d6ef94e9da4485043ed374c9739689d02072be92a34ca4e863#rd">clusterProfiler for enrichment analysis</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484414&amp;idx=1&amp;sn=096f758f04f875e25c333c345f530742&amp;chksm=ec43b2b9db343baf4e2a8640f48e7e72b3ef1b057c91c68905debb2bb54e5d2fdda62438628a#rd">why clusterProfiler fails</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484442&amp;idx=1&amp;sn=016b12d91af43e16ac8731ccd154b4b2&amp;chksm=ec43b55ddb343c4be1fb6f5f764a421889b8ba93e5784f4921a6f510ee3572c72d14c76059ae#rd">Comparison of clusterProfiler and GSEA-P</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484096&amp;idx=1&amp;sn=dbee71d4af2578746a1caa8fb0ad55a1&amp;chksm=ec43b387db343a91d48c9f69e85ccb5ba18d44ec025356e9a63705f38e1690c73023b80fdbd1#rd">buildGOmap</a></li>
+</ul>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/clusterprofiler/">clusterProfiler</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/orgdb/">OrgDb</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/maize/">maize</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/07/scale-size/" data-tooltip="搞大你的点，让我们画真正的气泡图">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/07/swirl/" data-tooltip="听说你想学R">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/07/scale-size/" data-tooltip="搞大你的点，让我们画真正的气泡图">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/07/swirl/" data-tooltip="听说你想学R">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F07%2Fclusterprofiler-maize%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F07%2Fclusterprofiler-maize%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F07%2Fclusterprofiler-maize%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2017\/07\/clusterprofiler-maize\/';
+          
+            this.page.identifier = '\/2017\/07\/clusterprofiler-maize\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

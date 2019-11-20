@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="
+
+生信界的网红Stephen Turner在github上有个msigdf的包，我在他写这个包的时候，就写了个gist，连接clusterProfiler，我写gist的时候是2016年的8月，很高兴网红还惦记着我的gist。
+
+msigdf这个包把著名的Broad Institute著名的Molecular Signatures Database (MSigDB)数据以data frame的形式打包成R包，这样子非常方便使用，当然他后来没有更新，而一个fork的版本，ToledoEM/msigdf把数据更新为最新版本v6.2，发布于2018年7月。">
+
+
+<meta property="og:description" content="
+
+生信界的网红Stephen Turner在github上有个msigdf的包，我在他写这个包的时候，就写了个gist，连接clusterProfiler，我写gist的时候是2016年的8月，很高兴网红还惦记着我的gist。
+
+msigdf这个包把著名的Broad Institute著名的Molecular Signatures Database (MSigDB)数据以data frame的形式打包成R包，这样子非常方便使用，当然他后来没有更新，而一个fork的版本，ToledoEM/msigdf把数据更新为最新版本v6.2，发布于2018年7月。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="msigdf &#43; clusterProfiler全方位支持MSigDb">
+<meta name="twitter:title" content="msigdf &#43; clusterProfiler全方位支持MSigDb">
+<meta property="og:url" content="https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="
+
+生信界的网红Stephen Turner在github上有个msigdf的包，我在他写这个包的时候，就写了个gist，连接clusterProfiler，我写gist的时候是2016年的8月，很高兴网红还惦记着我的gist。
+
+msigdf这个包把著名的Broad Institute著名的Molecular Signatures Database (MSigDB)数据以data frame的形式打包成R包，这样子非常方便使用，当然他后来没有更新，而一个fork的版本，ToledoEM/msigdf把数据更新为最新版本v6.2，发布于2018年7月。">
+<meta name="twitter:description" content="
+
+生信界的网红Stephen Turner在github上有个msigdf的包，我在他写这个包的时候，就写了个gist，连接clusterProfiler，我写gist的时候是2016年的8月，很高兴网红还惦记着我的gist。
+
+msigdf这个包把著名的Broad Institute著名的Molecular Signatures Database (MSigDB)数据以data frame的形式打包成R包，这样子非常方便使用，当然他后来没有更新，而一个fork的版本，ToledoEM/msigdf把数据更新为最新版本v6.2，发布于2018年7月。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-11-01T12:21:00">
+  
+  
+    <meta property="article:modified_time" content="2018-11-01T12:21:00">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="clusterProfiler">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>msigdf &#43; clusterProfiler全方位支持MSigDb</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      msigdf &#43; clusterProfiler全方位支持MSigDb
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-11-01T12:21:00&#43;08:00">
+        
+  November 1, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/msigdf.png" alt="" /></p>
+
+<p>生信界的网红Stephen Turner在github上有个<code>msigdf</code>的包，我在他写这个包的时候，就写了个<code>gist</code>，连接<code>clusterProfiler</code>，我写<code>gist</code>的时候是2016年的8月，很高兴网红还惦记着我的<code>gist</code>。</p>
+
+<p><code>msigdf</code>这个包把著名的Broad Institute著名的Molecular Signatures Database (MSigDB)数据以data frame的形式打包成<code>R</code>包，这样子非常方便使用，当然他后来没有更新，而一个fork的版本，<code>ToledoEM/msigdf</code>把数据更新为最新版本v6.2，发布于2018年7月。</p>
+
+<p>这个包，天生就方便我们<code>clusterProfiler</code>用户，我在《<a href="http://mp.weixin.qq.com/s/Q5aovZPfouw8_cIn2kWe1A">Comparison of clusterProfiler and GSEA-P</a>》一文中，为了比较<code>clusterProfiler</code>和Broad Institute出品的GSEA-P软件，特意打包了一个gmt文件，这样方便在注释一样的情况下比较，有了这个示例，其实大家就应该知道，下载gmt文件，然后就可以用<code>clusterProfiler</code>分析了，也就是说<code>clusterProfiler</code>是支持MSigDb的，再一次敲重点，不要再以为<code>clusterProfiler</code>只做GO和KEGG了，<code>clusterProfiler</code>啥都能干。</p>
+
+<hr />
+
+<p>好了，那么有这个包之后，我们连下载gmt文件都省了，直接载入这个包的数据，然后就可以无缝衔接<code>clusterProfiler</code>进行分析，还是原来的配方，还是熟悉的味道，你拥有了《<a href="https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA">enrichplot: 让你们对clusterProfiler系列包无法自拔</a>》的各种可视化功能。</p>
+
+<h2 id="msigdf-包"><code>msigdf</code>包</h2>
+
+<pre><code>## devtools::install_github(&quot;ToledoEM/msigdf&quot;)
+library(msigdf)
+</code></pre>
+
+<p><code>msigdf</code>包含了人和鼠的数据，总共有以下8个类别：</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">category</th>
+<th align="left">description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">H</td>
+<td align="left">hallmark gene sets</td>
+</tr>
+
+<tr>
+<td align="left">C1</td>
+<td align="left">positional gene sets</td>
+</tr>
+
+<tr>
+<td align="left">C2</td>
+<td align="left">curated gene sets</td>
+</tr>
+
+<tr>
+<td align="left">C3</td>
+<td align="left">motif gene sets</td>
+</tr>
+
+<tr>
+<td align="left">C4</td>
+<td align="left">computational gene sets</td>
+</tr>
+
+<tr>
+<td align="left">C5</td>
+<td align="left">GO gene sets</td>
+</tr>
+
+<tr>
+<td align="left">C6</td>
+<td align="left">oncogenic signatures</td>
+</tr>
+
+<tr>
+<td align="left">C7</td>
+<td align="left">immunologic signatures</td>
+</tr>
+</tbody>
+</table>
+
+<p>在这里我将过滤出<code>C2</code>拿来做分析：</p>
+
+<pre><code>library(dplyr)
+
+c2 &lt;- msigdf.human %&gt;% 
+    filter(category_code == &quot;c2&quot;) %&gt;% select(geneset, symbol) %&gt;% as.data.frame
+</code></pre>
+
+<p>下面这就是我们拿到的<code>C2</code>的注释，一个<code>data.frame</code>：</p>
+
+<pre><code>&gt; head(c2, 3)
+                              geneset  symbol
+1 NAKAMURA_CANCER_MICROENVIRONMENT_UP  COL1A2
+2 NAKAMURA_CANCER_MICROENVIRONMENT_UP GPIHBP1
+3 NAKAMURA_CANCER_MICROENVIRONMENT_UP     RET
+</code></pre>
+
+<p>接下来是<code>clusterProfiler</code>的表演时间，我们还是使用<code>DOSE</code>包里的<code>geneList</code>数据来做演示，如果不知道怎么搞自己的<code>geneList</code>，请移步《<a href="http://mp.weixin.qq.com/s/aht5fQ10nH_07CYttKFH7Q">听说你有RNAseq数据却不知道怎么跑GSEA</a>》。</p>
+
+<pre><code>library(clusterProfiler)
+data(geneList, package=&quot;DOSE&quot;)
+</code></pre>
+
+<p>这里涉及到一个问题，<code>geneList</code>里的基因是<code>ENTREZID</code>，而这里<code>msigdf</code>包里是<code>SYMBOL</code>，这个简单，无非是个基因ID转换的过程而已，一般而言，对于你自己的注释数据，你不应当有这个问题；假如有，也是一个转换步骤而已，这里做为演示，我把<code>geneList</code>的ID给转了，你当然也可以转注释<code>c2</code>里的ID。</p>
+
+<pre><code>&gt; id = bitr(names(geneList), &quot;ENTREZID&quot;, &quot;SYMBOL&quot;, &quot;org.Hs.eg.db&quot;)
+'select()' returned 1:1 mapping between keys and columns
+Warning message:
+In bitr(names(geneList), &quot;ENTREZID&quot;, &quot;SYMBOL&quot;, &quot;org.Hs.eg.db&quot;) :
+  0.41% of input gene IDs are fail to map...
+&gt; head(id, 3)
+  ENTREZID SYMBOL
+1     4312   MMP1
+2     8318  CDC45
+3    10874    NMU
+</code></pre>
+
+<p>我们看到<code>bitr</code>的输出，有部分ID是没法转的，这些应该过滤掉，然后用新的ID去给<code>geneList</code>重命名即可，要注意ID要一一对应，不能搞错，我这里用了<code>match</code>，确保操作没问题：</p>
+
+<pre><code>&gt; geneList = geneList[names(geneList) %in% id[,1]]
+&gt; names(geneList) = id[match(names(geneList), id[,1]), 2]    
+</code></pre>
+
+<p>好了，现在轮到熟悉的<code>clusterProfiler</code>分析了，大家应该都不陌生，在下面的文章中都有介绍过：</p>
+
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/2UqgAJIg75jG6LmRAhqWAw">use clusterProfiler as an universal enrichment analysis tool</a></li>
+<li><a href="https://mp.weixin.qq.com/s/mgbPMxY1sEZqV4Hoead82Q">功能注释后如何做富集分</a></li>
+<li><a href="https://mp.weixin.qq.com/s/17ujVhcrkX1DLsUJBtUGEw">使用新姿势玩KEGG，是种什么体验&hellip;</a></li>
+</ul>
+
+<p>用<code>enricher</code>做超几何分布检验：</p>
+
+<pre><code>de &lt;- names(geneList)[1:100]
+x &lt;- enricher(de, TERM2GENE = c2)
+</code></pre>
+
+<p>用<code>head</code>瞄一眼结果：</p>
+
+<pre><code>&gt; head(x, 3)
+                                                                                     ID
+ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER
+SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP           SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP
+SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6               SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6
+                                                                            Description
+ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER
+SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP           SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP
+SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6               SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6
+                                            GeneRatio   BgRatio       pvalue
+ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER     49/99 140/21142 5.021928e-83
+SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP          46/99 151/21142 2.834141e-74
+SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6            58/99 456/21142 3.097882e-71
+                                                p.adjust       qvalue
+ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER 8.050151e-80 5.370820e-80
+SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP      2.271564e-71 1.515520e-71
+SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6        1.655302e-68 1.104368e-68
+                                                                                                                                                                                                                                                                                                                                                                                            geneID
+ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER                                                   CDCA8/MCM10/CDC20/FOXM1/KIF23/CENPE/MYBL2/MELK/CCNB2/NDC80/TOP2A/NCAPH/E2F8/ASPM/RRM2/CEP55/DLGAP5/UBE2C/HJURP/APOBEC3B/PBK/NUSAP1/CDCA3/TPX2/TACC3/NEK2/CENPM/RAD51AP1/UBE2S/CCNA2/CDK1/ERCC6L/MAD2L1/GINS1/BIRC5/KIF11/EZH2/TTK/NCAPG/AURKB/CHAF1B/CHEK1/TRIP13/PRC1/KIFC1/KIF18B/KIF20A/DTL/AURKA
+SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP                                                                           CDC45/CDCA8/MCM10/CDC20/FOXM1/CENPE/MYBL2/MELK/CCNB2/NDC80/TOP2A/NCAPH/E2F8/ASPM/RRM2/CEP55/DLGAP5/UBE2C/HJURP/APOBEC3B/NUSAP1/CDCA3/TPX2/TACC3/NEK2/SLC7A5/CENPN/UBE2S/CCNA2/CDK1/MAD2L1/GINS1/BIRC5/KIF11/EZH2/TTK/NCAPG/AURKB/CHEK1/TRIP13/PRC1/KIFC1/KIF18B/QPRT/KIF20A/AURKA
+SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6        CDC45/NMU/CDCA8/MCM10/CDC20/FOXM1/KIF23/CENPE/MYBL2/MELK/CCNB2/NDC80/TOP2A/NCAPH/E2F8/ASPM/RRM2/CEP55/DLGAP5/UGT8/UBE2C/HJURP/APOBEC3B/SKA1/PBK/NUSAP1/CDCA3/TPX2/TACC3/NEK2/SLC7A5/CENPM/RAD51AP1/CENPN/UBE2S/CCNA2/CDK1/ERCC6L/MAD2L1/GINS1/KIF18A/CDT1/BIRC5/KIF11/EZH2/TTK/NCAPG/GPR19/AURKB/GINS2/CHEK1/TRIP13/PRC1/KIF18B/MMP12/KIF20A/DTL/AURKA
+                                            Count
+ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER    49
+SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP         46
+SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6           58
+</code></pre>
+
+<p>然后<code>GSEA</code>分析用<code>GSEA</code>函数：</p>
+
+<pre><code>y &lt;- GSEA(geneList, TERM2GENE = c2)
+</code></pre>
+
+<p>同样我们也用<code>head</code>瞄一眼结果：</p>
+
+<pre><code>&gt; head(y, 3)
+                                                                                                     ID
+ONKEN_UVEAL_MELANOMA_DN                                                         ONKEN_UVEAL_MELANOMA_DN
+NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN               NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN
+BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING
+                                                                                            Description
+ONKEN_UVEAL_MELANOMA_DN                                                         ONKEN_UVEAL_MELANOMA_DN
+NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN               NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN
+BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING
+                                                    setSize enrichmentScore
+ONKEN_UVEAL_MELANOMA_DN                                 491      -0.3915581
+NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN            466      -0.3459209
+BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING     479      -0.3882366
+                                                          NES      pvalue
+ONKEN_UVEAL_MELANOMA_DN                             -1.752063 0.001221001
+NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN        -1.542803 0.001230012
+BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING -1.734615 0.001231527
+                                                      p.adjust    qvalues rank
+ONKEN_UVEAL_MELANOMA_DN                             0.01896267 0.01308232 3641
+NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN        0.01896267 0.01308232 2573
+BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING 0.01896267 0.01308232 2967
+                                                                      leading_edge
+ONKEN_UVEAL_MELANOMA_DN                             tags=41%, list=29%, signal=30%
+NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN        tags=33%, list=21%, signal=27%
+BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING tags=37%, list=24%, signal=29%
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     core_enrichment
+ONKEN_UVEAL_MELANOMA_DN                             CTNNBIP1/DPY19L2P2/CNN3/ADCY6/TBX2/RPL11/KAT2B/C6orf48/SCAP/ETV1/HADHA/EIF3G/EIF1B/HFE/FAM184A/KDM6A/SPIN1/MBNL2/ABHD6/MID2/CSDE1/PRKAR1A/SLC35D2/BAG5/CSGALNACT1/TGOLN2/SOX9/NCKIPSD/ZNF185/QARS/DPYSL2/GABARAPL1/LRRC1/PCNP/SEC62/PEX6/TOP2B/ALDH9A1/FHL2/DLC1/RPL15/ENPP2/ZC3H13/USP4/ATXN7/ZSCAN12/EDNRB/SLC25A36/TWF1/ERBB3/MGEA5/OSBPL10/DSTN/SETD2/MFAP2/TMEM47/FAM86B1/NKTR/TFAP2A/TJP1/ADD3/NFE2L1/ECSIT/DAZAP2/MANSC1/RPL14/ACAA1/SNCA/SEMA6A/RPL29/CD200/TDRD3/APPL1/SDC4/ADRB2/GPR153/CTDSP2/VAMP3/GALC/RSL1D1/PREPL/PBX1/IP6K1/CTNNB1/GMPR2/PDHB/KANK2/DAB2/DBP/CPS1/SERPINB6/ENTPD1/GORASP1/PCLO/PTP4A2/PIK3R1/GLUL/RYBP/LETMD1/SCAMP1/PRCP/LAMA4/NEDD9/SPRY2/XPC/ASAH1/NEK4/GAS1/HBB/EIF4B/IMPDH2/PEG10/TSPYL1/CRBN/GOLGA4/LMCD1/MAGEH1/FSTL3/NRIP1/CCND1/HIST1H2AC/TOM1L1/NDN/GLCE/PALLD/BEX4/CREBL2/ITM2A/SPRY1/ZMAT3/CCDC28A/SOBP/KCNS3/SSBP2/ZBTB38/HSD17B8/ID4/ALDH6A1/IL11RA/C3orf14/CTSF/VWA5A/EFEMP2/RAB17/SNAP23/TIMP3/UBL3/SORBS1/DALRD3/SNRK/HSPA2/ZNF91/JAM3/ARMCX2/HNMT/GSTM2/SERPINI1/FAM129A/CADPS2/LPAR6/PDGFC/GSTM1/TXNIP/CCNG2/TRAK1/MTUS1/CBX7/SMARCA1/MPPED2/CAV1/CIRBP/NAP1L2/DYNC2H1/MZT2B/HEMK1/FYCO1/GPD1L/SLC7A8/PMP22/ZNF415/SLC39A6/POSTN/SYBU/GNG11/ZSCAN18/ZBTB20/LAMB2/LZTFL1/PLSCR4/CARTPT/GSTM3/AZGP1/PDGFD/ZNF423/RNASE4/KCNE4/PSD3/EMCN/PPP1R3C
+NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN                                                                                                                                                                                                                                                                                                                          ETS2/ADD3/SEC16A/ABCC3/TIA1/MACF1/RAB40B/DENND4C/C1RL/MXI1/SEMA6A/HBP1/WDR11/IGSF3/ZNF24/SERPINB1/GALC/RSL1D1/DPYD/FBXO9/NRN1/WSB1/ZNF638/ARNT2/AES/GATAD1/CPS1/NFATC2IP/MAVS/TRA2A/TTC31/BPTF/IGBP1/DTWD1/SRSF5/SLC2A10/LOXL2/STAT6/GLUL/RYBP/ITM2B/LETMD1/BNIP3L/EIF4A1/PHF3/COL6A1/CAST/WFDC2/BCL6/LMO2/IL1R1/AUH/INSR/TESC/GAS1/TAF9B/HP/TNFSF10/DOK1/PIGV/PCDH7/SGSM2/CLEC2B/DUSP1/FUCA1/USP34/HSD17B11/SLC24A3/SNCAIP/AHR/MKNK2/RNF125/FZD10/ZNF451/HIST1H2AC/FGFR3/KLHL28/C2orf68/CFI/NR4A2/ARID5B/GOLGA8A/ASPH/ZNF44/ZNF226/BAG1/ATG14/NELL2/UNC5B/HEY1/ENOSF1/ORAI3/RCOR3/SEZ6L2/NBR1/FNDC3A/SH3BGRL/LUM/FOS/CITED2/SLC46A3/TSPAN1/SPOCK1/CCNG1/DCAF10/RAB31/RAB27B/SPG11/ZNF91/IL33/UGCG/RGL2/CLK4/HNMT/SORL1/LPAR6/ST6GALNAC2/AHNAK2/TXNIP/CCNG2/CFH/LRIG1/ZNF580/CLK1/TPBG/MEGF6/MZF1/SLC7A2/ZNF395/ATP8B1/TTC28/CPE/CCNL2/KDM4B/GRAMD1C/C16orf45/CHST15/N4BP2L2/NISCH/IKBKB/NOTCH2NL/PILRB/PLAT/PODNL1/MAOA/CROT/COL4A5/MUC1/SLC1A1/SYT17/STC2/STEAP4/TMC5/CYBRD1
+BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING                                                                                                                                                            STOM/SDC2/STAT5B/ENPP2/FRMD4A/PTPRD/SCAPER/DNAJB4/OBSL1/AVPR2/PTPRS/TCF15/PEX3/ASPSCR1/NR2F1/SMARCA2/MORC3/TTC37/SIRT1/SEMA3F/TLE3/SRSF11/CCNH/NR2F2/SETD2/TMEM47/TNKS/CDK14/BCAT2/ADCY9/LRRC8E/CRTC3/AKAP10/RANBP3/GSTM5/PPP3CB/PDE4A/TM2D1/RECK/SPOP/PCGF3/RASA1/ECE1/BTF3/SPRED2/RAD17/KCNQ1/KCNAB1/ERLIN2/RB1/MRPS27/PPP3CA/EXOC7/METTL3/WBP4/HDAC4/EPB41L3/AP1G2/FEZ1/HOXD3/TMEM168/CCPG1/EID1/PIK3R1/CREBBP/AMH/MAN2A1/ITM2B/BNIP3L/SCAMP1/NID1/UBE2B/KDR/LIMCH1/ASAH1/NHLRC2/STK39/WNT5A/GPR39/FBXO38/FILIP1L/WFS1/ACSL3/PDS5B/LINC00260/HOOK2/ZNF235/F2R/PSD4/GULP1/COL15A1/SLC24A3/APC/SNCAIP/GATM/SFI1/CAMK2N1/NDN/PTPRN2/ARHGEF10/FBXL5/ITM2A/PDCD6/ZNF444/MEF2C/RPS6KA2/RARRES2/LPAR1/EDEM3/FNDC3A/DCHS1/ZFYVE16/LEPR/REEP5/THSD7A/RUNX1T1/ZNF839/COL21A1/UBL3/JAM2/SNAI2/GIPC2/PJA2/SPOCK1/CDH13/SOCS2/SYNE1/NBL1/MYOF/JAM3/PNISR/PDE1A/TRPC1/KL/ANKRA2/FAM172A/FAT4/PTGER3/EFEMP1/TSPAN7/IRAK3/SESN1/CAV1/MKL2/SEMA3C/EDNRA/ZBTB16/TGFB1I1/SPATA7/NBR2/SPDEF/CCDC106/ECM2/ABCG2/MEOX2/IKBKB/AGTR1/ZEB1/GPRASP1/DKK2/IGFBP4/SPARCL1/IRS1/AMIGO2/LMOD1/DCN/MAOA/IL6ST/ZCCHC24/PDZRN3/PDGFD/MAOB/RNASE4/C7/PSD3/CILP/ABCA8
+</code></pre>
+
+<p>用<code>clusterProfiler</code>分析有多种好处，一个是你可以用<code>compareCluster</code>比较不同的条件，还有就是有非常好的可视化函数，《<a href="https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA">enrichplot: 让你们对clusterProfiler系列包无法自拔</a>》这篇文章你不容错过。</p>
+
+<p>比如：</p>
+
+<pre><code>&gt; cnetplot(x, foldChange=geneList)  
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/enrichplot/2018-11-01-125817_1280x800_scrot.png" alt="" /></p>
+
+<pre><code>&gt; gseaplot2(y, 1)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/enrichplot/2018-11-01-125757_1280x800_scrot.png" alt="" /></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/clusterprofiler/">clusterProfiler</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/11/un-abstract-coding/" data-tooltip="王八拳编程及其它">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/10/for-postgraduate-student/" data-tooltip="给硕博考生的一封信">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/11/un-abstract-coding/" data-tooltip="王八拳编程及其它">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/10/for-postgraduate-student/" data-tooltip="给硕博考生的一封信">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F11%2Fmsigdf_clusterprofiler%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F11%2Fmsigdf_clusterprofiler%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F11%2Fmsigdf_clusterprofiler%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2018\/11\/msigdf_clusterprofiler\/';
+          
+            this.page.identifier = '\/2018\/11\/msigdf_clusterprofiler\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

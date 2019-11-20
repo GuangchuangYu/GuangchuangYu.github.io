@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="你是否对《R包辣鸡之CorMut》之篇还有印象？没有的话，快点打开阅读一下，这文章让作者毕业了，毕竟发表的是一篇Bioinformatics。
+
+《[连载3]：辣眼睛，一篇抄袭引发的系列血案！》，而这一篇文章中揭露了某讲师抄袭了两个R包，晋升副教授了！文章中还稍带了另外一个学生也是抄袭，当然也发表了SCI，也毕业了。
+
+今天讲另外一个R包，它做下面的事情：
+
+
+
+当然前面的事情是goseq干的，它的功能就是衔接了goseq的输出，让我们还看看它每一步都在做什么。">
+
+
+<meta property="og:description" content="你是否对《R包辣鸡之CorMut》之篇还有印象？没有的话，快点打开阅读一下，这文章让作者毕业了，毕竟发表的是一篇Bioinformatics。
+
+《[连载3]：辣眼睛，一篇抄袭引发的系列血案！》，而这一篇文章中揭露了某讲师抄袭了两个R包，晋升副教授了！文章中还稍带了另外一个学生也是抄袭，当然也发表了SCI，也毕业了。
+
+今天讲另外一个R包，它做下面的事情：
+
+
+
+当然前面的事情是goseq干的，它的功能就是衔接了goseq的输出，让我们还看看它每一步都在做什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你还在愁毕业？隔壁实验室的小哥从网上抄了几十行代码打了个R包，发了SCI，毕业了！">
+<meta name="twitter:title" content="你还在愁毕业？隔壁实验室的小哥从网上抄了几十行代码打了个R包，发了SCI，毕业了！">
+<meta property="og:url" content="https://guangchuangyu.github.io/2019/03/gogadget/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2019/03/gogadget/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="你是否对《R包辣鸡之CorMut》之篇还有印象？没有的话，快点打开阅读一下，这文章让作者毕业了，毕竟发表的是一篇Bioinformatics。
+
+《[连载3]：辣眼睛，一篇抄袭引发的系列血案！》，而这一篇文章中揭露了某讲师抄袭了两个R包，晋升副教授了！文章中还稍带了另外一个学生也是抄袭，当然也发表了SCI，也毕业了。
+
+今天讲另外一个R包，它做下面的事情：
+
+
+
+当然前面的事情是goseq干的，它的功能就是衔接了goseq的输出，让我们还看看它每一步都在做什么。">
+<meta name="twitter:description" content="你是否对《R包辣鸡之CorMut》之篇还有印象？没有的话，快点打开阅读一下，这文章让作者毕业了，毕竟发表的是一篇Bioinformatics。
+
+《[连载3]：辣眼睛，一篇抄袭引发的系列血案！》，而这一篇文章中揭露了某讲师抄袭了两个R包，晋升副教授了！文章中还稍带了另外一个学生也是抄袭，当然也发表了SCI，也毕业了。
+
+今天讲另外一个R包，它做下面的事情：
+
+
+
+当然前面的事情是goseq干的，它的功能就是衔接了goseq的输出，让我们还看看它每一步都在做什么。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-03-08T12:23:16">
+  
+  
+    <meta property="article:modified_time" content="2019-03-08T12:23:16">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="gogadget">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>你还在愁毕业？隔壁实验室的小哥从网上抄了几十行代码打了个R包，发了SCI，毕业了！</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2019/03/gogadget/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      你还在愁毕业？隔壁实验室的小哥从网上抄了几十行代码打了个R包，发了SCI，毕业了！
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-03-08T12:23:16&#43;08:00">
+        
+  March 8, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>你是否对《<a href="https://mp.weixin.qq.com/s/JODhkZ5-qPMDx1zrWHyW_w">R包辣鸡之CorMut</a>》之篇还有印象？没有的话，快点打开阅读一下，这文章让作者毕业了，毕竟发表的是一篇Bioinformatics。</p>
+
+<p>《<a href="http://mp.weixin.qq.com/s/AsRxsRw-0N5HOSqN0d_IIw">[连载3]：辣眼睛，一篇抄袭引发的系列血案！</a>》，而这一篇文章中揭露了某讲师抄袭了两个R包，晋升副教授了！文章中还稍带了另外一个学生也是抄袭，当然也发表了SCI，也毕业了。</p>
+
+<p>今天讲另外一个R包，它做下面的事情：</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/gogadget/workflow.jpg" alt="" /></p>
+
+<p>当然前面的事情是goseq干的，它的功能就是衔接了goseq的输出，让我们还看看它每一步都在做什么。</p>
+
+<h3 id="gogadget-p-adjust">gogadget.p.adjust</h3>
+
+<pre><code class="language-r">gogadget.p.adjust &lt;- function(x, method = &quot;BH&quot;) {
+    adjustedP &lt;- p.adjust(x$over_represented_pvalue, method = method)
+    x[&quot;adjusted_pvalue&quot;] &lt;- adjustedP
+    return(x)
+}
+</code></pre>
+
+<p>这一步干的事情，就是给goseq的输出加一个adjusted pvalue，仅此而已。</p>
+
+<h3 id="gogadget-explore">gogadget.explore</h3>
+
+<pre><code class="language-r">gogadget.explore &lt;- function(x , nmin = 10, stepmin = 10, nmax = 100, stepmax = 100, steps = 4, cutoff = 0.05, legend = &quot;topleft&quot;) {
+    seqmin &lt;- seq(nmin, nmin+stepmin*steps, by = stepmin)
+    seqmax &lt;- seq(nmax, nmax+stepmax*steps, by = stepmax)
+    x.bar &lt;- c()
+    x.name &lt;- c()
+    for(nmin in seqmin) {
+        for(nmax in seqmax) {
+        x.filter &lt;- gogadget.filter(x, cutoff = cutoff, nmin = nmin, nmax = nmax)
+        cat(&quot;Filtering with min.&quot;, nmin,&quot;and max.&quot;, nmax, &quot;genes results in:&quot;, length(x.filter$category), &quot;GO terms&quot;, &quot;\n&quot;)
+        x.bar &lt;- append(x.bar, length(x.filter$category))
+        x.name &lt;- append(x.name, nmin)
+        }
+    }
+    barplot(x.bar, ylab = &quot;Number of GO terms&quot;, col=c(1:length(seqmax)), names = c(x.name), cex.names = 0.7,
+    legend = seqmax, args.legend = list(x = legend, bty = &quot;n&quot;, title = &quot;Max.&quot;, cex = 0.8), xlab = &quot;Min.&quot;)
+}
+</code></pre>
+
+<p>这个函数就是取不同的gene set size去过滤数据，看看能留下多少结果，比如说基因集的大小在[10, 100]的情况下，过滤后有多少个结果，在[20, 100]的情况下又有多少个结果，以此类推，然后画一个柱状图，这就是所谓的结果探索了，探索是为了衔接下一步的过滤。</p>
+
+<p>它的理由在于富集的结果冗余度很大，看不过来，于是过滤一下，比如说就限制在基因集[50, 100]之间吧，结果出来的数目比较少。这简直是掩耳盗铃！因为完全没有任何生物学意义的过滤。结果太多，你不是去冗余，而是随意的过滤，只为了数目少。</p>
+
+<h3 id="gogadget-filter">gogadget.filter</h3>
+
+<pre><code class="language-r">gogadget.filter &lt;- function(x, cutoff = 0.05, nmin = 50, nmax = 250) {
+    x.sig &lt;- x[x[, &quot;adjusted_pvalue&quot;] &lt; cutoff,]
+    x.sig.filter &lt;- x.sig[x.sig[, &quot;numInCat&quot;] &gt;= nmin &amp; x.sig[, &quot;numInCat&quot;] &lt;= nmax,]
+    return(x.sig.filter)
+}
+</code></pre>
+
+<p>有了上面的解说，你该看得懂这个过滤了，一方面是p值，另一方面是指定基因集的大小进行过滤，而根据嘛，就是上面所谓的探索，就是一个柱状图，让你看什么样的基因集大小区间，出来的结果比较符合你想要的数目，真的就只是看数目，你很可能把最有用的信息都去掉，留下来一些高度冗余的，几乎没有信息量的结果。</p>
+
+<h3 id="gogadget-heatmap">gogadget.heatmap</h3>
+
+<pre><code class="language-r">gogadget.heatmap &lt;- function(x, genes, genome, id, fetch.cats = c(&quot;GO:CC&quot;,&quot;GO:BP&quot;,&quot;GO:MF&quot;), symm = T, trace = &quot;none&quot;, density.info = &quot;none&quot;, cexRow = 0.4, cexCol = 0.4, col = my_palette, margins = c(3, 11), revC = T, ...) {
+    allGOs &lt;- stack(getgo(genes, genome, id, fetch.cats = fetch.cats))
+    b &lt;- 1
+    name &lt;- list()
+    name[1:length(x$category)] &lt;- paste(&quot;var&quot;, 1:length(x$category), sep = &quot;&quot;)
+    for(a in x$category) {
+        new &lt;- allGOs[allGOs[&quot;values&quot;] == a,]
+        name[[b]] &lt;- new$ind
+        b &lt;- b+1
+    }
+    m &lt;- matrix(nrow = length(name), ncol = length(name))
+    for(i in 1:length(name)) {
+        for(j in 1:length(name)) {
+        overlap &lt;- name[[i]] %in% name[[j]]
+        m[i,j] &lt;- length(overlap[overlap == TRUE])
+        }
+    }
+    GOterms &lt;- subset(x, category == x$category, select = c(category, term))
+    colnames(m) &lt;- GOterms$category
+    mp &lt;- cor(m)
+    rownames(mp) &lt;- GOterms$term
+    my_palette &lt;- colorRampPalette(c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))(n = 299)
+    heatmap.2(mp, symm = symm, trace = trace, density.info = density.info, cexRow = cexRow, cexCol = cexCol, col = col, margins = margins, revC = revC, ...)
+    mp &lt;&lt;- mp
+}
+</code></pre>
+
+<p>富集到的GO，两两计算一下两个基因集overlap了多少，以此形成一个矩阵，然后对矩阵求pearson相关系数，对相关系数用heatmap.2画热图。这就是所谓对冗余GO进行层次聚类。</p>
+
+<p>PS：这里犯了一个大忌，用了&lt;&lt;-。</p>
+
+<h3 id="gogadget-cytoscape">gogadget.cytoscape</h3>
+
+<pre><code class="language-r">gogadget.cytoscape &lt;- function(x, file = &quot;File4cytoscape.txt&quot;) {
+    x.cytoscape &lt;- x[,c(&quot;category&quot;, &quot;term&quot;, &quot;over_represented_pvalue&quot;, &quot;adjusted_pvalue&quot;)]
+    colnames(x.cytoscape) &lt;- c(&quot;GO.ID&quot;, &quot;Description&quot;, &quot;p.Val&quot;, &quot;FDR&quot;)
+    write.table(x.cytoscape, file = file, sep = &quot;\t&quot;, row.names = F, quote = F)
+    cat(file,&quot;is written to your working directory.\n&quot;)
+}
+</code></pre>
+
+<p>这个就是把goseq的结果写成一个table，这样可以导入到cytoscape里去。当然光这个文件是不够的，所以需要下面这一步的文件。</p>
+
+<h3 id="gogadget-gmt">gogadget.gmt</h3>
+
+<pre><code class="language-r">gogadget.gmt &lt;- function(x, genes, genome, id, fetch.cats=c(&quot;GO:CC&quot;,&quot;GO:BP&quot;,&quot;GO:MF&quot;), file = &quot;cytoscape.gmt&quot;) {
+    allGOs &lt;- stack(getgo(genes, genome, id, fetch.cats = fetch.cats))
+    newdf&lt;-as.data.frame(cbind(x$category,x$term))
+    colnames(newdf)&lt;-c(&quot;values&quot;,&quot;term&quot;)
+    reshaped &lt;- group_by(allGOs, values) %&gt;% summarise(genes = paste(ind, collapse = &quot;\t&quot;))
+    reshaped.terms &lt;- left_join(reshaped, newdf, by = &quot;values&quot;,copy = T)
+    reshaped.terms &lt;- reshaped.terms[,c(1,3,2)]
+    write.table(reshaped.terms, file = file, sep = &quot;\t&quot;, quote = FALSE, row.names = FALSE, col.names = FALSE)
+}
+</code></pre>
+
+<p>这个是生成gmt文件，这样有基因集的信息，和上面的输出一起，两个文件就可以通过cytoscape画enrichment map了。</p>
+
+<p>然后这个包的功能就完了，而且所有代码也完了！你看到上面函数用到的getgo这些函数，是来自于goseq的，这个包并没有写工具性的函数被上面的函数所调用，它的代码真的就是这么多。</p>
+
+<h3 id="审稿吐槽">审稿吐槽</h3>
+
+<p>我帮他数了一下，78行代码，其实在它提交文章的时候，我就帮他数过了，66行，后来它还加了12行。</p>
+
+<blockquote>
+<p>Some of gogadget’s functions were developed with help and advice from users of the Biostars (<a href="https://www.biostars.org/">https://www.biostars.org/</a>) and Bioconductor Support (<a href="https://support.bioconductor.org/">https://support.bioconductor.org/</a>) website.</p>
+</blockquote>
+
+<p>而且作者在致谢中还感谢了网友们的帮助才有这几十行的代码。就这样一个R包，发表了SCI论文：</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/gogadget/paper.jpg" alt="" /></p>
+
+<p>你能想象作者竟然敢把它submit到Bioinformatics上吗？而Bioinformatics的Editor竟然还送审了！想我8年前提交clusterProfiler到Bioinformatics上，起码那年头也是第一次你可以在R包里批量对多个条件做富集分析并且把结果用点图呈现出来，好比较。记住这是8年前！然后Editor直接reject，并且说你不要再提交了，我们不接受这篇文章以任何形式再次提交！我真的好受伤。</p>
+
+<p>这篇gogadget的文章就是我审的稿，我直接就reject了，9月底reject，作者很快投了个小杂志，以极快的速度就被接收了：</p>
+
+<pre><code>Manuscript accepted:
+02 December 2016
+Manuscript received:
+06 October 2016
+</code></pre>
+
+<p>（鉴于文章已经发表了几年，审稿的保密性和匿名性已经不重要）我当时的审稿意见是：</p>
+
+<blockquote>
+<p>This R package is hosted in sourceforge. Any published package should be hosted in either Bioconductor or CRAN as they will test and build the package (ensure it’s runnable in current R release) and more easy to install.</p>
+</blockquote>
+
+<p>第一点，要发表R包，最好放CRAN或Bioconductor上，起码易安装，也有人去针对当前的R版本进行测试和编译。从后面发表的文章看，作者无视我的建议。</p>
+
+<blockquote>
+<p>This gogadge package is quite tiny with only 66 lines of source code and its functions are quite simple without any innovation.</p>
+</blockquote>
+
+<p>改成了78行，依然是太过于简章粗暴。</p>
+
+<blockquote>
+<p>For simplifying result to help interpretation, there are several tools that employ GO semantic similarity measure to remove redundant terms such as REVIGO, clusterProfiler etc. Filter by number as defined in gogadget.filter is too simply and can’t resolve the redundant issue.</p>
+</blockquote>
+
+<p>指出它并不能解决问题，而且明明有更好的方案已经存在。</p>
+
+<blockquote>
+<p>Heatmap and cytoscape’s enrichmap are good visualization tools for visualize related (redundant) terms but not directly solving the issue to simplify the result and help interpretation.</p>
+</blockquote>
+
+<p>可视化有助于去解析结果，但并没有直接解决问题。</p>
+
+<blockquote>
+<p>In my opinion, there is a better tool, RedundancyMiner, that can plot heatmap for GO terms. For enrichment map, this tool only generate txt file for cytoscape. Bioconductor package, clusterProfiler, can visualize enrichment map. It can simplify results by removing redundant terms using semantic similarity calculation followed by visualizing using enrichment map. All the functions provided by gogadget have better alternative in other software packages.
+This package is just too simple without innovation.</p>
+</blockquote>
+
+<p>指出来所有功能都有更好的实现存在，完全没有创新。其实另一个reviewer也指出说，没有和已有的包做比较，作者选择无视，因为根本没法拉出来和别的包溜一溜啊。但凡是像我这种review的时候，打开源码一看的，它必死无疑了。</p>
+
+<blockquote>
+<p>In addition, as there are many R packages that can perform GO enrichment analysis, such as GOstats, clusterProfiler, gage, geneAnswer, etc, we expect a package that designed for helping interpreting and visualizing result to work with other R packages to help users integrate their tools with existing pipeline. But unfortunately, gogadge only work with goseq.</p>
+</blockquote>
+
+<p>最后指出一点，作为一个目标是帮助解析结果的包，最好能够支持不同的软件输出，这样可以被整合到各种已有的pipeline中，而不是只针对一个goseq，显然作者也无视这一建议。</p>
+
+<p>在被拒稿之后，作者根本就无视审稿意见，不做提升，立马换一个杂志投，然后小杂志一下就中了，影响因子1.96，华丽丽地可以毕业了。靠着网友的解答，整理一下小代码，打个包，包装一下，就这样发表了。</p>
+
+<h3 id="代码靠网友">代码靠网友</h3>
+
+<blockquote>
+<p>Some of gogadget’s functions were developed with help and advice from users of the Biostars (<a href="https://www.biostars.org/">https://www.biostars.org/</a>) and Bioconductor Support (<a href="https://support.bioconductor.org/">https://support.bioconductor.org/</a>) website.</p>
+</blockquote>
+
+<p>在这里以gogadget.gmt为例，这个函数从goseq中提取基因的GO注释（用的是goseq中的函数getgo），目标是要写出一个gmt格式的文件，一个GO是一column，另一个column是对应的所有基因ID，以tab分隔，好了，这么简单的事情，作者不知道怎么搞，于是在Bioconductor上问网友（<a href="https://support.bioconductor.org/p/77134/）。">https://support.bioconductor.org/p/77134/）。</a></p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/gogadget/support_site.jpg" alt="" /></p>
+
+<p>网友给出代码，天了撸，他竟然继续提问，如果要用GO Description而不是Term，该怎么搞，这就是简单的merge而已啊，网友给出的是dplyr的代码，告诉他用left_join。</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/gogadget/support_site-2.jpg" alt="" /></p>
+
+<p>让我们再翻出来gogadget.gmt函数：</p>
+
+<pre><code class="language-r">gogadget.gmt &lt;- function(x, genes, genome, id, fetch.cats=c(&quot;GO:CC&quot;,&quot;GO:BP&quot;,&quot;GO:MF&quot;), file = &quot;cytoscape.gmt&quot;) {
+    allGOs &lt;- stack(getgo(genes, genome, id, fetch.cats = fetch.cats))
+    newdf&lt;-as.data.frame(cbind(x$category,x$term))
+    colnames(newdf)&lt;-c(&quot;values&quot;,&quot;term&quot;)
+    reshaped &lt;- group_by(allGOs, values) %&gt;% summarise(genes = paste(ind, collapse = &quot;\t&quot;))
+    reshaped.terms &lt;- left_join(reshaped, newdf, by = &quot;values&quot;,copy = T)
+    reshaped.terms &lt;- reshaped.terms[,c(1,3,2)]
+    write.table(reshaped.terms, file = file, sep = &quot;\t&quot;, quote = FALSE, row.names = FALSE, col.names = FALSE)
+}
+</code></pre>
+
+<p>后面几行和网友回答中给出的（下面的）代码，是不是一模一样？</p>
+
+<pre><code class="language-r">reshaped &lt;- group_by(sorted, values) %&gt;% summarise(genes = paste(ind, collapse = &quot;\t&quot;))
+added.terms &lt;- left_join(reshaped, newdf, by = &quot;values&quot;)
+## this won't have to columns in the order you'd like, so change them
+added.terms &lt;- added.terms[,c(1,3,2)]
+write.table(added.terms, file = &quot;/tmp/tmp.txt&quot;, sep = &quot;\t&quot;, quote = FALSE, row.names = FALSE, col.names = FALSE)
+</code></pre>
+
+<p>这只是我搜了一下Bioconductor support site之后的发现，如果你有心去搜biostar的话，你会发现更多的代码来自于网友。</p>
+
+<p>吐槽归吐槽，写这篇文章是为了跟大家讲，小文章真的挺容易发表的，但凡用点心的研究生，都不应该存在毕业的问题。隔壁实验室都人手一篇了，你还在愁啊愁！赶紧学习如何写R包。只有写不出R包，没有写出来发表不了的！简单如本文，代码还来自于网友，发表了，硬伤如《<a href="https://mp.weixin.qq.com/s/JODhkZ5-qPMDx1zrWHyW_w">R包辣鸡之CorMut</a>》的，也发表了，甚至于开头讲到的某讲师靠晋升副教授的，也是靠发表了几篇抄袭的R包（科研无捷径，像这种无耻到连裤衩都不要的故事，请大家一起来鄙视）。</p>
+
+<p>你即将要写的R包，也会发表的！</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/gogadget/">gogadget</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/03/ggupset/" data-tooltip="ggupset -- ggplot2版本的upset plot">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/03/hku-application/" data-tooltip="港校申请指北：考研考博失利之后的另一选择">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2019/03/gogadget/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2019/03/gogadget/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2019/03/gogadget/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/03/ggupset/" data-tooltip="ggupset -- ggplot2版本的upset plot">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/03/hku-application/" data-tooltip="港校申请指北：考研考博失利之后的另一选择">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2019/03/gogadget/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2019/03/gogadget/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2019/03/gogadget/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F03%2Fgogadget%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F03%2Fgogadget%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F03%2Fgogadget%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2019\/03\/gogadget\/';
+          
+            this.page.identifier = '\/2019\/03\/gogadget\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

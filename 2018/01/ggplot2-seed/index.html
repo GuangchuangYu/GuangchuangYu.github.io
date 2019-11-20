@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="今天以ggplot2的一个坑来说一下，坑无处不在，防不胜防，你大可以试一下下面的代码：
+
+&gt; set.seed(123)
+&gt; require(ggplot2)
+Loading required package: ggplot2
+&gt; rnorm(3)
+[1]  0.8005543  1.1902066 -1.6895557
+&gt; set.seed(123)
+&gt; rnorm(3)
+[1] -0.5604756 -0.2301775  1.5587083
+
+
+在两次set.seed和rnorm之间，第一次因为加载了ggplot2，结果就不一样了！这必须是第二次是正确答案，也就是说加载ggplot2把你的seed给吃了！加载包会改变R环境？这绝对不是好主意，我们来试试加载别的包试试，比如我的clusterProfiler:">
+
+
+<meta property="og:description" content="今天以ggplot2的一个坑来说一下，坑无处不在，防不胜防，你大可以试一下下面的代码：
+
+&gt; set.seed(123)
+&gt; require(ggplot2)
+Loading required package: ggplot2
+&gt; rnorm(3)
+[1]  0.8005543  1.1902066 -1.6895557
+&gt; set.seed(123)
+&gt; rnorm(3)
+[1] -0.5604756 -0.2301775  1.5587083
+
+
+在两次set.seed和rnorm之间，第一次因为加载了ggplot2，结果就不一样了！这必须是第二次是正确答案，也就是说加载ggplot2把你的seed给吃了！加载包会改变R环境？这绝对不是好主意，我们来试试加载别的包试试，比如我的clusterProfiler:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ggplot2的一个坑">
+<meta name="twitter:title" content="ggplot2的一个坑">
+<meta property="og:url" content="https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="今天以ggplot2的一个坑来说一下，坑无处不在，防不胜防，你大可以试一下下面的代码：
+
+&gt; set.seed(123)
+&gt; require(ggplot2)
+Loading required package: ggplot2
+&gt; rnorm(3)
+[1]  0.8005543  1.1902066 -1.6895557
+&gt; set.seed(123)
+&gt; rnorm(3)
+[1] -0.5604756 -0.2301775  1.5587083
+
+
+在两次set.seed和rnorm之间，第一次因为加载了ggplot2，结果就不一样了！这必须是第二次是正确答案，也就是说加载ggplot2把你的seed给吃了！加载包会改变R环境？这绝对不是好主意，我们来试试加载别的包试试，比如我的clusterProfiler:">
+<meta name="twitter:description" content="今天以ggplot2的一个坑来说一下，坑无处不在，防不胜防，你大可以试一下下面的代码：
+
+&gt; set.seed(123)
+&gt; require(ggplot2)
+Loading required package: ggplot2
+&gt; rnorm(3)
+[1]  0.8005543  1.1902066 -1.6895557
+&gt; set.seed(123)
+&gt; rnorm(3)
+[1] -0.5604756 -0.2301775  1.5587083
+
+
+在两次set.seed和rnorm之间，第一次因为加载了ggplot2，结果就不一样了！这必须是第二次是正确答案，也就是说加载ggplot2把你的seed给吃了！加载包会改变R环境？这绝对不是好主意，我们来试试加载别的包试试，比如我的clusterProfiler:">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-01-22T07:23:00">
+  
+  
+    <meta property="article:modified_time" content="2018-01-22T07:23:00">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="ggplot2">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>ggplot2的一个坑</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      ggplot2的一个坑
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-01-22T07:23:00&#43;08:00">
+        
+  January 22, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>今天以ggplot2的一个坑来说一下，坑无处不在，防不胜防，你大可以试一下下面的代码：</p>
+
+<pre><code>&gt; set.seed(123)
+&gt; require(ggplot2)
+Loading required package: ggplot2
+&gt; rnorm(3)
+[1]  0.8005543  1.1902066 -1.6895557
+&gt; set.seed(123)
+&gt; rnorm(3)
+[1] -0.5604756 -0.2301775  1.5587083
+</code></pre>
+
+<p>在两次set.seed和rnorm之间，第一次因为加载了ggplot2，结果就不一样了！这必须是第二次是正确答案，也就是说加载ggplot2把你的seed给吃了！加载包会改变R环境？这绝对不是好主意，我们来试试加载别的包试试，比如我的clusterProfiler:</p>
+
+<pre><code>&gt; set.seed(123)
+&gt; require(clusterProfiler)
+Loading required package: clusterProfiler
+Loading required package: DOSE
+
+DOSE v3.4.0  For help: https://guangchuangyu.github.io/DOSE
+
+If you use DOSE in published research, please cite:
+Guangchuang Yu, Li-Gen Wang, Guang-Rong Yan, Qing-Yu He. DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis. Bioinformatics 2015, 31(4):608-609
+
+clusterProfiler v3.6.0  For help: https://guangchuangyu.github.io/clusterProfiler
+
+If you use clusterProfiler in published research, please cite:
+Guangchuang Yu., Li-Gen Wang, Yanyan Han, Qing-Yu He. clusterProfiler: an R package for comparing biological themes among gene clusters. OMICS: A Journal of Integrative Biology. 2012, 16(5):284-287.
+&gt; rnorm(3)
+[1] -0.5604756 -0.2301775  1.5587083
+</code></pre>
+
+<p>显然并不影响！这才是正确的打开方式。而这种雷，你不小心踩了，都不知道在那里死的！</p>
+
+<p>我们来看看代码：</p>
+
+<p><a href="https://github.com/tidyverse/ggplot2/blob/master/R/zzz.r">https://github.com/tidyverse/ggplot2/blob/master/R/zzz.r</a></p>
+
+<pre><code>.onAttach &lt;- function(...) {
+  if (!interactive() || stats::runif(1) &gt; 0.1) return()
+
+  tips &lt;- c(
+    &quot;Need help? Try the ggplot2 mailing list: http://groups.google.com/group/ggplot2.&quot;,
+    &quot;Find out what's changed in ggplot2 at http://github.com/tidyverse/ggplot2/releases.&quot;,
+    &quot;Use suppressPackageStartupMessages() to eliminate package startup messages.&quot;,
+    &quot;Stackoverflow is a great place to get help: http://stackoverflow.com/tags/ggplot2.&quot;,
+    &quot;Need help getting started? Try the cookbook for R: http://www.cookbook-r.com/Graphs/&quot;,
+    &quot;Want to understand how all the pieces fit together? Buy the ggplot2 book: http://ggplot2.org/book/&quot;
+  )
+
+  tip &lt;- sample(tips, 1)
+  packageStartupMessage(paste(strwrap(tip), collapse = &quot;\n&quot;))
+}
+</code></pre>
+
+<p>因为你加载包的时候，hadley用了sample，也就是说你的seed，被加载时候的sample指令给用掉了。这个坑，就在两天前被Jim Hester给修复了，用了<code>withr::with_preserve_seed</code>，这个坑存在了两年多啊！</p>
+
+<pre><code>.onAttach &lt;- function(...) {
+  withr::with_preserve_seed({
+    if (!interactive() || stats::runif(1) &gt; 0.1) return()
+
+    tips &lt;- c(
+      &quot;RStudio Community is a great place to get help: https://community.rstudio.com/c/tidyverse.&quot;,
+      &quot;Find out what's changed in ggplot2 at https://github.com/tidyverse/ggplot2/releases.&quot;,
+      &quot;Use suppressPackageStartupMessages() to eliminate package startup messages.&quot;,
+      &quot;Need help? Try Stackoverflow: https://stackoverflow.com/tags/ggplot2.&quot;,
+      &quot;Need help getting started? Try the cookbook for R: http://www.cookbook-r.com/Graphs/&quot;,
+      &quot;Want to understand how all the pieces fit together? See the R for Data Science book: http://r4ds.had.co.nz/&quot;
+    )
+
+    tip &lt;- sample(tips, 1)
+    packageStartupMessage(paste(strwrap(tip), collapse = &quot;\n&quot;))
+  })
+}
+</code></pre>
+
+<p>之前写的<a href="http://mp.weixin.qq.com/s/nt3siXtdTGKQfTBt_vhf_g">R的诡异事件</a>，都是R容易掉的坑，而大家面临的，远不止这些，因为「包治百病」嘛，都是在用R包，而各种R包，还可能有各种各样想不到的坑在等着你！而且修复bug这种事情，远不比表面看的那么简单，不信看看微软的bug（<a href="http://azaleasays.com/2017/01/22/30-year-old-bug-in-microsoft-excel/">http://azaleasays.com/2017/01/22/30-year-old-bug-in-microsoft-excel/</a>）</p>
+
+<blockquote>
+<p>在 Excel 诞生之前，电子表格软件的天下是属于 Lotus 1-2-3 的。而 Lotus 1-2-3 就假设1900年是闰年，这样计算和处理闰年方便快捷。Excel 为了和市场领导者 Lotus 1-2-3 兼容，使用了同样的日期数据格式，并且兼容了这个 bug，这样用户就可以无缝地在 Excel 上读写 Lotus 1-2-3 文件。几年后，Excel 打败了 Lotus 1-2-3，但是 Excel 也要兼容自己老版本的文件，一旦修复了这个 bug，则：</p>
+
+<p>所有 Excel 文件里的日期，都会差一天。修正这些数据要花费人力物力。</p>
+
+<p>使用日期相关函数的公式，可能会得出错误结果。</p>
+
+<p>会导致兼容 Excel 日期的其他软件不再兼容。</p>
+
+<p>所以，我们决定让这个 bug 长命百岁。</p>
+</blockquote>
+
+<h2 id="看完还想看">看完还想看</h2>
+
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/JODhkZ5-qPMDx1zrWHyW_w">R包辣鸡之CorMut</a></li>
+<li><a href="http://mp.weixin.qq.com/s/cu7J62fVQ74vaOYuRXUmqA">有魔性的图来一发</a></li>
+<li><a href="https://mp.weixin.qq.com/s/9jQQlLRpWL01K2Py8CsnNw">听说你想学R？</a></li>
+<li><a href="https://mp.weixin.qq.com/s/gVzjoYRB4vfq_8TMy3F8TA">R语言的最好资源，一个就够！</a></li>
+<li><a href="https://mp.weixin.qq.com/s/4DojzE5Vfmkm80u2MygNcQ">clifun: 在R里装装逼</a></li>
+<li><a href="http://mp.weixin.qq.com/s/brAfMBIwSYXS852K2uNqRg">Update R packages</a></li>
+<li><a href="http://mp.weixin.qq.com/s/oevSP-AvpkaRxxlIlVkuoQ">R binary is untrustable</a></li>
+<li><a href="https://mp.weixin.qq.com/s/kBnLyNl2anXuMa6sDepRQw">一个要复活的R包和一个404的网站</a></li>
+</ul>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/ggplot2/">ggplot2</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/01/pubmed-still-update/" data-tooltip="PubMed没有停更">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/01/pubmed-stop-update/" data-tooltip="PubMed停更？">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/01/pubmed-still-update/" data-tooltip="PubMed没有停更">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/01/pubmed-stop-update/" data-tooltip="PubMed停更？">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/01/ggplot2-seed/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F01%2Fggplot2-seed%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F01%2Fggplot2-seed%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F01%2Fggplot2-seed%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2018\/01\/ggplot2-seed\/';
+          
+            this.page.identifier = '\/2018\/01\/ggplot2-seed\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

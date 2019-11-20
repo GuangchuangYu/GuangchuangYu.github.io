@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="Ewan Birney最近的一篇博文（Five statistical things I wished I had been taught 20 years ago
+）讲述了统计对于生物学的重要性。
+
+一开始从RA Fisher讲起，说生物压根就是统计。Fisher是个农业学家，他所建立的那些统计方法，都是从生物学问题出发。
+
+Ewan所谈及的五个方面分别是：
+
+
+1. Non parametric statistics. These are statistical tests which make a
+bare minimum of assumptions of underlying distributions; in biology we
+are rarely confident that we know the underlying distribution, and hand
+waving about central limit theorem can only get you so far. Wherever
+possible you should use a non parameteric test. This is Mann-Whitney (or
+Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
+because this is not quite true. They test something which is closely
+related to the median) of two distributions, Spearman&rsquo;s Rho (rather
+pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
+(though if I get this right, you can&rsquo;t in Kruskal do the more
+sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
+forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
+like really good vodka) test of whether two sets of observations come
+from the same distribution. All of these methods have a basic theme of
+doing things on the rank of items in a distribution, not the actual
+level. So - if in doubt, do things on the rank of metric, rather than
+the metric itself.
+">
+
+
+<meta property="og:description" content="Ewan Birney最近的一篇博文（Five statistical things I wished I had been taught 20 years ago
+）讲述了统计对于生物学的重要性。
+
+一开始从RA Fisher讲起，说生物压根就是统计。Fisher是个农业学家，他所建立的那些统计方法，都是从生物学问题出发。
+
+Ewan所谈及的五个方面分别是：
+
+
+1. Non parametric statistics. These are statistical tests which make a
+bare minimum of assumptions of underlying distributions; in biology we
+are rarely confident that we know the underlying distribution, and hand
+waving about central limit theorem can only get you so far. Wherever
+possible you should use a non parameteric test. This is Mann-Whitney (or
+Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
+because this is not quite true. They test something which is closely
+related to the median) of two distributions, Spearman&rsquo;s Rho (rather
+pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
+(though if I get this right, you can&rsquo;t in Kruskal do the more
+sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
+forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
+like really good vodka) test of whether two sets of observations come
+from the same distribution. All of these methods have a basic theme of
+doing things on the rank of items in a distribution, not the actual
+level. So - if in doubt, do things on the rank of metric, rather than
+the metric itself.
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Five things biologists should know about statistics">
+<meta name="twitter:title" content="Five things biologists should know about statistics">
+<meta property="og:url" content="https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="Ewan Birney最近的一篇博文（Five statistical things I wished I had been taught 20 years ago
+）讲述了统计对于生物学的重要性。
+
+一开始从RA Fisher讲起，说生物压根就是统计。Fisher是个农业学家，他所建立的那些统计方法，都是从生物学问题出发。
+
+Ewan所谈及的五个方面分别是：
+
+
+1. Non parametric statistics. These are statistical tests which make a
+bare minimum of assumptions of underlying distributions; in biology we
+are rarely confident that we know the underlying distribution, and hand
+waving about central limit theorem can only get you so far. Wherever
+possible you should use a non parameteric test. This is Mann-Whitney (or
+Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
+because this is not quite true. They test something which is closely
+related to the median) of two distributions, Spearman&rsquo;s Rho (rather
+pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
+(though if I get this right, you can&rsquo;t in Kruskal do the more
+sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
+forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
+like really good vodka) test of whether two sets of observations come
+from the same distribution. All of these methods have a basic theme of
+doing things on the rank of items in a distribution, not the actual
+level. So - if in doubt, do things on the rank of metric, rather than
+the metric itself.
+">
+<meta name="twitter:description" content="Ewan Birney最近的一篇博文（Five statistical things I wished I had been taught 20 years ago
+）讲述了统计对于生物学的重要性。
+
+一开始从RA Fisher讲起，说生物压根就是统计。Fisher是个农业学家，他所建立的那些统计方法，都是从生物学问题出发。
+
+Ewan所谈及的五个方面分别是：
+
+
+1. Non parametric statistics. These are statistical tests which make a
+bare minimum of assumptions of underlying distributions; in biology we
+are rarely confident that we know the underlying distribution, and hand
+waving about central limit theorem can only get you so far. Wherever
+possible you should use a non parameteric test. This is Mann-Whitney (or
+Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
+because this is not quite true. They test something which is closely
+related to the median) of two distributions, Spearman&rsquo;s Rho (rather
+pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
+(though if I get this right, you can&rsquo;t in Kruskal do the more
+sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
+forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
+like really good vodka) test of whether two sets of observations come
+from the same distribution. All of these methods have a basic theme of
+doing things on the rank of items in a distribution, not the actual
+level. So - if in doubt, do things on the rank of metric, rather than
+the metric itself.
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2011-06-24T06:10:37">
+  
+  
+    <meta property="article:modified_time" content="2011-06-24T06:10:37">
+  
+  
+  
+    
+      <meta property="article:section" content="statistics">
+    
+  
+  
+    
+      <meta property="article:tag" content="bootstrap">
+    
+      <meta property="article:tag" content="power">
+    
+      <meta property="article:tag" content="nonparametric">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>Five things biologists should know about statistics</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Five things biologists should know about statistics
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-06-24T06:10:37&#43;08:00">
+        
+  June 24, 2011
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/statistics">statistics</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p><a href="http://www.ebi.ac.uk/~birney/">Ewan Birney</a>最近的一篇博文（<a href="http://genomeinformatician.blogspot.com/2011/06/five-statistical-things-i-wished-i-had.html">Five statistical things I wished I had been taught 20 years ago</a>
+）讲述了统计对于生物学的重要性。</p>
+
+<p>一开始从RA Fisher讲起，说生物压根就是统计。Fisher是个农业学家，他所建立的那些统计方法，都是从生物学问题出发。</p>
+
+<p>Ewan所谈及的五个方面分别是：</p>
+
+<blockquote>
+<p>1. Non parametric statistics. These are statistical tests which make a
+bare minimum of assumptions of underlying distributions; in biology we
+are rarely confident that we know the underlying distribution, and hand
+waving about central limit theorem can only get you so far. Wherever
+possible you should use a non parameteric test. This is Mann-Whitney (or
+Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
+because this is not quite true. They test something which is closely
+related to the median) of two distributions, Spearman&rsquo;s Rho (rather
+pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
+(though if I get this right, you can&rsquo;t in Kruskal do the more
+sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
+forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
+like really good vodka) test of whether two sets of observations come
+from the same distribution. All of these methods have a basic theme of
+doing things on the rank of items in a distribution, not the actual
+level. So - if in doubt, do things on the rank of metric, rather than
+the metric itself.</p>
+</blockquote>
+
+<p>学校里教统计，多半是t检验和ANOVA，这些方法都有assumption需要满足，比如正态分布啥的。多半大家是默认它满足，然后就开始套着用，这是比较危险的，如果assumption不满足，或者数据中有outliers，都可能会导致错误的结论。</p>
+
+<p>今年<a href="http://guangchuangyu.github.io/2010/11/phosphoproteome-profile-of-human-lung-cancer-cell-line-a549/">磷酸化谱的文章</a>，用到了免疫组化，实验结果的量化是由医生给出来打分值，癌组织和癌旁组织两组数据，免疫组化的数据不可能用参数统计，这个结果我就是用Wilcoxon
+signed rank test去做检验。文中所提出的其它非参统计方法，全都不会。囧</p>
+
+<p>关于相关性，这里有篇文章，比较了Pearson和Spearman： <a href="http://www.jstor.org/stable/2346598">On the Effects of Non-Normality on the Distribution of the Sample Product-Moment Correlation Coefficient</a> (Kowalski, 1975)</p>
+
+<p>还有文章说用Kendall&rsquo;s tau比Spearman&rsquo;s Rho要好： Newson R. <a href="http://www.stata-journal.com/sjpdf.html?articlenum=st0007">Parameters behind &ldquo;nonparametric&rdquo; statistics: Kendall&rsquo;s tau,Somers&rsquo; D and median differences</a>.
+Stata Journal 2002; 2(1):45-64.</p>
+
+<p>虽然作者强调非参统计，但是如果数据分布满足参数统计的assumption的话，还是用参数统计好，更加powerful。这个可能需要我们在做统计之前对数据分布做一下检验。不过正态检验其实用处也不大，小样本的话，不够powerful，大样本的话，即使不是正态分布，t-test和ANOVA也是很robust的。</p>
+
+<p>如果不满足参数统计检验的话，也不一定就得用非参统计，不负责任地说，可能用<a href="http://guangchuangyu.github.io/2009/07/bootstrap-method/">bootstrap</a>效果还更好。</p>
+
+<blockquote>
+<p>2. R (or I guess S). R is a cranky, odd statistical language/system with
+a great scientific plotting package. Its a package written mainly by
+statisticians for statisticians, and is rather unforgiving the first
+time you use it. It is defnitely worth persevering. It&rsquo;s basically a
+combination of excel spreadsheets on steriods (with no data entry. an
+Rdata frame is really the same logical set as a excel workbook - able to
+handle millions of points, not 1,000s), a statistical methods compendium
+(it&rsquo;s usually the case that statistical methods are written first in R,
+and you can almost guarantee that there are no bugs in the major
+functions - unlike many other scenarios) and a graphical data
+exploration tool (in particular lattice and ggplot packages). The syntax
+is inconsistent, the documentation sometimes wonderful, often awful and
+the learning curve is like the face of the Eiger. But once you&rsquo;ve met
+p.adjust(), xyplot() and apply(), you can never turn back.</p>
+</blockquote>
+
+<p><a href="http://www.r-project.org">R</a>实在是太好用了，习惯用矢量运算之后，我就很少用perl了。不过学生物的，我所见过的人，能用好excel的人不多（我也不会用-,-），会用SPSS的人非常少，SAS从没见过有人用。每次我告诉身边的人，我用的是R，几乎都没人听说过的。在国内，目前主要也就高校里有人用。但至少做生信的，是需要学R的，<a href="http://www.bioconductor.org/">Bioconductor</a>上面那一大堆的软件包，已然是无法回避。</p>
+
+<p>学生物的人都喜欢有图形界面的软件，像spss这种，点菜单无非是为了选参数，而R这种，变成敲键盘而已，一样的。用编程语言比用分析软件要好，可自动化，而且有利于交流（看一下代码，就知道都干了些什么），像SPSS这种把很多分析模块化，点点鼠标就能把回归模型算出来，固然是好，但是现代的数据分析，已经很少有问题是点个鼠标就能解决的了。</p>
+
+<p>至于画图，文中提到lattice和ggplot，lattice应该是目前R上面最复杂的图形包，功能比ggplot要强得多，画图速度也比ggplot要快，不过我没用过。只学了ggplot，因为ggplot的语法更加human
+friendly，我觉得，学了ggplot后，都会爱上画图的 =,=</p>
+
+<blockquote>
+<p>3. The problem of multiple testing, and how to handle it, either with
+the Expected value, or FDR, and the backstop of many of piece of
+bioinformatics - large scale permutation. Large scale permutation is
+sometimes frowned upon by more maths/distribution purists but often is
+the only way to get a sensible sense of whether something is likely &ldquo;by
+chance&rdquo; (whatever the latter phrase means - it&rsquo;s a very open question)
+given the complex, hetreogenous data we have. 10 years ago perhaps the
+lack of large scale compute resources meant this option was less open to
+people, but these days basically everyone should be working out how to
+appropriate permute the data to allow a good estimate of
+&ldquo;surprisingness&rdquo; of an observation.</p>
+</blockquote>
+
+<p>高通量的组学数据，变得越来越常见，pvalue算的是犯一类错误的概率，组学数据观测点多，而重复少，noise很多，如果单纯卡个pvalue，越高通量的数据，犯二类错误的概率会更大，假阳性没有得到控制。这个越来越重要，这周去给学生上课，我还专门讲了Bonferroni
+Method、Benjamini-Hochberg
+Method还有q-value，不过好像我讲的时候，学生都没啥兴趣，或许有一天，他们写文章，reviewer要求给出FDR的时候，希望还能记起。</p>
+
+<blockquote>
+<p>4. The relationship between Pvalue, Effect size, and Sample size This
+needs to be drilled into everyone - we&rsquo;re far too trigger happy quoting
+Pvalues, when we should often be quoting Pvalues and Effect size. Once a
+Pvalue is significant, it&rsquo;s higher significance is sort of meaningless
+(or rather it compounds Effect size things with Sample size things, the
+latter often being about relative frequency). So - if something is
+significantly correlated/different, then you want to know about how much
+of an effect this observation has. This is not just about GWAS like
+statistics - in genomic biology we&rsquo;re all too happy about quoting some
+small Pvalue not realising that with a million or so points often, even
+very small deviations will be significant. Quote your r2, Rhos or
+proportion of variance explained&hellip;</p>
+</blockquote>
+
+<p>从没接触过GWAS，不知道是怎么算的，从文中的描述看，这里讲的是power
+analysis，这个对实验设计有用，可以估计sample size。当然如果sample
+size已确定，那么设定pvalue和power，可以计算effect
+size，就是说，实验可以detect出多大的effect。或者知道sample size,effect
+size,
+pvalue，可以计算power，就是说effect存在的话，有多大的概率可以detect出来。这和pvalue不一样，pvalue算的是没有effect（$H_0$）的概率。</p>
+
+<p>power analysis就是四个变量，颠来倒去，知道三个，算第四个。</p>
+
+<p>差异越大，越容易检测出来，样本间的variance越大，就需要更大的样本量，来排除样本间差异所带来的干扰。差不多就是这样一些东西。</p>
+
+<blockquote>
+<p>5. Linear models and PCA. There is a tendency often to jump to quite
+complex models - networks, or biologically inspired combinations, when
+our first instinct should be to crack out the well established lm()
+(linear model) for prediction and princomp() (PCA) for dimensionality
+reduction. These are old school techniques - and often if you want to
+talk about statistical fits one needs to make gaussian assumptions about
+distributions - but most of the things we do could be either done well
+in a linear model, and most of the correlation we look at could have
+been found with a PCA biplot. The fact that these are 1970s bits of
+statistics doesn&rsquo;t mean they don&rsquo;t work well.</p>
+</blockquote>
+
+<p>PCA就是把高维空间映射到低维空间，在保留尽可能多信息的情况下进行降维处理，
+下面这段解释了linear model和PCA之间的不同之处：</p>
+
+<blockquote>
+<p>One may also see PCA as an analogue of the least squares method to
+find a line that goes as “near” the points as possible – to simplify,
+let us assume there are just two dimensions. But while the least
+squares method is asymetric (the two variables play different roles:
+they are not interchangeable, we try to predict one from the others,
+we measure the distance parallel to one coordinate axis), the PCA is
+symetric (the distance is measured orthogonally to the line we are
+looking for).</p>
+</blockquote>
+
+<p>John Mark在评论里写道，进阶还需要学什么，一并记录下来。</p>
+
+<blockquote>
+<p>The next level - number 6 - would be to get beyond P values, and
+instead compute probability distributions of the quantities of
+interest. This leads naturally to number 7, which is to delve into the
+generative models that are currently solved by MCMC methods. This is
+basically the Bayesian approach. Just as an aside &ldquo;non parametrics&rdquo; in
+some new work is also used to mean models where the number of
+parameters varies, as a consequence of the method.</p>
+</blockquote>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/bootstrap/">bootstrap</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/power/">power</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/nonparametric/">nonparametric</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2011/06/screen-shot/" data-tooltip="screen shot">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2011/06/r-package-dose-released/" data-tooltip="R package DOSE released">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2011/06/screen-shot/" data-tooltip="screen shot">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2011/06/r-package-dose-released/" data-tooltip="R package DOSE released">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2011/06/five-things-biologists-should-know-about-statistics/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2011%2F06%2Ffive-things-biologists-should-know-about-statistics%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2011%2F06%2Ffive-things-biologists-should-know-about-statistics%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2011%2F06%2Ffive-things-biologists-should-know-about-statistics%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2011\/06\/five-things-biologists-should-know-about-statistics\/';
+          
+            this.page.identifier = '\/2011\/06\/five-things-biologists-should-know-about-statistics\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

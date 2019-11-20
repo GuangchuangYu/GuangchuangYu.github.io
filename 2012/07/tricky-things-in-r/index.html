@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content=" ________________________________________________________________
+/  ____    _                                                     \
+| |  _ \  (_)___    __ ___      _____  ___  ___  _ __ ___   ___  |
+| | |_) | | / __|  / _` \ \ /\ / / _ \/ __|/ _ \| &#39;_ ` _ \ / _ \ |
+| |  _ &lt;  | \__ \ | (_| |\ V  V /  __/\__ \ (_) | | | | | |  __/ |
+| |_| \_\ |_|___/  \__,_| \_/\_/ \___||___/\___/|_| |_| |_|\___| |
+\                                                                /
+ ----------------------------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+
+赋值
+
+
+从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
+
+
+<meta property="og:description" content=" ________________________________________________________________
+/  ____    _                                                     \
+| |  _ \  (_)___    __ ___      _____  ___  ___  _ __ ___   ___  |
+| | |_) | | / __|  / _` \ \ /\ / / _ \/ __|/ _ \| &#39;_ ` _ \ / _ \ |
+| |  _ &lt;  | \__ \ | (_| |\ V  V /  __/\__ \ (_) | | | | | |  __/ |
+| |_| \_\ |_|___/  \__,_| \_/\_/ \___||___/\___/|_| |_| |_|\___| |
+\                                                                /
+ ----------------------------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+
+赋值
+
+
+从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tricky things in R">
+<meta name="twitter:title" content="tricky things in R">
+<meta property="og:url" content="https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content=" ________________________________________________________________
+/  ____    _                                                     \
+| |  _ \  (_)___    __ ___      _____  ___  ___  _ __ ___   ___  |
+| | |_) | | / __|  / _` \ \ /\ / / _ \/ __|/ _ \| &#39;_ ` _ \ / _ \ |
+| |  _ &lt;  | \__ \ | (_| |\ V  V /  __/\__ \ (_) | | | | | |  __/ |
+| |_| \_\ |_|___/  \__,_| \_/\_/ \___||___/\___/|_| |_| |_|\___| |
+\                                                                /
+ ----------------------------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+
+赋值
+
+
+从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
+<meta name="twitter:description" content=" ________________________________________________________________
+/  ____    _                                                     \
+| |  _ \  (_)___    __ ___      _____  ___  ___  _ __ ___   ___  |
+| | |_) | | / __|  / _` \ \ /\ / / _ \/ __|/ _ \| &#39;_ ` _ \ / _ \ |
+| |  _ &lt;  | \__ \ | (_| |\ V  V /  __/\__ \ (_) | | | | | |  __/ |
+| |_| \_\ |_|___/  \__,_| \_/\_/ \___||___/\___/|_| |_| |_|\___| |
+\                                                                /
+ ----------------------------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
+
+赋值
+
+
+从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2012-07-10T07:16:22">
+  
+  
+    <meta property="article:modified_time" content="2012-07-10T07:16:22">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="syntax">
+    
+      <meta property="article:tag" content="semantic">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>tricky things in R</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      tricky things in R
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2012-07-10T07:16:22&#43;08:00">
+        
+  July 10, 2012
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <pre><code> ________________________________________________________________
+/  ____    _                                                     \
+| |  _ \  (_)___    __ ___      _____  ___  ___  _ __ ___   ___  |
+| | |_) | | / __|  / _` \ \ /\ / / _ \/ __|/ _ \| '_ ` _ \ / _ \ |
+| |  _ &lt;  | \__ \ | (_| |\ V  V /  __/\__ \ (_) | | | | | |  __/ |
+| |_| \_\ |_|___/  \__,_| \_/\_/ \___||___/\___/|_| |_| |_|\___| |
+\                                                                /
+ ----------------------------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+</code></pre>
+
+<ol>
+<li>赋值</li>
+</ol>
+
+<p>从一开始学R就知道R的赋值符号和别的语言不一样，用的是<code>&lt;-</code>，虽然<code>=</code>也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用<code>&lt;-</code>。所以我基本上就抛弃用<code>=</code>号了，反正在ESS里用shift+-就会自动输入<code>&lt;-</code>，也是很方便的。直到有一天，我发现<a href="https://guangchuangyu.github.io/2009/03/assignment-token-of-r/">在switch里，必须用<code>=</code>号</a>，而不能用<code>&lt;-</code>，才发现坑爹啊，这两符号是不一样的。</p>
+
+<ol>
+<li>函数中给全局变量赋值</li>
+</ol>
+
+<p>R里可以用<code>&lt;&lt;-</code>来进行全局赋值，比如我在解Project Euler 15题时，就用了<code>&lt;&lt;-</code>，这个最好还是不要用，用全局赋值可能会给你surprise，会给出惊喜的代码不是好代码。</p>
+
+<!--more-->
+
+<p>当然所谓的全局和局部，都是相对的，主要看内存管理的实现方式，内存堆栈，在R里通过environment来实现，S中称之为frames。所谓的全局变量就是位于.GlobalEnv中而已。</p>
+
+<p>所以如果要用<code>&lt;&lt;-</code>来进行全局赋值的话，安全的做法是使用局部的全局变量。如果要做个类比的话，这有点像C/C++里的静态变量。</p>
+
+<p>比如下面这段计算fibonacci数的函数：</p>
+
+<pre><code class="language-r">fibonacci &lt;- local({
+    memo &lt;- c(1, 1, rep(NA, 20))
+    f &lt;- function(x) {
+        if(x == 0) return(0)
+        if(x &lt; 0) return(NA)
+        if(x &gt; length(memo))
+            stop(&quot;''x'' too big for implementation&quot;)
+        if(!is.na(memo[x])) return(memo[x])
+        ans &lt;- f(x-2) + f(x-1)
+        memo[x] &lt;&lt;- ans
+        ans
+    }
+})
+</code></pre>
+
+<pre><code>&gt; fibonacci(15)
+[1] 610
+&gt; get(&quot;memo&quot;, envir=environment(fibonacci))
+ [1]   1   1   2   3   5   8  13  21  34  55  89 144 233 377 610
+[16]  NA  NA  NA  NA  NA  NA  NA
+</code></pre>
+
+<p>environment是个好东西，我很惊讶于我看过的书里基本都没讲到。R的面向对象系统R5，就目前来看，是纯R实现的，用的就是S4和environment。</p>
+
+<p>PS:S3面向对象就是加个class属性，通常用list来存储数据。我一直觉得，把数据存在封闭的environment里，再加个class属性，基本上就可以当成是个简易版的S4了，当然S4怎么实现，我并不清楚。</p>
+
+<ol>
+<li>精度</li>
+</ol>
+
+<p>精度的问题，这是所有计算机语言的问题，就像<a href="http://www.ituring.com.cn/article/details/2058">图灵社区里的笑话</a>，0.1 + 0.2 &gt; 0.3 答案是TRUE.</p>
+
+<pre><code>&gt; .1 == .3/3
+[1] FALSE
+&gt; print(.3/3, digits=16)
+[1] 0.09999999999999999
+&gt; as.integer(.3/3)
+[1] 0
+</code></pre>
+
+<ol>
+<li>操作符优先度</li>
+</ol>
+
+<p>这个也是所有语言所共有的问题，加（）才是万能的。这个之所以tricky，是因为有些优先度和我们的直觉不符合，如果不注意，就很有可能出错。</p>
+
+<p>比如下面的例子：</p>
+
+<pre><code>&gt; -1.2^2.3
+[1] -1.52
+&gt; (-1.2)^2.3
+[1] NaN
+&gt; as.complex(-1.2)^2.3
+[1] 0.89+1.23i
+</code></pre>
+
+<p>在R里，可以用<code>?Syntax</code>通过在线文档查看操作符的优先度。</p>
+
+<ol>
+<li>类属性</li>
+</ol>
+
+<p>在R里，所有的东西，都是对象，都有类属性。比如下面的例子，我想看x和y是否是一样的。</p>
+
+<pre><code>&gt; x &lt;- 1:2
+&gt; y &lt;- c(1,2)
+&gt; all(x == y)
+[1] TRUE
+</code></pre>
+
+<p>显然它们应该是一样的，但是如果用identical函数来看，答案却是FALSE。原因是x是整数型数据，而y是浮点型数据，所以它们不一样。这么tricky的事情，原因在于函数c会把数字都存成浮点型。</p>
+
+<pre><code>&gt; print(y, digits=10)
+[1] 1 2
+</code></pre>
+
+<p>其实y就是整数，被认为是浮点数，完全是因为类属性。</p>
+
+<ol>
+<li>缺失值</li>
+</ol>
+
+<p>比如下面的例子，我想取x中的2，因为x含有NA，就出问题了。当然这个还是比较好解决的，用which就可以了。</p>
+
+<pre><code>&gt; x &lt;- c(1:4,NA, 2)
+&gt; x
+[1]  1  2  3  4 NA  2
+&gt; x[x==2]
+[1]  2 NA  2
+&gt; x[which(x==2)]
+[1] 2 2
+</code></pre>
+
+<p>这个不算tricky，但是如果我想把x中大于5的数剔除掉，上面这个x没有数字是大于5的，我们期望它返回x自身。</p>
+
+<pre><code>&gt; x[-which(x&gt;5)]
+numeric(0)
+</code></pre>
+
+<p>结果却是返回空向量。因为which(x&gt;5)是空的，做为index去取x的subset，自然也就取不到。</p>
+
+<p>对于各种membership的处理，万能又安全的还是<code>%in%</code>操作符。</p>
+
+<pre><code>&gt; x[! x %in% 5]
+[1]  1  2  3  4 NA  2
+</code></pre>
+
+<ol>
+<li>空向量</li>
+</ol>
+
+<p>上面例子出现空向量numeric(0),空向量如果出现于计算中，也是很weird的。</p>
+
+<pre><code>&gt; sum(numeric(0))
+[1] 0
+&gt; prod(numeric(0))
+[1] 1
+&gt; any(logical(0))
+[1] FALSE
+&gt; all(logical(0))
+[1] TRUE
+</code></pre>
+
+<ol>
+<li><p>操作符是函数</p>
+
+<pre><code>&gt; &quot;+&quot;(1,2)
+[1] 3
+&gt; &quot;==&quot;(1,2)
+[1] FALSE
+&gt; &quot;&lt;&quot;(1,2)
+[1] TRUE
+</code></pre></li>
+
+<li><p>纯数字的data.frame</p></li>
+</ol>
+
+<p>如果一个data.frame的内容全是数字，它看起来和matrix长得一模一样，但是它们的实现方式是不一样的，matrix是dimention=2的array，而data.frame是等长的list。</p>
+
+<p>长得像有时候不注意，就会出现confuse，比如你要求一个matrix的均值，很容易，用mean函数就行。但如果你用mean去求一个data.frame的均值，就不work了，给出的结果是每个column的均值所组成的向量，当然你可以对这个column mean再求一次mean就行了，也可以先as.matrix或unlist处理一下，再求mean。</p>
+
+<p>各种函数，包括apply系列，对于data.frame和matrix的行为，很多都是不一样的，需要谨慎。</p>
+
+<ol>
+<li>哈希表</li>
+</ol>
+
+<p>R的数据类型中没有哈希表，通常我们可以用named vector或者list来实现，可以通过name来取得所对应的值。但这并不是真正意义上的哈希，同样我们可以用environment来实现。</p>
+
+<pre><code>&gt; ee &lt;- new.env()
+&gt; assign(&quot;a&quot;, 10, ee)
+&gt; assign(&quot;b&quot;, 22, ee)
+&gt; get(&quot;a&quot;, ee)
+[1] 10
+&gt; keys &lt;- ls(ee)
+&gt; keys
+[1] &quot;a&quot; &quot;b&quot;
+&gt; values &lt;- sapply(keys, get, envir=ee)
+&gt; values
+ a  b 
+10 22 
+</code></pre>
+
+<ol>
+<li>用数字当变量名</li>
+</ol>
+
+<p>几乎所有的编程语言都不允许以_开头或者数字当变量名，但在R里，这却是可能的，请<a href="http://ygc.name/2009/11/23/using-number-as-variable/">猛击此处</a>。</p>
+
+<p>这么tricky的事情，也是通过environment来实现的。</p>
+
+<ol>
+<li>部分匹配</li>
+</ol>
+
+<p>正如第一点提到的<code>&lt;-</code>和=是通用的，取list元素是<code>$</code>和<code>[[</code>也是通用的，然而它们的默认行为也是不一样的，<code>$</code>默认支持部分匹配，而<code>[[</code>则不是。</p>
+
+<pre><code>&gt; ll &lt;- list(aa=1:2, ab=2:4, cc=1:3) 
+&gt; ll$c
+[1] 1 2 3
+&gt; ll[[&quot;c&quot;]]
+NULL
+&gt; ll[[&quot;c&quot;, exact=FALSE]]
+[1] 1 2 3
+</code></pre>
+
+<p>部分匹配不是好东西，比如下面的例子：</p>
+
+<pre><code>&gt; ll$c
+[1] 1 2 3
+&gt; ll$c &lt;- 5:6
+&gt; ll$c
+[1] 5 6
+&gt; ll
+$aa
+[1] 1 2
+$ab
+[1] 2 3 4
+$cc
+[1] 1 2 3
+$c
+[1] 5 6
+</code></pre>
+
+<p>如果你习惯用部分匹配去取元素，在对此元素进行重新赋值的时候，就很可能会犯错。</p>
+
+<p>函数参数也支持部分匹配，比如有个参数trim，而你一直用t去传这个参数，如果以后函数加了参数比如treat，那么你原先的代码就会莫名其妙的不干活了。</p>
+
+<ol>
+<li><p>factor</p>
+
+<pre><code>&gt; x &lt;- factor(8:12)
+&gt; as.numeric(x)
+[1] 1 2 3 4 5
+&gt; as.numeric(as.character(x))
+[1]  8  9 10 11 12
+&gt; as.numeric(levels(x))
+[1]  8  9 10 11 12
+</code></pre></li>
+</ol>
+
+<p>factor由于内部是使用自然数去存储的，所以如果想把factor转换成数字，就必须要麻烦点。</p>
+
+<p>这个问题出现于data.frame中，就是个另人upset的玩意了。</p>
+
+<pre><code>&gt; df &lt;- data.frame(a=1:2, b=c(&quot;x&quot;,&quot;y&quot;))
+&gt; df[1,]
+  a b
+1 1 x
+&gt; as.character(df[1,])
+[1] &quot;1&quot; &quot;1&quot;
+&gt; as.character(df)
+[1] &quot;1:2&quot; &quot;1:2&quot;
+</code></pre>
+
+<p>解决的办法是，你先把df转换成matrix。</p>
+
+<ol>
+<li>不存在的subscript</li>
+</ol>
+
+<p>接着使用上面的df。</p>
+
+<pre><code>&gt; rownames(df) &lt;- c(&quot;a&quot;, &quot;b&quot;)
+&gt; colnames(df) &lt;- c(&quot;p&quot;, &quot;q&quot;)
+&gt; df[c(&quot;a&quot;, &quot;e&quot;),]
+    p    q
+a   1    x
+NA NA &lt;NA&gt;
+&gt; df[,c(&quot;p&quot;, &quot;e&quot;)]
+Error in `[.data.frame`(df, , c(&quot;p&quot;, &quot;e&quot;)) : undefined columns selected
+</code></pre>
+
+<p>row和column的行为是不一致的，而对于不同的数据类型，其返回值也会不同。</p>
+
+<p>vector会返回NA,list则是NULL,matrix会报错，subscript out of bouds。</p>
+
+<ol>
+<li>从剪贴板里读数据</li>
+</ol>
+
+<p>在windows和linux下，都可以用<code>read.table(&quot;paste&quot;)</code>来读取剪贴板里的数据，在Mac OS X下，就不行了。你必须要用<code>read.table(pipe(&quot;pbpaste&quot;))</code>，而在Linux下，则是用<code>read.table(&quot;clipboard&quot;)</code>，我其实很纳闷，为什么就不能包装一下，让语法统一。</p>
+
+<p>最后，附送一个tips，从我<a href="https://guangchuangyu.github.io/cn/2007/06/screenshot/">以前的截屏</a>上看，我最喜欢干的事，就是一打开终端，自动运行一次fortune，顺道看看名言嘛-,-</p>
+
+<p>在R里，有个<a href="http://cran.r-project.org/web/packages/fortunes/index.html">fortunes</a>包，收集的是R相关的言论，有事没事看一看，有益身心健康啊！</p>
+
+<pre><code>&gt; require(fortunes)
+Loading required package: fortunes
+&gt; fortune()
+
+[Listing original copyright holders in R packages is] especially useful if
+there are areas of doubt and uncertainty (eg code published on ftp sites before
+people worried about licenses), since it at least gives you rigidly defined
+areas of doubt and uncertainty.[5]
+[5] Adams D, (1978) Hitchhiker's Guide. BBC Radio.
+   -- Thomas Lumley (in a discussion about copyright vs. licenses)
+      R-devel (January 2010)
+</code></pre>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/syntax/">syntax</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/semantic/">semantic</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2012/09/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E6%96%87%E7%8C%AE/" data-tooltip="如何获取文献">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2012/05/%E4%BB%80%E4%B9%88%E6%98%AFt-%E6%A3%80%E9%AA%8C/" data-tooltip="什么是T 检验">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2012/09/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E6%96%87%E7%8C%AE/" data-tooltip="如何获取文献">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2012/05/%E4%BB%80%E4%B9%88%E6%98%AFt-%E6%A3%80%E9%AA%8C/" data-tooltip="什么是T 检验">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2012/07/tricky-things-in-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2012%2F07%2Ftricky-things-in-r%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2012%2F07%2Ftricky-things-in-r%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2012%2F07%2Ftricky-things-in-r%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2012\/07\/tricky-things-in-r\/';
+          
+            this.page.identifier = '\/2012\/07\/tricky-things-in-r\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

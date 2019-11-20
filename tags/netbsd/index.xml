@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>netbsd on Guangchuang Yu</title>
+    <link>https://guangchuangyu.github.io/tags/netbsd/</link>
+    <description>Recent content in netbsd on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Sep 2008 12:32:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/netbsd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>备份苹果硬盘的数据</title>
+      <link>https://guangchuangyu.github.io/2008/09/data-backup/</link>
+      <pubDate>Mon, 29 Sep 2008 12:32:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2008/09/data-backup/</guid>
+      <description>&lt;p&gt;powerbook笔记本装Mac OSX 10.2，我嫌太慢了，&lt;a href=&#34;https://guangchuangyu.github.io/cn/2005/01/powerbook-gentoo/&#34;&gt;就装了gentoo&lt;/a&gt;，所有的东西都是从软件编译，费了很长的时间，CPU太慢了。原来的硬盘只有10G，后来我又换了60G的硬盘，就是现在要备份数据的硬盘了。换硬盘的时候，没有换系统，我从livecd里进去，把系统打包，并对新硬盘进行分区。然后拆机换硬盘，还是从livecd进去，把新硬盘格式化，把原来的硬盘挂上去，把打包的系统解压到新的分区里，并初始化一些系统的设定，把用户数据拷进去。换硬盘不换系统。这个当时没记录下来。后来有一次手痒，重新编译了glibc，把其它的local都去掉，只留下中文的。可是这一次搞了有问题，系统总有点莫名其妙的问题。&lt;/p&gt;
+
+&lt;p&gt;06年，我就想换个系统算了。找人刻了张os9.2的盘，自己刻了张netbsd的盘。&lt;a href=&#34;https://guangchuangyu.github.io/cn/2006/06/os9-netbsd-dual-boot&#34;&gt;装双系统&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;os9.2可以用微软的office 2001，还有ie5.5，不过都不是很好用。最爽的是可以用很多做图软件，photoshop,coredraw,illustrator等等啊。当年在合肥还帮很多同学处理过照片，因为6级考试要上传的图片要求是10k以下，很多人压到10k都看不清了，我用photoshop压到10k还能看清人.^_^.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>我制作的pkgsrc</title>
+      <link>https://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/</link>
+      <pubDate>Wed, 16 May 2007 04:36:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2007/05/%E6%88%91%E5%88%B6%E4%BD%9C%E7%9A%84pkgsrc/</guid>
+      <description>&lt;h2 id=&#34;xlyrics-unix下的歌词秀软件&#34;&gt;xlyrics: unix下的歌词秀软件   &lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://files.getdropbox.com/u/774072/software/pkgsrc/xlyrics-0.4.6.tar.bz2&#34;&gt;点此下载&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;eva-kde下的qq客户端&#34;&gt;EVA: KDE下的QQ客户端     &lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://files.getdropbox.com/u/774072/software/pkgsrc/eva-20070327.tar.bz2&#34;&gt;点此下载&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cd /usr/pkgsrc/wip-cn 
+#tar xjvf eva.tar.bz2 
+#cd eva 
+#make install clean
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;就可以啦。在我的机子（NetBSD 3.0.1 macppc）上测试通过。。
+更新到eva-20070327&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Edit partition table in NetBSD/macppc</title>
+      <link>https://guangchuangyu.github.io/2007/05/edit-partition-netbsd-macppc/</link>
+      <pubDate>Mon, 14 May 2007 04:43:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2007/05/edit-partition-netbsd-macppc/</guid>
+      <description>&lt;pre&gt;&lt;code&gt;#disklabel wd0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到原始分区如下: 7 partitions:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#        size    offset     fstype [fsize bsize cpg/sgs]
+a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
+b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
+c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
+d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
+e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
+g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac
+os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbsd下的/home分区。
+原本是两系统，os9.2一直都很少用，所以想删了，腾出空间来放数据。因为wd0d和wd0e不在连续的柱面上，所以无法将它们合并。&lt;/p&gt;
+
+&lt;p&gt;新的分区方案如下：wd0d删了，分成两个，一个15M(需要一个HFS类型的分区来放置&lt;code&gt;ofwboot.xcf&lt;/code&gt;，因为openfirmwire不支持从netbsd分区里加载loader),剩下的作为&lt;code&gt;/home&lt;/code&gt;分区。把原来的&lt;code&gt;/home&lt;/code&gt;分区(&lt;code&gt;wd0g&lt;/code&gt;)和共享数据的分区(&lt;code&gt;wd0e&lt;/code&gt;)合并为一个分区，用于放置数据。
+1. 第一步，也是最关键的一步，先备份好数据。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>pkgsrc tips</title>
+      <link>https://guangchuangyu.github.io/2007/05/pkgsrc-tips/</link>
+      <pubDate>Mon, 14 May 2007 04:37:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2007/05/pkgsrc-tips/</guid>
+      <description>&lt;h2 id=&#34;1-cpuflags&#34;&gt;1.cpuflags&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;devel/cpuflags:Determine compiler flags to best target current cpu&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#cd /usr/pkgsrc/devel/cpuflags 
+#make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后在/etc/mk.conf中加入:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.sinclude &amp;quot;/usr/pkg/share/mk/cpuflags.mk&amp;quot;
+.sinclude &amp;quot;/usr/pkg/share/mk/optimize_gcc.mk&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样make时便能够根据cpuflags进行优化编译了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>qvwm窗口管理器的windows2000主题</title>
+      <link>https://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/</link>
+      <pubDate>Sat, 24 Jun 2006 04:33:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2006/06/qvwm%E7%AA%97%E5%8F%A3%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84windows2000%E4%B8%BB%E9%A2%98/</guid>
+      <description>&lt;p&gt;&lt;em&gt;qvwm&lt;/em&gt; is a window manager for the X Window system which provides a user
+experience very close to Windows &lt;sup&gt;95&lt;/sup&gt;&amp;frasl;&lt;sub&gt;98&lt;/sub&gt;. It is small and extremely fast.&lt;/p&gt;
+
+&lt;p&gt;可从其&lt;a href=&#34;http://qvwm.sourceforge.net/index_en.html&#34;&gt;主页&lt;/a&gt;上看到它的介绍及下载源码。&lt;/p&gt;
+
+&lt;p&gt;这是我做的一个windows2000的主题。。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>安装os9和netbsd双系统</title>
+      <link>https://guangchuangyu.github.io/2006/06/os9-netbsd-dual-boot/</link>
+      <pubDate>Wed, 14 Jun 2006 04:31:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2006/06/os9-netbsd-dual-boot/</guid>
+      <description>&lt;h2 id=&#34;1-分区&#34;&gt;1 分区&lt;/h2&gt;
+
+&lt;p&gt;用MacOS X 10.2 的光盘启动，运行Disk Utility，选择“Install Mac OS
+9 Disk
+Drivers”不然分区将不能在OS9中使用，我一共分了5个分区，12G,10G,512M,20G,13.4G。其中12Ｇ装OS9系统，10Ｇ装netbsd系统，512Ｍ为swap分区，20Ｇ为home
+分区，最后一个为fat32格式，为两个系统所共享。&lt;/p&gt;
+
+&lt;h2 id=&#34;2-安装os9&#34;&gt;2 安装os9&lt;/h2&gt;
+
+&lt;p&gt;开机放入os9安装光盘，按住&lt;code&gt;Ｃ&lt;/code&gt;键，由光盘启动进入os9，在光盘根目录下点安装系统。指定第一个分区，选择安装的软件，十来分钟，便装完了。重新启动，将netbsd的启动程序&lt;code&gt;ofwboot.xcf&lt;/code&gt;放在os9的根目录下。&lt;/p&gt;
+
+&lt;h2 id=&#34;3-安装netbsd&#34;&gt;3 安装netbsd&lt;/h2&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

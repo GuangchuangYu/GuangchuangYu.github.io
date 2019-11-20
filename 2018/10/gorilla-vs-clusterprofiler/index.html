@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="做科研我们不爽的是没有结果，比结果更不爽的是结果不符合预期，故事不知道该怎么编，然而戏真的不要太多，学术不是以预期来驱动的，请尊重一下事实，还有你的小鼠。
+
+
+we had a quick email exchange about this and I would like to report this. (I appologise for contacting you directly, rather than following the submission guideline). I have a dataset with 6166 proteins of which 201 proteins are upregulated. The problem is that specifying the background proteins using universe argument in clusterProfiler, decreases the number of significant GO categories (28 significant categories without the universe argument and 5 with this argument). At the same time when I use online GORILLA tool  I get a lot of categories, with the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html
+
+and not categories without the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html
+
+I am not sure whether this is a bug or not, so I decided to report it here
+
+The dataset is presented below
+&hellip;
+
+&gt; allProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                       qvalueCutoff = 0.05)
+
+&gt;identifiedProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                             qvalueCutoff = 0.05,  universe = backgroundProt)
+
+&gt;dim (allProtUGO@result)
+&gt;dim (identifiedProtUGO@result)
+&gt;
+
+
+
+
+要看数据集地请点击此处直达github issue。">
+
+
+<meta property="og:description" content="做科研我们不爽的是没有结果，比结果更不爽的是结果不符合预期，故事不知道该怎么编，然而戏真的不要太多，学术不是以预期来驱动的，请尊重一下事实，还有你的小鼠。
+
+
+we had a quick email exchange about this and I would like to report this. (I appologise for contacting you directly, rather than following the submission guideline). I have a dataset with 6166 proteins of which 201 proteins are upregulated. The problem is that specifying the background proteins using universe argument in clusterProfiler, decreases the number of significant GO categories (28 significant categories without the universe argument and 5 with this argument). At the same time when I use online GORILLA tool  I get a lot of categories, with the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html
+
+and not categories without the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html
+
+I am not sure whether this is a bug or not, so I decided to report it here
+
+The dataset is presented below
+&hellip;
+
+&gt; allProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                       qvalueCutoff = 0.05)
+
+&gt;identifiedProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                             qvalueCutoff = 0.05,  universe = backgroundProt)
+
+&gt;dim (allProtUGO@result)
+&gt;dim (identifiedProtUGO@result)
+&gt;
+
+
+
+
+要看数据集地请点击此处直达github issue。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="做学术终究是看脸...">
+<meta name="twitter:title" content="做学术终究是看脸...">
+<meta property="og:url" content="https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="做科研我们不爽的是没有结果，比结果更不爽的是结果不符合预期，故事不知道该怎么编，然而戏真的不要太多，学术不是以预期来驱动的，请尊重一下事实，还有你的小鼠。
+
+
+we had a quick email exchange about this and I would like to report this. (I appologise for contacting you directly, rather than following the submission guideline). I have a dataset with 6166 proteins of which 201 proteins are upregulated. The problem is that specifying the background proteins using universe argument in clusterProfiler, decreases the number of significant GO categories (28 significant categories without the universe argument and 5 with this argument). At the same time when I use online GORILLA tool  I get a lot of categories, with the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html
+
+and not categories without the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html
+
+I am not sure whether this is a bug or not, so I decided to report it here
+
+The dataset is presented below
+&hellip;
+
+&gt; allProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                       qvalueCutoff = 0.05)
+
+&gt;identifiedProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                             qvalueCutoff = 0.05,  universe = backgroundProt)
+
+&gt;dim (allProtUGO@result)
+&gt;dim (identifiedProtUGO@result)
+&gt;
+
+
+
+
+要看数据集地请点击此处直达github issue。">
+<meta name="twitter:description" content="做科研我们不爽的是没有结果，比结果更不爽的是结果不符合预期，故事不知道该怎么编，然而戏真的不要太多，学术不是以预期来驱动的，请尊重一下事实，还有你的小鼠。
+
+
+we had a quick email exchange about this and I would like to report this. (I appologise for contacting you directly, rather than following the submission guideline). I have a dataset with 6166 proteins of which 201 proteins are upregulated. The problem is that specifying the background proteins using universe argument in clusterProfiler, decreases the number of significant GO categories (28 significant categories without the universe argument and 5 with this argument). At the same time when I use online GORILLA tool  I get a lot of categories, with the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html
+
+and not categories without the background:
+
+http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html
+
+I am not sure whether this is a bug or not, so I decided to report it here
+
+The dataset is presented below
+&hellip;
+
+&gt; allProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                       qvalueCutoff = 0.05)
+
+&gt;identifiedProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+                             qvalueCutoff = 0.05,  universe = backgroundProt)
+
+&gt;dim (allProtUGO@result)
+&gt;dim (identifiedProtUGO@result)
+&gt;
+
+
+
+
+要看数据集地请点击此处直达github issue。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-10-09T13:12:00">
+  
+  
+    <meta property="article:modified_time" content="2018-10-09T13:12:00">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="clusterProfiler">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>做学术终究是看脸...</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      做学术终究是看脸...
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-10-09T13:12:00&#43;08:00">
+        
+  October 9, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>做科研我们不爽的是没有结果，比结果更不爽的是结果不符合预期，故事不知道该怎么编，然而戏真的不要太多，学术不是以预期来驱动的，请尊重一下事实，还有你的小鼠。</p>
+
+<blockquote>
+<p>we had a quick email exchange about this and I would like to report this. (I appologise for contacting you directly, rather than following the submission guideline). I have a dataset with 6166 proteins of which 201 proteins are upregulated. The problem is that specifying the background proteins using universe argument in clusterProfiler, decreases the number of significant GO categories (28 significant categories without the universe argument and 5 with this argument). At the same time when I use online GORILLA tool  I get a lot of categories, with the background:</p>
+
+<p><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html">http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html</a></p>
+
+<p>and not categories without the background:</p>
+
+<p><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html">http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html</a></p>
+
+<p>I am not sure whether this is a bug or not, so I decided to report it here</p>
+
+<p>The dataset is presented below
+&hellip;</p>
+
+<pre><code>&gt; allProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont='ALL', pool = TRUE, 
+                       qvalueCutoff = 0.05)
+
+&gt;identifiedProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont='ALL', pool = TRUE, 
+                             qvalueCutoff = 0.05,  universe = backgroundProt)
+
+&gt;dim (allProtUGO@result)
+&gt;dim (identifiedProtUGO@result)
+&gt;
+
+</code></pre>
+</blockquote>
+
+<p>要看数据集地请点击<a href="https://github.com/GuangchuangYu/clusterProfiler/issues/122">此处直达github issue</a>。</p>
+
+<p>最近很多群众真的是表达了对GOrilla深深的爱啊，上一次写《<a href="https://mp.weixin.qq.com/s/6i4HSPT5ac4cr2ol4pLIHw">enrichGO出不来结果？没结果也是正确的结果</a>》就顺道吐槽了一下。不知道各位的科研是以自己的期望驱动的？还是以科学事实驱动的？</p>
+
+<p>把上次所说的GOrilla槽点再搬过来 (请移步：<a href="http://cbl-gorilla.cs.technion.ac.il/help.html">http://cbl-gorilla.cs.technion.ac.il/help.html</a>)：</p>
+
+<blockquote>
+<h2 id="parameters">Parameters</h2>
+
+<p><strong>P-value threshold</strong> - Only GO terms with a p-value better than this threshold are reported.
+Note that this p-value does not include the multiple hypothesis correction on the number of tested GO terms. To correct for this the p-value should be multiplied by the number of GO terms used as reported in the results page.</p>
+</blockquote>
+
+<p><code>GOrilla</code>没有考虑multiple hypothesis correction, 然而<code>clusterProfiler</code>用了p值较正和qvalue。他只要设置 <code>pAdjustMethod=&quot;none&quot;</code>和<code>qvalueCutoff = 1</code>, 就可以和<code>GOrilla</code>进行PK了，同样<code>clusterProfiler</code>也会给出很多结果的。</p>
+
+<p>然而还是那句话，你们的科研是以自己的预期来驱动的吗？给一堆结果你们就高兴了吗？现在google搜不出东西，它就告诉你搜不到，早期的google要是搜不到东西，就随机给出一些网页。只有有了自信的产品才敢跟无脑群众讲事实，而不是以满足幻想来留住你们。</p>
+
+<pre><code>allProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont='ALL', pool = TRUE, 
+                       qvalueCutoff = 1, pAdjustMethod=&quot;none&quot;)
+
+identifiedProtUGO &lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &quot;UNIPROT&quot;,  ont='ALL', pool = TRUE, 
+                             qvalueCutoff = 1, pAdjustMethod=&quot;none&quot;, universe = backgroundProt)
+
+&gt; dim (allProtUGO@result)
+[1] 221  10
+&gt; dim (identifiedProtUGO@result)
+[1] 129  10
+</code></pre>
+
+<p>最后《<a href="http://mp.weixin.qq.com/s/bxzWQa02b_mXSi5Y0vSCiA">why clusterProfiler fails</a>》这篇文章送给你们！</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/clusterprofiler/">clusterProfiler</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/10/ggrough/" data-tooltip="画图倒不如手绘">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/09/proxychains/" data-tooltip="一次解决所有代理问题">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/10/ggrough/" data-tooltip="画图倒不如手绘">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/09/proxychains/" data-tooltip="一次解决所有代理问题">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F10%2Fgorilla-vs-clusterprofiler%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F10%2Fgorilla-vs-clusterprofiler%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F10%2Fgorilla-vs-clusterprofiler%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2018\/10\/gorilla-vs-clusterprofiler\/';
+          
+            this.page.identifier = '\/2018\/10\/gorilla-vs-clusterprofiler\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

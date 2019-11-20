@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>compilation on Guangchuang Yu</title>
+    <link>https://guangchuangyu.github.io/tags/compilation/</link>
+    <description>Recent content in compilation on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Jul 2014 04:22:35 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/compilation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>R binary is untrustworthy</title>
+      <link>https://guangchuangyu.github.io/2014/07/r-binary-is-untrustworthy/</link>
+      <pubDate>Thu, 24 Jul 2014 04:22:35 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2014/07/r-binary-is-untrustworthy/</guid>
+      <description>去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
+Warning: Could not open read file &amp;quot;/tmp/8156.inpipe1&amp;quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&amp;gt; library(doParallel) &amp;gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &amp;gt; registerDoParallel(11) &amp;gt; &amp;gt; foreach(i = 1:10) %dopar% { getwd() } &amp;gt; *** caught segfault *** address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39;  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。</description>
+    </item>
+    
+  </channel>
+</rss>

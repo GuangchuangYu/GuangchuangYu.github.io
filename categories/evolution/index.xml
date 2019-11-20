@@ -1,87 +1,67 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Evolution | Guangchuang YU</title>
+    <title>Evolution on Guangchuang Yu</title>
     <link>https://guangchuangyu.github.io/categories/evolution/</link>
-      <atom:link href="https://guangchuangyu.github.io/categories/evolution/index.xml" rel="self" type="application/rss+xml" />
-    <description>Evolution</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Guangchuang YU</copyright><lastBuildDate>Thu, 19 Apr 2018 11:00:08 +0800</lastBuildDate>
-    <image>
-      <url>https://guangchuangyu.github.io/img/icon-192.png</url>
-      <title>Evolution</title>
-      <link>https://guangchuangyu.github.io/categories/evolution/</link>
-    </image>
+    <description>Recent content in Evolution on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Apr 2018 11:00:08 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/categories/evolution/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>rename phylogeny tip labels in treeio</title>
       <link>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</link>
       <pubDate>Thu, 19 Apr 2018 11:00:08 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2018/04/rename-phylogeny-tip-labels-in-treeio/</guid>
-      <description>&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(treeio)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Loading required package: treeio&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Registered S3 method overwritten by &amp;#39;treeio&amp;#39;:
-##   method     from
-##   root.phylo ape&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;require(ggtree)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Loading required package: ggtree&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## ggtree v1.99.1  For help: https://yulab-smu.github.io/treedata-book/
-## 
-## If you use ggtree in published research, please cite the most appropriate paper(s):
-## 
-## [36m-[39m Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution 2018, 35(12):3041-3043. doi: 10.1093/molbev/msy194
-## [36m-[39m Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr &amp;lt;- read.tree(text = &amp;quot;((a,(b,c)),d);&amp;quot;)
-genus &amp;lt;- c(&amp;quot;Gorilla&amp;quot;, &amp;quot;Pan&amp;quot;, &amp;quot;Homo&amp;quot;, &amp;quot;Pongo&amp;quot;)
-species &amp;lt;- c(&amp;quot;gorilla&amp;quot;, &amp;quot;spp.&amp;quot;, &amp;quot;sapiens&amp;quot;, &amp;quot;pygmaeus&amp;quot;)
-geo &amp;lt;- c(&amp;quot;Africa&amp;quot;, &amp;quot;Africa&amp;quot;, &amp;quot;World&amp;quot;, &amp;quot;Asia&amp;quot;)
-d &amp;lt;- data.frame(label = tr$tip.label, genus = genus,
-                species = species, geo = geo)
-d&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##   label   genus  species    geo
-## 1     a Gorilla  gorilla Africa
-## 2     b     Pan     spp. Africa
-## 3     c    Homo  sapiens  World
-## 4     d   Pongo pygmaeus   Asia&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggtree(tr) %&amp;lt;+% d + xlim(NA, 5) +
-    geom_tiplab(aes(label=paste0(&amp;#39;italic(&amp;#39;, genus, &amp;#39;)~bolditalic(&amp;#39;, species, &amp;#39;)~&amp;#39;, geo)), parse=T)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/post/R/ggtree/treeio/rename_taxa_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;However, it is also possible to rename taxa of the tree object (either &lt;code&gt;treedata&lt;/code&gt; or &lt;code&gt;phylo&lt;/code&gt;) in &lt;code&gt;treeio&lt;/code&gt;:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr2 = rename_taxa(tr, d, label, genus)
-write.tree(tr2)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla,(Pan,Homo)),Pongo);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d2 = dplyr::mutate(d, newlab = paste(genus, species, sep=&amp;#39;|&amp;#39;))
-d2&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##   label   genus  species    geo          newlab
-## 1     a Gorilla  gorilla Africa Gorilla|gorilla
-## 2     b     Pan     spp. Africa        Pan|spp.
-## 3     c    Homo  sapiens  World    Homo|sapiens
-## 4     d   Pongo pygmaeus   Asia  Pongo|pygmaeus&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tr3 = rename_taxa(tr, d2, label, newlab)
-write.tree(tr3)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;((Gorilla|gorilla,(Pan|spp.,Homo|sapiens)),Pongo|pygmaeus);&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;If the input tree object is a &lt;code&gt;treedata&lt;/code&gt; instance, you can use &lt;code&gt;write.beast&lt;/code&gt; to export the tree with associated data to a BEAST compatible NEXUS file.&lt;/p&gt;
-&lt;div id=&#34;vignettes&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Vignettes&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Importer.html&#34;&gt;Importing trees with data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/vignettes/treeio/inst/doc/Exporter.html&#34;&gt;Exporting trees with data&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
+      <description>
+
+
+&lt;p&gt;I don’t know whether ‘rename taxa’ is a common task or not. It seems not a good idea to rename taxa in Newick tree text, since it may introduce problems when mapping the original sequence alignment to the tree.&lt;/p&gt;
+&lt;p&gt;If you just want to show different or additional information when plotting the tree, it is fine and easy to do it using &lt;code&gt;ggtree&lt;/code&gt;:&lt;/p&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>add treescale to unrooted tree</title>
+      <link>https://guangchuangyu.github.io/2018/03/treescale_unrooted_tree/</link>
+      <pubDate>Mon, 05 Mar 2018 13:17:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2018/03/treescale_unrooted_tree/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;I am trying to add a scale to an unrooted tree with &lt;code&gt;geom_treescale&lt;/code&gt;, but when I use it, the tree completely collapses and I am not able to set anything that fix it. Anybody has any idea on how to do it ?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://groups.google.com/d/msgid/bioc-ggtree/9d69f444-94cf-42df-8382-bca2962b08c9%40googlegroups.com&#34;&gt;google group&lt;/a&gt;里的问题，说他加&lt;code&gt;geom_treescale&lt;/code&gt;之后，树被压缩了，由于他没有给出可重复性的例子，所以我们并不知道情况到底有多么糟糕，但这种情况是可能发生的，因为加&lt;strong&gt;treescale&lt;/strong&gt;这种东西，默认情况下&lt;code&gt;geom_treescale&lt;/code&gt;会自己去计算该加多大的scale bar，该放在什么位置上，而这种默认情况是基于rectangular布局来的，在假设的情况下，都不可能尽善尽美，假设不成立的情况下当然有可能搞得很差。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>webinar录播：plotting tree &#43; data</title>
+      <link>https://guangchuangyu.github.io/2017/10/ggtree-webinar-2017/</link>
+      <pubDate>Wed, 25 Oct 2017 10:17:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/10/ggtree-webinar-2017/</guid>
+      <description>&lt;p&gt;据说1024是程序员的节日，就在这一天，Y叔开始了第一次的网络讲座，首次在网络上露面。内容就是上一周预告的《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484958&amp;amp;idx=1&amp;amp;sn=d58e3bb5b43899849101c60efd29df53&amp;amp;chksm=ec43b759db343e4fefd48ec618a5a2d42f46256e7f455bf9373d90157be0b47df9bd7fd069a9#rd&#34;&gt;线上沙龙&lt;/a&gt;》。&lt;/p&gt;
+
+&lt;p&gt;很多人想要学ggplot2 + ggtree，但我的定位不是技术性的培训，而是学术讲座，所以一开始把问题摆出来，是有一些问题存在，有knowledge gap，然后我要去解决它。当然考虑到听众的knowledge gap也很大，我在介绍ggtree的之前，也帮大众撸了一篇R的画图，在这简短的时间里，你应该了解了R几个画图系统的关系，base和grid我在slides里写graphic system，但lattice和ggplot2我写的是data visualization system，我对它们是有区别对待的，像lattice和ggplot2自己是不成一体的，但提供了高阶的数据可视化方法/语法。听完讲座你也应该了解ggplot2，知道要怎样去入门，知道重点该学什么。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>add layer to specific panel of facet_plot output</title>
       <link>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/</link>
       <pubDate>Wed, 28 Dec 2016 20:30:00 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/</guid>
-      <description>&lt;p&gt;This is a question from &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ&#34; target=&#34;_blank&#34;&gt;ggtree google group&lt;/a&gt;:&lt;/p&gt;
+      <description>&lt;p&gt;This is a question from &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ&#34;&gt;ggtree google group&lt;/a&gt;:&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;Dear ggtree team,&lt;/p&gt;
 
 &lt;p&gt;how can I apply a geom_xxx to only one facet panel? For example if i want to get &lt;code&gt;geom_hline(yintersect=1:30)&lt;/code&gt; or a &lt;code&gt;geom_text()&lt;/code&gt; in the dot panel?
-I cant see the &lt;code&gt;facet_grid(. ~ var)&lt;/code&gt; function call, so I don&amp;rsquo;t know which subsetting to use. I have already read &lt;a href=&#34;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&#34; target=&#34;_blank&#34;&gt;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&lt;/a&gt;&lt;/p&gt;
+I cant see the &lt;code&gt;facet_grid(. ~ var)&lt;/code&gt; function call, so I don&amp;rsquo;t know which subsetting to use. I have already read &lt;a href=&#34;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&#34;&gt;http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working&lt;/a&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;  tr &amp;lt;- rtree(30)
   
@@ -98,69 +78,16 @@ I cant see the &lt;code&gt;facet_grid(. ~ var)&lt;/code&gt; function call, so I 
 Andreas&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;If this can be done, we can create even more &lt;a href=&#34;https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/&#34; target=&#34;_blank&#34;&gt;comprehensive tree plots&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In fact, it&amp;rsquo;s quite easy to do. In &lt;code&gt;facet_plot&lt;/code&gt;, &lt;code&gt;ggtree&lt;/code&gt; used a variable &lt;code&gt;.panel&lt;/code&gt; to store the panel information. We can add a dummy column &lt;code&gt;.panel&lt;/code&gt; to our data and pass it to  &lt;code&gt;geom&lt;/code&gt; layer function and the layer will be added to selected panel we specify in the &lt;code&gt;.panel&lt;/code&gt; column.&lt;/p&gt;
-
-&lt;p&gt;To follow up the above example, we can create a &lt;code&gt;data.frame&lt;/code&gt; that contains &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;.panel=&amp;quot;dot&amp;quot;&lt;/code&gt; as we want to add horizontal lines in &lt;code&gt;dot&lt;/code&gt; panel.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;d=data.frame(y=1:30, .panel=&#39;dot&#39;)
-p3 + geom_hline(data=d, aes(yintercept=y))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Here is what we can get:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2016-12-28-005010_1280x800_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href=&#34;https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/&#34; target=&#34;_blank&#34;&gt;xlim_expand&lt;/a&gt; is actually adding a &lt;code&gt;geom_blank&lt;/code&gt; layer to selected panel for setting x-axis limits of that panel.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Another approach is using &lt;code&gt;facet_plot&lt;/code&gt; with &lt;strong&gt;panel&lt;/strong&gt; parameter setting to existing one.&lt;/p&gt;
-
-&lt;p&gt;An example is posted in &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/2zAyBqa-CnM/NXWgmGKWDwAJ&#34; target=&#34;_blank&#34;&gt;google group&lt;/a&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(dplyr)
-library(ggstance)
-library(ggtree)
-
-tr &amp;lt;- rtree(30)
-p &amp;lt;- ggtree(tr) + theme_tree2() 
-
-df &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
-                 value = abs(rnorm(60, mean=100, sd=50)),
-                 category = rep(LETTERS[1:2], 30))
-
-sum_value &amp;lt;- df %&amp;gt;%
-    group_by(id) %&amp;gt;%
-    summarize(total = sum(value))
-
-p2 &amp;lt;- facet_plot(p, panel = &#39;Stacked Barplot&#39;, 
-                 data = df, geom = geom_barh,
-                 mapping = aes(x = value, fill = as.factor(category)),
-                 stat=&#39;identity&#39; ) 
-
-facet_plot(p2, panel=&#39;Stacked Barplot&#39;,
-           data=sum_value, geom=geom_text, 
-           mapping=aes(x=total+20, label=round(total)))                     
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_panel.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;If this can be done, we can create even more &lt;a href=&#34;https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/&#34;&gt;comprehensive tree plots&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>xlim_tree: set x axis limits for only Tree panel</title>
       <link>https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/</link>
       <pubDate>Mon, 31 Oct 2016 12:30:00 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/</guid>
-      <description>&lt;p&gt;A &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; user recently asked me the following question in &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ&#34; target=&#34;_blank&#34;&gt;google group&lt;/a&gt;:&lt;/p&gt;
+      <description>&lt;p&gt;A &lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; user recently asked me the following question in &lt;a href=&#34;https://groups.google.com/forum/?utm_medium=email&amp;amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ&#34;&gt;google group&lt;/a&gt;:&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.&lt;/p&gt;
@@ -168,167 +95,57 @@ facet_plot(p2, panel=&#39;Stacked Barplot&#39;,
 &lt;p&gt;Is it possible to work around this and only affect the tree and it&amp;rsquo;s tip labels leaving the other plots in facet_plot unaffected?&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;This is indeed a desire feature, as &lt;code&gt;ggplot2&lt;/code&gt; can&amp;rsquo;t automatically adjust &lt;code&gt;xlim&lt;/code&gt; for text since the units are in two different spaces (data and pixel).&lt;/p&gt;
-
-&lt;p&gt;Here is an example, the tip labels are truncated.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggtree)
-set.seed(2016-10-31)
-tr =rtree(50)
-tr$tip.label = paste(tr$tip.label, tr$tip.label, sep=&amp;quot;_&amp;quot;)
-p &amp;lt;- ggtree(tr) + geom_tiplab(align=TRUE) + theme_tree2()
-d = data.frame(id = tr$tip.label, v= rnorm(50))
-
-facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&amp;quot;truncated tip labels&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.31.39 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we only visualize the tree, it is easy to solve by using &lt;code&gt;xlim()&lt;/code&gt; to allocate more space for the lables. But &lt;code&gt;xlim()&lt;/code&gt; works for all panels. Combination of &lt;code&gt;facet_plot()&lt;/code&gt; and &lt;code&gt;xlim()&lt;/code&gt; will produce figure with many spaces.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;facet_plot(p+xlim(NA, 6), geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&amp;quot;xlim applies to all panels&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.33.05 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To overcome this issue, &lt;code&gt;ggtree&lt;/code&gt; provides &lt;code&gt;xlim_tree&lt;/code&gt; to set &lt;code&gt;x&lt;/code&gt; axis limits for only the &lt;code&gt;Tree&lt;/code&gt; panel.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;facet_plot(p+xlim_tree(6), geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + 
-        ggtitle(&#39;*xlim_tree* only change x axis limits of *Tree* panel&#39;)
-
-# or using:
-# facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel=&#39;dot&#39;) + xlim_tree(6)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Actually, you can set &lt;code&gt;xlim&lt;/code&gt; for selected panel by using &lt;code&gt;+xlim_expand(xlim, panel)&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;This is indeed a desire feature, as &lt;code&gt;ggplot2&lt;/code&gt; can&amp;rsquo;t automatically adjust &lt;code&gt;xlim&lt;/code&gt; for text since the units are in two different spaces (data and pixel).&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>facet_plot: a general solution to associate data with phylogenetic tree</title>
       <link>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/</link>
       <pubDate>Wed, 26 Oct 2016 16:30:00 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; provides &lt;code&gt;gheatmap&lt;/code&gt; for visualizing heatmap and &lt;code&gt;msaplot&lt;/code&gt; for visualizing multiple sequence alignment with phylogenetic tree.&lt;/p&gt;
+      <description>&lt;p&gt;&lt;a href=&#34;https://guangchuangyu.github.io/ggtree&#34;&gt;ggtree&lt;/a&gt; provides &lt;code&gt;gheatmap&lt;/code&gt; for visualizing heatmap and &lt;code&gt;msaplot&lt;/code&gt; for visualizing multiple sequence alignment with phylogenetic tree.&lt;/p&gt;
 
 &lt;p&gt;We may have different data types and want to visualize and align them with the tree. For example, &lt;code&gt;dotplot&lt;/code&gt; of SNP site (e.g. using &lt;code&gt;geom_point(shape=&#39;|&#39;)&lt;/code&gt;), &lt;code&gt;barplot&lt;/code&gt; of trait values (e.g. using &lt;code&gt;geom_barh(stat=&#39;identity&#39;)&lt;/code&gt;) &lt;em&gt;et al&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;To make it easy to associate different types of data with phylogenetic tree, I implemented the &lt;code&gt;facet_plot&lt;/code&gt; function which accepts a &lt;code&gt;geom&lt;/code&gt; function to draw the input &lt;code&gt;data.frame&lt;/code&gt; and display it in an additional &lt;code&gt;panel&lt;/code&gt;.&lt;/p&gt;
 
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;associate tree with different type of data by &lt;a href=&#34;https://twitter.com/hashtag/ggtree?src=hash&amp;amp;ref_src=twsrc%5Etfw&#34;&gt;#ggtree&lt;/a&gt; &lt;a href=&#34;https://t.co/6w755VWytZ&#34;&gt;https://t.co/6w755VWytZ&lt;/a&gt; &lt;a href=&#34;https://t.co/K8WViEi13E&#34;&gt;pic.twitter.com/K8WViEi13E&lt;/a&gt;&lt;/p&gt;&amp;mdash; Guangchuang Yu (@guangchuangyu) &lt;a href=&#34;https://twitter.com/guangchuangyu/status/773359054924095488?ref_src=twsrc%5Etfw&#34;&gt;September 7, 2016&lt;/a&gt;&lt;/blockquote&gt;
-&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;p&gt;tweet 773359054924095488&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用ggtree实现进化树的可视化和注释</title>
+      <link>https://guangchuangyu.github.io/2016/03/ggtree-for-tree-visualization-annotation/</link>
+      <pubDate>Wed, 09 Mar 2016 13:17:48 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2016/03/ggtree-for-tree-visualization-annotation/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;本文受魏太云（&lt;a href=&#34;http://www.weibo.com/taiyun&#34;&gt;@cloud_wei&lt;/a&gt;)的邀请，最初在2015年发表于&lt;a href=&#34;http://cos.name/2015/11/to-achieve-the-visualization-and-annotation-of-evolutionary-tree-using-ggtree/&#34;&gt;统计之都&lt;/a&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
 
+&lt;p&gt;进化树看起来和层次聚类很像。有必要解释一下两者的一些区别。&lt;/p&gt;
 
-&lt;p&gt;tr &amp;lt;- rtree(30)
-    p &amp;lt;- ggtree(tr)
-    d1 &amp;lt;- data.frame(id=tr$tip.label, location=sample(c(&amp;ldquo;GZ&amp;rdquo;, &amp;ldquo;HK&amp;rdquo;, &amp;ldquo;CZ&amp;rdquo;), 30, replace=TRUE))
-    p1 &amp;lt;- p %&amp;lt;+% d1 + geom_tippoint(aes(color=location))
-    d2 &amp;lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-    p2 &amp;lt;- facet_plot(p1, panel=&amp;ldquo;dot&amp;rdquo;, data=d2, geom=geom_point,
-                    aes(x=val), color=&amp;lsquo;firebrick&amp;rsquo;) + theme_tree2()&lt;/p&gt;
+&lt;p&gt;层次聚类的侧重点在于分类，把距离近的聚在一起。而进化树的构建可以说也是一个聚类过程，但侧重点在于推测进化关系和进化距离(evolutionary distance)。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Most of the &lt;code&gt;geom&lt;/code&gt; in &lt;code&gt;ggplot2&lt;/code&gt; draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have &lt;a href=&#34;https://github.com/lionel-/ggstance&#34; target=&#34;_blank&#34;&gt;ggstance&lt;/a&gt; which provides horizontal versions of &lt;code&gt;geoms&lt;/code&gt;, including:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;geom_barh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_histogramh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_linerangeh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_pointrangeh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_errorbarh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_crossbarh()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_boxploth()&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;geom_violinh()&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;With &lt;code&gt;ggstance&lt;/code&gt;, we can associate &lt;code&gt;barplot&lt;/code&gt;, &lt;code&gt;boxplot&lt;/code&gt; or other graphs to phylogenetic trees.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ggstance)
-d3 &amp;lt;- data.frame(id = rep(tr$tip.label, each=2),
-                    value = abs(rnorm(60, mean=100, sd=50)),
-                    category = rep(LETTERS[1:2], 30))
-p3 &amp;lt;- facet_plot(p2, panel = &#39;Stacked Barplot&#39;, data = d3, 
-                geom = geom_barh, 
-                mapping = aes(x = value, fill = as.factor(category)), 
-                stat=&#39;identity&#39; ) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;d4 = data.frame(id=rep(tr$tip.label, each=20), 
-                val=as.vector(sapply(1:30, function(i) 
-                                rnorm(20, mean=i)))
-                )               
-p4 &amp;lt;- facet_plot(p3, panel=&amp;quot;Boxplot&amp;quot;, data=d4, geom_boxploth, 
-            mapping = aes(x=val, group=label, color=location))                                  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;层次聚类的输入是距离，比如euclidean或manhattan距离。把距离近的聚在一起。而进化树推断是从生物序列（DNA或氨基酸）的比对开始。最简单的方法是计算一下序列中不匹配的数目，称之为hamming distance（通常用序列长度做归一化），使用距离当然也可以应用层次聚类的方法。进化树的构建最简单的方法是非加权配对平均法（Unweighted Pair Group Method with Arithmetic Mean, UPGMA），这其实是使用average linkage的层次聚类。这种方法在进化树推断上现在基本没人用。更为常用的是邻接法（neighbor joining），两个节点距离其它节点都比较远，而这两个节点又比较近，它们就是neighbor，可以看出neighbor不一定是距离最近的两个节点。真正做进化的人，这个方法也基本不用。现在主流的方法是最大似然法(Maximum likelihood, ML)，通过进化模型（evolutionary model)估计拓朴结构和分支长度，估计的结果具有最高的概率能够产生观测数据（多序列比对）。另外还有最大简约法和贝叶斯推断等方法用于构建进化树。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>an example of drawing beast tree using ggtree</title>
       <link>https://guangchuangyu.github.io/2015/04/an-example-of-drawing-beast-tree-using-ggtree/</link>
       <pubDate>Wed, 01 Apr 2015 01:50:04 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2015/04/an-example-of-drawing-beast-tree-using-ggtree/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://beast.bio.ed.ac.uk/figtree&#34; target=&#34;_blank&#34;&gt;FigTree&lt;/a&gt; is designed for viewing
+      <description>&lt;p&gt;&lt;a href=&#34;http://beast.bio.ed.ac.uk/figtree&#34;&gt;FigTree&lt;/a&gt; is designed for viewing
 beast output as demonstrated by their example data:
-&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.15.57.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;BEAST output is well supported by
-&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; and it&amp;rsquo;s easy to
-reproduce such a tree view.
-&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;ggtree&lt;/a&gt; supports parsing beast
-output by read.beast function. We can visualize the tree directly by
-using ggtree function. Since this is a time scale tree, we can set the
-parameter &lt;strong&gt;&lt;em&gt;mrsd&lt;/em&gt;&lt;/strong&gt; to most recent sampling date.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require(ggplot2)
-require(ggtree)
-x &amp;lt;- read.beast(&amp;quot;/Applications/FigTree/influenza.tree&amp;quot;)
-cols &amp;lt;- scale_color(x, by=&amp;quot;height&amp;quot;)
-ggtree(x, right=TRUE, mrsd=&amp;quot;2005-04-02&amp;quot;, color=cols) + theme_tree2() +
-    geom_text(aes(x=max(x), label=label), size=1, color=cols, hjust=-.3) +
-        scale_x_continuous(breaks=c(1992, 1995, 1997, 2000, 2002, 2005), minor_breaks=seq(1992, 2005, 1)) +
-            geom_segment(aes(xend=max(x)+.20, yend=y), linetype=&amp;quot;dotted&amp;quot;, size=.1, color=cols) +
-                theme(panel.grid.major   = element_line(color=&amp;quot;black&amp;quot;, size=.2),
-                      panel.grid.minor   = element_line(color=&amp;quot;grey&amp;quot;, size=.2),
-                      panel.grid.major.y = element_blank(),
-                      panel.grid.minor.y = element_blank()) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.16.14.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-10%2018.15.57.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>viewing and annotating phylogenetic tree with ggtree</title>
       <link>https://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/</link>
       <pubDate>Sun, 21 Dec 2014 08:00:08 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2014/12/viewing-and-annotating-phylogenetic-tree-with-ggtree/</guid>
       <description>&lt;p&gt;When I need to annotate nucleotide substitutions in the phylogenetic
 tree, I found that all the software are designed to display the tree but
@@ -337,173 +154,21 @@ specific data such as bootstrap values, but they are restricted to a few
 supported data types. It is hard/impossible to inject user specific
 data.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I decided to implement my own one by extending the ggplot2 package.
-There are other R packages that implemented tree viewer using ggplot2,
-including OutbreakTools, phyloseq and ggphylo, but all of them only
-create complex tree view function for their specific needs. They are
-just classical tree viewers that only viewing the tree or annotating a
-specific data type. The good parts of ggplot2 are not available in these
-packages. They lack of flexibilities of annotating phylogenetic tree by
-diverse user inputs. I develop ggtree, which is based on grammar of
-graphics and will takes all the good parts of ggplot2.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;nwk &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.nwk&amp;quot;, package = &amp;quot;ggtree&amp;quot;)
-library(ape)
-tree &amp;lt;- read.tree(nwk)
-library(ggplot2)
-library(ggtree)
-ggplot(tree, aes(x, y)) + geom_tree() + theme_tree() + xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It extends ggplot2 to support tree objects and implements a geom_tree()
-layer to draw the tree.&lt;/p&gt;
-
-&lt;p&gt;The ggtree package provides a function, ggtree, for shortcut of
-&lt;code&gt;ggplot()+geom_tree()+theme_tree()&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;It supports several tree objects including phylo that defined in ape,
-phylo4 that defined in phylobase and jplace that defined within the
-ggtree package.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p1 &amp;lt;- ggtree(tree) + ggtitle(&amp;quot;tree of phylo object&amp;quot;)
-tr2 &amp;lt;- as(tree, &amp;quot;phylo4&amp;quot;)
-p2 &amp;lt;- ggtree(tr2) + ggtitle(&amp;quot;tree of phylo4 object&amp;quot;)
-jpf &amp;lt;- system.file(&amp;quot;extdata&amp;quot;, &amp;quot;sample.jplace&amp;quot;, package=&amp;quot;ggtree&amp;quot;)
-jp &amp;lt;- read.jplace(jpf)
-p3 &amp;lt;- ggtree(jp) + ggtitle(&amp;quot;tree of jplace object&amp;quot;)
-library(gridExtra)
-grid.arrange(p1, p2, p3, ncol=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_objects.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;With this implementation, it is possible to inject user input. But is it
-easy? The answer is yes and no. It may depends on user&amp;rsquo;s ggplot2
-experiences. To place the input data at the correct position, you should
-know how the tree was layout. It may be easy for an experienced user,
-but hard for newbie. Most of us are impatient and reluctant to learn, so
-I should create a way that is easy to follow. It&amp;rsquo;s not a good idea to
-implement unnecessary geom_XXX layer, for it violates the great idea of
-taking all the good parts of ggplot2, and it will violate the consistent
-function calls of &lt;code&gt;geom_XXX&lt;/code&gt;. Thanks to my sleep disorder, I came out
-with an operator &lt;strong&gt;&lt;code&gt;%&amp;lt;+%&lt;/code&gt;&lt;/strong&gt; for injecting input data to the tree view.
-After the injection, the data is visible to all the geom_XXX layers.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p &amp;lt;- ggtree(tree)
-
-print(dd)
-taxa    place   value
-M   NA  55.9
-A   GZ  65.6
-C   GZ  59.3
-I   CZ  78.5
-E   GZ  62.9
-D   GZ  64.1
-J   CZ  62.3
-K   CZ  79.1
-B   GZ  89.0
-L   CZ  57.1
-G   HK  66.4
-H   HK  61.6
-F   HK  59.9
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Suppose we have a tree view p, and input data dd, we can attach the data
-to the tree and add a layer of tip labels and colored by place.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p &amp;lt;- p %&amp;lt;+% dd + geom_text(aes(color=place, label=label), hjust=-0.5)
-print(p)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_place.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Once the data is attached, it is always attached, and we can add more
-layers easily.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;p + geom_text(aes(color=place, label=place), hjust=1, vjust=-0.4, size=3) +
-  geom_text(aes(color=place, label=value), hjust=1, vjust=1.4, size=3)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/tree_place2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The package is now available via github,
-&lt;a href=&#34;https://github.com/GuangchuangYu/ggtree&#34; target=&#34;_blank&#34;&gt;https://github.com/GuangchuangYu/ggtree&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Suggestions, comments and feature request are all welcome. Let&amp;rsquo;s make it
-an easy to use and feature-riched package for viewing and annotating
-phylogenetic trees.&lt;/p&gt;
-
-&lt;p&gt;At last, wish you a merry christmas :)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/IMG_5755.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;G Yu&lt;/strong&gt;, DK Smith, H Zhu, Y Guan, TTY Lam&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract&#34; target=&#34;_blank&#34;&gt;ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Methods in Ecology and Evolution&lt;/em&gt;&lt;/strong&gt;. &lt;a href=&#34;http://dx.doi.org/10.1111/2041-210X.12628&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;doi:10.1111/2041-210X.12628&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;
-&lt;div data-badge-popover=&#34;right&#34; data-badge-type=&#34;donut&#34; data-doi=&#34;10.1111/2041-210X.12628&#34; class=&#34;altmetric-embed&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/12/2014-12-21-145753_579x436_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>The spread of new mutations</title>
       <link>https://guangchuangyu.github.io/2014/08/the-spread-of-new-mutations/</link>
       <pubDate>Wed, 13 Aug 2014 11:24:35 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2014/08/the-spread-of-new-mutations/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Genetic drift is the term used in population genetics to refer to the statistical drift over time of gene frequencies in a population due to random sampling effects in the formation of successive generations.
 In a narrower sense, genetic drift refers to the expected population dynamics of neutral alleles (those defined as having no positive or negative impact on reproductive fitness), which are predicted to eventually become fixed at zero or 100% frequency in the absence of other mechanisms affecting allele distributions.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;The most important keyword in the definition of &lt;em&gt;genetic drift&lt;/em&gt; is &lt;strong&gt;random sampling effects&lt;/strong&gt;. The figure belowed illustrates this idea. The surviving individuals do not necessarily have selection advantage. They are randomly selected.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2014/08/beetles_mech3.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Genetic drift can changes the proportion of genetic polymorphism. A particular mutation that are rare may becomes majority of the population due to random events. If all individuals in the population contain a particular mutation, we call it &lt;a href=&#34;http://en.wikipedia.org/wiki/Fixation_%28population_genetics%29&#34; target=&#34;_blank&#34;&gt;fixation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;In population genetics, fixation is the change in a gene pool from a situation where there exists at least two variants of a particular gene (allele) to a situation where only one of the alleles remains.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;If there are m individuals contains a particular mutation in the population of size N, the ratio of have and do not have this mutation is $a = m/N$ , and $1-a$ respectively. According to Wright-Fisher model, the probability of n individuals that have this mutation in next
-generation follows the distribution of binomial: $P(n) = C^N_n a^n(1-a)^{N-n}$&lt;/p&gt;
-
-&lt;p&gt;With this distribution, we can perform simulation. Here, assume population size N=200, and initial probability of $ a=0.1 $ , we can sample n base on Wright-Fisher model and repeatedly update $a$ until $a$ is equals to 0 or 100%.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2014/08/fixation.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In the above figure, I showed 20 times of simulations. There are 2 fixations. The ratio &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;20&lt;/sub&gt; is equals to the initial value of $a$ (0.1). For neutral mutation, the probability of fixation is equals to the mutation rate.&lt;/p&gt;
-
-&lt;p&gt;Not all mutation are neutral. With selection pressures, some mutations have advantage while some mutations are deleterious. Advantageous mutation has fitness 1+s, while s is the selection coefficient. Fitness is the ratio between actual number of offspring and the expected offspring number. So individuals that contain advantageous mutation produce 1+s times of offspring than those do not have that mutation.&lt;/p&gt;
-
-&lt;p&gt;The mean of fitness in m copies of mutation is: $\bar{w} = \frac{m(1+s) + (N-m)}{N}$&lt;/p&gt;
-
-&lt;p&gt;In next generation, the ratio of this mutation is: $ a = \frac{m(1+s)}{N\bar{w}} $&lt;/p&gt;
-
-&lt;p&gt;I used s=0.05 to perform simulation again. Most of the advantageous mutation can be fixed after 100 generations.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2014/08/fixation1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If I set s=0.2, mutation can be fixed after 30 generations.&lt;/p&gt;
-
-&lt;p&gt;Accordingly, if mutation is deleterious, the fitness is 1-s.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Motoo_Kimura&#34; target=&#34;_blank&#34;&gt;Kimura&lt;/a&gt; proposed diffusion
-theory that the probability of fixation for advantageous mutation is: $p_{fix} = \frac{1-e^{-2s}}{1-e^{-2Ns}}$&lt;/p&gt;
-
-&lt;p&gt;and for deleterious mutation is: $ p_{fix} = \frac{e^{2s}-1}{e^{2Ns}-1}$&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2014/08/fixation_probability.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If s is very small and Ns &amp;lt;&amp;lt; 1, the major force behind fixation is genetic drift, similar to neutral mutation (purple line).&lt;/p&gt;
-
-&lt;p&gt;In the condition of Ns &amp;gt;&amp;gt; 1 and s &amp;lt;&amp;lt; 1, $ e^{-2s} \approx 1-2s$ and $p_{fix} \approx 2s $ (red line).&lt;/p&gt;
-
-&lt;h4 id=&#34;reference&#34;&gt;Reference:&lt;/h4&gt;
-
-&lt;p&gt;Chapter 3 of &lt;a href=&#34;http://book.douban.com/subject/2044074/&#34; target=&#34;_blank&#34;&gt;Bioinformatics and Molecular Evolution&lt;/a&gt;&lt;/p&gt;</description>
+&lt;p&gt;The most important keyword in the definition of &lt;em&gt;genetic drift&lt;/em&gt; is &lt;strong&gt;random sampling effects&lt;/strong&gt;. The figure belowed illustrates this idea. The surviving individuals do not necessarily have selection advantage. They are randomly selected.&lt;/p&gt;</description>
     </item>
     
   </channel>

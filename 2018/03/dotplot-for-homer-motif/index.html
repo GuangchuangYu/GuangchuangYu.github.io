@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="
+第一棒：CNS里的泡泡图
+第二棒：怎样用HOMER找motif？
+第三棒：怎样用HOMER算出的P-value画出CNS级别的泡泡图？
+
+
+这是小伙伴的命题作文，下面这个数据是曾老湿给出来的，其中header行竟然放在了最后一行，我手工把它挪到了第一行，里面还有一个数据缺失的，会导致读了数据后会有NA值，需要去除。
+
+
+
+$ file summary_ATAC_seq_motif.xlsx                                                                                     
+summary_ATAC_seq_motif.xlsx: Microsoft Excel 2007&#43;
+
+
+这是一个Excel文件，我们可以用readxl来读：
+
+require(readxl)
+x &lt;- read_xlsx(&quot;summary_ATAC_seq_motif.xlsx&quot;)
+">
+
+
+<meta property="og:description" content="
+第一棒：CNS里的泡泡图
+第二棒：怎样用HOMER找motif？
+第三棒：怎样用HOMER算出的P-value画出CNS级别的泡泡图？
+
+
+这是小伙伴的命题作文，下面这个数据是曾老湿给出来的，其中header行竟然放在了最后一行，我手工把它挪到了第一行，里面还有一个数据缺失的，会导致读了数据后会有NA值，需要去除。
+
+
+
+$ file summary_ATAC_seq_motif.xlsx                                                                                     
+summary_ATAC_seq_motif.xlsx: Microsoft Excel 2007&#43;
+
+
+这是一个Excel文件，我们可以用readxl来读：
+
+require(readxl)
+x &lt;- read_xlsx(&quot;summary_ATAC_seq_motif.xlsx&quot;)
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎样用HOMER算出的P-value画出CNS级别的泡泡图？">
+<meta name="twitter:title" content="怎样用HOMER算出的P-value画出CNS级别的泡泡图？">
+<meta property="og:url" content="https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="
+第一棒：CNS里的泡泡图
+第二棒：怎样用HOMER找motif？
+第三棒：怎样用HOMER算出的P-value画出CNS级别的泡泡图？
+
+
+这是小伙伴的命题作文，下面这个数据是曾老湿给出来的，其中header行竟然放在了最后一行，我手工把它挪到了第一行，里面还有一个数据缺失的，会导致读了数据后会有NA值，需要去除。
+
+
+
+$ file summary_ATAC_seq_motif.xlsx                                                                                     
+summary_ATAC_seq_motif.xlsx: Microsoft Excel 2007&#43;
+
+
+这是一个Excel文件，我们可以用readxl来读：
+
+require(readxl)
+x &lt;- read_xlsx(&quot;summary_ATAC_seq_motif.xlsx&quot;)
+">
+<meta name="twitter:description" content="
+第一棒：CNS里的泡泡图
+第二棒：怎样用HOMER找motif？
+第三棒：怎样用HOMER算出的P-value画出CNS级别的泡泡图？
+
+
+这是小伙伴的命题作文，下面这个数据是曾老湿给出来的，其中header行竟然放在了最后一行，我手工把它挪到了第一行，里面还有一个数据缺失的，会导致读了数据后会有NA值，需要去除。
+
+
+
+$ file summary_ATAC_seq_motif.xlsx                                                                                     
+summary_ATAC_seq_motif.xlsx: Microsoft Excel 2007&#43;
+
+
+这是一个Excel文件，我们可以用readxl来读：
+
+require(readxl)
+x &lt;- read_xlsx(&quot;summary_ATAC_seq_motif.xlsx&quot;)
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-03-29T11:23:00">
+  
+  
+    <meta property="article:modified_time" content="2018-03-29T11:23:00">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+      <meta property="article:section" content="Visualization">
+    
+  
+  
+    
+      <meta property="article:tag" content="ggplot2">
+    
+      <meta property="article:tag" content="purrr">
+    
+      <meta property="article:tag" content="readxl">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>怎样用HOMER算出的P-value画出CNS级别的泡泡图？</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      怎样用HOMER算出的P-value画出CNS级别的泡泡图？
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-03-29T11:23:00&#43;08:00">
+        
+  March 29, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <ul>
+<li>第一棒：<a href="http://mp.weixin.qq.com/s/pTzvbfk5Ohu45RXb-ePzHw">CNS里的泡泡图</a></li>
+<li>第二棒：<a href="http://mp.weixin.qq.com/s/PVHCiqhzoW3DsvdsVQIKJg">怎样用HOMER找motif？</a></li>
+<li>第三棒：怎样用HOMER算出的P-value画出CNS级别的泡泡图？</li>
+</ul>
+
+<p>这是小伙伴的命题作文，下面这个数据是曾老湿给出来的，其中header行竟然放在了最后一行，我手工把它挪到了第一行，里面还有一个数据缺失的，会导致读了数据后会有NA值，需要去除。</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/MISC/motif_dotplot_data.png" alt="" /></p>
+
+<pre><code>$ file summary_ATAC_seq_motif.xlsx                                                                                     
+summary_ATAC_seq_motif.xlsx: Microsoft Excel 2007+
+</code></pre>
+
+<p>这是一个Excel文件，我们可以用<code>readxl</code>来读：</p>
+
+<pre><code>require(readxl)
+x &lt;- read_xlsx(&quot;summary_ATAC_seq_motif.xlsx&quot;)
+</code></pre>
+
+<p>下面是读进来的数据：</p>
+
+<pre><code>&gt; x
+# A tibble: 14 x 20
+   `2cells`      X__1 X__2  `4cells`      X__3 X__4  `8cells` X__5  X__6  ICM
+   &lt;chr&gt;        &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;lgl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;lgl&gt; &lt;chr&gt;
+ 1 AP-2gam… 1.00e+  0 NA    AP-2gam… 1.00e-  1 NA    AP-2gam… 9.99… NA    CTCF…
+ 2 CTCF(Zf… 1.00e-187 NA    CTCF(Zf… 1.00e-151 NA    CTCF(Zf… 9.99… NA    CTCF…
+ 3 CTCF-Sa… 1.00e- 10 NA    CTCF-Sa… 1.00e-  9 NA    CTCF-Sa… 9.99… NA    FOXA…
+ 4 FOXA1(F… 1.00e- 52 NA    FOXA1(F… 1.00e- 61 NA    FOXA1(F… 9.99… NA    FOXA…
+ 5 FOXA1(F… 1.00e- 62 NA    FOXA1(F… 1.00e- 77 NA    FOXA1(F… 1.00… NA    FOXA…
+ 6 FOXA1:A… 1.00e- 52 NA    FOXA1:A… 1.00e- 63 NA    FOXA1:A… 1E-26 NA    GABP…
+ 7 GABPA(E… 1.00e+  0 NA    GABPA(E… 1.00e-  4 NA    GABPA(E… 1E-41 NA    GATA…
+ 8 GATA3(Z… 1.00e+  0 NA    GATA3(Z… 1.00e+  0 NA    GATA3(Z… 9.99… NA    GATA…
+ 9 GATA3(Z… 1.00e- 13 NA    GATA3(Z… 1.00e-  3 NA    GATA3(Z… 9.99… NA    GATA…
+10 GATA3(Z… 1.00e+  0 NA    GATA3(Z… 1.00e-  4 NA    GATA3(Z… 1e-4… NA    Gata…
+11 Gata1(Z… 1.00e+  0 NA    Gata1(Z… 1.00e-  9 NA    Gata1(Z… 1e-4… NA    NF1:…
+12 NF1:FOX… 1.00e+  0 NA    NF1:FOX… 1.00e-  3 NA    NF1:FOX… 1E-3  NA    OCT4…
+13 OCT4-SO… 1.00e+  0 NA    OCT4-SO… 1.00e+  0 NA    OCT4-SO… 1.00… NA    TEAD…
+14 TEAD4(T… 1.00e+  0 NA    TEAD4(T… 1.00e- 19 NA    TEAD4(T… 9.99… NA    NA
+# ... with 10 more variables: X__7 &lt;chr&gt;, X__8 &lt;lgl&gt;, `1k_mESC` &lt;chr&gt;,
+#   X__9 &lt;chr&gt;, X__10 &lt;lgl&gt;, `200_mESC` &lt;chr&gt;, X__11 &lt;chr&gt;, X__12 &lt;lgl&gt;,
+#   `50k_mESC` &lt;chr&gt;, X__13 &lt;chr&gt;
+</code></pre>
+
+<p>因为有空白的column，所以会有NA的column出现，我们先去掉它们：</p>
+
+<pre><code>&gt; require(purrr)
+&gt; x &lt;- x[, map_lgl(x, function(y) !all(is.na(y)))]
+&gt; x
+# A tibble: 14 x 14
+   `2cells`       X__1 `4cells`       X__3 `8cells` X__5  ICM   X__7  `1k_mESC`
+   &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 AP-2gamm… 1.00e+  0 AP-2gamm… 1.00e-  1 AP-2gam… 9.99… CTCF… 1e-4… AP-2gamm…
+ 2 CTCF(Zf)… 1.00e-187 CTCF(Zf)… 1.00e-151 CTCF(Zf… 9.99… CTCF… 9.99… CTCF(Zf)…
+ 3 CTCF-Sat… 1.00e- 10 CTCF-Sat… 1.00e-  9 CTCF-Sa… 9.99… FOXA… 1E-8  CTCF-Sat…
+ 4 FOXA1(Fo… 1.00e- 52 FOXA1(Fo… 1.00e- 61 FOXA1(F… 9.99… FOXA… 1.00… FOXA1(Fo…
+ 5 FOXA1(Fo… 1.00e- 62 FOXA1(Fo… 1.00e- 77 FOXA1(F… 1.00… FOXA… 1E-4  FOXA1(Fo…
+ 6 FOXA1:AR… 1.00e- 52 FOXA1:AR… 1.00e- 63 FOXA1:A… 1E-26 GABP… 9.99… FOXA1:AR…
+ 7 GABPA(ET… 1.00e+  0 GABPA(ET… 1.00e-  4 GABPA(E… 1E-41 GATA… 1.00… GABPA(ET…
+ 8 GATA3(Zf… 1.00e+  0 GATA3(Zf… 1.00e+  0 GATA3(Z… 9.99… GATA… 1E-4  GATA3(Zf…
+ 9 GATA3(Zf… 1.00e- 13 GATA3(Zf… 1.00e-  3 GATA3(Z… 9.99… GATA… 1e-5… GATA3(Zf…
+10 GATA3(Zf… 1.00e+  0 GATA3(Zf… 1.00e-  4 GATA3(Z… 1e-4… Gata… 1e-7… GATA3(Zf…
+11 Gata1(Zf… 1.00e+  0 Gata1(Zf… 1.00e-  9 Gata1(Z… 1e-4… NF1:… 1     Gata1(Zf…
+12 NF1:FOXA… 1.00e+  0 NF1:FOXA… 1.00e-  3 NF1:FOX… 1E-3  OCT4… 1E-2… NF1:FOXA…
+13 OCT4-SOX… 1.00e+  0 OCT4-SOX… 1.00e+  0 OCT4-SO… 1.00… TEAD… 1e-3… OCT4-SOX…
+14 TEAD4(TE… 1.00e+  0 TEAD4(TE… 1.00e- 19 TEAD4(T… 9.99… NA    NA    TEAD4(TE…
+# ... with 5 more variables: X__9 &lt;chr&gt;, `200_mESC` &lt;chr&gt;, X__11 &lt;chr&gt;,
+#   `50k_mESC` &lt;chr&gt;, X__13 &lt;chr&gt;
+</code></pre>
+
+<p>现在就OK了，那么这个数据长这样子，一列是motif，紧跟着一列是p值，而motif列的名字是相应的实验条件，这些信息我们都是要的。</p>
+
+<pre><code>y &lt;- map_df(seq(1, length(x), 2), function(i) {
+    res &lt;- x[,i:(i+1)]
+    names(res) &lt;- c(&quot;motif&quot;, &quot;pvalue&quot;)
+    res[[2]] %&lt;&gt;% as.numeric
+    res$type = names(x)[i]
+    res &lt;- res[!is.na(res$motif),]
+    res
+})
+
+y$type = factor(y$type, levels=names(x)[seq(1, length(x), 2)])
+</code></pre>
+
+<p>实验条件存在type这个列里，设置了level，这样按照原本excel里的顺序来。现在的数据长这样子：</p>
+
+<pre><code>&gt; y
+# A tibble: 97 x 3
+   motif                                                           pvalue type
+   &lt;chr&gt;                                                            &lt;dbl&gt; &lt;fct&gt;
+ 1 AP-2gamma(AP2)/MCF7-TFAP2C-ChIP-Seq(GSE21234)/Homer          1.00e+  0 2cel…
+ 2 CTCF(Zf)/CD4+-CTCF-ChIP-Seq(Barski_et_al.)/Homer             1.00e-187 2cel…
+ 3 CTCF-SatelliteElement(Zf?)/CD4+-CTCF-ChIP-Seq(Barski_et_al.… 1.00e- 10 2cel…
+ 4 FOXA1(Forkhead)/LNCAP-FOXA1-ChIP-Seq(GSE27824)/Homer         1.00e- 52 2cel…
+ 5 FOXA1(Forkhead)/MCF7-FOXA1-ChIP-Seq(GSE26831)/Homer          1.00e- 62 2cel…
+ 6 FOXA1:AR(Forkhead,NR)/LNCAP-AR-ChIP-Seq(GSE27824)/Homer      1.00e- 52 2cel…
+ 7 GABPA(ETS)/Jurkat-GABPa-ChIP-Seq(GSE17954)/Homer             1.00e+  0 2cel…
+ 8 GATA3(Zf),DR4/iTreg-Gata3-ChIP-Seq(GSE20898)/Homer           1.00e+  0 2cel…
+ 9 GATA3(Zf),DR8/iTreg-Gata3-ChIP-Seq(GSE20898)/Homer           1.00e- 13 2cel…
+10 GATA3(Zf)/iTreg-Gata3-ChIP-Seq(GSE20898)/Homer               1.00e+  0 2cel…
+# ... with 87 more rows
+</code></pre>
+
+<p>那么画图就是显而易见的事情了，这里应该指出一点是曾老湿没有给我相应FPKM值，如果有表达值的话，与上面的y，<code>full_join</code>一下，然后就可以<code>aes(color=FPKM)</code>给点填充颜色了，这里用到了《<a href="https://mp.weixin.qq.com/s/JNIncz3W-59yjGk2ibJWUw">搞大你的点，让我们画真正的气泡图</a>》所教给大家的招数，如果你觉得Motif名字太长，当然你可以把无用的信息删除掉，像这个例子中都有Homer的字样，可以删的，从画图的角度来说，可以强制换行，这一招，我也是教给大家的，请看《<a href="https://mp.weixin.qq.com/s/AsXtK8wpr5UitCug5UQwBA">wrapping labels in ggplot2</a>》，另外你可能还给motif分类，像给motif名字上不同的颜色，这个算是容易的，但想生成图例，却是一件比较tricky的事情，而我也是教给大家的，请移步《<a href="https://mp.weixin.qq.com/s/1bJe7VPZ2qbBRSaONXvxKA">映射变量给axis上色</a>》，似乎没有我没讲过的疑难杂症。</p>
+
+<pre><code>library(ggplot2)
+ggplot(y, aes(type, motif)) + 
+    geom_point(aes(size=-log(pvalue))) + 
+    theme_minimal() + 
+    xlab(NULL) + ylab(NULL) + 
+    scale_size_continuous(range=c(1, 10))
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/MISC/dotplot.png" alt="" /></p>
+
+<h2 id="传送门">传送门</h2>
+
+<ul>
+<li><a href="http://mp.weixin.qq.com/s/oLgpTGdQgcka-OD757_3lA">Use ggplot2</a></li>
+<li><a href="http://mp.weixin.qq.com/s/9F_yPk1AJXBFVhMJpezTPw">ggplot2作图25招：《R入门25个菜谱》中所有图片的ggplot2版本</a></li>
+<li><a href="http://mp.weixin.qq.com/s/BTBP_snTRKrjmRCjF6Cp3A">ggplot2字体溢出的那点破事</a></li>
+<li><a href="http://mp.weixin.qq.com/s/UySUZRIpfX0VhNqveTPHwQ">根据GTF画基因的多个转录本结构</a></li>
+<li><a href="https://mp.weixin.qq.com/s/4kJXBm7ojaTH6okLOFC7pA">如何画类似MEME的注释序列</a></li>
+<li><a href="https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA">enrichplot: 让你们对clusterProfiler系列包无法自拔</a></li>
+</ul>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/ggplot2/">ggplot2</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/purrr/">purrr</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/readxl/">readxl</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/04/vscode-r/" data-tooltip="在VSCode中愉快地使用R">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/03/scatterplot-for-matrix/" data-tooltip="用散点可视化一个矩阵">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/04/vscode-r/" data-tooltip="在VSCode中愉快地使用R">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2018/03/scatterplot-for-matrix/" data-tooltip="用散点可视化一个矩阵">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2018/03/dotplot-for-homer-motif/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F03%2Fdotplot-for-homer-motif%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F03%2Fdotplot-for-homer-motif%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2018%2F03%2Fdotplot-for-homer-motif%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2018\/03\/dotplot-for-homer-motif\/';
+          
+            this.page.identifier = '\/2018\/03\/dotplot-for-homer-motif\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>maxima on Guangchuang Yu</title>
+    <link>https://guangchuangyu.github.io/tags/maxima/</link>
+    <description>Recent content in maxima on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 04 Sep 2017 14:13:35 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/maxima/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>3D版邪恶的曲线</title>
+      <link>https://guangchuangyu.github.io/2017/09/3d-breast/</link>
+      <pubDate>Mon, 04 Sep 2017 14:13:35 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2017/09/3d-breast/</guid>
+      <description>&lt;p&gt;我的公众号biobabble第一篇原创文章《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;amp;mid=2247483816&amp;amp;amp;idx=1&amp;amp;amp;sn=cbfbc284f4edb165ac65f7926f7f8fcc&amp;amp;amp;chksm=ec43b0efdb3439f91ec4f570f7be65e442e21e403481b969d69449464ae1986c7983551de04d#rd&#34;&gt;邪恶的曲线&lt;/a&gt;》，因为太邪恶，当时只推送给男性关注者，由于不是推送给所有人，所以历史记录是翻不到的，之前有再文字推送一下链接，结果评论区全是差评，我也是蛮囧rz的…&lt;/p&gt;
+
+&lt;p&gt;无意中我又翻到了一张2012年2月份画的3D版本，尽管你们要差评，还是想分享一下。代码就在截屏之中，想玩的话，可以照着输入，支持鼠标旋转哦，可以慢慢把玩（太邪恶了）。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>love function plot</title>
+      <link>https://guangchuangyu.github.io/2011/08/love-function-plot/</link>
+      <pubDate>Sat, 06 Aug 2011 05:37:55 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2011/08/love-function-plot/</guid>
+      <description>今天在微博上看到这坑爹的方程： $ (x^2+y^2-1)^3 = {x^2} {y^3}$
+画出来如下：
+跟个屁股似的，sigh&amp;hellip;
+翻出azalea的老文：http://azaleasays.com/2008/06/18/fomula-of-love/
+用ggplot2画一下这个爱的方程：$17x^2-16|x|y+17y^2 = 225 $
+x &amp;lt;- seq(-sqrt(17), sqrt(17), 0.001) y1 &amp;lt;- 8*abs(x)/17 + 15* sqrt(17 - x^2)/17 y2 &amp;lt;- 8*abs(x)/17 - 15* sqrt(17 - x^2)/17 d &amp;lt;- data.frame(x=c(x,x),y=c(y1,y2)) require(ggplot2) p &amp;lt;- ggplot(d, aes(x,y)) p + geom_point(color=&amp;quot;red&amp;quot;)  还可以画出红心，适合今天七夕的日子。
+p + geom_line(color=&amp;quot;red&amp;quot;)  画函数图，这种事情，还是用CAS方便点。
+通过maxima来画，一条指令就行，还不用解方程：
+contour_plot(17*x^2-16*abs(x)*y+17*y^2-225, [x,-sqrt(17),sqrt(17)],[y,-15*sqrt(17)/17, sqrt(17)])  </description>
+    </item>
+    
+    <item>
+      <title>在emacs里使用maxima</title>
+      <link>https://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/</link>
+      <pubDate>Sat, 28 May 2005 08:15:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/</guid>
+      <description>&lt;h2 id=&#34;下载imaxima&#34;&gt;下载imaxima   &lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz&#34;&gt;http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./configure
+make
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进行安装。
+默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(load &amp;quot;imaxima&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2005/05/070902122953.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;需要breqn094包，可从&lt;a href=&#34;ftp://ftp.ams.org/pub/tex/breqn.zip&#34;&gt;ftp://ftp.ams.org/pub/tex/breqn.zip&lt;/a&gt;下载，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /usr/share/texmf/tex/latex/
+sudo unzip ~/Downloads/breqn.zip
+sudo texhash
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

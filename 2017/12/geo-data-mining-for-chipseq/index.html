@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
+
+今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
+
+
+There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
+
+
+并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
+
+我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
+
+
+<meta property="og:description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
+
+今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
+
+
+There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
+
+
+并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
+
+我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ChIPseq-GEO数据挖掘">
+<meta name="twitter:title" content="ChIPseq-GEO数据挖掘">
+<meta property="og:url" content="https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
+
+今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
+
+
+There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
+
+
+并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
+
+我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
+<meta name="twitter:description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
+
+今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
+
+
+There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
+
+
+并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
+
+我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2017-12-11T12:53:16">
+  
+  
+    <meta property="article:modified_time" content="2017-12-11T12:53:16">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+      <meta property="article:section" content="ChIPseq">
+    
+  
+  
+    
+      <meta property="article:tag" content="ChIPseeker">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>ChIPseq-GEO数据挖掘</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      ChIPseq-GEO数据挖掘
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-12-11T12:53:16&#43;08:00">
+        
+  December 11, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/chipseq">ChIPseq</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《<a href="http://mp.weixin.qq.com/s/MqpfgkMJSFj0pYwcEjV9kQ">CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）</a>》）。</p>
+
+<p>今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：</p>
+
+<blockquote>
+<p>There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.</p>
+</blockquote>
+
+<p>并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。</p>
+
+<p>我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。</p>
+
+<p>做注释在Windows上有个软件CisGenome，是Hongkai Ji课题组做的，他们还做了一个hmChIP的database：</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/hmChIP.png" alt="" /></p>
+
+<p>这个hmChIP可以说是先行者，它只支持人和鼠，收集了一些GEO的数据，这个数据库做得比较早，当年GEO上的ChIPseq数据并不多，当由于搞得早，也发了一篇Bioinformatics，当然灌水之后，就不维护了，数据没更新，而基因组版本号还停留在hg18和mm8之上，所以即使它还能用，我想也不会有人去用了。这个数据库做一个事情，你可以上传自己的数据，然后它会和数据库中的数据进行比较，给你报道出你的数据和数据库中的数据overlap了多少，仅此而已。</p>
+
+<p>可以说这是一个雏形，我一直在想overlap了多少，不是很能说明问题，多少算多？能不能算个p值出来，overlap了这么多，随机情况下是不太可能产生的。思来想去，没办法直接算啊，于是求助于permutation，没有枪没有炮，我们自己造。</p>
+
+<p>写了一个shuffle函数，也就是传说中的洗牌，你给基因位置信息，<strong>随机</strong>给你返回等长的片段，但位置改变了。</p>
+
+<pre><code>p &lt;- GRanges(seqnames=c(&quot;chr1&quot;, &quot;chr3&quot;),
+             ranges=IRanges(start=c(1, 100), end=c(50, 130)))
+shuffle(p, TxDb=txdb)
+
+## GRanges object with 2 ranges and 0 metadata columns:
+##       seqnames                 ranges strand
+##          &lt;Rle&gt;              &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1 [239651460, 239651509]      *
+##   [2]     chr3 [163562934, 163562964]      *
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
+</code></pre>
+
+<p>有了这个函数，我们可以对数据洗牌洗它一千次、一万次，那么就可以计算一千一万个overlap，来形成背景分布，实际数据的overlap在这一背景分布中产生的概率就可以计算出来。</p>
+
+<pre><code>enrichPeakOverlap(queryPeak     = files[[5]],
+                  targetPeak    = unlist(files[1:4]),
+                  TxDb          = txdb,
+                  pAdjustMethod = &quot;BH&quot;,
+                  nShuffle      = 50,
+                  chainFile     = NULL,
+                  verbose       = FALSE)
+##                                                       qSample
+## ARmo_0M    GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
+## ARmo_1nM   GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
+## ARmo_100nM GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
+## CBX6_BF    GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
+##                                                       tSample qLen tLen N_OL
+## ARmo_0M                       GSM1174480_ARmo_0M_peaks.bed.gz 1663  812    0
+## ARmo_1nM                     GSM1174481_ARmo_1nM_peaks.bed.gz 1663 2296    8
+## ARmo_100nM                 GSM1174482_ARmo_100nM_peaks.bed.gz 1663 1359    3
+## CBX6_BF    GSM1295076_CBX6_BF_ChipSeq_mergedReps_peaks.bed.gz 1663 1331  968
+##                pvalue  p.adjust
+## ARmo_0M    0.90196078 0.9019608
+## ARmo_1nM   0.25490196 0.4444444
+## ARmo_100nM 0.33333333 0.4444444
+## CBX6_BF    0.05882353 0.2352941
+</code></pre>
+
+<p>函数里有一个<code>chainFile</code>的参数，如果你提供了，数据的比较可以跨基因组版本，甚至于可以跨物种比较。</p>
+
+<p>有了这个函数，那么我再打通GEO，让用户可以检索下载GEO的数据，如此一来，你就可以用自己的数据去和GEO的数据做比较，或者就可能挖出overlap非常significant但没被报道到的co-factor呢！</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/geo_stats.png" alt="" /></p>
+
+<p>ChIPseeker已经收集了超过90个物种，超过2万个BED文件的信息。你可以用getGEOgenomeVersion列出所有支持的基因组及相应的BED文件数目。</p>
+
+<pre><code>getGEOgenomeVersion()
+
+##                         organism genomeVersion Freq
+## 1            Anolis carolinensis       anoCar2    5
+## 2                     Bos taurus       bosTau4    2
+## 3                     Bos taurus       bosTau6   24
+## 4                     Bos taurus       bosTau7    2
+## 5         Caenorhabditis elegans          ce10    4
+## 6         Caenorhabditis elegans           ce6   64
+## 7                    Danio rerio       danRer6    6
+## 8                    Danio rerio       danRer7   61
+## 9        Drosophila melanogaster           dm3  502
+## 10                 Gallus gallus       galGal3   32
+## 11                 Gallus gallus       galGal4   15
+## 12                  Homo sapiens          hg18 2512
+## 13                  Homo sapiens          hg19 6876
+## 14                  Homo sapiens          hg38   43
+## 15                  Mus musculus          mm10  214
+## 16                  Mus musculus           mm8  507
+## 17                  Mus musculus           mm9 6289
+## 18         Monodelphis domestica       monDom5    8
+## 19               Pan troglodytes       panTro3   48
+## 20               Pan troglodytes       panTro4   42
+## 21                Macaca mulatta       rheMac2   81
+## 22                Macaca mulatta       rheMac3   31
+## 23             Rattus norvegicus           rn5    3
+## 24      Saccharomyces cerevisiae       sacCer2  141
+## 25      Saccharomyces cerevisiae       sacCer3  227
+## 26                    Sus scrofa       susScr2   17
+## 27 Xenopus (Silurana) tropicalis       xenTro3    3
+</code></pre>
+
+<p>比如说斑马鱼，文件也就几十个，你大可全部下载下来。</p>
+
+<pre><code>downloadGEObedFiles(genome=&quot;danRer7&quot;, destDir=&quot;danRer7&quot;)
+</code></pre>
+
+<p>而比如人鼠这些明显特种，实在太多，一般来说全部下载也不太现实。ChIPseeker可以给你列出信息，连pubmed ID都给出来了，也方便翻阅文献，如果<code>simplify=FALSE</code>的话，还会给出protocal和data processing等信息哦。</p>
+
+<pre><code>hg19 &lt;- getGEOInfo(genome=&quot;hg19&quot;, simplify=TRUE)
+head(hg19)
+
+##     series_id        gsm     organism
+## 111  GSE16256  GSM521889 Homo sapiens
+## 112  GSE16256  GSM521887 Homo sapiens
+## 113  GSE16256  GSM521883 Homo sapiens
+## 114  GSE16256 GSM1010966 Homo sapiens
+## 115  GSE16256  GSM896166 Homo sapiens
+## 116  GSE16256  GSM910577 Homo sapiens
+##                                                                                                       title
+## 111          Reference Epigenome: ChIP-Seq Analysis of H3K27me3 in IMR90 Cells; renlab.H3K27me3.IMR90-02.01
+## 112            Reference Epigenome: ChIP-Seq Analysis of H3K27ac in IMR90 Cells; renlab.H3K27ac.IMR90-03.01
+## 113            Reference Epigenome: ChIP-Seq Analysis of H3K14ac in IMR90 Cells; renlab.H3K14ac.IMR90-02.01
+## 114                      polyA RNA sequencing of STL003 Pancreas Cultured Cells; polyA-RNA-seq_STL003PA_r1a
+## 115          Reference Epigenome: ChIP-Seq Analysis of H4K8ac in hESC H1 Cells; renlab.H4K8ac.hESC.H1.01.01
+## 116 Reference Epigenome: ChIP-Seq Analysis of H3K4me1 in Human Spleen Tissue; renlab.H3K4me1.STL003SX.01.01
+##                                                                                                     supplementary_file
+## 111         ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM521nnn/GSM521889/suppl/GSM521889_UCSD.IMR90.H3K27me3.SK05.bed.gz
+## 112          ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM521nnn/GSM521887/suppl/GSM521887_UCSD.IMR90.H3K27ac.YL58.bed.gz
+## 113          ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM521nnn/GSM521883/suppl/GSM521883_UCSD.IMR90.H3K14ac.SK17.bed.gz
+## 114 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1010nnn/GSM1010966/suppl/GSM1010966_UCSD.Pancreas.mRNA-Seq.STL003.bed.gz
+## 115              ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM896nnn/GSM896166/suppl/GSM896166_UCSD.H1.H4K8ac.AY17.bed.gz
+## 116       ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM910nnn/GSM910577/suppl/GSM910577_UCSD.Spleen.H3K4me1.STL003.bed.gz
+##     genomeVersion pubmed_id
+## 111          hg19  19829295
+## 112          hg19  19829295
+## 113          hg19  19829295
+## 114          hg19  19829295
+## 115          hg19  19829295
+## 116          hg19  19829295
+</code></pre>
+
+<p>然后经过你的过滤，你就可以选择性地下载部分文件来分析了。</p>
+
+<pre><code>gsm &lt;- hg19$gsm[sample(nrow(hg19), 10)]
+downloadGSMbedFiles(gsm, destDir=&quot;hg19&quot;)
+</code></pre>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/chipseeker/">ChIPseeker</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/12/chipseeker-8g/" data-tooltip="最后的八卦">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/12/using-external-font-for-meme/" data-tooltip="使用外部字体画meme">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/12/chipseeker-8g/" data-tooltip="最后的八卦">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/12/using-external-font-for-meme/" data-tooltip="使用外部字体画meme">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F12%2Fgeo-data-mining-for-chipseq%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F12%2Fgeo-data-mining-for-chipseq%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F12%2Fgeo-data-mining-for-chipseq%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2017\/12\/geo-data-mining-for-chipseq\/';
+          
+            this.page.identifier = '\/2017\/12\/geo-data-mining-for-chipseq\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

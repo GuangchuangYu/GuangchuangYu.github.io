@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="最早在China Unix上写博客，后来转战新浪。在azelea的说服下，果断换成wordpress，写技术博客贴点代码什么的，新浪必须是太渣。azelea是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和ygc.name的域名，用了好几年。本来一直有想法要换成github&#43;jekll，恰巧Wei Shen强力推荐HUGO。于是再一次换博客。
+
+首先面临着wordpress迁移的问题。
+
+导入wordpress posts为markdown文件
+
+试用了多个插件或脚本，都是各种出错。最后发现了神器potter-wordpress，通过npm安装：
+
+npm install -g pottercms-wordpress
+
+
+然后一个语句:
+
+potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
+
+
+自动从线上把posts抓下来，并转化为markdown。在之前各种搞不定之后，看到下面的输出有种莫名的快感。
+
+Fetching articles&hellip;
+
+   Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
+   Got : [Mon Nov 09 2015] phylomoji with ggtree
+   Got : [Tue Nov 17 2015] 合体中的操作系统
+   Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
+   Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
+   Got : [Tue Oct 06 2015] TRIE
+   Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
+   Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
+
+   ...
+
+   Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
+   Got : [Mon May 14 2007] 我的emacs配置文件
+   Got : [Mon May 14 2007] pkgsrc tips
+   Got : [Thu May 03 2007] scilab三维平面绘图
+   Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
+   Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
+   Got : [Sat May 28 2005] 在emacs里使用maxima
+   Got : [Mon Mar 14 2005] scau校园网认证
+   Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
+
+
+Done.">
+
+
+<meta property="og:description" content="最早在China Unix上写博客，后来转战新浪。在azelea的说服下，果断换成wordpress，写技术博客贴点代码什么的，新浪必须是太渣。azelea是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和ygc.name的域名，用了好几年。本来一直有想法要换成github&#43;jekll，恰巧Wei Shen强力推荐HUGO。于是再一次换博客。
+
+首先面临着wordpress迁移的问题。
+
+导入wordpress posts为markdown文件
+
+试用了多个插件或脚本，都是各种出错。最后发现了神器potter-wordpress，通过npm安装：
+
+npm install -g pottercms-wordpress
+
+
+然后一个语句:
+
+potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
+
+
+自动从线上把posts抓下来，并转化为markdown。在之前各种搞不定之后，看到下面的输出有种莫名的快感。
+
+Fetching articles&hellip;
+
+   Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
+   Got : [Mon Nov 09 2015] phylomoji with ggtree
+   Got : [Tue Nov 17 2015] 合体中的操作系统
+   Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
+   Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
+   Got : [Tue Oct 06 2015] TRIE
+   Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
+   Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
+
+   ...
+
+   Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
+   Got : [Mon May 14 2007] 我的emacs配置文件
+   Got : [Mon May 14 2007] pkgsrc tips
+   Got : [Thu May 03 2007] scilab三维平面绘图
+   Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
+   Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
+   Got : [Sat May 28 2005] 在emacs里使用maxima
+   Got : [Mon Mar 14 2005] scau校园网认证
+   Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
+
+
+Done.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="喜新厌旧之hello Hugo">
+<meta name="twitter:title" content="喜新厌旧之hello Hugo">
+<meta property="og:url" content="https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="最早在China Unix上写博客，后来转战新浪。在azelea的说服下，果断换成wordpress，写技术博客贴点代码什么的，新浪必须是太渣。azelea是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和ygc.name的域名，用了好几年。本来一直有想法要换成github&#43;jekll，恰巧Wei Shen强力推荐HUGO。于是再一次换博客。
+
+首先面临着wordpress迁移的问题。
+
+导入wordpress posts为markdown文件
+
+试用了多个插件或脚本，都是各种出错。最后发现了神器potter-wordpress，通过npm安装：
+
+npm install -g pottercms-wordpress
+
+
+然后一个语句:
+
+potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
+
+
+自动从线上把posts抓下来，并转化为markdown。在之前各种搞不定之后，看到下面的输出有种莫名的快感。
+
+Fetching articles&hellip;
+
+   Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
+   Got : [Mon Nov 09 2015] phylomoji with ggtree
+   Got : [Tue Nov 17 2015] 合体中的操作系统
+   Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
+   Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
+   Got : [Tue Oct 06 2015] TRIE
+   Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
+   Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
+
+   ...
+
+   Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
+   Got : [Mon May 14 2007] 我的emacs配置文件
+   Got : [Mon May 14 2007] pkgsrc tips
+   Got : [Thu May 03 2007] scilab三维平面绘图
+   Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
+   Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
+   Got : [Sat May 28 2005] 在emacs里使用maxima
+   Got : [Mon Mar 14 2005] scau校园网认证
+   Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
+
+
+Done.">
+<meta name="twitter:description" content="最早在China Unix上写博客，后来转战新浪。在azelea的说服下，果断换成wordpress，写技术博客贴点代码什么的，新浪必须是太渣。azelea是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和ygc.name的域名，用了好几年。本来一直有想法要换成github&#43;jekll，恰巧Wei Shen强力推荐HUGO。于是再一次换博客。
+
+首先面临着wordpress迁移的问题。
+
+导入wordpress posts为markdown文件
+
+试用了多个插件或脚本，都是各种出错。最后发现了神器potter-wordpress，通过npm安装：
+
+npm install -g pottercms-wordpress
+
+
+然后一个语句:
+
+potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
+
+
+自动从线上把posts抓下来，并转化为markdown。在之前各种搞不定之后，看到下面的输出有种莫名的快感。
+
+Fetching articles&hellip;
+
+   Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
+   Got : [Mon Nov 09 2015] phylomoji with ggtree
+   Got : [Tue Nov 17 2015] 合体中的操作系统
+   Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
+   Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
+   Got : [Tue Oct 06 2015] TRIE
+   Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
+   Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
+
+   ...
+
+   Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
+   Got : [Mon May 14 2007] 我的emacs配置文件
+   Got : [Mon May 14 2007] pkgsrc tips
+   Got : [Thu May 03 2007] scilab三维平面绘图
+   Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
+   Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
+   Got : [Sat May 28 2005] 在emacs里使用maxima
+   Got : [Mon Mar 14 2005] scau校园网认证
+   Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
+
+
+Done.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2015-12-04T00:42:26">
+  
+  
+    <meta property="article:modified_time" content="2015-12-04T00:42:26">
+  
+  
+  
+    
+      <meta property="article:section" content="blog">
+    
+  
+  
+    
+      <meta property="article:tag" content="hugo">
+    
+      <meta property="article:tag" content="wordpress">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>喜新厌旧之hello Hugo</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      喜新厌旧之hello Hugo
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2015-12-04T00:42:26&#43;08:00">
+        
+  December 4, 2015
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/blog">blog</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>最早在China Unix上写博客，后来转战新浪。在<a href="http://azaleasays.com/">azelea</a>的说服下，<a href="http://guangchuangyu.github.io/2008/09/%E5%8D%9A%E5%AE%A2%E8%BD%ACwordpress/">果断换成wordpress</a>，写技术博客贴点代码什么的，新浪必须是太渣。<a href="http://azaleasays.com/">azelea</a>是我开始独立博客的领路人，为我提供了空间和域名。再后来自己买了空间和<code>ygc.name</code>的域名，用了好几年。本来一直有想法要换成github+jekll，恰巧<a href="http://blog.shenwei.me/">Wei Shen</a>强力推荐HUGO。于是再一次换博客。</p>
+
+<p>首先面临着wordpress迁移的问题。</p>
+
+<h1 id="导入wordpress-posts为markdown文件">导入wordpress posts为markdown文件</h1>
+
+<p>试用了多个插件或脚本，都是各种出错。最后发现了神器<a href="https://github.com/jprichardson/potter-wordpress">potter-wordpress</a>，通过npm安装：</p>
+
+<pre><code>npm install -g pottercms-wordpress
+</code></pre>
+
+<p>然后一个语句:</p>
+
+<pre><code>potter-wordpress -h WORDPRESS_SITE_URL -u USER_NAME -p PASSWORD --dir PATH_TO_STORE_MD_FILES
+</code></pre>
+
+<p>自动从线上把posts抓下来，并转化为<code>markdown</code>。在之前各种搞不定之后，看到下面的输出有种莫名的快感。</p>
+
+<p>Fetching articles&hellip;</p>
+
+<pre><code>   Got : [Sun Nov 29 2015] R kernel in Jupyter notebook 3
+   Got : [Mon Nov 09 2015] phylomoji with ggtree
+   Got : [Tue Nov 17 2015] 合体中的操作系统
+   Got : [Mon Nov 02 2015] Comparison of clusterProfiler and GSEA-P
+   Got : [Thu Oct 01 2015] ChIPseq data mining with ChIPseeker
+   Got : [Tue Oct 06 2015] TRIE
+   Got : [Thu Oct 15 2015] [BioC 3.2] NEWS of my BioC packages
+   Got : [Wed Oct 21 2015] use simplify to remove redundancy of enriched GO terms
+
+   ...
+
+   Got : [Mon May 14 2007] Edit partition table in NetBSD/macppc
+   Got : [Mon May 14 2007] 我的emacs配置文件
+   Got : [Mon May 14 2007] pkgsrc tips
+   Got : [Thu May 03 2007] scilab三维平面绘图
+   Got : [Sat Jun 24 2006] qvwm窗口管理器的windows2000主题
+   Got : [Wed Jun 14 2006] 安装os9和netbsd双系统
+   Got : [Sat May 28 2005] 在emacs里使用maxima
+   Got : [Mon Mar 14 2005] scau校园网认证
+   Got : [Fri Jan 14 2005] Powerbook G3上安装gentoo
+</code></pre>
+
+<p>Done.</p>
+
+<h1 id="导出wordpress的评论">导出wordpress的评论</h1>
+
+<p>安装<code>Disqus Comment System plugin</code>， 点击<code>Export comments to Disqus</code>搞定</p>
+
+<p>再到Disqus后台弄迁移，做个域名映射。</p>
+
+<h1 id="安装hugo">安装HUGO</h1>
+
+<p>安装hugo对于Mac用户来说，太容易，brew大法搞定。</p>
+
+<pre><code>brew install hugo
+</code></pre>
+
+<h1 id="mathjax支持">MathJax支持</h1>
+
+<p>把下面的代码:</p>
+
+<pre><code class="language-html">&lt;script type=&quot;text/javascript&quot;
+  src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;
+&lt;/script&gt;
+&lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: &quot;AMS&quot; },
+         extensions: [&quot;AMSmath.js&quot;, &quot;AMSsymbols.js&quot;] }
+  }
+});
+&lt;/script&gt;
+</code></pre>
+
+<p>加入主题到文件<code>layouts/partials/foot.html</code>中，就可以实现<code>$\LaTeX$</code>公式的解析。</p>
+
+<h1 id="social网分享">social网分享</h1>
+
+<p>使用<a href="http://www.sharethis.com">ShareThis</a>.
+把下面代码加到<code>layouts/post/single.html</code>的适当位置。</p>
+
+<pre><code>&lt;span class='st_twitter_hcount' displayText='Tweet'&gt;&lt;/span&gt;
+&lt;span class='st_facebook_hcount' displayText='Facebook'&gt;&lt;/span&gt;
+&lt;span class='st_sina_hcount' displayText='Sina'&gt;&lt;/span&gt;
+&lt;span class='st_linkedin_hcount' displayText='LinkedIn'&gt;&lt;/span&gt;
+</code></pre>
+
+<p>再加<code>script</code>加到<code>layouts/partials/foot.html</code>中。</p>
+
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;http://w.sharethis.com/button/buttons.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;stLight.options({publisher: &quot;d135f460-3fc5-4802-8169-bd08e4734a09&quot;, doNotHash: false, doNotCopy: false, hashAddressBar: false});&lt;/script&gt;
+</code></pre>
+
+<h1 id="代码高亮">代码高亮</h1>
+
+<p>加代码到<code>layouts/partials/foot.html</code>中。</p>
+
+<pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/zenburn.min.css&quot;&gt;
+&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;hljs.initHighlightingOnLoad();&lt;/script&gt;
+</code></pre>
+
+<h1 id="访问统计">访问统计</h1>
+
+<p>以前在wordpress中使用<a href="http://flagcounter.com/gmap/88/">flagcounter</a>，现在发现了<a href="https://www.revolvermaps.com/?target=enlarge&amp;i=5qpvv5zz7fp">RevolverMaps</a>，功能更好，把相应的代码加到sidebar中去即可。2016-03-18开始记录访问。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/hugo/">hugo</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/wordpress/">wordpress</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/" data-tooltip="use emoji font in R">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/11/r-kernel-in-jupyter-notebook-3/" data-tooltip="R kernel in Jupyter notebook 3">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/" data-tooltip="use emoji font in R">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/11/r-kernel-in-jupyter-notebook-3/" data-tooltip="R kernel in Jupyter notebook 3">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2015/12/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2015%2F12%2F%25E5%2596%259C%25E6%2596%25B0%25E5%258E%258C%25E6%2597%25A7%25E4%25B9%258Bhello-hugo%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2015%2F12%2F%25E5%2596%259C%25E6%2596%25B0%25E5%258E%258C%25E6%2597%25A7%25E4%25B9%258Bhello-hugo%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2015%2F12%2F%25E5%2596%259C%25E6%2596%25B0%25E5%258E%258C%25E6%2597%25A7%25E4%25B9%258Bhello-hugo%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2015\/12\/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo\/';
+          
+            this.page.identifier = '\/2015\/12\/%E5%96%9C%E6%96%B0%E5%8E%8C%E6%97%A7%E4%B9%8Bhello-hugo\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

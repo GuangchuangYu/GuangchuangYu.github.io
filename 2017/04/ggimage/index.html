@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="导言
+
+本文介绍了ggimage包，允许在ggplot2作图时嵌入图片，并支持aes映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用ggimage来展示在这些特定领域里的应用，ggimage的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。
+
+图上嵌图片
+
+R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是graphics::rasterImage：
+
+imgurl &lt;- &quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&quot;
+library(EBImage)
+x &lt;- readImage(imgurl)
+plot(1, type = &quot;n&quot;, xlab = &quot;&quot;, ylab = &quot;&quot;, xlim = c(0, 8), ylim = c(0, 8))
+rasterImage(x, 2, 2, 6, 4)
+
+
+">
+
+
+<meta property="og:description" content="导言
+
+本文介绍了ggimage包，允许在ggplot2作图时嵌入图片，并支持aes映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用ggimage来展示在这些特定领域里的应用，ggimage的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。
+
+图上嵌图片
+
+R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是graphics::rasterImage：
+
+imgurl &lt;- &quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&quot;
+library(EBImage)
+x &lt;- readImage(imgurl)
+plot(1, type = &quot;n&quot;, xlab = &quot;&quot;, ylab = &quot;&quot;, xlim = c(0, 8), ylim = c(0, 8))
+rasterImage(x, 2, 2, 6, 4)
+
+
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ggimage：ggplot2中愉快地使用图片">
+<meta name="twitter:title" content="ggimage：ggplot2中愉快地使用图片">
+<meta property="og:url" content="https://guangchuangyu.github.io/2017/04/ggimage/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2017/04/ggimage/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="导言
+
+本文介绍了ggimage包，允许在ggplot2作图时嵌入图片，并支持aes映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用ggimage来展示在这些特定领域里的应用，ggimage的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。
+
+图上嵌图片
+
+R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是graphics::rasterImage：
+
+imgurl &lt;- &quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&quot;
+library(EBImage)
+x &lt;- readImage(imgurl)
+plot(1, type = &quot;n&quot;, xlab = &quot;&quot;, ylab = &quot;&quot;, xlim = c(0, 8), ylim = c(0, 8))
+rasterImage(x, 2, 2, 6, 4)
+
+
+">
+<meta name="twitter:description" content="导言
+
+本文介绍了ggimage包，允许在ggplot2作图时嵌入图片，并支持aes映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用ggimage来展示在这些特定领域里的应用，ggimage的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。
+
+图上嵌图片
+
+R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是graphics::rasterImage：
+
+imgurl &lt;- &quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&quot;
+library(EBImage)
+x &lt;- readImage(imgurl)
+plot(1, type = &quot;n&quot;, xlab = &quot;&quot;, ylab = &quot;&quot;, xlim = c(0, 8), ylim = c(0, 8))
+rasterImage(x, 2, 2, 6, 4)
+
+
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2017-04-11T10:06:59">
+  
+  
+    <meta property="article:modified_time" content="2017-04-11T10:06:59">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+      <meta property="article:section" content="Visualization">
+    
+  
+  
+    
+      <meta property="article:tag" content="ggimage">
+    
+      <meta property="article:tag" content="ggplot2">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>ggimage：ggplot2中愉快地使用图片</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2017/04/ggimage/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      ggimage：ggplot2中愉快地使用图片
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-04-11T10:06:59&#43;08:00">
+        
+  April 11, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <h1 id="导言">导言</h1>
+
+<p>本文介绍了<strong>ggimage</strong>包，允许在<strong>ggplot2</strong>作图时嵌入图片，并支持<code>aes</code>映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用<strong>ggimage</strong>来展示在这些特定领域里的应用，<strong>ggimage</strong>的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。</p>
+
+<h1 id="图上嵌图片">图上嵌图片</h1>
+
+<p>R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是<code>graphics::rasterImage</code>：</p>
+
+<pre><code class="language-r">imgurl &lt;- &quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&quot;
+library(EBImage)
+x &lt;- readImage(imgurl)
+plot(1, type = &quot;n&quot;, xlab = &quot;&quot;, ylab = &quot;&quot;, xlim = c(0, 8), ylim = c(0, 8))
+rasterImage(x, 2, 2, 6, 4)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/raster.png" alt="R绘图嵌入图片演示" /></p>
+
+<p>如果我们搜索&rdquo;ggplot2 image&rdquo;，会找到类似于下面这样的帖子/博文：</p>
+
+<ul>
+<li><a href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2">r - Inserting an image to ggplot2 - Stack Overflow</a></li>
+<li><a href="https://www.r-bloggers.com/add-a-background-png-image-to-ggplot2/">Add a background png image to ggplot2 | R-bloggers</a></li>
+</ul>
+
+<p>也就是说通过程序员秘笈，搜索，我们用<strong>ggplot2</strong>同样也可以做到。</p>
+
+<p>这里我们需要用到<code>annotation_custom(rasterGrob)</code>来把图片加到<strong>ggplot2</strong>图形中，这和基础图形库是一模一样的。</p>
+
+<pre><code class="language-r">library(grid)
+library(ggplot2)
+
+p &lt;- ggplot(d = data.frame(x = c(0, 8), y = c(0, 8)), aes(x, y)) + geom_blank()
+p + annotation_custom(rasterGrob(x), 2, 6, 2, 4)
+</code></pre>
+
+<p>如果要使用图片来打点画一个散点图，我们就需要<code>for</code>循环，对每一个点进行操作，这显然是底层的操作，而<strong>ggplot2</strong>是一个高抽象的画图系统，我们希望能够使用<strong>ggplot2</strong>的语法。</p>
+
+<p><strong>ggimage</strong>就是来实现这样一个功能，它只是一个简单的包，允许我们在ggplot2中把离散性变量映射到不同的图片来画图。</p>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/Screenshot1.png" alt="推特截屏：把图片当字体一样使用" /></p>
+
+<p>实现这个功能的想法已经酝酿很久了，在<strong>ggtree</strong>的开发中，我实现了<code>phylopic</code>函数来使用Phylopic数据库的图片注释进化树，也实现了<code>subview</code>函数在图上嵌入小图。用图片来注释进化树在进化分析上还是很常见的，特别是在一些分类学的研究中，需要把一些分类学特征在进化树上展示出来，而像我们做病毒，也经常会把一些图片放在进化树上来展示病毒的宿主信息。</p>
+
+<p><strong>ggtree</strong>和可视化有关的函数分两类，一类是加注释的图层，另一类是可视化操作树（比如像旋转、合并分支）。操作树的都是普通函数，而加注释的都是<code>geom</code>图层，除了<code>subview</code>和<code>phylopic</code>，这种所谓逼死处女座的存在，我早就想改成了<code>geom_subview</code>和<code>geom_phylopic</code>了（已实现），这也是为什么我要写<strong>ggimage</strong>的原因了。</p>
+
+<h1 id="安装">安装</h1>
+
+<p><strong>ggimage</strong>依赖于<strong>EBImage</strong>来读图片，这是个Bioconductor包，所以我们需要额外的动作来安装它，用<code>setRepositories</code>把Bioconductor软件仓库加进来，这样<code>install.packages</code>也可以搜索到它的包。</p>
+
+<pre><code class="language-r">setRepositories(ind = 1:2)
+install.packages(&quot;ggimage&quot;)
+</code></pre>
+
+<h1 id="实例分析">实例分析</h1>
+
+<p>据我所知目前支持使用图片的R包有<strong>CatterPlots</strong>, <strong>rphylopic</strong>, <strong>emoGG</strong>,
+<strong>ggflags</strong>这几个，都是为特定的目的而实现的，都有其特定的应用场景，而<strong>ggimage</strong>是的
+<code>geom_image</code>是通用的，通过对它进行简单的包装，同样可以实现这些特殊场景的应用图层。</p>
+
+<p><strong>CatterPlots</strong>这个包只可以应用于基础图形库（base graphics）中，通过预设的几个猫图（R对象，随包载入）来画散点图。最近<a href="http://blog.revolutionanalytics.com/2017/02/catterplots-plots-with-cats.html">RevolutionAnalytics 有博文</a>介绍。<strong>ggplot2</strong>没有相应画猫的包。我们可以使用<strong>ggimage</strong>来画，而且不用限制于<strong>CatterPlots</strong>预设的几个图形。</p>
+
+<pre><code class="language-r">library(ggplot2)
+library(ggimage)
+
+mytheme &lt;- theme_minimal() +
+    theme(axis.title = element_blank())
+theme_set(mytheme)
+
+x &lt;- seq(-2 * pi, 2 * pi, length.out = 30)
+d &lt;- data.frame(x = x, y = sin(x))
+
+img &lt;- &quot;http://www.belleamibengals.com/bengal_cat_2.png&quot;
+ggplot(d, aes(x, y)) + geom_image(image = img, size = .1)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/ggimage_CatterPlots.png" alt="ggimage画猫散点图演示" /></p>
+
+<p><strong>CatterPlots</strong>实现的方式就是上面谈到的<code>rasterImage</code>内部使用了循环。<strong>rphylopic</strong>同时支持基础图形库（base graphics）和<strong>ggplot2</strong>，也是一样的实现方式，不过<strong>rphylopic</strong>内部没有使用循环，一次只能加一个图，它使用的图来自于<a href="http://phylopic.org/">phylopic</a>数据库。</p>
+
+<p>我们用<strong>ggimage</strong>同样可以使用<code>phylopic</code>图片：</p>
+
+<pre><code class="language-r">ggplot(d, aes(x, y)) + geom_phylopic(image = &quot;500bd7c6-71c1-4b86-8e54-55f72ad1beca&quot;, size = .1)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/ggimage_rphylopic.png" alt="ggimage使用phylopic图片演示" /></p>
+
+<blockquote>
+<p>图中是<code>翼足目</code>动物。</p>
+</blockquote>
+
+<p><strong>emoGG</strong>是专门来画<code>emoji</code>的，如果要画<code>emoji</code>的话，我推荐我写的<strong>emojifont</strong>包，在轩哥的<a href="https://cos.name/2014/01/showtext-interesting-fonts-and-graphs/"><strong>showtext</strong>基础</a>上，把<code>emoji</code>当做普通字体一样操作，更方便。</p>
+
+<p><strong>emoGG</strong>这个包提供了<code>geom_emoji</code>图层，虽然一次可以画出散点，但因为不支持<code>aes</code>映射，而<strong>ggimage</strong>所提供的<code>geom_emoji</code>则支持映射，下面的例子中我们做了一个简单的回归分析，如果残差<code>&lt;0.5</code>用笑脸表示，<code>&gt;0.5</code>则用哭脸来表示。</p>
+
+<pre><code class="language-r">set.seed(123)
+iris2 &lt;- iris[sample(1:nrow(iris), 30), ]
+model &lt;- lm(Petal.Length ~ Sepal.Length, data = iris2)
+iris2$fitted &lt;- predict(model)
+
+p &lt;- ggplot(iris2, aes(x = Sepal.Length, y = Petal.Length)) +
+  geom_linerange(aes(ymin = fitted, ymax = Petal.Length),
+                 colour = &quot;purple&quot;) +
+  geom_abline(intercept = model$coefficients[1],
+              slope = model$coefficients[2])
+
+p + ggimage::geom_emoji(aes(image = ifelse(abs(Petal.Length-fitted) &gt; 0.5, '1f622', '1f600')))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/emoji_residual2.png" alt="ggimage画emoji演示" /></p>
+
+<p>如果要用<strong>emoGG</strong>来做的话，则需要自己切数据分两次来进行：</p>
+
+<pre><code class="language-r">p + emoGG::geom_emoji(data = subset(iris2, (Petal.Length-fitted) &lt; 0.5), emoji = &quot;1f600&quot;) +
+    emoGG::geom_emoji(data = subset(iris2, (Petal.Length-fitted) &gt; 0.5), emoji = &quot;1f622&quot;)
+</code></pre>
+
+<p>这里我们只分两类(残差是否大于0.5)，所以需要加两次，试想我们的分类变量有多种可能的取值，则我们需要分多次切数据加图层，<strong>CatterPlots</strong>、<strong>rphylopic</strong>和<strong>emoGG</strong>都有这个问题，这也是<code>aes</code>映射之于<strong>ggplot2</strong>的重要和强大之处，它让我们可以在更高的抽像水平思考，</p>
+
+<p><strong>ggflags</strong>是支持<code>aes</code>映射的，只不过它只能用来画国旗而已。同样<strong>ggimage</strong>也提供
+了相应的<code>geom_flag</code>来使用国旗用于做图。</p>
+
+<pre><code class="language-r">library(rvest)
+library(dplyr)
+
+url &lt;- &quot;http://www.nbcolympics.com/medals&quot;
+
+medals &lt;- read_html(url) %&gt;%
+    html_nodes(&quot;table&quot;) %&gt;%
+    html_table() %&gt;% .[[1]]
+
+library(countrycode)
+library(tidyr)
+
+medals &lt;- medals %&gt;%
+    mutate(code = countrycode(Country, &quot;country.name&quot;, &quot;iso2c&quot;)) %&gt;%
+    gather(medal, count, Gold:Bronze) %&gt;%
+    filter(Total &gt;= 10)
+
+head(medals)
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th align="left">Country</th>
+<th align="right">Total</th>
+<th align="left">code</th>
+<th align="left">medal</th>
+<th align="right">count</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">Russia</td>
+<td align="right">33</td>
+<td align="left">RU</td>
+<td align="left">Gold</td>
+<td align="right">13</td>
+</tr>
+
+<tr>
+<td align="left">United States</td>
+<td align="right">28</td>
+<td align="left">US</td>
+<td align="left">Gold</td>
+<td align="right">9</td>
+</tr>
+
+<tr>
+<td align="left">Norway</td>
+<td align="right">26</td>
+<td align="left">NO</td>
+<td align="left">Gold</td>
+<td align="right">11</td>
+</tr>
+
+<tr>
+<td align="left">Canada</td>
+<td align="right">25</td>
+<td align="left">CA</td>
+<td align="left">Gold</td>
+<td align="right">10</td>
+</tr>
+
+<tr>
+<td align="left">Netherlands</td>
+<td align="right">24</td>
+<td align="left">NL</td>
+<td align="left">Gold</td>
+<td align="right">8</td>
+</tr>
+
+<tr>
+<td align="left">Germany</td>
+<td align="right">19</td>
+<td align="left">DE</td>
+<td align="left">Gold</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
+
+<p>首先我们从网站上爬回来2016年各个国家的奥林匹克奖牌数，画出柱状图，并在<code>xlab</code>国家名边上用<strong>ggimage</strong>画上国旗：</p>
+
+<pre><code class="language-r">p &lt;- ggplot(medals, aes(Country, count)) + geom_col(aes(fill = medal), width = .8)
+
+p + geom_flag(y = -2, aes(image = code)) +
+    coord_flip() + expand_limits(y = -2)  +
+    scale_fill_manual(values = c(&quot;Gold&quot; = &quot;gold&quot;, &quot;Bronze&quot; = &quot;#cd7f32&quot;, &quot;Silver&quot; = &quot;#C0C0C0&quot;))
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/olympics_2016.png" alt="ggimage画国旗演示" /></p>
+
+<h2 id="ggimage"><strong>ggimage</strong></h2>
+
+<p>前面我们介绍了<strong>ggimage</strong>在一些场景的应用实例，虽然有专门的包针对这些应用场景，但<strong>ggimage</strong>在这些领域中的表现要比大多数的包要好（支持aes映射）。但<strong>ggimage</strong>的使用并不限于这些(<code>geom_phylopic</code>，<code>geom_emoji</code>和<code>geom_flag</code>只是通用图层<code>geom_image</code>的简单封装)，这里将展示一些有趣的例子。</p>
+
+<h3 id="用r图标来画r形状">用R图标来画R形状</h3>
+
+<pre><code class="language-r">x &lt;- c(2, 2, 2, 2, 2, 3, 3, 3.5, 3.5, 4)
+y &lt;- c(2, 3, 4, 5, 6, 4, 6, 3, 5, 2)
+d &lt;- data.frame(x = x, y = y)
+
+img &lt;- system.file(&quot;img&quot;, &quot;Rlogo.png&quot;, package = &quot;png&quot;)
+ggplot(d, aes(x, y)) + geom_image(image = img, size = .1) +
+  xlim(0, 6) + ylim(0, 7)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/R.png" alt="用R图标画R形状演示" /></p>
+
+<h3 id="嵌套式绘图">嵌套式绘图</h3>
+
+<p>这里我要展示的是非常有名的气泡图（Bubble Plot），但气泡不是圆圈，而是使用
+<strong>ggplot2</strong>画的饼图，我先把饼图保存起来，再用<strong>ggimage</strong>拿来画，饼图的大小
+与人口总数正相关。这个例子可以应用到很多场景中去，比如一个时间序列的曲线，你要用统计图在某些时间点上展示相关的信息，比如你要在地图上加某些地方的相关统计信息（如果要在地图上画饼图，可以使用我写的<a href="https://cran.r-project.org/package=scatterpie"><strong>scatterpie</strong></a>包）。</p>
+
+<pre><code class="language-r">crime &lt;- read.csv(&quot;http://datasets.flowingdata.com/crimeRatesByState2005.tsv&quot;,
+                  header = TRUE, sep = &quot;\t&quot;, stringsAsFactors = F)
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th align="left">state</th>
+<th align="right">murder</th>
+<th align="right">Forcible_rate</th>
+<th align="right">Robbery</th>
+<th align="right">aggravated_assult</th>
+<th align="right">burglary</th>
+<th align="right">larceny_theft</th>
+<th align="right">motor_vehicle_theft</th>
+<th align="right">population</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">Alabama</td>
+<td align="right">8.2</td>
+<td align="right">34.3</td>
+<td align="right">141.4</td>
+<td align="right">247.8</td>
+<td align="right">953.8</td>
+<td align="right">2650.0</td>
+<td align="right">288.3</td>
+<td align="right">4627851</td>
+</tr>
+
+<tr>
+<td align="left">Alaska</td>
+<td align="right">4.8</td>
+<td align="right">81.1</td>
+<td align="right">80.9</td>
+<td align="right">465.1</td>
+<td align="right">622.5</td>
+<td align="right">2599.1</td>
+<td align="right">391.0</td>
+<td align="right">686293</td>
+</tr>
+
+<tr>
+<td align="left">Arizona</td>
+<td align="right">7.5</td>
+<td align="right">33.8</td>
+<td align="right">144.4</td>
+<td align="right">327.4</td>
+<td align="right">948.4</td>
+<td align="right">2965.2</td>
+<td align="right">924.4</td>
+<td align="right">6500180</td>
+</tr>
+
+<tr>
+<td align="left">Arkansas</td>
+<td align="right">6.7</td>
+<td align="right">42.9</td>
+<td align="right">91.1</td>
+<td align="right">386.8</td>
+<td align="right">1084.6</td>
+<td align="right">2711.2</td>
+<td align="right">262.1</td>
+<td align="right">2855390</td>
+</tr>
+
+<tr>
+<td align="left">California</td>
+<td align="right">6.9</td>
+<td align="right">26.0</td>
+<td align="right">176.1</td>
+<td align="right">317.3</td>
+<td align="right">693.3</td>
+<td align="right">1916.5</td>
+<td align="right">712.8</td>
+<td align="right">36756666</td>
+</tr>
+
+<tr>
+<td align="left">Colorado</td>
+<td align="right">3.7</td>
+<td align="right">43.4</td>
+<td align="right">84.6</td>
+<td align="right">264.7</td>
+<td align="right">744.8</td>
+<td align="right">2735.2</td>
+<td align="right">559.5</td>
+<td align="right">4861515</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-r">library(gtable)
+
+plot_pie &lt;- function(i) {
+    df &lt;- gather(crime[i, ], type, value, murder:motor_vehicle_theft)
+    ggplot(df, aes(x = 1, value, fill = type)) +
+        geom_col() + coord_polar(theta = 'y') +
+        ggtitle(crime[i, &quot;state&quot;]) +
+        theme_void() + theme_transparent() +
+        theme(legend.position = &quot;none&quot;,
+              plot.title = element_text(size = rel(6), hjust = 0.5))
+}
+
+pies &lt;- sapply(1:nrow(crime), function(i) {
+    outfile &lt;- paste0(&quot;crime_&quot;, i, &quot;.png&quot;)
+    plot_pie(i) + ggsave(outfile, bg = &quot;transparent&quot;)
+    outfile
+})
+
+radius &lt;- sqrt(crime$population / pi)
+crime$radius &lt;- 0.2 * radius/max(radius)
+crime$pie &lt;- pies
+
+leg1 &lt;- gtable_filter(
+    ggplot_gtable(
+        ggplot_build(plot_pie(1) + theme(legend.position = &quot;right&quot;))
+    ), &quot;guide-box&quot;)
+
+ggplot(crime, aes(murder, Robbery)) +
+  geom_image(aes(image = pie, size = I(radius))) +
+  geom_subview(leg1, x = 8.8, y = 50)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/us_crime.png" alt="嵌套式绘图演示：用饼图来画气泡图" /></p>
+
+<p>我们还可以每次只画一个州的数据，制作成动图。</p>
+
+<pre><code class="language-r">plot_crime &lt;- function(i) {
+    o &lt;- paste0(i, &quot;.png&quot;)
+    ggplot(crime, aes(murder, Robbery)) + geom_blank() +
+        geom_image(data = crime[i, ], aes(image = pie, size = I(radius))) +
+        geom_subview(p, leg1, x = 8.8, y = 50) + ggsave(o)
+    o
+}
+
+library(magick)
+library(purrr)
+order(crime$murder, decreasing = F) %&gt;%
+    map(plot_crime) %&gt;%
+    map(image_read) %&gt;%
+    image_join() %&gt;%
+    image_animate(fps = 2) %&gt;%
+    image_write(&quot;crime.gif&quot;)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/us_crime.gif" alt="嵌套式绘图演示，动图版本" /></p>
+
+<p><code>geom_subview</code>可以图上嵌图，并不需要保存为图片，但对于<strong>ggplot2</strong>来讲，保存图片也是有好处的，因为<strong>ggplot2</strong>画图，点线是在数据空间上，随着我们保存图片的大小是按比例缩小或放大的，但文字是在像素空间上，和画图空间并不相关。所以当我们嵌图时缩小了画图窗口之后，字体会显得格外大，微调起来也比较繁琐，这时候保存为合适尺寸的图片，再用<code>geom_image</code>来加上去，显然就轻松得多。</p>
+
+<h3 id="其它来自r社区的例子">其它来自R社区的例子</h3>
+
+<p>SAS博客对<code>M&amp;M</code>巧克力的<a href="http://blogs.sas.com/content/iml/2017/02/20/proportion-of-colors-mandms.html">颜色分布做了分析</a>，通过模拟估计不同颜色的置信区间。这个<a href="http://rpubs.com/hrbrmstr/mms">分析被翻译成R</a>，并产生下图：</p>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/mm.png" alt="M&amp;M例子展示" /></p>
+
+<p>其中垂直片段|是真实值，水平片段当然就是置信空间了，而估计值用了<strong>ggimage</strong>来画不同颜色的巧克力。</p>
+
+<p>另一个例子是<a href="https://rpubs.com/bhaskarvk/disney">迪斯尼电影主人公名字的流行程度</a>:</p>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/Screenshot3.png" alt="迪斯尼例子展示" /></p>
+
+<p>最近我还添加了<code>geom_pokemon</code>图层，让大家可以用pokemon来画图，比如：</p>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/geom_pokemon.png" alt="pokemon例子展示" /></p>
+
+<p><strong>ggimage</strong>是通用的包，所以可以被应用于不同的领域/场景中，起码可以让我们画出更好玩的图出来，后续我有时间的话，会写一个<code>draw_key_image</code>的函数，实现使用图片来当legend key的功能。</p>
+
+<p>最后祝大家玩得开心！不要把图画得太有魔性哦:)</p>
+
+<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/Screenshot2.png" alt="推特截屏" /></p>
+
+<blockquote>
+<p>感谢大为和太云的校稿，特别是大为提出很多修改意见以及给出了用R画R的例子。</p>
+</blockquote>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+<li><a href="https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2">https://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2</a></li>
+<li><a href="https://www.r-bloggers.com/add-a-background-png-image-to-ggplot2/">https://www.r-bloggers.com/add-a-background-png-image-to-ggplot2/</a></li>
+<li><a href="https://github.com/GuangchuangYu/ggimage">https://github.com/GuangchuangYu/ggimage</a></li>
+<li><a href="https://github.com/Gibbsdavidl/CatterPlots">https://github.com/Gibbsdavidl/CatterPlots</a></li>
+<li><a href="https://github.com/sckott/rphylopic">https://github.com/sckott/rphylopic</a></li>
+<li><a href="https://github.com/baptiste/ggflags">https://github.com/baptiste/ggflags</a></li>
+<li><a href="http://blog.revolutionanalytics.com/2017/02/catterplots-plots-with-cats.html">http://blog.revolutionanalytics.com/2017/02/catterplots-plots-with-cats.html</a></li>
+<li><a href="http://blogs.sas.com/content/iml/2017/02/20/proportion-of-colors-mandms.html">http://blogs.sas.com/content/iml/2017/02/20/proportion-of-colors-mandms.html</a></li>
+<li><a href="http://rpubs.com/hrbrmstr/mms">http://rpubs.com/hrbrmstr/mms</a></li>
+<li><a href="https://rpubs.com/bhaskarvk/disney">https://rpubs.com/bhaskarvk/disney</a></li>
+<li><a href="https://cran.r-project.org/package=scatterpie">https://cran.r-project.org/package=scatterpie</a></li>
+</ul>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/ggimage/">ggimage</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/ggplot2/">ggplot2</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/04/%E6%9D%A5%E8%87%AAr%E7%9A%84%E6%A1%8C%E9%9D%A2%E6%8F%90%E9%86%92/" data-tooltip="来自R的桌面提醒">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/04/generate-biobabble-banner-using-ggimage/" data-tooltip="generate biobabble banner using ggimage">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/04/ggimage/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/04/ggimage/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/04/ggimage/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/04/%E6%9D%A5%E8%87%AAr%E7%9A%84%E6%A1%8C%E9%9D%A2%E6%8F%90%E9%86%92/" data-tooltip="来自R的桌面提醒">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/04/generate-biobabble-banner-using-ggimage/" data-tooltip="generate biobabble banner using ggimage">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/04/ggimage/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/04/ggimage/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/04/ggimage/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F04%2Fggimage%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F04%2Fggimage%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F04%2Fggimage%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2017\/04\/ggimage\/';
+          
+            this.page.identifier = '\/2017\/04\/ggimage\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

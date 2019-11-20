@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="CRAN刚上线的新包geofacet，可以让ggplot2分面按指定的地理位置来，比如下面的数据，美国各州各项指标的排名：
+
+  head(state_ranks)
+    state   name   variable rank
+1    AK Alaska  education   28
+2    AK Alaska employment   50
+3    AK Alaska     health   25
+4    AK Alaska     wealth    5
+5    AK Alaska      sleep   27
+6    AK Alaska    insured   50
+
+
+我们正常画图是这样子的：">
+
+
+<meta property="og:description" content="CRAN刚上线的新包geofacet，可以让ggplot2分面按指定的地理位置来，比如下面的数据，美国各州各项指标的排名：
+
+  head(state_ranks)
+    state   name   variable rank
+1    AK Alaska  education   28
+2    AK Alaska employment   50
+3    AK Alaska     health   25
+4    AK Alaska     wealth    5
+5    AK Alaska      sleep   27
+6    AK Alaska    insured   50
+
+
+我们正常画图是这样子的：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="按地理位置进行分面">
+<meta name="twitter:title" content="按地理位置进行分面">
+<meta property="og:url" content="https://guangchuangyu.github.io/2017/06/geofacet/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2017/06/geofacet/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="CRAN刚上线的新包geofacet，可以让ggplot2分面按指定的地理位置来，比如下面的数据，美国各州各项指标的排名：
+
+  head(state_ranks)
+    state   name   variable rank
+1    AK Alaska  education   28
+2    AK Alaska employment   50
+3    AK Alaska     health   25
+4    AK Alaska     wealth    5
+5    AK Alaska      sleep   27
+6    AK Alaska    insured   50
+
+
+我们正常画图是这样子的：">
+<meta name="twitter:description" content="CRAN刚上线的新包geofacet，可以让ggplot2分面按指定的地理位置来，比如下面的数据，美国各州各项指标的排名：
+
+  head(state_ranks)
+    state   name   variable rank
+1    AK Alaska  education   28
+2    AK Alaska employment   50
+3    AK Alaska     health   25
+4    AK Alaska     wealth    5
+5    AK Alaska      sleep   27
+6    AK Alaska    insured   50
+
+
+我们正常画图是这样子的：">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2017-06-26T12:23:16">
+  
+  
+    <meta property="article:modified_time" content="2017-06-26T12:23:16">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+      <meta property="article:section" content="Visualization">
+    
+  
+  
+    
+      <meta property="article:tag" content="geofacet">
+    
+      <meta property="article:tag" content="ggplot2">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+
+
+    <title>按地理位置进行分面</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2017/06/geofacet/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      按地理位置进行分面
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-06-26T12:23:16&#43;08:00">
+        
+  June 26, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>CRAN刚上线的新包<code>geofacet</code>，可以让ggplot2分面按指定的地理位置来，比如下面的数据，美国各州各项指标的排名：</p>
+
+<pre><code class="language-r">  head(state_ranks)
+    state   name   variable rank
+1    AK Alaska  education   28
+2    AK Alaska employment   50
+3    AK Alaska     health   25
+4    AK Alaska     wealth    5
+5    AK Alaska      sleep   27
+6    AK Alaska    insured   50
+</code></pre>
+
+<p>我们正常画图是这样子的：</p>
+
+<pre><code class="language-r">ggplot(state_ranks, aes(variable, rank, fill = variable)) +
+  geom_col() +
+  coord_flip() +
+  theme_bw() +
+  facet_wrap(~ state)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-22 10.18.16.png" alt="" /></p>
+
+<p>这个geofacet包的引入了<code>facet_geo</code>，用法和<code>facet_wrap</code>一模一样，所以如果你会用<code>facet_wrap</code>分面的话，你已然会了：</p>
+
+<pre><code class="language-r">ggplot(state_ranks, aes(variable, rank, fill = variable)) +
+  geom_col() +
+  coord_flip() +
+  theme_bw() +
+  facet_geo(~ state)
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-22 10.18.49.png" alt="" /></p>
+
+<p>然后它还可以通过手工指定位置，比如下面这个：</p>
+
+<pre><code class="language-r">head(us_state_grid2)
+  row col code       name
+1   6   7   AL    Alabama
+2   1   1   AK     Alaska
+3   6   2   AZ    Arizona
+4   6   5   AR   Arkansas
+5   6   1   CA California
+6   5   3   CO   Colorado
+</code></pre>
+
+<p>可以通过<code>grid</code>参数指定，<code>label</code>参数可以指定分面用什么变量来label:</p>
+
+<pre><code class="language-r">ggplot(state_unemp, aes(year, rate)) +
+  geom_line() +
+  facet_geo(~ state, grid = &quot;us_state_grid2&quot;, label = &quot;name&quot;) +
+  scale_x_continuous(labels = function(x) paste0(&quot;'&quot;, substr(x, 3, 4))) +
+  labs(title = &quot;Seasonally Adjusted US Unemployment Rate 2000-2016&quot;,
+    caption = &quot;Data Source: bls.gov&quot;,
+    x = &quot;Year&quot;,
+    y = &quot;Unemployment Rate (%)&quot;) +
+  theme(strip.text.x = element_text(size = 6))
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-22 10.24.19.png" alt="" /></p>
+
+<p>geofacet包里自带了一些geo grid信息：</p>
+
+<pre><code class="language-r">&gt; get_grid_names()
+ [1] &quot;us_state_grid1&quot;       &quot;us_state_grid2&quot;       &quot;eu_grid1&quot;
+ [4] &quot;aus_grid1&quot;            &quot;sa_prov_grid1&quot;        &quot;london_boroughs_grid&quot;
+ [7] &quot;nhs_scot_grid&quot;        &quot;india_grid1&quot;          &quot;india_grid2&quot;
+[10] &quot;argentina_grid1&quot;      &quot;br_grid1&quot;
+</code></pre>
+
+<p>比如我们用欧盟国家的位置来画它们的GDP：</p>
+
+<pre><code class="language-r">ggplot(eu_gdp, aes(year, gdp_pc)) +
+  geom_line(color = &quot;steelblue&quot;) +
+  facet_geo(~ name, grid = &quot;eu_grid1&quot;, scales = &quot;free_y&quot;) +
+  scale_x_continuous(labels = function(x) paste0(&quot;'&quot;, substr(x, 3, 4))) +
+  ylab(&quot;GDP Per Capita in Relation to EU Index (100)&quot;) +
+  theme_bw()
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-22 10.25.41.png" alt="" /></p>
+
+<p>很可惜，没有中国各个省的位置信息，不过这个分分钟我们可以搞出来，我之前为了画中国地图，打包了个中国的地图信息（分省份，且有台湾）在<code>chinamap</code>包里，我们很容易通过这个data.frame生成一个各个省相对位置的grid表格来，大家可以试一下，或者等我什么时候有这个可视化的需求，我再来搞。</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-22 11.03.50.png" alt="" /></p>
+
+<p>有grid信息之后，<code>geofacet</code>还支持通过拖拽来微调，这是用shiny写的：</p>
+
+<pre><code class="language-r">grid_design()
+</code></pre>
+
+<p>比如我把美国地图拖成这样子：</p>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-22 10.36.45.png" alt="" /></p>
+
+<p>然后拿它来可视化美国大选：</p>
+
+<pre><code class="language-r">ggplot(election, aes(candidate, votes / 1000000, fill = candidate)) +
+  geom_col() +
+  scale_fill_manual(values = c(&quot;#4e79a7&quot;, &quot;#e15759&quot;, &quot;#59a14f&quot;)) +
+  facet_geo(~ state, grid = mygrid) +
+  coord_flip() +
+  labs(title = &quot;2016 Election Results&quot;,
+    caption = &quot;Data Source: http://bit.ly/2016votecount&quot;,
+    x = NULL,
+    y = &quot;Votes (millions)&quot;) +
+  theme(strip.text.x = element_text(size = 6))
+</code></pre>
+
+<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-22 10.49.22.png" alt="" /></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/geofacet/">geofacet</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/ggplot2/">ggplot2</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/06/pixel-art-geofacet/" data-tooltip="pixel art of ggplot2 faceting using geofacet">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/06/lxde-theme/" data-tooltip="Linux装windows的二逼">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/06/geofacet/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/06/geofacet/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/06/geofacet/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/06/pixel-art-geofacet/" data-tooltip="pixel art of ggplot2 faceting using geofacet">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2017/06/lxde-theme/" data-tooltip="Linux装windows的二逼">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2017/06/geofacet/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2017/06/geofacet/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2017/06/geofacet/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F06%2Fgeofacet%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F06%2Fgeofacet%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2017%2F06%2Fgeofacet%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">a senior-in-age-but-not-senior-in-knowledge bioinformatician</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2017\/06\/geofacet\/';
+          
+            this.page.identifier = '\/2017\/06\/geofacet\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

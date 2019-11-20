@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>codelink on Guangchuang Yu</title>
+    <link>https://guangchuangyu.github.io/tags/codelink/</link>
+    <description>Recent content in codelink on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 23 Sep 2008 01:18:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/codelink/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>映射codelink芯片ID</title>
+      <link>https://guangchuangyu.github.io/2008/09/mapping-codelink-id/</link>
+      <pubDate>Tue, 23 Sep 2008 01:18:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2008/09/mapping-codelink-id/</guid>
+      <description>&lt;p&gt;GE公司codelink芯片(这个破产品已经停产了)上的探针ID，需要转成别的ID，看了一些在线的转换ID工具，都不支持，探针ID基本上都只支持affy的。&lt;/p&gt;
+
+&lt;p&gt;想起了bioconductor里的biomaRt，这个包可以检索BioMart数据库，这个数据库里有N多种ID。试了一下，果然没问题。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;#加载biomaRt包
+library(biomaRt)
+
+#选取数据库
+ensembl = useMart(&amp;quot;ensembl&amp;quot;, dataset = &amp;quot;hsapiens_gene_ensembl&amp;quot;)
+
+#获取可供检索的attribute
+attributes=listAttributes(mart=ensembl)
+
+#看一下attributes里是否有codelink，得到以下的结果。
+attributes[grep(&amp;quot;codelink&amp;quot;,attributes[,1]), ]
+
+name description
+21 codelink Codelink ID
+#再搜一下其它我想要的ID
+
+#读进含有codelink ID的文件。
+mrna_id &amp;lt;- read.table(&amp;quot;mrna_id.txt&amp;quot;)
+
+#进行ID映射。
+idmap &amp;lt;- getBM(attributes=c(&amp;quot;codelink&amp;quot;,&amp;quot;refseq_dna&amp;quot;,&amp;quot;external_gene_id&amp;quot;,
+                            &amp;quot;embl&amp;quot;,&amp;quot;hgnc_id&amp;quot;,&amp;quot;hgnc_symbol&amp;quot;), 
+               filters =&amp;quot;codelink&amp;quot;, values=mrna_id[,1],
+               mart=ensembl,output=&amp;quot;list&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

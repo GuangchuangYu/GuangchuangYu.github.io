@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Genomics | Guangchuang YU</title>
+    <title>Genomics on Guangchuang Yu</title>
     <link>https://guangchuangyu.github.io/categories/genomics/</link>
-      <atom:link href="https://guangchuangyu.github.io/categories/genomics/index.xml" rel="self" type="application/rss+xml" />
-    <description>Genomics</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Guangchuang YU</copyright><lastBuildDate>Tue, 05 Dec 2017 11:09:07 +0800</lastBuildDate>
-    <image>
-      <url>https://guangchuangyu.github.io/img/icon-192.png</url>
-      <title>Genomics</title>
-      <link>https://guangchuangyu.github.io/categories/genomics/</link>
-    </image>
+    <description>Recent content in Genomics on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 Dec 2017 11:09:07 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/categories/genomics/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>visualizing reassortment history using seqcombo</title>
       <link>https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/</link>
       <pubDate>Tue, 05 Dec 2017 11:09:07 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/</guid>
       <description>&lt;p&gt;Reassortment is an important strategy for influenza A viruses to
 introduce a HA subtype that is new to human populations, which creates
@@ -54,209 +54,38 @@ flow_info &amp;lt;- tibble(from = c(1,2,3,3,4,5,6),
 hybrid_plot(virus_info, flow_info)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;hybrid_plot&lt;/code&gt; requires two tibble data frame of virus information
-and genetic flow information.&lt;/p&gt;
-
-&lt;p&gt;Users need to provide &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; positions to plot the virus, this make
-sense for geographically and temporally information are usually
-available in such phylodynamic study and can be employed to set &lt;code&gt;x&lt;/code&gt; or
-&lt;code&gt;y&lt;/code&gt; to provide more information and help interpretation of the
-reassortment events.&lt;/p&gt;
-
-&lt;p&gt;We use hexagon to represent virus. Users can set the virus outer
-boundary color by &lt;code&gt;v_color&lt;/code&gt; and fill the virus by &lt;code&gt;v_fill&lt;/code&gt;. Color of
-line segments that indicate the genetic flow relationship can be specify
-via &lt;code&gt;l_color&lt;/code&gt; parameter.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=&#39;firebrick&#39;, v_fill=&#39;darkgreen&#39;, l_color=&#39;steelblue&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-3-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We usually have more information to present, for example host
-information and HA subtype &lt;em&gt;etc.&lt;/em&gt; and these information can be used to
-color the virus either by &lt;code&gt;v_color&lt;/code&gt; or &lt;code&gt;v_fill&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$Host = c(&amp;quot;Avian&amp;quot;, &amp;quot;Human&amp;quot;, rep(&amp;quot;Swine&amp;quot;, 4), &amp;quot;Human&amp;quot;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-4-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The relative virus size can also be specify if a &lt;code&gt;virus_size&lt;/code&gt; column is
-available in the input &lt;code&gt;virus_info&lt;/code&gt; data.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$virus_size &amp;lt;- c(rep(1, 3), 2, 1, 1, 1.5)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-5-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If &lt;code&gt;label&lt;/code&gt; and &lt;code&gt;label_position&lt;/code&gt; coloumns are available, the virus labels
-(virus name or other information) will be added automatically.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;Avian&amp;quot;, &amp;quot;Human\nH3N2&amp;quot;, &amp;quot;Classic\nswine\nH1N1&amp;quot;, &amp;quot;Eurasian swine&amp;quot;,
-                      &amp;quot;North American swine\n triple reassrotant H3N2&amp;quot;,
-                      &amp;quot;North American swine\n triple reassortant H1N2&amp;quot;, &amp;quot;2009 Human H1N1&amp;quot;)
-virus_info$label_position &amp;lt;- c(&#39;left&#39;, &#39;left&#39;, &#39;left&#39;, &#39;below&#39;, &#39;below&#39;, &#39;upper&#39;, &#39;below&#39;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-6-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;User can use &lt;code&gt;asp&lt;/code&gt; to set the aspect ratio of hexagons, &lt;code&gt;asp &amp;lt; 1&lt;/code&gt; for
-thick/short and &lt;code&gt;asp &amp;gt; 1&lt;/code&gt; for thin/tall.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host, asp=2)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-7-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The output of &lt;code&gt;hybrid_plot&lt;/code&gt; is a &lt;code&gt;ggplot&lt;/code&gt; object and users can use
-&lt;code&gt;ggplot2&lt;/code&gt; to modify the details.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;title &amp;lt;- &amp;quot;Reassortment events in evolution of the 2009 influenza A (H1N1) virus&amp;quot;
-caption &amp;lt;- &#39;Gene segments: PB2, PB1, PA, HA, NP, NA, M, NS&#39;
-color &amp;lt;- c(Avian=&amp;quot;purple&amp;quot;, Human=&amp;quot;red&amp;quot;, Swine=&amp;quot;darkgreen&amp;quot;)
-
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
-    labs(caption=caption, title=title) +
-    scale_color_manual(values=color) + scale_fill_manual(values=color) +
-    scale_x_continuous(breaks=c(1990, 2000, 2009)) +
-    xlab(NULL) + ylab(NULL) + theme_minimal() +
-    theme(axis.line.y = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank(),
-          panel.grid.minor=element_blank(),
-          panel.grid.major.y=element_blank(),
-          legend.position = c(.95, .1)
-          )
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Top-down or bottom-up style is also supported.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;x &amp;lt;- virus_info$x
-virus_info$x &amp;lt;- virus_info$y
-virus_info$y &amp;lt;- x
-virus_info$label_position &amp;lt;- c(rep(&amp;quot;right&amp;quot;, 3), &amp;quot;left&amp;quot;, &amp;quot;left&amp;quot;, &amp;quot;right&amp;quot;, &amp;quot;right&amp;quot;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host) +
-    scale_y_reverse() + scale_x_continuous(limits=c(0, 5.5))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-9-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;User can also use Emoji to label the virus (host information in this
-example):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info$label &amp;lt;- c(&amp;quot;chicken&amp;quot;, &amp;quot;woman&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;pig&amp;quot;, &amp;quot;woman&amp;quot;)
-hybrid_plot(virus_info, flow_info, v_color=~Host, v_fill=~Host,
-              parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;) +
-    scale_y_reverse()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-10-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In case you don&amp;rsquo;t have xy-coordination information, you can use
-&lt;code&gt;set_layout&lt;/code&gt; function to auto setting the xy position using selected
-layout function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.kamada.kawai&amp;quot;)
-hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;virus_info &amp;lt;- set_layout(virus_info, flow_info, layout=&amp;quot;layout.fruchterman.reingold&amp;quot;)
-hybrid_plot(virus_info, flow_info, parse=&#39;emoji&#39;, t_size=8, t_color=&#39;firebrick&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-11-2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Please let me know if you know any published reassortment data that contain
-spatial information, I will demonstrate how to visualize reassortment
-history on a map.&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>ChIPseq data mining with ChIPseeker</title>
       <link>https://guangchuangyu.github.io/2015/10/chipseq-data-mining-with-chipseeker/</link>
       <pubDate>Thu, 01 Oct 2015 09:08:06 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2015/10/chipseq-data-mining-with-chipseeker/</guid>
       <description>&lt;p&gt;ChIP-seq is rapidly becoming a common technique and there are a large
 number of dataset available in the public domain. Results from
 individual experiments provide a limited understanding of chromatin
 interactions, as there is many factors cooperate to regulate
 transcription. Unlike other tools that designed for single dataset,
-&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt; is
+&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt; is
 designed for comparing profiles of ChIP-seq datasets at different
 levels.&lt;/p&gt;
 
 &lt;p&gt;We provide functions to compare profiles of peaks binding to TSS
 regions, annotation, and enriched functional profiles. More importantly,
 ChIPseeker incorporates statistical testing of co-occurrence of
-different ChIP-seq datasets and can be used to identify co-factors.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; library(ChIPseeker)
-&amp;gt; ff=getSampleFiles()
-&amp;gt; x = enrichPeakOverlap(ff[[5]], unlist(ff[1:4]), nShuffle=10000, pAdjustMethod=&amp;quot;BH&amp;quot;, chainFile=NULL)
-&amp;gt;&amp;gt; permutation test of peak overlap...       2015-09-24 14:23:43
-  |======================================================================| 100%
-&amp;gt; x
-                                                      qSample
-ARmo_0M    GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
-ARmo_1nM   GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
-ARmo_100nM GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
-CBX6_BF    GSM1295077_CBX7_BF_ChipSeq_mergedReps_peaks.bed.gz
-                                                      tSample qLen tLen N_OL
-ARmo_0M                       GSM1174480_ARmo_0M_peaks.bed.gz 1663  812    0
-ARmo_1nM                     GSM1174481_ARmo_1nM_peaks.bed.gz 1663 2296    8
-ARmo_100nM                 GSM1174482_ARmo_100nM_peaks.bed.gz 1663 1359    3
-CBX6_BF    GSM1295076_CBX6_BF_ChipSeq_mergedReps_peaks.bed.gz 1663 1331  968
-               pvalue   p.adjust
-ARmo_0M    0.88901110 0.88901110
-ARmo_1nM   0.15118488 0.30236976
-ARmo_100nM 0.37296270 0.49728360
-CBX6_BF    0.00009999 0.00039996
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/Screenshot%202015-09-24%2015.05.08.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The enrichment analysis of peak overlap is based on permutation test.
-&lt;em&gt;nShuffle&lt;/em&gt; of random ChIP data were generated to estimate the background
-null distribution of the overlap and p-value is then calculated by the
-probability of observing more extreme overlap. Multiple comparison
-correction is also incorporated.&lt;/p&gt;
-
-&lt;p&gt;The most exciting feature in ChIPseeker is that it collected more than
-18,000 bed file information from GEO database and make this co-factor
-inference available to the community. With these datasets, we can
-compare our own dataset to those deposited in GEO to identify
-co-occurrence binding proteins that maybe cooperated with the one we are
-interested in. Hypothesis can be generated by this inference and serve
-as a starting point for further study.&lt;/p&gt;
-
-&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
-
-&lt;p&gt;G Yu, LG Wang, QY He. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btv145&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;.
-Bioinformatics. 2015, 31(14):2382-2383.
-PMID:&lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pubmed/25765347&#34; target=&#34;_blank&#34;&gt;25765347&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+different ChIP-seq datasets and can be used to identify co-factors.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>functional enrichment analysis with NGS data</title>
       <link>https://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/</link>
       <pubDate>Fri, 21 Aug 2015 03:22:21 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2015/08/functional-enrichment-analysis-with-ngs-data/</guid>
       <description>&lt;p&gt;I found a Bioconductor package,
-&lt;a href=&#34;http://www.bioconductor.org/packages/seq2pathway/&#34; target=&#34;_blank&#34;&gt;seq2pathway&lt;/a&gt;, that
+&lt;a href=&#34;http://www.bioconductor.org/packages/seq2pathway/&#34;&gt;seq2pathway&lt;/a&gt;, that
 can apply functional analysis to NGS data. It consists of two
 components, &lt;em&gt;seq2gene&lt;/em&gt; and &lt;em&gt;gene2pathway&lt;/em&gt;. &lt;em&gt;seq2gene&lt;/em&gt; converts genomic
 coordination to genes while &lt;em&gt;gene2pathway&lt;/em&gt; performs functional analysis
@@ -265,157 +94,29 @@ at gene level.&lt;/p&gt;
 &lt;p&gt;I think it would be interesting to incorporate &lt;em&gt;seq2gene&lt;/em&gt; with
 clusterProfiler. But it fail to run due to it call absolute path of
 python installed in the author&amp;rsquo;s computer.
-&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/emotion_icons/surprise.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;THIS should never be happened in a Bioconductor package since
-Bioconductor requires every package to have a least one vignette and
-runnable examples in man files. It turns out that there is no runnable
-example in either the vignette or man files. This package was compiled
-successfully in all platforms but it actually can only be run in windows
-platform with python installed exactly in the same path of the author. I
-don&amp;rsquo;t know why Bioconductor core team didn&amp;rsquo;t detect this issue when
-reviewing this package and why reviewers of &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/early/2015/05/27/bioinformatics.btv289.full&#34; target=&#34;_blank&#34;&gt;Bioinformatics&lt;/a&gt; didn&amp;rsquo;t test the package.&lt;/p&gt;
-
-&lt;p&gt;I modified &amp;lsquo;C:/Python27/python&amp;rsquo;, to &amp;lsquo;python&amp;rsquo;. But it still throw error:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.51.48.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is due to the author used &amp;lsquo;\\&amp;rsquo; as folder separator which is Windows platform specific.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;command &amp;lt;- paste(&amp;quot;C:/Python27/python &amp;quot;, tempdir(),&amp;quot;\\&amp;quot;,name,sep=&amp;quot;&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AND I found that there are many &amp;lsquo;\\&amp;rsquo; in the source code.&lt;/p&gt;
-
-&lt;p&gt;So I gave up to try this package and reinvented the wheel.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/MISC/evolution_of_the_wheel_by_echoes93-d4owse1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It&amp;rsquo;s not difficult to implement a &lt;em&gt;seq2gene&lt;/em&gt; function using internal functions already available in my package &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;. It only took me half hour and was available since version 1.5.5.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/Screenshot%202015-08-21%2011.08.46.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;seq2gene&lt;/em&gt; provided by &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt; considers host gene (exon/intron), promoter region and flanking gene from intergenomic region.&lt;/p&gt;
-
-&lt;p&gt;With &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;, user can annotates genomic coordination by nearest gene, host gene, flanking genes or consider all of them by &lt;em&gt;seq2gene&lt;/em&gt; and performs GO/KEGG/DO/Reactome analysis with &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34; target=&#34;_blank&#34;&gt;clusterProfiler&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/DOSE.html&#34; target=&#34;_blank&#34;&gt;DOSE&lt;/a&gt;/&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34; target=&#34;_blank&#34;&gt;ReactomePA&lt;/a&gt; at gene level. A scenario can be found in &lt;a href=&#34;https://support.bioconductor.org/p/70227/&#34; target=&#34;_blank&#34;&gt;Bioconductor support site&lt;/a&gt;, that used ChIPseeker to retrieve 5 genes flanking of each enhancer followed by GO analysis.&lt;/p&gt;
-
-&lt;h4 id=&#34;note&#34;&gt;Note:&lt;/h4&gt;
-
-&lt;p&gt;seq2pathway, &lt;a href=&#34;https://github.com/Bioconductor-mirror/seq2pathway&#34; target=&#34;_blank&#34;&gt;https://github.com/Bioconductor-mirror/seq2pathway&lt;/a&gt;,
-version 1.1.2, access date 21 Aug, 2015&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>upsetplot in ChIPseeker</title>
       <link>https://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</link>
       <pubDate>Tue, 28 Jul 2015 06:45:01 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2015/07/upsetplot-in-chipseeker/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;
+      <description>&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/&#34;&gt;ChIPseeker&lt;/a&gt;
 is an R package for ChIP peak annotation, comparison and visualization.&lt;/p&gt;
 
-&lt;p&gt;We have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34; target=&#34;_blank&#34;&gt;several visualization methods&lt;/a&gt;,
+&lt;p&gt;We have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34;&gt;several visualization methods&lt;/a&gt;,
 including
-&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34; target=&#34;_blank&#34;&gt;vennpie&lt;/a&gt;&lt;/em&gt;
-that was designed for viewing annotation overlap as shown below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Not all overlap information can be demonstrated in vennpie.
-&lt;a href=&#34;http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html&#34; target=&#34;_blank&#34;&gt;Upset&lt;/a&gt;
-is an effective way to visualize sets and intersections. We import
-&lt;em&gt;upset&lt;/em&gt; function from &lt;a href=&#34;https://github.com/cran/UpSetR&#34; target=&#34;_blank&#34;&gt;UpSetR&lt;/a&gt; package
-and implement &lt;em&gt;upsetplot&lt;/em&gt; function, that can visualize ChIP annotation
-overlap directly with output of &lt;em&gt;annotatePeak&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;library(ChIPseeker)
-peak_file &amp;lt;- getSampleFiles()[[4]]
-x &amp;lt;- annotatePeak(peak_file)
-upsetplot(x)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We add a new parameter, &lt;em&gt;vennpie=FALSE&lt;/em&gt;, in upsetplot. If vennpie=TRUE,
-a vennpie will be added as show below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset_vennpie.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Although upset contains more information, vennpie is more intuitive and
-the final figure is more compact. More information is available at the
-&lt;a href=&#34;http://www.bioconductor.org/packages/3.2/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html&#34; target=&#34;_blank&#34;&gt;online vignette&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;reference&#34;&gt;Reference&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Alexander Lex, and Gehlenborg Nils. “Points of View: Sets and
-Intersections.” Nature Methods 11, no. 8 (August 2014): 779–779.
-doi:&lt;a href=&#34;http://doi.org/10.1038/nmeth.3033&#34; target=&#34;_blank&#34;&gt;10.1038/nmeth.3033&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Guangchuang Yu, Li-Gen Wang, and Qing-Yu He. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: An
-R/Bioconductor Package for ChIP Peak Annotation, Comparison and
-Visualization&lt;/a&gt;. Bioinformatics 31, no. 14 (July 15, 2015): 2382–83.
-doi:&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34; target=&#34;_blank&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Conway Jake, and Gehlenborg Nils, &amp;ldquo;UpSetR&amp;rdquo;,
-&lt;a href=&#34;https://github.com/cran/UpSetR&#34; target=&#34;_blank&#34;&gt;https://github.com/cran/UpSetR&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;</description>
-    </item>
-    
-    <item>
-      <title>ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization</title>
-      <link>https://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/</link>
-      <pubDate>Mon, 13 Jul 2015 08:14:50 +0800</pubDate>
-      <guid>https://guangchuangyu.github.io/2015/07/chipseeker-an-r/bioconductor-package-for-chip-peak-annotation-comparison-and-visualization/</guid>
-      <description>&lt;p&gt;My R/Bioconductor package,
-&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;, published
-in
-&lt;a href=&#34;http://bioinformatics.oxfordjournals.org/cgi/content/abstract/btv145&#34; target=&#34;_blank&#34;&gt;Bioinformatics&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt; had been
-cited by &lt;a href=&#34;http://www.biomedcentral.com/1471-2164/16/292&#34; target=&#34;_blank&#34;&gt;http://www.biomedcentral.com/1471-2164/16/292&lt;/a&gt; and
-&lt;a href=&#34;http://www.jbc.org/content/early/2015/06/18/jbc.M115.668558.short&#34; target=&#34;_blank&#34;&gt;http://www.jbc.org/content/early/2015/06/18/jbc.M115.668558.short&lt;/a&gt;, and
-was used (not cited) in
-&lt;a href=&#34;http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract&#34; target=&#34;_blank&#34;&gt;http://nar.oxfordjournals.org/content/early/2015/06/27/nar.gkv642.abstract&lt;/a&gt;
-and
-&lt;a href=&#34;http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract&#34; target=&#34;_blank&#34;&gt;http://emboj.embopress.org/content/early/2014/12/18/embj.201490061.abstract&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/bioinfo_2015.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation,
-comparison and visualization&lt;/strong&gt; &lt;strong&gt;G Yu&lt;/strong&gt;, LG Wang, QY He.
-&lt;strong&gt;Bioinformatics&lt;/strong&gt; 2015, 31(14):2382-2383 DOI:
-&lt;a href=&#34;http://doi.org/10.1093/bioinformatics/btv145&#34; target=&#34;_blank&#34;&gt;10.1093/bioinformatics/btv145&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt; ChIPseeker is an R package for annotating ChIP-seq data
-analysis. It supports annotating ChIP peaks and provides functions to
-visualize ChIP peaks coverage over chromosomes and profiles of peaks
-binding to TSS regions. Comparison of ChIP peak profiles and annotation
-are also supported. Moreover, it supports evaluating significant overlap
-among ChIP-seq datasets. Currently, ChIPseeker contains 15 000 bed file
-information from GEO database. These datasets can be downloaded and
-compare with user’s own data to explore significant overlap datasets for
-inferring co-regulation or transcription factor complex for further
-investigation. &lt;strong&gt;Availability and implementation:&lt;/strong&gt; ChIPseeker is
-released under Artistic-2.0 License. The source code and documents are
-freely available through Bioconductor
-(&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34; target=&#34;_blank&#34;&gt;http://www.bioconductor.org/packages/release/bioc/html/ChIPseeker.html&lt;/a&gt;).&lt;/p&gt;</description>
+&lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/&#34;&gt;vennpie&lt;/a&gt;&lt;/em&gt;
+that was designed for viewing annotation overlap as shown below:&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>multiple annotation in ChIPseeker</title>
       <link>https://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/</link>
       <pubDate>Wed, 01 Oct 2014 13:00:33 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/</guid>
       <description>&lt;h3 id=&#34;nearest-gene-annotation&#34;&gt;Nearest gene annotation&lt;/h3&gt;
 
@@ -427,124 +128,17 @@ genome.&lt;/p&gt;
 
 &lt;p&gt;The function &lt;em&gt;annotatePeak&lt;/em&gt; provides option to assign genes with a max
 distance cutoff and all genes within this distance were reported for
-each peak.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; anno = annotatePeak(getSampleFiles()[[4]], addFlankGeneInfo=TRUE, flankDistance=5000)
-&amp;gt;&amp;gt; loading peak file...              2014-09-30 01:12:09 PM 
-&amp;gt;&amp;gt; preparing features information...         2014-09-30 01:12:09 PM 
-&amp;gt;&amp;gt; identifying nearest features...       2014-09-30 01:12:10 PM 
-&amp;gt;&amp;gt; calculating distance from peak to TSS...  2014-09-30 01:12:11 PM 
-&amp;gt;&amp;gt; assigning genomic annotation...       2014-09-30 01:12:11 PM 
-&amp;gt;&amp;gt; adding flank feature information from peaks...2014-09-30 01:12:37 PM 
-&amp;gt;&amp;gt; assigning chromosome lengths          2014-09-30 01:12:39 PM 
-&amp;gt;&amp;gt; done...                   2014-09-30 01:12:39 PM 
-&amp;gt; head(as.GRanges(anno))
-GRanges object with 6 ranges and 14 metadata columns:
-      seqnames             ranges strand |          V4        V5
-                      |     
-  [1]     chr1 [ 815092,  817883]      * | MACS_peak_1    295.76
-  [2]     chr1 [1243287, 1244338]      * | MACS_peak_2     63.19
-  [3]     chr1 [2979976, 2981228]      * | MACS_peak_3    100.16
-  [4]     chr1 [3566181, 3567876]      * | MACS_peak_4    558.89
-  [5]     chr1 [3816545, 3818111]      * | MACS_peak_5     57.57
-  [6]     chr1 [6304864, 6305704]      * | MACS_peak_6     54.57
-             annotation  geneChr geneStart   geneEnd geneLength geneStrand
-                    
-  [1] Distal Intergenic     chr1    803451    812182       8732          -
-  [2]  Promoter (&amp;lt;=1kb)     chr1   1243994   1247057       3064          +
-  [3]  Promoter (&amp;lt;=1kb)     chr1   2976181   2980350       4170          -
-  [4]  Promoter (&amp;lt;=1kb)     chr1   3547331   3566671      19341          -
-  [5]  Promoter (&amp;lt;=1kb)     chr1   3816968   3832011      15044          +
-  [6]  Promoter (1-2kb)     chr1   6304252   6305638       1387          +
-           geneId transcriptId distanceToTSS
-             
-  [1]      284593   uc001abt.4         -5701
-  [2]      126789   uc001aed.3             0
-  [3]      440556   uc001aka.3             0
-  [4]       49856   uc001ako.3             0
-  [5]   100133612   uc001alg.3             0
-  [6]      390992   uc009vly.2          1452
-                                                                                                                                                               flank_txIds
-                                                                                                                                                               
-  [1]                                                                                                                                                           uc001abt.4
-  [2] uc001aea.2;uc001aeb.2;uc001aec.1;uc001aed.3;uc010nyi.2;uc009vjx.3;uc009vjy.1;uc001aee.2;uc001aef.2;uc001aeg.2;uc001aeh.2;uc001aei.2;uc001aek.2;uc009vjz.2;uc010nyj.2
-  [3]                                                                                                    uc001aka.3;uc010nzg.1;uc001akc.3;uc001ake.3;uc001akf.3;uc009vlh.3
-  [4]                                                                   uc001ako.3;uc001akn.3;uc010nzi.2;uc001akp.3;uc021ofb.1;uc021ofc.1;uc021ofd.1;uc021ofe.1;uc021off.1
-  [5]                                                                                                    uc001alg.3;uc010nzo.2;uc001alh.4;uc001alf.3;uc009vls.3;uc031pkz.1
-  [6]                                                                                                                                                uc001amp.2;uc009vly.2
-                                                                                        flank_geneIds
-                                                                                          
-  [1]                                                                                          284593
-  [2] 116983;116983;116983;126789;126789;126789;54973;54973;54973;54973;54973;54973;54973;54973;54973
-  [3]                                                           440556;440556;63976;63976;63976;63976
-  [4]                                                 49856;49856;49856;7161;7161;7161;7161;7161;7161
-  [5]                                              100133612;100133612;100133612;339448;339448;339448
-  [6]                                                                                   387509;390992
-                                                           flank_gene_distances
-                                                                    
-  [1]                                                                     -2910
-  [2] -1978;-18;0;0;0;-128;8492;15729;15729;15729;15729;15729;15729;15729;15729
-  [3]                                               0;0;-4514;-4514;-4514;-4514
-  [4]                                 0;0;0;-1253;-1253;-1253;-1253;-1253;-1253
-  [5]                                                               0;0;0;0;0;0
-  [6]                                                                   15331;0
-  -------
-  seqinfo: 24 sequences from hg19 genome
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Three extra columns, &lt;em&gt;flank_txIds&lt;/em&gt;, &lt;em&gt;flank_geneIds&lt;/em&gt;,
-&lt;em&gt;flank_gene_distances&lt;/em&gt; were added if parameter &lt;em&gt;addFlankGeneInfo&lt;/em&gt; is
-set to &lt;em&gt;TRUE&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;genomic-annotation&#34;&gt;Genomic annotation&lt;/h3&gt;
-
-&lt;p&gt;The annotation column annotates the genomic location of a given peak.
-Since some annotations overlap, they are assigned based on the following
-priority.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Promoter (defined by tssRegion parameter)&lt;/li&gt;
-&lt;li&gt;5&amp;rsquo; UTR&lt;/li&gt;
-&lt;li&gt;3&amp;rsquo; UTR&lt;/li&gt;
-&lt;li&gt;Exon&lt;/li&gt;
-&lt;li&gt;Intron&lt;/li&gt;
-&lt;li&gt;Downstream (immediate downstream of a gene, within 3kb)&lt;/li&gt;
-&lt;li&gt;Distal Intergenic&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I have implemented &lt;a href=&#34;http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/&#34; target=&#34;_blank&#34;&gt;plotAnnoPie and plotAnnoBar&lt;/a&gt;
-to visualize their distribution. I am wondering how to visualize the
-annotation overlap and found &lt;a href=&#34;http://onetipperday.blogspot.hk/2014/09/how-to-draw-venn-pie-agram-multi-layer.html&#34; target=&#34;_blank&#34;&gt;venn pie-agram&lt;/a&gt;
-can partially solve this issue. It&amp;rsquo;s hard/impossible to visualize all
-the overlap information within one vennpie plot.&lt;/p&gt;
-
-&lt;p&gt;I employed the vennpie to ChIPseeker, and now with the vennpie function,
-we can visualize some of the overlap annotations.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;vennpie(anno)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In order to manage complex data, &lt;em&gt;annotatePeak&lt;/em&gt; now output a S4 object.
-Users can use &lt;em&gt;as.GRanges&lt;/em&gt; to convert it to &lt;em&gt;as.GRanges&lt;/em&gt; object or
-&lt;em&gt;as.data.frame&lt;/em&gt; to convert it to &lt;em&gt;data.frame&lt;/em&gt; and then the output can be
-exported by &lt;em&gt;write.table&lt;/em&gt; function.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+each peak.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>visualization methods in ChIPseeker</title>
       <link>https://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/</link>
       <pubDate>Wed, 30 Apr 2014 06:33:41 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/</guid>
       <description>&lt;p&gt;After two weeks developed, I have added/updated some plot functions in
-&lt;a href=&#34;http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34; target=&#34;_blank&#34;&gt;ChIPseeker&lt;/a&gt;
+&lt;a href=&#34;http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html&#34;&gt;ChIPseeker&lt;/a&gt;
 (version &amp;gt;=1.0.1).&lt;/p&gt;
 
 &lt;h3 id=&#34;chip-peaks-over-chromosomes&#34;&gt;ChIP peaks over Chromosomes&lt;/h3&gt;
@@ -571,71 +165,14 @@ GRanges object with 1331 ranges and 2 metadata columns:
     chr1 chr10 chr11 chr12 chr13 chr14 ...  chr6  chr7  chr8  chr9  chrX  chrY
       NA    NA    NA    NA    NA    NA ...    NA    NA    NA    NA    NA    NA
 &amp;gt; covplot(peak, weightCol=&amp;quot;V5&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/chrCoverage.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;heatmap-of-chip-binding-to-tss-regions&#34;&gt;Heatmap of ChIP binding to TSS regions&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;require(TxDb.Hsapiens.UCSC.hg19.knownGene)
-txdb &amp;lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
-peakHeatmap(files, weightCol=&amp;quot;V5&amp;quot;, TxDb=txdb, upstream=3000, downstream=3000, color=rainbow(length(files)))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/peakHeat2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;average-profile-of-chip-peaks-binding-to-tss-region&#34;&gt;Average Profile of ChIP peaks binding to TSS region&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;plotAvgProf(files, TranscriptDb=txdb, weightCol=&amp;quot;V5&amp;quot;, upstream=3000, downstream=3000)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/avgProf2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;genomic-annotation&#34;&gt;Genomic Annotation&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;peakAnnoList=lapply(files, annotatePeak)
-plotAnnoPie(peakAnnoList[[1]])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/pieAnno.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;plotAnnoBar(peakAnnoList)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/barAnno.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;distance-to-tss&#34;&gt;Distance to TSS&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;plotDistToTSS(peakAnnoList)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/distTSS.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;overlap-of-peak-sets&#34;&gt;Overlap of peak sets&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;genes= lapply(peakAnnoList, function(i) as.data.frame(i)$geneId)
-vennplot(genes)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/04/venn.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In the future version, ChIPseeker will support statistical comparison
-among ChIP peak sets, and incorporate open access database GEO for users
-to compare their own dataset to those deposited in database. Significant
-overlap among peak sets can be used to infer cooperative regulation.
-This feature will soon be available.&lt;/p&gt;
-
-&lt;h2 id=&#34;citation&#34;&gt;Citation&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Yu G&lt;/em&gt;&lt;/strong&gt;, Wang LG and He QY&lt;sup&gt;*&lt;/sup&gt;. &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/31/14/2382&#34; target=&#34;_blank&#34;&gt;ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization&lt;/a&gt;. &lt;strong&gt;&lt;em&gt;Bioinformatics&lt;/em&gt;&lt;/strong&gt; 2015, 31(14):2382-2383.&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js&#34;&gt;&lt;/script&gt;&lt;div class=&#34;altmetric-embed&#34; data-badge-type=&#34;donut&#34; data-badge-popover=&#34;right&#34; data-altmetric-id=&#34;3781087&#34;&gt;&lt;/div&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
       <title>Bug of R package ChIPpeakAnno</title>
       <link>https://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/</link>
       <pubDate>Tue, 14 Jan 2014 17:09:07 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/</guid>
       <description>&lt;p&gt;I used R package &lt;strong&gt;ChIPpeakAnno&lt;/strong&gt; for annotating peaks, and found that
 it handle the DNA strand in the wrong way. Maybe the developers were
@@ -658,217 +195,7 @@ RangedData with 1 row and 9 value columns across 1 space
                   distancetoFeature shortestDistance fromOverlappingOrNearest
                                                 
 1 ENSG00000001461             -5527             4756             NearestStart
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In this example, I defined a peak ranging from chr1:24736757 to
-chr1:24737528 and annotated the peak using ChIPpeakAnno package.&lt;/p&gt;
-
-&lt;p&gt;It returns that the nearest gene is ENSG00000001461, whose gene symbol
-is NIPAL3.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; require(org.Hs.eg.db)
-&amp;gt; gene.ChIPpeakAnno &amp;lt;- select(org.Hs.eg.db, key=ap$feature, keytype=&amp;quot;ENSEMBL&amp;quot;, columns=c(&amp;quot;ENSEMBL&amp;quot;, &amp;quot;ENTREZID&amp;quot;, &amp;quot;SYMBOL&amp;quot;))
-&amp;gt; gene.ChIPpeakAnno
-          ENSEMBL ENTREZID SYMBOL
-1 ENSG00000001461    57185 NIPAL3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;When looking at the peak in Genome Browser, I found the nearest gene is
-STPG1.
-&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/01/Screenshot-2014-01-13-22.00.46.png&#34; alt=&#34;&#34; /&gt;
-The gene symbol, STPG1, was converted to ENTREZID for future processing.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; gene.nearest &amp;lt;- select(org.Hs.eg.db, key=&amp;quot;STPG1&amp;quot;, keytype=&amp;quot;SYMBOL&amp;quot;, columns=c(&amp;quot;ENSEMBL&amp;quot;, &amp;quot;ENTREZID&amp;quot;, &amp;quot;SYMBOL&amp;quot;))
-&amp;gt; gene.nearest
-  SYMBOL         ENSEMBL ENTREZID
-1  STPG1 ENSG00000001460    90529
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We can query the coordination of these two genes, and compare their
-distances to the peak.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
-&amp;gt; knownGene &amp;lt;- transcriptsBy(TxDb.Hsapiens.UCSC.hg19.knownGene, by=&amp;quot;gene&amp;quot;)
-&amp;gt; 
-&amp;gt; gene.ChIPpeakAnno.info &amp;lt;- knownGene[[gene.ChIPpeakAnno$ENTREZID]]
-&amp;gt; gene.ChIPpeakAnno.info
-GRanges with 4 ranges and 2 metadata columns:
-      seqnames               ranges strand |     tx_id     tx_name
-                        |  
-  [1]     chr1 [24742245, 24781314]      + |       618  uc010oek.2
-  [2]     chr1 [24742245, 24799473]      + |       619  uc001bjh.3
-  [3]     chr1 [24742245, 24799473]      + |       620  uc009vrc.3
-  [4]     chr1 [24782628, 24792864]      + |       621  uc001bji.3
-  ---
-  seqlengths:
-                    chr1                  chr2 ...        chrUn_gl000249
-               249250621             243199373 ...                 38502
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;After getting the information of the gene annotated by ChIPpeakAnno, I
-also found that the ranges of the gene is slightly different from the
-one returned by &lt;em&gt;annotatePeakInBatch&lt;/em&gt; function. This may due to the
-variation of different versions and it&amp;rsquo;s not a big deal.&lt;/p&gt;
-
-&lt;p&gt;As the gene, NIPAL3, is encoded in + strand, the nearest distance is:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; min(abs(start(peak) - start(gene.ChIPpeakAnno.info)))
-[1] 5488
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;While the gene, STPG1, is encoded in - strand, the end of the gene
-coordination is actually the start position of the gene and the start of
-the gene coordination is the end position. So the distance should be
-calculated by the end coordination.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; gene.nearest.info &amp;lt;- knownGene[[gene.nearest$ENTREZID]]
-&amp;gt; gene.nearest.info
-GRanges with 6 ranges and 2 metadata columns:
-      seqnames               ranges strand |     tx_id     tx_name
-                        |  
-  [1]     chr1 [24683489, 24700300]      - |      4706  uc010oej.2
-  [2]     chr1 [24683489, 24740262]      - |      4707  uc001bja.3
-  [3]     chr1 [24683489, 24740262]      - |      4708  uc001bjb.3
-  [4]     chr1 [24683489, 24740262]      - |      4709  uc001bjc.3
-  [5]     chr1 [24683489, 24741587]      - |      4710  uc001bjd.3
-  [6]     chr1 [24695211, 24718169]      - |      4711  uc001bjf.3
-  ---
-  seqlengths:
-                    chr1                  chr2 ...        chrUn_gl000249
-               249250621             243199373 ...                 38502
-&amp;gt; min(abs(end(peak) - end(knownGene[[gene.nearest$ENTREZID]])))
-[1] 2734
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;STPG1 is more close to the peak than NIPAL3. Those genes encoded in -
-strand can&amp;rsquo;t be well-handled by &lt;strong&gt;ChIPpeakAnno&lt;/strong&gt; package.&lt;/p&gt;
-
-&lt;p&gt;I look careful to the source code of &lt;em&gt;annotatePeakInBatch&lt;/em&gt; function.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    TSS.ordered &amp;lt;- AnnotationData
-    rm(AnnotationData)
-    if (!length(rownames(TSS.ordered))) {
-        rownames(TSS.ordered) = formatC(1:dim(TSS.ordered)[1],
-            width = nchar(dim(TSS.ordered)[1]), flag = &amp;quot;0&amp;quot;)
-    }
-    if (length(TSS.ordered$strand) == length(start(TSS.ordered))) {
-        r2 = cbind(rownames(TSS.ordered), start(TSS.ordered),
-            end(TSS.ordered), as.character(TSS.ordered$strand))
-    }
-    else {
-        TSS.ordered$strand = rep(&amp;quot;+&amp;quot;, length(start(TSS.ordered)))
-        r2 = cbind(rownames(TSS.ordered), start(TSS.ordered),
-            end(TSS.ordered), rep(&amp;quot;+&amp;quot;, length(start(TSS.ordered))))
-    }
-    colnames(r2) = c(&amp;quot;feature_id&amp;quot;, &amp;quot;start_position&amp;quot;, &amp;quot;end_position&amp;quot;,
-        &amp;quot;strand&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The &lt;em&gt;AnnotationData&lt;/em&gt; object is provided by the package, or query from
-biomaRt, the length(TSS.ordered\$strand) == length(start(TSS.ordered)
-should be TRUE, and this code should works fine. But when the expression
-return FALSE, the function should complain this, with warning message
-showing in the screen or even stop running. But the author just simply
-assign all the genes encoded in + strand, this is nonsense.&lt;/p&gt;
-
-&lt;p&gt;Then for calculating the feauture location:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    if (FeatureLocForDistance == &amp;quot;middle&amp;quot; || FeatureLocForDistance ==
-        &amp;quot;m&amp;quot;) {
-        FeatureLoc = unlist(lapply(1:dim(r2)[1], function(i) {
-            round(mean(c(as.numeric(r2[i, 2]), as.numeric(r2[i,
-                3]))))
-        }))
-        FeatureLocForDistance = &amp;quot;middle&amp;quot;
-    }
-    else if (FeatureLocForDistance == &amp;quot;start&amp;quot; || FeatureLocForDistance ==
-        &amp;quot;s&amp;quot;) {
-        FeatureLoc = r2[, 2]
-        FeatureLocForDistance = &amp;quot;start&amp;quot;
-    }
-    else if (FeatureLocForDistance == &amp;quot;end&amp;quot; || FeatureLocForDistance ==
-        &amp;quot;e&amp;quot;) {
-        FeatureLoc = r2[, 3]
-        FeatureLocForDistance = &amp;quot;end&amp;quot;
-    }
-    else if (FeatureLocForDistance == &amp;quot;geneEnd&amp;quot; || FeatureLocForDistance ==
-        &amp;quot;g&amp;quot;) {
-        FeatureLoc = unlist(lapply(1:dim(r2)[1], function(i) {
-            if (as.character(r2[i, 4]) == &amp;quot;+&amp;quot; || as.character(r2[i,
-                4]) == &amp;quot;1&amp;quot; || as.character(r2[i, 4]) == &amp;quot;*&amp;quot;) {
-                r2[i, 3]
-            }
-            else {
-                r2[i, 2]
-            }
-        }))
-        FeatureLocForDistance = &amp;quot;geneEnd&amp;quot;
-    }
-    else {
-        FeatureLoc = unlist(lapply(1:dim(r2)[1], function(i) {
-            if (as.character(r2[i, 4]) == &amp;quot;+&amp;quot; || as.character(r2[i,
-                4]) == &amp;quot;1&amp;quot; || as.character(r2[i, 4]) == &amp;quot;*&amp;quot;) {
-                r2[i, 2]
-            }
-            else {
-                r2[i, 3]
-            }
-        }))
-        FeatureLocForDistance = &amp;quot;TSS&amp;quot;
-    }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Only &amp;ldquo;geneEnd&amp;rdquo; and &amp;ldquo;TSS&amp;rdquo; types consider the strand information. For
-&amp;ldquo;middle&amp;rdquo;, omits the strand information should be fine, but for &amp;ldquo;start&amp;rdquo;
-and &amp;ldquo;end&amp;rdquo;, the &amp;ldquo;start&amp;rdquo; should be &amp;ldquo;end&amp;rdquo; and &amp;ldquo;end&amp;rdquo; should be &amp;ldquo;start&amp;rdquo; when
-the gene is located at - strand. Again, the &lt;em&gt;annotatePeakInBatch&lt;/em&gt;
-function omits the strand information of genes/features.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;        TSS.ordered$FeatureLoc = FeatureLoc
-        myPeakList$PeakLoc = PeakLoc
-        plusAnno = TSS.ordered[as.character(TSS.ordered$strand) %in%
-            c(&amp;quot;+&amp;quot;, &amp;quot;*&amp;quot;, &amp;quot;1&amp;quot;), ]
-        minusAnno = TSS.ordered[as.character(TSS.ordered$strand) %in%
-            c(&amp;quot;-1&amp;quot;, &amp;quot;-&amp;quot;), ]
-        r1 = do.call(rbind, lapply(seq_len(numberOfChromosome),
-            function(i) {
-                chr = allChr[i]
-                if (chr %in% allChr.Anno) {
-                  featureStart = as.numeric(TSS.ordered[chr]$FeatureLoc)
-                  peakLoc = as.numeric(myPeakList[chr]$PeakLoc)
-                  peakStart = as.numeric(start(myPeakList[chr]))
-                  peakEnd = as.numeric(end(myPeakList[chr]))
-                  name = rownames(myPeakList[chr])
-                  peakRanges = IRanges(start = peakStart, end = peakEnd,
-                    names = name)
-                  featureID = rownames(TSS.ordered[chr])
-                  featureRanges = IRanges(start = featureStart,
-                    end = featureStart, names = featureID)
-                  nearestFeature = featureRanges[nearest(peakRanges,
-                    featureRanges)]
-                  data.frame(name = name, feature_id = names(nearestFeature))
-                }
-            }))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;For identifying the nearest feature, the author use:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;nearestFeature = featureRanges[nearest(peakRanges,
-                    featureRanges)]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The &amp;ldquo;start&amp;rdquo; of the features should be used when it were encoded in +
-strand and &amp;ldquo;end&amp;rdquo; when features were encoded in - strand. But the author
-use &lt;em&gt;nearest&lt;/em&gt; function which use both &amp;ldquo;start&amp;rdquo; and &amp;ldquo;end&amp;rdquo; of the interval
-to calculate the distance by default.&lt;/p&gt;
-
-&lt;p&gt;Considering the &amp;ldquo;start&amp;rdquo; and &amp;ldquo;end&amp;rdquo; records may reverse when the
-genes/features were encoded in - strand and the way ChIPpeakAnno
-calcultes the distance is too simple by using &lt;em&gt;nearest&lt;/em&gt; function, I
-can&amp;rsquo;t trust their results. It&amp;rsquo;s not hard to implement a function to
-annotate peaks. Preparing the gene annotation and calculating the
-distances among genes and peaks for finding the nearest gene of the
-peak. That&amp;rsquo;s it.&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
   </channel>

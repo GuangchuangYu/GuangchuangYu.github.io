@@ -1,231 +1,52 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>integrals | Guangchuang YU</title>
+    <title>integrals on Guangchuang Yu</title>
     <link>https://guangchuangyu.github.io/tags/integrals/</link>
-      <atom:link href="https://guangchuangyu.github.io/tags/integrals/index.xml" rel="self" type="application/rss+xml" />
-    <description>integrals</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Guangchuang YU</copyright><lastBuildDate>Sat, 25 Dec 2010 10:40:22 +0800</lastBuildDate>
-    <image>
-      <url>https://guangchuangyu.github.io/img/icon-192.png</url>
-      <title>integrals</title>
-      <link>https://guangchuangyu.github.io/tags/integrals/</link>
-    </image>
+    <description>Recent content in integrals on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Sep 2011 06:40:22 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/integrals/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MC积分</title>
+      <link>https://guangchuangyu.github.io/2011/09/mc-integration/</link>
+      <pubDate>Thu, 22 Sep 2011 06:40:22 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2011/09/mc-integration/</guid>
+      <description>&lt;p&gt;Monte Carlo方法由冯·诺伊曼于二战时提出，1777年法国人布丰用此思路&lt;a href=&#34;http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/&#34;&gt;估计pi值&lt;/a&gt;被认为是Monte
+Carlo的起源，这个方法简单又快速，通过产生随机数，将数值计算问题变成随机变量的某些特征值（比如期望值）。&lt;/p&gt;
+
+&lt;p&gt;积分运算，和&lt;a href=&#34;http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/&#34;&gt;估计pi值&lt;/a&gt;一样，用hit
+and miss法估计。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hit_miss &amp;lt;- function(fun, lower, upper, n=500) {
+    # Monte Carlo integration using the hit and miss method
+    x &amp;lt;- runif(n, lower, upper)
+    f.value &amp;lt;- sapply(seq(lower, upper, 0.001), fun)
+    f.min &amp;lt;- min(f.value)
+    f.max &amp;lt;- max(f.value)
+    y &amp;lt;- runif(n, f.min, f.max)
+    hits &amp;lt;- sum(y &amp;lt;= fun(x))
+    area &amp;lt;- (upper-lower) * f.min + hits/n * (upper-lower) * (f.max-f.min)
+    return(area)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;hit and miss方法收敛太慢，效率并不高，通常所说的MC积分是指下面这个方法。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>one-dimensional integrals</title>
       <link>https://guangchuangyu.github.io/2010/12/one-dimensional-integrals/</link>
       <pubDate>Sat, 25 Dec 2010 10:40:22 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2010/12/one-dimensional-integrals/</guid>
-      <description>
-
-&lt;p&gt;The foundamental idea of numerical integration is to estimate the area of the region in the &lt;em&gt;xy&lt;/em&gt;-plane bounded by the graph of function &lt;em&gt;f(x)&lt;/em&gt;. The integral was esimated by dividing &lt;em&gt;x&lt;/em&gt; into small intervals, then adds all the small approximations to give a total approximation.&lt;/p&gt;
-
-&lt;h2 id=&#34;trapezoidal-rule&#34;&gt;Trapezoidal rule&lt;/h2&gt;
-
-&lt;p&gt;Numerical integration can be done by trapezoidal rule, simpson&amp;rsquo;s rule and quadrature rules. R has a built-in function, &lt;code&gt;integrate&lt;/code&gt;, which performs adaptive quadrature.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Trapezoidal_rule&#34; target=&#34;_blank&#34;&gt;Trapezoidal rule&lt;/a&gt; works by approximating the region under the graph &lt;em&gt;f(x)&lt;/em&gt; as a trapezoid and calculating its area.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;trapezoid &amp;lt;- function(fun, a, b, n=100) {
-    # numerical integral of fun from a to b
-    # using the trapezoid rule with n subdivisions
-    # assume a &amp;lt; b and n is a positive integer
-    h &amp;lt;- (b-a)/n
-    x &amp;lt;- seq(a, b, by=h)
-    y &amp;lt;- fun(x)
-    s &amp;lt;- h * (y[1]/2 + sum(y[2:n]) + y[n+1]/2)
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;simpson-s-rule&#34;&gt;Simpson&amp;rsquo;s rule&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Simpson%27s_rule&#34; target=&#34;_blank&#34;&gt;Simpson&amp;rsquo;s rule&lt;/a&gt; subdivides the interval &lt;code&gt;[a,b]&lt;/code&gt; into &lt;em&gt;n&lt;/em&gt; subintervals, where &lt;em&gt;n&lt;/em&gt; is even, then on each consecutive pairs of subintervals, it approximates the behaviour of &lt;em&gt;f(x)&lt;/em&gt; by a parabola (polynomial of degree 2) rather than by the straight lines used in the trapezoidal rule.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;simpson &amp;lt;- function(fun, a, b, n=100) {
-    # numerical integral using Simpson&#39;s rule
-    # assume a &amp;lt; b and n is an even positive integer
-    h &amp;lt;- (b-a)/n
-    x &amp;lt;- seq(a, b, by=h)
-    if (n == 2) {
-        s &amp;lt;- fun(x[1]) + 4*fun(x[2]) +fun(x[3])
-    } else {
-        s &amp;lt;- fun(x[1]) + fun(x[n+1]) +
-        	2*sum(fun(x[seq(2,n,by=2)])) + 
-            4 *sum(fun(x[seq(3,n-1, by=2)]))
-    }
-    s &amp;lt;- s*h/3
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To calculate an integrate over infinite interval, one way is to
-transform it into an integral over a finite interval as introduce in &lt;a href=&#34;http://en.wikipedia.org/wiki/Numerical_integration&#34; target=&#34;_blank&#34;&gt;wiki&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;simpson_v2 &amp;lt;- function(fun, a, b, n=100) {
-    # numerical integral using Simpson&#39;s rule
-    # assume a &amp;lt; b and n is an even positive integer
-    if (a == -Inf &amp;amp; b == Inf) {
-        f &amp;lt;- function(t) (fun((1-t)/t) + fun((t-1)/t))/t^2
-        s &amp;lt;- simpson_v2(f, 0, 1, n)
-    } else if (a == -Inf &amp;amp; b != Inf) {
-        f &amp;lt;- function(t) fun(b-(1-t)/t)/t^2
-        s &amp;lt;- simpson_v2(f, 0, 1, n)
-    } else if (a != -Inf &amp;amp; b == Inf) {
-        f &amp;lt;- function(t) fun(a+(1-t)/t)/t^2
-        s &amp;lt;- simpson_v2(f, 0, 1, n)
-    } else {
-        h &amp;lt;- (b-a)/n
-        x &amp;lt;- seq(a, b, by=h)
-        y &amp;lt;- fun(x)
-        y[is.nan(y)]=0
-        s &amp;lt;- y[1] + y[n+1] + 
-        	2*sum(y[seq(2,n,by=2)]) + 
-            4 *sum(y[seq(3,n-1, by=2)])
-        s &amp;lt;- s*h/3
-    }
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; phi &amp;lt;- function(x) exp(-x^2/2)/sqrt(2*pi)  ##normal distribution
-&amp;gt; simpson_v2(phi, 0, Inf, n=100)
-[1] 0.4986569
-&amp;gt; simpson_v2(phi, -Inf,3, n=100)
-[1] 0.998635
-&amp;gt; pnorm(3)
-[1] 0.9986501
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Simpson&amp;rsquo;s rule is more accuracy than trapezoidal rule. To compare the accuracy between simpson&amp;rsquo;s rule and trapezoidal rule, I estimated $ \int_{0.01}^{1} \frac{1}{x} dx = -\log(0.01)$ for a sequence of increasing values of &lt;em&gt;n&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;f &amp;lt;- function(x) 1/x
-#integrate(f, 0.01, 1) == -log(0.01)
-S.trapezoid &amp;lt;- function(n) trapezoid(f, 0.01, 1, n)
-S.simpson &amp;lt;- function(n) simpson(f, 0.01, 1, n)
-
-n &amp;lt;- seq(10, 1000, by = 10)
-St &amp;lt;- sapply(n, S.trapezoid)
-Ss &amp;lt;- sapply(n, S.simpson)
-
-opar &amp;lt;- par(mfrow = c(2, 2))
-plot(n,St + log(0.01), type=&amp;quot;l&amp;quot;, xlab=&amp;quot;n&amp;quot;, ylab=&amp;quot;error&amp;quot;, main=&amp;quot;Trapezoidal rule&amp;quot;)
-plot(n,Ss + log(0.01), type=&amp;quot;l&amp;quot;, xlab=&amp;quot;n&amp;quot;, ylab=&amp;quot;error&amp;quot;,main=&amp;quot;Simpson&#39;s rule&amp;quot;)
-plot(log(n), log(St+log(0.01)),type=&amp;quot;l&amp;quot;, xlab=&amp;quot;log(n)&amp;quot;, ylab=&amp;quot;log(error)&amp;quot;,main=&amp;quot;Trapezoidal rule&amp;quot;)
-plot(log(n), log(Ss+log(0.01)),type=&amp;quot;l&amp;quot;, xlab=&amp;quot;log(n)&amp;quot;, ylab=&amp;quot;log(error)&amp;quot;,main=&amp;quot;Simpson&#39;s rule&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2010/12/test-accuarcy.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The plot showed that log(error) against log(n) appears to have a slope of -1.90 and -3.28 for trapezoidal rule and simpson&amp;rsquo;s rule respectively.&lt;/p&gt;
-
-&lt;p&gt;Another way to compare their accuracy is to calculate how large of the partition size &lt;em&gt;n&lt;/em&gt; for reaching a specific tolerance.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;yIntegrate &amp;lt;- function(fun, a, b, tol=1e-8, method= &amp;quot;simpson&amp;quot;, verbose=TRUE) {
-    # numerical integral of fun from a to b, assume a &amp;lt; b 
-    # with tolerance tol
-    n &amp;lt;- 4
-    h &amp;lt;- (b-a)/4
-    x &amp;lt;- seq(a, b, by=h)
-    y &amp;lt;- fun(x)
-    yIntegrate_internal &amp;lt;- function(y, h, n, method) {
-        if (method == &amp;quot;simpson&amp;quot;) {
-            s &amp;lt;- y[1] + y[n+1] + 4*sum(y[seq(2,n,by=2)]) + 
-            	2 *sum(y[seq(3,n-1, by=2)])
-            s &amp;lt;- s*h/3
-        } else if (method == &amp;quot;trapezoidal&amp;quot;) {
-            s &amp;lt;- h * (y[1]/2 + sum(y[2:n]) + y[n+1]/2)
-        } else {
-        }       
-        return(s)
-    }
-    
-    s &amp;lt;- yIntegrate_internal(y, h, n, method)
-    s.diff &amp;lt;- tol + 1 # ensures to loop at once.
-    while (s.diff &amp;gt; tol ) {
-        s.old &amp;lt;- s
-        n &amp;lt;- 2*n
-        h &amp;lt;- h/2
-        y[seq(1, n+1, by=2)] &amp;lt;- y ##reuse old fun values
-        y[seq(2,n, by=2)] &amp;lt;- sapply(seq(a+h, b-h, by=2*h), fun)
-        s &amp;lt;- yIntegrate_internal(y, h, n, method)
-        s.diff &amp;lt;- abs(s-s.old)
-    }
-    if (verbose) {
-        cat(&amp;quot;partition size&amp;quot;, n, &amp;quot;\n&amp;quot;)
-    }
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; fun &amp;lt;- function(x) exp(x) - x^2
-&amp;gt; yIntegrate(fun, 3,5,tol=1e-8, method=&amp;quot;simpson&amp;quot;)
-partition size 512 
-[1] 95.66096
-&amp;gt; yIntegrate(fun, 3,5,tol=1e-8, method=&amp;quot;trapezoidal&amp;quot;)
-partition size 131072 
-[1] 95.66096
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;As show above, simpson&amp;rsquo;s rule converge much faster than trapezoidal rule.&lt;/p&gt;
-
-&lt;h2 id=&#34;quadrature-rule&#34;&gt;Quadrature rule&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Adaptive_quadrature&#34; target=&#34;_blank&#34;&gt;Quadrature rule&lt;/a&gt; is
-more efficient than traditional algorithms. In adaptive quadrature, the subinterval width &lt;code&gt;h&lt;/code&gt; is not constant over the interval &lt;code&gt;[a,b]&lt;/code&gt;, but instead adapts to the function. Here, I presented the adaptive simpson&amp;rsquo;s method.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;quadrature &amp;lt;- function(fun, a, b, tol=1e-8) {
-    # numerical integration using adaptive quadrature
-    
-    quadrature_internal &amp;lt;- function(S.old, fun, a, m, b, tol, level) {
-        level.max &amp;lt;- 100
-        if (level &amp;gt; level.max) {
-            cat (&amp;quot;recursion limit reached: singularity likely\n&amp;quot;)
-            return (NULL)
-        }
-        S.left &amp;lt;- simpson(fun, a, m, n=2) 
-        S.right &amp;lt;- simpson(fun, m, b, n=2)
-        S.new &amp;lt;- S.left + S.right
-        if (abs(S.new-S.old) &amp;gt; tol) {
-            S.left &amp;lt;- quadrature_internal(S.left, fun, a, (a+m)/2, m, tol/2, level+1)
-            S.right &amp;lt;- quadrature_internal(S.right, fun, m, (m+b)/2, b, tol/2, level+1)
-            S.new &amp;lt;- S.left + S.right
-        }
-        return(S.new)
-    }
-    
-    level = 1
-    S.old &amp;lt;- (b-a) * (fun(a) + fun(b))/2
-    S.new &amp;lt;- quadrature_internal(S.old, fun, a, (a+b)/2, b, tol, level+1)
-    return(S.new)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Quadrature rule is effective when &lt;em&gt;f(x)&lt;/em&gt; is steep.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; fun &amp;lt;- function(x) return(1.5 * sqrt(x))
-&amp;gt; system.time(yIntegrate(fun, 0,1, tol=1e-9, method=&amp;quot;simpson&amp;quot;))
-partition size 524288 
-   user  system elapsed 
-   1.58    0.00    1.58 
-&amp;gt; system.time(quadrature(fun, 0,1, tol=1e-9))
-   user  system elapsed 
-   0.25    0.00    0.25 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Robinson A., O. Jones, and R. Maillardet. 2009.
-&lt;a href=&#34;http://book.douban.com/subject/4324593/&#34; target=&#34;_blank&#34;&gt;Introduction to Scientific Programming and Simulation Using
-R&lt;/a&gt;. Chapman and Hall.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Numerical_integration&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Numerical_integration&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Trapezoidal_rule&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Trapezoidal_rule&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Simpson%27s_rule&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Simpson%27s_rule&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Adaptive_quadrature&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Adaptive_quadrature&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</description>
+      <description>The foundamental idea of numerical integration is to estimate the area of the region in the xy-plane bounded by the graph of function f(x). The integral was esimated by dividing x into small intervals, then adds all the small approximations to give a total approximation.
+Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&amp;rsquo;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.</description>
     </item>
     
   </channel>

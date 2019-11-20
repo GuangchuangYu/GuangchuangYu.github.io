@@ -1,376 +1,148 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Programming | Guangchuang YU</title>
+    <title>Programming on Guangchuang Yu</title>
     <link>https://guangchuangyu.github.io/categories/programming/</link>
-      <atom:link href="https://guangchuangyu.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
-    <description>Programming</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2019 Guangchuang YU</copyright><lastBuildDate>Sat, 25 Dec 2010 10:40:22 +0800</lastBuildDate>
-    <image>
-      <url>https://guangchuangyu.github.io/img/icon-192.png</url>
-      <title>Programming</title>
-      <link>https://guangchuangyu.github.io/categories/programming/</link>
-    </image>
+    <description>Recent content in Programming on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Sep 2011 06:40:22 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MC积分</title>
+      <link>https://guangchuangyu.github.io/2011/09/mc-integration/</link>
+      <pubDate>Thu, 22 Sep 2011 06:40:22 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2011/09/mc-integration/</guid>
+      <description>&lt;p&gt;Monte Carlo方法由冯·诺伊曼于二战时提出，1777年法国人布丰用此思路&lt;a href=&#34;http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/&#34;&gt;估计pi值&lt;/a&gt;被认为是Monte
+Carlo的起源，这个方法简单又快速，通过产生随机数，将数值计算问题变成随机变量的某些特征值（比如期望值）。&lt;/p&gt;
+
+&lt;p&gt;积分运算，和&lt;a href=&#34;http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/&#34;&gt;估计pi值&lt;/a&gt;一样，用hit
+and miss法估计。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hit_miss &amp;lt;- function(fun, lower, upper, n=500) {
+    # Monte Carlo integration using the hit and miss method
+    x &amp;lt;- runif(n, lower, upper)
+    f.value &amp;lt;- sapply(seq(lower, upper, 0.001), fun)
+    f.min &amp;lt;- min(f.value)
+    f.max &amp;lt;- max(f.value)
+    y &amp;lt;- runif(n, f.min, f.max)
+    hits &amp;lt;- sum(y &amp;lt;= fun(x))
+    area &amp;lt;- (upper-lower) * f.min + hits/n * (upper-lower) * (f.max-f.min)
+    return(area)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;hit and miss方法收敛太慢，效率并不高，通常所说的MC积分是指下面这个方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Monte Carlo估计pi值</title>
+      <link>https://guangchuangyu.github.io/2011/09/monte-carlo-estimate-pi/</link>
+      <pubDate>Wed, 21 Sep 2011 10:40:22 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2011/09/monte-carlo-estimate-pi/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://mathfaculty.fullerton.edu/mathews/n2003/montecarlopi/MonteCarloPiMod/Images/MonteCarloPiMod_gr_11.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;圆和外接正方形的面积比，是$ \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$.&lt;/p&gt;
+
+&lt;p&gt;通过这一比值，可以使用&lt;a href=&#34;http://baike.baidu.com/view/7775.htm&#34;&gt;蒙特-卡罗方法&lt;/a&gt;来估计Pi，这是Monte Carlo方法的最经典的一个例子。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;getPI &amp;lt;- function(N) {
+    x &amp;lt;- runif(N)
+    y &amp;lt;- runif(N)
+    hits &amp;lt;- sum(sqrt(x^2+y^2) &amp;lt; 1)
+    pi &amp;lt;- 4*hits/N
+    return(pi)
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
     
     <item>
       <title>one-dimensional integrals</title>
       <link>https://guangchuangyu.github.io/2010/12/one-dimensional-integrals/</link>
       <pubDate>Sat, 25 Dec 2010 10:40:22 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2010/12/one-dimensional-integrals/</guid>
-      <description>
-
-&lt;p&gt;The foundamental idea of numerical integration is to estimate the area of the region in the &lt;em&gt;xy&lt;/em&gt;-plane bounded by the graph of function &lt;em&gt;f(x)&lt;/em&gt;. The integral was esimated by dividing &lt;em&gt;x&lt;/em&gt; into small intervals, then adds all the small approximations to give a total approximation.&lt;/p&gt;
-
-&lt;h2 id=&#34;trapezoidal-rule&#34;&gt;Trapezoidal rule&lt;/h2&gt;
-
-&lt;p&gt;Numerical integration can be done by trapezoidal rule, simpson&amp;rsquo;s rule and quadrature rules. R has a built-in function, &lt;code&gt;integrate&lt;/code&gt;, which performs adaptive quadrature.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Trapezoidal_rule&#34; target=&#34;_blank&#34;&gt;Trapezoidal rule&lt;/a&gt; works by approximating the region under the graph &lt;em&gt;f(x)&lt;/em&gt; as a trapezoid and calculating its area.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;trapezoid &amp;lt;- function(fun, a, b, n=100) {
-    # numerical integral of fun from a to b
-    # using the trapezoid rule with n subdivisions
-    # assume a &amp;lt; b and n is a positive integer
-    h &amp;lt;- (b-a)/n
-    x &amp;lt;- seq(a, b, by=h)
-    y &amp;lt;- fun(x)
-    s &amp;lt;- h * (y[1]/2 + sum(y[2:n]) + y[n+1]/2)
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;simpson-s-rule&#34;&gt;Simpson&amp;rsquo;s rule&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Simpson%27s_rule&#34; target=&#34;_blank&#34;&gt;Simpson&amp;rsquo;s rule&lt;/a&gt; subdivides the interval &lt;code&gt;[a,b]&lt;/code&gt; into &lt;em&gt;n&lt;/em&gt; subintervals, where &lt;em&gt;n&lt;/em&gt; is even, then on each consecutive pairs of subintervals, it approximates the behaviour of &lt;em&gt;f(x)&lt;/em&gt; by a parabola (polynomial of degree 2) rather than by the straight lines used in the trapezoidal rule.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;simpson &amp;lt;- function(fun, a, b, n=100) {
-    # numerical integral using Simpson&#39;s rule
-    # assume a &amp;lt; b and n is an even positive integer
-    h &amp;lt;- (b-a)/n
-    x &amp;lt;- seq(a, b, by=h)
-    if (n == 2) {
-        s &amp;lt;- fun(x[1]) + 4*fun(x[2]) +fun(x[3])
-    } else {
-        s &amp;lt;- fun(x[1]) + fun(x[n+1]) +
-        	2*sum(fun(x[seq(2,n,by=2)])) + 
-            4 *sum(fun(x[seq(3,n-1, by=2)]))
-    }
-    s &amp;lt;- s*h/3
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To calculate an integrate over infinite interval, one way is to
-transform it into an integral over a finite interval as introduce in &lt;a href=&#34;http://en.wikipedia.org/wiki/Numerical_integration&#34; target=&#34;_blank&#34;&gt;wiki&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;simpson_v2 &amp;lt;- function(fun, a, b, n=100) {
-    # numerical integral using Simpson&#39;s rule
-    # assume a &amp;lt; b and n is an even positive integer
-    if (a == -Inf &amp;amp; b == Inf) {
-        f &amp;lt;- function(t) (fun((1-t)/t) + fun((t-1)/t))/t^2
-        s &amp;lt;- simpson_v2(f, 0, 1, n)
-    } else if (a == -Inf &amp;amp; b != Inf) {
-        f &amp;lt;- function(t) fun(b-(1-t)/t)/t^2
-        s &amp;lt;- simpson_v2(f, 0, 1, n)
-    } else if (a != -Inf &amp;amp; b == Inf) {
-        f &amp;lt;- function(t) fun(a+(1-t)/t)/t^2
-        s &amp;lt;- simpson_v2(f, 0, 1, n)
-    } else {
-        h &amp;lt;- (b-a)/n
-        x &amp;lt;- seq(a, b, by=h)
-        y &amp;lt;- fun(x)
-        y[is.nan(y)]=0
-        s &amp;lt;- y[1] + y[n+1] + 
-        	2*sum(y[seq(2,n,by=2)]) + 
-            4 *sum(y[seq(3,n-1, by=2)])
-        s &amp;lt;- s*h/3
-    }
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; phi &amp;lt;- function(x) exp(-x^2/2)/sqrt(2*pi)  ##normal distribution
-&amp;gt; simpson_v2(phi, 0, Inf, n=100)
-[1] 0.4986569
-&amp;gt; simpson_v2(phi, -Inf,3, n=100)
-[1] 0.998635
-&amp;gt; pnorm(3)
-[1] 0.9986501
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Simpson&amp;rsquo;s rule is more accuracy than trapezoidal rule. To compare the accuracy between simpson&amp;rsquo;s rule and trapezoidal rule, I estimated $ \int_{0.01}^{1} \frac{1}{x} dx = -\log(0.01)$ for a sequence of increasing values of &lt;em&gt;n&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;f &amp;lt;- function(x) 1/x
-#integrate(f, 0.01, 1) == -log(0.01)
-S.trapezoid &amp;lt;- function(n) trapezoid(f, 0.01, 1, n)
-S.simpson &amp;lt;- function(n) simpson(f, 0.01, 1, n)
-
-n &amp;lt;- seq(10, 1000, by = 10)
-St &amp;lt;- sapply(n, S.trapezoid)
-Ss &amp;lt;- sapply(n, S.simpson)
-
-opar &amp;lt;- par(mfrow = c(2, 2))
-plot(n,St + log(0.01), type=&amp;quot;l&amp;quot;, xlab=&amp;quot;n&amp;quot;, ylab=&amp;quot;error&amp;quot;, main=&amp;quot;Trapezoidal rule&amp;quot;)
-plot(n,Ss + log(0.01), type=&amp;quot;l&amp;quot;, xlab=&amp;quot;n&amp;quot;, ylab=&amp;quot;error&amp;quot;,main=&amp;quot;Simpson&#39;s rule&amp;quot;)
-plot(log(n), log(St+log(0.01)),type=&amp;quot;l&amp;quot;, xlab=&amp;quot;log(n)&amp;quot;, ylab=&amp;quot;log(error)&amp;quot;,main=&amp;quot;Trapezoidal rule&amp;quot;)
-plot(log(n), log(Ss+log(0.01)),type=&amp;quot;l&amp;quot;, xlab=&amp;quot;log(n)&amp;quot;, ylab=&amp;quot;log(error)&amp;quot;,main=&amp;quot;Simpson&#39;s rule&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2010/12/test-accuarcy.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The plot showed that log(error) against log(n) appears to have a slope of -1.90 and -3.28 for trapezoidal rule and simpson&amp;rsquo;s rule respectively.&lt;/p&gt;
-
-&lt;p&gt;Another way to compare their accuracy is to calculate how large of the partition size &lt;em&gt;n&lt;/em&gt; for reaching a specific tolerance.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;yIntegrate &amp;lt;- function(fun, a, b, tol=1e-8, method= &amp;quot;simpson&amp;quot;, verbose=TRUE) {
-    # numerical integral of fun from a to b, assume a &amp;lt; b 
-    # with tolerance tol
-    n &amp;lt;- 4
-    h &amp;lt;- (b-a)/4
-    x &amp;lt;- seq(a, b, by=h)
-    y &amp;lt;- fun(x)
-    yIntegrate_internal &amp;lt;- function(y, h, n, method) {
-        if (method == &amp;quot;simpson&amp;quot;) {
-            s &amp;lt;- y[1] + y[n+1] + 4*sum(y[seq(2,n,by=2)]) + 
-            	2 *sum(y[seq(3,n-1, by=2)])
-            s &amp;lt;- s*h/3
-        } else if (method == &amp;quot;trapezoidal&amp;quot;) {
-            s &amp;lt;- h * (y[1]/2 + sum(y[2:n]) + y[n+1]/2)
-        } else {
-        }       
-        return(s)
-    }
-    
-    s &amp;lt;- yIntegrate_internal(y, h, n, method)
-    s.diff &amp;lt;- tol + 1 # ensures to loop at once.
-    while (s.diff &amp;gt; tol ) {
-        s.old &amp;lt;- s
-        n &amp;lt;- 2*n
-        h &amp;lt;- h/2
-        y[seq(1, n+1, by=2)] &amp;lt;- y ##reuse old fun values
-        y[seq(2,n, by=2)] &amp;lt;- sapply(seq(a+h, b-h, by=2*h), fun)
-        s &amp;lt;- yIntegrate_internal(y, h, n, method)
-        s.diff &amp;lt;- abs(s-s.old)
-    }
-    if (verbose) {
-        cat(&amp;quot;partition size&amp;quot;, n, &amp;quot;\n&amp;quot;)
-    }
-    return(s)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; fun &amp;lt;- function(x) exp(x) - x^2
-&amp;gt; yIntegrate(fun, 3,5,tol=1e-8, method=&amp;quot;simpson&amp;quot;)
-partition size 512 
-[1] 95.66096
-&amp;gt; yIntegrate(fun, 3,5,tol=1e-8, method=&amp;quot;trapezoidal&amp;quot;)
-partition size 131072 
-[1] 95.66096
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;As show above, simpson&amp;rsquo;s rule converge much faster than trapezoidal rule.&lt;/p&gt;
-
-&lt;h2 id=&#34;quadrature-rule&#34;&gt;Quadrature rule&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Adaptive_quadrature&#34; target=&#34;_blank&#34;&gt;Quadrature rule&lt;/a&gt; is
-more efficient than traditional algorithms. In adaptive quadrature, the subinterval width &lt;code&gt;h&lt;/code&gt; is not constant over the interval &lt;code&gt;[a,b]&lt;/code&gt;, but instead adapts to the function. Here, I presented the adaptive simpson&amp;rsquo;s method.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;quadrature &amp;lt;- function(fun, a, b, tol=1e-8) {
-    # numerical integration using adaptive quadrature
-    
-    quadrature_internal &amp;lt;- function(S.old, fun, a, m, b, tol, level) {
-        level.max &amp;lt;- 100
-        if (level &amp;gt; level.max) {
-            cat (&amp;quot;recursion limit reached: singularity likely\n&amp;quot;)
-            return (NULL)
-        }
-        S.left &amp;lt;- simpson(fun, a, m, n=2) 
-        S.right &amp;lt;- simpson(fun, m, b, n=2)
-        S.new &amp;lt;- S.left + S.right
-        if (abs(S.new-S.old) &amp;gt; tol) {
-            S.left &amp;lt;- quadrature_internal(S.left, fun, a, (a+m)/2, m, tol/2, level+1)
-            S.right &amp;lt;- quadrature_internal(S.right, fun, m, (m+b)/2, b, tol/2, level+1)
-            S.new &amp;lt;- S.left + S.right
-        }
-        return(S.new)
-    }
-    
-    level = 1
-    S.old &amp;lt;- (b-a) * (fun(a) + fun(b))/2
-    S.new &amp;lt;- quadrature_internal(S.old, fun, a, (a+b)/2, b, tol, level+1)
-    return(S.new)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Quadrature rule is effective when &lt;em&gt;f(x)&lt;/em&gt; is steep.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; fun &amp;lt;- function(x) return(1.5 * sqrt(x))
-&amp;gt; system.time(yIntegrate(fun, 0,1, tol=1e-9, method=&amp;quot;simpson&amp;quot;))
-partition size 524288 
-   user  system elapsed 
-   1.58    0.00    1.58 
-&amp;gt; system.time(quadrature(fun, 0,1, tol=1e-9))
-   user  system elapsed 
-   0.25    0.00    0.25 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Robinson A., O. Jones, and R. Maillardet. 2009.
-&lt;a href=&#34;http://book.douban.com/subject/4324593/&#34; target=&#34;_blank&#34;&gt;Introduction to Scientific Programming and Simulation Using
-R&lt;/a&gt;. Chapman and Hall.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Numerical_integration&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Numerical_integration&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Trapezoidal_rule&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Trapezoidal_rule&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Simpson%27s_rule&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Simpson%27s_rule&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Adaptive_quadrature&#34; target=&#34;_blank&#34;&gt;http://en.wikipedia.org/wiki/Adaptive_quadrature&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</description>
+      <description>The foundamental idea of numerical integration is to estimate the area of the region in the xy-plane bounded by the graph of function f(x). The integral was esimated by dividing x into small intervals, then adds all the small approximations to give a total approximation.
+Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&amp;rsquo;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.</description>
     </item>
     
     <item>
       <title>Root finding</title>
       <link>https://guangchuangyu.github.io/2010/12/root-finding/</link>
       <pubDate>Sat, 04 Dec 2010 10:40:22 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2010/12/root-finding/</guid>
       <description>&lt;p&gt;Numerical root finding methods use iteration, producing a sequence of numbers that hopefully converge towards a limits which is a root. This post only focuses four basic algorithms on root finding, and covers bisection method, fixed point method, Newton-Raphson method, and secant method.&lt;/p&gt;
 
-&lt;p&gt;The simplest root finding algorithms is the &lt;a href=&#34;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&#34; target=&#34;_blank&#34;&gt;bisection method&lt;/a&gt;. It works when &lt;code&gt;f&lt;/code&gt; is a continuous function and it requires previous knowledge of two initial gueeses, &lt;code&gt;u&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt;, such that &lt;code&gt;f(u)&lt;/code&gt; and &lt;code&gt;f(v)&lt;/code&gt; have opposite signs. This method is reliable, but converges slowly. For detail, see &lt;a href=&#34;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&#34; target=&#34;_blank&#34;&gt;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;The simplest root finding algorithms is the &lt;a href=&#34;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&#34;&gt;bisection method&lt;/a&gt;. It works when &lt;code&gt;f&lt;/code&gt; is a continuous function and it requires previous knowledge of two initial gueeses, &lt;code&gt;u&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt;, such that &lt;code&gt;f(u)&lt;/code&gt; and &lt;code&gt;f(v)&lt;/code&gt; have opposite signs. This method is reliable, but converges slowly. For detail, see &lt;a href=&#34;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&#34;&gt;https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/&lt;/a&gt; .&lt;/p&gt;
 
-&lt;p&gt;Root finding can be reduced to the problem of finding fixed points of the function &lt;code&gt;g(x) = c*f(x) +x&lt;/code&gt;, where &lt;code&gt;c&lt;/code&gt; is a non-zero constant. It is clearly that &lt;code&gt;f(a) = 0&lt;/code&gt; if and only if &lt;code&gt;g(a) = a&lt;/code&gt;. This is the so called fixed point algorithm.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;fixedpoint &amp;lt;- function(fun, x0, tol=1e-07, niter=500){
-    ## fixed-point algorithm to find x such that fun(x) == x
-    ## assume that fun is a function of a single variable
-    ## x0 is the initial guess at the fixed point
- 
-    xold &amp;lt;- x0
-    xnew &amp;lt;- fun(xold)
-    for (i in 1:niter) {
-        xold &amp;lt;- xnew
-        xnew &amp;lt;- fun(xold)
-        if ( abs((xnew-xold)) &amp;lt; tol )
-            return(xnew)
-        }
-    stop(&amp;quot;exceeded allowed number of iterations&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; f &amp;lt;- function(x) log(x) - exp(-x)
-&amp;gt; gfun &amp;lt;- function(x) x - log(x) + exp(-x)
-&amp;gt; fixedpoint(gfun, 2)
-[1] 1.309800
-&amp;gt; x=fixedpoint(gfun, 2)
-&amp;gt; f(x)
-[1] 3.260597e-09
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The fixed point algorithm is not reliable, since it cannot guaranteed to
-converge. Another disavantage of this method is that the speed is relatively slow.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/&#34; target=&#34;_blank&#34;&gt;Newtom-Raphson method&lt;/a&gt; converge more quickly than bisection method and fixed point method. It assumes the function &lt;code&gt;f&lt;/code&gt; to have a continuous derivative. For detail, see &lt;a href=&#34;http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/&#34; target=&#34;_blank&#34;&gt;http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/&lt;/a&gt; .&lt;/p&gt;
-
-&lt;p&gt;The secant method does not require the computation of a derivative, it only requires that the function &lt;code&gt;f&lt;/code&gt; is continuous. The secant method is based on a linear approximation to the function &lt;code&gt;f&lt;/code&gt;. The convergence properties of the secant method are similar to those of the Newton-Raphson method.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;secant &amp;lt;- function(fun, x0, x1, tol=1e-07, niter=500){
-    for ( i in 1:niter ) {
-        x2 &amp;lt;- x1-fun(x1)*(x1-x0)/(fun(x1)-fun(x0))
-        if (abs(fun(x2)) &amp;lt; tol)
-            return(x2)
-        x0 &amp;lt;- x1
-        x1 &amp;lt;- x2
-    }
-    stop(&amp;quot;exceeded allowed number of iteractions&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; f &amp;lt;- function(x) log(x) - exp(-x)
-&amp;gt; secant(f, x0=1, x1=2)
-[1] 1.309800
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;p&gt;Root finding can be reduced to the problem of finding fixed points of the function &lt;code&gt;g(x) = c*f(x) +x&lt;/code&gt;, where &lt;code&gt;c&lt;/code&gt; is a non-zero constant. It is clearly that &lt;code&gt;f(a) = 0&lt;/code&gt; if and only if &lt;code&gt;g(a) = a&lt;/code&gt;. This is the so called fixed point algorithm.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>The S3 OOP system</title>
       <link>https://guangchuangyu.github.io/2010/10/the-s3-oop-system/</link>
       <pubDate>Fri, 15 Oct 2010 07:24:30 +0800</pubDate>
+      
       <guid>https://guangchuangyu.github.io/2010/10/the-s3-oop-system/</guid>
       <description>&lt;p&gt;R currently supports two internal OOP systems (S3 and S4), and several
 others as add-on packages, such as
-&lt;a href=&#34;http://cran.r-project.org/web/packages/R.oo/index.html&#34; target=&#34;_blank&#34;&gt;R.oo&lt;/a&gt;, and
-&lt;a href=&#34;http://www.omegahat.org/OOP/&#34; target=&#34;_blank&#34;&gt;OOP&lt;/a&gt;.&lt;/p&gt;
+&lt;a href=&#34;http://cran.r-project.org/web/packages/R.oo/index.html&#34;&gt;R.oo&lt;/a&gt;, and
+&lt;a href=&#34;http://www.omegahat.org/OOP/&#34;&gt;OOP&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&amp;rsquo;s a function centric system which is different from class centric system like JAVA.&lt;/p&gt;
+&lt;p&gt;S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&amp;rsquo;s a function centric system which is different from class centric system like JAVA.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于编程，我的理解</title>
+      <link>https://guangchuangyu.github.io/2008/12/opinion-in-programming/</link>
+      <pubDate>Sun, 14 Dec 2008 09:18:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2008/12/opinion-in-programming/</guid>
+      <description>&lt;p&gt;写给某个小朋友看，希望我的一点看法，能有用。欢迎讨论。。&lt;/p&gt;
 
-&lt;p&gt;Computations are carried out by methods. In many OOP languages, that is, a call to &lt;code&gt;obj.method()&lt;/code&gt; which will find the first ancestor class of &lt;code&gt;obj&lt;/code&gt; that has a method &lt;code&gt;.method()&lt;/code&gt;. R makes the same dicision in a different way, it turns the idea of inheritance &amp;ldquo;inside out&amp;rdquo;. In R, a special type of function called generic function decides which method to invoke. Methods are defined in the same way as a normal function, but with a tag describing what type of object they were designed to process.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为什么会有编程语言？&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;object-class&#34;&gt;Object Class&lt;/h2&gt;
+&lt;p&gt;计算机史前有过不同的理论，但最后活下来的，只有图灵机一个模型。现在的计算机，都是基于此发展的，跟二战前那个三层楼高的计算机，没啥区别，那个机器一堆开关，人工操作。CPU做的计算也是开关的逻辑计算。所以计算机的语言是01二进制，一开一关，告诉计算机要不要发出电子脉冲。写一个程序全是01数字组成的，对于人来说是mission impossible！所以必须要有编程语言。编程语言就是为了&lt;strong&gt;抽象&lt;/strong&gt;计算机机械原理的一面。&lt;/p&gt;
 
-&lt;p&gt;The class of an object is defined by a character vector of class names.&lt;/p&gt;
+&lt;p&gt;LOAD A ADD B STORE C&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;gt; x &amp;lt;- 1
-&amp;gt; class(x) &amp;lt;- &amp;quot;foo&amp;quot;
-#or 
-&amp;gt; attr(x, &amp;quot;class&amp;quot;) &amp;lt;- &amp;quot;foo&amp;quot;
-#or
-&amp;gt; x &amp;lt;- structure(1, class=&amp;quot;foo&amp;quot;)
-&amp;gt; x
-[1] 1
-attr(,&amp;quot;class&amp;quot;)
-[1] &amp;quot;foo&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;实现两个数的加和，这是人类可读的语言，而不是一串01所组成的不可读的机器语言。&lt;/p&gt;
 
-&lt;p&gt;Objects can have many classes:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;抽象&lt;/strong&gt;是最关键的。所有的编程语言都是为了实现抽象。越是高级的语言，抽象度越高，抽象度越高越好！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>用中值定理求根</title>
+      <link>https://guangchuangyu.github.io/2008/11/bisect-to-solve-equation/</link>
+      <pubDate>Tue, 25 Nov 2008 10:40:22 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2008/11/bisect-to-solve-equation/</guid>
+      <description>&lt;p&gt;翻看了以前写的&lt;a href=&#34;https://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/&#34;&gt;使用Newton-Raphson Method求一个数的开方&lt;/a&gt;，想到其实也可以用中值定理来实现。
+中值定理：f(x)是一个连续性的函数，在[u,v]区间内，当c的值位于f(u)和f(v)之间时，至少存在一个点，满足f(x) = c 当f(u)和f(v)一正一负时，那么在[u,v]之间至少有一个根的存在，这个定理本来就是拿来证明根的存在的，但是其实也可以用来求解根。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Newton-Raphson Method估算函数的根</title>
+      <link>https://guangchuangyu.github.io/2007/06/newton-raphson-method/</link>
+      <pubDate>Sat, 02 Jun 2007 13:53:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2007/06/newton-raphson-method/</guid>
+      <description>&lt;h2 id=&#34;newton-raphson-method&#34;&gt;Newton-Raphson Method&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;gt; class(x) &amp;lt;- c(&amp;quot;foo&amp;quot;, &amp;quot;bar&amp;quot;)
-&amp;gt; x
-[1] 1
-attr(,&amp;quot;class&amp;quot;)
-[1] &amp;quot;foo&amp;quot; &amp;quot;bar&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;曲线&lt;code&gt;f(x)&lt;/code&gt;有根c,取曲线上一点$(x_1,f(x_1))$, 过此点的切线交x轴$x_2$,过曲线上$(x_2,f(x_2))$的切线交x轴$x_3$，如此反复得到一个序列 $x_1,x_2,\cdot \cdot \cdot,x_n$ 逼近c值.&lt;/p&gt;
 
-&lt;h2 id=&#34;generic-functions-and-method-dispatch&#34;&gt;Generic functions and method dispatch&lt;/h2&gt;
+&lt;p&gt;过$(x_n,f(x_n))$的切线方程为 $y-f(x_n) = f&amp;rsquo;(x_n)\,(x-x&lt;em&gt;n)$,假设此方程与x轴的交点为$x&lt;/em&gt;{n+1}$, 即有: $0 - f(x_n) = f&amp;rsquo;(x_n)(x_n+1 - x&lt;em&gt;n)$， 即$x&lt;/em&gt;{n+1} = x_n - \frac{f(x_n)}{f&amp;rsquo;(x_n)}$ &lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;A generic function is a function that examines the class of its first argument, and thus decides which specific method to dispatch to.&lt;/p&gt;
+&lt;p&gt;下面利用此法来求一个数的开方。 $f(x) = x^2 - a$ 有根$\sqrt{a}$,
+由$f&amp;rsquo;(x_n) = 2x&lt;em&gt;n$, 代入式&lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;可得$x&lt;/em&gt;{n+1} = (x_n + a/x_n)/2$; 当i -&amp;gt; INF 时, $x_i$ -&amp;gt; $\sqrt{a}$;&lt;/p&gt;
 
-&lt;p&gt;Generic functions are defined by &lt;code&gt;UseMethod&lt;/code&gt; with the generic name and the object to dispatch on as its parameters.&lt;/p&gt;
-
-&lt;p&gt;The following example shows how to define a generic function:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sound &amp;lt;- function(x) UseMethod(&amp;quot;sound&amp;quot;, x)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Methods are defined with a naming convention: &lt;code&gt;generic.class&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sound.dog &amp;lt;- function(x) &amp;quot;bark&amp;quot;
-sound.cow &amp;lt;- function(x) &amp;quot;moo&amp;quot;
-sound.default &amp;lt;- function(x) &amp;quot;animal sound&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The &lt;code&gt;methods&lt;/code&gt; function can find out which classes a generic function was designed for.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; methods(&amp;quot;sound&amp;quot;)
-[1] sound.cow     sound.default sound.dog   
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;R looks for methods in the order in which they appear in the class vector until it found the appropriate method to operate on.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; x &amp;lt;- structure(&amp;quot;cat&amp;quot;, class = c(&amp;quot;cat&amp;quot;, &amp;quot;dog&amp;quot;, &amp;quot;cow&amp;quot;))
-&amp;gt; sound(x)
-[1] &amp;quot;bark&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;inheritance&#34;&gt;Inheritance&lt;/h2&gt;
-
-&lt;p&gt;In S3 system, evaluation may be passed to a less specific method by calling &lt;code&gt;NextMethod&lt;/code&gt; which provide a simple inheritance mechanism. &lt;code&gt;NextMethod&lt;/code&gt; will dispatch on the second element of the class vector:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; class(x) &amp;lt;- c(&amp;quot;dog&amp;quot;, &amp;quot;cow&amp;quot;)
-&amp;gt; sound(x)
-[1] &amp;quot;bark&amp;quot;
-&amp;gt; sound.dog &amp;lt;- function(x) NextMethod()
-&amp;gt; sound(x)
-[1] &amp;quot;moo&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;h2 id=&#34;c-implementation&#34;&gt;C implementation&lt;/h2&gt;</description>
     </item>
     
   </channel>
