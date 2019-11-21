@@ -6,10 +6,58 @@
     <description>Recent content in ggimage on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Jun 2018 13:06:59 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 26 Sep 2019 18:06:59 +0800</lastBuildDate>
     
 	<atom:link href="https://guangchuangyu.github.io/tags/ggimage/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>shit，拟合的残差这么大！</title>
+      <link>https://guangchuangyu.github.io/2019/09/shit-residual/</link>
+      <pubDate>Thu, 26 Sep 2019 18:06:59 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2019/09/shit-residual/</guid>
+      <description>&lt;p&gt;《&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247486708&amp;amp;idx=1&amp;amp;sn=8da7f94fe242a094b0eef88e359c1afe&amp;amp;chksm=ec43bdb3db3434a5aefd2032229ef0efb8dd0380719aa4f0a4e6773bf6e9216733e8e8a90f29&amp;amp;scene=21#wechat_redirect&#34;&gt;基佬的屁股和科学家的屎，之间的共同点是&amp;hellip;!&lt;/a&gt;》这篇推文发表之后，发现大家对屎尿屁还是蛮有兴趣的，画屎除了展示的emojifont包之外，也提到了ggimage包，其实用ggimage包更有趣！这里也演示一下，一起来玩屎，看看自己到底是搅屎棍还是化粪池！玩屎玩出花来。&lt;/p&gt;
+
+&lt;p&gt;先来一张线性拟合的图：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;set.seed(123)
+iris2 &amp;lt;- iris[sample(1:nrow(iris), 30), ]
+model &amp;lt;- lm(Petal.Length ~ Sepal.Length, data = iris2)
+iris2$fitted &amp;lt;- predict(model)
+
+iris3 &amp;lt;- iris2[abs(iris2$Petal.Length-iris2$fitted) &amp;gt; 0.5,]
+p &amp;lt;- ggplot(iris2, aes(x = Sepal.Length, y = Petal.Length)) +
+    geom_point() +
+    geom_linerange(aes(ymin = fitted, ymax = Petal.Length),
+                   data=iris3, colour = &amp;quot;purple&amp;quot;) +
+    geom_abline(intercept = model$coefficients[1],
+                slope = model$coefficients[2])
+p
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>让我们画个黑板报吧</title>
+      <link>https://guangchuangyu.github.io/2019/08/geom-bgimage/</link>
+      <pubDate>Wed, 21 Aug 2019 18:06:59 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2019/08/geom-bgimage/</guid>
+      <description>&lt;p&gt;上次推送的《geom_bgimage》，竟然有人问说用ggplot2怎么搞。明明我的例子就是了，虽然用的是ggtree的例子，但与ggplot2何异？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggplot2)
+require(ggimage)
+
+d = data.frame(x=LETTERS[1:3], y = 1:3)
+d$y2 = rev(cumsum(rev(d$y)))
+
+p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color=&#39;white&#39;) +  
+ geom_bgimage(&amp;quot;img/blackboard.jpg&amp;quot;) + theme_void() +
+ coord_polar(&amp;quot;y&amp;quot;) + theme(legend.position=&#39;none&#39;) + 
+ geom_text(aes(y = y2 - y/2, label=x),family=&#39;xkcd&#39;, size=8) + 
+ xlim(-1, NA) + scale_fill_viridis_d()
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
     
     <item>
       <title>2018世界杯专属图层</title>

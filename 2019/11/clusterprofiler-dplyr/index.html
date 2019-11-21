@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="
+
+出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
+
+但这样的图，对于我们来说，简直简单的不要不要的。
+
+首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
+
+
+<meta property="og:description" content="
+
+出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
+
+但这样的图，对于我们来说，简直简单的不要不要的。
+
+首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="clusterProfiler.dplyr：用dplyr操作富集分析结果">
+<meta name="twitter:title" content="clusterProfiler.dplyr：用dplyr操作富集分析结果">
+<meta property="og:url" content="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="
+
+出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
+
+但这样的图，对于我们来说，简直简单的不要不要的。
+
+首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
+<meta name="twitter:description" content="
+
+出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
+
+但这样的图，对于我们来说，简直简单的不要不要的。
+
+首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-11-01T15:10:00">
+  
+  
+    <meta property="article:modified_time" content="2019-11-01T15:10:00">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="clusterProfiler.dplyr">
+    
+      <meta property="article:tag" content="clusterProfiler">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@guangchuangyu">
+
+
+  <meta name="twitter:creator" content="@guangchuangyu">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+
+
+    <title>clusterProfiler.dplyr：用dplyr操作富集分析结果</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">Bioinformatics Professor @ SMU</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/GuangchuangYu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/guangchuangyu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/blog_images/biobabble.jpg">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-weixin"></i>
+      
+      <span class="sidebar-button-desc">WeChat</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      clusterProfiler.dplyr：用dplyr操作富集分析结果
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-11-01T15:10:00&#43;08:00">
+        
+  November 1, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/qestion.jpeg" alt="" /></p>
+
+<p>出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。</p>
+
+<p>但这样的图，对于我们来说，简直简单的不要不要的。</p>
+
+<p>首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：</p>
+
+<pre><code>library(ReactomePA)
+data(geneList)
+x &lt;- gsePathway(geneList)
+结果中有308个通路是显著性的。
+
+&gt; x
+#
+# Gene Set Enrichment Analysis
+#
+#...@organism      human 
+#...@setType      Reactome 
+#...@keytype      ENTREZID 
+#...@geneList      Named num [1:12495] 4.57 4.51 4.42 4.14 3.88 ...
+ - attr(*, &quot;names&quot;)= chr [1:12495] &quot;4312&quot; &quot;8318&quot; &quot;10874&quot; &quot;55143&quot; ...
+#...nPerm      10000 
+#...pvalues adjusted by 'BH' with cutoff &lt;0.05 
+#...308 enriched terms found
+'data.frame':    308 obs. of  11 variables:
+ $ ID             : chr  &quot;R-HSA-1474244&quot; &quot;R-HSA-216083&quot; &quot;R-HSA-3000178&quot; &quot;R-HSA-3000171&quot; ...
+ $ Description    : chr  &quot;Extracellular matrix organization&quot; &quot;Integrin cell surface interactions&quot; &quot;ECM proteoglycans&quot; &quot;Non-integrin membrane-ECM interactions&quot; ...
+ $ setSize        : int  266 80 74 56 53 41 38 36 35 33 ...
+ $ enrichmentScore: num  -0.458 -0.512 -0.626 -0.586 -0.592 ...
+ $ NES            : num  -1.94 -1.86 -2.24 -1.99 -1.99 ...
+ $ pvalue         : num  0.000133 0.000152 0.000154 0.000158 0.000159 ...
+ $ p.adjust       : num  0.00295 0.00295 0.00295 0.00295 0.00295 ...
+ $ qvalues        : num  0.00215 0.00215 0.00215 0.00215 0.00215 ...
+ $ rank           : num  1943 1890 1890 2538 1890 ...
+ $ leading_edge   : chr  &quot;tags=33%, list=16%, signal=29%&quot; &quot;tags=39%, list=15%, signal=33%&quot; &quot;tags=46%, list=15%, signal=39%&quot; &quot;tags=45%, list=20%, signal=36%&quot; ...
+ $ core_enrichment: chr  &quot;8038/11132/4017/1288/4811/3910/3371/1291/3791/831/1301/4238/7450/3685/80781/1280/1306/4314/3675/8425/977/4054/7&quot;| __truncated__ &quot;3371/1291/3791/7450/3685/80781/1280/3675/1278/4060/1277/1293/1295/58494/1281/83700/50509/1290/3693/1294/3339/12&quot;| __truncated__ &quot;3910/3371/1291/3685/1280/7042/3912/1278/4060/1277/1293/1281/50509/1290/3693/3339/1462/1289/1292/3908/3909/6678/&quot;| __truncated__ &quot;3915/6385/4921/1288/3910/3371/1301/3685/1280/3912/1278/1277/2247/1281/50509/1290/3693/3339/1289/3908/3909/3913/1300/1287&quot; ...
+#...Citation
+  Guangchuang Yu, Qing-Yu He. ReactomePA: an R/Bioconductor package for
+  reactome pathway analysis and visualization. Molecular BioSystems
+  2016, 12(2):477-479 
+clusterProfiler.dplyr神器
+</code></pre>
+
+<p>用这个包，你可以对输出像data frame一样使用dplyr的函数去操作。</p>
+
+<p>于是这里使用arrange去给NES的绝对值从大到小排序，NES是我们用于计算p值的统计量，正数越大则通路越有可能是激活的，而负数越小则通路越有可能是被抑制的，所以我们也经常看到使用这一统计量进行画图。</p>
+
+<p>然后我们使用group_by把数据分组了，按照NES正负数来分，最后我们把每一组切出来前5个。也就是说分别取激活或抑制最大的5个通路。</p>
+
+<pre><code class="language-r">library(clusterProfiler.dplyr)
+y &lt;- arrange(x, abs(NES)) %&gt;% 
+        group_by(sign(NES)) %&gt;% 
+        slice(1:5)
+</code></pre>
+
+<p>最后如我们所愿，取出10个通路。</p>
+
+<pre><code>&gt; y
+#
+# Gene Set Enrichment Analysis
+#
+#...@organism      human 
+#...@setType      Reactome 
+#...@keytype      ENTREZID 
+#...@geneList      Named num [1:12495] 4.57 4.51 4.42 4.14 3.88 ...
+ - attr(*, &quot;names&quot;)= chr [1:12495] &quot;4312&quot; &quot;8318&quot; &quot;10874&quot; &quot;55143&quot; ...
+#...nPerm      10000 
+#...pvalues adjusted by 'BH' with cutoff &lt;0.05 
+#...10 enriched terms found
+Classes ‘grouped_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':    10 obs. of  12 variables:
+ $ ID             : chr  &quot;R-HSA-397014&quot; &quot;R-HSA-8978868&quot; &quot;R-HSA-9006934&quot; &quot;R-HSA-211859&quot; ...
+ $ Description    : chr  &quot;Muscle contraction&quot; &quot;Fatty acid metabolism&quot; &quot;Signaling by Receptor Tyrosine Kinases&quot; &quot;Biological oxidations&quot; ...
+ $ setSize        : int  183 141 418 165 117 308 282 169 162 155
+ $ enrichmentScore: num  -0.357 -0.37 -0.338 -0.373 -0.402 ...
+ $ NES            : num  -1.45 -1.46 -1.49 -1.5 -1.54 ...
+ $ pvalue         : num  0.004193 0.006929 0.000503 0.001696 0.003381 ...
+ $ p.adjust       : num  0.0216 0.03289 0.00381 0.01039 0.01827 ...
+ $ qvalues        : num  0.01572 0.02394 0.00277 0.00756 0.0133 ...
+ $ rank           : num  2990 1951 2788 2129 2829 ...
+ $ leading_edge   : chr  &quot;tags=34%, list=24%, signal=26%&quot; &quot;tags=26%, list=16%, signal=22%&quot; &quot;tags=27%, list=22%, signal=21%&quot; &quot;tags=25%, list=17%, signal=21%&quot; ...
+ $ core_enrichment: chr  &quot;59/9992/800/6543/4638/3750/2982/11280/3709/2977/6546/3672/7169/6335/783/10174/4604/6588/7139/27091/3784/1760/72&quot;| __truncated__ &quot;5563/284541/37/224/3248/1543/79966/2181/8644/5095/27306/80724/11001/33/6785/7923/6584/57834/1384/2166/60481/831&quot;| __truncated__ &quot;26052/534/2065/3709/7423/1215/2263/83464/26469/7057/4670/7072/1298/3915/5921/5441/200734/9846/9611/3315/466/111&quot;| __truncated__ &quot;4837/6799/1553/8459/284541/7366/8648/1543/2098/29104/1548/54996/27306/196/2232/2954/57834/6817/22977/1581/7358/&quot;| __truncated__ ...
+ $ sign(NES)      : num  -1 -1 -1 -1 -1 1 1 1 1 1
+ - attr(*, &quot;groups&quot;)=Classes ‘tbl_df’, ‘tbl’ and 'data.frame':    2 obs. of  2 variables:
+  ..$ sign(NES): num  -1 1
+  ..$ .rows    :List of 2
+  .. ..$ : int  1 2 3 4 5
+  .. ..$ : int  6 7 8 9 10
+  ..- attr(*, &quot;.drop&quot;)= logi FALSE
+#...Citation
+  Guangchuang Yu, Qing-Yu He. ReactomePA: an R/Bioconductor package for
+  reactome pathway analysis and visualization. Molecular BioSystems
+  2016, 12(2):477-479 
+</code></pre>
+
+<h3 id="画图">画图</h3>
+
+<p>然后你直接就可以对上面这样的对象使用ggplot进行画图，你没看错，你不需要转为data frame，而是直接对这个S4对象进行ggplot，魔法就在enrichplot包。然后一切都是ggplot语法了。</p>
+
+<pre><code class="language-r">library(forcats)
+library(ggplot2)
+library(ggstance)
+library(enrichplot)
+
+ggplot(y, aes(NES, fct_reorder(Description, NES), fill=qvalues), showCategory=10) + 
+    geom_barh(stat='identity') + 
+    scale_fill_continuous(low='red', high='blue') + 
+    theme_minimal() + ylab(NULL)
+</code></pre>
+
+<p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/dplyr.png" alt="" /></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/clusterprofiler.dplyr/">clusterProfiler.dplyr</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/clusterprofiler/">clusterProfiler</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/11/chipseeker-atac-dnase-seq/" data-tooltip="ChIPseeker其实支持顺反组的各种测序数据">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/10/funtion-for-data/" data-tooltip="ggplot2小技巧-数据没有，函数倒是有一个">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/11/chipseeker-atac-dnase-seq/" data-tooltip="ChIPseeker其实支持顺反组的各种测序数据">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/10/funtion-for-data/" data-tooltip="ggplot2小技巧-数据没有，函数倒是有一个">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F11%2Fclusterprofiler-dplyr%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F11%2Fclusterprofiler-dplyr%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F11%2Fclusterprofiler-dplyr%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">Bioinformatics Professor @ SMU</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2019\/11\/clusterprofiler-dplyr\/';
+          
+            this.page.identifier = '\/2019\/11\/clusterprofiler-dplyr\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'gcyu';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="
+
+
+
+群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
+
+套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
+
+
+<meta property="og:description" content="
+
+
+
+群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
+
+套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="史前人类怎么使用R">
+<meta name="twitter:title" content="史前人类怎么使用R">
+<meta property="og:url" content="https://guangchuangyu.github.io/2019/05/base-r/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2019/05/base-r/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="
+
+
+
+群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
+
+套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
+<meta name="twitter:description" content="
+
+
+
+群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
+
+套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-05-08T18:06:59">
+  
+  
+    <meta property="article:modified_time" content="2019-05-08T18:06:59">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="apply">
+    
+      <meta property="article:tag" content="tidyverse">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@guangchuangyu">
+
+
+  <meta name="twitter:creator" content="@guangchuangyu">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+
+
+    <title>史前人类怎么使用R</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2019/05/base-r/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">Bioinformatics Professor @ SMU</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/GuangchuangYu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/guangchuangyu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/blog_images/biobabble.jpg">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-weixin"></i>
+      
+      <span class="sidebar-button-desc">WeChat</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      史前人类怎么使用R
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-05-08T18:06:59&#43;08:00">
+        
+  May 8, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/apply.jpg" alt="" /></p>
+
+<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-apply.jpg" alt="" /></p>
+
+<p>群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。</p>
+
+<p>套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？</p>
+
+<p>用我说的split + apply，完全不需要额外的library，其实也蛮简单的，下面是我写的代码，仅供参考：</p>
+
+<blockquote>
+<p>PS: 尽管这里用到了管道，但管道可有可无，无非是把从里到外变成从左到右，让代码易读性高一点而已。</p>
+</blockquote>
+
+<pre><code class="language-r">res &lt;- read.delim(&quot;Temperature.txt&quot;)[,c(&quot;Year&quot;, &quot;Month&quot;, &quot;Temperature&quot;)] %&gt;%
+    split(.$Year) %&gt;%
+    lapply(function(y) split(y, y$Month)) %&gt;%
+    lapply(function(m) lapply(m, function(x)
+        mean(x$Temperature, na.rm=TRUE))) %&gt;%
+    lapply(function(x)
+        data.frame(Month=names(x),
+                   Temperature=unlist(x))) %&gt;%
+    do.call(&quot;rbind&quot;, .) %&gt;%
+    cbind(Year=sub(&quot;\\.\\d{1,2}&quot;, &quot;&quot;,
+                   rownames(.)), .,
+          row.names=NULL)
+</code></pre>
+
+<p>结果如下：</p>
+
+<pre><code>&gt; head(res)
+  Year Month Temperature
+1 1990     1    6.313889
+2 1990     2    6.475000
+3 1990     3    8.192857
+4 1990     4    9.153333
+5 1990     5   14.357576
+6 1990     6   16.277273
+&gt; tail(res)
+    Year Month Temperature
+187 2005     7   18.799111
+188 2005     8   17.692105
+189 2005     9   17.883455
+190 2005    10   14.498125
+191 2005    11   11.562759
+192 2005    12    7.111481
+&gt; 
+</code></pre>
+
+<h3 id="拆解代码">拆解代码</h3>
+
+<p>这个代码看着挺复杂，其实很简单，我们来拆解一下：</p>
+
+<p><strong>读数据：</strong></p>
+
+<pre><code class="language-r">x &lt;- read.delim(&quot;Temperature.txt&quot;)[,c(&quot;Year&quot;, &quot;Month&quot;, &quot;Temperature&quot;)]
+</code></pre>
+
+<p><strong>切分数据，并计算</strong></p>
+
+<p>按照两个因子分层切分，对第二层数据进行求均值。</p>
+
+<pre><code class="language-r">x %&gt;%
+  split(.$Year) %&gt;%
+  lapply(function(y) split(y, y$Month)) %&gt;%
+    lapply(function(m) lapply(m, function(x)
+        mean(x$Temperature, na.rm=TRUE)))
+</code></pre>
+
+<p>对于第二步，如果我们套用tapply的话，就可以少一行，因为tapply相当于是sapply + split，所以对于Month可以不用切，交给tapply。</p>
+
+<pre><code>x %&gt;%
+    split(.$Year) %&gt;%
+    lapply(function(x)
+        tapply(x$Temperature, x$Month, mean, na.rm=TRUE))
+</code></pre>
+
+<p><strong>结果转为data.frame</strong></p>
+
+<p>这里写成函数，因为后面会重用到</p>
+
+<pre><code class="language-r">ls2df &lt;- function(ls) {
+   lapply(ls, function(x)
+     data.frame(Month=names(x),
+                Temperature=unlist(x))) %&gt;%
+     do.call(&quot;rbind&quot;, .) %&gt;%
+     cbind(Year=sub(&quot;\\.\\d{1,2}&quot;, &quot;&quot;,
+                    rownames(.)), .,
+           row.names=NULL)
+}
+</code></pre>
+
+<h3 id="来个简单版本">来个简单版本</h3>
+
+<p>其实啊，split可以一次切两个因子，所以用split一切，套个sapply即可。</p>
+
+<pre><code class="language-r">temp &lt;- sapply(split(x$Temperature, x[,c(&quot;Year&quot;, &quot;Month&quot;)]), mean, na.rm=TRUE)
+res &lt;- data.frame(Year = sub(&quot;(\\d{4}).*&quot;, &quot;\\1&quot;, names(temp)),
+                  Month = sub(&quot;\\d{4}.&quot;, &quot;&quot;, names(temp)),
+                  Temperature = temp,
+                  row.names = NULL)
+</code></pre>
+
+<h3 id="一行代码版本">一行代码版本</h3>
+
+<p>前面我说过tapply相当于sapply + split，所以用tapply可以一行代码解决：</p>
+
+<pre><code class="language-r">tapply(x$Temperature, list(x$Year, x$Month), mean, na.rm=TRUE)
+</code></pre>
+
+<p>不过这个输出是以Year为row, Month为column的matrix，如果要转成像上面的tidy data frame的话，还需要额外的操作。</p>
+
+<p>用aggregate也可以实现一行代码，不过没有tapply快，当然输出不完全一致的情况下，比较速度也有点bias。</p>
+
+<pre><code class="language-r">b &lt;- microbenchmark(
+    tapply(x$Temperature, list(x$Year, x$Month), mean, na.rm=TRUE),
+    aggregate(x, by=list(x$Year, x$Month), mean, na.rm=T)
+    )
+</code></pre>
+
+<p>tapply胜出：</p>
+
+<pre><code>&gt; b
+Unit: milliseconds
+                                                             expr    min
+ tapply(x$Temperature, list(x$Year, x$Month), mean, na.rm = TRUE) 1.2762
+        aggregate(x, by = list(x$Year, x$Month), mean, na.rm = T) 7.1846
+      lq     mean  median     uq     max neval
+ 1.33325 1.499571 1.41000 1.4750  5.6744   100
+ 7.37845 8.205050 8.07395 8.3865 15.9764   100
+</code></pre>
+
+<h3 id="强行总结">强行总结</h3>
+
+<p><img src="http://guangchuangyu.gitee.io/blog_images/slogan/perl.jpg" alt="" /></p>
+
+<p>尽管split、aggregate和tapply都可以支持多重因子，我还是喜欢各种split+apply套一堆的版本，因为做为练习，这才是好的学习代码，而且我写的这个，已经非常模块化了，三个步骤，非常明确，再者多玩一下list，熟悉一下不规则的数据，才好应对现实世界中的数据，总是data.frame进，data.frame出是不太现实的。尽管tapply一行可以解决，但内部的逻辑无非也是与我们的代码类似。</p>
+
+<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-moment-1.jpg" alt="" /></p>
+
+<h3 id="番外篇-假如我要用r包呢">番外篇：假如我要用R包呢？</h3>
+
+<p><img src="http://guangchuangyu.gitee.io/blog_images/gif/dance.gif" alt="" /></p>
+
+<p><strong>plyr</strong></p>
+
+<pre><code class="language-r">library(plyr)
+ddply(x, .(Year,Month), summarize, 
+      Temperature=mean(Temperature, na.rm=T))
+</code></pre>
+
+<p><strong>reshape2</strong></p>
+
+<pre><code class="language-r">library(reshape2)
+dcast(x, Year+Month~..., fun=function(x) mean(x, na.rm=T), 
+      value.var = c(&quot;Temperature&quot;))
+</code></pre>
+
+<p><strong>purrr</strong></p>
+
+<p>用purrr就跟用lapply似的，所以并不显示有什么优势，当然如果你直接按照Year + Month去split的话，用lapply跟用map一样，非常简单出结果，也就是上面的来个简单版本所写的版本。并没有什么新玩意。</p>
+
+<p>如果要用purrr的话，我想还是用我原先的代码，先产生list of list，再对第二层求均值，最后用ls2df函数（上面拆解代码的第三步）整理为data.frame，这样子的话，在第二步求均值的时候，用purrr就显得有优势了，因为要对两层list操作的时候，不用套两个lapply，可以用map_depth，这样逻辑还是一样，但代码简洁了，可读性，易于理解等都有所改善。</p>
+
+<pre><code class="language-r">library(purrr)
+lapply(split(x, x$Year), function(.) split(., .$Month)) %&gt;%
+  map_depth(2, function(.) mean(.$Temperature, na.rm=T)) %&gt;%
+  ls2df
+</code></pre>
+
+<p><strong>sqldf</strong></p>
+
+<p>让你用SQL语法来summarize数据。</p>
+
+<pre><code class="language-r">library(sqldf)
+sqldf(&quot;SELECT Year, Month, avg(Temperature)
+       FROM x
+       GROUP BY Year, Month&quot;)
+</code></pre>
+
+<p><strong>doBy</strong></p>
+
+<p>顾名思义，干的就是这档事。</p>
+
+<pre><code class="language-r">library(doBy)
+summaryBy(Temperature ~ Year + Month, data = x, FUN=mean, na.rm=T)
+</code></pre>
+
+<p><strong>data.table</strong></p>
+
+<pre><code class="language-r">library(data.table)
+data.table(x)[, list(mean=mean(Temperature, na.rm=TRUE)), 
+              by=c(&quot;Year&quot;, &quot;Month&quot;)]
+</code></pre>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/apply/">apply</a>
+
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/tidyverse/">tidyverse</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/05/clusterprofiler-cellmarker/" data-tooltip="你那一串差异基因，到底是在哪个组织、哪种细胞中富集？">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/04/oral-presentation/" data-tooltip="那些我讲过的oral">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2019/05/base-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2019/05/base-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2019/05/base-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/05/clusterprofiler-cellmarker/" data-tooltip="你那一串差异基因，到底是在哪个组织、哪种细胞中富集？">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/04/oral-presentation/" data-tooltip="那些我讲过的oral">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2019/05/base-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2019/05/base-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2019/05/base-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F05%2Fbase-r%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F05%2Fbase-r%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2019%2F05%2Fbase-r%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">Bioinformatics Professor @ SMU</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2019\/05\/base-r\/';
+          
+            this.page.identifier = '\/2019\/05\/base-r\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'gcyu';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

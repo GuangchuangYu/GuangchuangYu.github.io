@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
+root@jz:/ssd/genomes# apt-get install ncbi-blast&#43; Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast&#43; 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.">
+
+
+<meta property="og:description" content="I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
+root@jz:/ssd/genomes# apt-get install ncbi-blast&#43; Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast&#43; 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="local blast">
+<meta name="twitter:title" content="local blast">
+<meta property="og:url" content="https://guangchuangyu.github.io/2013/11/local-blast/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2013/11/local-blast/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
+root@jz:/ssd/genomes# apt-get install ncbi-blast&#43; Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast&#43; 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.">
+<meta name="twitter:description" content="I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
+root@jz:/ssd/genomes# apt-get install ncbi-blast&#43; Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast&#43; 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2013-11-21T10:40:22">
+  
+  
+    <meta property="article:modified_time" content="2013-11-21T10:40:22">
+  
+  
+  
+    
+      <meta property="article:section" content="Biology">
+    
+      <meta property="article:section" content="Software">
+    
+  
+  
+    
+      <meta property="article:tag" content="blast">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@guangchuangyu">
+
+
+  <meta name="twitter:creator" content="@guangchuangyu">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+
+
+    <title>local blast</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2013/11/local-blast/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">Bioinformatics Professor @ SMU</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/GuangchuangYu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/guangchuangyu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/blog_images/biobabble.jpg">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-weixin"></i>
+      
+      <span class="sidebar-button-desc">WeChat</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      local blast
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2013-11-21T10:40:22&#43;08:00">
+        
+  November 21, 2013
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/biology">Biology</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/software">Software</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>I was asked to set up a local blast for the lab. Blast can be installed
+directly using apt in debian and it turns out to be easy.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">root@jz:/ssd/genomes# apt-get install ncbi-blast+
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  ncbi-blast+
+0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded.
+Need to get 11.2 MB of archives.
+After this operation, 32.8 MB of additional disk space will be used.
+Get:1 http://ftp.hk.debian.org/debian/ wheezy/main ncbi-blast+ amd64 2.2.26-3 [11.2 MB]
+Fetched 11.2 MB in 1min 16s (146 kB/s)
+Selecting previously unselected package ncbi-blast+.
+(Reading database ... 252681 files and directories currently installed.)
+Unpacking ncbi-blast+ (from .../ncbi-blast+_2.2.26-3_amd64.deb) ...
+Processing triggers for man-db ...
+Setting up ncbi-blast+ (2.2.26-3) ...
+</code></pre>
+
+<p>Before the program can be used for sequence alignment, we should prepare
+the db files:</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">root@jz:/ssd/genomes/blast/db# makeblastdb -in ../../hg19.fa -out hg19 -dbtype nucl
+Building a new DB, current time: 11/21/2013 16:03:05
+New DB name:   hg19
+New DB title:  ../../hg19.fa
+Sequence type: Nucleotide
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1073741824B
+Adding sequences from FASTA; added 25 sequences in 27.7084 seconds.
+</code></pre>
+
+<p>That&rsquo;s it. Now blast is supported in the lab server. I tested blastn
+with the <a href="http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;from=62184015&amp;to=62331329&amp;strand=true">AHANAK
+sequence</a>.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">ygc@jz:~$ date; blastn -num_threads 8 -query sequence.fasta -db /ssd/genomes/blast/db/hg19 &gt;&gt; testblast.txt ; date
+Thu Nov 21 16:19:19 HKT 2013
+Thu Nov 21 17:19:45 HKT 2013
+ygc@jz:~$ wc -c sequence.fasta
+149510 sequence.fasta
+</code></pre>
+
+<p>Blast search has three distinctive stages: word matching with database
+scan, ungapped alignment, gapped alignment with traceback. Only word
+matching stage is multi-threaded. So it tooks 1 hour to align this long
+gene.</p>
+
+<p>The most significant hit of the blast result indicated that the sequence
+is located at chr11:62331329-62184015, which is consistent with the
+information presented in the <a href="http://www.ncbi.nlm.nih.gov/nuccore/NC_000011.9?report=fasta&amp;from=62184015&amp;to=62331329&amp;strand=true">AHANAK sequence
+link</a>.</p>
+
+<pre><code>ygc@jz:~$ cat testblast.txt
+BLASTN 2.2.26+
+
+
+Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb
+Miller (2000), &quot;A greedy algorithm for aligning DNA sequences&quot;, J
+Comput Biol 2000; 7(1-2):203-14.
+
+
+
+Database: ../../hg19.fa
+           25 sequences; 3,095,693,983 total letters
+
+
+
+Query= gi|224589802:c62331329-62184015 Homo sapiens chromosome 11,
+GRCh37.p13 Primary Assembly
+
+Length=147315
+                                                                      Score        E
+Sequences producing significant alignments:                          (Bits)     Value
+
+  chr11                                                               2.720e+05  0.0
+  chr14                                                                941       0.0
+
+...
+
+&gt; chr11
+Length=135006516
+
+ Score = 2.720e+05 bits (147315),  Expect = 0.0
+ Identities = 147315/147315 (100%), Gaps = 0/147315 (0%)
+ Strand=Plus/Minus
+
+Query  1         CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  60
+                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  62331329  CATTTGGAAAGGAACCTGGGACCTAGGGTTAAAGGACAGATCCTCTGCTTTGCTACAGTG  62331270
+
+Query  61        TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  120
+                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  62331269  TAATCTTGGACAGGTCATTCTACTTGGTCTCATCTGTAAAGAGAGGGGAGGGTCAGGGTA  62331210
+
+...
+
+  Database: ../../hg19.fa
+    Posted date:  Nov 21, 2013  4:03 PM
+  Number of letters in database: 3,095,693,983
+  Number of sequences in database:  25
+
+
+
+Matrix: blastn matrix 1 -2
+Gap Penalties: Existence: 0, Extension: 2.5
+</code></pre>
+
+<p>In addition to the species-specific sequence file, we should download
+the non-redundent gene and protein sequences from
+<a href="ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz">ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nt.gz</a> and
+<a href="ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz">ftp://ftp.ncbi.nih.gov/blast/db/FASTA/nr.gz</a> respectively.</p>
+
+<p>nt contains all nucleotide sequences of GenBank, RefSeq Nucleotides,
+EMBL, DDBJ and PDB, while nr contains all non-redundant peptide
+sequences from GenBank CDS translations, RefSeq Proteins, PDB,
+SwissProt, PIR and PRF. After generating the db files, we can blast a
+sequence to multiple species.</p>
+
+<pre><code class="language-lang=&quot;bash&quot;">makeblastdb -in ../../nr/nr -out nr -dbtype prot
+makeblastdb -in ../../nr/nt -out nt -dbtype nucl
+</code></pre>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/blast/">blast</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/" data-tooltip="Bug of R package ChIPpeakAnno">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2013/11/run-remote-r-in-emacs-with-ess/" data-tooltip="Run remote R in Emacs with ESS">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2013/11/local-blast/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2013/11/local-blast/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2013/11/local-blast/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2014/01/bug-of-r-package-chippeakanno/" data-tooltip="Bug of R package ChIPpeakAnno">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2013/11/run-remote-r-in-emacs-with-ess/" data-tooltip="Run remote R in Emacs with ESS">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2013/11/local-blast/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2013/11/local-blast/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2013/11/local-blast/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2013%2F11%2Flocal-blast%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2013%2F11%2Flocal-blast%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2013%2F11%2Flocal-blast%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">Bioinformatics Professor @ SMU</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2013\/11\/local-blast\/';
+          
+            this.page.identifier = '\/2013\/11\/local-blast\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'gcyu';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
