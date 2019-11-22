@@ -250,6 +250,79 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/">
+          Comparison of clusterProfiler and GSEA-P
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2015-11-02T11:50:29&#43;08:00">
+        
+  November 2, 2015
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>Thanks <a href="https://github.com/mevers">@mevers</a> for raising <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/31">the issue</a> to me
+and his efforts in benchmarking
+<a href="https://github.com/GuangchuangYu/clusterProfiler">clusterProfiler</a>.</p>
+
+<p>He pointed out two issues:</p>
+
+<ul>
+<li>outputs from gseGO and GSEA-P are poorly overlap.</li>
+<li>pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
+variation</li>
+</ul>
+
+<p>For GSEA analysis, we have two inputs, a ranked gene list and gene set
+collections.</p>
+
+<p>First of all, the gene set collections are very different. The GMT file
+used in his test is <em>c5.cc.v5.0.symbols.gmt</em>, which is a tiny subset of
+GO CC, while clusterProfiler used the whole GO CC corpus.</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2015/11/comparison-of-clusterprofiler-and-gsea-p/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2015/10/use-simplify-to-remove-redundancy-of-enriched-go-terms/">
           use simplify to remove redundancy of enriched GO terms
         </a>
@@ -633,91 +706,6 @@ and <a href="https://github.com/timelyportfolio/comicR">comicR</a>.</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2015/09/comic-phylogenetic-tree-with-ggtree-and-comicr/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2015/08/subview/">
-          subview
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2015-08-31T03:17:48&#43;08:00">
-        
-  August 31, 2015
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>I implemented a function, <em>subview</em>, in
-<a href="http://www.bioconductor.org/packages/release/bioc/html/ggtree.html">ggtree</a>
-that make it easy to embed a subplot in ggplot.</p>
-
-<p>An example is shown below:</p>
-
-<pre><code>library(ggplot2)
-library(ggtree)
-
-dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
-pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
-    geom_bar(stat=&quot;identity&quot;, width=1) + 
-    coord_polar(theta=&quot;y&quot;) + theme_tree() + 
-    xlab(NULL) + ylab(NULL) + 
-    theme_transparent()
-
-x &lt;- sample(2:9)
-y &lt;- sample(2:9)
-width &lt;- sample(seq(0.05, 0.15, length.out=length(x)))
-height &lt;- width
-
-p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
-print(p)
-for (i in seq_along(x)) {
-    p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
-    print(p)
-}
-</code></pre>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2015/08/subview/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

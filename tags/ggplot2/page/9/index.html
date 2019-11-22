@@ -252,6 +252,89 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/">
+          add layer to specific panel of facet_plot output
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2016-12-28T20:30:00&#43;08:00">
+        
+  December 28, 2016
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/evolution">Evolution</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ">ggtree google group</a>:</p>
+
+<blockquote>
+<p>Dear ggtree team,</p>
+
+<p>how can I apply a geom_xxx to only one facet panel? For example if i want to get <code>geom_hline(yintersect=1:30)</code> or a <code>geom_text()</code> in the dot panel?
+I cant see the <code>facet_grid(. ~ var)</code> function call, so I don&rsquo;t know which subsetting to use. I have already read <a href="http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working">http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working</a></p>
+
+<pre><code>  tr &lt;- rtree(30)
+  
+  d1 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+  p &lt;- ggtree(tr)
+  
+  p2 &lt;- facet_plot(p, panel=&quot;dot&quot;, data=d1, geom=geom_point, aes(x=val), color='firebrick')
+  d2 &lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
+  
+  p3 &lt;- facet_plot(p2, panel='bar', data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color='steelblue') + theme_tree2()
+</code></pre>
+
+<p>Thanks!
+Andreas</p>
+</blockquote>
+
+<p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">comprehensive tree plots</a>.</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2016/12/add-layer-to-specific-panel-of-facet_plot-output/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/">
           xlim_tree: set x axis limits for only Tree panel
         </a>
@@ -625,69 +708,6 @@ subview(p, imgfile, x=d$x[1], y=d$y[1]) + geom_point(size=5)
       
       <p>
         <a href="https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
-              
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2014/05/use-ggplot2/">
-          Use ggplot2
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2014-05-11T06:17:56&#43;08:00">
-        
-  May 11, 2014
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <h3 id="why-use-ggplot2">Why use ggplot2</h3>
-
-<p>ggplot2是我见过最human friendly的画图软件，这得益于Leland Wilkinson在他的著作《<a href="http://book.douban.com/subject/10123863/">The Grammar of Graphics</a>》中提出了一套图形语法，把图形元素抽象成可以自由组合的成分，Hadley
-Wickham把这套想法在R中实现。</p>
-
-<p>为什么要学习ggplot2，可以参考<a href="http://book.douban.com/subject/24527091/">ggplot2: 数据分析与图形艺术</a>的<a href="https://github.com/cosname/ggplot2-translation/blob/master/preface.md">序言</a>（btw: 在序言的最后，我被致谢了）。</p>
-
-<p>Hadley Wickham也给出<a href="https://github.com/hadley/ggplot2/wiki/Why-use-ggplot2">一堆理由</a>让我们说服自己，我想再补充一点，Hadley Wickham是学医出身的，做为学生物出身的人有什么理由不支持呢:)</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2014/05/use-ggplot2/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
