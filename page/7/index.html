@@ -249,6 +249,64 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/">
+          msigdf &#43; clusterProfiler全方位支持MSigDb
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-11-01T12:21:00&#43;08:00">
+        
+  November 1, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/msigdf.png" alt=""></p>
+<p>生信界的网红Stephen Turner在github上有个<code>msigdf</code>的包，我在他写这个包的时候，就写了个<code>gist</code>，连接<code>clusterProfiler</code>，我写<code>gist</code>的时候是2016年的8月，很高兴网红还惦记着我的<code>gist</code>。</p>
+<p><code>msigdf</code>这个包把著名的Broad Institute著名的Molecular Signatures Database (MSigDB)数据以data frame的形式打包成<code>R</code>包，这样子非常方便使用，当然他后来没有更新，而一个fork的版本，<code>ToledoEM/msigdf</code>把数据更新为最新版本v6.2，发布于2018年7月。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/10/for-postgraduate-student/">
           给硕博考生的一封信
         </a>
@@ -621,93 +679,6 @@ biocLite(pkg_name)
       
       <p>
         <a href="https://guangchuangyu.github.io/2018/09/facet_labeller/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/09/separating-legends-of-heatmaps-in-ggtree/">
-          separating legends of heatmaps in ggtree
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2018-09-10T11:00:08&#43;08:00">
-        
-  September 10, 2018
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        
-
-
-<blockquote>
-<p>I’ve been having great success with ggtree now and have recommended it to several colleages here in Oxford.</p>
-</blockquote>
-<blockquote>
-<p>Is there any way to seperate the legend in heatmaps? Eg I have plotted a tree in a circular style with outer rings given extra data - I would like a seperate key for each ring - is this possible?</p>
-</blockquote>
-<p>This is a user question. Plotting multiple heatmaps that align to the phylogenetic tree is easy with <code>gheatmap</code> function.</p>
-<p>Here is a simple example:</p>
-<pre class="r"><code>library(&quot;ggplot2&quot;)
-library(&quot;ggtree&quot;)
-
-nwk &lt;- system.file(&quot;extdata&quot;, &quot;sample.nwk&quot;, package=&quot;treeio&quot;)
-
-tree &lt;- read.tree(nwk)
-circ &lt;- ggtree(tree, layout = &quot;circular&quot;)
-
-df &lt;- data.frame(first=c(&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;c&quot;, &quot;d&quot;, &quot;d&quot;, &quot;a&quot;, &quot;b&quot;, &quot;e&quot;, &quot;e&quot;, &quot;f&quot;, &quot;c&quot;, &quot;f&quot;),
-                 second= c(&quot;z&quot;, &quot;z&quot;, &quot;z&quot;, &quot;z&quot;, &quot;y&quot;, &quot;y&quot;, &quot;y&quot;, &quot;y&quot;, &quot;x&quot;, &quot;x&quot;, &quot;x&quot;, &quot;a&quot;, &quot;a&quot;))
-
-rownames(df) &lt;- tree$tip.label
-
-
-p1 &lt;- gheatmap(circ, df[, &quot;first&quot;, drop=F], offset=.8, width=.1,
-               colnames_angle=90, colnames_offset_y = .25)
-p2 &lt;- gheatmap(p1, df[, &quot;second&quot;, drop=F], offset=5, width=.1,
-               colnames_angle=90, colnames_offset_y = .25)</code></pre>
-
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2018/09/separating-legends-of-heatmaps-in-ggtree/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

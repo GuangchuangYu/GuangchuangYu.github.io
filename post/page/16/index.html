@@ -250,6 +250,97 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/">
+          visualizing reassortment history using seqcombo
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-12-05T11:09:07&#43;08:00">
+        
+  December 5, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/genomics">Genomics</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>Reassortment is an important strategy for influenza A viruses to
+introduce a HA subtype that is new to human populations, which creates
+the possibilities of pandemic.</p>
+<p><img src="https://raw.githubusercontent.com/GuangchuangYu/seqcombo/master/vignettes/figures/srep25549-f2.jpg" alt=""></p>
+<p>A diagram showed above (Figure 2 of <code>doi:10.1038/srep25549</code>) is widely
+used to illustrate the reassortment events. While such diagrams are
+mostly manually draw and edit without software tool to automatically
+generate. Here, I implemented the <code>hybrid_plot</code> function for producing
+publication quality figure of reassortment events.</p>
+<pre><code>library(tibble)
+library(ggplot2)
+
+
+n &lt;- 8
+
+virus_info &lt;- tibble(
+    id = 1:7,
+    x = c(rep(1990, 4), rep(2000, 2), 2009),
+    y = c(1,2,3,5, 1.5, 3, 4),
+    segment_color = list(
+        rep('purple', n),
+        rep('red', n),
+        rep('darkgreen', n),
+        rep('lightgreen', n),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'red', 'purple', 'red', 'purple'),
+        c('darkgreen', 'darkgreen', 'red', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'),
+        c('darkgreen', 'lightgreen', 'lightgreen', 'darkgreen', 'darkgreen', 'purple', 'red', 'purple'))
+)
+
+flow_info &lt;- tibble(from = c(1,2,3,3,4,5,6),
+                    to = c(5,5,5,6,7,6,7))
+hybrid_plot(virus_info, flow_info)
+</code></pre>
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/seqcombo/reassortment_files/figure-markdown_strict/unnamed-chunk-2-1.png" alt=""></p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2017/12/visualizing-reassortment-history-using-seqcombo/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/12/subsetting-in-ggplot2-ggtree/">
           ggplot2/ggtree取子集画图
         </a>
@@ -588,71 +679,6 @@ rownames(d) = paste0('g', 1:10)
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/11/bmc-journal-protects-paper-of-plagiarism/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/11/watermark/">
-          听说你想打水印？
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2017-11-10T00:53:00&#43;08:00">
-        
-  November 10, 2017
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p><img src="http://guangchuangyu.github.io/blog_images/R/meme/WechatIMG165.png" alt=""></p>
-<p>正如我在《<a href="http://mp.weixin.qq.com/s/jDXjkrkq_YVhW-Z5Vx2-Fg">用R画meme ;)</a>》里说的，meme包就可以拿来画，当然这个包是设计来画meme的，所以文本只会打在中间，如果你想在右下角之类的，不好意思，我没提供选项让你调文本位置，氮素，meme依然是你的好帮手，怎么说呢，meme不单能帮你读图片，还能用grid画出来，这意味着你可以用<code>grid.text</code>随便加个文本就OK了。</p>
-<p>实例演示一发：</p>
-<pre><code>library(meme)
-u &lt;- system.file(&quot;angry8.jpg&quot;, package=&quot;meme&quot;)
-x &lt;- meme(u)
-print(x)
-grid.text(&quot;biobabble&quot;, x=.9, y=.05, 
-	gp=gpar(col='white', cex=1.2))
-</code></pre>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2017/11/watermark/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

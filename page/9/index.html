@@ -249,6 +249,74 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/07/scholar-impact-factor/">
+          scholar包检索期刊影响因子（2018年最新版本）
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-07-03T15:22:35&#43;08:00">
+        
+  July 3, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>在《<a href="https://mp.weixin.qq.com/s/kBnLyNl2anXuMa6sDepRQw">一个要复活的R包和一个404的网站</a>》一文中第一次介绍了scholar包，它可以应用于《<a href="https://mp.weixin.qq.com/s/IBrEOh92r_90DRbGb3XlKg">自动抓取论文的引用数据</a>》，虽然数据源来自于Google Scholar，国内用户可能访问不了，但今天要介绍的这个功能，所有人都是可以用的，它允许我们检索期刊的影响因子，在《<a href="https://mp.weixin.qq.com/s/qnuiepL4-nSiSWJVJH54ug">scholar包支持检索期刊影响因子</a>》一文中第一次介绍了这个功能，当时是2016年的影响因子（2017年发布），现在数据已经更新至2018年6月26号发布的2017年影响因子。</p>
+<pre><code>&gt; library(scholar)
+&gt; jn = c(&quot;bioinformatics&quot;, &quot;methods in ecology and evolution&quot;,
++     &quot;molecular biosystems&quot;, &quot;molecular biology and evolution&quot;)
+&gt; get_impactfactor(jn)
+# A tibble: 4 x 4
+  Journal                          Cites ImpactFactor Eigenfactor
+  &lt;chr&gt;                            &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+1 BIOINFORMATICS                   95300         5.48      0.201
+2 Methods in Ecology and Evolution  8866         6.36      0.0370
+3 Molecular BioSystems              7269         2.76      0.0175
+4 MOLECULAR BIOLOGY AND EVOLUTION  44664        10.2       0.102
+</code></pre>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2018/07/scholar-impact-factor/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/06/geom_worldcup2018/">
           2018世界杯专属图层
         </a>
@@ -585,65 +653,6 @@ if (!doNotTrack) {
       
       <p>
         <a href="https://guangchuangyu.github.io/2018/05/explode-pieplot/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/05/ggplot2-clip/">
-          ggplot2新参数clip
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2018-05-04T13:10:00&#43;08:00">
-        
-  May 4, 2018
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>《<a href="http://mp.weixin.qq.com/s/BTBP_snTRKrjmRCjF6Cp3A">ggplot2字体溢出的那点破事</a>》这是经典老问题了，现在新版本的<code>ggplot2</code>有新的解决方案了，在<code>coord_cartesian</code>中新加入了<code>clip</code>参数，这样可以支持把图层画在画布之外，那么文本打过界也就支持了。这有一个好处，是可以支持direct label，而不需要调整<code>xlim</code>和<code>ylim</code>，毕竟你把<code>xlim</code>和<code>ylim</code>搞大有时候会给人以误导，认为你的数据取值范围就是图中的<code>xlim</code>和<code>ylim</code>，但实际上要小一些。</p>
-<p>我以<code>ggtree</code>为例，为了让tip label打全，那么<code>p1</code>把时间给搞到2020，但实际上最近的采样时间是2013年，这样你单看<code>x</code>轴的标记，总感觉有一点点不对路，或者有一点点别扭。现在好了，我不设置<code>xlim</code>，而是让label打过界，当然还是需要有足够的空间来放这些文本，这个可以通过把<code>margin</code>搞大来实现。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2018/05/ggplot2-clip/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

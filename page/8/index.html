@@ -249,6 +249,93 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/09/separating-legends-of-heatmaps-in-ggtree/">
+          separating legends of heatmaps in ggtree
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-09-10T11:00:08&#43;08:00">
+        
+  September 10, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        
+
+
+<blockquote>
+<p>I’ve been having great success with ggtree now and have recommended it to several colleages here in Oxford.</p>
+</blockquote>
+<blockquote>
+<p>Is there any way to seperate the legend in heatmaps? Eg I have plotted a tree in a circular style with outer rings given extra data - I would like a seperate key for each ring - is this possible?</p>
+</blockquote>
+<p>This is a user question. Plotting multiple heatmaps that align to the phylogenetic tree is easy with <code>gheatmap</code> function.</p>
+<p>Here is a simple example:</p>
+<pre class="r"><code>library(&quot;ggplot2&quot;)
+library(&quot;ggtree&quot;)
+
+nwk &lt;- system.file(&quot;extdata&quot;, &quot;sample.nwk&quot;, package=&quot;treeio&quot;)
+
+tree &lt;- read.tree(nwk)
+circ &lt;- ggtree(tree, layout = &quot;circular&quot;)
+
+df &lt;- data.frame(first=c(&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;c&quot;, &quot;d&quot;, &quot;d&quot;, &quot;a&quot;, &quot;b&quot;, &quot;e&quot;, &quot;e&quot;, &quot;f&quot;, &quot;c&quot;, &quot;f&quot;),
+                 second= c(&quot;z&quot;, &quot;z&quot;, &quot;z&quot;, &quot;z&quot;, &quot;y&quot;, &quot;y&quot;, &quot;y&quot;, &quot;y&quot;, &quot;x&quot;, &quot;x&quot;, &quot;x&quot;, &quot;a&quot;, &quot;a&quot;))
+
+rownames(df) &lt;- tree$tip.label
+
+
+p1 &lt;- gheatmap(circ, df[, &quot;first&quot;, drop=F], offset=.8, width=.1,
+               colnames_angle=90, colnames_offset_y = .25)
+p2 &lt;- gheatmap(p1, df[, &quot;second&quot;, drop=F], offset=5, width=.1,
+               colnames_angle=90, colnames_offset_y = .25)</code></pre>
+
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2018/09/separating-legends-of-heatmaps-in-ggtree/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/08/ggplot-3d/">
           用ggplot2画3D
         </a>
@@ -607,74 +694,6 @@ g &lt;- c(&quot;AT5G61600&quot;, &quot;AT2G44230&quot;, &quot;AT1G49130&quot;, &
       
       <p>
         <a href="https://guangchuangyu.github.io/2018/07/clusterprofiler-ath/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/07/scholar-impact-factor/">
-          scholar包检索期刊影响因子（2018年最新版本）
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2018-07-03T15:22:35&#43;08:00">
-        
-  July 3, 2018
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>在《<a href="https://mp.weixin.qq.com/s/kBnLyNl2anXuMa6sDepRQw">一个要复活的R包和一个404的网站</a>》一文中第一次介绍了scholar包，它可以应用于《<a href="https://mp.weixin.qq.com/s/IBrEOh92r_90DRbGb3XlKg">自动抓取论文的引用数据</a>》，虽然数据源来自于Google Scholar，国内用户可能访问不了，但今天要介绍的这个功能，所有人都是可以用的，它允许我们检索期刊的影响因子，在《<a href="https://mp.weixin.qq.com/s/qnuiepL4-nSiSWJVJH54ug">scholar包支持检索期刊影响因子</a>》一文中第一次介绍了这个功能，当时是2016年的影响因子（2017年发布），现在数据已经更新至2018年6月26号发布的2017年影响因子。</p>
-<pre><code>&gt; library(scholar)
-&gt; jn = c(&quot;bioinformatics&quot;, &quot;methods in ecology and evolution&quot;,
-+     &quot;molecular biosystems&quot;, &quot;molecular biology and evolution&quot;)
-&gt; get_impactfactor(jn)
-# A tibble: 4 x 4
-  Journal                          Cites ImpactFactor Eigenfactor
-  &lt;chr&gt;                            &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-1 BIOINFORMATICS                   95300         5.48      0.201
-2 Methods in Ecology and Evolution  8866         6.36      0.0370
-3 Molecular BioSystems              7269         2.76      0.0175
-4 MOLECULAR BIOLOGY AND EVOLUTION  44664        10.2       0.102
-</code></pre>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2018/07/scholar-impact-factor/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
