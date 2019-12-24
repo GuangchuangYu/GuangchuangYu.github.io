@@ -249,6 +249,72 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/04/%E6%9D%A5%E8%87%AAr%E7%9A%84%E6%A1%8C%E9%9D%A2%E6%8F%90%E9%86%92/">
+          来自R的桌面提醒
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-04-11T12:23:16&#43;08:00">
+        
+  April 11, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p><strong>notifier</strong>包实现了跨平台的桌面提醒功能，当然它是调用了外部的命令，比如windows使用了<strong>toaster</strong>，老版本windows使用的是<strong>notifu</strong>，在linux下使用<strong>notify-send</strong>，而在OSX下，则调用了<strong>terminal-notifier</strong>，通过了简单的封装之后，就可以给桌面发布消息提醒了。</p>
+<p>比如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(notifier)
+<span style="color:#a6e22e">notify</span>(
+  title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">15 Packages out of date&#34;</span>,
+  msg <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">You can run update.packages() to update them.&#34;</span>,
+  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Outdated packages: Boom colorspace desc memuse networkD3&#34;</span>,
+  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">pbapply revealjs rgl rmdformats timevis and 5 more&#34;</span>)
+)
+</code></pre></div><p>​
+效果如下：</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2017/04/%E6%9D%A5%E8%87%AAr%E7%9A%84%E6%A1%8C%E9%9D%A2%E6%8F%90%E9%86%92/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/04/ggimage/">
           ggimage：ggplot2中愉快地使用图片
         </a>
@@ -611,86 +677,6 @@ print(p)
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/03/how-to-bug-author/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/03/peak%E6%B3%A8%E9%87%8A/">
-          peak注释
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2017-03-16T12:23:16&#43;08:00">
-        
-  March 16, 2017
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/chipseq">ChIPseq</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>这一次讲解非常重要的peak注释，注释在<strong>ChIPseeker</strong>里只需要用到一个函数<strong>annotatePeak</strong>，它可以满足大家各方面的需求。</p>
-<h2 id="heading">输入</h2>
-<p>当然需要我们上次讲到的BED文件，<strong>ChIPseeker</strong>自带了5个BED文件，用<strong>getSampleFiles()<strong>可以拿到文件的全路径，它返回的是个named list，我这里取第4个文件来演示。<strong>annotatePeak</strong>的输入也可以是</strong>GRanges</strong>对象，你如果用R做peak calling的话,直接就可以衔接上<strong>ChIPseeker</strong>了。</p>
-<pre><code>&gt; require(ChIPseeker)
-&gt; f = getSampleFiles()[[4]]
-</code></pre><p>巧妇难为无米之炊，就像拿到<strong>fastq</strong>要跑<strong>BWA</strong>，你需要全基因组的序列一样，做注释当然需要注释信息，基因的起始终止，基因有那些内含子，外显子，以及它们的起始终止，非编码区的位置，功能元件的位置等各种信息。</p>
-<p>很多软件会针对特定的物种去整理这些信息供软件使用，但这样就限制了软件的物种支持，有些开发者写软件本意也是解决自己的问题，可能对自己的研究无关的物种也没兴趣去支持。</p>
-<p>然而<strong>ChIPseeker</strong>支持所有的物种，你没有看错，<strong>ChIPseeker</strong>没有物种限制，当然这是有前提的，物种本身起码是有基因的位置这些注释信息，不然就变无米之炊了。</p>
-<p>这里我们需要的是一个<strong>TxDb</strong>对象，这个<strong>TxDb</strong>就包含了我们需要的各种信息，<strong>ChIPseeker</strong>会把信息抽取出来，用于注释时使用。</p>
-<pre><code>&gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
-&gt; txdb = TxDb.Hsapiens.UCSC.hg19.knownGene
-&gt; x = annotatePeak(f, tssRegion=c(-1000, 1000), TxDb=txdb)
-&gt;&gt; loading peak file...				 2017-03-09 11:29:18 PM 
-&gt;&gt; preparing features information...		 2017-03-09 11:29:18 PM 
-&gt;&gt; identifying nearest features...		 2017-03-09 11:29:19 PM 
-&gt;&gt; calculating distance from peak to TSS...	 2017-03-09 11:29:20 PM 
-&gt;&gt; assigning genomic annotation...		 2017-03-09 11:29:20 PM 
-&gt;&gt; assigning chromosome lengths			 2017-03-09 11:29:42 PM 
-&gt;&gt; done...					 2017-03-09 11:29:42 PM 
-</code></pre><blockquote>
-<p>这里需要注意的是，启动子区域是没有明确的定义的，所以你可能需要指定<strong>tssRegion</strong>，把基因起始转录位点的上下游区域来做为启动子区域。</p>
-</blockquote>
-<p>有了这两个输入（BED文件和TxDb对象），你就可以跑注释了，然后就可以出结果了。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2017/03/peak%E6%B3%A8%E9%87%8A/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
