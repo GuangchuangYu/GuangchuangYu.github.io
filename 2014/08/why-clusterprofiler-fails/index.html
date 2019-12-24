@@ -5,26 +5,22 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="@kaji331
 compared cluserProfiler with GeneAnswers and found that clusterProfiler
 gives larger p values.
-
 It eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input
-
+gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&#39;t use as.character to coerce the input
 But his comment forces me to test it.">
 
 
 <meta property="og:description" content="@kaji331
 compared cluserProfiler with GeneAnswers and found that clusterProfiler
 gives larger p values.
-
 It eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input
-
+gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&#39;t use as.character to coerce the input
 But his comment forces me to test it.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="why clusterProfiler fails">
@@ -35,18 +31,14 @@ But his comment forces me to test it.">
 <meta property="og:description" content="@kaji331
 compared cluserProfiler with GeneAnswers and found that clusterProfiler
 gives larger p values.
-
 It eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input
-
+gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&#39;t use as.character to coerce the input
 But his comment forces me to test it.">
 <meta name="twitter:description" content="@kaji331
 compared cluserProfiler with GeneAnswers and found that clusterProfiler
 gives larger p values.
-
 It eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&rsquo;t use as.character to coerce the input
-
+gene as numeric vector, which was supposed to be character and he used an old version of clusterProfiler which didn&#39;t use as.character to coerce the input
 But his comment forces me to test it.">
 <meta property="og:locale" content="en-us">
 
@@ -313,12 +305,9 @@ if (!doNotTrack) {
               <p><a href="https://github.com/kaji331">@kaji331</a>
 compared <code>cluserProfiler</code> with <code>GeneAnswers</code> and found that clusterProfiler
 gives larger p values.</p>
-
 <p>It eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used an <strong>old</strong> version of <code>clusterProfiler</code> which didn&rsquo;t use <code>as.character</code> to coerce the input</p>
-
+gene as numeric vector, which was supposed to be character and he used an <strong>old</strong> version of <code>clusterProfiler</code> which didn't use <code>as.character</code> to coerce the input</p>
 <p>But his comment forces me to test it.</p>
-
 <pre><code>require(GeneAnswers)
 data('humanGeneInput')
 y &lt;- geneAnswersBuilder(humanGeneInput, 'org.Hs.eg.db', 
@@ -344,9 +333,7 @@ p.GeneAnswers &lt;- yy[id[idx],]$&quot;p value&quot;
  [6] -1.077398e-04 -3.774637e-04 -2.849278e-04 -4.197993e-04  7.588155e-04
 [11] -3.702141e-04  2.314721e-03 -5.695641e-04 -5.940830e-04 -4.923697e-04
 [16] -5.560738e-04 -5.884079e-04  2.011138e-03
-</code></pre>
-
-<p>Here, I used the dataset, <code>humanGeneInput</code>, provided by <code>GeneAnswers</code>. There
+</code></pre><p>Here, I used the dataset, <code>humanGeneInput</code>, provided by <code>GeneAnswers</code>. There
 are 19 pathways have p values below 0.1 by GeneAnswers and 18 pathways
 have p values below 0.1 by clusterProfiler. 18 of them are the same and
 p values are highly correlated with very small differences. <a href="http://guangchuangyu.github.io/2012/04/enrichment-analysis/">Enrichment
@@ -354,7 +341,6 @@ analyses</a> are tested by
 geometric model, I believe all packages do it in the same way. The
 difference should be attributed to annotation file and I found
 background ratio are different.</p>
-
 <pre><code>&gt; xx[1,]
                ID Description GeneRatio  BgRatio     pvalue   p.adjust
 hsa04110 hsa04110  Cell cycle      6/51 128/5894 0.00075424 0.02191169
@@ -374,32 +360,27 @@ hsa04110 0.01683117 894/595/4175/6502/4173/9134     6
 [1] 5870
 &gt; length(get(&quot;04110&quot;, org.Hs.egPATH2EG))/length(allEG)
 [1] 0.02112436
-</code></pre>
-
-<p>In the above example, the BgRatio of clusterProfiler is <sup>128</sup>&frasl;<sub>5894</sub>,
+</code></pre><p>In the above example, the BgRatio of clusterProfiler is 128/5894,
 slightly larger than 0.02112436 calculated by GeneAnswers. This is why
 clusterProfiler gives a p value larger than GeneAnswers (In this
 particular pathway of this particular example, clusterProfiler not
 always produce larger p values). The annotation file used by
 clusterProfiler is KEGG.db, while GeneAnswers uses org.Hs.eg.db. This is
-the reason of the difference and it&rsquo;s not a big deal.</p>
-
-<p>It&rsquo;s not a good idea to give the background ratio in decimal format as
+the reason of the difference and it's not a big deal.</p>
+<p>It's not a good idea to give the background ratio in decimal format as
 GeneAnswers does. We have no idea of the number of total genes in
 background with ratio like 0.02112436. Some software packages may use
 the gene number of the whole genome as background. If the total gene
 number is setting to 18000, the background ratio turn out to be
-<sup>124</sup>&frasl;<sub>18000</sub>=0.006888889. With 0.006888889, it&rsquo;s hard to detect the
+124/18000=0.006888889. With 0.006888889, it's hard to detect the
 background gene number was set to a larger number. In this scenario, all
 the p values will become very small, and many false positive were
 reported.</p>
-
 <p>clusterProfiler and GeneAnswers estimate the total genes in the right
 way, but there are many packages may setting it to all the genes, no
 matter they have annotation or not. For instance, some software may
 setting the background to 20,000 when testing human genes.</p>
-
-<p>I still remember in 2007, I used princeton&rsquo;s web server,
+<p>I still remember in 2007, I used princeton's web server,
 <a href="http://go.princeton.edu/cgi-bin/GOTermFinder">http://go.princeton.edu/cgi-bin/GOTermFinder</a>, to test GO enrichment. I
 found the background gene number was set to a very large number and all
 the p values were extremely small. When writing this blog post, I submit
@@ -407,11 +388,10 @@ a job to this web server and found the gene number of human is setting
 to 45758. After I found this, I never use this web server again. The
 result is extremely &ldquo;significant&rdquo;! The web sever has an option, &ldquo;Enter
 the number of products estimated for your organism&rdquo;. This is ridiculous.
-It&rsquo;s hard to estimate for ordinary users and it is impossible to
-estimate it correctly since we don&rsquo;t know the annotation file in used.
+It's hard to estimate for ordinary users and it is impossible to
+estimate it correctly since we don't know the annotation file in used.
 The default number, 45758 for human, is too large, result in many false
 positive.</p>
-
 <p>Input a gene list as background is useful, for instance we may use all
 genes that are detected in microarray experiment or all proteins
 identified by MS as background. This is an effective way to eliminate
@@ -420,11 +400,10 @@ the total number of gene in the genome as background. By default, KEGG
 enrichment analyses of clusterProfiler and GeneAnswers are using the
 whole genome, that is about 5900 genes for human, which are all genes
 have pathway annotation in the whole genome. Others without annotation
-are abandoned. This itself is a bias actually, but it&rsquo;s the realistic.
+are abandoned. This itself is a bias actually, but it's the realistic.
 If we include all genes no matter they have annotation or not, and
 setting 20000 or even more as background of human genes, definitely we
 will get significant result! But it is man-made significant.</p>
-
 <p>As I replied to
 <a href="https://github.com/kaji331">@kaji331</a>,
 if p values obtained by different software are different, trust the one
@@ -433,12 +412,9 @@ produce larger p values. Many user will choose a software give a more
 Conservatively, always choose the one give you larger p-values if you
 know nothing about the calculation. Software that never &ldquo;fail&rdquo; is
 untrustable.</p>
-
 <h2 id="citation">Citation</h2>
-
-<p><strong><em>Yu G</em></strong>, Wang L, Han Y and He Q<sup>*</sup>. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <strong><em>OMICS: A Journal of Integrative Biology</em></strong>. 2012, 16(5):284-287.</p>
-
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="681089"></div></p>
+<p><em><strong>Yu G</strong></em>, Wang L, Han Y and He Q<!-- raw HTML omitted -->*<!-- raw HTML omitted -->. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <em><strong>OMICS: A Journal of Integrative Biology</strong></em>. 2012, 16(5):284-287.</p>
+<!-- raw HTML omitted -->
               
             </div>
           </div>

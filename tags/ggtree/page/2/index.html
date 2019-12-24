@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,7 +282,6 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p><code>ggtree</code>画树是不带root edge的，之前在《<a href="http://mp.weixin.qq.com/s/b0OVm2ZDGbEZ48O1Uyp_WA">中空的环形树</a>》一文中，有用户想要加长长的root edge，这样变成环形树的时候，就可以用这个root edge把树给顶出去，这个我给出的解决方案是留白，大家可以回过去看那篇文章。</p>
-
 <p>然而root edge在某些时候还是需要的，我其实也一直有要写的想法，不过因为不是特别需要的东西，一直也就放着，刚好最近有用户在feature request，想要画root edge，于是我就实现了<code>geom_rootedge</code>图层，当你加这个图层的时候，root edge就自动画上去了。</p>
       
       <p>
@@ -342,7 +341,6 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>《<a href="http://mp.weixin.qq.com/s/BTBP_snTRKrjmRCjF6Cp3A">ggplot2字体溢出的那点破事</a>》这是经典老问题了，现在新版本的<code>ggplot2</code>有新的解决方案了，在<code>coord_cartesian</code>中新加入了<code>clip</code>参数，这样可以支持把图层画在画布之外，那么文本打过界也就支持了。这有一个好处，是可以支持direct label，而不需要调整<code>xlim</code>和<code>ylim</code>，毕竟你把<code>xlim</code>和<code>ylim</code>搞大有时候会给人以误导，认为你的数据取值范围就是图中的<code>xlim</code>和<code>ylim</code>，但实际上要小一些。</p>
-
 <p>我以<code>ggtree</code>为例，为了让tip label打全，那么<code>p1</code>把时间给搞到2020，但实际上最近的采样时间是2013年，这样你单看<code>x</code>轴的标记，总感觉有一点点不对路，或者有一点点别扭。现在好了，我不设置<code>xlim</code>，而是让label打过界，当然还是需要有足够的空间来放这些文本，这个可以通过把<code>margin</code>搞大来实现。</p>
       
       <p>
@@ -466,24 +464,18 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/WechatIMG601.jpeg" alt="" /></p>
-
+        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/WechatIMG601.jpeg" alt=""></p>
 <blockquote>
 <p>当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。</p>
 </blockquote>
-
 <p>这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：</p>
-
 <p>首先我们读入一个FASTA数据：</p>
-
 <pre><code>require(treeio)
 
 fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
 aa &lt;- read.fasta(fasta)
 </code></pre>
-
 <p>数据用<code>treeio</code>包里的<code>read.fasta</code>去读这个氨基酸序列，它有个好处是你直接<code>as.character(aa[[i]])</code>就是个字母的向量，方便比较。</p>
-
 <pre><code>n = length(aa)
 d = matrix(NA, ncol=n, nrow=n)
 nm = labels(aa)
@@ -496,7 +488,6 @@ for (i in seq_len(n)) {
     }
 } 
 </code></pre>
-
 <p>这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。</p>
       
       <p>
@@ -558,7 +549,6 @@ for (i in seq_len(n)) {
         <blockquote>
 <p>I am trying to add a scale to an unrooted tree with <code>geom_treescale</code>, but when I use it, the tree completely collapses and I am not able to set anything that fix it. Anybody has any idea on how to do it ?</p>
 </blockquote>
-
 <p><a href="https://groups.google.com/d/msgid/bioc-ggtree/9d69f444-94cf-42df-8382-bca2962b08c9%40googlegroups.com">google group</a>里的问题，说他加<code>geom_treescale</code>之后，树被压缩了，由于他没有给出可重复性的例子，所以我们并不知道情况到底有多么糟糕，但这种情况是可能发生的，因为加<strong>treescale</strong>这种东西，默认情况下<code>geom_treescale</code>会自己去计算该加多大的scale bar，该放在什么位置上，而这种默认情况是基于rectangular布局来的，在假设的情况下，都不可能尽善尽美，假设不成立的情况下当然有可能搞得很差。</p>
       
       <p>
@@ -619,9 +609,11 @@ for (i in seq_len(n)) {
       
         <blockquote>
 <p>Hello all,</p>
-
+</blockquote>
+<blockquote>
 <p>When I plot some data using ggtree, the out groups are on a very long branch length. The out groups are 75 and 76 in the example below.</p>
-
+</blockquote>
+<blockquote>
 <p>I would like to keep the out groups in the tree but ignore their branch lengths to make presentation easier.</p>
 </blockquote>
       
@@ -682,9 +674,7 @@ for (i in seq_len(n)) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>话说有一只蛙，它旅游去了广东，游戏结束。</p>
-
 <p>这篇文章，只想跟大家讲一讲ggtree，你值得拥有的强大的进化树可视化软件，高颜值的图，就在于指尖几行代码中。</p>
-
 <p>最近养蛙很流行，就以蛙为例，读树用<code>read.tree</code>，然后一个<code>ggtree</code>的指令，树就画出来了。而你见证神奇的时刻就在于你不断<code>+geom_xxx</code>加图层，这里我用了<code>geom_tiplab</code>来加taxa label，而这个可不仅仅是名字哦，用emoji也可以，这里我用的竟然是<strong>图片</strong>，你没看错，也可以。只要指定<code>geom=&quot;image&quot;</code>就OK，那个本来要打的文本，就会被当成是文件名，然后读图片画图片，一切尽在我的ggimage包。</p>
       
       <p>

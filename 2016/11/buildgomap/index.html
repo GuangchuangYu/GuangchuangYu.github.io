@@ -5,20 +5,16 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 周末Bioconductor上的问题，说的是他用了buildGOmap之后，在终端上输出了一长串，但没有文件产生，今天就来讲讲这个buildGOmap的前世今生。
-
 当年写clusterProfiler的时候在暨大工作，主要也是自己的需求驱动，因为实验室里有做细菌，比如肺炎链球菌D39，在细菌界基本上所谓的GO分析，就是跑个电子注释，然后数一下数目，列个表格画个饼图。很难看到有富集性分析的身影，因为绝大多数的工具是只支持少量模式生物的，还有部分工具比如支持某些细菌，支持某些植物或者某些真菌，比如支持植物的，也只是支持少量的植物物种而已，都是些自己定制给自己用的玩意，放出来只是为了顺道灌水而已。">
 
 
 <meta property="og:description" content="
-
 周末Bioconductor上的问题，说的是他用了buildGOmap之后，在终端上输出了一长串，但没有文件产生，今天就来讲讲这个buildGOmap的前世今生。
-
 当年写clusterProfiler的时候在暨大工作，主要也是自己的需求驱动，因为实验室里有做细菌，比如肺炎链球菌D39，在细菌界基本上所谓的GO分析，就是跑个电子注释，然后数一下数目，列个表格画个饼图。很难看到有富集性分析的身影，因为绝大多数的工具是只支持少量模式生物的，还有部分工具比如支持某些细菌，支持某些植物或者某些真菌，比如支持植物的，也只是支持少量的植物物种而已，都是些自己定制给自己用的玩意，放出来只是为了顺道灌水而已。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="buildGOmap">
@@ -27,14 +23,10 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2016/11/buildgomap/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 周末Bioconductor上的问题，说的是他用了buildGOmap之后，在终端上输出了一长串，但没有文件产生，今天就来讲讲这个buildGOmap的前世今生。
-
 当年写clusterProfiler的时候在暨大工作，主要也是自己的需求驱动，因为实验室里有做细菌，比如肺炎链球菌D39，在细菌界基本上所谓的GO分析，就是跑个电子注释，然后数一下数目，列个表格画个饼图。很难看到有富集性分析的身影，因为绝大多数的工具是只支持少量模式生物的，还有部分工具比如支持某些细菌，支持某些植物或者某些真菌，比如支持植物的，也只是支持少量的植物物种而已，都是些自己定制给自己用的玩意，放出来只是为了顺道灌水而已。">
 <meta name="twitter:description" content="
-
 周末Bioconductor上的问题，说的是他用了buildGOmap之后，在终端上输出了一长串，但没有文件产生，今天就来讲讲这个buildGOmap的前世今生。
-
 当年写clusterProfiler的时候在暨大工作，主要也是自己的需求驱动，因为实验室里有做细菌，比如肺炎链球菌D39，在细菌界基本上所谓的GO分析，就是跑个电子注释，然后数一下数目，列个表格画个饼图。很难看到有富集性分析的身影，因为绝大多数的工具是只支持少量模式生物的，还有部分工具比如支持某些细菌，支持某些植物或者某些真菌，比如支持植物的，也只是支持少量的植物物种而已，都是些自己定制给自己用的玩意，放出来只是为了顺道灌水而已。">
 <meta property="og:locale" content="en-us">
 
@@ -294,25 +286,17 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/640.jpg" alt="" /></p>
-
+              <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/640.jpg" alt=""></p>
 <p>周末Bioconductor上的问题，说的是他用了buildGOmap之后，在终端上输出了一长串，但没有文件产生，今天就来讲讲这个buildGOmap的前世今生。</p>
-
 <p>当年写clusterProfiler的时候在暨大工作，主要也是自己的需求驱动，因为实验室里有做细菌，比如肺炎链球菌D39，在细菌界基本上所谓的GO分析，就是跑个电子注释，然后数一下数目，列个表格画个饼图。很难看到有富集性分析的身影，因为绝大多数的工具是只支持少量模式生物的，还有部分工具比如支持某些细菌，支持某些植物或者某些真菌，比如支持植物的，也只是支持少量的植物物种而已，都是些自己定制给自己用的玩意，放出来只是为了顺道灌水而已。</p>
-
 <p>说到富集性分析，大家第一感觉是这玩意烂大街了，工具非常多。如果是说超几何分布检验的话，可以说是对的。但如果说GSEA的话，工具并没有那么多，也不像超几何分布那种，有一堆web server，你看大家喜欢/最有名的DAVID, wego都不能做GSEA，因为GSEA复杂一些（门槛高一点），计算量大一些（让web sever不太现实）。即使是超几何分布，烂大街的也是模式生物，对于一些细菌真菌、新物种什么的，还是很难找到称手的工具，当然有一些工具，可以支持用户自己的注释文件，像在R里面，可以支持用户自己的注释信息存在data.frame或list做为输入，这极大方便了用户整理注释信息并继而做分析。</p>
-
-<p>我当年一开始是用GO::TermFinder (<a href="http://search.cpan.org/dist/GO-TermFinder/lib/GO/TermFinder.pm)，">http://search.cpan.org/dist/GO-TermFinder/lib/GO/TermFinder.pm)，</a> 一个perl module，我印象中要定制分析非常麻烦，而且要修改配置文件。当然在Bioconductor上有GOstats，这个包是可以支持用户注释的，然而调用时要先构建参数对象，我老记不住，对于我这种脑容量不够的人来说，最好是直接调用函数出结果，然后它的输出也有一些问题，比如不会列出到底有那些基因属于这些报出来的enriched terms。当时还写过一些helper function来导出结果时把额外的一些信息加进去。</p>
-
+<p>我当年一开始是用GO::TermFinder (<a href="http://search.cpan.org/dist/GO-TermFinder/lib/GO/TermFinder.pm">http://search.cpan.org/dist/GO-TermFinder/lib/GO/TermFinder.pm</a>)， 一个perl module，我印象中要定制分析非常麻烦，而且要修改配置文件。当然在Bioconductor上有GOstats，这个包是可以支持用户注释的，然而调用时要先构建参数对象，我老记不住，对于我这种脑容量不够的人来说，最好是直接调用函数出结果，然后它的输出也有一些问题，比如不会列出到底有那些基因属于这些报出来的enriched terms。当时还写过一些helper function来导出结果时把额外的一些信息加进去。</p>
 <p>当时写clusterProfiler的驱动主要有：
 我要用自己的注释数据，我希望改变实验室所谓GO分析只是列表格计数画饼图的现状，
 我希望能够有更全面的信息，比如上面提到的genes in enrich term，这个我还专门加了个readable的参数，自己转化为gene symbol方便人类阅读
 画图的需求，当时有比较不同情况的想法，这也是这个包名的出处。</p>
-
 <p>当时写了GO和KEGG，并且支持了大概20个物种，而用户自己的GO注释，是这样来实现的，如果输入的物种不是支持的那20个，那么在工作目录里寻找注释文件，而这些注释文件，就是由buildGOmap产生，所以流程就是buildGOmap -&gt; enrichGO。这个buildGOmap会把间接注释加上去（所以比较慢）然后整理成enrichGO所需要的注释，产生文件保存在工具目录中。</p>
-
 <p>然而这只是最初的clusterProfiler，做为一个良心之作，在发表文章之后，不断更新，现在GO已经支持非常多的物种，KEGG支持超过3千个物种而且是在线数据（多半的工具在用过时数据），还有其它比如Broad Institute的Molecular Signatures Database等各种注释，以及用户自己的注释信息。并且GSEA也是支持的。</p>
-
 <p>所以呢用户自己（定制）的注释信息现在是单独支持，不仅限于GO，那么之前buildGOmap -&gt; enrichGO的流程就不再需要了，你可以用你的注释信息直接用enricher/GSEA分析，如果你分析的是GO，并用你的注释只有直接注释，那么你可以用buildGOmap把间接注释加上去，然后再用enricher/GSEA分析，所以现在的流程是buildGOmap(optional and only for GO) -&gt; enricher/GSEA。在现在clusterProfiler里，buildGOmap不会产生文件，而是输出一个data.frame，做为background annotation输入给enricher(超几何检验）或GSEA。</p>
               
             </div>

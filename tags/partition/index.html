@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,10 +282,7 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <pre><code>#disklabel wd0
-</code></pre>
-
-<p>可以看到原始分区如下: 7 partitions:</p>
-
+</code></pre><p>可以看到原始分区如下: 7 partitions:</p>
 <pre><code>#        size    offset     fstype [fsize bsize cpg/sgs]
 a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
 b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
@@ -294,13 +291,13 @@ d:  25165824      1824        HFS                 
 e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
 g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
 </code></pre>
-
 <p>a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac
 os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbsd下的/home分区。
 原本是两系统，os9.2一直都很少用，所以想删了，腾出空间来放数据。因为wd0d和wd0e不在连续的柱面上，所以无法将它们合并。</p>
-
-<p>新的分区方案如下：wd0d删了，分成两个，一个15M(需要一个HFS类型的分区来放置<code>ofwboot.xcf</code>，因为openfirmwire不支持从netbsd分区里加载loader),剩下的作为<code>/home</code>分区。把原来的<code>/home</code>分区(<code>wd0g</code>)和共享数据的分区(<code>wd0e</code>)合并为一个分区，用于放置数据。
-1. 第一步，也是最关键的一步，先备份好数据。</p>
+<p>新的分区方案如下：wd0d删了，分成两个，一个15M(需要一个HFS类型的分区来放置<code>ofwboot.xcf</code>，因为openfirmwire不支持从netbsd分区里加载loader),剩下的作为<code>/home</code>分区。把原来的<code>/home</code>分区(<code>wd0g</code>)和共享数据的分区(<code>wd0e</code>)合并为一个分区，用于放置数据。</p>
+<ol>
+<li>第一步，也是最关键的一步，先备份好数据。</li>
+</ol>
       
       <p>
         <a href="https://guangchuangyu.github.io/2007/05/edit-partition-netbsd-macppc/" class="postShorten-excerpt_link link">Continue reading</a>

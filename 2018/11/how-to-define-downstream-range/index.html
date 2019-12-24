@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="首先基因下游是什么？
-
 我们知道上游很重要啊，因为可能会调控转录，但注释的时候，没有上游这个东西，为什么呢？因为转录起始位点TSS的上下游被定义为promoter，所以啊上游被包括在promoter中，也就没有上游这个category了。">
 
 
 <meta property="og:description" content="首先基因下游是什么？
-
 我们知道上游很重要啊，因为可能会调控转录，但注释的时候，没有上游这个东西，为什么呢？因为转录起始位点TSS的上下游被定义为promoter，所以啊上游被包括在promoter中，也就没有上游这个category了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何定义基因下游的区间">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/11/how-to-define-downstream-range/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="首先基因下游是什么？
-
 我们知道上游很重要啊，因为可能会调控转录，但注释的时候，没有上游这个东西，为什么呢？因为转录起始位点TSS的上下游被定义为promoter，所以啊上游被包括在promoter中，也就没有上游这个category了。">
 <meta name="twitter:description" content="首先基因下游是什么？
-
 我们知道上游很重要啊，因为可能会调控转录，但注释的时候，没有上游这个东西，为什么呢？因为转录起始位点TSS的上下游被定义为promoter，所以啊上游被包括在promoter中，也就没有上游这个category了。">
 <meta property="og:locale" content="en-us">
 
@@ -291,21 +287,14 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>首先基因下游是什么？</p>
-
 <p>我们知道上游很重要啊，因为可能会调控转录，但注释的时候，没有上游这个东西，为什么呢？因为转录起始位点TSS的上下游被定义为promoter，所以啊上游被包括在promoter中，也就没有上游这个category了。</p>
-
-<p>那么转录终止位点TTS的上下游呢？上游还在基因主体里，它可以是外显子、内含子、3&rsquo;UTR这些，优先拿这些来注释，而下游呢？基因间区！基因间区就是各种不编码蛋白的区域，当然也可能编码一些非编码RNA之类的，这一块从基因的角度来看，是比较‘没用’的。但对于TTS后面紧接着的基因间区，它可能对基因的转录还是有些影响的，所以单独拿出来，就是这里要说的<code>downstream</code>了。</p>
-
+<p>那么转录终止位点TTS的上下游呢？上游还在基因主体里，它可以是外显子、内含子、3'UTR这些，优先拿这些来注释，而下游呢？基因间区！基因间区就是各种不编码蛋白的区域，当然也可能编码一些非编码RNA之类的，这一块从基因的角度来看，是比较‘没用’的。但对于TTS后面紧接着的基因间区，它可能对基因的转录还是有些影响的，所以单独拿出来，就是这里要说的<code>downstream</code>了。</p>
 <p>所以一个基因主体的immediate upstream，包含在promter里，而immediate downstream，我们也单独拿出来注释为<code>downstream</code>，这两块其实都在基因间区，但被我们拿出来了，因为和基因直接连接，很近的区域，可以说这是近端基因间区。而其它的基因间区，我们称之为远端基因间区，distal intergenic.</p>
-
-<hr />
-
+<hr>
 <blockquote>
 <p>Does anyone know how to set the downstream range for the peak annotation? It seems the default setting of downstream is 3kb. I would like to set the downstream range from 3kb to 500bp. Thanks</p>
 </blockquote>
-
 <p>这是Bioconductor上的问题，<a href="https://support.bioconductor.org/p/103135/">https://support.bioconductor.org/p/103135/</a>，事实上在早期的版本，这是hard coded的，写死在里面，现在的版本是可以由用户自己定义的，但我在写这个的时候呢，我觉得<code>annotatePeak</code>已经有很多参数了，我不想把参数列表搞得又臭又长，所以呢，就变成了黑魔法，使用<code>options</code>来设置。比如说上面提问者想要的500bp，就可以通过下面的指令来设置：</p>
-
 <pre><code>options(ChIPseeker.downstreamDistance = 500)
 </code></pre>
               

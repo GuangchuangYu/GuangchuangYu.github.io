@@ -17,12 +17,9 @@
       <pubDate>Fri, 01 Nov 2019 15:10:00 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/clusterProfiler/qestion.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/clusterProfiler/qestion.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。&lt;/p&gt;
-
 &lt;p&gt;但这样的图，对于我们来说，简直简单的不要不要的。&lt;/p&gt;
-
 &lt;p&gt;首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：&lt;/p&gt;</description>
     </item>
     
@@ -32,21 +29,15 @@
       <pubDate>Thu, 19 Sep 2019 18:06:59 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2019/09/doseplot/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/doseplot/p1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/doseplot/p2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/doseplot/p1.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/doseplot/p2.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;I have been using clusterProfiler, which is a very useful package for gene set analysis and visualisation. I would like to use the &amp;lsquo;cnetplot&amp;rsquo; function to plot a network of GO terms and the related genes. However for larger networks, the automatic display can be confusing and it would be helpful to be able to move nodes around. In the past I could do this with with cnetplot(fixed=FALSE) option, but after updating R and re-installing clusterProfiler, the output remains static.&lt;/p&gt;
-
 &lt;p&gt;I am using R 3.5.3 with clusterProfiler v3.10.1 which I installed using Bioconductor 3.8. I have installed and loaded the &amp;lsquo;igraph&amp;rsquo; package, and the following test code produces output in an interactive window, as desired:&lt;/p&gt;
-
 &lt;p&gt;library(igraph)
-   g &amp;lt;- make_ring(10)
-   tkplot(g)&lt;/p&gt;
-
+g &amp;lt;- make_ring(10)
+tkplot(g)&lt;/p&gt;
 &lt;p&gt;Is there any way to make cnetplot output interactive, or is that functionality simply not available in the latest release?&lt;/p&gt;
-
 &lt;p&gt;Any help would be greatly appreciated!&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -57,10 +48,8 @@
       <pubDate>Tue, 28 May 2019 18:06:59 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2019/05/clusterprofiler-cellmarker/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-1.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;有一个叫CellMarker的数据库，专门收录组织和细胞的基因标记物，收录还比较全，而且是手工校对的（可怜一下干这种脏活的研究生三秒钟）。&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;By manually curating over 100 000 published papers, 4124 entries including the cell marker information, tissue type, cell type, cancer information and source, were recorded. At last, 13 605 cell markers of 467 cell types in 158 human tissues/sub-tissues and 9148 cell makers of 389 cell types in 81 mouse tissues/sub-tissues were collected and deposited in CellMarker.&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -73,9 +62,7 @@
       
       <guid>https://guangchuangyu.github.io/2019/01/clusterprofiler-setreadable/</guid>
       <description>&lt;p&gt;有一些软件做了检验之后，是不告诉你那些基因在某个富集的通路中，显然做为生物学家，是对此有兴趣的。&lt;code&gt;clusterProfiler&lt;/code&gt;系列，全部函数都会输出，但看基因ID，比如ENTREZID或ENSEMBLE，这些都对人类不友好，看了你也不知道是什么，为了让大家看结果的时候，还能有点感觉，我们需要把基因翻译成symbol，有那么一批函数比如DO、GO、Reactome的分析都是有&lt;code&gt;readable&lt;/code&gt;参数的，但有一些是没有这个参数的，我被问得最多的是KEGG的分析为什么没有！&lt;/p&gt;
-
 &lt;p&gt;首先GO为什么有？因为&lt;code&gt;enrichGO&lt;/code&gt;和&lt;code&gt;gseGO&lt;/code&gt;都是使用&lt;code&gt;OrgDb&lt;/code&gt;，而&lt;code&gt;OrgDb&lt;/code&gt;本身带有ID转换的注释，而KEGG是在线去检索KEGG数据库的，KEGG并没有提供这些信息，当然对于少量大家比较熟悉的模式生物，要支持还是很容易的，然而有些物种支持，有些不支持，大家又会问了，凭什么我做的物种被BS了。所以啊，大家都不支持，挺公平。其实KEGG数据库里那么多的生物，很多物种是没有基因名的，有很多生物的注释还停留在基因座，你让我帮你转ID，臣妾做不到啊。&lt;/p&gt;
-
 &lt;p&gt;但起码对能支持的物种支持一下呗，以我一贯的作风，能帮小白解决的小问题，我都会去解决。于是我们有&lt;code&gt;setReadable&lt;/code&gt;函数。但凡你能找到一个OrgDb，你就能用来转ID，就这样。&lt;/p&gt;</description>
     </item>
     
@@ -85,10 +72,8 @@
       <pubDate>Thu, 01 Nov 2018 12:21:00 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2018/11/msigdf_clusterprofiler/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/msigdf.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/msigdf.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;生信界的网红Stephen Turner在github上有个&lt;code&gt;msigdf&lt;/code&gt;的包，我在他写这个包的时候，就写了个&lt;code&gt;gist&lt;/code&gt;，连接&lt;code&gt;clusterProfiler&lt;/code&gt;，我写&lt;code&gt;gist&lt;/code&gt;的时候是2016年的8月，很高兴网红还惦记着我的&lt;code&gt;gist&lt;/code&gt;。&lt;/p&gt;
-
 &lt;p&gt;&lt;code&gt;msigdf&lt;/code&gt;这个包把著名的Broad Institute著名的Molecular Signatures Database (MSigDB)数据以data frame的形式打包成&lt;code&gt;R&lt;/code&gt;包，这样子非常方便使用，当然他后来没有更新，而一个fork的版本，&lt;code&gt;ToledoEM/msigdf&lt;/code&gt;把数据更新为最新版本v6.2，发布于2018年7月。&lt;/p&gt;</description>
     </item>
     
@@ -99,35 +84,36 @@
       
       <guid>https://guangchuangyu.github.io/2018/10/gorilla-vs-clusterprofiler/</guid>
       <description>&lt;p&gt;做科研我们不爽的是没有结果，比结果更不爽的是结果不符合预期，故事不知道该怎么编，然而戏真的不要太多，学术不是以预期来驱动的，请尊重一下事实，还有你的小鼠。&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;we had a quick email exchange about this and I would like to report this. (I appologise for contacting you directly, rather than following the submission guideline). I have a dataset with 6166 proteins of which 201 proteins are upregulated. The problem is that specifying the background proteins using universe argument in clusterProfiler, decreases the number of significant GO categories (28 significant categories without the universe argument and 5 with this argument). At the same time when I use online GORILLA tool  I get a lot of categories, with the background:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html&#34;&gt;http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;and not categories without the background:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html&#34;&gt;http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;I am not sure whether this is a bug or not, so I decided to report it here&lt;/p&gt;
-
-&lt;p&gt;The dataset is presented below
-&amp;hellip;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt; allProtUGO &amp;lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &amp;quot;UNIPROT&amp;quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
-                       qvalueCutoff = 0.05)
-
-&amp;gt;identifiedProtUGO &amp;lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &amp;quot;UNIPROT&amp;quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
-                             qvalueCutoff = 0.05,  universe = backgroundProt)
-
-&amp;gt;dim (allProtUGO@result)
-&amp;gt;dim (identifiedProtUGO@result)
-&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;
 &lt;/blockquote&gt;
-
-&lt;p&gt;要看数据集地请点击&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/122&#34;&gt;此处直达github issue&lt;/a&gt;。&lt;/p&gt;</description>
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html&#34;&gt;http://cbl-gorilla.cs.technion.ac.il/GOrilla/kwpgie9l/GOResults.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;and not categories without the background:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html&#34;&gt;http://cbl-gorilla.cs.technion.ac.il/GOrilla/5y4n3hn1/GOResults.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I am not sure whether this is a bug or not, so I decided to report it here&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The dataset is presented below 
+&amp;hellip;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;allProtUGO &amp;lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &amp;quot;UNIPROT&amp;quot;,  ont=&#39;ALL&#39;, pool = TRUE, 
+&lt;/code&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;                   qvalueCutoff = 0.05)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;identifiedProtUGO &amp;lt;- enrichGO(gene = upRegProt, OrgDb = org.Hs.eg.db,  keyType = &amp;ldquo;UNIPROT&amp;rdquo;,  ont=&#39;ALL&amp;rsquo;, pool = TRUE, 
+qvalueCutoff = 0.05,  universe = backgroundProt)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;dim (allProtUGO@result)
+dim (identifiedProtUGO@result)&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
     <item>
@@ -137,9 +123,7 @@
       
       <guid>https://guangchuangyu.github.io/2018/07/clusterprofiler-ath/</guid>
       <description>&lt;p&gt;「知识星球」里的问题，&lt;a href=&#34;https://t.zsxq.com/aEyneA2&#34;&gt;https://t.zsxq.com/aEyneA2&lt;/a&gt;，拟南芥的ID怎么搞，这个内置是支持的。&lt;/p&gt;
-
 &lt;p&gt;比如我随便搞几个ID来演示一下：&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;&amp;gt; require(clusterProfiler)
 Loading required package: clusterProfiler
 
@@ -163,7 +147,6 @@ g &amp;lt;- c(&amp;quot;AT5G61600&amp;quot;, &amp;quot;AT2G44230&amp;quot;, &amp
       
       <guid>https://guangchuangyu.github.io/2018/04/dotplot-x-axis/</guid>
       <description>&lt;p&gt;使用&lt;code&gt;barplot&lt;/code&gt;来展示富集分析结果是很常用的，而&lt;code&gt;dotplot&lt;/code&gt;比较&lt;code&gt;barplot&lt;/code&gt;来说，多了一个点大小的信息，可以比&lt;code&gt;barplot&lt;/code&gt;展示多一个信息，所以是比较推荐的，我之前已经写了《&lt;a href=&#34;https://mp.weixin.qq.com/s/KzcnIH88d4E41Ybvr_76zA&#34;&gt;dotplot展示富集分析结果&lt;/a&gt;》和《&lt;a href=&#34;https://mp.weixin.qq.com/s/JLon7oaddmTpsMzL03OJIA&#34;&gt;dotplot for GSEA&lt;/a&gt;》两篇文章，&lt;code&gt;dotplot&lt;/code&gt;虽然简单，很多人会觉得会容易用&lt;code&gt;ggplot2&lt;/code&gt;画出来，但其实有些细节，比如《&lt;a href=&#34;https://mp.weixin.qq.com/s/VW4LvtQqXumrs6SMvwGgvQ&#34;&gt;为什么画出来的点比指定的数目要多？&lt;/a&gt;》，有些技巧，比如《&lt;a href=&#34;https://mp.weixin.qq.com/s/JNIncz3W-59yjGk2ibJWUw&#34;&gt;搞大你的点，让我们画真正的气泡图&lt;/a&gt;》，是很多新手所不具备的，图虽然简单，但老司机的飚车技能也不可小看哦，所以我在《&lt;a href=&#34;https://mp.weixin.qq.com/s/bloMPypAkQ3Ovlh406M-FQ&#34;&gt;听说你也在画dotplot，但是我不服！&lt;/a&gt;》的文后就说了一句话：&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;clusterProfiler之所以好，因为真的考虑了很多细节！请放开那图，让clusterProfiler来画！&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -176,9 +159,7 @@ g &amp;lt;- c(&amp;quot;AT5G61600&amp;quot;, &amp;quot;AT2G44230&amp;quot;, &amp
       
       <guid>https://guangchuangyu.github.io/2018/01/kegg-pathway-index/</guid>
       <description>&lt;p&gt;有小伙伴说他要用gage这个包，因为可以选择sigmet这个index，然后得到的结果只有signaling and metabolic pathways，而不会有他不关心的disease pathways。然而也有各种不爽，他最喜欢的还是clusterProfiler，但没办法只做某些pathways。&lt;/p&gt;
-
 &lt;p&gt;我发现大家对clusterProfiler有各种误解，各种觉得没办法，我也很无语啊，明明我写了大量的文档，你们偏不看。clusterProfiler啥都可以做，你想做COG，domain这些没有内置支持的富集分析都可以的，因为clusterProfiler是通用的分析工具，啥都能做。&lt;/p&gt;
-
 &lt;p&gt;说到gage的pathway index，这其实是他们对pathway有个分类，这个数据就在&lt;a href=&#34;https://pathview.uncc.edu/data/khier.tsv&#34;&gt;https://pathview.uncc.edu/data/khier.tsv&lt;/a&gt;可以下载到，要支持他还不容易，但我不喜欢把别人的东西打包在自己的包里，所谓走别人的路，让别人无路可走，这可不是什么好主意。所以呢，我不会内置支持的，你们自己玩。&lt;/p&gt;</description>
     </item>
     
@@ -189,9 +170,7 @@ g &amp;lt;- c(&amp;quot;AT5G61600&amp;quot;, &amp;quot;AT2G44230&amp;quot;, &amp
       
       <guid>https://guangchuangyu.github.io/2017/11/bioc-db-update/</guid>
       <description>&lt;p&gt;《&lt;a href=&#34;http://mp.weixin.qq.com/s/miGQs6U1d3aHwcm7vgNCVw&#34;&gt;你昨天才做的分析，可能是几年前的结果！&lt;/a&gt;》这篇文章给大家敲了警钟，各种各样的web-server，要小心看有没有维护更新，有些是五年十年都不更新的，十分可怕。文章虽然讲的是富集分析，但其它分析工具你同样需要小心。&lt;/p&gt;
-
 &lt;p&gt;当然并不是说独立的软件/软件包就一定靠谱，如果软件自己打包了数据，同样要注意数据是否有更新，而如果数据不打包在软件里，而是在线获取，你同样也该留一下心。这也是clusterProfiler做富集分析的优势所在，KEGG数据是在线的，永远是最新的，而GO的数据不在软件包里，而依赖于别的数据包，而这些数据包是社区维护的（相对而言，个人的维护比较难以为继），就确保了数据一直在有更新维护的。&lt;/p&gt;
-
 &lt;p&gt;Bioconductor每半年发行一次，注释包同样每半年更新一次，所以你用clusterProfiler做GO分析，你用的GO数据库不会说超过半年没更新，而不像有些公司给出的结果，落后于这个世界不是一年两年这么简单。&lt;/p&gt;</description>
     </item>
     
@@ -202,10 +181,9 @@ g &amp;lt;- c(&amp;quot;AT5G61600&amp;quot;, &amp;quot;AT2G44230&amp;quot;, &amp
       
       <guid>https://guangchuangyu.github.io/2017/11/kegg-gene-annotation/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/115&#34;&gt;github上的问题&lt;/a&gt;，问了两个问题，这是其中第二个：&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;Meanwhile, when I fed the ENTREZID to enrichKEGG, it show me two unreasonable results:&lt;/p&gt;
-
+&lt;/blockquote&gt;
 &lt;pre&gt;&lt;code&gt;kegg_enrich = enrichKEGG(
 	gene = new_ids$ENTREZID,
 	organism = &#39;hsa&#39;,
@@ -215,14 +193,13 @@ g &amp;lt;- c(&amp;quot;AT5G61600&amp;quot;, &amp;quot;AT2G44230&amp;quot;, &amp
 	#qvalueCutoff = 0.2,
 	use_internal_data = FALSE
 )
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;/blockquote&gt;
 &lt;pre&gt;&lt;code&gt;head(kegg_enrich)
               ID                           Description GeneRatio  BgRatio       pvalue   p.adjust     qvalue
 hsa04380 hsa04380            Osteoclast differentiation    14/281 128/7299 0.0003817040 0.04767338 0.04508266
 hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.0003875885 0.04767338 0.04508266
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
 &lt;p&gt;I noted that only 281 genes are remained(there are 700+ genes in my list). In case that there is something wrong wtihin my gene list, I also tried my list with DAVID. It gave me reasonable results. So this is my second question, why enrichKEGG cannot recognize my geneids?&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -234,26 +211,32 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
       
       <guid>https://guangchuangyu.github.io/2017/10/enrichgo-more-conserve/</guid>
       <description>&lt;blockquote&gt;
-&lt;p&gt;Dear Dr. Guangchuang Yu, I write to you regarding a doubt concerning the enrichGO function from Clustalprofiler package. I have been used this package before, but now I&amp;rsquo;m using the same R script and I have an error message.&lt;/p&gt;
-
+&lt;p&gt;Dear Dr. Guangchuang Yu, I write to you regarding a doubt concerning the enrichGO function from Clustalprofiler package. I have been used this package before, but now I&#39;m using the same R script and I have an error message.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;This is the command I use:&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;blockquote&gt;
 &lt;p&gt;go.bp &amp;lt;- enrichGO(gene = gene.df$ENSEMBL, universe = universe.ENSEMBLID, keytype = &amp;lsquo;ENSEMBL&amp;rsquo;, OrgDb = org.Ce.eg.db, ont = &amp;lsquo;BP&amp;rsquo;, pAdjustMethod = &amp;lsquo;BH&amp;rsquo;, pvalueCutoff = 0.01, qvalueCutoff = 0.05, readable=T)&lt;/p&gt;
 &lt;/blockquote&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;and the error is the following one:&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;No gene set have size &amp;gt; 10 &amp;hellip;
 &amp;ndash;&amp;gt; return NULL&amp;hellip;&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;My input list is attached to this email (101 genes in total). When I use this list in a web resource such as GOrilla it gives to me the proper GO terms.&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;Thank you very much in advance. Best regards,&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;María&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;最近clusterProfiler用户的问题，这个问题还蛮普遍。这个我在《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484414&amp;amp;idx=1&amp;amp;sn=096f758f04f875e25c333c345f530742&amp;amp;chksm=ec43b2b9db343baf4e2a8640f48e7e72b3ef1b057c91c68905debb2bb54e5d2fdda62438628a#rd&#34;&gt;why clusterProfiler fails&lt;/a&gt;》中也有谈到，并不是能出结果就是好的。没有结果也是一种结果。&lt;/p&gt;</description>
     </item>
     
@@ -266,31 +249,28 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
       <description>&lt;blockquote&gt;
 &lt;p&gt;Since the clusterProfiler is a very useful tools for GO and Kegg annotation.At present I want to use it to enrich for kegg result while only have the KO number ,So I want to convert the KO number to the pathway function,Is there have any function or methods in the software can convert it?any help will be appreciated&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/99&#34;&gt;这个问题&lt;/a&gt;问说他想转KO到通路，首先这是一个常见的错误，很多人分不清&lt;code&gt;K&lt;/code&gt;和&lt;code&gt;ko&lt;/code&gt;，所以在我告诉他可以把&lt;code&gt;K number&lt;/code&gt;转成&lt;code&gt;ko pathway&lt;/code&gt;的时候，我先指出他的错误。&lt;/p&gt;
-
 &lt;p&gt;&lt;code&gt;ko&lt;/code&gt; is actually pathway map. I think you are talking about &lt;code&gt;K&lt;/code&gt; number mapping to &lt;code&gt;ko&lt;/code&gt; pathway.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;&amp;gt; bitr_kegg(&amp;quot;K00844&amp;quot;, &amp;quot;kegg&amp;quot;, &amp;quot;Path&amp;quot;, &amp;quot;ko&amp;quot;)
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bitr_kegg&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;K00844&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;kegg&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Path&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ko&amp;#34;&lt;/span&gt;)
      kegg    Path
-1  K00844 ko00010
-2  K00844 ko00051
-3  K00844 ko00052
-4  K00844 ko00500
-5  K00844 ko00520
-6  K00844 ko00521
-7  K00844 ko00524
-8  K00844 ko01100
-9  K00844 ko01110
-10 K00844 ko01120
-11 K00844 ko01130
-12 K00844 ko01200
-13 K00844 ko04066
-14 K00844 ko04910
-15 K00844 ko04930
-16 K00844 ko04973
-17 K00844 ko05230
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;  K00844 ko00010
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;  K00844 ko00051
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;  K00844 ko00052
+&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;  K00844 ko00500
+&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;  K00844 ko00520
+&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;  K00844 ko00521
+&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;  K00844 ko00524
+&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;  K00844 ko01100
+&lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt;  K00844 ko01110
+&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt; K00844 ko01120
+&lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt; K00844 ko01130
+&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; K00844 ko01200
+&lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt; K00844 ko04066
+&lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt; K00844 ko04910
+&lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt; K00844 ko04930
+&lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt; K00844 ko04973
+&lt;span style=&#34;color:#ae81ff&#34;&gt;17&lt;/span&gt; K00844 ko05230
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -299,7 +279,7 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
       <pubDate>Mon, 11 Sep 2017 19:11:00 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2017/09/color-in-gseaplot/</guid>
-      <description>&lt;p&gt;《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;amp;mid=2247484730&amp;amp;amp;idx=1&amp;amp;amp;sn=48b8c24b6cfb6162f8fb3f3861ddfe1b&amp;amp;amp;chksm=ec43b47ddb343d6b37581fa81b0bf11b5141a446333b1b961ef1ad4f80da4c4732d7bc3432c2#rd&#34;&gt;听说你有RNAseq数据却不知道怎么跑GSEA&lt;/a&gt;》一文有小伙伴问封面的gseaplot能否换颜色，于是我就随手支持了。&lt;/p&gt;</description>
+      <description>&lt;p&gt;《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484730&amp;amp;idx=1&amp;amp;sn=48b8c24b6cfb6162f8fb3f3861ddfe1b&amp;amp;chksm=ec43b47ddb343d6b37581fa81b0bf11b5141a446333b1b961ef1ad4f80da4c4732d7bc3432c2#rd&#34;&gt;听说你有RNAseq数据却不知道怎么跑GSEA&lt;/a&gt;》一文有小伙伴问封面的gseaplot能否换颜色，于是我就随手支持了。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -309,9 +289,7 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
       
       <guid>https://guangchuangyu.github.io/2017/08/joyplot-for-gsea-result/</guid>
       <description>&lt;p&gt;I am very glad to find that someone figure out &lt;a href=&#34;https://stackoverflow.com/questions/45384281/ggjoy-facet-with-ggtree&#34;&gt;how to use ggjoy with ggtree&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://i.stack.imgur.com/U7D3j.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://i.stack.imgur.com/U7D3j.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;I really love ggjoy and believe it can be a good tool to visualize gene set enrichment (GSEA) result. DOSE/clusterProfiler support several visualization methods.&lt;/p&gt;</description>
     </item>
     
@@ -323,23 +301,27 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
       <guid>https://guangchuangyu.github.io/2017/08/prepare-genelist/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Dear GuangChuangyu,&lt;/p&gt;
-
-&lt;p&gt;I&amp;rsquo;m trying to use the clusterProfiler package for GSE analysis on DGE data obtained from RNAseq.
-While I can run enrichKEGG, I&amp;rsquo;m unable to run gseKEGG basically because I don&amp;rsquo;t know how to obtain an order ranked gene list.&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I&#39;m trying to use the clusterProfiler package for GSE analysis on DGE data obtained from RNAseq.
+While I can run enrichKEGG, I&#39;m unable to run gseKEGG basically because I don&#39;t know how to obtain an order ranked gene list.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;I work on R. I have a dataframe or matrix with gene names, log2 fold change values, pvalues and adjusted pvalues among others.&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;How can I get the order ranked gene list to feed in gseKEGG?&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;Moreover what is the more reliable way to obtain functional insight about each sample? enrichKEGG or gseKEGG?&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;Thank you in advance for your help.&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;best regards&lt;/p&gt;
-
 &lt;p&gt;bruno saubaméa&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;今天收到一封来自Université Paris Descartes的求助信，这个问题我被问过好多次了，显然很多新手都有这问题，根本不知道该怎么跑GSEA，搞不清GSEA的输入是什么。&lt;/p&gt;</description>
     </item>
     
@@ -350,15 +332,10 @@ While I can run enrichKEGG, I&amp;rsquo;m unable to run gseKEGG basically becaus
       
       <guid>https://guangchuangyu.github.io/2017/07/clusterprofiler-dotplot/</guid>
       <description>&lt;p&gt;陈同的‘生信宝典’公众号出了篇《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&amp;amp;mid=2247483978&amp;amp;idx=1&amp;amp;sn=e0c158c0e92375553036cc37f4987e40&amp;amp;chksm=ec0dc7c0db7a4ed6ac593493b7d8b52f11f2feb92d24fa00d19527fbb6f95b24f7e313ef9440#rd&#34;&gt;R语言学习 - 富集分析泡泡图&lt;/a&gt;》，搞个shell脚本，一步绘图。讲了这个脚本可以适用于clusterProfiler和其它软件的富集结果。&lt;/p&gt;
-
 &lt;p&gt;浑身都是硬伤，我都不想吐槽，但由于作者邀请我提点，那就吐槽模式全开。&lt;/p&gt;
-
-&lt;h2 id=&#34;一个command出图-小白已经哭晕&#34;&gt;一个command出图，小白已经哭晕&lt;/h2&gt;
-
+&lt;h2 id=&#34;command&#34;&gt;一个command出图，小白已经哭晕&lt;/h2&gt;
 &lt;p&gt;从出的图看，应该是ggplot2画的（就算猜错，要吐槽的依然正确），小白在web-server上做了分析，存结果为xls文件，拿你这脚本，一跑报错。读xls文件（别告诉我你跟用户说读xls但其实是个tsv）和画图的依赖关系没解决！用户友好在那里？不要告诉我你的脚本0依赖，有个shell就能跑，即使我们熟悉的各种命令，很多都是独立程序，不关shell什么事。&lt;/p&gt;
-
-&lt;h2 id=&#34;所谓的一步出图&#34;&gt;所谓的一步出图&lt;/h2&gt;
-
+&lt;h2 id=&#34;heading&#34;&gt;所谓的一步出图&lt;/h2&gt;
 &lt;p&gt;既然讲了clusterProfiler，那么clusterProfiler用户笑而不语了。我们用dotplot不也是一条命令出图，为什么要退出R，去跑你的shell脚本，这过程还得转换数据，存储数据。最后的这一步，是前面+N步为代价的。&lt;/p&gt;</description>
     </item>
     
@@ -378,11 +355,8 @@ While I can run enrichKEGG, I&amp;rsquo;m unable to run gseKEGG basically becaus
       
       <guid>https://guangchuangyu.github.io/2017/07/clusterprofiler-maize/</guid>
       <description>&lt;p&gt;模式生物做什么都简单，非模式生物则很多缺少注释，没有注释你就没法做，只能是借助于各种软件比如blastgo，自己跑电子注释。但今天要讲的不是这种情况，很多物种还是有注释的，只是你有时候不知道该去那里下载，或者你有数据，却不知道该怎么用！很多的软件都是针对模式生物的，或者针对某一些类型的非模式生物，能够支持多种非模式生物，能够支持用户自己的注释文件的软件相对来讲，就非常少有了，然而clusterProfiler就是这类少有的软件之一。&lt;/p&gt;
-
-&lt;h2 id=&#34;获得orgdb&#34;&gt;获得OrgDb&lt;/h2&gt;
-
+&lt;h2 id=&#34;orgdb&#34;&gt;获得OrgDb&lt;/h2&gt;
 &lt;p&gt;今天要讲的是通过OrgDb来做GO分析，这是clusterProfiler的&lt;strong&gt;enrichGO&lt;/strong&gt;函数所支持的背景注释，Bioconductor自带20个OrgDb可供使用，多半是模式生物，难道我们要做的物种不在这20个里面就不行了吗？显然不是的，clusterProfiler能支持的物种我自己都数不过来。&lt;/p&gt;
-
 &lt;p&gt;我们可以通过AnnotationHub在线检索并抓取OrgDb，比如这里以玉米为例：&lt;/p&gt;</description>
     </item>
     
@@ -392,8 +366,7 @@ While I can run enrichKEGG, I&amp;rsquo;m unable to run gseKEGG basically becaus
       <pubDate>Thu, 06 Jul 2017 05:44:27 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2017/07/david-clusterprofiler/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/DAVID/science.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/DAVID/science.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;好端端的一篇文章，因为用了DAVID，在PubPeer上就被吐槽了：&lt;/p&gt;</description>
     </item>
     
@@ -404,7 +377,6 @@ While I can run enrichKEGG, I&amp;rsquo;m unable to run gseKEGG basically becaus
       
       <guid>https://guangchuangyu.github.io/2017/05/bioc-3.5-news-of-my-bioc-packages/</guid>
       <description>&lt;p&gt;I have 8 packages published within the &lt;code&gt;Bioconductor&lt;/code&gt; project.&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/li&gt;
@@ -415,7 +387,6 @@ While I can run enrichKEGG, I&amp;rsquo;m unable to run gseKEGG basically becaus
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/treeio&#34;&gt;treeio&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;A new package &lt;a href=&#34;http://guangchuangyu.github.io/treeio&#34;&gt;treeio&lt;/a&gt; was included in BioC 3.5 release.&lt;/p&gt;</description>
     </item>
     
@@ -426,19 +397,14 @@ While I can run enrichKEGG, I&amp;rsquo;m unable to run gseKEGG basically becaus
       
       <guid>https://guangchuangyu.github.io/2017/05/enrichdavid-user-bg/</guid>
       <description>&lt;p&gt;虽然我不喜欢DAVID，但很多用户喜欢，所以clusterProfiler也支持了，最近github上又有人&lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/87&#34;&gt;要求支持自定义背景&lt;/a&gt;。&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;Dear Guangchuang,&lt;/p&gt;
-
 &lt;p&gt;I am using clusterProfiler in Kegg pathway enrichment analysis, it is useful and nice. I am looking for a function which accept background and has ability to deal with Ensembl gene ID.&lt;/p&gt;
-
 &lt;p&gt;In a function enrichDAVID it can takes ensembl gene id as an input format, but not allows to enter background.
 &lt;code&gt;enrichDAVID(gene = gene, idType=&amp;quot;ENSEMBL_GENE_ID&amp;quot;, annotation=&amp;quot;KEGG_PATHWAY&amp;quot;, species= &amp;quot;hsa&amp;quot;)&lt;/code&gt;&lt;/p&gt;
-
 &lt;p&gt;Other command enrichKEGG has a background input but only takes entrez gene id,
 &lt;code&gt;enrichKEGG(gene, organism = &amp;quot;hsa&amp;quot;, keyType = &amp;quot;kegg&amp;quot;, universe)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;I have tried to convert my ensembl gene IDs to entrez gene id, but some ensembl gene IDs represent more than one entrez gene ID.
+&lt;p&gt;I have tried to convert my ensembl gene IDs to entrez gene id, but some ensembl gene IDs represent more than one entrez gene ID. 
 I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are in entrez ID and i am still dont know how to convert.&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -450,11 +416,8 @@ I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are
       
       <guid>https://guangchuangyu.github.io/2017/02/wrapping-labels-in-ggplot2/</guid>
       <description>&lt;p&gt;在公众号biobabble后台有多人同时在问这个问题：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2017/2017-02-12-223832_646x667_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2017/2017-02-12-223832_646x667_scrot.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;晒这个截屏主要想说一点，如果是一两句话就能说清楚的问题，可以提问，如果不是，则不要在后台提问，写邮件或者到论坛提问，是更好的方式，像截屏中显示的，图片显示过期，我根本就没看到过图片。在手机上是无法看的，而我正好几天没在电脑前，于是你们发的图片我看不了，而且我如果没有在24小时之内回复，公众平台就不允许我回复了，因为问题已经过期。所以在此强调，不要在后台发图片提问，不要在后台问稍复杂的问题。&lt;/p&gt;
-
 &lt;p&gt;这个问题其实很简单，用&lt;code&gt;stringr&lt;/code&gt;包的&lt;code&gt;str_wrap&lt;/code&gt;来完成文本自动换行就行了。&lt;/p&gt;</description>
     </item>
     
@@ -464,10 +427,8 @@ I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are
       <pubDate>Fri, 30 Dec 2016 12:58:10 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2016/12/dotplot-for-gsea-result/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/gseaplot.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;For GSEA analysis, we are familar with the above figure which shows the running enrichment score. But for most of the software, it lack of visualization method to summarize the whole enrichment result.&lt;/p&gt;
-
 &lt;p&gt;In &lt;a href=&#34;https://guangchuangyu.github.io/DOSE&#34;&gt;DOSE&lt;/a&gt; (and related tools including &lt;a href=&#34;https://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;, &lt;a href=&#34;https://guangchuangyu.github.io/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt; and &lt;a href=&#34;https://guangchuangyu.github.io/meshes&#34;&gt;meshes&lt;/a&gt;), we provide &lt;code&gt;enrichMap&lt;/code&gt; and &lt;code&gt;cnetplot&lt;/code&gt; to summarize GSEA result.&lt;/p&gt;</description>
     </item>
     
@@ -477,10 +438,8 @@ I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are
       <pubDate>Mon, 28 Nov 2016 00:53:00 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2016/11/buildgomap/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/640.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/640.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;周末Bioconductor上的问题，说的是他用了buildGOmap之后，在终端上输出了一长串，但没有文件产生，今天就来讲讲这个buildGOmap的前世今生。&lt;/p&gt;
-
 &lt;p&gt;当年写clusterProfiler的时候在暨大工作，主要也是自己的需求驱动，因为实验室里有做细菌，比如肺炎链球菌D39，在细菌界基本上所谓的GO分析，就是跑个电子注释，然后数一下数目，列个表格画个饼图。很难看到有富集性分析的身影，因为绝大多数的工具是只支持少量模式生物的，还有部分工具比如支持某些细菌，支持某些植物或者某些真菌，比如支持植物的，也只是支持少量的植物物种而已，都是些自己定制给自己用的玩意，放出来只是为了顺道灌水而已。&lt;/p&gt;</description>
     </item>
     
@@ -492,26 +451,32 @@ I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are
       <guid>https://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;I am using dotplot() to visualize results from enrichGO(), enrichDO(), enricher() and compareCluster() in clusterProfiler R package. When specifying showCategory, I get the right number of categories except with the results of compareCluser().&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;In my case, I use compareCluster() on a list of 3 elements:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;str(ClusterList)
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;str(ClusterList)
 List of 3
- $ All : chr [1:1450] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
- $ g1  : chr [1:858] &amp;quot;89886&amp;quot; &amp;quot;29923&amp;quot; &amp;quot;100132891&amp;quot; &amp;quot;101410536&amp;quot; ...
- $ g2: chr [1:592] &amp;quot;5325&amp;quot; &amp;quot;170691&amp;quot; &amp;quot;29953&amp;quot; &amp;quot;283392&amp;quot; ...
-CompareGO_BP=compareCluster(ClusterList, fun=&amp;quot;enrichGO&amp;quot;, pvalueCutoff=0.01, pAdjustMethod=&amp;quot;BH&amp;quot;, OrgDb=org.Hs.eg.db,ont=&amp;quot;BP&amp;quot;,readable=T)
-
-dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
+$ All : chr [1:1450] &amp;ldquo;89886&amp;rdquo; &amp;ldquo;29923&amp;rdquo; &amp;ldquo;100132891&amp;rdquo; &amp;ldquo;101410536&amp;rdquo; &amp;hellip;
+$ g1  : chr [1:858] &amp;ldquo;89886&amp;rdquo; &amp;ldquo;29923&amp;rdquo; &amp;ldquo;100132891&amp;rdquo; &amp;ldquo;101410536&amp;rdquo; &amp;hellip;
+$ g2: chr [1:592] &amp;ldquo;5325&amp;rdquo; &amp;ldquo;170691&amp;rdquo; &amp;ldquo;29953&amp;rdquo; &amp;ldquo;283392&amp;rdquo; &amp;hellip;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;CompareGO_BP=compareCluster(ClusterList, fun=&amp;quot;enrichGO&amp;rdquo;, pvalueCutoff=0.01, pAdjustMethod=&amp;quot;BH&amp;rdquo;, OrgDb=org.Hs.eg.db,ont=&amp;quot;BP&amp;rdquo;,readable=T)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&amp;rdquo;)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;I ask for 10 categories, but I get 15 categories in All, 8 categories in g1 and 12 categories in g2. None of the categories, neither the sum of the categories are 10&amp;hellip;&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;Is the option showCategory working in the case of comparison? Am I missing something here?&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;And which categories precisely will it plot? the most significant whatever my 3 cases or the most significant of each case?&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;The question was &lt;a href=&#34;https://support.bioconductor.org/p/88965/&#34;&gt;posted&lt;/a&gt; in Bioconductor support site. It seems quite confusing and I think I need to write a post to clarify it.&lt;/p&gt;</description>
     </item>
     
@@ -522,7 +487,6 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
       
       <guid>https://guangchuangyu.github.io/2016/10/bioc-34-news-of-my-bioc-packages/</guid>
       <description>&lt;p&gt;I have 7 packages published within the &lt;code&gt;Bioconductor&lt;/code&gt; project.&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/li&gt;
@@ -532,7 +496,6 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/meshes&#34;&gt;meshes&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;A new package &lt;a href=&#34;http://guangchuangyu.github.io/meshes&#34;&gt;meshes&lt;/a&gt; was included in BioC 3.4 release.&lt;/p&gt;</description>
     </item>
     
@@ -543,11 +506,8 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
       
       <guid>https://guangchuangyu.github.io/2016/07/leading-edge-analysis/</guid>
       <description>&lt;h2 id=&#34;leading-edge-and-core-enrichment&#34;&gt;leading edge and core enrichment&lt;/h2&gt;
-
 &lt;p&gt;Leading edge analysis reports &lt;code&gt;Tags&lt;/code&gt; to indicate the percentage of genes contributing to the enrichment score, &lt;code&gt;List&lt;/code&gt; to indicate where in the list the enrichment score is attained and &lt;code&gt;Signal&lt;/code&gt; for enrichment signal strength.&lt;/p&gt;
-
 &lt;p&gt;It would also be very interesting to get the core enriched genes that contribute to the enrichment.&lt;/p&gt;
-
 &lt;p&gt;Now &lt;a href=&#34;https://guangchuangyu.github.io/DOSE&#34;&gt;DOSE&lt;/a&gt;, &lt;a href=&#34;https://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt; and &lt;a href=&#34;https://guangchuangyu.github.io/ReactomePA&#34;&gt;ReactomePA&lt;/a&gt; all support leading edge analysis and report core enriched genes.&lt;/p&gt;</description>
     </item>
     
@@ -566,10 +526,8 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
       <pubDate>Thu, 05 May 2016 20:13:57 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2016/05/bioc-33-news-of-my-bioc-packages/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/MISC/ke.jpg&#34; width=600&gt;&lt;/p&gt;
-
-&lt;p&gt;Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&amp;rsquo;s again the time to reflect what I&amp;rsquo;ve done in the past year.&lt;/p&gt;
-
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&#39;s again the time to reflect what I&#39;ve done in the past year.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://guangchuangyu.github.io/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;&lt;/li&gt;
@@ -587,9 +545,7 @@ dotplot(CompareGO_BP, showCategory=10, title=&amp;quot;GO - Biological Process&a
       
       <guid>https://guangchuangyu.github.io/2016/05/convert-biological-id-with-kegg-api-using-clusterprofiler/</guid>
       <description>&lt;h2 id=&#34;bitr-kegg&#34;&gt;bitr_kegg&lt;/h2&gt;
-
 &lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; can convert biological IDs using &lt;code&gt;OrgDb&lt;/code&gt; object via the &lt;code&gt;bitr&lt;/code&gt; function. Now I implemented another function, &lt;code&gt;bitr_kegg&lt;/code&gt; for converting IDs through KEGG API.&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;library(clusterProfiler)
 data(gcSample)
 hg &amp;lt;- gcSample[[1]]
@@ -624,7 +580,6 @@ head(np2up)
 ## 5      NP_006054  O60662
 ## 6   NP_001092002  O95398
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;The ID type (both fromType &amp;amp; toType) should be one of &amp;lsquo;kegg&amp;rsquo;, &amp;lsquo;ncbi-geneid&amp;rsquo;, &amp;lsquo;ncbi-proteinid&amp;rsquo; or &amp;lsquo;uniprot&amp;rsquo;. The &amp;lsquo;kegg&amp;rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &amp;lsquo;kegg&amp;rsquo; ID is &lt;code&gt;entrezgene&lt;/code&gt; ID for eukaryote species and &lt;code&gt;Locus&lt;/code&gt; ID for prokaryotes.&lt;/p&gt;</description>
     </item>
     
@@ -636,7 +591,8 @@ head(np2up)
       <guid>https://guangchuangyu.github.io/2016/04/kegg-module-enrichment-analysis/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;pathway modules – representing tight functional units in KEGG metabolic pathway maps, such as M00002 (Glycolysis, core module involving three-carbon compounds)&lt;/li&gt;
 &lt;li&gt;structural complexes – often forming molecular machineries, such as M00072 (Oligosaccharyltransferase)&lt;/li&gt;
@@ -654,10 +610,8 @@ head(np2up)
       <guid>https://guangchuangyu.github.io/2016/01/go-analysis-using-clusterprofiler/</guid>
       <description>&lt;p&gt;&lt;code&gt;clusterProfiler&lt;/code&gt; supports over-representation test and gene set
 enrichment analysis of Gene Ontology. It supports GO annotation from
-OrgDb object, GMT file and user&amp;rsquo;s own data.&lt;/p&gt;
-
+OrgDb object, GMT file and user&#39;s own data.&lt;/p&gt;
 &lt;h2 id=&#34;support-many-species&#34;&gt;support many species&lt;/h2&gt;
-
 &lt;p&gt;In github version of clusterProfiler, &lt;code&gt;enrichGO&lt;/code&gt; and &lt;code&gt;gseGO&lt;/code&gt; functions
 removed the parameter &lt;em&gt;organism&lt;/em&gt; and add another parameter &lt;em&gt;OrgDb&lt;/em&gt;, so
 that any species that have &lt;code&gt;OrgDb&lt;/code&gt; object available can be analyzed in
@@ -676,18 +630,14 @@ users can build &lt;code&gt;OrgDb&lt;/code&gt; via &lt;code&gt;AnnotationHub&lt;
       <description>&lt;p&gt;Thanks &lt;a href=&#34;https://github.com/mevers&#34;&gt;@mevers&lt;/a&gt; for raising &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler/issues/31&#34;&gt;the issue&lt;/a&gt; to me
 and his efforts in benchmarking
 &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
-
 &lt;p&gt;He pointed out two issues:&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;outputs from gseGO and GSEA-P are poorly overlap.&lt;/li&gt;
-&lt;li&gt;pvalues from gseGO are generally smaller and don&amp;rsquo;t show a lot of
+&lt;li&gt;pvalues from gseGO are generally smaller and don&#39;t show a lot of
 variation&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;For GSEA analysis, we have two inputs, a ranked gene list and gene set
 collections.&lt;/p&gt;
-
 &lt;p&gt;First of all, the gene set collections are very different. The GMT file
 used in his test is &lt;em&gt;c5.cc.v5.0.symbols.gmt&lt;/em&gt;, which is a tiny subset of
 GO CC, while clusterProfiler used the whole GO CC corpus.&lt;/p&gt;</description>
@@ -702,7 +652,6 @@ GO CC, while clusterProfiler used the whole GO CC corpus.&lt;/p&gt;</description
       <description>&lt;p&gt;To simplify enriched GO result, we can use slim version of GO and use
 &lt;em&gt;&lt;a href=&#34;http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/&#34;&gt;enricher&lt;/a&gt;&lt;/em&gt;
 function to analyze.&lt;/p&gt;
-
 &lt;p&gt;Another strategy is to use
 &lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; to calculate
 similarity of GO terms and remove those highly similar terms by keeping
@@ -710,7 +659,6 @@ one representative term. To make this feature available to
 &lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;
 users, I develop a &lt;em&gt;simplify&lt;/em&gt; method to reduce redundant GO terms from
 output of &lt;em&gt;enrichGO&lt;/em&gt; function.&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;require(clusterProfiler)
 data(geneList, package=&amp;quot;DOSE&amp;quot;)
 de &amp;lt;- names(geneList)[abs(geneList) &amp;gt; 2]
@@ -732,9 +680,7 @@ enrichMap(bp)
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html&#34;&gt;ReactomePA&lt;/a&gt;,
 and &lt;a href=&#34;http://www.bioconductor.org/packages/ChIPseeker&#34;&gt;ChIPseeker&lt;/a&gt; switch
 from Sweave to R Markdown for package vignettes.&lt;/p&gt;
-
 &lt;h3 id=&#34;gosemsim&#34;&gt;GOSemSim&lt;/h3&gt;
-
 &lt;p&gt;To make it consistent between
 &lt;a href=&#34;http://www.bioconductor.org/packages/GOSemSim&#34;&gt;GOSemSim&lt;/a&gt; and
 &lt;a href=&#34;http://www.bioconductor.org/packages/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;,
@@ -754,11 +700,10 @@ can apply functional analysis to NGS data. It consists of two
 components, &lt;em&gt;seq2gene&lt;/em&gt; and &lt;em&gt;gene2pathway&lt;/em&gt;. &lt;em&gt;seq2gene&lt;/em&gt; converts genomic
 coordination to genes while &lt;em&gt;gene2pathway&lt;/em&gt; performs functional analysis
 at gene level.&lt;/p&gt;
-
 &lt;p&gt;I think it would be interesting to incorporate &lt;em&gt;seq2gene&lt;/em&gt; with
 clusterProfiler. But it fail to run due to it call absolute path of
-python installed in the author&amp;rsquo;s computer.
-&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+python installed in the author&#39;s computer.
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -772,9 +717,8 @@ from the GTEx dataset. A criticism raised on
 &lt;a href=&#34;https://pubpeer.com/publications/EB99BD086B27075CFF5278F1CEAA57&#34;&gt;pubpeer&lt;/a&gt;
 is that the gene ontology enrichment analysis was done with DAVID which
 has not been updated in the last five years.&lt;/p&gt;
-
 &lt;p&gt;The result is shown below:
-&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screenshot%202015-07-15%2019.49.01.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screenshot%202015-07-15%2019.49.01.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -784,7 +728,7 @@ has not been updated in the last five years.&lt;/p&gt;
       
       <guid>https://guangchuangyu.github.io/2015/06/dotplot-for-enrichment-result/</guid>
       <description>&lt;p&gt;This is a feature request from &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
-user. It&amp;rsquo;s similar to what I implemented in
+user. It&#39;s similar to what I implemented in
 &lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
 for comparing biological themes. For comparing different enrichment
 results, the x-axis represent different gene clusters while for a single
@@ -814,7 +758,6 @@ GO&lt;/a&gt;, novel
 functional annotation (eg GO via &lt;a href=&#34;https://www.blast2go.com/&#34;&gt;blastgo&lt;/a&gt;
 and KEGG via &lt;a href=&#34;http://www.genome.jp/tools/kaas/&#34;&gt;KAAS&lt;/a&gt;), unsupported
 ontology/pathway or customized annotation.&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&#34;http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;
 provides &lt;em&gt;enricher&lt;/em&gt; function for hypergeometric test and &lt;em&gt;GSEA&lt;/em&gt; function
 for gene set enrichment analysis that are designed to accept user
@@ -832,18 +775,15 @@ TERM2NAME is optional.&lt;/p&gt;</description>
       <pubDate>Mon, 20 Apr 2015 11:44:01 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2015/04/bioc-31-news-of-my-bioc-packages/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-12%2019.05.54.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/Screenshot%202015-03-12%2019.05.54.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;gosemsim&#34;&gt;GOSemSim&lt;/h3&gt;
-
 &lt;p&gt;&lt;a href=&#34;www.bioconductor.org/packages/release/bioc/html/GOSemSim.html&#34;&gt;GOSemSim&lt;/a&gt;
 was first implemented in &lt;a href=&#34;http://guangchuangyu.github.io/2008/08/gosemsim/&#34;&gt;2008&lt;/a&gt;
 and published in
 &lt;a href=&#34;http://bioinformatics.oxfordjournals.org/content/26/7/976&#34;&gt;Bioinformatics&lt;/a&gt;
-in 2010. It&amp;rsquo;s now a mature package with no bugs found in the past half
+in 2010. It&#39;s now a mature package with no bugs found in the past half
 year. Only vignette and Information content data were updated.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/GOSemSim/gosemsim_stats.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/Bioconductor/GOSemSim/gosemsim_stats.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -856,16 +796,13 @@ year. Only vignette and Information content data were updated.&lt;/p&gt;
 used to visualize &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt;
 results in a paper published in &lt;a href=&#34;http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3907017/&#34;&gt;BMC
 Genomics&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/clusterProfiler_david.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2015/clusterProfiler_david.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Some users told me that they may want to use DAVID at some
 circumstances. I think it maybe a good idea to make clusterProfiler
 supports DAVID, so that
 &lt;a href=&#34;http://david.abcc.ncifcrf.gov/summary.jsp&#34;&gt;DAVID&lt;/a&gt; users can use
 visualization functions provided by
 &lt;a href=&#34;https://github.com/GuangchuangYu/clusterProfiler&#34;&gt;clusterProfiler&lt;/a&gt;.&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;require(DOSE)
 require(clusterProfiler)
 data(geneList)
@@ -889,7 +826,6 @@ hsa04110    11
 hsa04114    10
 hsa03320     7
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;There are only 5085 human genes annotated by KEGG, this is due to
 out-of-date DAVID data.&lt;/p&gt;</description>
     </item>
@@ -902,16 +838,15 @@ out-of-date DAVID data.&lt;/p&gt;</description>
       <guid>https://guangchuangyu.github.io/2015/02/kegg-enrichment-analysis-with-latest-online-data-using-clusterprofiler/</guid>
       <description>&lt;p&gt;&lt;em&gt;KEGG.db&lt;/em&gt; is not updated since 2012. The data is now pretty old, but
 many of the Bioconductor packages still using it for KEGG annotation and
-enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological databases&lt;/a&gt;&amp;rsquo;,
+enrichment analysis. As pointed out in &amp;lsquo;&lt;a href=&#34;http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases&#34;&gt;Are there too many biological databases&lt;/a&gt;&#39;,
 there is a problem that many out of date biological databases often
-don&amp;rsquo;t get offline. This issue also exists in web-server or software that
+don&#39;t get offline. This issue also exists in web-server or software that
 using out-of-date data. For example, the
 &lt;a href=&#34;http://wego.genomics.org.cn/cgi-bin/wego/index.pl&#34;&gt;WEGO&lt;/a&gt; web-server
 stopped updating GO annotation data since 2009, and WEGO still online
 with &lt;a href=&#34;https://scholar.google.com.hk/scholar?as_ylo=2015&amp;amp;hl=en&amp;amp;as_sdt=0,5&amp;amp;sciodt=0,5&amp;amp;cites=13025429171853466135&amp;amp;scipsc=&#34;&gt;many people using it&lt;/a&gt;.
 The biological story may changed totally if using a recently updated
 data. Seriously, We should keep an eye on this issue.&lt;/p&gt;
-
 &lt;p&gt;Now &lt;em&gt;enrichKEGG&lt;/em&gt; function is reloaded with a new parameter &lt;em&gt;use_internal_data&lt;/em&gt;. This
 parameter is by default setting to FALSE, and &lt;em&gt;enrichKEGG&lt;/em&gt; function will
 download the latest KEGG data for enrichment analysis. If the parameter
@@ -931,7 +866,7 @@ current release version of
 and &amp;ldquo;mouse&amp;rdquo;. For these previously supported species, common name is also
 supported. So that you script is still working with new version of
 &lt;a href=&#34;http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html&#34;&gt;clusterProfiler&lt;/a&gt;.
-For other species, common name is not supported, since I don&amp;rsquo;t want to
+For other species, common name is not supported, since I don&#39;t want to
 maintain such a long mapping list with many species have no common name
 available and it may also introduce unexpected bugs.&lt;/p&gt;</description>
     </item>
@@ -945,10 +880,8 @@ available and it may also introduce unexpected bugs.&lt;/p&gt;</description>
       <description>&lt;p&gt;&lt;a href=&#34;https://github.com/kaji331&#34;&gt;@kaji331&lt;/a&gt;
 compared &lt;code&gt;cluserProfiler&lt;/code&gt; with &lt;code&gt;GeneAnswers&lt;/code&gt; and found that clusterProfiler
 gives larger p values.&lt;/p&gt;
-
 &lt;p&gt;It eventually came out that he passed the input
-gene as numeric vector, which was supposed to be character and he used an &lt;strong&gt;old&lt;/strong&gt; version of &lt;code&gt;clusterProfiler&lt;/code&gt; which didn&amp;rsquo;t use &lt;code&gt;as.character&lt;/code&gt; to coerce the input&lt;/p&gt;
-
+gene as numeric vector, which was supposed to be character and he used an &lt;strong&gt;old&lt;/strong&gt; version of &lt;code&gt;clusterProfiler&lt;/code&gt; which didn&#39;t use &lt;code&gt;as.character&lt;/code&gt; to coerce the input&lt;/p&gt;
 &lt;p&gt;But his comment forces me to test it.&lt;/p&gt;</description>
     </item>
     
@@ -958,7 +891,7 @@ gene as numeric vector, which was supposed to be character and he used an &lt;st
       <pubDate>Sun, 03 Aug 2014 12:48:15 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2014/08/enrichment-map/</guid>
-      <description>&lt;p&gt;In &lt;a href=&#34;http://www.plob.org/&#34;&gt;PLOB&lt;/a&gt;&amp;rsquo;s QQ group, someone asked how to change
+      <description>&lt;p&gt;In &lt;a href=&#34;http://www.plob.org/&#34;&gt;PLOB&lt;/a&gt;&amp;lsquo;s QQ group, someone asked how to change
 the color of enrichment map in &lt;a href=&#34;http://cytoscape.org/&#34;&gt;Cytoscape&lt;/a&gt;. I am
 very curious how enrichment map can helps to interpret enrichment
 results. It took me 2 hours to implement it using R and I am surprised

@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="面向对象有多种实现方式，R里面就有3种，class-based, method-based, object-based，R6与C&#43;&#43;/JAVA一样是class-based的，S3/S4是method-based的，还有一种是object-based的，这在proto包中实现，很多人可能没听说过，但是ggplot2你们一定听过，ggplot2就是object-based的实现，它现在是自己的定制实现，称之为ggproto。
-
 emojifont就是用proto实现的，属于我的练手之作，很高兴深受大家的喜欢。">
 
 
 <meta property="og:description" content="面向对象有多种实现方式，R里面就有3种，class-based, method-based, object-based，R6与C&#43;&#43;/JAVA一样是class-based的，S3/S4是method-based的，还有一种是object-based的，这在proto包中实现，很多人可能没听说过，但是ggplot2你们一定听过，ggplot2就是object-based的实现，它现在是自己的定制实现，称之为ggproto。
-
 emojifont就是用proto实现的，属于我的练手之作，很高兴深受大家的喜欢。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="News in emojifont">
@@ -23,10 +21,8 @@ emojifont就是用proto实现的，属于我的练手之作，很高兴深受大
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/03/news-in-emojifont/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="面向对象有多种实现方式，R里面就有3种，class-based, method-based, object-based，R6与C&#43;&#43;/JAVA一样是class-based的，S3/S4是method-based的，还有一种是object-based的，这在proto包中实现，很多人可能没听说过，但是ggplot2你们一定听过，ggplot2就是object-based的实现，它现在是自己的定制实现，称之为ggproto。
-
 emojifont就是用proto实现的，属于我的练手之作，很高兴深受大家的喜欢。">
 <meta name="twitter:description" content="面向对象有多种实现方式，R里面就有3种，class-based, method-based, object-based，R6与C&#43;&#43;/JAVA一样是class-based的，S3/S4是method-based的，还有一种是object-based的，这在proto包中实现，很多人可能没听说过，但是ggplot2你们一定听过，ggplot2就是object-based的实现，它现在是自己的定制实现，称之为ggproto。
-
 emojifont就是用proto实现的，属于我的练手之作，很高兴深受大家的喜欢。">
 <meta property="og:locale" content="en-us">
 
@@ -289,85 +285,53 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>面向对象有多种实现方式，R里面就有3种，class-based, method-based, object-based，R6与C++/JAVA一样是class-based的，S3/S4是method-based的，还有一种是object-based的，这在proto包中实现，很多人可能没听说过，但是ggplot2你们一定听过，ggplot2就是object-based的实现，它现在是自己的定制实现，称之为ggproto。</p>
-
 <p>emojifont就是用proto实现的，属于我的练手之作，很高兴深受大家的喜欢。</p>
-
 <p>如果我想看一个emoji长啥样，用<strong>ggplot2</strong>还是麻烦点，用ggplot2是这样画的：</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/tree.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/tree.png" alt=""></p>
 <p>而用base plot，则相对简单些：</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/Screen Shot 2017-02-14 at 8.00.23 PM.png" alt="" /></p>
-
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/R/emojifont/Screen">https://guangchuangyu.github.io/blog_images/R/emojifont/Screen</a> Shot 2017-02-14 at 8.00.23 PM.png)</p>
 <p>于是我有了要写个<strong>geom_emoji</strong>图层的想法：</p>
-
 <blockquote>
 <p>我在想应该利用emojifont，写个geom_emoji图层，这样直接ggplot()+geom_emoji(&ldquo;broken_heart&rdquo;)就可以直接出来，ggplot()+geom_emoji(&ldquo;chicken&rdquo;)就出来一只，虽然emojifont已足够易用，但减少输入更加傻瓜，还是可以有的。</p>
 </blockquote>
-
-<hr />
-
+<hr>
 <p>过了一天，我就写了<strong>geom_emoji</strong>，于是如果我想看某个emoji长什么样，比如下面画个玫瑰花：</p>
-
-<pre><code class="language-r">ggplot() + geom_emoji(&quot;rose&quot;) + theme_void()
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/rose.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">rose&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>()
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/rose.png" alt=""></p>
 <p>这次的更新，我还换个emoji字体，升级到unicode 9，也就是最新加入的鸭子也能用咯：</p>
-
-<pre><code class="language-r">ggplot() + geom_emoji(&quot;duck&quot;) + theme_void()
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/duck.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">duck&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>()
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/duck.png" alt=""></p>
 <p><strong>geom_emoji</strong>让画散点也变得简单:</p>
-
-<pre><code class="language-r">x &lt;- seq(-sqrt(17), sqrt(17), length.out=30)
-y1 &lt;- 8*abs(x)/17 + 15* sqrt(17 - x^2)/17
-y2 &lt;- 8*abs(x)/17 - 15* sqrt(17 - x^2)/17
-ggplot() + geom_emoji(&quot;gift_heart&quot;, x=x, y=c(y1, y2), color=&quot;red&quot;, size=10)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/heart_of_heart.png" alt="" /></p>
-
-<hr />
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(<span style="color:#f92672">-</span><span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span>), <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span>), length.out<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
+y1 <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">*</span><span style="color:#a6e22e">abs</span>(x)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">15</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span> <span style="color:#f92672">-</span> x^2)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span>
+y2 <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">*</span><span style="color:#a6e22e">abs</span>(x)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">15</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span> <span style="color:#f92672">-</span> x^2)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span>
+<span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">gift_heart&#34;</span>, x<span style="color:#f92672">=</span>x, y<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(y1, y2), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">red&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/heart_of_heart.png" alt=""></p>
+<hr>
 <p>制作动图gif也是非常简单，这个代码简直如同人类语言一般：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<span style="color:#a6e22e">require</span>(magick)
+<span style="color:#a6e22e">require</span>(purrr)
 
-<pre><code class="language-r">require(ggplot2)
-require(magick)
-require(purrr)
+x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">search_emoji</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">heart&#34;</span>)
 
-x &lt;- search_emoji(&quot;heart&quot;)
-
-plot_heart=function(x) {
- p = ggplot() + geom_emoji(x)
- o = paste0(x, &quot;.png&quot;)
- ggsave(o, p, width=5, height=5)
+plot_heart<span style="color:#f92672">=</span><span style="color:#a6e22e">function</span>(x) {
+ p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(x)
+ o <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste0</span>(x, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.png&#34;</span>)
+ <span style="color:#a6e22e">ggsave</span>(o, p, width<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>, height<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
  o
  }
 
-x %&gt;% map(plot_heart) %&gt;% map(image_read) %&gt;% 
-image_join() %&gt;% image_animate(fps=1) %&gt;% 
-image_write(&quot;heart.gif&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/heart.gif" alt="" /></p>
-
+x <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">map</span>(plot_heart) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">map</span>(image_read) <span style="color:#f92672">%&gt;%</span> 
+<span style="color:#a6e22e">image_join</span>() <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">image_animate</span>(fps<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">%&gt;%</span> 
+<span style="color:#a6e22e">image_write</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">heart.gif&#34;</span>)
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/heart.gif" alt=""></p>
 <p>因为换了字体，所以和之前的不同，如果要去背景，只需要<code>+theme_void()</code>就可以。</p>
-
 <p>新版也不同你加载字体的，随包载入自动加载，当然以前的字体还能用，还用一样的办法手工加载。（所以说我这次升级很考究，原来的字体，老方法，新字体你啥都不用干）</p>
-
 <p>同时加入的还有<strong>geom_fontawesome</strong>图层，最新画hex sticker，用fontawesome蛮好用 -,-</p>
-
 <p>这次更新，主要有3方面：升级了新字体，支持unicode 9；新加入的图层让你非常方便地看一看emoji表情长啥样；再者不需要手工加载字体了。</p>
-
-<hr />
-
+<hr>
 <p>我在网上看到香港R用户组的教学视频，发现我被‘出镜了’，讲解了emojifont包，好像我在香港还有点小名气，然而我并没有露过脸，视频中也没有。</p>
-
 
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
   <iframe src="https://www.youtube.com/embed/t-tLnvaYKHw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>

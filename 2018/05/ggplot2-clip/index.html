@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="《ggplot2字体溢出的那点破事》这是经典老问题了，现在新版本的ggplot2有新的解决方案了，在coord_cartesian中新加入了clip参数，这样可以支持把图层画在画布之外，那么文本打过界也就支持了。这有一个好处，是可以支持direct label，而不需要调整xlim和ylim，毕竟你把xlim和ylim搞大有时候会给人以误导，认为你的数据取值范围就是图中的xlim和ylim，但实际上要小一些。
-
 我以ggtree为例，为了让tip label打全，那么p1把时间给搞到2020，但实际上最近的采样时间是2013年，这样你单看x轴的标记，总感觉有一点点不对路，或者有一点点别扭。现在好了，我不设置xlim，而是让label打过界，当然还是需要有足够的空间来放这些文本，这个可以通过把margin搞大来实现。">
 
 
 <meta property="og:description" content="《ggplot2字体溢出的那点破事》这是经典老问题了，现在新版本的ggplot2有新的解决方案了，在coord_cartesian中新加入了clip参数，这样可以支持把图层画在画布之外，那么文本打过界也就支持了。这有一个好处，是可以支持direct label，而不需要调整xlim和ylim，毕竟你把xlim和ylim搞大有时候会给人以误导，认为你的数据取值范围就是图中的xlim和ylim，但实际上要小一些。
-
 我以ggtree为例，为了让tip label打全，那么p1把时间给搞到2020，但实际上最近的采样时间是2013年，这样你单看x轴的标记，总感觉有一点点不对路，或者有一点点别扭。现在好了，我不设置xlim，而是让label打过界，当然还是需要有足够的空间来放这些文本，这个可以通过把margin搞大来实现。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ggplot2新参数clip">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/05/ggplot2-clip/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="《ggplot2字体溢出的那点破事》这是经典老问题了，现在新版本的ggplot2有新的解决方案了，在coord_cartesian中新加入了clip参数，这样可以支持把图层画在画布之外，那么文本打过界也就支持了。这有一个好处，是可以支持direct label，而不需要调整xlim和ylim，毕竟你把xlim和ylim搞大有时候会给人以误导，认为你的数据取值范围就是图中的xlim和ylim，但实际上要小一些。
-
 我以ggtree为例，为了让tip label打全，那么p1把时间给搞到2020，但实际上最近的采样时间是2013年，这样你单看x轴的标记，总感觉有一点点不对路，或者有一点点别扭。现在好了，我不设置xlim，而是让label打过界，当然还是需要有足够的空间来放这些文本，这个可以通过把margin搞大来实现。">
 <meta name="twitter:description" content="《ggplot2字体溢出的那点破事》这是经典老问题了，现在新版本的ggplot2有新的解决方案了，在coord_cartesian中新加入了clip参数，这样可以支持把图层画在画布之外，那么文本打过界也就支持了。这有一个好处，是可以支持direct label，而不需要调整xlim和ylim，毕竟你把xlim和ylim搞大有时候会给人以误导，认为你的数据取值范围就是图中的xlim和ylim，但实际上要小一些。
-
 我以ggtree为例，为了让tip label打全，那么p1把时间给搞到2020，但实际上最近的采样时间是2013年，这样你单看x轴的标记，总感觉有一点点不对路，或者有一点点别扭。现在好了，我不设置xlim，而是让label打过界，当然还是需要有足够的空间来放这些文本，这个可以通过把margin搞大来实现。">
 <meta property="og:locale" content="en-us">
 
@@ -291,9 +287,7 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>《<a href="http://mp.weixin.qq.com/s/BTBP_snTRKrjmRCjF6Cp3A">ggplot2字体溢出的那点破事</a>》这是经典老问题了，现在新版本的<code>ggplot2</code>有新的解决方案了，在<code>coord_cartesian</code>中新加入了<code>clip</code>参数，这样可以支持把图层画在画布之外，那么文本打过界也就支持了。这有一个好处，是可以支持direct label，而不需要调整<code>xlim</code>和<code>ylim</code>，毕竟你把<code>xlim</code>和<code>ylim</code>搞大有时候会给人以误导，认为你的数据取值范围就是图中的<code>xlim</code>和<code>ylim</code>，但实际上要小一些。</p>
-
 <p>我以<code>ggtree</code>为例，为了让tip label打全，那么<code>p1</code>把时间给搞到2020，但实际上最近的采样时间是2013年，这样你单看<code>x</code>轴的标记，总感觉有一点点不对路，或者有一点点别扭。现在好了，我不设置<code>xlim</code>，而是让label打过界，当然还是需要有足够的空间来放这些文本，这个可以通过把<code>margin</code>搞大来实现。</p>
-
 <pre><code>require(ggtree)
 beast_file &lt;- system.file(&quot;examples/MCC_FluA_H3.tree&quot;, package=&quot;ggtree&quot;)
 beast_tree &lt;- read.beast(beast_file)
@@ -302,12 +296,8 @@ ggtree(beast_tree, mrsd=&quot;2013-01-01&quot;) + geom_tiplab(size=2, align=TRUE
 p1 = p + xlim(NA, 2020)
 p + coord_cartesian(clip=&quot;off&quot;) + theme_tree2(plot.margin=margin(6, 80, 6, 6)) -&gt; p2
 cowplot::plot_grid(p1, p2, ncol=2)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/ggplot2/clip.jpg" alt="" /></p>
-
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/ggplot2/clip.jpg" alt=""></p>
 <p>如果你脑洞够大，你甚至于可以用<code>theme</code>把坐标轴给去掉，然后自己用<code>geom_segment</code>画坐标轴，于是你可以把<code>ggplot2</code>画成类似于<code>base</code> plot，可以装得特别像。</p>
-
 <p>再者，因为我们可以随意把各种元素画到画布的任何区域上，放开脑洞，各种鬼畜的ggplot2可以走你了！</p>
               
             </div>

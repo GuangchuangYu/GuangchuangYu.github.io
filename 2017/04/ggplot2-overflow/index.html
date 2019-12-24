@@ -5,30 +5,24 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="比如下面的代码：
-
 require(ggplot2)
 d &lt;- data.frame(x=c(0, 0.002, 0.00575), y = 1:3)
 p &lt;- ggplot(d, aes(x, y)) &#43; geom_point() &#43; xlab(NULL) &#43; ylab(NULL)
 print(p)
-
-
 
 
 上面图中x轴的文本0.006，这个数字中的6几乎看不到，因为一半过界了。">
 
 
 <meta property="og:description" content="比如下面的代码：
-
 require(ggplot2)
 d &lt;- data.frame(x=c(0, 0.002, 0.00575), y = 1:3)
 p &lt;- ggplot(d, aes(x, y)) &#43; geom_point() &#43; xlab(NULL) &#43; ylab(NULL)
 print(p)
-
-
 
 
 上面图中x轴的文本0.006，这个数字中的6几乎看不到，因为一半过界了。">
@@ -39,24 +33,18 @@ print(p)
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/04/ggplot2-overflow/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="比如下面的代码：
-
 require(ggplot2)
 d &lt;- data.frame(x=c(0, 0.002, 0.00575), y = 1:3)
 p &lt;- ggplot(d, aes(x, y)) &#43; geom_point() &#43; xlab(NULL) &#43; ylab(NULL)
 print(p)
-
-
 
 
 上面图中x轴的文本0.006，这个数字中的6几乎看不到，因为一半过界了。">
 <meta name="twitter:description" content="比如下面的代码：
-
 require(ggplot2)
 d &lt;- data.frame(x=c(0, 0.002, 0.00575), y = 1:3)
 p &lt;- ggplot(d, aes(x, y)) &#43; geom_point() &#43; xlab(NULL) &#43; ylab(NULL)
 print(p)
-
-
 
 
 上面图中x轴的文本0.006，这个数字中的6几乎看不到，因为一半过界了。">
@@ -321,42 +309,29 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>比如下面的代码：</p>
-
 <pre><code>require(ggplot2)
 d &lt;- data.frame(x=c(0, 0.002, 0.00575), y = 1:3)
 p &lt;- ggplot(d, aes(x, y)) + geom_point() + xlab(NULL) + ylab(NULL)
 print(p)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt=""></p>
 <p>上面图中x轴的文本<strong>0.006</strong>，这个数字中的<strong>6</strong>几乎看不到，因为一半过界了。</p>
-
 <p>这种情况还可以更糟糕，比如我把字体搞大点：</p>
-
 <pre><code>p &lt;- p + theme(axis.text=element_text(size=12))
 print(p)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-2.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-2.png" alt=""></p>
 <p>简直了，<strong>6</strong>都看不见了。第一次遇到这种情况，都会觉得这软件也太傻了！连坐标轴都会过界！但事实上，这是一个普遍的现象。因为像点这些，是数据空间，但文本是像素空间，只会按照指定的大小转化为多少个像素，然后把字打出来，这些当然容易打过界了。特别是如果把文本打在数据点的右边，比如我们画进化树时，需要画tip label，这纯粹是在右边打字的，文本通常只有部分显示出来，解决方案就在<strong>ggtree</strong>的<a href="https://guangchuangyu.github.io/ggtree/faq/#tip-label-truncated">文档</a>里，用<code>xlim</code>搞大右边。比如这个例子的话，<code>+xlim</code>很容易解决的：</p>
-
 <pre><code>p + xlim(NA, 0.0062)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-3.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-3.png" alt=""></p>
 <p>当然复杂的情况也是有的，比如你在分面的时候，只有某个分面溢出了，而<code>scales</code>又是<code>free</code>的，你直接<code>+xlim</code>会应用于所有分面，但在free scale的情况下，你只想应用到某一分面，这个也是可以搞的，参考<a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/">xlim_tree</a>，做为思考题，看大家能不能悟出来。</p>
-
 <blockquote>
 <p>讲ggtree各种技巧，对于你们学ggplot2也是极有帮助的！</p>
 </blockquote>
-
-<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. 2017, 8(1):28-36.</p>
-
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
-<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<!-- raw HTML omitted -->*<!-- raw HTML omitted -->. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <em><strong>Methods in Ecology and Evolution</strong></em>. 2017, 8(1):28-36.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
               
             </div>
           </div>

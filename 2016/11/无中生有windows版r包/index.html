@@ -5,28 +5,20 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="之前帮助高老师实现比对序列的做图，把代码打包为R包seqcombo，方便安装使用。花两小时的作品，发现还有些用户在使用 -，-
-
 之前有人联系我说安装不上，我觉得不应该有这个问题，因为是纯R代码代码，不涉及到编译，源码包安装不应该有问题。但既然有人问，又都是windows用户，我想可以给他们提供编译好的windows包，简化安装过程（这么体贴用户，我都要被自己感动了）。
-
 放在CRAN或Bioconductor上的R包，CRAN和Bioconductor会编译出不同平台的二进制包，但seqcobo放在github上，只有源代码，没有预编译好的包，但没有不是问题，我编译好放上去就行了。
-
 但问题是我没有windows！多年来一直是OSX和linux，MacBook Pro跑Arch Linux，一台iMac跑OSX，我自己根本没有跑windows的机器，所以难为无米之炊，借台机器总是有的，但总不能每次一更新，就拷个代码去别人的机器上打包，再拷回来上传到网上，想想也是蛋疼。
-
 所以没有windows，这事干起来还不太容易，！在想怎么来无中生有生出个windows包出来的时候，我想起了rhub，也是因为没有windows，之前就用rhub来进行windows平台的R check，在把代码push到CRAN或Bioconductor之前，我总会测试没问题了，再提交代码过去，而rhub正好可以给我提供windows平台的检测。">
 
 
 <meta property="og:description" content="之前帮助高老师实现比对序列的做图，把代码打包为R包seqcombo，方便安装使用。花两小时的作品，发现还有些用户在使用 -，-
-
 之前有人联系我说安装不上，我觉得不应该有这个问题，因为是纯R代码代码，不涉及到编译，源码包安装不应该有问题。但既然有人问，又都是windows用户，我想可以给他们提供编译好的windows包，简化安装过程（这么体贴用户，我都要被自己感动了）。
-
 放在CRAN或Bioconductor上的R包，CRAN和Bioconductor会编译出不同平台的二进制包，但seqcobo放在github上，只有源代码，没有预编译好的包，但没有不是问题，我编译好放上去就行了。
-
 但问题是我没有windows！多年来一直是OSX和linux，MacBook Pro跑Arch Linux，一台iMac跑OSX，我自己根本没有跑windows的机器，所以难为无米之炊，借台机器总是有的，但总不能每次一更新，就拷个代码去别人的机器上打包，再拷回来上传到网上，想想也是蛋疼。
-
 所以没有windows，这事干起来还不太容易，！在想怎么来无中生有生出个windows包出来的时候，我想起了rhub，也是因为没有windows，之前就用rhub来进行windows平台的R check，在把代码push到CRAN或Bioconductor之前，我总会测试没问题了，再提交代码过去，而rhub正好可以给我提供windows平台的检测。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="无中生有windows版R包">
@@ -35,22 +27,14 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2016/11/%E6%97%A0%E4%B8%AD%E7%94%9F%E6%9C%89windows%E7%89%88r%E5%8C%85/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="之前帮助高老师实现比对序列的做图，把代码打包为R包seqcombo，方便安装使用。花两小时的作品，发现还有些用户在使用 -，-
-
 之前有人联系我说安装不上，我觉得不应该有这个问题，因为是纯R代码代码，不涉及到编译，源码包安装不应该有问题。但既然有人问，又都是windows用户，我想可以给他们提供编译好的windows包，简化安装过程（这么体贴用户，我都要被自己感动了）。
-
 放在CRAN或Bioconductor上的R包，CRAN和Bioconductor会编译出不同平台的二进制包，但seqcobo放在github上，只有源代码，没有预编译好的包，但没有不是问题，我编译好放上去就行了。
-
 但问题是我没有windows！多年来一直是OSX和linux，MacBook Pro跑Arch Linux，一台iMac跑OSX，我自己根本没有跑windows的机器，所以难为无米之炊，借台机器总是有的，但总不能每次一更新，就拷个代码去别人的机器上打包，再拷回来上传到网上，想想也是蛋疼。
-
 所以没有windows，这事干起来还不太容易，！在想怎么来无中生有生出个windows包出来的时候，我想起了rhub，也是因为没有windows，之前就用rhub来进行windows平台的R check，在把代码push到CRAN或Bioconductor之前，我总会测试没问题了，再提交代码过去，而rhub正好可以给我提供windows平台的检测。">
 <meta name="twitter:description" content="之前帮助高老师实现比对序列的做图，把代码打包为R包seqcombo，方便安装使用。花两小时的作品，发现还有些用户在使用 -，-
-
 之前有人联系我说安装不上，我觉得不应该有这个问题，因为是纯R代码代码，不涉及到编译，源码包安装不应该有问题。但既然有人问，又都是windows用户，我想可以给他们提供编译好的windows包，简化安装过程（这么体贴用户，我都要被自己感动了）。
-
 放在CRAN或Bioconductor上的R包，CRAN和Bioconductor会编译出不同平台的二进制包，但seqcobo放在github上，只有源代码，没有预编译好的包，但没有不是问题，我编译好放上去就行了。
-
 但问题是我没有windows！多年来一直是OSX和linux，MacBook Pro跑Arch Linux，一台iMac跑OSX，我自己根本没有跑windows的机器，所以难为无米之炊，借台机器总是有的，但总不能每次一更新，就拷个代码去别人的机器上打包，再拷回来上传到网上，想想也是蛋疼。
-
 所以没有windows，这事干起来还不太容易，！在想怎么来无中生有生出个windows包出来的时候，我想起了rhub，也是因为没有windows，之前就用rhub来进行windows平台的R check，在把代码push到CRAN或Bioconductor之前，我总会测试没问题了，再提交代码过去，而rhub正好可以给我提供windows平台的检测。">
 <meta property="og:locale" content="en-us">
 
@@ -311,36 +295,23 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>之前帮助高老师实现比对序列的做图，把代码打包为R包seqcombo，方便安装使用。花两小时的作品，发现还有些用户在使用 -，-</p>
-
 <p>之前有人联系我说安装不上，我觉得不应该有这个问题，因为是纯R代码代码，不涉及到编译，源码包安装不应该有问题。但既然有人问，又都是windows用户，我想可以给他们提供编译好的windows包，简化安装过程（这么体贴用户，我都要被自己感动了）。</p>
-
 <p>放在CRAN或Bioconductor上的R包，CRAN和Bioconductor会编译出不同平台的二进制包，但seqcobo放在github上，只有源代码，没有预编译好的包，但没有不是问题，我编译好放上去就行了。</p>
-
 <p>但问题是我没有windows！多年来一直是OSX和linux，MacBook Pro跑Arch Linux，一台iMac跑OSX，我自己根本没有跑windows的机器，所以难为无米之炊，借台机器总是有的，但总不能每次一更新，就拷个代码去别人的机器上打包，再拷回来上传到网上，想想也是蛋疼。</p>
-
 <p>所以没有windows，这事干起来还不太容易，！在想怎么来无中生有生出个windows包出来的时候，我想起了rhub，也是因为没有windows，之前就用rhub来进行windows平台的R check，在把代码push到CRAN或Bioconductor之前，我总会测试没问题了，再提交代码过去，而rhub正好可以给我提供windows平台的检测。</p>
-
 <p>在R check完之后，rhub会把check之前build的包存起来，正是这一点，为我们提供了这无米之炊，这时候我就可以下载它来放到我的repo里，这也算是一个变通的办法。</p>
-
 <p>然而，我要等它check完，再去下载，放到repo，push到github上，动作太多，太繁琐，所以必须写代码让它自动化起来。</p>
-
 <p>于是写了Makefile:</p>
-
-<pre><code class="language-make">windows:
-	Rscript -e 'rhub::check_on_windows(&quot;.&quot;)'
-addtorepo: windows
-	Rscript -e 'drat:::insert(&quot;../$(PKGNAME)_$(PKGVERS).tar.gz&quot;, &quot;../drat/docs&quot;)';\
-	Rscript -e 'drat:::insert(ypages::get_windows_binary(), &quot;../drat/docs&quot;);\
-	cd ../drat;\
-	git add .; git commit -m '$(PKGNAME)_$(PKGVERS)'; git push -u origin master
-</code></pre>
-
-<p>我只要<code>make addtorepo</code>一条指令，它就会自动运行传到rhub的windows平台check我的包，check结束后，下载rhub平台编译的包，然后用<code>drat:::insert</code>来把它放到合适的位置，并生成相应的文件（如包的依赖关系、md5sum等），再把它push到github上去。</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/Screen Shot 2016-11-23 at 6.11.14 PM.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">windows</span><span style="color:#f92672">:</span>
+	Rscript -e <span style="color:#e6db74">&#39;rhub::check_on_windows(&#34;.&#34;)&#39;</span>
+<span style="color:#a6e22e">addtorepo</span><span style="color:#f92672">:</span> windows
+	Rscript -e <span style="color:#e6db74">&#39;drat:::insert(&#34;../$(PKGNAME)_$(PKGVERS).tar.gz&#34;, &#34;../drat/docs&#34;)&#39;</span>;<span style="color:#ae81ff">\</span>
+	Rscript -e <span style="color:#e6db74">&#39;drat:::insert(ypages::get_windows_binary(), &#34;../drat/docs&#34;);\
+</span><span style="color:#e6db74">	cd ../drat;\
+</span><span style="color:#e6db74">	git add .; git commit -m &#39;</span><span style="color:#66d9ef">$(</span>PKGNAME<span style="color:#66d9ef">)</span>_<span style="color:#66d9ef">$(</span>PKGVERS<span style="color:#66d9ef">)</span><span style="color:#960050;background-color:#1e0010">&#39;</span>; git push -u origin master
+</code></pre></div><p>我只要<code>make addtorepo</code>一条指令，它就会自动运行传到rhub的windows平台check我的包，check结束后，下载rhub平台编译的包，然后用<code>drat:::insert</code>来把它放到合适的位置，并生成相应的文件（如包的依赖关系、md5sum等），再把它push到github上去。</p>
+<p>![](<a href="http://guangchuangyu.github.io/blog_images/Bioconductor/Screen">http://guangchuangyu.github.io/blog_images/Bioconductor/Screen</a> Shot 2016-11-23 at 6.11.14 PM.png)</p>
 <p>这里我用了一条<code>ypages::get_windows_binary()</code>指令来检验rhub check是否结束，如果是则把编译的包下载到临时文件，并作为输入传到<code>drat:::insert</code>。</p>
-
 <p><code>ypages</code>也是一个R包，我用来搞github pages的私人定制包，比如我各种包的主页上那些badge图标，显示下载量、版本号、文章引用数目等相关信息的图标，都是通过ypages自动生成的，没有放出来，所以细节不在这里讲，这里主要介绍一个思路，利用rhub云平台来编译windows二进制包，放入私人repo供用户下载安装，通过makefile自动化这一过程。Makefile才是最通用的可重复性研究工具，你值得拥有。</p>
               
             </div>

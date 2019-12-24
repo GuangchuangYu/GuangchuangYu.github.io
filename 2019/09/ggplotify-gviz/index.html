@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 在《ggplotify - version 0.0.4》一文中，有粉丝说想要支持Gviz包，画图包如果输出的是对象，那么我们可以写方法针对这个对象，然而Gviz的输出，却是list，显然这个方法走不通。">
 
 
 <meta property="og:description" content="
-
 在《ggplotify - version 0.0.4》一文中，有粉丝说想要支持Gviz包，画图包如果输出的是对象，那么我们可以写方法针对这个对象，然而Gviz的输出，却是list，显然这个方法走不通。">
 <meta property="og:type" content="article">
 <meta property="og:title" content=" 听说你想把Gviz画的基因结构转成ggplot?">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2019/09/ggplotify-gviz/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 在《ggplotify - version 0.0.4》一文中，有粉丝说想要支持Gviz包，画图包如果输出的是对象，那么我们可以写方法针对这个对象，然而Gviz的输出，却是list，显然这个方法走不通。">
 <meta name="twitter:description" content="
-
 在《ggplotify - version 0.0.4》一文中，有粉丝说想要支持Gviz包，画图包如果输出的是对象，那么我们可以写方法针对这个对象，然而Gviz的输出，却是list，显然这个方法走不通。">
 <meta property="og:locale" content="en-us">
 
@@ -292,33 +288,25 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-1.png" alt="" /></p>
-
+              <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-1.png" alt=""></p>
 <p>在《<a href="http://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247487870&amp;idx=1&amp;sn=836f75a9e6bd17a77a0b886056e51e29&amp;chksm=ec43a039db34292fcd3a618ce4b5f9bebe5bc8414a6d7de196e51bd77177886f9cd81a2472b9&amp;scene=21#wechat_redirect">ggplotify - version 0.0.4</a>》一文中，有粉丝说想要支持Gviz包，画图包如果输出的是对象，那么我们可以写方法针对这个对象，然而Gviz的输出，却是list，显然这个方法走不通。</p>
-
 <p>《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247486133&amp;idx=1&amp;sn=506c42856f734f5754043f737fcfd105&amp;scene=21#wechat_redirect">ggsave支持base plot</a>》一文中，我们知道可以使用base2grob来转化base plot为grob对象，乃至于ggplot2对象。然而Gviz包不是使用base plot来写的，它是使用grid来实现的，但又不输出grob对象，而是直接画图。针对这种情况，我在ggplotify包中又加入了grid2grob函数，以对应于base2grob函数。那么顾名思义，grid2grob函数可以把使用grid出图的，都转成grob对象，它适用于所有基于grid出的图，包括图A中的Gviz，当然也包括图B中的ggplot2(虽然例子中转ggplot2是多此一举)。</p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-2.png" alt="" /></p>
-
-<h3 id="画图a的代码">画图A的代码</h3>
-
-<pre><code class="language-r">library(Gviz)
-library(GenomicRanges)
-data(cpgIslands)
-atrack &lt;- AnnotationTrack(cpgIslands, name = &quot;CpG&quot;)
-gtrack &lt;- GenomeAxisTrack()
-gen&lt;-genome(cpgIslands)
-chr &lt;- as.character(unique(seqnames(cpgIslands)))
-itrack &lt;- IdeogramTrack(genome = gen, chromosome = chr)
-data(geneModels)
-grtrack &lt;- GeneRegionTrack(geneModels, genome = gen,
-                           chromosome = chr, name = &quot;Gene Model&quot;)
-plotTracks(list(itrack, gtrack, atrack, grtrack))
-</code></pre>
-
-<p>其实不使用新版，也是可以支持Gviz的，虽然它的输出（直接画图+返回一个list）不能被直接转变成grob和ggplot2，但直接画图的函数是可以直接的，于是我们只需要简单地把画图的语句包装成一个函数，诸如function() plot_something，然后把这个函数传给as.grob或者as.ggplot就可以实现转化啦，所以旧版本也是支持的，只是你不懂得用而已。</p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-3.png" alt="" /></p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-2.png" alt=""></p>
+<h3 id="a">画图A的代码</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(Gviz)
+<span style="color:#a6e22e">library</span>(GenomicRanges)
+<span style="color:#a6e22e">data</span>(cpgIslands)
+atrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">AnnotationTrack</span>(cpgIslands, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CpG&#34;</span>)
+gtrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">GenomeAxisTrack</span>()
+gen<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">genome</span>(cpgIslands)
+chr <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.character</span>(<span style="color:#a6e22e">unique</span>(<span style="color:#a6e22e">seqnames</span>(cpgIslands)))
+itrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">IdeogramTrack</span>(genome <span style="color:#f92672">=</span> gen, chromosome <span style="color:#f92672">=</span> chr)
+<span style="color:#a6e22e">data</span>(geneModels)
+grtrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">GeneRegionTrack</span>(geneModels, genome <span style="color:#f92672">=</span> gen,
+                           chromosome <span style="color:#f92672">=</span> chr, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Gene Model&#34;</span>)
+<span style="color:#a6e22e">plotTracks</span>(<span style="color:#a6e22e">list</span>(itrack, gtrack, atrack, grtrack))
+</code></pre></div><p>其实不使用新版，也是可以支持Gviz的，虽然它的输出（直接画图+返回一个list）不能被直接转变成grob和ggplot2，但直接画图的函数是可以直接的，于是我们只需要简单地把画图的语句包装成一个函数，诸如function() plot_something，然后把这个函数传给as.grob或者as.ggplot就可以实现转化啦，所以旧版本也是支持的，只是你不懂得用而已。</p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-3.png" alt=""></p>
               
             </div>
           </div>

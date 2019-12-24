@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -281,24 +281,18 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/WechatIMG601.jpeg" alt="" /></p>
-
+        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/WechatIMG601.jpeg" alt=""></p>
 <blockquote>
 <p>当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。</p>
 </blockquote>
-
 <p>这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：</p>
-
 <p>首先我们读入一个FASTA数据：</p>
-
 <pre><code>require(treeio)
 
 fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
 aa &lt;- read.fasta(fasta)
 </code></pre>
-
 <p>数据用<code>treeio</code>包里的<code>read.fasta</code>去读这个氨基酸序列，它有个好处是你直接<code>as.character(aa[[i]])</code>就是个字母的向量，方便比较。</p>
-
 <pre><code>n = length(aa)
 d = matrix(NA, ncol=n, nrow=n)
 nm = labels(aa)
@@ -311,7 +305,6 @@ for (i in seq_len(n)) {
     }
 } 
 </code></pre>
-
 <p>这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。</p>
       
       <p>

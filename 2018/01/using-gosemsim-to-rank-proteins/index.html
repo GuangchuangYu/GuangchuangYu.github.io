@@ -5,35 +5,25 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="很多人会有这样一个问题，差异基因一大堆，到底该选那个来做下游的实验验证？这个问题，说白了是个基因「重要性」的打分问题，你做差异基因分析的时候，就可以看做是个打分的过程，p值是你的统计量，p值越小，打分越高，然而所有的打分都是辅助帮我们进一步缩小范围而已，并不是打分越高就越「重要」，如果打分可以说明一切，那么我们就不需要实验验证了。所以像差异基因分析，我们一般是卡p &lt; 0.01或p &lt; 0.05来过滤，把p值小的基因留下来，但我们并不能说p值最小的基因就是最重要的。
-
 回到开头的问题，我们要的是对打分（差异分析）结果再利用别的手段，再一次进行打分，进一步缩小范围。比如你可以通过构建相互作用网络，通过分析betweenness，找hub分子。当然打分不一定是要基于基因/蛋白水平，也可以是通路水平，比如你可以用clusterProfiler进行富集分析，然后把你的目标限定在某个/些通路上。反正就是各种手段一起上，直到你能够限定到少量几个基因上，对于做实验验证的人来说，再好不过。
-
 上一周发表的《GOSemSim: GO语义相似性度量》，我记录了GOSemSim包被应用于各种各样的场景，它当然也可以拿来给基因/蛋白质打分。比如你用clusterProfiler分析后，就想验证某一通路，但不知道要选这个通路的哪个基因来做为切入点。
-
 首先问一个问题，同一通路上的基因功能相似性高吗？大家可能会潜意识地认为应该比较高，这不一定的，基因/蛋白有直接或间接的相互作用，但这种相互作用可能只是「月上柳梢头，人约黄昏后」而已，可能偶尔才来一发，这种属于约会型。一个基因/蛋白通常会参与到多条不同的通路中，如果两个蛋白在不同的通路中经常一起出现，那么它们的功能相似性才会高，这种属于基友/闺蜜的死党型。今天就来讲一讲到底谁和谁在约会，谁和谁又是死党。
 
-
 Y Han, G Yu, H Sarioglu, A Caballero-Martinez, F Schlott, M Ueffing, H Haase, C Peschel, AM Krackhardt. Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity. Journal of Proteomics. 2013, 78:72-82.
-
 
 这篇文章是和慕尼黑工业大学（Technische Universität München）合作的一篇文章，使用了Co-IP去拉蛋白，再用LC-MS/MS进行鉴定，Co-IP是鉴定蛋白相互作用的常用手段，当然拉下来的蛋白不见得就是有真实的相互作用，它甚至于可能只是背景污染而已，所以我们需要对拉下来的蛋白进行打分，找出一些可能性比较高的候选蛋白进一步进行验证。">
 
 
 <meta property="og:description" content="很多人会有这样一个问题，差异基因一大堆，到底该选那个来做下游的实验验证？这个问题，说白了是个基因「重要性」的打分问题，你做差异基因分析的时候，就可以看做是个打分的过程，p值是你的统计量，p值越小，打分越高，然而所有的打分都是辅助帮我们进一步缩小范围而已，并不是打分越高就越「重要」，如果打分可以说明一切，那么我们就不需要实验验证了。所以像差异基因分析，我们一般是卡p &lt; 0.01或p &lt; 0.05来过滤，把p值小的基因留下来，但我们并不能说p值最小的基因就是最重要的。
-
 回到开头的问题，我们要的是对打分（差异分析）结果再利用别的手段，再一次进行打分，进一步缩小范围。比如你可以通过构建相互作用网络，通过分析betweenness，找hub分子。当然打分不一定是要基于基因/蛋白水平，也可以是通路水平，比如你可以用clusterProfiler进行富集分析，然后把你的目标限定在某个/些通路上。反正就是各种手段一起上，直到你能够限定到少量几个基因上，对于做实验验证的人来说，再好不过。
-
 上一周发表的《GOSemSim: GO语义相似性度量》，我记录了GOSemSim包被应用于各种各样的场景，它当然也可以拿来给基因/蛋白质打分。比如你用clusterProfiler分析后，就想验证某一通路，但不知道要选这个通路的哪个基因来做为切入点。
-
 首先问一个问题，同一通路上的基因功能相似性高吗？大家可能会潜意识地认为应该比较高，这不一定的，基因/蛋白有直接或间接的相互作用，但这种相互作用可能只是「月上柳梢头，人约黄昏后」而已，可能偶尔才来一发，这种属于约会型。一个基因/蛋白通常会参与到多条不同的通路中，如果两个蛋白在不同的通路中经常一起出现，那么它们的功能相似性才会高，这种属于基友/闺蜜的死党型。今天就来讲一讲到底谁和谁在约会，谁和谁又是死党。
 
-
 Y Han, G Yu, H Sarioglu, A Caballero-Martinez, F Schlott, M Ueffing, H Haase, C Peschel, AM Krackhardt. Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity. Journal of Proteomics. 2013, 78:72-82.
-
 
 这篇文章是和慕尼黑工业大学（Technische Universität München）合作的一篇文章，使用了Co-IP去拉蛋白，再用LC-MS/MS进行鉴定，Co-IP是鉴定蛋白相互作用的常用手段，当然拉下来的蛋白不见得就是有真实的相互作用，它甚至于可能只是背景污染而已，所以我们需要对拉下来的蛋白进行打分，找出一些可能性比较高的候选蛋白进一步进行验证。">
 <meta property="og:type" content="article">
@@ -43,29 +33,19 @@ Y Han, G Yu, H Sarioglu, A Caballero-Martinez, F Schlott, M Ueffing, H Haase, C 
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/01/using-gosemsim-to-rank-proteins/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="很多人会有这样一个问题，差异基因一大堆，到底该选那个来做下游的实验验证？这个问题，说白了是个基因「重要性」的打分问题，你做差异基因分析的时候，就可以看做是个打分的过程，p值是你的统计量，p值越小，打分越高，然而所有的打分都是辅助帮我们进一步缩小范围而已，并不是打分越高就越「重要」，如果打分可以说明一切，那么我们就不需要实验验证了。所以像差异基因分析，我们一般是卡p &lt; 0.01或p &lt; 0.05来过滤，把p值小的基因留下来，但我们并不能说p值最小的基因就是最重要的。
-
 回到开头的问题，我们要的是对打分（差异分析）结果再利用别的手段，再一次进行打分，进一步缩小范围。比如你可以通过构建相互作用网络，通过分析betweenness，找hub分子。当然打分不一定是要基于基因/蛋白水平，也可以是通路水平，比如你可以用clusterProfiler进行富集分析，然后把你的目标限定在某个/些通路上。反正就是各种手段一起上，直到你能够限定到少量几个基因上，对于做实验验证的人来说，再好不过。
-
 上一周发表的《GOSemSim: GO语义相似性度量》，我记录了GOSemSim包被应用于各种各样的场景，它当然也可以拿来给基因/蛋白质打分。比如你用clusterProfiler分析后，就想验证某一通路，但不知道要选这个通路的哪个基因来做为切入点。
-
 首先问一个问题，同一通路上的基因功能相似性高吗？大家可能会潜意识地认为应该比较高，这不一定的，基因/蛋白有直接或间接的相互作用，但这种相互作用可能只是「月上柳梢头，人约黄昏后」而已，可能偶尔才来一发，这种属于约会型。一个基因/蛋白通常会参与到多条不同的通路中，如果两个蛋白在不同的通路中经常一起出现，那么它们的功能相似性才会高，这种属于基友/闺蜜的死党型。今天就来讲一讲到底谁和谁在约会，谁和谁又是死党。
 
-
 Y Han, G Yu, H Sarioglu, A Caballero-Martinez, F Schlott, M Ueffing, H Haase, C Peschel, AM Krackhardt. Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity. Journal of Proteomics. 2013, 78:72-82.
-
 
 这篇文章是和慕尼黑工业大学（Technische Universität München）合作的一篇文章，使用了Co-IP去拉蛋白，再用LC-MS/MS进行鉴定，Co-IP是鉴定蛋白相互作用的常用手段，当然拉下来的蛋白不见得就是有真实的相互作用，它甚至于可能只是背景污染而已，所以我们需要对拉下来的蛋白进行打分，找出一些可能性比较高的候选蛋白进一步进行验证。">
 <meta name="twitter:description" content="很多人会有这样一个问题，差异基因一大堆，到底该选那个来做下游的实验验证？这个问题，说白了是个基因「重要性」的打分问题，你做差异基因分析的时候，就可以看做是个打分的过程，p值是你的统计量，p值越小，打分越高，然而所有的打分都是辅助帮我们进一步缩小范围而已，并不是打分越高就越「重要」，如果打分可以说明一切，那么我们就不需要实验验证了。所以像差异基因分析，我们一般是卡p &lt; 0.01或p &lt; 0.05来过滤，把p值小的基因留下来，但我们并不能说p值最小的基因就是最重要的。
-
 回到开头的问题，我们要的是对打分（差异分析）结果再利用别的手段，再一次进行打分，进一步缩小范围。比如你可以通过构建相互作用网络，通过分析betweenness，找hub分子。当然打分不一定是要基于基因/蛋白水平，也可以是通路水平，比如你可以用clusterProfiler进行富集分析，然后把你的目标限定在某个/些通路上。反正就是各种手段一起上，直到你能够限定到少量几个基因上，对于做实验验证的人来说，再好不过。
-
 上一周发表的《GOSemSim: GO语义相似性度量》，我记录了GOSemSim包被应用于各种各样的场景，它当然也可以拿来给基因/蛋白质打分。比如你用clusterProfiler分析后，就想验证某一通路，但不知道要选这个通路的哪个基因来做为切入点。
-
 首先问一个问题，同一通路上的基因功能相似性高吗？大家可能会潜意识地认为应该比较高，这不一定的，基因/蛋白有直接或间接的相互作用，但这种相互作用可能只是「月上柳梢头，人约黄昏后」而已，可能偶尔才来一发，这种属于约会型。一个基因/蛋白通常会参与到多条不同的通路中，如果两个蛋白在不同的通路中经常一起出现，那么它们的功能相似性才会高，这种属于基友/闺蜜的死党型。今天就来讲一讲到底谁和谁在约会，谁和谁又是死党。
 
-
 Y Han, G Yu, H Sarioglu, A Caballero-Martinez, F Schlott, M Ueffing, H Haase, C Peschel, AM Krackhardt. Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity. Journal of Proteomics. 2013, 78:72-82.
-
 
 这篇文章是和慕尼黑工业大学（Technische Universität München）合作的一篇文章，使用了Co-IP去拉蛋白，再用LC-MS/MS进行鉴定，Co-IP是鉴定蛋白相互作用的常用手段，当然拉下来的蛋白不见得就是有真实的相互作用，它甚至于可能只是背景污染而已，所以我们需要对拉下来的蛋白进行打分，找出一些可能性比较高的候选蛋白进一步进行验证。">
 <meta property="og:locale" content="en-us">
@@ -335,25 +315,16 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>很多人会有这样一个问题，差异基因一大堆，到底该选那个来做下游的实验验证？这个问题，说白了是个基因「重要性」的打分问题，你做差异基因分析的时候，就可以看做是个打分的过程，p值是你的统计量，p值越小，打分越高，然而所有的打分都是辅助帮我们进一步缩小范围而已，并不是打分越高就越「重要」，如果打分可以说明一切，那么我们就不需要实验验证了。所以像差异基因分析，我们一般是卡p &lt; 0.01或p &lt; 0.05来过滤，把p值小的基因留下来，但我们并不能说p值最小的基因就是最重要的。</p>
-
 <p>回到开头的问题，我们要的是对打分（差异分析）结果再利用别的手段，再一次进行打分，进一步缩小范围。比如你可以通过构建相互作用网络，通过分析betweenness，找hub分子。当然打分不一定是要基于基因/蛋白水平，也可以是通路水平，比如你可以用<a href="http://mp.weixin.qq.com/s/ScwaofLd_ybfECYjL1dGow">clusterProfiler进行富集分析</a>，然后把你的目标限定在某个/些通路上。反正就是各种手段一起上，直到你能够限定到少量几个基因上，对于做实验验证的人来说，再好不过。</p>
-
 <p>上一周发表的《<a href="https://mp.weixin.qq.com/s/FTzgf1JHXAhDta2u-cDksQ">GOSemSim: GO语义相似性度量</a>》，我记录了GOSemSim包被应用于各种各样的场景，它当然也可以拿来给基因/蛋白质打分。比如你用clusterProfiler分析后，就想验证某一通路，但不知道要选这个通路的哪个基因来做为切入点。</p>
-
 <p>首先问一个问题，同一通路上的基因功能相似性高吗？大家可能会潜意识地认为应该比较高，这不一定的，基因/蛋白有直接或间接的相互作用，但这种相互作用可能只是「月上柳梢头，人约黄昏后」而已，可能偶尔才来一发，这种属于约会型。一个基因/蛋白通常会参与到多条不同的通路中，如果两个蛋白在不同的通路中经常一起出现，那么它们的功能相似性才会高，这种属于基友/闺蜜的死党型。今天就来讲一讲到底谁和谁在约会，谁和谁又是死党。</p>
-
 <blockquote>
 <p>Y Han, <strong>G Yu</strong>, H Sarioglu, A Caballero-Martinez, F Schlott, M Ueffing, H Haase, C Peschel, AM Krackhardt. <a href="http://www.sciencedirect.com/science/article/pii/S1874391912007567">Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity</a>. <strong><em>Journal of Proteomics</em></strong>. 2013, 78:72-82.</p>
 </blockquote>
-
 <p>这篇文章是和慕尼黑工业大学（Technische Universität München）合作的一篇文章，使用了Co-IP去拉蛋白，再用LC-MS/MS进行鉴定，Co-IP是鉴定蛋白相互作用的常用手段，当然拉下来的蛋白不见得就是有真实的相互作用，它甚至于可能只是背景污染而已，所以我们需要对拉下来的蛋白进行打分，找出一些可能性比较高的候选蛋白进一步进行验证。</p>
-
 <p>在这篇文章中，我定义功能相似性为分子功能和细胞组分的GO语义相似性的几何平均数，也就是说同时考虑到蛋白的功能和细胞定位。GO语义相似性当然由我的GOSemSim包计算得出，这个功能相似性你可以当成是在给蛋白之间的关系强度进行打分，结果就如同下图所示：</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screen-Shot-2014-12-16-at-12.05.58-am.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/2015/Screen-Shot-2014-12-16-at-12.05.58-am.png" alt=""></p>
 <p>显而易见，我们使用FMNL1拉下来的这些蛋白中，处于核心地位的是AHNAK1、SIPA1、FLII这三个基因，通过文献检索，SIPA1和FLII都有报道与FMNL1有关，而这个AHNAK1处于打分最高的，而与FMNL1的相互作用竟然从没被报道过，显然它就成为了我们进一步验证的靶基因。继而我们验证了这个相互作用，AHNAK1的C端与FMNL1的N端有相互作用。前人的研究表明AHNAK1是钙依赖的，我们通过这个新发现的相互作用，进一步就发现了FMNL1可以通过诱导AHNAK1的translocation来强化ionophore-mediated calcium influx，这就又进一步发现了FMNL1蛋白的新功能，它可以调控钙依赖的细胞膜骨架。</p>
-
 <p>这就是从GOSemSim的计算出来，通过考察谁是谁的死党，发现了没被前人发现的好基友，进而通过验证，指向了新功能。</p>
               
             </div>

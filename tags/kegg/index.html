@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -280,9 +280,7 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <h2 id="bitr-kegg">bitr_kegg</h2>
-
 <p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
-
 <pre><code>library(clusterProfiler)
 data(gcSample)
 hg &lt;- gcSample[[1]]
@@ -317,7 +315,6 @@ head(np2up)
 ## 5      NP_006054  O60662
 ## 6   NP_001092002  O95398
 </code></pre>
-
 <p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
       
       <p>
@@ -376,7 +373,8 @@ head(np2up)
       
         <blockquote>
 <p>KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:</p>
-
+</blockquote>
+<blockquote>
 <ul>
 <li>pathway modules – representing tight functional units in KEGG metabolic pathway maps, such as M00002 (Glycolysis, core module involving three-carbon compounds)</li>
 <li>structural complexes – often forming molecular machineries, such as M00072 (Oligosaccharyltransferase)</li>
@@ -441,16 +439,15 @@ head(np2up)
       
         <p><em>KEGG.db</em> is not updated since 2012. The data is now pretty old, but
 many of the Bioconductor packages still using it for KEGG annotation and
-enrichment analysis. As pointed out in &lsquo;<a href="http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases">Are there too many biological databases</a>&rsquo;,
+enrichment analysis. As pointed out in &lsquo;<a href="http://www.acgt.me/blog/2015/1/16/are-there-too-many-biological-databases">Are there too many biological databases</a>',
 there is a problem that many out of date biological databases often
-don&rsquo;t get offline. This issue also exists in web-server or software that
+don't get offline. This issue also exists in web-server or software that
 using out-of-date data. For example, the
 <a href="http://wego.genomics.org.cn/cgi-bin/wego/index.pl">WEGO</a> web-server
 stopped updating GO annotation data since 2009, and WEGO still online
 with <a href="https://scholar.google.com.hk/scholar?as_ylo=2015&amp;hl=en&amp;as_sdt=0,5&amp;sciodt=0,5&amp;cites=13025429171853466135&amp;scipsc=">many people using it</a>.
 The biological story may changed totally if using a recently updated
 data. Seriously, We should keep an eye on this issue.</p>
-
 <p>Now <em>enrichKEGG</em> function is reloaded with a new parameter <em>use_internal_data</em>. This
 parameter is by default setting to FALSE, and <em>enrichKEGG</em> function will
 download the latest KEGG data for enrichment analysis. If the parameter
@@ -470,7 +467,7 @@ current release version of
 and &ldquo;mouse&rdquo;. For these previously supported species, common name is also
 supported. So that you script is still working with new version of
 <a href="http://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html">clusterProfiler</a>.
-For other species, common name is not supported, since I don&rsquo;t want to
+For other species, common name is not supported, since I don't want to
 maintain such a long mapping list with many species have no common name
 available and it may also introduce unexpected bugs.</p>
       

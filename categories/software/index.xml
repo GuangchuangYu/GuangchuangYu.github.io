@@ -17,19 +17,12 @@
       <pubDate>Mon, 26 Nov 2018 00:22:16 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2018/11/macbook-arch-setting/</guid>
-      <description>&lt;h2 id=&#34;声音&#34;&gt;声音&lt;/h2&gt;
-
+      <description>&lt;h2 id=&#34;heading&#34;&gt;声音&lt;/h2&gt;
 &lt;p&gt;没有声音，在&lt;code&gt;/etc/modprobe.d/modprobe.conf&lt;/code&gt;里加入：&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;options snd-hda-intel model=mbp3 position_fix=2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;网络&#34;&gt;网络&lt;/h2&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;heading-1&#34;&gt;网络&lt;/h2&gt;
 &lt;p&gt;dhcpcd禁止&lt;code&gt;ipv6&lt;/code&gt;:&lt;/p&gt;
-
 &lt;p&gt;在&lt;code&gt;/etc/dhcpcd.conf&lt;/code&gt;中加入:&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;noipv6rs
 noipv6
 &lt;/code&gt;&lt;/pre&gt;</description>
@@ -42,8 +35,12 @@ noipv6
       
       <guid>https://guangchuangyu.github.io/2018/11/arch-lts/</guid>
       <description>&lt;p&gt;看到一个帖子, &lt;a href=&#34;https://www.maketecheasier.com/make-arch-linux-more-stable/&#34;&gt;https://www.maketecheasier.com/make-arch-linux-more-stable/&lt;/a&gt;， 说避免老升级内核，用lts版，装完可以把原先内核干掉：&lt;/p&gt;
-
-&lt;blockquote&gt;</description>
+&lt;blockquote&gt;
+&lt;pre&gt;&lt;code&gt;sudo pacman -S linux-lts
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;When you’ve installed the LTS kernel, it’s a good idea to remove the bleeding edge kernel from your system.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo pacman -R linux 
+&lt;/code&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;我内心闪过一个想法，难道不用配置启动么？也没去确认，照做后重启，你妹啊，太坑了，直接就找不到内核死掉！&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -55,20 +52,14 @@ noipv6
       <description>&lt;blockquote&gt;
 &lt;p&gt;之前公众号上有人说，我回大陆了会有一波科学上网的教程，今天的推文算一个吧。真的是被你们言中了！&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;做为Bioconductor包作者，而&lt;code&gt;git push&lt;/code&gt;传代码到Bioconductor上是被封的。这很是恼火，随着10月份将迎来新一版本的Bioconductor发布，不能够push代码是多么惨的一件事。&lt;/p&gt;
-
 &lt;p&gt;代理其实也挺恼火的，因为各种协议啊，你要各种设置啊，&lt;code&gt;http/https/ssh/git&lt;/code&gt;都是各种配置，其实我只要有一个&lt;code&gt;socks5&lt;/code&gt;的代理，然后你们所有需要走代理的程序都通过它就好了。&lt;/p&gt;
-
 &lt;p&gt;谁特么有空天天在琢磨怎么配置各种不同协议的代理！只要我们想得到的，一般都有人做了。&lt;/p&gt;
-
 &lt;p&gt;于是万能的github上找到了&lt;a href=&#34;https://github.com/haad/proxychains&#34;&gt;proxychains&lt;/a&gt;。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;A hook preloader that allows to redirect TCP traffic of existing
 dynamically linked programs through one or more SOCKS or HTTP
 proxies
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;它强制给定程序发起的TCP连接通过事先配置的代理。可以涵盖所有需要代理的情景。就以git为例，没有proxychains的话，就必须为每个协议（&lt;code&gt;https&lt;/code&gt;, &lt;code&gt;git&lt;/code&gt;, &lt;code&gt;ssh&lt;/code&gt;）按照git文档的要求分别设置代理，过程复杂且不稳定。有了&lt;code&gt;proxychains&lt;/code&gt;，这些完全可以不用管，当然应用场景不限于&lt;code&gt;git&lt;/code&gt;，任何一个需要代理的命令行程序都是一样在运行的指令前面加&lt;code&gt;proxychains&lt;/code&gt;完事。&lt;/p&gt;</description>
     </item>
     
@@ -79,13 +70,9 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2018/06/chocolatey/</guid>
       <description>&lt;p&gt;试想一下，每次重装系统，都要安装一堆常用的小软件，7zip, notepad++, filezilla, winrar等等，每次都要搜索下载地址，下载，安装，摆明了是木兰要从军一般，“东市买骏马，西市买鞍鞯，南市买辔头，北市买长鞭”，当然Windows现在也有各种软件管家之类的软件，但很多是流氓软件，要带各种全家桶的，我宁愿自己来一次木兰从军记。&lt;/p&gt;
-
 &lt;p&gt;大家都喜欢Linux的包管理，比如&lt;code&gt;apt-get&lt;/code&gt;，而OSX也有homebrew，可以brew install一大票Unix-like的软件，而Windows用户只有羡慕的份，上面提到的流氓软件管理，当然也是装不了Unix-like软件的，所以我们羡慕，我们妒忌，外加恨！&lt;/p&gt;
-
-&lt;hr /&gt;
-
+&lt;hr&gt;
 &lt;p&gt;今天要跟大家介绍一个为windows设计的包管理器，Chocolatey，有了它，你也能&lt;code&gt;choco install wget&lt;/code&gt;, &lt;code&gt;choco install docker&lt;/code&gt;这样装软件了，不用再羡慕水果用户，不用再木兰从军般装软件了。&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Chocolatey is a package manager for Windows (like apt-get or yum but for Windows)&lt;/strong&gt;. It was designed to be a decentralized framework for quickly installing applications and tools that you need. It is built on the NuGet infrastructure currently using PowerShell as its focus for delivering packages from the distros to your door, err computer.&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -98,13 +85,10 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2018/05/kopernio/</guid>
       <description>&lt;p&gt;kopernio是个浏览器插件，可以通过&lt;a href=&#34;http://kopernio.com/&#34;&gt;http://kopernio.com/&lt;/a&gt;获得，现在这类插件其实挺多，当然多半是结合sci-hub，而sci-hub也是下文献领域绝对的王者，而且很多插件还有额外的一些功能，比如显示影响因子之类的，甚至于还有些给加二维码，微信扫一扫直接把文章分享到朋友圈，反正是啥都有人干。所以虽然我知道这个插件已经很久了，我一直没有介绍它的原因就在于此，它似乎也并不出彩。&lt;/p&gt;
-
 &lt;p&gt;但今天我要介绍它，因为当你打开它的主页时，你会发现赫然公布着一个消息：&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;We are excited to announce that Kopernio has joined Clarivate Analytics, the home of Web of Science and the Journal Impact Factor.&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;它被Clarivate Analytics收购了，已经是Clarivate Analytics旗下的产品，这意味着以后可能会与Web of Science有更好的整合，它现在支持PubMed和Google Scholar，以后支持Web of Science肯定不在话下，现在是给你一个按钮，直接点击下PDF，以后可能通过整合Web of Science，比如给你期刊的影响因子、学科排名等Clarivate Analytics的拳头产品。&lt;/p&gt;</description>
     </item>
     
@@ -115,9 +99,7 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2018/04/r-35-release/</guid>
       <description>&lt;p&gt;R &lt;code&gt;3.5.0&lt;/code&gt;已经发布了，我昨天已经更新了，Bioconductor也将在5月初发布&lt;code&gt;3.7&lt;/code&gt;版本，就我个人而言，新版的Bioconductor主要有以下一些新东西：&lt;/p&gt;
-
 &lt;h2 id=&#34;enrichplot&#34;&gt;enrichplot&lt;/h2&gt;
-
 &lt;p&gt;新包&lt;code&gt;enrichplot&lt;/code&gt;，《&lt;a href=&#34;https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA&#34;&gt;enrichplot: 让你们对clusterProfiler系列包无法自拔&lt;/a&gt;
 》，以后&lt;code&gt;clusterProfiler&lt;/code&gt;系列出图更好看了，而且所有图你都可以用&lt;code&gt;cowplot&lt;/code&gt;拼图。&lt;/p&gt;</description>
     </item>
@@ -129,7 +111,6 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2018/04/vscode-r/</guid>
       <description>&lt;p&gt;在《&lt;a href=&#34;http://mp.weixin.qq.com/s/BsEm76Eq9_tbw3myobD_SA&#34;&gt;你所不知道的，R的N种打开方式&lt;/a&gt;》我介绍了N多种打开R的方式，甚至于你还能用python写的号称21世纪的R界面：《&lt;a href=&#34;https://mp.weixin.qq.com/s/VbMq3ZKMdn0E3wauC4l_hg&#34;&gt;R，python喊你回家吃饭啦&lt;/a&gt;》。&lt;/p&gt;
-
 &lt;p&gt;我自己一直很少用RStudio，而是用Emacs，虽然Emacs比较小众，也不适合这个公众号的粉丝，但文本编辑器之于程序程好比剑客手中的剑，一个用着顺手、长期使用的文本编辑器比什么都好，在《&lt;a href=&#34;http://mp.weixin.qq.com/s/BsEm76Eq9_tbw3myobD_SA&#34;&gt;你所不知道的，R的N种打开方式&lt;/a&gt;》中我介绍了Emacs, Vim, textMate, sublime，今天要介绍另一款，VSCode，这是微软开源的文本编辑器，非常现代化，有很好的扩展生态。&lt;/p&gt;</description>
     </item>
     
@@ -140,11 +121,8 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2018/01/scihub-osx/</guid>
       <description>&lt;p&gt;为了方便苹果用户也能用桌面软件下文献，我把SciHub桌面版打包成可以运行在苹果上的App。&lt;/p&gt;
-
 &lt;p&gt;SciHub桌面版是Windows程序，主页为&lt;a href=&#34;https://zhuanlan.zhihu.com/p/31809890&#34;&gt;https://zhuanlan.zhihu.com/p/31809890&lt;/a&gt;。&lt;/p&gt;
-
 &lt;p&gt;首先这是利用wine技术实现的，在苹果上你需要安装&lt;strong&gt;XQuartz&lt;/strong&gt;: &lt;a href=&#34;https://www.xquartz.org/&#34;&gt;https://www.xquartz.org/&lt;/a&gt;。&lt;/p&gt;
-
 &lt;p&gt;安装很容易，我已经打包了dmg文件，这个文件有44M，还挺大的，没法，要打包一个windows的运行环境嘛。&lt;/p&gt;</description>
     </item>
     
@@ -154,8 +132,7 @@ proxies
       <pubDate>Fri, 22 Dec 2017 13:50:22 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2017/12/biosyntax/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;http://biosyntax.org/images/sam-less-small.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;http://biosyntax.org/images/sam-less-small.gif&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;对于生信狗，天天黑白命令行，实验室的同事，经常对着我的Emacs说，这么小的字体你看得清吗？我只能无奈地回答，因为我要一个屏幕显示一整个函数。我自己平时写代码也很注意这一点，函数尽量小，太长就要考虑切分成几个函数，我说自己是脑容量不够，写不了长函数。我希望如果有人看我代码，他/她可以看得舒服点，虽然写的不见得好，但起码一个函数，你一个屏幕是装得下的。岁月留给我们的，是越来越厚的镜片！然而最近有一款神器，让我们在命令行里，可以高亮显示生物学常见的数据格式，包括SAM, VCF, GTF, PDB和FASTA。这款神器叫bioSyntax (&lt;a href=&#34;http://bioSyntax.org&#34;&gt;http://bioSyntax.org&lt;/a&gt;) ，看着舒服多了，而且逼格十足，如果大家序列比对看多了，其实都会依赖于看颜色，黑白字体情况下，你很难去区分ATCG，即使有明显的pattern，你也很难看出来。&lt;/p&gt;</description>
     </item>
     
@@ -168,13 +145,9 @@ proxies
       <description>&lt;blockquote&gt;
 &lt;p&gt;Linux是生信从业者最好的操作系统，我觉得对新手最大的安利是大家常用的软件都可以在linux上爽快地用！之前介绍了&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484544&amp;amp;idx=1&amp;amp;sn=f22444670bec8505090cf377de98b6f4&amp;amp;chksm=ec43b5c7db343cd1f7b3e516e7110f7aa25d11cc6c7fd741808cf70548a1d0e4a3cb76aa9236#rd&#34;&gt;QQ&lt;/a&gt; 、&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484423&amp;amp;idx=1&amp;amp;sn=311c627bb70e6fc626bb1f014ec0a976&amp;amp;chksm=ec43b540db343c56fb01f86851c0a4b685351b860d0c9ac2f9709857428b4b76b85bf2bc8b49&amp;amp;scene=21#wechat_redirect&#34;&gt;微信&lt;/a&gt;、&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484004&amp;amp;idx=1&amp;amp;sn=ef769333f07137b83daf9f338ec18eba&amp;amp;chksm=ec43b323db343a35da859d08110d480296b3c95a99240b0ea7336ffbdfd465ef59e6f92d67ff#rd&#34;&gt;迅雷&lt;/a&gt;，这次将介绍度娘的网盘云管家。&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;h2 id=&#34;老司机带带你&#34;&gt;老司机带带你&lt;/h2&gt;
-
+&lt;h2 id=&#34;heading&#34;&gt;老司机带带你&lt;/h2&gt;
 &lt;p&gt;各种音乐客户端我都没装，看到朋友圈有分享音乐的，偶尔手贱点进去，通常都会弹出来说告诉我，我所在的区域不支持！尼玛！这世界除了翻墙之外，还有翻回去的，到了墙内网络上音乐、视频才可以听可以看。某一天我想下个专辑放手机上吧，网络上各种搜索，都无法下载，各种会员制、付费、论坛经验值神马的，于是我怒了，找了个磁力链，扔给度娘，度娘&lt;strong&gt;1秒钟&lt;/strong&gt;就给我下好了，你没看错，度娘下东西是秒下！&lt;/p&gt;
-
 &lt;p&gt;Linux上链接有软链接和硬链接之分，软链接就是大家熟悉的’快捷方式‘，而硬链接则是真正意义上的物理指向，所有链接都是真实的，但电脑上有一份拷贝，但凡有一个链接还存在，文件就存在。云盘肯定是类似这样的‘硬链接’，你把别人云盘里的资源保存在你的云盘里，它消耗了你的空间，而实际上对于云盘供应商，零消耗！云盘里有大量的资源，什么东西能吸引用户？色情、电影、盗版软件这些绝对占大头，度娘给了大家下载BT的功能，现在又有下载磁力链的功能，简直分分种满足宅男所有愿望！但凡你要下的东西是存在于度娘的云盘里的，它瞬间就可以给你一个硬链接，所以下东西都是秒下！&lt;/p&gt;
-
 &lt;p&gt;之前有师弟在微信群里问那里可以下到illustrator，被我笑说做为汉子怎么好意思在群里问师姐下盗版，不会下也默默地上淘宝买啊，也就几块钱的事。其实这些上网随便找个BT或磁力链，交给度娘，秒下。即使是很老的BT种子，已经没源了，度娘也是秒下。度娘才是最大的老司机，从此你不再也没理由看不到小电影、看不到盗版碟、下不了盗版软件、听了不盗版专辑。度娘喊你上车！一次满足你所有愿望！&lt;/p&gt;</description>
     </item>
     
@@ -187,7 +160,6 @@ proxies
       <description>&lt;blockquote&gt;
 &lt;p&gt;在《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247483956&amp;amp;idx=1&amp;amp;sn=16df120e86b3e66395ce69c3abf76715&amp;amp;chksm=ec43b373db343a6581301f52c923c7506e0f0789d5f0792fbf59da44f8b29b833cdbc46ddfc2#rd&#34;&gt;如何获取文献&lt;/a&gt;》一文中，我介绍了获取文献的方方面面，从搜索、文献管理、订阅、个性人推荐到下载。本文再继续说说文献下载神器。&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;Sci-hub无疑现在是很多苦逼科研工作者所依赖的最大神器，然而最近败诉给爱思唯尔出版社，赔1500万美元，这点钱显然是不能够搞垮sci-hub的，但是&lt;strong&gt;败诉&lt;/strong&gt;本身给大家带来的信号对sci-hub的影响会更大，必须更大！美国化学学会几天前也发起了对Sci-Hub的诉讼！sci-hub很有可能在败诉的影响下，被群起而攻之，最终被各大出版社给掐死。&lt;/p&gt;</description>
     </item>
     
@@ -198,8 +170,7 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2017/07/r-gui/</guid>
       <description>&lt;p&gt;RStudio太成功，以至于有些新手只知有RStudio，不知有R。在&lt;a href=&#34;https://guangchuangyu.github.io/2015/11/r-kernel-in-jupyter-notebook-3/&#34;&gt;R kernel in Jupyter notebook 3&lt;/a&gt;和&lt;a href=&#34;https://guangchuangyu.github.io/2014/12/auto-complete-in-ess/&#34;&gt;auto-complete in ESS&lt;/a&gt;两篇文章中，我介绍了在Jupyter和Emacs里使用R。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/screenshots/Screenshot%202015-11-04%2010.54.29.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/screenshots/Screenshot%202015-11-04%2010.54.29.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -209,9 +180,7 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2017/05/viziometric/</guid>
       <description>&lt;p&gt;收到了&lt;a href=&#34;http://viziometrics.org&#34;&gt;Viziometric&lt;/a&gt;的邮件：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/screenshots/VizioMetric/Screenshot 2017-05-19 19.48.20.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;![](&lt;a href=&#34;https://guangchuangyu.github.io/blog_images/screenshots/VizioMetric/Screenshot&#34;&gt;https://guangchuangyu.github.io/blog_images/screenshots/VizioMetric/Screenshot&lt;/a&gt; 2017-05-19 19.48.20.png)&lt;/p&gt;
 &lt;p&gt;说要我给自己的一篇文章选一张图做为代表，我顺手点开，没想到这是一款神器啊！这是由University of Washington做Computer Vision的研究生做的一个&lt;strong&gt;学术图片&lt;/strong&gt;搜索引擎，去年被Economist和MIT Technology报道过。&lt;/p&gt;</description>
     </item>
     
@@ -222,10 +191,9 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2017/04/realvnc/</guid>
       <description>&lt;blockquote&gt;
-&lt;p&gt;Virtual Network Computing (VNC) is a special way to remotely control a computer. Like Secure Shell (SSH), a computer user can login to a remote machine on the network and execute commands and access files on the system. However, VNC displays the remote system&amp;rsquo;s desktop while SSH displays a terminal shell. It may be beneficial to learn more about VNC and similar technologies.&lt;/p&gt;
+&lt;p&gt;Virtual Network Computing (VNC) is a special way to remotely control a computer. Like Secure Shell (SSH), a computer user can login to a remote machine on the network and execute commands and access files on the system. However, VNC displays the remote system&#39;s desktop while SSH displays a terminal shell. It may be beneficial to learn more about VNC and similar technologies.&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2017/2017-04-13-011729_1280x800_scrot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2017/2017-04-13-011729_1280x800_scrot.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -237,11 +205,8 @@ proxies
       <description>&lt;blockquote&gt;
 &lt;p&gt;BioEdit是一个Windows的程序，但在这里我要说的是苹果版！&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.mbio.ncsu.edu/bioedit/bioedit.html&#34;&gt;&lt;img src=&#34;http://www.mbio.ncsu.edu/bioedit/Banner1.GIF&#34; alt=&#34;&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;a href=&#34;http://www.mbio.ncsu.edu/bioedit/bioedit.html&#34;&gt;&lt;img src=&#34;http://www.mbio.ncsu.edu/bioedit/Banner1.GIF&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;BioEdit有很多的功能，当然基本上我是不会用的，然而其核心的功能，编辑序列比对，是没法回避的！因为根本找不到可以与之匹敌的软件！&lt;/p&gt;
-
 &lt;p&gt;神马！序列比对不都是clustalw, muscle, mafft这些软件生成完事吗？怎么还要编辑？！我只能说，年轻人，拿衣服啊。&lt;/p&gt;</description>
     </item>
     
@@ -251,10 +216,8 @@ proxies
       <pubDate>Wed, 30 Mar 2016 13:40:22 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2016/03/yet-an-unofficial-bioedit-for-osx/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://www.mbio.ncsu.edu/bioedit/bioedit.html&#34;&gt;&lt;img src=&#34;http://www.mbio.ncsu.edu/bioedit/Banner1.GIF&#34; alt=&#34;&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.mbio.ncsu.edu/bioedit/bioedit.html&#34;&gt;&lt;img src=&#34;http://www.mbio.ncsu.edu/bioedit/Banner1.GIF&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;To my knowledge, &lt;a href=&#34;http://www.mbio.ncsu.edu/bioedit/bioedit.html&#34;&gt;BioEdit&lt;/a&gt; is the most comprehensive biological sequence alignment editor. Most of my labmates run this software using &lt;code&gt;Parallels Desktop&lt;/code&gt;. For some of them, BioEdit is the only reason to install &lt;code&gt;Parallels Desktop&lt;/code&gt;.&lt;/p&gt;
-
 &lt;p&gt;I need to edit my alignment recently, and install it in my iMac using &lt;a href=&#34;https://www.winehq.org/&#34;&gt;Wine&lt;/a&gt;, which is a compatibility layer for running Windows applications on POSIX-compliant OS. Although it is famous in Linux community for many years, many OSX users never heard of it.&lt;/p&gt;</description>
     </item>
     
@@ -265,10 +228,8 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2016/03/google-drive-hku/</guid>
       <description>&lt;p&gt;寻找一个好的网盘一直是个困扰我的问题，Dropbox非常好，但空间有限，大陆的各种网盘都是渣渣，本来试用了一下&lt;a href=&#34;http://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/&#34;&gt;百度云&lt;/a&gt;，但度娘实在不争气，体验非常差。我后来找到了个比较好的方案，那就是&lt;a href=&#34;https://gitlab.com/&#34;&gt;gitlab&lt;/a&gt;，可以创建无限量的project，每个project有10G的空间，这比&lt;a href=&#34;https://github.com/&#34;&gt;github&lt;/a&gt;出手大方多了。唯一不足是&lt;code&gt;.git&lt;/code&gt;文件夹也是非常占空间的。&lt;/p&gt;
-
 &lt;p&gt;到HKU两年多，才发现HKU的邮箱自带无限量的google drive网盘。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2016/google_drive.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2016/google_drive.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -287,15 +248,10 @@ proxies
       
       <guid>https://guangchuangyu.github.io/2015/06/install-amos/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://sourceforge.net/projects/amos/?source=navbar&#34;&gt;Amos&lt;/a&gt;是纯于比较难安装那种，因为依赖关系比较复杂。&lt;/p&gt;
-
 &lt;p&gt;首先编译需要&lt;code&gt;qt4-dev&lt;/code&gt;和&lt;code&gt;boost graph toolkit&lt;/code&gt;：&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;sudo apt-get install libqt4-dev
 sudo apt-get install libboost-graph-dev
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再者是&lt;code&gt;perl&lt;/code&gt;模块：&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;再者是&lt;code&gt;perl&lt;/code&gt;模块：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;sudo cpan -i DBI
 sudo cpan -i Statistics::Descriptive
 &lt;/code&gt;&lt;/pre&gt;</description>
@@ -308,9 +264,9 @@ sudo cpan -i Statistics::Descriptive
       
       <guid>https://guangchuangyu.github.io/2014/12/auto-complete-in-ess/</guid>
       <description>Auto complete is good, it can save you times in typing and prevent typo sometimes.
-RStudio now supports function arguments in auto complete. ESS&amp;rsquo;s auto complete is more advance, it supports help page.
+RStudio now supports function arguments in auto complete. ESS&#39;s auto complete is more advance, it supports help page.
 We should use &amp;lsquo;ess-use-auto-complete&amp;rsquo; to activate auto complete in ESS buffers.
-(setq ess-use-auto-complete t)  The effect is quite amazing. Auto-complete extension is needed for ESS, we need to install the auto-complete extension and load it at Emacs startup.</description>
+(setq ess-use-auto-complete t)The effect is quite amazing. Auto-complete extension is needed for ESS, we need to install the auto-complete extension and load it at Emacs startup.</description>
     </item>
     
     <item>
@@ -319,7 +275,7 @@ We should use &amp;lsquo;ess-use-auto-complete&amp;rsquo; to activate auto compl
       <pubDate>Thu, 04 Sep 2014 15:38:44 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2014/09/install-454-gs-data-analysis-software-on-ubuntu/</guid>
-      <description>Usually Roche&amp;rsquo;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
+      <description>Usually Roche&#39;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
 I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian derived distribution, lspci command is located in /bin folder. This issue is easy to solve by adding a soft link to /sbin/lspci.</description>
     </item>
     
@@ -330,8 +286,8 @@ I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian der
       
       <guid>https://guangchuangyu.github.io/2014/07/r-binary-is-untrustworthy/</guid>
       <description>去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
-Warning: Could not open read file &amp;quot;/tmp/8156.inpipe1&amp;quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
-&amp;gt; library(doParallel) &amp;gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &amp;gt; registerDoParallel(11) &amp;gt; &amp;gt; foreach(i = 1:10) %dopar% { getwd() } &amp;gt; *** caught segfault *** address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39;  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。</description>
+Warning: Could not open read file &amp;quot;/tmp/8156.inpipe1&amp;quot; for reading; skipping...Error: Encountered internal Bowtie 2 exception (#1)Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&amp;gt; library(doParallel)&amp;gt; Loading required package: foreachforeach: simple, scalable parallel programming from Revolution AnalyticsUse Revolution R for scalability, fault tolerance and more.http://www.revolutionanalytics.comLoading required package: iteratorsLoading required package: parallel&amp;gt;registerDoParallel(11)&amp;gt; &amp;gt;foreach(i = 1:10) %dopar% { getwd() }&amp;gt;*** caught segfault ***address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39; 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。</description>
     </item>
     
     <item>
@@ -341,10 +297,8 @@ Warning: Could not open read file &amp;quot;/tmp/8156.inpipe1&amp;quot; for read
       
       <guid>https://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/</guid>
       <description>&lt;p&gt;从2007年写了&lt;a href=&#34;http://cjbmb.bjmu.edu.cn/CN/abstract/abstract17570.shtml&#34;&gt;第一篇文章&lt;/a&gt;之后，我发现管理文献真不是人干的，一直以来使用Zotero来管理文献，自从有了dropbox之后，就想把文献库放在dropbox上，一来有个云备份，不怕硬盘坏，二来嘛，实验室电脑和个人电脑可以实时同步化，无奈dropbox空间太小，而我的zotero早已超过10G，因为电子书也放在里面，只能做罢。&lt;/p&gt;
-
 &lt;p&gt;度娘出手还是很大方的，我现在的网盘已经有3T，包括之前在推广阶段用1元买的1T。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/05/Screenshot-2014-05-05-21.31.57.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2014/05/Screenshot-2014-05-05-21.31.57.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -354,7 +308,7 @@ Warning: Could not open read file &amp;quot;/tmp/8156.inpipe1&amp;quot; for read
       
       <guid>https://guangchuangyu.github.io/2013/11/local-blast/</guid>
       <description>I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
-root@jz:/ssd/genomes# apt-get install ncbi-blast+ Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast+ 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.</description>
+root@jz:/ssd/genomes# apt-get install ncbi-blast+Reading package lists... DoneBuilding dependency treeReading state information... DoneThe following NEW packages will be installed:ncbi-blast+0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded.Need to get 11.2 MB of archives.After this operation, 32.</description>
     </item>
     
     <item>
@@ -377,7 +331,7 @@ root@jz:/ssd/genomes# apt-get install ncbi-blast+ Reading package lists... Done 
 我第一反应是拒绝使用TIFF，600DPI的TIFF文件肯定非常大，EPS也是矢量图，我用R重新把图画一遍，存为EPS就OK了。画图的过程，我发现对EPS的支持不太好，老报些某字体不存在的错误。这当然不是什么大不了的事，自己指定字体就好了。问题在于有张图是拼的，我只能借助于软件转换，我用Inkscape处理，导出EPS，出来的图我发现有些细节并不太好。
 无奈之下还是用TIFF吧，Fig1和3都是R画的，直接指定分辨率和压缩算法，存为TIFF文件。Fig1是3000x3000pixel 600dpi的图，只有320k，Fig3是4200x4200pixel的图，也是600dpi，只有558k，用R产生TIFF还是非常靠谱的。
 关键是Fig2，这一张拼的图，存成PDF矢量图，需要用ImageMagick转换成600DPI的TIFF图片，ImageMagick需要安装Xcode才能在Mac下编译成功。
-Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:others ygc$ identify -verbose fig2.tif Image: fig2.tif Format: TIFF (Tagged Image File Format) Class: DirectClass Geometry: 6000x4500+0+0 Resolution: 600x600 Print size: 10x7.5 Units: Undefined Type: PaletteMatte Base type: TrueColor Endianess: MSB ... Yus-Mac-Pro:others ygc$ convert -density 600 -compress lzw fig2.pdf fig2_compress.tif Yus-Mac-Pro:others ygc$ ls -l fig2*.tif -rw-r--r-- 1 ygc admin 216036263 May 23 17:53 fig2.</description>
+Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tifYus-Mac-Pro:others ygc$ identify -verbose fig2.tifImage: fig2.tifFormat: TIFF (Tagged Image File Format)Class: DirectClassGeometry: 6000x4500+0+0Resolution: 600x600Print size: 10x7.5Units: UndefinedType: PaletteMatteBase type: TrueColorEndianess: MSB...Yus-Mac-Pro:others ygc$ convert -density 600 -compress lzw fig2.pdf fig2_compress.tifYus-Mac-Pro:others ygc$ ls -l fig2*.tif-rw-r--r-- 1 ygc admin 216036263 May 23 17:53 fig2.</description>
     </item>
     
     <item>
@@ -388,10 +342,8 @@ Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:other
       <guid>https://guangchuangyu.github.io/2011/12/word-freq/</guid>
       <description>&lt;p&gt;最近老收到那个&lt;a href=&#34;http://www.douban.com/group/topic/23848309/&#34;&gt;“消灭”文科生的词频页面&lt;/a&gt;。好吧，我也来跟风娱乐一下
 =,=&lt;/p&gt;
-
 &lt;p&gt;对着原贴那样的题目，做为理科生，拿着随机数对着看啥的，哪好意思啊。搞几行代码才好装13。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2011/12/random_word.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2011/12/random_word.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -410,14 +362,9 @@ Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:other
       
       <guid>https://guangchuangyu.github.io/2008/09/ntlmaps/</guid>
       <description>&lt;p&gt;院里使用Microsoft ISA proxy作代理，我用linux，firefox可以通过代理验证，在终端export代理的环境变量也可以用。虽然很多软件不能支持认证，我也懒得理了。由于要用Cytoscape来分析蛋白相互作用网络，这个软件能支持代理却不支持NTLM认证，为了突破这个限制，只能作二级跳了，在本地设一个代理，软件通过这个代理上，而用本机代理负责去连接院内的代理并进行认证。&lt;/p&gt;
-
 &lt;p&gt;搜了一下，发现ntlmaps这个包可以用来做认证，这个包是用python写的。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;&amp;gt; apt-get install ntlmaps # 安装。
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装完就是修改配置文件&lt;code&gt;/etc/ntlmaps/server.cfg&lt;/code&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装完就是修改配置文件&lt;code&gt;/etc/ntlmaps/server.cfg&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;设定网络监听的端口、父级代理的IP和端口、账号、密码、网域。&lt;/p&gt;</description>
     </item>
     
@@ -429,10 +376,8 @@ Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:other
       <guid>https://guangchuangyu.github.io/2008/09/modify-qq-login-gui/</guid>
       <description>&lt;p&gt;闲来无聊，改了一下QQ的登录界面。
 下面是下载链接，到QQ目录里替换掉原文件。修改的文件是2008正式版的，没有在别的版本下测试。&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&#34;http://guangchuangyu.github.io/blog_images/uploads/2008/09/qq_ahmu.rar&#34;&gt;安医版&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2008/11/qq_ahmu.jpg&#34; alt=&#34;qq\_ahmu&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2008/11/qq_ahmu.jpg&#34; alt=&#34;qq\_ahmu&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -442,7 +387,6 @@ Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:other
       
       <guid>https://guangchuangyu.github.io/2008/08/gperiodic/</guid>
       <description>&lt;p&gt;推荐一个小软件，gperiodic，功能很简单，就是个元素周期表而已，可以查到各个元素的详细信息。&lt;/p&gt;
-
 &lt;p&gt;当年初中的时候，这个表也是背过的。。那时候用方言背的，现在用普通话讲，总觉得有点别扭。。&lt;/p&gt;</description>
     </item>
     
@@ -463,28 +407,21 @@ Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:other
       
       <guid>https://guangchuangyu.github.io/2007/05/scilab%E4%B8%89%E7%BB%B4%E5%B9%B3%E9%9D%A2%E7%BB%98%E5%9B%BE/</guid>
       <description>&lt;p&gt;三维绘图可以分为两大类型：矩阵型和曲面型。&lt;/p&gt;
-
-&lt;h2 id=&#34;矩阵型&#34;&gt;矩阵型&lt;/h2&gt;
-
+&lt;h2 id=&#34;heading&#34;&gt;矩阵型&lt;/h2&gt;
 &lt;p&gt;通常是声明一个矩阵，以矩阵的长宽为x,y范围，以矩阵里面的数值为高z，
 使用&lt;code&gt;plot3d(t1,t2,Z,alpha=a,theta=b)&lt;/code&gt;&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;t1:y轴方向的范围&lt;/li&gt;
 &lt;li&gt;t2:x轴方向的范围&lt;/li&gt;
 &lt;li&gt;Z:矩阵&lt;/li&gt;
 &lt;li&gt;alpha&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;theta参数用于指定角度，让图绘出来以某个特定的角度呈现出来。(optional)&lt;/p&gt;
-
+&lt;li&gt;theta参数用于指定角度，让图绘出来以某个特定的角度呈现出来。(optional)&lt;/li&gt;
+&lt;/ul&gt;
 &lt;pre&gt;&lt;code&gt;-&amp;gt;clear -&amp;gt;A=[1 2 5 4 3;0 3 2 8 6;2 4 6 7 5;2 3 4 3 1];
 -&amp;gt;t1=1:4; -&amp;gt;t2=1:5;
 //plot3d1与plot3d语法类似，能够嵌入多种颜色
 -&amp;gt;plot3d(t1,t2,A,alpha=45,theta=45);
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;mesh不需要边界声明， &lt;code&gt;-&amp;gt;mesh(A);&lt;/code&gt;&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;mesh不需要边界声明， &lt;code&gt;-&amp;gt;mesh(A);&lt;/code&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -493,26 +430,17 @@ Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:other
       <pubDate>Sat, 28 May 2005 08:15:00 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2005/05/%E5%9C%A8emacs%E9%87%8C%E4%BD%BF%E7%94%A8maxima/</guid>
-      <description>&lt;h2 id=&#34;下载imaxima&#34;&gt;下载imaxima   &lt;/h2&gt;
-
+      <description>&lt;h2 id=&#34;imaxima&#34;&gt;下载imaxima   &lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz&#34;&gt;http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz&lt;/a&gt;&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;./configure
 make
 sudo make install
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;进行安装。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;进行安装。
 默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;(load &amp;quot;imaxima&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。
-&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2005/05/070902122953.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。
+&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2005/05/070902122953.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;需要breqn094包，可从&lt;a href=&#34;ftp://ftp.ams.org/pub/tex/breqn.zip&#34;&gt;ftp://ftp.ams.org/pub/tex/breqn.zip&lt;/a&gt;下载，&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;cd /usr/share/texmf/tex/latex/
 sudo unzip ~/Downloads/breqn.zip
 sudo texhash

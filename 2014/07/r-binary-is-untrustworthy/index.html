@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
-Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
-&gt; library(doParallel) &gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &gt; registerDoParallel(11) &gt; &gt; foreach(i = 1:10) %dopar% { getwd() } &gt; *** caught segfault *** address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39;  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
+Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping...Error: Encountered internal Bowtie 2 exception (#1)Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&gt; library(doParallel)&gt; Loading required package: foreachforeach: simple, scalable parallel programming from Revolution AnalyticsUse Revolution R for scalability, fault tolerance and more.http://www.revolutionanalytics.comLoading required package: iteratorsLoading required package: parallel&gt;registerDoParallel(11)&gt; &gt;foreach(i = 1:10) %dopar% { getwd() }&gt;*** caught segfault ***address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39; 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
 
 
 <meta property="og:description" content="去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
-Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
-&gt; library(doParallel) &gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &gt; registerDoParallel(11) &gt; &gt; foreach(i = 1:10) %dopar% { getwd() } &gt; *** caught segfault *** address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39;  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
+Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping...Error: Encountered internal Bowtie 2 exception (#1)Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&gt; library(doParallel)&gt; Loading required package: foreachforeach: simple, scalable parallel programming from Revolution AnalyticsUse Revolution R for scalability, fault tolerance and more.http://www.revolutionanalytics.comLoading required package: iteratorsLoading required package: parallel&gt;registerDoParallel(11)&gt; &gt;foreach(i = 1:10) %dopar% { getwd() }&gt;*** caught segfault ***address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39; 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="R binary is untrustworthy">
 <meta name="twitter:title" content="R binary is untrustworthy">
@@ -23,11 +23,11 @@ Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; ski
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2014/07/r-binary-is-untrustworthy/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
-Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
-&gt; library(doParallel) &gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &gt; registerDoParallel(11) &gt; &gt; foreach(i = 1:10) %dopar% { getwd() } &gt; *** caught segfault *** address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39;  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
+Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping...Error: Encountered internal Bowtie 2 exception (#1)Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&gt; library(doParallel)&gt; Loading required package: foreachforeach: simple, scalable parallel programming from Revolution AnalyticsUse Revolution R for scalability, fault tolerance and more.http://www.revolutionanalytics.comLoading required package: iteratorsLoading required package: parallel&gt;registerDoParallel(11)&gt; &gt;foreach(i = 1:10) %dopar% { getwd() }&gt;*** caught segfault ***address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39; 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
 <meta name="twitter:description" content="去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
-Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
-&gt; library(doParallel) &gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &gt; registerDoParallel(11) &gt; &gt; foreach(i = 1:10) %dopar% { getwd() } &gt; *** caught segfault *** address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39;  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
+Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping...Error: Encountered internal Bowtie 2 exception (#1)Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&gt; library(doParallel)&gt; Loading required package: foreachforeach: simple, scalable parallel programming from Revolution AnalyticsUse Revolution R for scalability, fault tolerance and more.http://www.revolutionanalytics.comLoading required package: iteratorsLoading required package: parallel&gt;registerDoParallel(11)&gt; &gt;foreach(i = 1:10) %dopar% { getwd() }&gt;*** caught segfault ***address 0x7fbeb6d399d0, cause &#39;memory not mapped&#39; 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。">
 <meta property="og:locale" content="en-us">
 
   
@@ -288,15 +288,12 @@ if (!doNotTrack) {
             <div class="main-content-wrap">
               <p>去年ubuntu下apt-get了R-3.0.2,
 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：</p>
-
 <pre><code>Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping...
 Error: Encountered internal Bowtie 2 exception (#1)
 Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2
 </code></pre>
-
 <p>这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。
 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：</p>
-
 <pre><code>&gt; library(doParallel)
 &gt; Loading required package: foreach
 foreach: simple, scalable parallel programming from Revolution Analytics
@@ -314,16 +311,12 @@ foreach(i = 1:10) %dopar% { getwd() }
  *** caught segfault ***
 address 0x7fbeb6d399d0, cause 'memory not mapped'
 </code></pre>
-
 <p>其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。</p>
-
 <pre><code>Sorry -- I have no idea what this is about and no ability whatsoever to do
 debugging for your here.  Segfaults like this are rarely due to R's build are
 more often due to the BLAS libraries you plug in or out.
 </code></pre>
-
 <p>Dirk指出他是用libopenblas的，我确实也是用这个的，重新用apt-get安装，确认和Dirk的一致，也是有问题的。</p>
-
 <pre><code>root@jz:/home/ygc# ps aux |grep exec/R
 root     26790  0.6  0.4 282124 132156 pts/3   Sl+  15:30   0:00 /usr/lib/R/bin/exec/R
 root     26799  0.0  0.3 273920 129776 pts/3   S+   15:30   0:00 /usr/lib/R/bin/exec/R
@@ -333,9 +326,7 @@ root@jz:/home/ygc# lsof -p 26790 |grep 'blas\|lapack'
 R       26790 root  mem    REG   8,17 10294080  48234941 /usr/lib/lapack/liblapack.so.3.0
 R       26790 root  mem    REG   8,17 19536904  49942482 /usr/lib/openblas-base/libopenblas.so.0
 </code></pre>
-
 <p>我自己编译的R，使用的是libRblas，完全没有问题，不过性能没有libopenblas好。</p>
-
 <pre><code>root@jz:~/R-3.0.2# ps aux |grep exec/R
 ygc      22938 80.9  0.4 257764 163560 pts/0   S+   13:36  89:14 /usr/lib/R/bin/exec/R
 root     25609  0.0  0.0   6304   600 pts/3    S+   15:26   0:00 grep exec/R
@@ -343,26 +334,17 @@ root@jz:~/R-3.0.2# lsof -p 22938 |grep 'blas\|lapack'
 R       22938  ygc  mem    REG   8,17   4823581 49286712 /usr/lib/R/lib/libRlapack.so
 R       22938  ygc  mem    REG   8,17    454082 49286705 /usr/lib/R/lib/libRblas.so
 </code></pre>
-
 <p>由于Dirk说无法重复我的错误，而我自己编译的版本也能够work了，这事情也就告一段落。</p>
-
 <p>前天用RMarkdown写了个slide，在R-3.1.0下面编译得好好的，手痒apt-get了R-3.1.1，改了一张slide，再编译的时候，各种错误。回到宿舍，用mac下编译又没问题，于是确定又是R的问题，ssh到实验室的机器，自己编译R，果然问题就不存在了，二进制版的R实在是坑！！！不过我编译的版本也有问题，在画图时设置透明色时，会报错：</p>
-
 <pre><code>semi-transparency is not supported on this device
 </code></pre>
-
 <p>这是由于机器缺少某些X11相关的库，于是更新r-base-dev以及安装它所需的所有库。</p>
-
 <pre><code>ygc@SPH:R-3.1.1$ sudo apt-get build-dep r-base-dev  
 </code></pre>
-
 <p>另外要安装tk-dev，然后在./configure的时候，指定：</p>
-
 <pre><code>--with-tcltk --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
 </code></pre>
-
 <p>这样才能支持tcltk。</p>
-
 <p>再次编译，整个世界就清静了！所以说，在linux下使用R，还是自己编译来得靠谱。由于环境的细小差别，预编译版的R，实在是各种坑！！！</p>
 
               

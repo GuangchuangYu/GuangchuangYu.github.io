@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -250,6 +250,80 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2011/09/mc-integration/">
+          MC积分
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-09-22T06:40:22&#43;08:00">
+        
+  September 22, 2011
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/programming">Programming</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/calculus">Calculus</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>Monte Carlo方法由冯·诺伊曼于二战时提出，1777年法国人布丰用此思路<a href="http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/">估计pi值</a>被认为是Monte
+Carlo的起源，这个方法简单又快速，通过产生随机数，将数值计算问题变成随机变量的某些特征值（比如期望值）。</p>
+<p>积分运算，和<a href="http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/">估计pi值</a>一样，用hit
+and miss法估计。</p>
+<pre><code>hit_miss &lt;- function(fun, lower, upper, n=500) {
+    # Monte Carlo integration using the hit and miss method
+    x &lt;- runif(n, lower, upper)
+    f.value &lt;- sapply(seq(lower, upper, 0.001), fun)
+    f.min &lt;- min(f.value)
+    f.max &lt;- max(f.value)
+    y &lt;- runif(n, f.min, f.max)
+    hits &lt;- sum(y &lt;= fun(x))
+    area &lt;- (upper-lower) * f.min + hits/n * (upper-lower) * (f.max-f.min)
+    return(area)
+}
+</code></pre>
+<p>hit and miss方法收敛太慢，效率并不高，通常所说的MC积分是指下面这个方法。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2011/09/mc-integration/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2011/09/monte-carlo-estimate-pi/">
           Monte Carlo估计pi值
         </a>
@@ -277,12 +351,9 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://mathfaculty.fullerton.edu/mathews/n2003/montecarlopi/MonteCarloPiMod/Images/MonteCarloPiMod_gr_11.gif" alt="" /></p>
-
+        <p><img src="http://mathfaculty.fullerton.edu/mathews/n2003/montecarlopi/MonteCarloPiMod/Images/MonteCarloPiMod_gr_11.gif" alt=""></p>
 <p>圆和外接正方形的面积比，是$ \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$.</p>
-
-<p>通过这一比值，可以使用<a href="http://baike.baidu.com/view/7775.htm">蒙特-卡罗方法</a>来估计Pi，这是Monte Carlo方法的最经典的一个例子。</p>
-
+<p>通过这一比值，可以使用<!-- raw HTML omitted -->蒙特-卡罗方法<!-- raw HTML omitted -->来估计Pi，这是Monte Carlo方法的最经典的一个例子。</p>
 <pre><code>getPI &lt;- function(N) {
     x &lt;- runif(N)
     y &lt;- runif(N)
@@ -352,10 +423,8 @@ if (!doNotTrack) {
 internal plot function and ggplot2, I have recreated the figures in the
 book, <a href="http://book.douban.com/subject/5992544/">25 Recipes for Getting Started with
 R</a>, with ggplot2.</p>
-
 <p>The code used to create the images is in separate paragraphs, allowing
 easy comparison. <strong>1.16 Creating a Scatter Plot</strong></p>
-
 <pre><code>plot(cars)
 </code></pre>
       
@@ -478,11 +547,8 @@ an image with an equation which apparently draws the Batman logo.</p>
       
         <p>读研时买了很多书，大部分都没时间看，<a href="http://book.douban.com/subject/1320282/">《什么是数学》</a>就是其中的一本。
 这两天翻看了一点。</p>
-
 <p>《第二章：数学中的数系》讲到了当年的伟大发现，一个正方形的对角线与它的边是不可公度的。而由不可公度线段，引入的无理数概念，引入负数，在17世纪都是个另人不安的事情，无理数是个巨大的飞跃，</p>
-
 <p>73页中的图10,给出了 $\sqrt{2}$的几何作图。</p>
-
 <p>我用R尝试把它画出来：</p>
       
       <p>
@@ -544,10 +610,10 @@ an image with an equation which apparently draws the Batman logo.</p>
 跟个屁股似的，sigh&hellip;
 翻出azalea的老文：http://azaleasays.com/2008/06/18/fomula-of-love/
 用ggplot2画一下这个爱的方程：$17x^2-16|x|y+17y^2 = 225 $
-x &lt;- seq(-sqrt(17), sqrt(17), 0.001) y1 &lt;- 8*abs(x)/17 + 15* sqrt(17 - x^2)/17 y2 &lt;- 8*abs(x)/17 - 15* sqrt(17 - x^2)/17 d &lt;- data.frame(x=c(x,x),y=c(y1,y2)) require(ggplot2) p &lt;- ggplot(d, aes(x,y)) p + geom_point(color=&quot;red&quot;)  还可以画出红心，适合今天七夕的日子。
-p + geom_line(color=&quot;red&quot;)  画函数图，这种事情，还是用CAS方便点。
+x &lt;- seq(-sqrt(17), sqrt(17), 0.001)y1 &lt;- 8*abs(x)/17 + 15* sqrt(17 - x^2)/17y2 &lt;- 8*abs(x)/17 - 15* sqrt(17 - x^2)/17d &lt;- data.frame(x=c(x,x),y=c(y1,y2))require(ggplot2)p &lt;- ggplot(d, aes(x,y))p + geom_point(color=&quot;red&quot;) 还可以画出红心，适合今天七夕的日子。
+p + geom_line(color=&quot;red&quot;) 画函数图，这种事情，还是用CAS方便点。
 通过maxima来画，一条指令就行，还不用解方程：
-contour_plot(17*x^2-16*abs(x)*y+17*y^2-225, [x,-sqrt(17),sqrt(17)],[y,-15*sqrt(17)/17, sqrt(17)])  
+contour_plot(17*x^2-16*abs(x)*y+17*y^2-225, [x,-sqrt(17),sqrt(17)],[y,-15*sqrt(17)/17, sqrt(17)]) 
       
       <p>
         <a href="https://guangchuangyu.github.io/2011/08/love-function-plot/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -606,71 +672,11 @@ contour_plot(17*x^2-16*abs(x)*y+17*y^2-225, [x,-sqrt(17),sqrt(17)],[y,-15*sqrt(1
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>虽然R提供了很多作图函数，但自己实现一下，是非常好的体验，而且能够让我们了解其中的细节。</p>
-
 <p>最近在读<a href="http://book.douban.com/subject/4237062/">＜Modern Applied Statistics With S-PLUS＞</a>，115页讲到Q-Q图时，书中给出了一个Trellis的实现。（Trellis是S/S-PLUS的可视化系统，在R里的对等实现是lattice包）。</p>
-
 <p>我们知道一组数字，可以算4分位数，分别是25%， 50%（中位数）， 75%，它等于该组数字中所有数值由小到大排列后第X%的数字，事实上每个数字都可以对应一个X%，Q-Q图很简单，把样本数据和理论分布算出来的quantiles，画个散点图而已。分别用base graph和ggplot2实现，图中三个图分别由系统函数qqnorm，和这里定义的qqplot, qqplot2画出来。</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2011/08/qq-plot/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2011/07/ibw2011/">
-          IBW2011
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2011-07-18T04:26:00&#43;08:00">
-        
-  July 18, 2011
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/conference">conference</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>开完了IBW这个会，感觉比较面向学生，会议前的龙星课程，倒是不错，我就冲着它的题目过去的，我想听的是概率图模型和系统生物学，结果只有最后一天，早上讲了点bayesian network，下午讲了会GSEA，BN讲的只是基本的概念，GSEA讲的内容还不到位，只讲到fisher&rsquo;s test做enrichment analysis，并没有讲如何把表达量通过某些方法把它转化为统计量，再进行enrichment analysis，没有考虑表达量，是不叫GSEA的，提出GSEA的那篇PNAS文章，讲的就是expression+prior knowledge (gene set)。</p>
-
-<p>几天的时间，基本上是讲Hidden Markov Model用于序列比对，Prof Tang以前是在Waterman那里做post-doc，估计也是搞了很长时间的序列。我对这块兴趣不大。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2011/07/ibw2011/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

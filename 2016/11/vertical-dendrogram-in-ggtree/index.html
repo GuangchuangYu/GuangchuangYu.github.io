@@ -5,24 +5,18 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="https://twitter.com/kurai_yousei/status/799532564633518080
 
-
-
 这个Diego在推特上问的问题，他最近在写一个motiftools的R包，里面用了ggtree来画图，我想他应该是要解决他在包里的画树/聚类功能吧。
-
 他问题写的horizontal，但其实plot.hclust默认是vertical，ggtree默认也是horizontal，所以我认为他问的是vertical layout，这个在我的回答中也得到了他的确认。">
 
 
 <meta property="og:description" content="https://twitter.com/kurai_yousei/status/799532564633518080
 
-
-
 这个Diego在推特上问的问题，他最近在写一个motiftools的R包，里面用了ggtree来画图，我想他应该是要解决他在包里的画树/聚类功能吧。
-
 他问题写的horizontal，但其实plot.hclust默认是vertical，ggtree默认也是horizontal，所以我认为他问的是vertical layout，这个在我的回答中也得到了他的确认。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vertical dendrogram in ggtree">
@@ -32,17 +26,11 @@
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="https://twitter.com/kurai_yousei/status/799532564633518080
 
-
-
 这个Diego在推特上问的问题，他最近在写一个motiftools的R包，里面用了ggtree来画图，我想他应该是要解决他在包里的画树/聚类功能吧。
-
 他问题写的horizontal，但其实plot.hclust默认是vertical，ggtree默认也是horizontal，所以我认为他问的是vertical layout，这个在我的回答中也得到了他的确认。">
 <meta name="twitter:description" content="https://twitter.com/kurai_yousei/status/799532564633518080
 
-
-
 这个Diego在推特上问的问题，他最近在写一个motiftools的R包，里面用了ggtree来画图，我想他应该是要解决他在包里的画树/聚类功能吧。
-
 他问题写的horizontal，但其实plot.hclust默认是vertical，ggtree默认也是horizontal，所以我认为他问的是vertical layout，这个在我的回答中也得到了他的确认。">
 <meta property="og:locale" content="en-us">
 
@@ -307,25 +295,16 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p><a href="https://twitter.com/kurai_yousei/status/799532564633518080">https://twitter.com/kurai_yousei/status/799532564633518080</a></p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/2019-11-21_14-12.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/2019-11-21_14-12.png" alt=""></p>
 <p>这个Diego在推特上问的问题，他最近在写一个<a href="https://github.com/ddiez/motiftools">motiftools</a>的R包，里面用了ggtree来画图，我想他应该是要解决他在包里的画树/聚类功能吧。</p>
-
 <p>他问题写的horizontal，但其实plot.hclust默认是vertical，ggtree默认也是horizontal，所以我认为他问的是vertical layout，这个在我的回答中也得到了他的确认。</p>
-
 <pre><code>&gt; require(ggtree)
 &gt; set.seed(123)
 &gt; tr = rtree(30)
 &gt; ggtree(tr) + scale_x_reverse() + coord_flip()
-</code></pre>
-
-<p>这个问题很简单，无非是坐标轴翻转而已。于是上面的代码，就得到下面的图：</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-11-21 at 7.53.54 PM.png" alt="" /></p>
-
+</code></pre><p>这个问题很简单，无非是坐标轴翻转而已。于是上面的代码，就得到下面的图：</p>
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen">https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen</a> Shot 2016-11-21 at 7.53.54 PM.png)</p>
 <p>ggtree支持多种布局(layout)，rectangular（上面这种就是，父节点到子节点由90度折线连接），slated（父节点到子节点由直线连接）， circular（圆圈型，父节点到子节点的连接方式可以是rectangular也可以是slanted），fan（顾名思义-扇子型，也可以理解为有开口的圆圈，实际上ggtree提供了open_tree函数，可以把circular的树转变为fan layout），unrooted（无根树，连接方式是slanted，但没有根节点，所以可以说有些说圆圈型，但没有中心），还有二维树（把y轴利用起来，可以映射到节点的phenotype或者是统计推断的估值）。</p>
-
 <p>上面提到的这些布局，都可以有画phylogram或cladogram，差别在于phylogram有branch length而cladogram没有。而在层次聚类中，做的是聚类，而不是进化树，这是不同的概念，所以画出来的图相似，但却是不一样的东西，所以聚类分析的图叫dendrogram，像上面这个图，就是典型的dendrogram画法，显然看着和进化树是没什么差别的，只不过进化树一般从左到右画，而dendrogram画这种从上到下的形状还是比较常见的。虽然是不一样的东西，但从画图的角度来看，dendrogram和rectangular layout的phylogram/cladogram是一样的。所以要问ggtree能不能画dendrogram的形状，当然可以，要问能不能从上到下，当然可以，无非是坐标轴颠过来倒过去而已，就算你要画出从下到上，从右到左，都是没有问题的。</p>
               
             </div>

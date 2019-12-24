@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,7 +282,6 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>使用<code>barplot</code>来展示富集分析结果是很常用的，而<code>dotplot</code>比较<code>barplot</code>来说，多了一个点大小的信息，可以比<code>barplot</code>展示多一个信息，所以是比较推荐的，我之前已经写了《<a href="https://mp.weixin.qq.com/s/KzcnIH88d4E41Ybvr_76zA">dotplot展示富集分析结果</a>》和《<a href="https://mp.weixin.qq.com/s/JLon7oaddmTpsMzL03OJIA">dotplot for GSEA</a>》两篇文章，<code>dotplot</code>虽然简单，很多人会觉得会容易用<code>ggplot2</code>画出来，但其实有些细节，比如《<a href="https://mp.weixin.qq.com/s/VW4LvtQqXumrs6SMvwGgvQ">为什么画出来的点比指定的数目要多？</a>》，有些技巧，比如《<a href="https://mp.weixin.qq.com/s/JNIncz3W-59yjGk2ibJWUw">搞大你的点，让我们画真正的气泡图</a>》，是很多新手所不具备的，图虽然简单，但老司机的飚车技能也不可小看哦，所以我在《<a href="https://mp.weixin.qq.com/s/bloMPypAkQ3Ovlh406M-FQ">听说你也在画dotplot，但是我不服！</a>》的文后就说了一句话：</p>
-
 <blockquote>
 <p>clusterProfiler之所以好，因为真的考虑了很多细节！请放开那图，让clusterProfiler来画！</p>
 </blockquote>
@@ -342,9 +341,7 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>有小伙伴说他要用gage这个包，因为可以选择sigmet这个index，然后得到的结果只有signaling and metabolic pathways，而不会有他不关心的disease pathways。然而也有各种不爽，他最喜欢的还是clusterProfiler，但没办法只做某些pathways。</p>
-
 <p>我发现大家对clusterProfiler有各种误解，各种觉得没办法，我也很无语啊，明明我写了大量的文档，你们偏不看。clusterProfiler啥都可以做，你想做COG，domain这些没有内置支持的富集分析都可以的，因为clusterProfiler是通用的分析工具，啥都能做。</p>
-
 <p>说到gage的pathway index，这其实是他们对pathway有个分类，这个数据就在<a href="https://pathview.uncc.edu/data/khier.tsv">https://pathview.uncc.edu/data/khier.tsv</a>可以下载到，要支持他还不容易，但我不喜欢把别人的东西打包在自己的包里，所谓走别人的路，让别人无路可走，这可不是什么好主意。所以呢，我不会内置支持的，你们自己玩。</p>
       
       <p>
@@ -402,9 +399,7 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>《<a href="http://mp.weixin.qq.com/s/miGQs6U1d3aHwcm7vgNCVw">你昨天才做的分析，可能是几年前的结果！</a>》这篇文章给大家敲了警钟，各种各样的web-server，要小心看有没有维护更新，有些是五年十年都不更新的，十分可怕。文章虽然讲的是富集分析，但其它分析工具你同样需要小心。</p>
-
 <p>当然并不是说独立的软件/软件包就一定靠谱，如果软件自己打包了数据，同样要注意数据是否有更新，而如果数据不打包在软件里，而是在线获取，你同样也该留一下心。这也是clusterProfiler做富集分析的优势所在，KEGG数据是在线的，永远是最新的，而GO的数据不在软件包里，而依赖于别的数据包，而这些数据包是社区维护的（相对而言，个人的维护比较难以为继），就确保了数据一直在有更新维护的。</p>
-
 <p>Bioconductor每半年发行一次，注释包同样每半年更新一次，所以你用clusterProfiler做GO分析，你用的GO数据库不会说超过半年没更新，而不像有些公司给出的结果，落后于这个世界不是一年两年这么简单。</p>
       
       <p>
@@ -462,10 +457,9 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p><a href="https://github.com/GuangchuangYu/clusterProfiler/issues/115">github上的问题</a>，问了两个问题，这是其中第二个：</p>
-
 <blockquote>
 <p>Meanwhile, when I fed the ENTREZID to enrichKEGG, it show me two unreasonable results:</p>
-
+</blockquote>
 <pre><code>kegg_enrich = enrichKEGG(
 	gene = new_ids$ENTREZID,
 	organism = 'hsa',
@@ -475,14 +469,13 @@ if (!doNotTrack) {
 	#qvalueCutoff = 0.2,
 	use_internal_data = FALSE
 )
-</code></pre>
-
+</code></pre><blockquote>
+</blockquote>
 <pre><code>head(kegg_enrich)
               ID                           Description GeneRatio  BgRatio       pvalue   p.adjust     qvalue
 hsa04380 hsa04380            Osteoclast differentiation    14/281 128/7299 0.0003817040 0.04767338 0.04508266
 hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.0003875885 0.04767338 0.04508266
-</code></pre>
-
+</code></pre><blockquote>
 <p>I noted that only 281 genes are remained(there are 700+ genes in my list). In case that there is something wrong wtihin my gene list, I also tried my list with DAVID. It gave me reasonable results. So this is my second question, why enrichKEGG cannot recognize my geneids?</p>
 </blockquote>
       
@@ -541,26 +534,32 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <blockquote>
-<p>Dear Dr. Guangchuang Yu, I write to you regarding a doubt concerning the enrichGO function from Clustalprofiler package. I have been used this package before, but now I&rsquo;m using the same R script and I have an error message.</p>
-
+<p>Dear Dr. Guangchuang Yu, I write to you regarding a doubt concerning the enrichGO function from Clustalprofiler package. I have been used this package before, but now I'm using the same R script and I have an error message.</p>
+</blockquote>
+<blockquote>
 <p>This is the command I use:</p>
-
+</blockquote>
+<blockquote>
 <blockquote>
 <p>go.bp &lt;- enrichGO(gene = gene.df$ENSEMBL, universe = universe.ENSEMBLID, keytype = &lsquo;ENSEMBL&rsquo;, OrgDb = org.Ce.eg.db, ont = &lsquo;BP&rsquo;, pAdjustMethod = &lsquo;BH&rsquo;, pvalueCutoff = 0.01, qvalueCutoff = 0.05, readable=T)</p>
 </blockquote>
-
+</blockquote>
+<blockquote>
 <p>and the error is the following one:</p>
-
+</blockquote>
+<blockquote>
 <p>No gene set have size &gt; 10 &hellip;
 &ndash;&gt; return NULL&hellip;</p>
-
+</blockquote>
+<blockquote>
 <p>My input list is attached to this email (101 genes in total). When I use this list in a web resource such as GOrilla it gives to me the proper GO terms.</p>
-
+</blockquote>
+<blockquote>
 <p>Thank you very much in advance. Best regards,</p>
-
+</blockquote>
+<blockquote>
 <p>María</p>
 </blockquote>
-
 <p>最近clusterProfiler用户的问题，这个问题还蛮普遍。这个我在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484414&amp;idx=1&amp;sn=096f758f04f875e25c333c345f530742&amp;chksm=ec43b2b9db343baf4e2a8640f48e7e72b3ef1b057c91c68905debb2bb54e5d2fdda62438628a#rd">why clusterProfiler fails</a>》中也有谈到，并不是能出结果就是好的。没有结果也是一种结果。</p>
       
       <p>
@@ -620,31 +619,28 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
         <blockquote>
 <p>Since the clusterProfiler is a very useful tools for GO and Kegg annotation.At present I want to use it to enrich for kegg result while only have the KO number ,So I want to convert the KO number to the pathway function,Is there have any function or methods in the software can convert it?any help will be appreciated</p>
 </blockquote>
-
 <p><a href="https://github.com/GuangchuangYu/clusterProfiler/issues/99">这个问题</a>问说他想转KO到通路，首先这是一个常见的错误，很多人分不清<code>K</code>和<code>ko</code>，所以在我告诉他可以把<code>K number</code>转成<code>ko pathway</code>的时候，我先指出他的错误。</p>
-
 <p><code>ko</code> is actually pathway map. I think you are talking about <code>K</code> number mapping to <code>ko</code> pathway.</p>
-
-<pre><code class="language-r">&gt; bitr_kegg(&quot;K00844&quot;, &quot;kegg&quot;, &quot;Path&quot;, &quot;ko&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">bitr_kegg</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">K00844&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">kegg&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Path&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ko&#34;</span>)
      kegg    Path
-1  K00844 ko00010
-2  K00844 ko00051
-3  K00844 ko00052
-4  K00844 ko00500
-5  K00844 ko00520
-6  K00844 ko00521
-7  K00844 ko00524
-8  K00844 ko01100
-9  K00844 ko01110
-10 K00844 ko01120
-11 K00844 ko01130
-12 K00844 ko01200
-13 K00844 ko04066
-14 K00844 ko04910
-15 K00844 ko04930
-16 K00844 ko04973
-17 K00844 ko05230
-</code></pre>
+<span style="color:#ae81ff">1</span>  K00844 ko00010
+<span style="color:#ae81ff">2</span>  K00844 ko00051
+<span style="color:#ae81ff">3</span>  K00844 ko00052
+<span style="color:#ae81ff">4</span>  K00844 ko00500
+<span style="color:#ae81ff">5</span>  K00844 ko00520
+<span style="color:#ae81ff">6</span>  K00844 ko00521
+<span style="color:#ae81ff">7</span>  K00844 ko00524
+<span style="color:#ae81ff">8</span>  K00844 ko01100
+<span style="color:#ae81ff">9</span>  K00844 ko01110
+<span style="color:#ae81ff">10</span> K00844 ko01120
+<span style="color:#ae81ff">11</span> K00844 ko01130
+<span style="color:#ae81ff">12</span> K00844 ko01200
+<span style="color:#ae81ff">13</span> K00844 ko04066
+<span style="color:#ae81ff">14</span> K00844 ko04910
+<span style="color:#ae81ff">15</span> K00844 ko04930
+<span style="color:#ae81ff">16</span> K00844 ko04973
+<span style="color:#ae81ff">17</span> K00844 ko05230
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/09/ko-id-conversion/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -700,7 +696,7 @@ hsa04070 hsa04070 Phosphatidylinositol signaling system    12/281  99/7299 0.000
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484730&amp;amp;idx=1&amp;amp;sn=48b8c24b6cfb6162f8fb3f3861ddfe1b&amp;amp;chksm=ec43b47ddb343d6b37581fa81b0bf11b5141a446333b1b961ef1ad4f80da4c4732d7bc3432c2#rd">听说你有RNAseq数据却不知道怎么跑GSEA</a>》一文有小伙伴问封面的gseaplot能否换颜色，于是我就随手支持了。</p>
+        <p>《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484730&amp;idx=1&amp;sn=48b8c24b6cfb6162f8fb3f3861ddfe1b&amp;chksm=ec43b47ddb343d6b37581fa81b0bf11b5141a446333b1b961ef1ad4f80da4c4732d7bc3432c2#rd">听说你有RNAseq数据却不知道怎么跑GSEA</a>》一文有小伙伴问封面的gseaplot能否换颜色，于是我就随手支持了。</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/09/color-in-gseaplot/" class="postShorten-excerpt_link link">Continue reading</a>

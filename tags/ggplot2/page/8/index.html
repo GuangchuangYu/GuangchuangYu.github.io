@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,10 +282,8 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>I just discovered an interesting <code>ggplot2</code> extension, <code>geofacet</code>, that supports arranging facet panels that mimics geographic topoloty.</p>
-
 <p>After playing with it, I realized that it is not only for visualizing <code>geo</code>-related data, but also can be fun for presenting data to mimics pixel art.</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png" alt="" /></p>
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/2017/Screenshot">https://guangchuangyu.github.io/blog_images/2017/Screenshot</a> 2017-06-26 15.49.50.png)</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/06/pixel-art-geofacet/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -344,18 +342,15 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>CRAN刚上线的新包<code>geofacet</code>，可以让ggplot2分面按指定的地理位置来，比如下面的数据，美国各州各项指标的排名：</p>
-
-<pre><code class="language-r">  head(state_ranks)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">  <span style="color:#a6e22e">head</span>(state_ranks)
     state   name   variable rank
-1    AK Alaska  education   28
-2    AK Alaska employment   50
-3    AK Alaska     health   25
-4    AK Alaska     wealth    5
-5    AK Alaska      sleep   27
-6    AK Alaska    insured   50
-</code></pre>
-
-<p>我们正常画图是这样子的：</p>
+<span style="color:#ae81ff">1</span>    AK Alaska  education   <span style="color:#ae81ff">28</span>
+<span style="color:#ae81ff">2</span>    AK Alaska employment   <span style="color:#ae81ff">50</span>
+<span style="color:#ae81ff">3</span>    AK Alaska     health   <span style="color:#ae81ff">25</span>
+<span style="color:#ae81ff">4</span>    AK Alaska     wealth    <span style="color:#ae81ff">5</span>
+<span style="color:#ae81ff">5</span>    AK Alaska      sleep   <span style="color:#ae81ff">27</span>
+<span style="color:#ae81ff">6</span>    AK Alaska    insured   <span style="color:#ae81ff">50</span>
+</code></pre></div><p>我们正常画图是这样子的：</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/06/geofacet/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -414,19 +409,15 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
-
 <h2 id="use-emoji-in-taxa-labels">Use emoji in taxa labels</h2>
-
-<pre><code class="language-r">library(ggtree)
+<pre><code class="language-{r}" data-lang="{r}">library(ggtree)
 tree_text &lt;- &quot;(((((cow, (whale, dolphin)), (pig2, boar)), camel), fish), seedling);&quot;
 x &lt;- read.tree(text=tree_text)
 ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
     xlim(NA, 7) + ylim(NA, 8.5) +
     geom_tiplab(aes(color=label), parse='emoji', size=14, vjust=0.25) +
     labs(title=&quot;phylomoji&quot;, caption=&quot;powered by ggtree + emojifont&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="" /></p>
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt=""></p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -484,22 +475,16 @@ ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <h1 id="导言">导言</h1>
-
+        <h1 id="heading">导言</h1>
 <p>本文介绍了<strong>ggimage</strong>包，允许在<strong>ggplot2</strong>作图时嵌入图片，并支持<code>aes</code>映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用<strong>ggimage</strong>来展示在这些特定领域里的应用，<strong>ggimage</strong>的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。</p>
-
-<h1 id="图上嵌图片">图上嵌图片</h1>
-
+<h1 id="heading-1">图上嵌图片</h1>
 <p>R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是<code>graphics::rasterImage</code>：</p>
-
-<pre><code class="language-r">imgurl &lt;- &quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&quot;
-library(EBImage)
-x &lt;- readImage(imgurl)
-plot(1, type = &quot;n&quot;, xlab = &quot;&quot;, ylab = &quot;&quot;, xlim = c(0, 8), ylim = c(0, 8))
-rasterImage(x, 2, 2, 6, 4)
-</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/raster.png" alt="R绘图嵌入图片演示" /></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">imgurl <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&#34;</span>
+<span style="color:#a6e22e">library</span>(EBImage)
+x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">readImage</span>(imgurl)
+<span style="color:#a6e22e">plot</span>(<span style="color:#ae81ff">1</span>, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">n&#34;</span>, xlab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, ylab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, xlim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>), ylim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>))
+<span style="color:#a6e22e">rasterImage</span>(x, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">4</span>)
+</code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/raster.png" alt="R绘图嵌入图片演示"></p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/04/ggimage/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -556,15 +541,12 @@ rasterImage(x, 2, 2, 6, 4)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>比如下面的代码：</p>
-
 <pre><code>require(ggplot2)
 d &lt;- data.frame(x=c(0, 0.002, 0.00575), y = 1:3)
 p &lt;- ggplot(d, aes(x, y)) + geom_point() + xlab(NULL) + ylab(NULL)
 print(p)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_text_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt=""></p>
 <p>上面图中x轴的文本<strong>0.006</strong>，这个数字中的<strong>6</strong>几乎看不到，因为一半过界了。</p>
       
       <p>
@@ -622,7 +604,6 @@ print(p)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>面向对象有多种实现方式，R里面就有3种，class-based, method-based, object-based，R6与C++/JAVA一样是class-based的，S3/S4是method-based的，还有一种是object-based的，这在proto包中实现，很多人可能没听说过，但是ggplot2你们一定听过，ggplot2就是object-based的实现，它现在是自己的定制实现，称之为ggproto。</p>
-
 <p>emojifont就是用proto实现的，属于我的练手之作，很高兴深受大家的喜欢。</p>
       
       <p>
@@ -680,11 +661,8 @@ print(p)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>在公众号biobabble后台有多人同时在问这个问题：</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/2017-02-12-223832_646x667_scrot.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/2017-02-12-223832_646x667_scrot.png" alt=""></p>
 <p>晒这个截屏主要想说一点，如果是一两句话就能说清楚的问题，可以提问，如果不是，则不要在后台提问，写邮件或者到论坛提问，是更好的方式，像截屏中显示的，图片显示过期，我根本就没看到过图片。在手机上是无法看的，而我正好几天没在电脑前，于是你们发的图片我看不了，而且我如果没有在24小时之内回复，公众平台就不允许我回复了，因为问题已经过期。所以在此强调，不要在后台发图片提问，不要在后台问稍复杂的问题。</p>
-
 <p>这个问题其实很简单，用<code>stringr</code>包的<code>str_wrap</code>来完成文本自动换行就行了。</p>
       
       <p>

@@ -5,20 +5,16 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="不记得是什么时候知道统计之都的，但我记得最早知道的是太云，因为我用了他写的corrplot包。后来统计之都最早接触的也是太云，他给我写邮件问我能不能帮忙校对《ggplot2：数据分析与图形艺术》，从此开始和太云变成了网友。
-
 我在暨大的时候，太云曾经邀请我去China-R会议做报告，但我觉得自己没什么好分享的，GOSemSim这个包是硕士的时候做的，不好去讲之前做的东西。而当时我写的另一个包clusterProfiler，纯粹是因为大量做富集分析的工具都是针对模式生物，而我们实验室有做各种细菌；另外有一些工具，背景设置是有问题的。自己实现一个包，不受别人的限制。即便是这个包现在受到了一定的认可，比如BioC 3.3中有个debrowser的包使用了clusterProfiler，而在BioC 3.4中又有个新包bioCancer也使用了clusterProfiler；再比如这次在北京，有好几个参会的人员在茶歇时问了clusterProfiler的问题。但始终觉得这只是个实用性的包而已，算法是别人的，而且已经比较老了，类似的工具简直就是成百上千。所以也是不好意思拿出来讲的。所以我拒绝了太云的邀请，一直也没有参加China-R的会议。
-
 今年是第九届China-R会议，这次会议规模很大，有22个分会场，超过100个演讲嘉宾，参会人数超过4000人。这一次刚好有个Bioconductor的分会场，Matt写信给我，说我写过几个Bioconductor包，他本人喜欢我的ChIPseeker包，问我能否在会上分享与Bioconductor包相关的经验。这是Bioconductor在中国的首秀，我欣然接受，当然也是因为这两年我写了ChIPseeker和ggtree，我自己觉得还拿得出手🙈。">
 
 
 <meta property="og:description" content="不记得是什么时候知道统计之都的，但我记得最早知道的是太云，因为我用了他写的corrplot包。后来统计之都最早接触的也是太云，他给我写邮件问我能不能帮忙校对《ggplot2：数据分析与图形艺术》，从此开始和太云变成了网友。
-
 我在暨大的时候，太云曾经邀请我去China-R会议做报告，但我觉得自己没什么好分享的，GOSemSim这个包是硕士的时候做的，不好去讲之前做的东西。而当时我写的另一个包clusterProfiler，纯粹是因为大量做富集分析的工具都是针对模式生物，而我们实验室有做各种细菌；另外有一些工具，背景设置是有问题的。自己实现一个包，不受别人的限制。即便是这个包现在受到了一定的认可，比如BioC 3.3中有个debrowser的包使用了clusterProfiler，而在BioC 3.4中又有个新包bioCancer也使用了clusterProfiler；再比如这次在北京，有好几个参会的人员在茶歇时问了clusterProfiler的问题。但始终觉得这只是个实用性的包而已，算法是别人的，而且已经比较老了，类似的工具简直就是成百上千。所以也是不好意思拿出来讲的。所以我拒绝了太云的邀请，一直也没有参加China-R的会议。
-
 今年是第九届China-R会议，这次会议规模很大，有22个分会场，超过100个演讲嘉宾，参会人数超过4000人。这一次刚好有个Bioconductor的分会场，Matt写信给我，说我写过几个Bioconductor包，他本人喜欢我的ChIPseeker包，问我能否在会上分享与Bioconductor包相关的经验。这是Bioconductor在中国的首秀，我欣然接受，当然也是因为这两年我写了ChIPseeker和ggtree，我自己觉得还拿得出手🙈。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第九届ChinaR会议生物信息学分会">
@@ -27,14 +23,10 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2016/05/%E7%AC%AC%E4%B9%9D%E5%B1%8Achinar%E4%BC%9A%E8%AE%AE%E7%94%9F%E7%89%A9%E4%BF%A1%E6%81%AF%E5%AD%A6%E5%88%86%E4%BC%9A/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="不记得是什么时候知道统计之都的，但我记得最早知道的是太云，因为我用了他写的corrplot包。后来统计之都最早接触的也是太云，他给我写邮件问我能不能帮忙校对《ggplot2：数据分析与图形艺术》，从此开始和太云变成了网友。
-
 我在暨大的时候，太云曾经邀请我去China-R会议做报告，但我觉得自己没什么好分享的，GOSemSim这个包是硕士的时候做的，不好去讲之前做的东西。而当时我写的另一个包clusterProfiler，纯粹是因为大量做富集分析的工具都是针对模式生物，而我们实验室有做各种细菌；另外有一些工具，背景设置是有问题的。自己实现一个包，不受别人的限制。即便是这个包现在受到了一定的认可，比如BioC 3.3中有个debrowser的包使用了clusterProfiler，而在BioC 3.4中又有个新包bioCancer也使用了clusterProfiler；再比如这次在北京，有好几个参会的人员在茶歇时问了clusterProfiler的问题。但始终觉得这只是个实用性的包而已，算法是别人的，而且已经比较老了，类似的工具简直就是成百上千。所以也是不好意思拿出来讲的。所以我拒绝了太云的邀请，一直也没有参加China-R的会议。
-
 今年是第九届China-R会议，这次会议规模很大，有22个分会场，超过100个演讲嘉宾，参会人数超过4000人。这一次刚好有个Bioconductor的分会场，Matt写信给我，说我写过几个Bioconductor包，他本人喜欢我的ChIPseeker包，问我能否在会上分享与Bioconductor包相关的经验。这是Bioconductor在中国的首秀，我欣然接受，当然也是因为这两年我写了ChIPseeker和ggtree，我自己觉得还拿得出手🙈。">
 <meta name="twitter:description" content="不记得是什么时候知道统计之都的，但我记得最早知道的是太云，因为我用了他写的corrplot包。后来统计之都最早接触的也是太云，他给我写邮件问我能不能帮忙校对《ggplot2：数据分析与图形艺术》，从此开始和太云变成了网友。
-
 我在暨大的时候，太云曾经邀请我去China-R会议做报告，但我觉得自己没什么好分享的，GOSemSim这个包是硕士的时候做的，不好去讲之前做的东西。而当时我写的另一个包clusterProfiler，纯粹是因为大量做富集分析的工具都是针对模式生物，而我们实验室有做各种细菌；另外有一些工具，背景设置是有问题的。自己实现一个包，不受别人的限制。即便是这个包现在受到了一定的认可，比如BioC 3.3中有个debrowser的包使用了clusterProfiler，而在BioC 3.4中又有个新包bioCancer也使用了clusterProfiler；再比如这次在北京，有好几个参会的人员在茶歇时问了clusterProfiler的问题。但始终觉得这只是个实用性的包而已，算法是别人的，而且已经比较老了，类似的工具简直就是成百上千。所以也是不好意思拿出来讲的。所以我拒绝了太云的邀请，一直也没有参加China-R的会议。
-
 今年是第九届China-R会议，这次会议规模很大，有22个分会场，超过100个演讲嘉宾，参会人数超过4000人。这一次刚好有个Bioconductor的分会场，Matt写信给我，说我写过几个Bioconductor包，他本人喜欢我的ChIPseeker包，问我能否在会上分享与Bioconductor包相关的经验。这是Bioconductor在中国的首秀，我欣然接受，当然也是因为这两年我写了ChIPseeker和ggtree，我自己觉得还拿得出手🙈。">
 <meta property="og:locale" content="en-us">
 
@@ -295,25 +287,15 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>不记得是什么时候知道统计之都的，但我记得最早知道的是太云，因为我用了他写的<a href="https://cran.r-project.org/package=corrplot">corrplot</a>包。后来统计之都最早接触的也是太云，他给我写邮件问我能不能帮忙校对<a href="https://book.douban.com/subject/24527091/">《ggplot2：数据分析与图形艺术》</a>，从此开始和太云变成了网友。</p>
-
 <p>我在暨大的时候，太云曾经邀请我去China-R会议做报告，但我觉得自己没什么好分享的，<a href="http://guangchuangyu.github.io/GOSemSim">GOSemSim</a>这个包是硕士的时候做的，不好去讲之前做的东西。而当时我写的另一个包<a href="http://guangchuangyu.github.io/clusterProfiler">clusterProfiler</a>，纯粹是因为大量做富集分析的工具都是针对模式生物，而我们实验室有做各种细菌；另外有一些工具，背景设置是有问题的。自己实现一个包，不受别人的限制。即便是这个包现在受到了一定的认可，比如BioC 3.3中有个<a href="http://bioconductor.org/packages/release/bioc/html/debrowser.html">debrowser</a>的包使用了clusterProfiler，而在BioC 3.4中又有个新包<a href="http://bioconductor.org/packages/devel/bioc/html/bioCancer.html">bioCancer</a>也使用了clusterProfiler；再比如这次在北京，有好几个参会的人员在茶歇时问了clusterProfiler的问题。但始终觉得这只是个实用性的包而已，算法是别人的，而且已经比较老了，类似的工具简直就是成百上千。所以也是不好意思拿出来讲的。所以我拒绝了太云的邀请，一直也没有参加China-R的会议。</p>
-
 <p>今年是第九届China-R会议，这次会议规模很大，有22个分会场，超过100个演讲嘉宾，参会人数超过4000人。这一次刚好有个Bioconductor的分会场，Matt写信给我，说我写过几个Bioconductor包，他本人喜欢我的<a href="http://guangchuangyu.github.io/ChIPseeker">ChIPseeker</a>包，问我能否在会上分享与Bioconductor包相关的经验。这是Bioconductor在中国的首秀，我欣然接受，当然也是因为这两年我写了<a href="http://guangchuangyu.github.io/ChIPseeker">ChIPseeker</a>和<a href="http://guangchuangyu.github.io/ggtree">ggtree</a>，我自己觉得还拿得出手🙈。</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2016/2016-05-30 10.36.12.jpg" alt="" /></p>
-
+<p>![](<a href="http://guangchuangyu.github.io/blog_images/2016/2016-05-30">http://guangchuangyu.github.io/blog_images/2016/2016-05-30</a> 10.36.12.jpg)</p>
 <p>做为Bioconductor在中国的首场会议，当然少不了Bioconductor的老大，Martin Morgan教授。早上Martin是第一个到会场的嘉宾，而我是第二个，做为一个讲蹩脚Chinglish的人，一般不会跟歪果仁搭讪，但看到Martin我主动坐到他旁边，并且跟他聊起来。</p>
-
 <p>Martin在会议上介绍了Bioconductor项目，并且演示了基因组数据存储、检索和操作的强大功能和易用性，也介绍了Bioconductor强大的可视化功能。</p>
-
 <p>Julie分享了CRISPRseek和GUIDEseq设计特异性gRNAs和评估CRISPR-Cas9准确性；Charity介绍了使用Bioconductor系列包进行RNA-seq分析的流程，特别推荐了limma包用于差异表达的检验；Jovana介绍了DNA甲基化分析，以及她们开发的MissMethyl包；腾飞分享了docker技术和七桥公司的Cancer Genomics Cloud云平台。</p>
-
 <p>我在会上分享了<a href="http://guangchuangyu.github.io/ggtree">ggtree</a>的功能特性。ggtree应该说是我写过最受欢迎的包，最主要是使用起来够简单直接，按照ggplot2的语法自由组合进化树的注释图层。在我刚来现在这个实验室时，我尝试去教labmates学ggplot2，但收效甚微，现在几乎所有人都在学R和ggplot2，因为他/她们都要用ggtree。在这次会议之前，太云也向我邀稿，当时在统计之都上发表了<a href="http://cos.name/2015/11/to-achieve-the-visualization-and-annotation-of-evolutionary-tree-using-ggtree/">使用ggtree实现进化树的可视化和注释</a>，这次在会议上分享的内容要远超于之前在统计之都上发表的文章，同时也介绍了很多新的功能（<a href="http://guangchuangyu.github.io/presentation/2016-ggtree-chinar/">会议slides请猛戳此处</a>）。</p>
-
 <p>这次Bioconductor的会议相当成功，全程三个半小时，没人离场，后面一直站满了人。</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2016/2016-05-29 11.00.29.jpg" alt="" /></p>
-
+<p>![](<a href="http://guangchuangyu.github.io/blog_images/2016/2016-05-29">http://guangchuangyu.github.io/blog_images/2016/2016-05-29</a> 11.00.29.jpg)</p>
 <p>PS: 在香港住惯了几平米，到了友谊宾馆后惊讶地发现竟然有阳台（据说是当年住苏联专家的地方）。两天的时间很短，但很开心，和几个多年的老网友，终于见到面，统计之都的太云，WeGene公司的陈钢，艾吉泰康公司的屈武斌；又认识了腾飞，沈侠、文锋等小伙伴；还认识了Julie教授，她一见到我说以为我很凶，着实有点不好意思，之前攻击了她的ChIPpeakAnno，算是不打不相识😬。</p>
               
             </div>

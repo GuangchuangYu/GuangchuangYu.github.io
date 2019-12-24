@@ -5,22 +5,18 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 有一个叫CellMarker的数据库，专门收录组织和细胞的基因标记物，收录还比较全，而且是手工校对的（可怜一下干这种脏活的研究生三秒钟）。
-
 
 By manually curating over 100 000 published papers, 4124 entries including the cell marker information, tissue type, cell type, cancer information and source, were recorded. At last, 13 605 cell markers of 467 cell types in 158 human tissues/sub-tissues and 9148 cell makers of 389 cell types in 81 mouse tissues/sub-tissues were collected and deposited in CellMarker.
 ">
 
 
 <meta property="og:description" content="
-
 有一个叫CellMarker的数据库，专门收录组织和细胞的基因标记物，收录还比较全，而且是手工校对的（可怜一下干这种脏活的研究生三秒钟）。
-
 
 By manually curating over 100 000 published papers, 4124 entries including the cell marker information, tissue type, cell type, cancer information and source, were recorded. At last, 13 605 cell markers of 467 cell types in 158 human tissues/sub-tissues and 9148 cell makers of 389 cell types in 81 mouse tissues/sub-tissues were collected and deposited in CellMarker.
 ">
@@ -31,16 +27,12 @@ By manually curating over 100 000 published papers, 4124 entries including the c
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2019/05/clusterprofiler-cellmarker/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 有一个叫CellMarker的数据库，专门收录组织和细胞的基因标记物，收录还比较全，而且是手工校对的（可怜一下干这种脏活的研究生三秒钟）。
-
 
 By manually curating over 100 000 published papers, 4124 entries including the cell marker information, tissue type, cell type, cancer information and source, were recorded. At last, 13 605 cell markers of 467 cell types in 158 human tissues/sub-tissues and 9148 cell makers of 389 cell types in 81 mouse tissues/sub-tissues were collected and deposited in CellMarker.
 ">
 <meta name="twitter:description" content="
-
 有一个叫CellMarker的数据库，专门收录组织和细胞的基因标记物，收录还比较全，而且是手工校对的（可怜一下干这种脏活的研究生三秒钟）。
-
 
 By manually curating over 100 000 published papers, 4124 entries including the cell marker information, tissue type, cell type, cancer information and source, were recorded. At last, 13 605 cell markers of 467 cell types in 158 human tissues/sub-tissues and 9148 cell makers of 389 cell types in 81 mouse tissues/sub-tissues were collected and deposited in CellMarker.
 ">
@@ -304,26 +296,18 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-1.jpg" alt="" /></p>
-
+              <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-1.jpg" alt=""></p>
 <p>有一个叫CellMarker的数据库，专门收录组织和细胞的基因标记物，收录还比较全，而且是手工校对的（可怜一下干这种脏活的研究生三秒钟）。</p>
-
 <blockquote>
 <p>By manually curating over 100 000 published papers, 4124 entries including the cell marker information, tissue type, cell type, cancer information and source, were recorded. At last, 13 605 cell markers of 467 cell types in 158 human tissues/sub-tissues and 9148 cell makers of 389 cell types in 81 mouse tissues/sub-tissues were collected and deposited in CellMarker.</p>
 </blockquote>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-2.jpg" alt="" /></p>
-
+<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-2.jpg" alt=""></p>
 <p>数据是提供下载的，我就不下载了，直接读入R，此处只演示一下使用人的数据。</p>
-
-<pre><code class="language-r">cell_markers &lt;- vroom::vroom('http://bio-bigdata.hrbmu.edu.cn/CellMarker/download/Human_cell_markers.txt') %&gt;%
-   tidyr::unite(&quot;cellMarker&quot;, tissueType, cancerType, cellName, sep=&quot;, &quot;) %&gt;% 
-   dplyr::select(cellMarker, geneID) %&gt;%
-   dplyr::mutate(geneID = strsplit(geneID, ', '))
-</code></pre>
-
-<p>整理之后，数据长这样子：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">cell_markers <span style="color:#f92672">&lt;-</span> vroom<span style="color:#f92672">::</span><span style="color:#a6e22e">vroom</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">http://bio-bigdata.hrbmu.edu.cn/CellMarker/download/Human_cell_markers.txt&#39;</span>) <span style="color:#f92672">%&gt;%</span>
+   tidyr<span style="color:#f92672">::</span><span style="color:#a6e22e">unite</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">cellMarker&#34;</span>, tissueType, cancerType, cellName, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">, &#34;</span>) <span style="color:#f92672">%&gt;%</span> 
+   dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">select</span>(cellMarker, geneID) <span style="color:#f92672">%&gt;%</span>
+   dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">mutate</span>(geneID <span style="color:#f92672">=</span> <span style="color:#a6e22e">strsplit</span>(geneID, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">, &#39;</span>))
+</code></pre></div><p>整理之后，数据长这样子：</p>
 <pre><code>&gt; cell_markers
 ## # A tibble: 2,868 x 2
 ##    cellMarker                                       geneID  
@@ -339,26 +323,16 @@ if (!doNotTrack) {
 ##  9 Primitive streak, Normal, Primitive streak cell  &lt;chr [2…
 ## 10 Adipose tissue, Normal, Stromal vascular fracti… &lt;chr [1…
 ## # … with 2,858 more rows
-</code></pre>
+</code></pre><p>然后我们就可以用clusterProfiler来做富集分析了，一如既往地使用示例数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(clusterProfiler)
 
-<p>然后我们就可以用clusterProfiler来做富集分析了，一如既往地使用示例数据：</p>
-
-<pre><code class="language-r">library(clusterProfiler)
-
-data(geneList, package=&quot;DOSE&quot;)
-gene &lt;- names(geneList)[abs(geneList) &gt; 2]
-</code></pre>
-
-<p>那么分析起来，太容易，结果我用DT来展示：</p>
-
-<pre><code class="language-r">y &lt;- enricher(gene, TERM2GENE=cell_markers, minGSSize=1)
-DT::datatable(as.data.frame(y))
-</code></pre>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-3.jpg" alt="" /></p>
-
+<span style="color:#a6e22e">data</span>(geneList, package<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">DOSE&#34;</span>)
+gene <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">names</span>(geneList)<span style="color:#a6e22e">[abs</span>(geneList) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>]
+</code></pre></div><p>那么分析起来，太容易，结果我用DT来展示：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">y <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">enricher</span>(gene, TERM2GENE<span style="color:#f92672">=</span>cell_markers, minGSSize<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+DT<span style="color:#f92672">::</span><span style="color:#a6e22e">datatable</span>(<span style="color:#a6e22e">as.data.frame</span>(y))
+</code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-3.jpg" alt=""></p>
 <p>大概就是这样，有一些新的数据库，新的注释，不妨使用clusterProfiler来试着分析一下，或者能够带来新的线索或视角呢！而这一切相当容易，因为clusterProfiler是一个通用的富集分析软件，千万不要认为只是做GO和KEGG的工具，它还能帮你生猴（wen）子（zhang）。</p>
-
 <p>如果你应用clusterProfiler分析文档里没介绍的Ontology、Pathway或其它的各种注释，那么请写个邮件告诉我一声！或者我们可以一起写点文档介绍一下！</p>
               
             </div>

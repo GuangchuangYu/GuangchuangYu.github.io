@@ -5,20 +5,16 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="最初github上用户（@JustGitting）报告说geom_hilight和geom_cladelabel不能用于unrooted树。详见：https://github.com/GuangchuangYu/ggtree/issues/118
-
 我表示这确实是不行的，然后这就变成了feature request。我继续表示unrooted tree在ggtree中的实现并不好，我只实现了equal angle algorithm，在写注释图层之前，如果我有时间的话，我希望可以先实现更好的layout algorithm。
-
 然后JustGitting表示，他发现python的ETE和R的ape，在无根树的可视化上好像都不太行。问我有什么unrooted的layout algorithm，有没有什么参考文献，或许他可以帮忙实现，因为他觉得ggtree是最成熟的软件。">
 
 
 <meta property="og:description" content="最初github上用户（@JustGitting）报告说geom_hilight和geom_cladelabel不能用于unrooted树。详见：https://github.com/GuangchuangYu/ggtree/issues/118
-
 我表示这确实是不行的，然后这就变成了feature request。我继续表示unrooted tree在ggtree中的实现并不好，我只实现了equal angle algorithm，在写注释图层之前，如果我有时间的话，我希望可以先实现更好的layout algorithm。
-
 然后JustGitting表示，他发现python的ETE和R的ape，在无根树的可视化上好像都不太行。问我有什么unrooted的layout algorithm，有没有什么参考文献，或许他可以帮忙实现，因为他觉得ggtree是最成熟的软件。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="highlight clade of unrooted tree">
@@ -27,14 +23,10 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/09/highlight-clade-of-unrooted-tree/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="最初github上用户（@JustGitting）报告说geom_hilight和geom_cladelabel不能用于unrooted树。详见：https://github.com/GuangchuangYu/ggtree/issues/118
-
 我表示这确实是不行的，然后这就变成了feature request。我继续表示unrooted tree在ggtree中的实现并不好，我只实现了equal angle algorithm，在写注释图层之前，如果我有时间的话，我希望可以先实现更好的layout algorithm。
-
 然后JustGitting表示，他发现python的ETE和R的ape，在无根树的可视化上好像都不太行。问我有什么unrooted的layout algorithm，有没有什么参考文献，或许他可以帮忙实现，因为他觉得ggtree是最成熟的软件。">
 <meta name="twitter:description" content="最初github上用户（@JustGitting）报告说geom_hilight和geom_cladelabel不能用于unrooted树。详见：https://github.com/GuangchuangYu/ggtree/issues/118
-
 我表示这确实是不行的，然后这就变成了feature request。我继续表示unrooted tree在ggtree中的实现并不好，我只实现了equal angle algorithm，在写注释图层之前，如果我有时间的话，我希望可以先实现更好的layout algorithm。
-
 然后JustGitting表示，他发现python的ETE和R的ape，在无根树的可视化上好像都不太行。问我有什么unrooted的layout algorithm，有没有什么参考文献，或许他可以帮忙实现，因为他觉得ggtree是最成熟的软件。">
 <meta property="og:locale" content="en-us">
 
@@ -299,27 +291,16 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>最初github上用户（<a href="https://github.com/JustGitting">@JustGitting</a>）报告说<code>geom_hilight</code>和<code>geom_cladelabel</code>不能用于unrooted树。详见：<a href="https://github.com/GuangchuangYu/ggtree/issues/118">https://github.com/GuangchuangYu/ggtree/issues/118</a></p>
-
 <p>我表示这确实是不行的，然后这就变成了feature request。我继续表示unrooted tree在ggtree中的实现并不好，我只实现了equal angle algorithm，在写注释图层之前，如果我有时间的话，我希望可以先实现更好的layout algorithm。</p>
-
 <p>然后JustGitting表示，他发现python的ETE和R的ape，在无根树的可视化上好像都不太行。问我有什么unrooted的layout algorithm，有没有什么参考文献，或许他可以帮忙实现，因为他觉得ggtree是最成熟的软件。</p>
-
 <p>对于这种表示可以帮忙的用户，我最喜欢了，必须提供帮助，于是我让他去看《Inferring Phylogenies》第34章，然后他表示要实现这本书第582页的equal daylight算法。过了一个月，他华丽丽地实现了equal daylight算法：<a href="https://github.com/GuangchuangYu/ggtree/pull/124">https://github.com/GuangchuangYu/ggtree/pull/124</a>。</p>
-
-<hr />
-
+<hr>
 <p>有了这个PR之后，我继续给他指方向啊，要做个unrooted版的<code>geom_hilight</code>，可以用<code>X-spline</code>，而且可以参考<code>ggalt::geom_encircle</code>。然后时隔5个月，他又实现了<code>geom_hilight_encircle</code>和<code>geom_cladelabel2</code>，这两个用于无根树注释的图层，相当给力：<a href="https://github.com/GuangchuangYu/ggtree/pull/152">https://github.com/GuangchuangYu/ggtree/pull/152</a>.</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_hilight_encircle.jpg" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/geom_hilight_encircle.jpg" alt=""></p>
 <p>上面这个简单的例子，用的就是daylight layout，这个算法的空间利用率比较高，而我们平时看到的unrooted tree是下面这样子的，点分不开，而图中空白区域又多。</p>
-
-<p><img src="https://www.researchgate.net/profile/Wei_Chun_Kao/publication/264163876/figure/fig6/AS:216498170798085@1428628594708/The-phylogenetic-tree-of-Rieske-ISP-The-unrooted-tree-of-Rieske-ISP-from-organisms-in.png" alt="" /></p>
-
+<p><img src="https://www.researchgate.net/profile/Wei_Chun_Kao/publication/264163876/figure/fig6/AS:216498170798085@1428628594708/The-phylogenetic-tree-of-Rieske-ISP-The-unrooted-tree-of-Rieske-ISP-from-organisms-in.png" alt=""></p>
 <p>而现在有了<code>geom_hilight_encircle</code>之后，要画下面这样的树，已经毫无压力：</p>
-
-<p><img src="http://www.nature.com/nature/journal/v468/n7325/images/468773a-f1.2.jpg" alt="" /></p>
-
+<p><img src="http://www.nature.com/nature/journal/v468/n7325/images/468773a-f1.2.jpg" alt=""></p>
 <p>这是一次非常成功的经历，JustGitting不知道unrooted tree layout有什么算法，也不知道要有什么方法可以画不规则的封闭的线/圈，我告诉他去看那本书，看某个算法，然后他死磕了一番（总共半年时间，甚至于去看Phylip的源代码<code>drawtree.c</code>），华丽丽地实现了他想要的功能。我体验了一把当指导者的身份，然后ggtree还增加了我没时间去实现的功能，感觉萌萌哒。</p>
               
             </div>

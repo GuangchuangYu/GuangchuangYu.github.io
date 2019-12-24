@@ -18,23 +18,21 @@
       
       <guid>https://guangchuangyu.github.io/2019/09/shit-residual/</guid>
       <description>&lt;p&gt;《&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247486708&amp;amp;idx=1&amp;amp;sn=8da7f94fe242a094b0eef88e359c1afe&amp;amp;chksm=ec43bdb3db3434a5aefd2032229ef0efb8dd0380719aa4f0a4e6773bf6e9216733e8e8a90f29&amp;amp;scene=21#wechat_redirect&#34;&gt;基佬的屁股和科学家的屎，之间的共同点是&amp;hellip;!&lt;/a&gt;》这篇推文发表之后，发现大家对屎尿屁还是蛮有兴趣的，画屎除了展示的emojifont包之外，也提到了ggimage包，其实用ggimage包更有趣！这里也演示一下，一起来玩屎，看看自己到底是搅屎棍还是化粪池！玩屎玩出花来。&lt;/p&gt;
-
 &lt;p&gt;先来一张线性拟合的图：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;set.seed&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;123&lt;/span&gt;)
+iris2 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; iris&lt;span style=&#34;color:#a6e22e&#34;&gt;[sample&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;nrow&lt;/span&gt;(iris), &lt;span style=&#34;color:#ae81ff&#34;&gt;30&lt;/span&gt;), ]
+model &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lm&lt;/span&gt;(Petal.Length &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; Sepal.Length, data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; iris2)
+iris2&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;fitted &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;predict&lt;/span&gt;(model)
 
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;set.seed(123)
-iris2 &amp;lt;- iris[sample(1:nrow(iris), 30), ]
-model &amp;lt;- lm(Petal.Length ~ Sepal.Length, data = iris2)
-iris2$fitted &amp;lt;- predict(model)
-
-iris3 &amp;lt;- iris2[abs(iris2$Petal.Length-iris2$fitted) &amp;gt; 0.5,]
-p &amp;lt;- ggplot(iris2, aes(x = Sepal.Length, y = Petal.Length)) +
-    geom_point() +
-    geom_linerange(aes(ymin = fitted, ymax = Petal.Length),
-                   data=iris3, colour = &amp;quot;purple&amp;quot;) +
-    geom_abline(intercept = model$coefficients[1],
-                slope = model$coefficients[2])
+iris3 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; iris2&lt;span style=&#34;color:#a6e22e&#34;&gt;[abs&lt;/span&gt;(iris2&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;Petal.Length&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;iris2&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;fitted) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.5&lt;/span&gt;,]
+p &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(iris2, &lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Sepal.Length, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Petal.Length)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_point&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_linerange&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(ymin &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fitted, ymax &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Petal.Length),
+                   data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;iris3, colour &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;purple&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_abline&lt;/span&gt;(intercept &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;coefficients[1],
+                slope &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;coefficients[2])
 p
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -44,19 +42,18 @@ p
       
       <guid>https://guangchuangyu.github.io/2019/08/geom-bgimage/</guid>
       <description>&lt;p&gt;上次推送的《geom_bgimage》，竟然有人问说用ggplot2怎么搞。明明我的例子就是了，虽然用的是ggtree的例子，但与ggplot2何异？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(ggplot2)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(ggimage)
 
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggplot2)
-require(ggimage)
+d &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(x&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;LETTERS&lt;/span&gt;[1&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;], y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)
+d&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;y2 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rev&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;cumsum&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;rev&lt;/span&gt;(d&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;y)))
 
-d = data.frame(x=LETTERS[1:3], y = 1:3)
-d$y2 = rev(cumsum(rev(d$y)))
-
-p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color=&#39;white&#39;) +  
- geom_bgimage(&amp;quot;img/blackboard.jpg&amp;quot;) + theme_void() +
- coord_polar(&amp;quot;y&amp;quot;) + theme(legend.position=&#39;none&#39;) + 
- geom_text(aes(y = y2 - y/2, label=x),family=&#39;xkcd&#39;, size=8) + 
- xlim(-1, NA) + scale_fill_viridis_d()
-&lt;/code&gt;&lt;/pre&gt;</description>
+p &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(d, &lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(x&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, y, fill&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;x)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_col&lt;/span&gt;(color&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;white&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;  
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bgimage&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;img/blackboard.jpg&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_void&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;coord_polar&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;y&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(legend.position&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;none&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; y2 &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; y&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;x),family&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;xkcd&amp;#39;&lt;/span&gt;, size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;xlim&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_viridis_d&lt;/span&gt;()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -66,9 +63,7 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color=&#39;white&#39;) +
       
       <guid>https://guangchuangyu.github.io/2018/06/geom_worldcup2018/</guid>
       <description>&lt;p&gt;说到世界杯，我是不追的，但1998年法国世界杯我还是有印象的，那时候读初中的我，一直在集邮，那年代没有网购，通讯基本靠吼，当年的我已经是个老司机了，通过邮政汇款，买了好多东西，包括1998年世界杯从法国寄往中国的首日封，当然锁在老家的柜子里，尘封多年，所以我现在也没办法随手拍一张照片给大家分享。&lt;/p&gt;
-
 &lt;p&gt;另一件事，同样是1998年，那年升高一，开学第一天，老师让大家自我介绍一下，有位帅哥在见面第一天，就立了flag，说自己中考没考好，是因为看世界杯了，他高考必定要怎么样怎么样，毕竟世界杯是四年一次。你一个交钱进学校的学渣，牛逼吹大了，我印象深刻，所以我后来留意了一下这家伙高考上了那家高校，结果是「中山大学网络教育学院」，也就是电视大学！真的是情节反转如疾风！&lt;/p&gt;
-
 &lt;p&gt;《&lt;a href=&#34;https://mp.weixin.qq.com/s/EojwBbg0MUWijwGeNIjntg&#34;&gt;转发5个群，Y叔送你一顶帽子&lt;/a&gt;》这一篇文章写的是加圣诞帽子，但你要加个C罗、梅西，有什么差别吗？没有！你要加某球队的队服，有什么差别吗？没有。所以要制作世界杯专属头像，已然可以用ggimage纯代码生成。&lt;/p&gt;</description>
     </item>
     
@@ -79,20 +74,14 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color=&#39;white&#39;) +
       
       <guid>https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://cran.r-project.org/package=ggimage&#34;&gt;ggimage&lt;/a&gt; 0.1.4 is available on CRAN.&lt;/p&gt;
-
 &lt;p&gt;This release introduces a new function called &lt;code&gt;ggbackground&lt;/code&gt; for setting image background as &lt;code&gt;ggplot&lt;/code&gt; canvas.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(magick)
+&lt;pre&gt;&lt;code class=&#34;language-{r&#34; data-lang=&#34;{r&#34;&gt;require(magick)
 require(ggplot2)
 require(ggimage) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(ggplot2)
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code class=&#34;language-{r}&#34; data-lang=&#34;{r}&#34;&gt;require(ggplot2)
 p &amp;lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
     geom_point(size=5) + theme_classic()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Suppose we have the above &lt;code&gt;ggplot&lt;/code&gt; object, &lt;code&gt;p&lt;/code&gt;, the only thing we need to do is passing the &lt;code&gt;p&lt;/code&gt; with an image file name (local or remote) to &lt;code&gt;ggbackground&lt;/code&gt;, as demonstrated below:&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Suppose we have the above &lt;code&gt;ggplot&lt;/code&gt; object, &lt;code&gt;p&lt;/code&gt;, the only thing we need to do is passing the &lt;code&gt;p&lt;/code&gt; with an image file name (local or remote) to &lt;code&gt;ggbackground&lt;/code&gt;, as demonstrated below:&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -104,12 +93,8 @@ p &amp;lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species)
       <description>&lt;pre&gt;&lt;code&gt;require(ggplot2)
  p &amp;lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
     geom_point(size=5) + theme_classic()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;首先我们有一个图，是用&lt;code&gt;ggplot2&lt;/code&gt;画的，上面这图大家太熟悉，不打印出来都知道是什么了。&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;首先我们有一个图，是用&lt;code&gt;ggplot2&lt;/code&gt;画的，上面这图大家太熟悉，不打印出来都知道是什么了。&lt;/p&gt;
 &lt;p&gt;我在最新版的&lt;code&gt;ggimage&lt;/code&gt;中加入了一个&lt;code&gt;ggbackground&lt;/code&gt;的函数，我随便从网上找一张&lt;code&gt;iris&lt;/code&gt;的图片，我们把&lt;code&gt;p&lt;/code&gt;和&lt;code&gt;img&lt;/code&gt;同时传给&lt;code&gt;ggbackground&lt;/code&gt;就好了，非常容易，于是图的内容还是一样，但加了一张我们给定的图片做为背景。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;require(ggimage) 
 img = &amp;quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&amp;quot;
 ggbackground(p, img)
@@ -123,13 +108,10 @@ ggbackground(p, img)
       
       <guid>https://guangchuangyu.github.io/2017/12/ggimage-hat/</guid>
       <description>&lt;p&gt;圣诞节期间，一个个在@微信官方，要加圣诞帽，这让人想起了以前：&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;今天是马化腾的生日，转发5个群，自动开通一个月的QQ会员&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;这班玩QQ长大的孩子，现在变成了玩微信的油腻中年了。&lt;/p&gt;
-
 &lt;p&gt;做为biobabble公众号的粉丝，我觉得你们是有能力用两三行R代码来给自己加个帽子的。由于我在过圣诞节，所以这篇文章没有能够及时推送出来，就当马后炮吧，不合时宜地调侃一下大家。&lt;/p&gt;</description>
     </item>
     
@@ -140,12 +122,9 @@ ggbackground(p, img)
       
       <guid>https://guangchuangyu.github.io/2017/10/ygc/</guid>
       <description>&lt;p&gt;大量的生信公众号在各种linux入门、perl入门、python入门、R入门、软件安装、跑跑示例代码、流程。我自己平时根本不会去看这些生信号，在《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484921&amp;amp;idx=1&amp;amp;sn=b729438c35c7d491ef75fdf8dab5f09f&amp;amp;chksm=ec43b4bedb343da85853e234b5eb86267276e78a6b53dd1360367cca94d764955594ef86e910#rd&#34;&gt;s01 - Counting DNA Nucleotides&lt;/a&gt;》一文发出去后，就被爪哥说不能跟着走低端路线，囧rz&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2017/WechatIMG93.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;http://guangchuangyu.github.io/blog_images/2017/WechatIMG93.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;还好我多半写的是自己的东西，目前还没有掉进「低端」的坑里，今天继续画图，唯有赏心悦目的图能抚慰人心。&lt;/p&gt;
-
-&lt;p&gt;我写了一个包叫《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484164&amp;amp;idx=1&amp;amp;sn=030612f5a84120ef407401ff6fad715f&amp;amp;chksm=ec43b243db343b5524c911327bdcbe5f01034095d549d43d530decc5676faecdbd449dfac026#rd&#34;&gt;ggimage：ggplot2中愉快地使用图片&lt;/a&gt;》，从此图上嵌图（ggplot对象）或图片变得轻而易举。某一天写着玩，写了个《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484079&amp;amp;idx=1&amp;amp;sn=2f37b54ad09b966ccb9e8bf93ebd6643&amp;amp;chksm=ec43b3e8db343afed5d55c25aaaba233f3339686e9eba0e65f004a5ca58ac13bba7ba9b5bacc#rd&#34;&gt;geom_pokemon: 使用pokemon画图&lt;/a&gt;》的图层，引起了人民群众的尖叫，国外有妹纸用来可视化NBA数据《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484149&amp;amp;idx=1&amp;amp;sn=0058b64bc269a05937ba97dccd9c0e23&amp;amp;chksm=ec43b3b2db343aa4799e68b1f5c51cde7b4b5452fe69158b93de6f7b368738ecbc2dcf275abc#rd&#34;&gt;大开眼界+多图慎点：Pokémon x NBA and other fun with ggimage&lt;/a&gt;》，国内有汉子用来可视化复旦大学考研的报考专业《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;amp;mid=2247484594&amp;amp;amp;idx=1&amp;amp;amp;sn=d35474d1ff032b54152935ef55088340&amp;amp;amp;chksm=ec43b5f5db343ce311e0d54e1b936cb4982f952ce38e940ba6c3cf354436c91b1ae22fc17ea1#rd&#34;&gt;你的专业是那一只Pokémon神兽？&lt;/a&gt;》。&lt;/p&gt;</description>
+&lt;p&gt;我写了一个包叫《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484164&amp;amp;idx=1&amp;amp;sn=030612f5a84120ef407401ff6fad715f&amp;amp;chksm=ec43b243db343b5524c911327bdcbe5f01034095d549d43d530decc5676faecdbd449dfac026#rd&#34;&gt;ggimage：ggplot2中愉快地使用图片&lt;/a&gt;》，从此图上嵌图（ggplot对象）或图片变得轻而易举。某一天写着玩，写了个《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484079&amp;amp;idx=1&amp;amp;sn=2f37b54ad09b966ccb9e8bf93ebd6643&amp;amp;chksm=ec43b3e8db343afed5d55c25aaaba233f3339686e9eba0e65f004a5ca58ac13bba7ba9b5bacc#rd&#34;&gt;geom_pokemon: 使用pokemon画图&lt;/a&gt;》的图层，引起了人民群众的尖叫，国外有妹纸用来可视化NBA数据《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484149&amp;amp;idx=1&amp;amp;sn=0058b64bc269a05937ba97dccd9c0e23&amp;amp;chksm=ec43b3b2db343aa4799e68b1f5c51cde7b4b5452fe69158b93de6f7b368738ecbc2dcf275abc#rd&#34;&gt;大开眼界+多图慎点：Pokémon x NBA and other fun with ggimage&lt;/a&gt;》，国内有汉子用来可视化复旦大学考研的报考专业《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484594&amp;amp;idx=1&amp;amp;sn=d35474d1ff032b54152935ef55088340&amp;amp;chksm=ec43b5f5db343ce311e0d54e1b936cb4982f952ce38e940ba6c3cf354436c91b1ae22fc17ea1#rd&#34;&gt;你的专业是那一只Pokémon神兽？&lt;/a&gt;》。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -154,9 +133,8 @@ ggbackground(p, img)
       <pubDate>Wed, 20 Sep 2017 14:13:35 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2017/09/geofacet_index/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-10-17 10.31.23.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这个题目可以放好多不正经的图，我在这个公众号里面已经写过太多，比如《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;amp;mid=2247483816&amp;amp;amp;idx=1&amp;amp;amp;sn=cbfbc284f4edb165ac65f7926f7f8fcc&amp;amp;amp;chksm=ec43b0efdb3439f91ec4f570f7be65e442e21e403481b969d69449464ae1986c7983551de04d#rd&#34;&gt;邪恶的曲线&lt;/a&gt;》和它的3D版本，《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;amp;mid=2247484823&amp;amp;amp;idx=1&amp;amp;amp;sn=4af972da15535c1d7dcf837ace320592&amp;amp;amp;chksm=ec43b4d0db343dc6ec2e622523a5aabb67f25e4b9e4b93a67ab37125570fbab907741351da18#rd&#34;&gt;3D版邪恶的曲线&lt;/a&gt;》，但这里不涉及太多，只用&lt;code&gt;geofacet&lt;/code&gt;这个包为例。&lt;/p&gt;</description>
+      <description>&lt;p&gt;![](&lt;a href=&#34;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot&#34;&gt;https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot&lt;/a&gt; 2017-10-17 10.31.23.png)&lt;/p&gt;
+&lt;p&gt;这个题目可以放好多不正经的图，我在这个公众号里面已经写过太多，比如《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247483816&amp;amp;idx=1&amp;amp;sn=cbfbc284f4edb165ac65f7926f7f8fcc&amp;amp;chksm=ec43b0efdb3439f91ec4f570f7be65e442e21e403481b969d69449464ae1986c7983551de04d#rd&#34;&gt;邪恶的曲线&lt;/a&gt;》和它的3D版本，《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484823&amp;amp;idx=1&amp;amp;sn=4af972da15535c1d7dcf837ace320592&amp;amp;chksm=ec43b4d0db343dc6ec2e622523a5aabb67f25e4b9e4b93a67ab37125570fbab907741351da18#rd&#34;&gt;3D版邪恶的曲线&lt;/a&gt;》，但这里不涉及太多，只用&lt;code&gt;geofacet&lt;/code&gt;这个包为例。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -166,9 +144,7 @@ ggbackground(p, img)
       
       <guid>https://guangchuangyu.github.io/2017/07/pie-version-of-bubble-plot/</guid>
       <description>&lt;p&gt;在《&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484164&amp;amp;idx=1&amp;amp;sn=030612f5a84120ef407401ff6fad715f&amp;amp;chksm=ec43b243db343b5524c911327bdcbe5f01034095d549d43d530decc5676faecdbd449dfac026#rd&#34;&gt;ggimage：ggplot2中愉快地使用图片&lt;/a&gt;》一文中，我展示了「嵌套式绘图」，中间生成了多个饼图，再用这些产生的饼图用于做图，绘制出饼图版的气泡图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/us_crime.png&#34; alt=&#34;嵌套式绘图演示：用饼图来画气泡图&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/us_crime.png&#34; alt=&#34;嵌套式绘图演示：用饼图来画气泡图&#34;&gt;&lt;/p&gt;
 &lt;p&gt;当时还通过每次只画一个州的数据，来演示制作动图：&lt;/p&gt;</description>
     </item>
     
@@ -178,9 +154,8 @@ ggbackground(p, img)
       <pubDate>Thu, 13 Jul 2017 10:06:59 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2017/07/pokemon/</guid>
-      <description>&lt;h2 id=&#34;啥都不说-先上图&#34;&gt;啥都不说，先上图&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/ggimage/1208212267.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;heading&#34;&gt;啥都不说，先上图&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/R/ggimage/1208212267.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -189,22 +164,16 @@ ggbackground(p, img)
       <pubDate>Tue, 11 Apr 2017 10:06:59 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2017/04/ggimage/</guid>
-      <description>&lt;h1 id=&#34;导言&#34;&gt;导言&lt;/h1&gt;
-
+      <description>&lt;h1 id=&#34;heading&#34;&gt;导言&lt;/h1&gt;
 &lt;p&gt;本文介绍了&lt;strong&gt;ggimage&lt;/strong&gt;包，允许在&lt;strong&gt;ggplot2&lt;/strong&gt;作图时嵌入图片，并支持&lt;code&gt;aes&lt;/code&gt;映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用&lt;strong&gt;ggimage&lt;/strong&gt;来展示在这些特定领域里的应用，&lt;strong&gt;ggimage&lt;/strong&gt;的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。&lt;/p&gt;
-
-&lt;h1 id=&#34;图上嵌图片&#34;&gt;图上嵌图片&lt;/h1&gt;
-
+&lt;h1 id=&#34;heading-1&#34;&gt;图上嵌图片&lt;/h1&gt;
 &lt;p&gt;R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是&lt;code&gt;graphics::rasterImage&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;imgurl &amp;lt;- &amp;quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&amp;quot;
-library(EBImage)
-x &amp;lt;- readImage(imgurl)
-plot(1, type = &amp;quot;n&amp;quot;, xlab = &amp;quot;&amp;quot;, ylab = &amp;quot;&amp;quot;, xlim = c(0, 8), ylim = c(0, 8))
-rasterImage(x, 2, 2, 6, 4)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/raster.png&#34; alt=&#34;R绘图嵌入图片演示&#34; /&gt;&lt;/p&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;imgurl &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(EBImage)
+x &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;readImage&lt;/span&gt;(imgurl)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;plot&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;n&amp;#34;&lt;/span&gt;, xlab &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, ylab &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, xlim &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;), ylim &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;))
+&lt;span style=&#34;color:#a6e22e&#34;&gt;rasterImage&lt;/span&gt;(x, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/raster.png&#34; alt=&#34;R绘图嵌入图片演示&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -213,22 +182,16 @@ rasterImage(x, 2, 2, 6, 4)
       <pubDate>Wed, 05 Apr 2017 12:23:16 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2017/04/generate-biobabble-banner-using-ggimage/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/biobabble_banner.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+      <description>&lt;p&gt;&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/biobabble_banner.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;制作了一个banner，用来插入到文后，方便阅读到最后的时候，直接扫描关注。&lt;/p&gt;
-
 &lt;p&gt;这图当然用PS一下就可以得到，无非是拼图和加点文字。但做为天天写代码画图的人来说，必然是要纯代码来产生的，而且做科学的人，讲究自动化、可重复性。&lt;/p&gt;
-
 &lt;p&gt;就像有些人不理解data scentist为什么讨厌excel一样，觉得无非是工具，没什么好搞阵营的。试想一下，一个分析流程中间有一步要用到excel，需要人工去点点鼠标，这对于讲究自动化、可重复性的data scientist来说是不可接受的。&lt;/p&gt;
-
-&lt;h2 id=&#34;加载中文字体&#34;&gt;加载中文字体&lt;/h2&gt;
-
+&lt;h2 id=&#34;heading&#34;&gt;加载中文字体&lt;/h2&gt;
 &lt;p&gt;为了打几个中文字，需要先加载字体，这里我用showtext。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;require(showtext)
-font.add(&amp;quot;heiti&amp;quot;, &amp;quot;/Library/Fonts/华文黑体.ttf&amp;quot;)
-showtext.auto()
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(showtext)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;font.add&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;heiti&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;/Library/Fonts/华文黑体.ttf&amp;#34;&lt;/span&gt;)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;showtext.auto&lt;/span&gt;()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
   </channel>

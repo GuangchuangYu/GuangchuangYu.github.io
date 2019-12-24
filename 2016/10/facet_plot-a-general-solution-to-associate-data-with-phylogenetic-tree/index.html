@@ -5,24 +5,18 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="ggtree provides gheatmap for visualizing heatmap and msaplot for visualizing multiple sequence alignment with phylogenetic tree.
-
 We may have different data types and want to visualize and align them with the tree. For example, dotplot of SNP site (e.g. using geom_point(shape=&#39;|&#39;)), barplot of trait values (e.g. using geom_barh(stat=&#39;identity&#39;)) et al.
-
 To make it easy to associate different types of data with phylogenetic tree, I implemented the facet_plot function which accepts a geom function to draw the input data.frame and display it in an additional panel.
-
 ">
 
 
 <meta property="og:description" content="ggtree provides gheatmap for visualizing heatmap and msaplot for visualizing multiple sequence alignment with phylogenetic tree.
-
 We may have different data types and want to visualize and align them with the tree. For example, dotplot of SNP site (e.g. using geom_point(shape=&#39;|&#39;)), barplot of trait values (e.g. using geom_barh(stat=&#39;identity&#39;)) et al.
-
 To make it easy to associate different types of data with phylogenetic tree, I implemented the facet_plot function which accepts a geom function to draw the input data.frame and display it in an additional panel.
-
 ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="facet_plot: a general solution to associate data with phylogenetic tree">
@@ -31,18 +25,12 @@ To make it easy to associate different types of data with phylogenetic tree, I i
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="ggtree provides gheatmap for visualizing heatmap and msaplot for visualizing multiple sequence alignment with phylogenetic tree.
-
 We may have different data types and want to visualize and align them with the tree. For example, dotplot of SNP site (e.g. using geom_point(shape=&#39;|&#39;)), barplot of trait values (e.g. using geom_barh(stat=&#39;identity&#39;)) et al.
-
 To make it easy to associate different types of data with phylogenetic tree, I implemented the facet_plot function which accepts a geom function to draw the input data.frame and display it in an additional panel.
-
 ">
 <meta name="twitter:description" content="ggtree provides gheatmap for visualizing heatmap and msaplot for visualizing multiple sequence alignment with phylogenetic tree.
-
 We may have different data types and want to visualize and align them with the tree. For example, dotplot of SNP site (e.g. using geom_point(shape=&#39;|&#39;)), barplot of trait values (e.g. using geom_barh(stat=&#39;identity&#39;)) et al.
-
 To make it easy to associate different types of data with phylogenetic tree, I implemented the facet_plot function which accepts a geom function to draw the input data.frame and display it in an additional panel.
-
 ">
 <meta property="og:locale" content="en-us">
 
@@ -315,25 +303,18 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p><a href="https://guangchuangyu.github.io/ggtree">ggtree</a> provides <code>gheatmap</code> for visualizing heatmap and <code>msaplot</code> for visualizing multiple sequence alignment with phylogenetic tree.</p>
-
 <p>We may have different data types and want to visualize and align them with the tree. For example, <code>dotplot</code> of SNP site (e.g. using <code>geom_point(shape='|')</code>), <code>barplot</code> of trait values (e.g. using <code>geom_barh(stat='identity')</code>) <em>et al</em>.</p>
-
 <p>To make it easy to associate different types of data with phylogenetic tree, I implemented the <code>facet_plot</code> function which accepts a <code>geom</code> function to draw the input <code>data.frame</code> and display it in an additional <code>panel</code>.</p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/2019-11-20_23-16.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/2019-11-20_23-16.png" alt=""></p>
 <p>tr &lt;- rtree(30)
-    p &lt;- ggtree(tr)
-    d1 &lt;- data.frame(id=tr$tip.label, location=sample(c(&ldquo;GZ&rdquo;, &ldquo;HK&rdquo;, &ldquo;CZ&rdquo;), 30, replace=TRUE))
-    p1 &lt;- p %&lt;+% d1 + geom_tippoint(aes(color=location))
-    d2 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-    p2 &lt;- facet_plot(p1, panel=&ldquo;dot&rdquo;, data=d2, geom=geom_point,
-                    aes(x=val), color=&lsquo;firebrick&rsquo;) + theme_tree2()</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" alt="" /></p>
-
+p &lt;- ggtree(tr)
+d1 &lt;- data.frame(id=tr$tip.label, location=sample(c(&ldquo;GZ&rdquo;, &ldquo;HK&rdquo;, &ldquo;CZ&rdquo;), 30, replace=TRUE))
+p1 &lt;- p %&lt;+% d1 + geom_tippoint(aes(color=location))
+d2 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
+p2 &lt;- facet_plot(p1, panel=&quot;dot&rdquo;, data=d2, geom=geom_point, 
+aes(x=val), color='firebrick&rsquo;) + theme_tree2()</p>
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" alt=""></p>
 <p>Most of the <code>geom</code> in <code>ggplot2</code> draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have <a href="https://github.com/lionel-/ggstance">ggstance</a> which provides horizontal versions of <code>geoms</code>, including:</p>
-
 <ul>
 <li><code>geom_barh()</code></li>
 <li><code>geom_histogramh()</code></li>
@@ -344,9 +325,7 @@ if (!doNotTrack) {
 <li><code>geom_boxploth()</code></li>
 <li><code>geom_violinh()</code></li>
 </ul>
-
 <p>With <code>ggstance</code>, we can associate <code>barplot</code>, <code>boxplot</code> or other graphs to phylogenetic trees.</p>
-
 <pre><code>library(ggstance)
 d3 &lt;- data.frame(id = rep(tr$tip.label, each=2),
                     value = abs(rnorm(60, mean=100, sd=50)),
@@ -356,25 +335,19 @@ p3 &lt;- facet_plot(p2, panel = 'Stacked Barplot', data = d3,
                 mapping = aes(x = value, fill = as.factor(category)), 
                 stat='identity' ) 
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" alt=""></p>
 <pre><code>d4 = data.frame(id=rep(tr$tip.label, each=20), 
                 val=as.vector(sapply(1:30, function(i) 
                                 rnorm(20, mean=i)))
-                )               
+                )				
 p4 &lt;- facet_plot(p3, panel=&quot;Boxplot&quot;, data=d4, geom_boxploth, 
-            mapping = aes(x=val, group=label, color=location))                                  
+            mapping = aes(x=val, group=label, color=location))									
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" alt=""></p>
 <h2 id="citation">Citation</h2>
-
-<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
-
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
-<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<!-- raw HTML omitted -->*<!-- raw HTML omitted -->. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <em><strong>Methods in Ecology and Evolution</strong></em>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
               
             </div>
           </div>

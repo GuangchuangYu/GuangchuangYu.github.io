@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用boxplot，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。
-
 然而事情是不断在进化的，我们的手段是要跟上潮流的，现在的潮流就是除了要有统计量，还要有原始数据，甚至于有统计推断，全集中一图中，揭开数据的红盖头，给大家呈现全方位无死角的面貌。">
 
 
 <meta property="og:description" content="生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用boxplot，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。
-
 然而事情是不断在进化的，我们的手段是要跟上潮流的，现在的潮流就是除了要有统计量，还要有原始数据，甚至于有统计推断，全集中一图中，揭开数据的红盖头，给大家呈现全方位无死角的面貌。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="（翻）云（覆）雨图">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/11/raincloud/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用boxplot，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。
-
 然而事情是不断在进化的，我们的手段是要跟上潮流的，现在的潮流就是除了要有统计量，还要有原始数据，甚至于有统计推断，全集中一图中，揭开数据的红盖头，给大家呈现全方位无死角的面貌。">
 <meta name="twitter:description" content="生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用boxplot，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。
-
 然而事情是不断在进化的，我们的手段是要跟上潮流的，现在的潮流就是除了要有统计量，还要有原始数据，甚至于有统计推断，全集中一图中，揭开数据的红盖头，给大家呈现全方位无死角的面貌。">
 <meta property="og:locale" content="en-us">
 
@@ -289,46 +285,31 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用<a href="http://mp.weixin.qq.com/s/kk3M1eoVhCiYmyu92P0zwA">boxplot</a>，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。</p>
-
 <p>然而事情是不断在进化的，我们的手段是要跟上潮流的，现在的潮流就是除了要有统计量，还要有原始数据，甚至于有统计推断，全集中一图中，揭开数据的红盖头，给大家呈现全方位无死角的面貌。</p>
-
 <p>所以现在流行的不单单是画boxplot，有以下几种方式是显得比较专业的：</p>
-
 <ul>
 <li>boxplot + raw data</li>
 <li>violin plot + boxplot</li>
 <li>violin plot + raw data</li>
 <li>violin plot + boxplot + raw data</li>
 </ul>
-
 <p>反正就是原始数据+统计量（boxplot）+统计推断（violin plot, 概率密度）的组合。然而violin画出来是对称的，也就是说信息冗余，就有人提出来，能不能画一半的violin，但其实一半也挺丑的，但大家脑洞足够大，把violin往右移一点，它就像一朵云彩，而raw data就像是雨滴，于是乎云雨图(raincloud)应运而生，一下子俘获大家的芳心，包括我。</p>
-
 <p>就这一个可视化方式，有人专门写文章介绍，并且还用主流语言实现了，<a href="https://peerj.com/preprints/27137v1/">https://peerj.com/preprints/27137v1/</a>。</p>
-
 <p>《<a href="https://mp.weixin.qq.com/s/0y1hS0VM0o1fyb9MCxGWow">ggridges：一种波涛汹涌，哦不对，是山峰叠峦的可视化方式</a>》本身长得就像半个violin，这个包现在也支持raincloud，不过我还是喜欢单一的元素然后自己拼。</p>
-
 <p>那么要实现这个图，最大的问题在于需要一半的violin，这个<a href="https://github.com/dgrtwo">David Robinson</a>首先从<code>ggplot2</code>中的<code>geom_violin</code>图层<a href="https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R">修改得到</a>，然后我发现一直没人打包在R包里，我为了方便讲课时候在课堂上演示，于是我就打了一个R包，叫<code>gglayer</code>，<a href="https://github.com/GuangchuangYu/gglayer">https://github.com/GuangchuangYu/gglayer</a>， 顾名思义就是打包ggplot的图层的，我顺道把我<code>yyplot</code>中的两个图层也给移过去。</p>
-
 <ul>
 <li><a href="https://mp.weixin.qq.com/s/Iqcqo5YTy1qmXdsuIrlrYQ">130岁了，祝你生快</a></li>
 <li><a href="https://mp.weixin.qq.com/s/8kqTVSDjuHpivGaim6ukNg">画个小圈圈</a></li>
 </ul>
-
-<h3 id="violin-boxplot-raw-data">violin + boxplot + raw data</h3>
-
+<h3 id="violin--boxplot--raw-data">violin + boxplot + raw data</h3>
 <pre><code>require(ggplot2)
 ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_violin(alpha=.5) +
     geom_boxplot(width=.1) +
     geom_jitter()
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b1.png" alt="" /></p>
-
-<h3 id="violin-mean-sd-raw-data">violin + mean+-sd + raw data</h3>
-
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b1.png" alt=""></p>
+<h3 id="violin--mean-sd--raw-data">violin + mean+-sd + raw data</h3>
 <p>统计量不一定要用boxplot来展示四分位数，你也可以是均值+-标准误差的方式，这样相当于你把barplot的信息也放进去了，所以说单纯barplot有多弱鸡。当然统计量也不限于此，有合适的都可以放进去。无非是拼图层，这也是图形语法的灵活所在，封装失去了自由组合的灵活性。</p>
-
 <pre><code>require(dplyr)
 d &lt;- group_by(iris, Species) %&gt;%
     summarize(mean = mean(Petal.Length),
@@ -338,12 +319,8 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_violin(alpha=.5) +
     geom_jitter() +
     geom_pointrange(aes(y=mean, ymin=mean-sd, ymax=mean+sd, color=Species), data=d, size=2) 
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b2.png" alt="" /></p>
-
-<h3 id="云雨图1-加上均值和标准误差">云雨图1：加上均值和标准误差。</h3>
-
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b2.png" alt=""></p>
+<h3 id="1">云雨图1：加上均值和标准误差。</h3>
 <pre><code>## devtools::install_github(&quot;GuangchuangYu/gglayer&quot;)
 require(gglayer)
 
@@ -354,33 +331,23 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
                     data=d, size=1, position=position_nudge(x=.25)) +
     coord_flip() + theme_bw() +
     theme(legend.position=&quot;bottom&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b3.png" alt="" /></p>
-
-<h3 id="云雨图2-加上boxplot">云雨图2：加上boxplot</h3>
-
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b3.png" alt=""></p>
+<h3 id="2boxplot">云雨图2：加上boxplot</h3>
 <pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_flat_violin(position=position_nudge(x=.3)) +
     geom_jitter(aes(color=Species), width=.15) +
     geom_boxplot(width=.1, position=position_nudge(x=.22)) +
     coord_flip() + theme_bw() +
     theme(legend.position=&quot;bottom&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b4.png" alt="" /></p>
-
-<h3 id="云雨图3-用堆叠的点图当雨点">云雨图3：用堆叠的点图当雨点</h3>
-
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b4.png" alt=""></p>
+<h3 id="3">云雨图3：用堆叠的点图当雨点</h3>
 <pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_flat_violin(position=position_nudge(x=.2)) +
     geom_dotplot(binaxis=&quot;y&quot;, stackdir=&quot;down&quot;, dotsize=.35) +
     geom_boxplot(width=.1, position=position_nudge(x=.1)) +
     coord_flip() + theme_bw() +
     theme(legend.position=&quot;bottom&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b5.png" alt="" /></p>
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b5.png" alt=""></p>
               
             </div>
           </div>

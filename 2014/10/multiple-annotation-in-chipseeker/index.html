@@ -5,30 +5,26 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Nearest gene annotation
-
 Almost all annotation software calculate the distance of a peak to the
 nearest TSS and assign the peak to that gene. This can be misleading, as
 binding sites might be located between two start sites of different
 genes or hit different genes which have the same TSS location in the
 genome.
-
 The function annotatePeak provides option to assign genes with a max
 distance cutoff and all genes within this distance were reported for
 each peak.">
 
 
 <meta property="og:description" content="Nearest gene annotation
-
 Almost all annotation software calculate the distance of a peak to the
 nearest TSS and assign the peak to that gene. This can be misleading, as
 binding sites might be located between two start sites of different
 genes or hit different genes which have the same TSS location in the
 genome.
-
 The function annotatePeak provides option to assign genes with a max
 distance cutoff and all genes within this distance were reported for
 each peak.">
@@ -39,24 +35,20 @@ each peak.">
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2014/10/multiple-annotation-in-chipseeker/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="Nearest gene annotation
-
 Almost all annotation software calculate the distance of a peak to the
 nearest TSS and assign the peak to that gene. This can be misleading, as
 binding sites might be located between two start sites of different
 genes or hit different genes which have the same TSS location in the
 genome.
-
 The function annotatePeak provides option to assign genes with a max
 distance cutoff and all genes within this distance were reported for
 each peak.">
 <meta name="twitter:description" content="Nearest gene annotation
-
 Almost all annotation software calculate the distance of a peak to the
 nearest TSS and assign the peak to that gene. This can be misleading, as
 binding sites might be located between two start sites of different
 genes or hit different genes which have the same TSS location in the
 genome.
-
 The function annotatePeak provides option to assign genes with a max
 distance cutoff and all genes within this distance were reported for
 each peak.">
@@ -327,17 +319,14 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <h3 id="nearest-gene-annotation">Nearest gene annotation</h3>
-
 <p>Almost all annotation software calculate the distance of a peak to the
 nearest TSS and assign the peak to that gene. This can be misleading, as
 binding sites might be located between two start sites of different
 genes or hit different genes which have the same TSS location in the
 genome.</p>
-
 <p>The function <em>annotatePeak</em> provides option to assign genes with a max
 distance cutoff and all genes within this distance were reported for
 each peak.</p>
-
 <pre><code>&gt; anno = annotatePeak(getSampleFiles()[[4]], addFlankGeneInfo=TRUE, flankDistance=5000)
 &gt;&gt; loading peak file...              2014-09-30 01:12:09 PM 
 &gt;&gt; preparing features information...         2014-09-30 01:12:09 PM 
@@ -399,18 +388,13 @@ GRanges object with 6 ranges and 14 metadata columns:
   [6]                                                                   15331;0
   -------
   seqinfo: 24 sequences from hg19 genome
-</code></pre>
-
-<p>Three extra columns, <em>flank_txIds</em>, <em>flank_geneIds</em>,
+</code></pre><p>Three extra columns, <em>flank_txIds</em>, <em>flank_geneIds</em>,
 <em>flank_gene_distances</em> were added if parameter <em>addFlankGeneInfo</em> is
 set to <em>TRUE</em>.</p>
-
 <h3 id="genomic-annotation">Genomic annotation</h3>
-
 <p>The annotation column annotates the genomic location of a given peak.
 Since some annotations overlap, they are assigned based on the following
 priority.</p>
-
 <ul>
 <li>Promoter (defined by tssRegion parameter)</li>
 <li>5&rsquo; UTR</li>
@@ -420,31 +404,23 @@ priority.</p>
 <li>Downstream (immediate downstream of a gene, within 3kb)</li>
 <li>Distal Intergenic</li>
 </ul>
-
 <p>I have implemented <a href="http://guangchuangyu.github.io/2014/04/visualization-methods-in-chipseeker/">plotAnnoPie and plotAnnoBar</a>
 to visualize their distribution. I am wondering how to visualize the
 annotation overlap and found <a href="http://onetipperday.blogspot.hk/2014/09/how-to-draw-venn-pie-agram-multi-layer.html">venn pie-agram</a>
-can partially solve this issue. It&rsquo;s hard/impossible to visualize all
+can partially solve this issue. It's hard/impossible to visualize all
 the overlap information within one vennpie plot.</p>
-
 <p>I employed the vennpie to ChIPseeker, and now with the vennpie function,
 we can visualize some of the overlap annotations.</p>
-
 <pre><code>vennpie(anno)
 </code></pre>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/10/2014-09-30-142735_471x303_scrot.png" alt=""></p>
 <p>In order to manage complex data, <em>annotatePeak</em> now output a S4 object.
 Users can use <em>as.GRanges</em> to convert it to <em>as.GRanges</em> object or
 <em>as.data.frame</em> to convert it to <em>data.frame</em> and then the output can be
 exported by <em>write.table</em> function.</p>
-
 <h2 id="citation">Citation</h2>
-
-<p><strong><em>Yu G</em></strong>, Wang LG and He QY<sup>*</sup>. <a href="http://bioinformatics.oxfordjournals.org/content/31/14/2382">ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization</a>. <strong><em>Bioinformatics</em></strong> 2015, 31(14):2382-2383.</p>
-
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script><div class="altmetric-embed" data-badge-type="donut" data-badge-popover="right" data-altmetric-id="3781087"></div></p>
+<p><em><strong>Yu G</strong></em>, Wang LG and He QY<!-- raw HTML omitted -->*<!-- raw HTML omitted -->. <a href="http://bioinformatics.oxfordjournals.org/content/31/14/2382">ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization</a>. <em><strong>Bioinformatics</strong></em> 2015, 31(14):2382-2383.</p>
+<!-- raw HTML omitted -->
               
             </div>
           </div>

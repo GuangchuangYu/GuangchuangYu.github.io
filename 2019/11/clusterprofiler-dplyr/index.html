@@ -5,24 +5,18 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
-
 但这样的图，对于我们来说，简直简单的不要不要的。
-
 首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
 
 
 <meta property="og:description" content="
-
 出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
-
 但这样的图，对于我们来说，简直简单的不要不要的。
-
 首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="clusterProfiler.dplyr：用dplyr操作富集分析结果">
@@ -31,18 +25,12 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
-
 但这样的图，对于我们来说，简直简单的不要不要的。
-
 首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
 <meta name="twitter:description" content="
-
 出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。
-
 但这样的图，对于我们来说，简直简单的不要不要的。
-
 首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：">
 <meta property="og:locale" content="en-us">
 
@@ -304,14 +292,10 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/qestion.jpeg" alt="" /></p>
-
+              <p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/qestion.jpeg" alt=""></p>
 <p>出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。</p>
-
 <p>但这样的图，对于我们来说，简直简单的不要不要的。</p>
-
 <p>首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：</p>
-
 <pre><code>library(ReactomePA)
 data(geneList)
 x &lt;- gsePathway(geneList)
@@ -346,22 +330,14 @@ x &lt;- gsePathway(geneList)
   reactome pathway analysis and visualization. Molecular BioSystems
   2016, 12(2):477-479 
 clusterProfiler.dplyr神器
-</code></pre>
-
-<p>用这个包，你可以对输出像data frame一样使用dplyr的函数去操作。</p>
-
+</code></pre><p>用这个包，你可以对输出像data frame一样使用dplyr的函数去操作。</p>
 <p>于是这里使用arrange去给NES的绝对值从大到小排序，NES是我们用于计算p值的统计量，正数越大则通路越有可能是激活的，而负数越小则通路越有可能是被抑制的，所以我们也经常看到使用这一统计量进行画图。</p>
-
 <p>然后我们使用group_by把数据分组了，按照NES正负数来分，最后我们把每一组切出来前5个。也就是说分别取激活或抑制最大的5个通路。</p>
-
-<pre><code class="language-r">library(clusterProfiler.dplyr)
-y &lt;- arrange(x, abs(NES)) %&gt;% 
-        group_by(sign(NES)) %&gt;% 
-        slice(1:5)
-</code></pre>
-
-<p>最后如我们所愿，取出10个通路。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(clusterProfiler.dplyr)
+y <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">arrange</span>(x, <span style="color:#a6e22e">abs</span>(NES)) <span style="color:#f92672">%&gt;%</span> 
+        <span style="color:#a6e22e">group_by</span>(<span style="color:#a6e22e">sign</span>(NES)) <span style="color:#f92672">%&gt;%</span> 
+        <span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">5</span>)
+</code></pre></div><p>最后如我们所愿，取出10个通路。</p>
 <pre><code>&gt; y
 #
 # Gene Set Enrichment Analysis
@@ -397,24 +373,18 @@ Classes ‘grouped_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':    10 obs. o
   Guangchuang Yu, Qing-Yu He. ReactomePA: an R/Bioconductor package for
   reactome pathway analysis and visualization. Molecular BioSystems
   2016, 12(2):477-479 
-</code></pre>
-
-<h3 id="画图">画图</h3>
-
+</code></pre><h3 id="heading">画图</h3>
 <p>然后你直接就可以对上面这样的对象使用ggplot进行画图，你没看错，你不需要转为data frame，而是直接对这个S4对象进行ggplot，魔法就在enrichplot包。然后一切都是ggplot语法了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(forcats)
+<span style="color:#a6e22e">library</span>(ggplot2)
+<span style="color:#a6e22e">library</span>(ggstance)
+<span style="color:#a6e22e">library</span>(enrichplot)
 
-<pre><code class="language-r">library(forcats)
-library(ggplot2)
-library(ggstance)
-library(enrichplot)
-
-ggplot(y, aes(NES, fct_reorder(Description, NES), fill=qvalues), showCategory=10) + 
-    geom_barh(stat='identity') + 
-    scale_fill_continuous(low='red', high='blue') + 
-    theme_minimal() + ylab(NULL)
-</code></pre>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/dplyr.png" alt="" /></p>
+<span style="color:#a6e22e">ggplot</span>(y, <span style="color:#a6e22e">aes</span>(NES, <span style="color:#a6e22e">fct_reorder</span>(Description, NES), fill<span style="color:#f92672">=</span>qvalues), showCategory<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_barh</span>(stat<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">identity&#39;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">scale_fill_continuous</span>(low<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">red&#39;</span>, high<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">blue&#39;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">theme_minimal</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylab</span>(<span style="color:#66d9ef">NULL</span>)
+</code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/dplyr.png" alt=""></p>
               
             </div>
           </div>

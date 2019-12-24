@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -280,8 +280,8 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
-Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
-&gt; library(doParallel) &gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &gt; registerDoParallel(11) &gt; &gt; foreach(i = 1:10) %dopar% { getwd() } &gt; *** caught segfault *** address 0x7fbeb6d399d0, cause 'memory not mapped'  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。
+Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping...Error: Encountered internal Bowtie 2 exception (#1)Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&gt; library(doParallel)&gt; Loading required package: foreachforeach: simple, scalable parallel programming from Revolution AnalyticsUse Revolution R for scalability, fault tolerance and more.http://www.revolutionanalytics.comLoading required package: iteratorsLoading required package: parallel&gt;registerDoParallel(11)&gt; &gt;foreach(i = 1:10) %dopar% { getwd() }&gt;*** caught segfault ***address 0x7fbeb6d399d0, cause 'memory not mapped' 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。
       
       <p>
         <a href="https://guangchuangyu.github.io/2014/07/r-binary-is-untrustworthy/" class="postShorten-excerpt_link link">Continue reading</a>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -280,23 +280,21 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>《<a href="http://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247486708&amp;idx=1&amp;sn=8da7f94fe242a094b0eef88e359c1afe&amp;chksm=ec43bdb3db3434a5aefd2032229ef0efb8dd0380719aa4f0a4e6773bf6e9216733e8e8a90f29&amp;scene=21#wechat_redirect">基佬的屁股和科学家的屎，之间的共同点是&hellip;!</a>》这篇推文发表之后，发现大家对屎尿屁还是蛮有兴趣的，画屎除了展示的emojifont包之外，也提到了ggimage包，其实用ggimage包更有趣！这里也演示一下，一起来玩屎，看看自己到底是搅屎棍还是化粪池！玩屎玩出花来。</p>
-
 <p>先来一张线性拟合的图：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">123</span>)
+iris2 <span style="color:#f92672">&lt;-</span> iris<span style="color:#a6e22e">[sample</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#a6e22e">nrow</span>(iris), <span style="color:#ae81ff">30</span>), ]
+model <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lm</span>(Petal.Length <span style="color:#f92672">~</span> Sepal.Length, data <span style="color:#f92672">=</span> iris2)
+iris2<span style="color:#f92672">$</span>fitted <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">predict</span>(model)
 
-<pre><code class="language-r">set.seed(123)
-iris2 &lt;- iris[sample(1:nrow(iris), 30), ]
-model &lt;- lm(Petal.Length ~ Sepal.Length, data = iris2)
-iris2$fitted &lt;- predict(model)
-
-iris3 &lt;- iris2[abs(iris2$Petal.Length-iris2$fitted) &gt; 0.5,]
-p &lt;- ggplot(iris2, aes(x = Sepal.Length, y = Petal.Length)) +
-    geom_point() +
-    geom_linerange(aes(ymin = fitted, ymax = Petal.Length),
-                   data=iris3, colour = &quot;purple&quot;) +
-    geom_abline(intercept = model$coefficients[1],
-                slope = model$coefficients[2])
+iris3 <span style="color:#f92672">&lt;-</span> iris2<span style="color:#a6e22e">[abs</span>(iris2<span style="color:#f92672">$</span>Petal.Length<span style="color:#f92672">-</span>iris2<span style="color:#f92672">$</span>fitted) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>,]
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(iris2, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> Sepal.Length, y <span style="color:#f92672">=</span> Petal.Length)) <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">geom_linerange</span>(<span style="color:#a6e22e">aes</span>(ymin <span style="color:#f92672">=</span> fitted, ymax <span style="color:#f92672">=</span> Petal.Length),
+                   data<span style="color:#f92672">=</span>iris3, colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">purple&#34;</span>) <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">geom_abline</span>(intercept <span style="color:#f92672">=</span> model<span style="color:#f92672">$</span>coefficients[1],
+                slope <span style="color:#f92672">=</span> model<span style="color:#f92672">$</span>coefficients[2])
 p
-</code></pre>
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/09/shit-residual/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -353,19 +351,18 @@ p
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>上次推送的《geom_bgimage》，竟然有人问说用ggplot2怎么搞。明明我的例子就是了，虽然用的是ggtree的例子，但与ggplot2何异？</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<span style="color:#a6e22e">require</span>(ggimage)
 
-<pre><code class="language-r">require(ggplot2)
-require(ggimage)
+d <span style="color:#f92672">=</span> <span style="color:#a6e22e">data.frame</span>(x<span style="color:#f92672">=</span><span style="color:#66d9ef">LETTERS</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>], y <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>)
+d<span style="color:#f92672">$</span>y2 <span style="color:#f92672">=</span> <span style="color:#a6e22e">rev</span>(<span style="color:#a6e22e">cumsum</span>(<span style="color:#a6e22e">rev</span>(d<span style="color:#f92672">$</span>y)))
 
-d = data.frame(x=LETTERS[1:3], y = 1:3)
-d$y2 = rev(cumsum(rev(d$y)))
-
-p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +  
- geom_bgimage(&quot;img/blackboard.jpg&quot;) + theme_void() +
- coord_polar(&quot;y&quot;) + theme(legend.position='none') + 
- geom_text(aes(y = y2 - y/2, label=x),family='xkcd', size=8) + 
- xlim(-1, NA) + scale_fill_viridis_d()
-</code></pre>
+p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, y, fill<span style="color:#f92672">=</span>x)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_col</span>(color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">white&#39;</span>) <span style="color:#f92672">+</span>  
+ <span style="color:#a6e22e">geom_bgimage</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">img/blackboard.jpg&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span>
+ <span style="color:#a6e22e">coord_polar</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">y&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>) <span style="color:#f92672">+</span> 
+ <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(y <span style="color:#f92672">=</span> y2 <span style="color:#f92672">-</span> y<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, label<span style="color:#f92672">=</span>x),family<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">xkcd&#39;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> 
+ <span style="color:#a6e22e">xlim</span>(<span style="color:#ae81ff">-1</span>, <span style="color:#66d9ef">NA</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_fill_viridis_d</span>()
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/08/geom-bgimage/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -424,9 +421,7 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>说到世界杯，我是不追的，但1998年法国世界杯我还是有印象的，那时候读初中的我，一直在集邮，那年代没有网购，通讯基本靠吼，当年的我已经是个老司机了，通过邮政汇款，买了好多东西，包括1998年世界杯从法国寄往中国的首日封，当然锁在老家的柜子里，尘封多年，所以我现在也没办法随手拍一张照片给大家分享。</p>
-
 <p>另一件事，同样是1998年，那年升高一，开学第一天，老师让大家自我介绍一下，有位帅哥在见面第一天，就立了flag，说自己中考没考好，是因为看世界杯了，他高考必定要怎么样怎么样，毕竟世界杯是四年一次。你一个交钱进学校的学渣，牛逼吹大了，我印象深刻，所以我后来留意了一下这家伙高考上了那家高校，结果是「中山大学网络教育学院」，也就是电视大学！真的是情节反转如疾风！</p>
-
 <p>《<a href="https://mp.weixin.qq.com/s/EojwBbg0MUWijwGeNIjntg">转发5个群，Y叔送你一顶帽子</a>》这一篇文章写的是加圣诞帽子，但你要加个C罗、梅西，有什么差别吗？没有！你要加某球队的队服，有什么差别吗？没有。所以要制作世界杯专属头像，已然可以用ggimage纯代码生成。</p>
       
       <p>
@@ -486,20 +481,14 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p><a href="https://cran.r-project.org/package=ggimage">ggimage</a> 0.1.4 is available on CRAN.</p>
-
 <p>This release introduces a new function called <code>ggbackground</code> for setting image background as <code>ggplot</code> canvas.</p>
-
-<pre><code class="language-r">require(magick)
+<pre><code class="language-{r" data-lang="{r">require(magick)
 require(ggplot2)
 require(ggimage) 
-</code></pre>
-
-<pre><code class="language-r">require(ggplot2)
+</code></pre><pre><code class="language-{r}" data-lang="{r}">require(ggplot2)
 p &lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
     geom_point(size=5) + theme_classic()
-</code></pre>
-
-<p>Suppose we have the above <code>ggplot</code> object, <code>p</code>, the only thing we need to do is passing the <code>p</code> with an image file name (local or remote) to <code>ggbackground</code>, as demonstrated below:</p>
+</code></pre><p>Suppose we have the above <code>ggplot</code> object, <code>p</code>, the only thing we need to do is passing the <code>p</code> with an image file name (local or remote) to <code>ggbackground</code>, as demonstrated below:</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2018/04/setting-ggplot2-background-with-ggbackground/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -560,12 +549,8 @@ p &lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) +
         <pre><code>require(ggplot2)
  p &lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
     geom_point(size=5) + theme_classic()
-</code></pre>
-
-<p>首先我们有一个图，是用<code>ggplot2</code>画的，上面这图大家太熟悉，不打印出来都知道是什么了。</p>
-
+</code></pre><p>首先我们有一个图，是用<code>ggplot2</code>画的，上面这图大家太熟悉，不打印出来都知道是什么了。</p>
 <p>我在最新版的<code>ggimage</code>中加入了一个<code>ggbackground</code>的函数，我随便从网上找一张<code>iris</code>的图片，我们把<code>p</code>和<code>img</code>同时传给<code>ggbackground</code>就好了，非常容易，于是图的内容还是一样，但加了一张我们给定的图片做为背景。</p>
-
 <pre><code>require(ggimage) 
 img = &quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&quot;
 ggbackground(p, img)
@@ -628,13 +613,10 @@ ggbackground(p, img)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>圣诞节期间，一个个在@微信官方，要加圣诞帽，这让人想起了以前：</p>
-
 <blockquote>
 <p>今天是马化腾的生日，转发5个群，自动开通一个月的QQ会员</p>
 </blockquote>
-
 <p>这班玩QQ长大的孩子，现在变成了玩微信的油腻中年了。</p>
-
 <p>做为biobabble公众号的粉丝，我觉得你们是有能力用两三行R代码来给自己加个帽子的。由于我在过圣诞节，所以这篇文章没有能够及时推送出来，就当马后炮吧，不合时宜地调侃一下大家。</p>
       
       <p>
@@ -694,12 +676,9 @@ ggbackground(p, img)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>大量的生信公众号在各种linux入门、perl入门、python入门、R入门、软件安装、跑跑示例代码、流程。我自己平时根本不会去看这些生信号，在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484921&amp;idx=1&amp;sn=b729438c35c7d491ef75fdf8dab5f09f&amp;chksm=ec43b4bedb343da85853e234b5eb86267276e78a6b53dd1360367cca94d764955594ef86e910#rd">s01 - Counting DNA Nucleotides</a>》一文发出去后，就被爪哥说不能跟着走低端路线，囧rz&hellip;</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2017/WechatIMG93.jpeg" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/2017/WechatIMG93.jpeg" alt=""></p>
 <p>还好我多半写的是自己的东西，目前还没有掉进「低端」的坑里，今天继续画图，唯有赏心悦目的图能抚慰人心。</p>
-
-<p>我写了一个包叫《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484164&amp;idx=1&amp;sn=030612f5a84120ef407401ff6fad715f&amp;chksm=ec43b243db343b5524c911327bdcbe5f01034095d549d43d530decc5676faecdbd449dfac026#rd">ggimage：ggplot2中愉快地使用图片</a>》，从此图上嵌图（ggplot对象）或图片变得轻而易举。某一天写着玩，写了个《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484079&amp;idx=1&amp;sn=2f37b54ad09b966ccb9e8bf93ebd6643&amp;chksm=ec43b3e8db343afed5d55c25aaaba233f3339686e9eba0e65f004a5ca58ac13bba7ba9b5bacc#rd">geom_pokemon: 使用pokemon画图</a>》的图层，引起了人民群众的尖叫，国外有妹纸用来可视化NBA数据《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484149&amp;idx=1&amp;sn=0058b64bc269a05937ba97dccd9c0e23&amp;chksm=ec43b3b2db343aa4799e68b1f5c51cde7b4b5452fe69158b93de6f7b368738ecbc2dcf275abc#rd">大开眼界+多图慎点：Pokémon x NBA and other fun with ggimage</a>》，国内有汉子用来可视化复旦大学考研的报考专业《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484594&amp;amp;idx=1&amp;amp;sn=d35474d1ff032b54152935ef55088340&amp;amp;chksm=ec43b5f5db343ce311e0d54e1b936cb4982f952ce38e940ba6c3cf354436c91b1ae22fc17ea1#rd">你的专业是那一只Pokémon神兽？</a>》。</p>
+<p>我写了一个包叫《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484164&amp;idx=1&amp;sn=030612f5a84120ef407401ff6fad715f&amp;chksm=ec43b243db343b5524c911327bdcbe5f01034095d549d43d530decc5676faecdbd449dfac026#rd">ggimage：ggplot2中愉快地使用图片</a>》，从此图上嵌图（ggplot对象）或图片变得轻而易举。某一天写着玩，写了个《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484079&amp;idx=1&amp;sn=2f37b54ad09b966ccb9e8bf93ebd6643&amp;chksm=ec43b3e8db343afed5d55c25aaaba233f3339686e9eba0e65f004a5ca58ac13bba7ba9b5bacc#rd">geom_pokemon: 使用pokemon画图</a>》的图层，引起了人民群众的尖叫，国外有妹纸用来可视化NBA数据《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484149&amp;idx=1&amp;sn=0058b64bc269a05937ba97dccd9c0e23&amp;chksm=ec43b3b2db343aa4799e68b1f5c51cde7b4b5452fe69158b93de6f7b368738ecbc2dcf275abc#rd">大开眼界+多图慎点：Pokémon x NBA and other fun with ggimage</a>》，国内有汉子用来可视化复旦大学考研的报考专业《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484594&amp;idx=1&amp;sn=d35474d1ff032b54152935ef55088340&amp;chksm=ec43b5f5db343ce311e0d54e1b936cb4982f952ce38e940ba6c3cf354436c91b1ae22fc17ea1#rd">你的专业是那一只Pokémon神兽？</a>》。</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/10/ygc/" class="postShorten-excerpt_link link">Continue reading</a>

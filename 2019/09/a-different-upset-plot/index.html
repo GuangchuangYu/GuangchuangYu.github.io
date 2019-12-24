@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="upsetplot大家见得多，首先来个富集分析的实例：
-
 library(DOSE)
 data(geneList)
 de &lt;- names(geneList)[abs(geneList) &gt; 2]
@@ -21,7 +20,6 @@ upsetplot(edo)
 
 
 <meta property="og:description" content="upsetplot大家见得多，首先来个富集分析的实例：
-
 library(DOSE)
 data(geneList)
 de &lt;- names(geneList)[abs(geneList) &gt; 2]
@@ -37,7 +35,6 @@ upsetplot(edo)
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2019/09/a-different-upset-plot/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="upsetplot大家见得多，首先来个富集分析的实例：
-
 library(DOSE)
 data(geneList)
 de &lt;- names(geneList)[abs(geneList) &gt; 2]
@@ -47,7 +44,6 @@ library(enrichplot)
 upsetplot(edo)
 ">
 <meta name="twitter:description" content="upsetplot大家见得多，首先来个富集分析的实例：
-
 library(DOSE)
 data(geneList)
 de &lt;- names(geneList)[abs(geneList) &gt; 2]
@@ -319,40 +315,29 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>upsetplot大家见得多，首先来个富集分析的实例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(DOSE)
+<span style="color:#a6e22e">data</span>(geneList)
+de <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">names</span>(geneList)<span style="color:#a6e22e">[abs</span>(geneList) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>]
+edo <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">enrichDGN</span>(de)
 
-<pre><code class="language-r">library(DOSE)
-data(geneList)
-de &lt;- names(geneList)[abs(geneList) &gt; 2]
-edo &lt;- enrichDGN(de)
-
-library(enrichplot)
-upsetplot(edo)
-</code></pre>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/enrichplot/upset-1.jpg" alt="" /></p>
-
+<span style="color:#a6e22e">library</span>(enrichplot)
+<span style="color:#a6e22e">upsetplot</span>(edo)
+</code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/enrichplot/upset-1.jpg" alt=""></p>
 <p>在v &gt;= 1.5.2版本的enrichplot中，我加入了对GSEA结果的支持，于是你现在也可以用upsetplot来画，但风格不一样哦。</p>
-
 <p>再来个实例：</p>
-
-<pre><code class="language-r">library(clusterProfiler)
-kk2 &lt;- gseKEGG(geneList     = geneList,
-               organism     = 'hsa',
-               nPerm        = 1000,
-               minGSSize    = 120,
-               pvalueCutoff = 0.05,
-               verbose      = FALSE)
-upsetplot(kk2) 
-</code></pre>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/enrichplot/upset-2.jpg" alt="" /></p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/enrichplot/upset-3.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(clusterProfiler)
+kk2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gseKEGG</span>(geneList     <span style="color:#f92672">=</span> geneList,
+               organism     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">hsa&#39;</span>,
+               nPerm        <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>,
+               minGSSize    <span style="color:#f92672">=</span> <span style="color:#ae81ff">120</span>,
+               pvalueCutoff <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>,
+               verbose      <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>)
+<span style="color:#a6e22e">upsetplot</span>(kk2) 
+</code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/enrichplot/upset-2.jpg" alt=""></p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/enrichplot/upset-3.png" alt=""></p>
 <blockquote>
 <p>Gene set variation analysis (GSVA). Pathway analyses were predominantly performed on the 50 hallmark pathways described in the molecular signature database 16 , exported using the GSEABase package (version 1.36.0). We also assessed metabolic pathway activities using a described curated dataset 48 . To reduce pathway overlaps and pathway redundancies, each gene set associated with a pathway was trimmed to only contain unique genes, and all genes associated to two or more pathways were removed. Most gene sets retained &gt;70% of their associated genes. Next, to assign pathway activity estimates to individual cells, we applied GSVA 49 using standard settings, as implemented in the GSVA package (version 1.22.4).</p>
 </blockquote>
-
 <p>针对上面这篇文章所采用的策略，似乎我们现在所呈现的图，更好，也能给出更多的信息，你可能还可以发现一些有趣的cross-talk。PS:画图的集合，也是可选的。</p>
               
             </div>

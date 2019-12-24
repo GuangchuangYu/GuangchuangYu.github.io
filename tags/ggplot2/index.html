@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,29 +282,26 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>Thomas Lin Pedersen简直是个天才，最近<code>patchwork</code>动作很大，看到我都准备转投它的怀抱，把旧爱<code>cowplot</code>给扔了。</p>
-
 <p>我们知道<code>patchwork</code>一出来，就推出<code>+</code>号来拼图，最近又搞出了<code>|</code>和<code>/</code>两个操作符。让整个拼图看起来很舒服。</p>
-
 <p>先来画几张图：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(mpg, disp)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图一&#39;</span>)
 
-<pre><code class="language-r">library(ggplot2)
-p1 &lt;- ggplot(mtcars) + 
-  geom_point(aes(mpg, disp)) + 
-  ggtitle('图一')
+p2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_boxplot</span>(<span style="color:#a6e22e">aes</span>(gear, disp, group <span style="color:#f92672">=</span> gear)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图二&#39;</span>)
 
-p2 &lt;- ggplot(mtcars) + 
-  geom_boxplot(aes(gear, disp, group = gear)) + 
-  ggtitle('图二')
+p3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(hp, wt, colour <span style="color:#f92672">=</span> mpg)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图三&#39;</span>)
 
-p3 &lt;- ggplot(mtcars) + 
-  geom_point(aes(hp, wt, colour = mpg)) + 
-  ggtitle('图三')
-
-p4 &lt;- ggplot(mtcars) + 
-  geom_bar(aes(gear)) + 
-  facet_wrap(~cyl) + 
-  ggtitle('图四')
-</code></pre>
+p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_bar</span>(<span style="color:#a6e22e">aes</span>(gear)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">facet_wrap</span>(<span style="color:#f92672">~</span>cyl) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图四&#39;</span>)
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/11/patchwork/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -361,14 +358,10 @@ p4 &lt;- ggplot(mtcars) +
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>今天讲一个小技巧，首先数据还是得有，很简单地生成一些随机数：</p>
-
-<pre><code class="language-r">set.seed(2019-10-23)
-d &lt;- data.frame(val=abs(rnorm(20)), 
-                type=rep(c('A', 'B'), 10))
-</code></pre>
-
-<p>20个数长这样子：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2019</span><span style="color:#ae81ff">-10</span><span style="color:#ae81ff">-23</span>)
+d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(val<span style="color:#f92672">=</span><span style="color:#a6e22e">abs</span>(<span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">20</span>)), 
+                type<span style="color:#f92672">=</span><span style="color:#a6e22e">rep</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">A&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">B&#39;</span>), <span style="color:#ae81ff">10</span>))
+</code></pre></div><p>20个数长这样子：</p>
 <pre><code>          val type
 1  0.04625141    A
 2  0.28000082    B
@@ -447,15 +440,14 @@ d &lt;- data.frame(val=abs(rnorm(20)),
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>upsetplot大家见得多，首先来个富集分析的实例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(DOSE)
+<span style="color:#a6e22e">data</span>(geneList)
+de <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">names</span>(geneList)<span style="color:#a6e22e">[abs</span>(geneList) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>]
+edo <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">enrichDGN</span>(de)
 
-<pre><code class="language-r">library(DOSE)
-data(geneList)
-de &lt;- names(geneList)[abs(geneList) &gt; 2]
-edo &lt;- enrichDGN(de)
-
-library(enrichplot)
-upsetplot(edo)
-</code></pre>
+<span style="color:#a6e22e">library</span>(enrichplot)
+<span style="color:#a6e22e">upsetplot</span>(edo)
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/09/a-different-upset-plot/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -512,23 +504,21 @@ upsetplot(edo)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>《<a href="http://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247486708&amp;idx=1&amp;sn=8da7f94fe242a094b0eef88e359c1afe&amp;chksm=ec43bdb3db3434a5aefd2032229ef0efb8dd0380719aa4f0a4e6773bf6e9216733e8e8a90f29&amp;scene=21#wechat_redirect">基佬的屁股和科学家的屎，之间的共同点是&hellip;!</a>》这篇推文发表之后，发现大家对屎尿屁还是蛮有兴趣的，画屎除了展示的emojifont包之外，也提到了ggimage包，其实用ggimage包更有趣！这里也演示一下，一起来玩屎，看看自己到底是搅屎棍还是化粪池！玩屎玩出花来。</p>
-
 <p>先来一张线性拟合的图：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">123</span>)
+iris2 <span style="color:#f92672">&lt;-</span> iris<span style="color:#a6e22e">[sample</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#a6e22e">nrow</span>(iris), <span style="color:#ae81ff">30</span>), ]
+model <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lm</span>(Petal.Length <span style="color:#f92672">~</span> Sepal.Length, data <span style="color:#f92672">=</span> iris2)
+iris2<span style="color:#f92672">$</span>fitted <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">predict</span>(model)
 
-<pre><code class="language-r">set.seed(123)
-iris2 &lt;- iris[sample(1:nrow(iris), 30), ]
-model &lt;- lm(Petal.Length ~ Sepal.Length, data = iris2)
-iris2$fitted &lt;- predict(model)
-
-iris3 &lt;- iris2[abs(iris2$Petal.Length-iris2$fitted) &gt; 0.5,]
-p &lt;- ggplot(iris2, aes(x = Sepal.Length, y = Petal.Length)) +
-    geom_point() +
-    geom_linerange(aes(ymin = fitted, ymax = Petal.Length),
-                   data=iris3, colour = &quot;purple&quot;) +
-    geom_abline(intercept = model$coefficients[1],
-                slope = model$coefficients[2])
+iris3 <span style="color:#f92672">&lt;-</span> iris2<span style="color:#a6e22e">[abs</span>(iris2<span style="color:#f92672">$</span>Petal.Length<span style="color:#f92672">-</span>iris2<span style="color:#f92672">$</span>fitted) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>,]
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(iris2, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> Sepal.Length, y <span style="color:#f92672">=</span> Petal.Length)) <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">geom_linerange</span>(<span style="color:#a6e22e">aes</span>(ymin <span style="color:#f92672">=</span> fitted, ymax <span style="color:#f92672">=</span> Petal.Length),
+                   data<span style="color:#f92672">=</span>iris3, colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">purple&#34;</span>) <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">geom_abline</span>(intercept <span style="color:#f92672">=</span> model<span style="color:#f92672">$</span>coefficients[1],
+                slope <span style="color:#f92672">=</span> model<span style="color:#f92672">$</span>coefficients[2])
 p
-</code></pre>
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/09/shit-residual/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -584,8 +574,7 @@ p
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-1.png" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-1.png" alt=""></p>
 <p>在《<a href="http://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247487870&amp;idx=1&amp;sn=836f75a9e6bd17a77a0b886056e51e29&amp;chksm=ec43a039db34292fcd3a618ce4b5f9bebe5bc8414a6d7de196e51bd77177886f9cd81a2472b9&amp;scene=21#wechat_redirect">ggplotify - version 0.0.4</a>》一文中，有粉丝说想要支持Gviz包，画图包如果输出的是对象，那么我们可以写方法针对这个对象，然而Gviz的输出，却是list，显然这个方法走不通。</p>
       
       <p>
@@ -643,19 +632,18 @@ p
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>上次推送的《geom_bgimage》，竟然有人问说用ggplot2怎么搞。明明我的例子就是了，虽然用的是ggtree的例子，但与ggplot2何异？</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<span style="color:#a6e22e">require</span>(ggimage)
 
-<pre><code class="language-r">require(ggplot2)
-require(ggimage)
+d <span style="color:#f92672">=</span> <span style="color:#a6e22e">data.frame</span>(x<span style="color:#f92672">=</span><span style="color:#66d9ef">LETTERS</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>], y <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>)
+d<span style="color:#f92672">$</span>y2 <span style="color:#f92672">=</span> <span style="color:#a6e22e">rev</span>(<span style="color:#a6e22e">cumsum</span>(<span style="color:#a6e22e">rev</span>(d<span style="color:#f92672">$</span>y)))
 
-d = data.frame(x=LETTERS[1:3], y = 1:3)
-d$y2 = rev(cumsum(rev(d$y)))
-
-p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +  
- geom_bgimage(&quot;img/blackboard.jpg&quot;) + theme_void() +
- coord_polar(&quot;y&quot;) + theme(legend.position='none') + 
- geom_text(aes(y = y2 - y/2, label=x),family='xkcd', size=8) + 
- xlim(-1, NA) + scale_fill_viridis_d()
-</code></pre>
+p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, y, fill<span style="color:#f92672">=</span>x)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_col</span>(color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">white&#39;</span>) <span style="color:#f92672">+</span>  
+ <span style="color:#a6e22e">geom_bgimage</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">img/blackboard.jpg&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span>
+ <span style="color:#a6e22e">coord_polar</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">y&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>) <span style="color:#f92672">+</span> 
+ <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(y <span style="color:#f92672">=</span> y2 <span style="color:#f92672">-</span> y<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, label<span style="color:#f92672">=</span>x),family<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">xkcd&#39;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> 
+ <span style="color:#a6e22e">xlim</span>(<span style="color:#ae81ff">-1</span>, <span style="color:#66d9ef">NA</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_fill_viridis_d</span>()
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/08/geom-bgimage/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -711,8 +699,7 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/position-jitter-email.jpg" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/position-jitter-email.jpg" alt=""></p>
 <p>《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247485644&amp;idx=1&amp;sn=a273d17668d4847b1df8c12546f78351&amp;scene=21#wechat_redirect">画图给点分组?</a>》这一篇文章中给出了方法，画出两层分组的点图，一层分组是按照离散型变量在x轴上分组，第二层是每一个分组里，再来一个离散型变量再分一次。非常感谢读者们的反馈，原来这第二层分组在ggplot2中是有内置的实现方式的，那就是<code>position_jitterdodge</code>。</p>
       
       <p>

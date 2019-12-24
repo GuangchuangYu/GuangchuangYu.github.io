@@ -5,20 +5,16 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 这是去年「知识星球」里的提问，「知识星球」相当于是众筹我一年的时间，向我提问，请谨慎入坑。
-
 我当时就写了一个函数ggvenn，这个函数其实包装了venneuler，但由于venneuler依赖rJava，而很多小伙伴不会装rJava，而因此装不了yyplot，所以我去掉了这个依赖，但如果你想要用ggvenn这个函数，请自行安装rJava和venneuler。其实还有另外一个包，VennDiagram，它的输出是gList，所以可以直接封装为ggplot2图层，然而对于画venn plot，我并没有太多的兴趣，《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》一文中介绍的upset plot，可能更好一些。">
 
 
 <meta property="og:description" content="
-
 这是去年「知识星球」里的提问，「知识星球」相当于是众筹我一年的时间，向我提问，请谨慎入坑。
-
 我当时就写了一个函数ggvenn，这个函数其实包装了venneuler，但由于venneuler依赖rJava，而很多小伙伴不会装rJava，而因此装不了yyplot，所以我去掉了这个依赖，但如果你想要用ggvenn这个函数，请自行安装rJava和venneuler。其实还有另外一个包，VennDiagram，它的输出是gList，所以可以直接封装为ggplot2图层，然而对于画venn plot，我并没有太多的兴趣，《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》一文中介绍的upset plot，可能更好一些。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用ggplot2画维恩图">
@@ -27,14 +23,10 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/04/ggvenn/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 这是去年「知识星球」里的提问，「知识星球」相当于是众筹我一年的时间，向我提问，请谨慎入坑。
-
 我当时就写了一个函数ggvenn，这个函数其实包装了venneuler，但由于venneuler依赖rJava，而很多小伙伴不会装rJava，而因此装不了yyplot，所以我去掉了这个依赖，但如果你想要用ggvenn这个函数，请自行安装rJava和venneuler。其实还有另外一个包，VennDiagram，它的输出是gList，所以可以直接封装为ggplot2图层，然而对于画venn plot，我并没有太多的兴趣，《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》一文中介绍的upset plot，可能更好一些。">
 <meta name="twitter:description" content="
-
 这是去年「知识星球」里的提问，「知识星球」相当于是众筹我一年的时间，向我提问，请谨慎入坑。
-
 我当时就写了一个函数ggvenn，这个函数其实包装了venneuler，但由于venneuler依赖rJava，而很多小伙伴不会装rJava，而因此装不了yyplot，所以我去掉了这个依赖，但如果你想要用ggvenn这个函数，请自行安装rJava和venneuler。其实还有另外一个包，VennDiagram，它的输出是gList，所以可以直接封装为ggplot2图层，然而对于画venn plot，我并没有太多的兴趣，《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》一文中介绍的upset plot，可能更好一些。">
 <meta property="og:locale" content="en-us">
 
@@ -300,28 +292,18 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="http://guangchuangyu.github.io/blog_images/zhishixingqiu/ggvenn_question.png" alt="" /></p>
-
+              <p><img src="http://guangchuangyu.github.io/blog_images/zhishixingqiu/ggvenn_question.png" alt=""></p>
 <p>这是去年「知识星球」里的提问，「知识星球」相当于是众筹我一年的时间，向我提问，请谨慎入坑。</p>
-
 <p>我当时就写了一个函数<code>ggvenn</code>，这个函数其实包装了<code>venneuler</code>，但由于<code>venneuler</code>依赖<code>rJava</code>，而很多小伙伴不会装<code>rJava</code>，而因此装不了<code>yyplot</code>，所以我去掉了这个依赖，但如果你想要用<code>ggvenn</code>这个函数，请自行安装<code>rJava</code>和<code>venneuler</code>。其实还有另外一个包，<code>VennDiagram</code>，它的输出是<code>gList</code>，所以可以直接封装为<code>ggplot2</code>图层，然而对于画venn plot，我并没有太多的兴趣，《<a href="http://mp.weixin.qq.com/s/MqpfgkMJSFj0pYwcEjV9kQ">CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）</a>》一文中介绍的upset plot，可能更好一些。</p>
-
 <p>要使用<code>ggvenn</code>是非常简单的，你只要给定一个matrix，这个matrix每一个column代表一个分组，数字0代表没有overlap，而非0代表overlap，数字的大小可以当做是overlap的加权。当然还支持别形式的输入，具体可以参考<code>venneuler</code>的文档。</p>
-
 <pre><code>set.seed(2017-11-08)
 x &lt;- matrix(sample(0:4, 40, TRUE, c(.5, .1, .1, .1, .1)), ncol=4)
 colnames(x) &lt;- LETTERS[1:4]
 yyplot::ggvenn(x)
-</code></pre>
-
-<p>如果你跑上面的代码，你可以看到下面的图：</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/zhishixingqiu/ggvenn_solution.png" alt="" /></p>
-
+</code></pre><p>如果你跑上面的代码，你可以看到下面的图：</p>
+<p><img src="http://guangchuangyu.github.io/blog_images/zhishixingqiu/ggvenn_solution.png" alt=""></p>
 <p>变成<code>ggplot2</code>出图的好处，我想不用多说，你可以用<code>ggplot2</code>的主题系列做点后戏，还可以用<code>grid</code>做后后戏，比如《<a href="http://mp.weixin.qq.com/s/yVAP09kfE0af79egYENBRA">一次解决ggplot2所有字体</a>》，然后你可以用<code>cowplot</code>拼图，用<code>ggimage</code>图上嵌图，《<a href="http://mp.weixin.qq.com/s/eVX3-3zT4p3s0JU_oy7lIQ">ggimage：ggplot2中愉快地使用图片</a>》，比如此处可以预告一下，我们可以把这个维恩图嵌在UpSet图中，正如我在《<a href="http://mp.weixin.qq.com/s/MqpfgkMJSFj0pYwcEjV9kQ">CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）</a>》中嵌入一个vennpie一样。现在有<code>ggimage</code>，这些活都只是一句代码的事情。</p>
-
-<h2 id="一点都不yy的yyplot">一点都不YY的yyplot</h2>
-
+<h2 id="yyyyplot">一点都不YY的yyplot</h2>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s/ne2AEUxmD7EDcWzh7i-jAQ">Y叔的新玩意&ndash;yyplot</a></li>
 <li><a href="http://mp.weixin.qq.com/s/yVAP09kfE0af79egYENBRA">一次解决ggplot2所有字体</a></li>
@@ -329,11 +311,9 @@ yyplot::ggvenn(x)
 <li><a href="https://mp.weixin.qq.com/s/YaDxF4ZUISWlUR_7bQnbSQ">pubmed年度趋势，你的开题报告需要它！</a></li>
 <li><a href="https://mp.weixin.qq.com/s/Iqcqo5YTy1qmXdsuIrlrYQ">130岁了，祝你生快</a></li>
 <li><a href="https://mp.weixin.qq.com/s/8kqTVSDjuHpivGaim6ukNg">画个小圈圈</a></li>
-<li><a href="https://mp.weixin.qq.com/s/_XH6u2hPv_JJi_MbGbeoHA">ggplot扩展学习笔记&ndash;逐行解析Y叔的&rdquo;geom_ord_ellipse.R&rdquo;</a></li>
+<li><a href="https://mp.weixin.qq.com/s/_XH6u2hPv_JJi_MbGbeoHA">ggplot扩展学习笔记&ndash;逐行解析Y叔的&quot;geom_ord_ellipse.R&rdquo;</a></li>
 </ul>
-
-<h2 id="知识星球解答范例">知识星球解答范例</h2>
-
+<h2 id="heading">知识星球解答范例</h2>
 <ul>
 <li><a href="http://mp.weixin.qq.com/s/vB7mJG9FQYXsYZh9Bcp0_g">怀疑人生！我不欠你们钱，好吗？</a></li>
 <li><a href="http://mp.weixin.qq.com/s/jegI1wWc7DJzrM7mQfz77Q">同一数据多变量分组的boxplot?</a></li>

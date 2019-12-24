@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="The foundamental idea of numerical integration is to estimate the area of the region in the xy-plane bounded by the graph of function f(x). The integral was esimated by dividing x into small intervals, then adds all the small approximations to give a total approximation.
-Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&rsquo;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
+Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&#39;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
 
 
 <meta property="og:description" content="The foundamental idea of numerical integration is to estimate the area of the region in the xy-plane bounded by the graph of function f(x). The integral was esimated by dividing x into small intervals, then adds all the small approximations to give a total approximation.
-Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&rsquo;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
+Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&#39;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="one-dimensional integrals">
 <meta name="twitter:title" content="one-dimensional integrals">
@@ -21,9 +21,9 @@ Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2010/12/one-dimensional-integrals/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="The foundamental idea of numerical integration is to estimate the area of the region in the xy-plane bounded by the graph of function f(x). The integral was esimated by dividing x into small intervals, then adds all the small approximations to give a total approximation.
-Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&rsquo;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
+Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&#39;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
 <meta name="twitter:description" content="The foundamental idea of numerical integration is to estimate the area of the region in the xy-plane bounded by the graph of function f(x). The integral was esimated by dividing x into small intervals, then adds all the small approximations to give a total approximation.
-Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&rsquo;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
+Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&#39;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.">
 <meta property="og:locale" content="en-us">
 
   
@@ -286,79 +286,64 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              
-
-<p>The foundamental idea of numerical integration is to estimate the area of the region in the <em>xy</em>-plane bounded by the graph of function <em>f(x)</em>. The integral was esimated by dividing <em>x</em> into small intervals, then adds all the small approximations to give a total approximation.</p>
-
+              <p>The foundamental idea of numerical integration is to estimate the area of the region in the <em>xy</em>-plane bounded by the graph of function <em>f(x)</em>. The integral was esimated by dividing <em>x</em> into small intervals, then adds all the small approximations to give a total approximation.</p>
 <h2 id="trapezoidal-rule">Trapezoidal rule</h2>
-
-<p>Numerical integration can be done by trapezoidal rule, simpson&rsquo;s rule and quadrature rules. R has a built-in function, <code>integrate</code>, which performs adaptive quadrature.</p>
-
+<p>Numerical integration can be done by trapezoidal rule, simpson's rule and quadrature rules. R has a built-in function, <code>integrate</code>, which performs adaptive quadrature.</p>
 <p><a href="http://en.wikipedia.org/wiki/Trapezoidal_rule">Trapezoidal rule</a> works by approximating the region under the graph <em>f(x)</em> as a trapezoid and calculating its area.</p>
-
-<pre><code class="language-r">trapezoid &lt;- function(fun, a, b, n=100) {
-    # numerical integral of fun from a to b
-    # using the trapezoid rule with n subdivisions
-    # assume a &lt; b and n is a positive integer
-    h &lt;- (b-a)/n
-    x &lt;- seq(a, b, by=h)
-    y &lt;- fun(x)
-    s &lt;- h * (y[1]/2 + sum(y[2:n]) + y[n+1]/2)
-    return(s)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">trapezoid <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, a, b, n<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>) {
+    <span style="color:#75715e"># numerical integral of fun from a to b</span>
+    <span style="color:#75715e"># using the trapezoid rule with n subdivisions</span>
+    <span style="color:#75715e"># assume a &lt; b and n is a positive integer</span>
+    h <span style="color:#f92672">&lt;-</span> (b<span style="color:#f92672">-</span>a)<span style="color:#f92672">/</span>n
+    x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(a, b, by<span style="color:#f92672">=</span>h)
+    y <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fun</span>(x)
+    s <span style="color:#f92672">&lt;-</span> h <span style="color:#f92672">*</span> (y[1]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">sum</span>(y[2<span style="color:#f92672">:</span>n]) <span style="color:#f92672">+</span> y[n<span style="color:#ae81ff">+1</span>]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
+    <span style="color:#a6e22e">return</span>(s)
 }
-</code></pre>
-
-<h2 id="simpson-s-rule">Simpson&rsquo;s rule</h2>
-
-<p><a href="http://en.wikipedia.org/wiki/Simpson%27s_rule">Simpson&rsquo;s rule</a> subdivides the interval <code>[a,b]</code> into <em>n</em> subintervals, where <em>n</em> is even, then on each consecutive pairs of subintervals, it approximates the behaviour of <em>f(x)</em> by a parabola (polynomial of degree 2) rather than by the straight lines used in the trapezoidal rule.</p>
-
-<pre><code class="language-r">simpson &lt;- function(fun, a, b, n=100) {
-    # numerical integral using Simpson's rule
-    # assume a &lt; b and n is an even positive integer
-    h &lt;- (b-a)/n
-    x &lt;- seq(a, b, by=h)
-    if (n == 2) {
-        s &lt;- fun(x[1]) + 4*fun(x[2]) +fun(x[3])
+</code></pre></div><h2 id="simpsons-rule">Simpson's rule</h2>
+<p><a href="http://en.wikipedia.org/wiki/Simpson%27s_rule">Simpson's rule</a> subdivides the interval <code>[a,b]</code> into <em>n</em> subintervals, where <em>n</em> is even, then on each consecutive pairs of subintervals, it approximates the behaviour of <em>f(x)</em> by a parabola (polynomial of degree 2) rather than by the straight lines used in the trapezoidal rule.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">simpson <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, a, b, n<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>) {
+    <span style="color:#75715e"># numerical integral using Simpson&#39;s rule</span>
+    <span style="color:#75715e"># assume a &lt; b and n is an even positive integer</span>
+    h <span style="color:#f92672">&lt;-</span> (b<span style="color:#f92672">-</span>a)<span style="color:#f92672">/</span>n
+    x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(a, b, by<span style="color:#f92672">=</span>h)
+    <span style="color:#a6e22e">if </span>(n <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>) {
+        s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fun</span>(x[1]) <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span><span style="color:#a6e22e">fun</span>(x[2]) <span style="color:#f92672">+</span><span style="color:#a6e22e">fun</span>(x[3])
     } else {
-        s &lt;- fun(x[1]) + fun(x[n+1]) +
-        	2*sum(fun(x[seq(2,n,by=2)])) + 
-            4 *sum(fun(x[seq(3,n-1, by=2)]))
+        s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fun</span>(x[1]) <span style="color:#f92672">+</span> <span style="color:#a6e22e">fun</span>(x[n<span style="color:#ae81ff">+1</span>]) <span style="color:#f92672">+</span>
+        	<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>(<span style="color:#a6e22e">fun</span>(x<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">2</span>,n,by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)])) <span style="color:#f92672">+</span> 
+            <span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>(<span style="color:#a6e22e">fun</span>(x<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">3</span>,n<span style="color:#ae81ff">-1</span>, by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)]))
     }
-    s &lt;- s*h/3
-    return(s)
+    s <span style="color:#f92672">&lt;-</span> s<span style="color:#f92672">*</span>h<span style="color:#f92672">/</span><span style="color:#ae81ff">3</span>
+    <span style="color:#a6e22e">return</span>(s)
 }
-</code></pre>
-
-<p>To calculate an integrate over infinite interval, one way is to
+</code></pre></div><p>To calculate an integrate over infinite interval, one way is to
 transform it into an integral over a finite interval as introduce in <a href="http://en.wikipedia.org/wiki/Numerical_integration">wiki</a>.</p>
-
-<pre><code class="language-r">simpson_v2 &lt;- function(fun, a, b, n=100) {
-    # numerical integral using Simpson's rule
-    # assume a &lt; b and n is an even positive integer
-    if (a == -Inf &amp; b == Inf) {
-        f &lt;- function(t) (fun((1-t)/t) + fun((t-1)/t))/t^2
-        s &lt;- simpson_v2(f, 0, 1, n)
-    } else if (a == -Inf &amp; b != Inf) {
-        f &lt;- function(t) fun(b-(1-t)/t)/t^2
-        s &lt;- simpson_v2(f, 0, 1, n)
-    } else if (a != -Inf &amp; b == Inf) {
-        f &lt;- function(t) fun(a+(1-t)/t)/t^2
-        s &lt;- simpson_v2(f, 0, 1, n)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">simpson_v2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, a, b, n<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>) {
+    <span style="color:#75715e"># numerical integral using Simpson&#39;s rule</span>
+    <span style="color:#75715e"># assume a &lt; b and n is an even positive integer</span>
+    <span style="color:#a6e22e">if </span>(a <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#66d9ef">Inf</span> <span style="color:#f92672">&amp;</span> b <span style="color:#f92672">==</span> <span style="color:#66d9ef">Inf</span>) {
+        f <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(t) (<span style="color:#a6e22e">fun</span>((<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>t)<span style="color:#f92672">/</span>t) <span style="color:#f92672">+</span> <span style="color:#a6e22e">fun</span>((t<span style="color:#ae81ff">-1</span>)<span style="color:#f92672">/</span>t))<span style="color:#f92672">/</span>t^2
+        s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">simpson_v2</span>(f, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, n)
+    } else <span style="color:#a6e22e">if </span>(a <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#66d9ef">Inf</span> <span style="color:#f92672">&amp;</span> b <span style="color:#f92672">!=</span> <span style="color:#66d9ef">Inf</span>) {
+        f <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(t) <span style="color:#a6e22e">fun</span>(b<span style="color:#f92672">-</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>t)<span style="color:#f92672">/</span>t)<span style="color:#f92672">/</span>t^2
+        s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">simpson_v2</span>(f, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, n)
+    } else <span style="color:#a6e22e">if </span>(a <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span><span style="color:#66d9ef">Inf</span> <span style="color:#f92672">&amp;</span> b <span style="color:#f92672">==</span> <span style="color:#66d9ef">Inf</span>) {
+        f <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(t) <span style="color:#a6e22e">fun</span>(a<span style="color:#f92672">+</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>t)<span style="color:#f92672">/</span>t)<span style="color:#f92672">/</span>t^2
+        s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">simpson_v2</span>(f, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, n)
     } else {
-        h &lt;- (b-a)/n
-        x &lt;- seq(a, b, by=h)
-        y &lt;- fun(x)
-        y[is.nan(y)]=0
-        s &lt;- y[1] + y[n+1] + 
-        	2*sum(y[seq(2,n,by=2)]) + 
-            4 *sum(y[seq(3,n-1, by=2)])
-        s &lt;- s*h/3
+        h <span style="color:#f92672">&lt;-</span> (b<span style="color:#f92672">-</span>a)<span style="color:#f92672">/</span>n
+        x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(a, b, by<span style="color:#f92672">=</span>h)
+        y <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fun</span>(x)
+        y<span style="color:#a6e22e">[is.nan</span>(y)]<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+        s <span style="color:#f92672">&lt;-</span> y[1] <span style="color:#f92672">+</span> y[n<span style="color:#ae81ff">+1</span>] <span style="color:#f92672">+</span> 
+        	<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>(y<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">2</span>,n,by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)]) <span style="color:#f92672">+</span> 
+            <span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>(y<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">3</span>,n<span style="color:#ae81ff">-1</span>, by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)])
+        s <span style="color:#f92672">&lt;-</span> s<span style="color:#f92672">*</span>h<span style="color:#f92672">/</span><span style="color:#ae81ff">3</span>
     }
-    return(s)
+    <span style="color:#a6e22e">return</span>(s)
 }
-</code></pre>
-
-<pre><code>&gt; phi &lt;- function(x) exp(-x^2/2)/sqrt(2*pi)  ##normal distribution
+</code></pre></div><pre><code>&gt; phi &lt;- function(x) exp(-x^2/2)/sqrt(2*pi)  ##normal distribution
 &gt; simpson_v2(phi, 0, Inf, n=100)
 [1] 0.4986569
 &gt; simpson_v2(phi, -Inf,3, n=100)
@@ -366,69 +351,60 @@ transform it into an integral over a finite interval as introduce in <a href="ht
 &gt; pnorm(3)
 [1] 0.9986501
 </code></pre>
+<p>Simpson's rule is more accuracy than trapezoidal rule. To compare the accuracy between simpson's rule and trapezoidal rule, I estimated $ \int_{0.01}^{1} \frac{1}{x} dx = -\log(0.01)$ for a sequence of increasing values of *n*.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">f <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x) <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>x
+<span style="color:#75715e">#integrate(f, 0.01, 1) == -log(0.01)</span>
+S.trapezoid <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(n) <span style="color:#a6e22e">trapezoid</span>(f, <span style="color:#ae81ff">0.01</span>, <span style="color:#ae81ff">1</span>, n)
+S.simpson <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(n) <span style="color:#a6e22e">simpson</span>(f, <span style="color:#ae81ff">0.01</span>, <span style="color:#ae81ff">1</span>, n)
 
-<p>Simpson&rsquo;s rule is more accuracy than trapezoidal rule. To compare the accuracy between simpson&rsquo;s rule and trapezoidal rule, I estimated $ \int_{0.01}^{1} \frac{1}{x} dx = -\log(0.01)$ for a sequence of increasing values of <em>n</em>.</p>
+n <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">1000</span>, by <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>)
+St <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(n, S.trapezoid)
+Ss <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(n, S.simpson)
 
-<pre><code class="language-r">f &lt;- function(x) 1/x
-#integrate(f, 0.01, 1) == -log(0.01)
-S.trapezoid &lt;- function(n) trapezoid(f, 0.01, 1, n)
-S.simpson &lt;- function(n) simpson(f, 0.01, 1, n)
-
-n &lt;- seq(10, 1000, by = 10)
-St &lt;- sapply(n, S.trapezoid)
-Ss &lt;- sapply(n, S.simpson)
-
-opar &lt;- par(mfrow = c(2, 2))
-plot(n,St + log(0.01), type=&quot;l&quot;, xlab=&quot;n&quot;, ylab=&quot;error&quot;, main=&quot;Trapezoidal rule&quot;)
-plot(n,Ss + log(0.01), type=&quot;l&quot;, xlab=&quot;n&quot;, ylab=&quot;error&quot;,main=&quot;Simpson's rule&quot;)
-plot(log(n), log(St+log(0.01)),type=&quot;l&quot;, xlab=&quot;log(n)&quot;, ylab=&quot;log(error)&quot;,main=&quot;Trapezoidal rule&quot;)
-plot(log(n), log(Ss+log(0.01)),type=&quot;l&quot;, xlab=&quot;log(n)&quot;, ylab=&quot;log(error)&quot;,main=&quot;Simpson's rule&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2010/12/test-accuarcy.png" alt="" /></p>
-
-<p>The plot showed that log(error) against log(n) appears to have a slope of -1.90 and -3.28 for trapezoidal rule and simpson&rsquo;s rule respectively.</p>
-
+opar <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">par</span>(mfrow <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>))
+<span style="color:#a6e22e">plot</span>(n,St <span style="color:#f92672">+</span> <span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">0.01</span>), type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">l&#34;</span>, xlab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">n&#34;</span>, ylab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">error&#34;</span>, main<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Trapezoidal rule&#34;</span>)
+<span style="color:#a6e22e">plot</span>(n,Ss <span style="color:#f92672">+</span> <span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">0.01</span>), type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">l&#34;</span>, xlab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">n&#34;</span>, ylab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">error&#34;</span>,main<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Simpson&#39;s rule&#34;</span>)
+<span style="color:#a6e22e">plot</span>(<span style="color:#a6e22e">log</span>(n), <span style="color:#a6e22e">log</span>(St<span style="color:#f92672">+</span><span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">0.01</span>)),type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">l&#34;</span>, xlab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">log(n)&#34;</span>, ylab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">log(error)&#34;</span>,main<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Trapezoidal rule&#34;</span>)
+<span style="color:#a6e22e">plot</span>(<span style="color:#a6e22e">log</span>(n), <span style="color:#a6e22e">log</span>(Ss<span style="color:#f92672">+</span><span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">0.01</span>)),type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">l&#34;</span>, xlab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">log(n)&#34;</span>, ylab<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">log(error)&#34;</span>,main<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Simpson&#39;s rule&#34;</span>)
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/2010/12/test-accuarcy.png" alt=""></p>
+<p>The plot showed that log(error) against log(n) appears to have a slope of -1.90 and -3.28 for trapezoidal rule and simpson's rule respectively.</p>
 <p>Another way to compare their accuracy is to calculate how large of the partition size <em>n</em> for reaching a specific tolerance.</p>
-
-<pre><code class="language-r">yIntegrate &lt;- function(fun, a, b, tol=1e-8, method= &quot;simpson&quot;, verbose=TRUE) {
-    # numerical integral of fun from a to b, assume a &lt; b 
-    # with tolerance tol
-    n &lt;- 4
-    h &lt;- (b-a)/4
-    x &lt;- seq(a, b, by=h)
-    y &lt;- fun(x)
-    yIntegrate_internal &lt;- function(y, h, n, method) {
-        if (method == &quot;simpson&quot;) {
-            s &lt;- y[1] + y[n+1] + 4*sum(y[seq(2,n,by=2)]) + 
-            	2 *sum(y[seq(3,n-1, by=2)])
-            s &lt;- s*h/3
-        } else if (method == &quot;trapezoidal&quot;) {
-            s &lt;- h * (y[1]/2 + sum(y[2:n]) + y[n+1]/2)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">yIntegrate <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, a, b, tol<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-8</span>, method<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">simpson&#34;</span>, verbose<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>) {
+    <span style="color:#75715e"># numerical integral of fun from a to b, assume a &lt; b </span>
+    <span style="color:#75715e"># with tolerance tol</span>
+    n <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">4</span>
+    h <span style="color:#f92672">&lt;-</span> (b<span style="color:#f92672">-</span>a)<span style="color:#f92672">/</span><span style="color:#ae81ff">4</span>
+    x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(a, b, by<span style="color:#f92672">=</span>h)
+    y <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fun</span>(x)
+    yIntegrate_internal <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(y, h, n, method) {
+        <span style="color:#a6e22e">if </span>(method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">simpson&#34;</span>) {
+            s <span style="color:#f92672">&lt;-</span> y[1] <span style="color:#f92672">+</span> y[n<span style="color:#ae81ff">+1</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>(y<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">2</span>,n,by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)]) <span style="color:#f92672">+</span> 
+            	<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>(y<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">3</span>,n<span style="color:#ae81ff">-1</span>, by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)])
+            s <span style="color:#f92672">&lt;-</span> s<span style="color:#f92672">*</span>h<span style="color:#f92672">/</span><span style="color:#ae81ff">3</span>
+        } else <span style="color:#a6e22e">if </span>(method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">trapezoidal&#34;</span>) {
+            s <span style="color:#f92672">&lt;-</span> h <span style="color:#f92672">*</span> (y[1]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">sum</span>(y[2<span style="color:#f92672">:</span>n]) <span style="color:#f92672">+</span> y[n<span style="color:#ae81ff">+1</span>]<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>)
         } else {
         }       
-        return(s)
+        <span style="color:#a6e22e">return</span>(s)
     }
     
-    s &lt;- yIntegrate_internal(y, h, n, method)
-    s.diff &lt;- tol + 1 # ensures to loop at once.
-    while (s.diff &gt; tol ) {
-        s.old &lt;- s
-        n &lt;- 2*n
-        h &lt;- h/2
-        y[seq(1, n+1, by=2)] &lt;- y ##reuse old fun values
-        y[seq(2,n, by=2)] &lt;- sapply(seq(a+h, b-h, by=2*h), fun)
-        s &lt;- yIntegrate_internal(y, h, n, method)
-        s.diff &lt;- abs(s-s.old)
+    s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">yIntegrate_internal</span>(y, h, n, method)
+    s.diff <span style="color:#f92672">&lt;-</span> tol <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#75715e"># ensures to loop at once.</span>
+    <span style="color:#a6e22e">while </span>(s.diff <span style="color:#f92672">&gt;</span> tol ) {
+        s.old <span style="color:#f92672">&lt;-</span> s
+        n <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>n
+        h <span style="color:#f92672">&lt;-</span> h<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
+        y<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">1</span>, n<span style="color:#ae81ff">+1</span>, by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)] <span style="color:#f92672">&lt;-</span> y <span style="color:#75715e">##reuse old fun values</span>
+        y<span style="color:#a6e22e">[seq</span>(<span style="color:#ae81ff">2</span>,n, by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)] <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#a6e22e">seq</span>(a<span style="color:#f92672">+</span>h, b<span style="color:#f92672">-</span>h, by<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>h), fun)
+        s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">yIntegrate_internal</span>(y, h, n, method)
+        s.diff <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">abs</span>(s<span style="color:#f92672">-</span>s.old)
     }
-    if (verbose) {
-        cat(&quot;partition size&quot;, n, &quot;\n&quot;)
+    <span style="color:#a6e22e">if </span>(verbose) {
+        <span style="color:#a6e22e">cat</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">partition size&#34;</span>, n, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\n&#34;</span>)
     }
-    return(s)
+    <span style="color:#a6e22e">return</span>(s)
 }
-</code></pre>
-
-<pre><code>&gt; fun &lt;- function(x) exp(x) - x^2
+</code></pre></div><pre><code>&gt; fun &lt;- function(x) exp(x) - x^2
 &gt; yIntegrate(fun, 3,5,tol=1e-8, method=&quot;simpson&quot;)
 partition size 512 
 [1] 95.66096
@@ -436,43 +412,36 @@ partition size 512
 partition size 131072 
 [1] 95.66096
 </code></pre>
-
-<p>As show above, simpson&rsquo;s rule converge much faster than trapezoidal rule.</p>
-
+<p>As show above, simpson's rule converge much faster than trapezoidal rule.</p>
 <h2 id="quadrature-rule">Quadrature rule</h2>
-
 <p><a href="http://en.wikipedia.org/wiki/Adaptive_quadrature">Quadrature rule</a> is
-more efficient than traditional algorithms. In adaptive quadrature, the subinterval width <code>h</code> is not constant over the interval <code>[a,b]</code>, but instead adapts to the function. Here, I presented the adaptive simpson&rsquo;s method.</p>
-
-<pre><code class="language-r">quadrature &lt;- function(fun, a, b, tol=1e-8) {
-    # numerical integration using adaptive quadrature
+more efficient than traditional algorithms. In adaptive quadrature, the subinterval width <code>h</code> is not constant over the interval <code>[a,b]</code>, but instead adapts to the function. Here, I presented the adaptive simpson's method.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">quadrature <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, a, b, tol<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-8</span>) {
+    <span style="color:#75715e"># numerical integration using adaptive quadrature</span>
     
-    quadrature_internal &lt;- function(S.old, fun, a, m, b, tol, level) {
-        level.max &lt;- 100
-        if (level &gt; level.max) {
-            cat (&quot;recursion limit reached: singularity likely\n&quot;)
-            return (NULL)
+    quadrature_internal <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(S.old, fun, a, m, b, tol, level) {
+        level.max <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">100</span>
+        <span style="color:#a6e22e">if </span>(level <span style="color:#f92672">&gt;</span> level.max) {
+            <span style="color:#a6e22e">cat </span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">recursion limit reached: singularity likely\n&#34;</span>)
+            <span style="color:#a6e22e">return </span>(<span style="color:#66d9ef">NULL</span>)
         }
-        S.left &lt;- simpson(fun, a, m, n=2) 
-        S.right &lt;- simpson(fun, m, b, n=2)
-        S.new &lt;- S.left + S.right
-        if (abs(S.new-S.old) &gt; tol) {
-            S.left &lt;- quadrature_internal(S.left, fun, a, (a+m)/2, m, tol/2, level+1)
-            S.right &lt;- quadrature_internal(S.right, fun, m, (m+b)/2, b, tol/2, level+1)
-            S.new &lt;- S.left + S.right
+        S.left <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">simpson</span>(fun, a, m, n<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>) 
+        S.right <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">simpson</span>(fun, m, b, n<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+        S.new <span style="color:#f92672">&lt;-</span> S.left <span style="color:#f92672">+</span> S.right
+        <span style="color:#a6e22e">if </span>(<span style="color:#a6e22e">abs</span>(S.new<span style="color:#f92672">-</span>S.old) <span style="color:#f92672">&gt;</span> tol) {
+            S.left <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">quadrature_internal</span>(S.left, fun, a, (a<span style="color:#f92672">+</span>m)<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, m, tol<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, level<span style="color:#ae81ff">+1</span>)
+            S.right <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">quadrature_internal</span>(S.right, fun, m, (m<span style="color:#f92672">+</span>b)<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, b, tol<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, level<span style="color:#ae81ff">+1</span>)
+            S.new <span style="color:#f92672">&lt;-</span> S.left <span style="color:#f92672">+</span> S.right
         }
-        return(S.new)
+        <span style="color:#a6e22e">return</span>(S.new)
     }
     
-    level = 1
-    S.old &lt;- (b-a) * (fun(a) + fun(b))/2
-    S.new &lt;- quadrature_internal(S.old, fun, a, (a+b)/2, b, tol, level+1)
-    return(S.new)
+    level <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    S.old <span style="color:#f92672">&lt;-</span> (b<span style="color:#f92672">-</span>a) <span style="color:#f92672">*</span> (<span style="color:#a6e22e">fun</span>(a) <span style="color:#f92672">+</span> <span style="color:#a6e22e">fun</span>(b))<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>
+    S.new <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">quadrature_internal</span>(S.old, fun, a, (a<span style="color:#f92672">+</span>b)<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, b, tol, level<span style="color:#ae81ff">+1</span>)
+    <span style="color:#a6e22e">return</span>(S.new)
 }
-</code></pre>
-
-<p>Quadrature rule is effective when <em>f(x)</em> is steep.</p>
-
+</code></pre></div><p>Quadrature rule is effective when <em>f(x)</em> is steep.</p>
 <pre><code>&gt; fun &lt;- function(x) return(1.5 * sqrt(x))
 &gt; system.time(yIntegrate(fun, 0,1, tol=1e-9, method=&quot;simpson&quot;))
 partition size 524288 
@@ -482,9 +451,7 @@ partition size 524288
    user  system elapsed 
    0.25    0.00    0.25 
 </code></pre>
-
 <h2 id="reference">Reference</h2>
-
 <ol>
 <li>Robinson A., O. Jones, and R. Maillardet. 2009.
 <a href="http://book.douban.com/subject/4324593/">Introduction to Scientific Programming and Simulation Using

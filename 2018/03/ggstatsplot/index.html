@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="大家是否还记得我写的文章《画个小圈圈》？里面吐槽了ggpubr这个包的存在是制造混乱，徒增学习成本。我们知道ggplot2包里有个qplot函数，而在《ggplot2》的第一版中，hadley先用了一章介绍qplot，再介绍grammar of graphics，然后这个qplot就被吐槽，先入为主，给学习grammar of graphics，学习ggplot2语法制造了不必要的麻烦。然后如果你看《ggplot2》第二版，你就会发现qplot这一章被删掉了。我说ggpubr制造混乱，徒增学习成本并不是为了吐槽某公众号，而是实事求是。
-
 我并不反对封装，我并没有强迫症说大家一定要用ggplot2图形语法，而不能封装函数，我想我在《画个小圈圈》已经说得很清楚了，封装画图的包，按我的观点是要么卖了数据处理的专业知识，要么卖了画图的专业知识。如果一个包做的封装太过于简单，像ggpubr这种，数据必须是用户整理好的data.frame，而画图只是简单的两三个图层的叠加，那么当然可以减少你敲键盘输入，然而影响了初级用户学习ggplot2，复杂的东西，我们当然想要用封装好的函数，等你自己啥都搞懂了，老板都要跟你掀桌子了。简单的东西也可以封装，减少输入嘛，只是特别不适用于ggplot2的图层，简单的设定你写个主题，我都举双手赞成，但两三个图层的简单拼凑我不支持，因为图层是积木，大家学习就是要对积木熟悉，然后才能搭出复杂的东西出来。特别简单的图层叠加正是你熟悉积木的时候，你不多敲点键盘，做为练习，又怎么能做出稍复杂点的东西呢？">
 
 
 <meta property="og:description" content="大家是否还记得我写的文章《画个小圈圈》？里面吐槽了ggpubr这个包的存在是制造混乱，徒增学习成本。我们知道ggplot2包里有个qplot函数，而在《ggplot2》的第一版中，hadley先用了一章介绍qplot，再介绍grammar of graphics，然后这个qplot就被吐槽，先入为主，给学习grammar of graphics，学习ggplot2语法制造了不必要的麻烦。然后如果你看《ggplot2》第二版，你就会发现qplot这一章被删掉了。我说ggpubr制造混乱，徒增学习成本并不是为了吐槽某公众号，而是实事求是。
-
 我并不反对封装，我并没有强迫症说大家一定要用ggplot2图形语法，而不能封装函数，我想我在《画个小圈圈》已经说得很清楚了，封装画图的包，按我的观点是要么卖了数据处理的专业知识，要么卖了画图的专业知识。如果一个包做的封装太过于简单，像ggpubr这种，数据必须是用户整理好的data.frame，而画图只是简单的两三个图层的叠加，那么当然可以减少你敲键盘输入，然而影响了初级用户学习ggplot2，复杂的东西，我们当然想要用封装好的函数，等你自己啥都搞懂了，老板都要跟你掀桌子了。简单的东西也可以封装，减少输入嘛，只是特别不适用于ggplot2的图层，简单的设定你写个主题，我都举双手赞成，但两三个图层的简单拼凑我不支持，因为图层是积木，大家学习就是要对积木熟悉，然后才能搭出复杂的东西出来。特别简单的图层叠加正是你熟悉积木的时候，你不多敲点键盘，做为练习，又怎么能做出稍复杂点的东西呢？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一条指令把统计&#43;画图都给做了？似乎太美好！">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/03/ggstatsplot/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="大家是否还记得我写的文章《画个小圈圈》？里面吐槽了ggpubr这个包的存在是制造混乱，徒增学习成本。我们知道ggplot2包里有个qplot函数，而在《ggplot2》的第一版中，hadley先用了一章介绍qplot，再介绍grammar of graphics，然后这个qplot就被吐槽，先入为主，给学习grammar of graphics，学习ggplot2语法制造了不必要的麻烦。然后如果你看《ggplot2》第二版，你就会发现qplot这一章被删掉了。我说ggpubr制造混乱，徒增学习成本并不是为了吐槽某公众号，而是实事求是。
-
 我并不反对封装，我并没有强迫症说大家一定要用ggplot2图形语法，而不能封装函数，我想我在《画个小圈圈》已经说得很清楚了，封装画图的包，按我的观点是要么卖了数据处理的专业知识，要么卖了画图的专业知识。如果一个包做的封装太过于简单，像ggpubr这种，数据必须是用户整理好的data.frame，而画图只是简单的两三个图层的叠加，那么当然可以减少你敲键盘输入，然而影响了初级用户学习ggplot2，复杂的东西，我们当然想要用封装好的函数，等你自己啥都搞懂了，老板都要跟你掀桌子了。简单的东西也可以封装，减少输入嘛，只是特别不适用于ggplot2的图层，简单的设定你写个主题，我都举双手赞成，但两三个图层的简单拼凑我不支持，因为图层是积木，大家学习就是要对积木熟悉，然后才能搭出复杂的东西出来。特别简单的图层叠加正是你熟悉积木的时候，你不多敲点键盘，做为练习，又怎么能做出稍复杂点的东西呢？">
 <meta name="twitter:description" content="大家是否还记得我写的文章《画个小圈圈》？里面吐槽了ggpubr这个包的存在是制造混乱，徒增学习成本。我们知道ggplot2包里有个qplot函数，而在《ggplot2》的第一版中，hadley先用了一章介绍qplot，再介绍grammar of graphics，然后这个qplot就被吐槽，先入为主，给学习grammar of graphics，学习ggplot2语法制造了不必要的麻烦。然后如果你看《ggplot2》第二版，你就会发现qplot这一章被删掉了。我说ggpubr制造混乱，徒增学习成本并不是为了吐槽某公众号，而是实事求是。
-
 我并不反对封装，我并没有强迫症说大家一定要用ggplot2图形语法，而不能封装函数，我想我在《画个小圈圈》已经说得很清楚了，封装画图的包，按我的观点是要么卖了数据处理的专业知识，要么卖了画图的专业知识。如果一个包做的封装太过于简单，像ggpubr这种，数据必须是用户整理好的data.frame，而画图只是简单的两三个图层的叠加，那么当然可以减少你敲键盘输入，然而影响了初级用户学习ggplot2，复杂的东西，我们当然想要用封装好的函数，等你自己啥都搞懂了，老板都要跟你掀桌子了。简单的东西也可以封装，减少输入嘛，只是特别不适用于ggplot2的图层，简单的设定你写个主题，我都举双手赞成，但两三个图层的简单拼凑我不支持，因为图层是积木，大家学习就是要对积木熟悉，然后才能搭出复杂的东西出来。特别简单的图层叠加正是你熟悉积木的时候，你不多敲点键盘，做为练习，又怎么能做出稍复杂点的东西呢？">
 <meta property="og:locale" content="en-us">
 
@@ -291,11 +287,8 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>大家是否还记得我写的文章《<a href="https://mp.weixin.qq.com/s/8kqTVSDjuHpivGaim6ukNg">画个小圈圈</a>》？里面吐槽了<code>ggpubr</code>这个包的存在是<strong>制造混乱，徒增学习成本</strong>。我们知道<code>ggplot2</code>包里有个<code>qplot</code>函数，而在《ggplot2》的第一版中，hadley先用了一章介绍<code>qplot</code>，再介绍grammar of graphics，然后这个<code>qplot</code>就被吐槽，先入为主，给学习grammar of graphics，学习ggplot2语法制造了不必要的麻烦。然后如果你看《ggplot2》第二版，你就会发现<code>qplot</code>这一章被删掉了。我说<code>ggpubr</code><strong>制造混乱，徒增学习成本</strong>并不是为了吐槽某公众号，而是实事求是。</p>
-
 <p>我并不反对封装，我并没有强迫症说大家一定要用ggplot2图形语法，而不能封装函数，我想我在《<a href="https://mp.weixin.qq.com/s/8kqTVSDjuHpivGaim6ukNg">画个小圈圈</a>》已经说得很清楚了，封装画图的包，按我的观点是要么卖了数据处理的专业知识，要么卖了画图的专业知识。如果一个包做的封装太过于简单，像<code>ggpubr</code>这种，数据必须是用户整理好的data.frame，而画图只是简单的两三个图层的叠加，那么当然可以减少你敲键盘输入，然而影响了初级用户学习<code>ggplot2</code>，复杂的东西，我们当然想要用封装好的函数，等你自己啥都搞懂了，老板都要跟你掀桌子了。简单的东西也可以封装，减少输入嘛，只是特别不适用于ggplot2的图层，简单的设定你写个主题，我都举双手赞成，但两三个图层的简单拼凑我不支持，因为图层是积木，大家学习就是要对积木熟悉，然后才能搭出复杂的东西出来。特别简单的图层叠加正是你熟悉积木的时候，你不多敲点键盘，做为练习，又怎么能做出稍复杂点的东西呢？</p>
-
 <p>我以下面这个<code>ggpubr</code>的例子来讲一下吧。</p>
-
 <pre><code>set.seed(1234)
 df &lt;- data.frame( sex=factor(rep(c(&quot;f&quot;, &quot;M&quot;), each=200)), 
                   weight=c(rnorm(200, 55), rnorm(200, 58)))
@@ -312,22 +305,16 @@ head(df)
 ggdensity(df, x=&quot;weight&quot;, add = &quot;mean&quot;, rug = TRUE, color = &quot;sex&quot;, fill = &quot;sex&quot;,
           palette = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;))
 </code></pre>
-
-<p><img src="https://pic1.zhimg.com/80/v2-498cc4bf9fefbc13f456c18a06e6b89a_hd.jpg" alt="" /></p>
-
+<p><img src="https://pic1.zhimg.com/80/v2-498cc4bf9fefbc13f456c18a06e6b89a_hd.jpg" alt=""></p>
 <p>这个图画density,就是<code>geom_density</code>这个图层，下面加个指示位置的地毯线就是用<code>geom_rug</code>：</p>
-
 <pre><code>require(ggplot2)
 p &lt;- ggplot(df, aes(weight, fill=sex, color=sex)) + 
     geom_density(alpha=.5) + 
     geom_rug()
 print(p)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2018/unnamed-chunk-2-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2018/unnamed-chunk-2-1.png" alt=""></p>
 <p>要加上分布的均值之类的统计量，还不容易，随手一算：</p>
-
 <pre><code>require(dplyr)
 df2 = group_by(df, sex) %&gt;% summarize(m = mean(weight))
 df2
@@ -338,42 +325,29 @@ df2
 ## 1 f      54.9
 ## 2 M      58.1
 </code></pre>
-
 <p>然后再用<code>geom_vline</code>加个线条，要搞颜色也是一样。</p>
-
 <pre><code>p + geom_vline(aes(xintercept=m, color=sex), df2, linetype='dashed') + 
     scale_fill_manual(values=c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;)) + 
     scale_color_manual(values=c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;))
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2018/unnamed-chunk-4-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2018/unnamed-chunk-4-1.png" alt=""></p>
 <p>虽然你多输入了很多，但是在不断的输入中，你对各个图层更熟悉了，都是自由组合的组件。而且这还有个前提是ggplot2图层的文档很全，新手学习并不是很费力。所以我也不是说学习是最重要，如果费时费力，你又有产出的压力，比如老板叫你明天把结果放在他桌面上，学个鬼个！黄花菜都凉了。</p>
-
 <p><code>ggpubr</code>另一方面是组间比较，这个跑个检验还不简单，要标显著嘛，我好多年前的文章《<a href="http://mp.weixin.qq.com/s/oLgpTGdQgcka-OD757_3lA">Use
 ggplot2</a>》已经手把手教你们了，就不重复了。</p>
-
-<hr />
-
+<hr>
 <p>我知道大家都喜欢少敲点代码，对<code>ggpubr</code>的吐槽一是对学习有负面，二是不中用！今天跟大家一个中用的，比<code>ggpubr</code>强N倍的包。</p>
-
 <ul>
 <li>一键出图，但图不是简单拼图层能够拼出来的</li>
 <li>附带做了统计，把统计量都给你在图上标准了</li>
 </ul>
-
 <p>这有什么好处？画图+统计都要做，但一般我们开始只是在探索，而不是最终出要发表文章的图，而这个包，一画图就是图+统计，特别省事/省时间，等于说我毫不费力就可以试不同的图和统计检验。</p>
-
 <ul>
 <li>场景1，你对这些是懂的，那么你不需要花时间去探索，这个包帮你做了。</li>
 <li>场景2,
 你对这些是不懂的，这是小白福音，你不懂你根本不知道要怎么做，甚至于不知道要做什么，你连学习的方向都没有，但人家帮你做了，你可以有目的性去学习相关的背景。</li>
 </ul>
-
 <p>画图就是在感性（可视化）地探索数据，而统计检验给了你理性（定量）的指标。我们通常需要不断试，各种探索，最后可能都没用，或者有一种是最终要的，这个过程是很花时间的，而这个包，可以让你用很少的时间来探索一下。</p>
-
 <h1 id="ggstatsplot">ggstatsplot</h1>
-
 <pre><code>head(mtcars)
 
 ##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
@@ -384,22 +358,16 @@ ggplot2</a>》已经手把手教你们了，就不重复了。</p>
 ## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 ## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 </code></pre>
-
 <p>比如我想知道汽车的轮子数目和自动波/手波是否有关联，那么二联表走起，然后卡方检验，等你做完一小时过去了。而我用<code>ggstatsplot</code>包，3秒钟搞定：</p>
-
 <pre><code>library(ggstatsplot)
 ggpiestats(data = mtcars,
            main = am,                
            condition = cyl) +
   scale_fill_brewer(palette = &quot;Dark2&quot;)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggpiestats2-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggpiestats2-1.png" alt=""></p>
 <p>实际上你要做多少东西呢：</p>
-
 <p>首先是二联表：</p>
-
 <pre><code> Contingency Tables             
  ────────────────────────────── 
    cyl      0     1     Total   
@@ -410,9 +378,7 @@ ggpiestats(data = mtcars,
    Total    19    13       32   
  ────────────────────────────── 
 </code></pre>
-
 <p>再都卡方检验：</p>
-
 <pre><code> χ² Tests                       
  ────────────────────────────── 
          Value    df    p       
@@ -421,9 +387,7 @@ ggpiestats(data = mtcars,
    N        32                  
  ────────────────────────────── 
 </code></pre>
-
 <p>图上还有一些你可能不懂的东西，比如：</p>
-
 <pre><code> Nominal                      
  ──────────────────────────── 
                       Value   
@@ -432,48 +396,32 @@ ggpiestats(data = mtcars,
    Cramer's V         0.523   
  ──────────────────────────── 
 </code></pre>
-
 <p>省了多少时间？如果我只是看一看，最终这个结果我不要，那只花了3秒，如果这是我要的，我不懂卡方的情况下，也能做出来，那么我再有的放矢地去学习，甚至可以自己手工来一遍，这比毫无目的在各种手工学习或试错强太多，OK，我也懂用卡方的情况下，它做的东西，里面也可能有我不懂的东西，比如这个Cramer’s V，就打在图上，不懂，又可以去学习了，学习使我快乐，如果不是在图上看到，我不要说看不懂，根本都不知道有这东西的存在！所以不单单好用，也能让我们学到新东西。最重要的是老板说你先试一下，明天给我看个初步的结果，bingo，今晚可以愉快地睡觉！</p>
-
-<h2 id="组间比较">组间比较</h2>
-
+<h2 id="heading">组间比较</h2>
 <pre><code>ggbetweenstats(data = iris, 
                x = Species, 
                y = Sepal.Length)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggbetweenstats1-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggbetweenstats1-1.png" alt=""></p>
 <p>组间比较还有生物狗最喜欢的标注<strong>均值</strong>，不管是用点和/或数字都行。</p>
-
-<h2 id="相关性">相关性</h2>
-
+<h2 id="heading-1">相关性</h2>
 <pre><code>ggscatterstats(data = iris, 
                x = Sepal.Length, 
                y = Petal.Length,
                title = &quot;Dataset: Iris flower data set&quot;)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggscatterstats1-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggscatterstats1-1.png" alt=""></p>
 <p>这里展示的只是最简单的，有很多参数，比如<code>marginal.type = &quot;density&quot;</code>那么marginal画出来的就不是histogram，而是density
 curve。也可以是boxplot哦。</p>
-
-<h2 id="相关性矩阵">相关性矩阵</h2>
-
+<h2 id="heading-2">相关性矩阵</h2>
 <pre><code>ggcorrmat(
    data = subset(iris, Species == &quot;versicolor&quot;),
    cor.vars = c(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)）
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/corr.png" alt="" /></p>
-
-<h2 id="分组做图并拼图">分组做图并拼图</h2>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/corr.png" alt=""></p>
+<h2 id="heading-3">分组做图并拼图</h2>
 <p>像上面的相关性矩阵，我只是切了versicolor一个物种来画，iris数据我们知道有三个物种，我们可以一个一个做，然后用<code>cowplot</code>来拼图。</p>
-
 <p>下面我先定义一个函数来画图：</p>
-
 <pre><code>plot_fun = function(data) {
   ggscatterstats(
   data = data,
@@ -485,9 +433,7 @@ curve。也可以是boxplot哦。</p>
   )
 }
 </code></pre>
-
 <p>然后分组做图：</p>
-
 <pre><code>library(tidyr)
 library(purrr)
 
@@ -496,10 +442,8 @@ nested_df &lt;- iris %&gt;%
   nest() %&gt;% 
   mutate(p = map(data, plot_fun))   
 </code></pre>
-
 <p>这样就有三张图，用<code>cowplot</code>当然很容易拼，但我们经常需要拼完再加个title,
 再底部加个注释什么的。你当然可以自己再画个tible什么的，然后再去拼。而<code>ggstatsplot</code>直接封装了<code>cowplot</code>，并提供了一些参数，让你加标题和注释什么的。比如上面画的三张图，我用<code>combine_plots</code>拼出来：</p>
-
 <pre><code>combine_plots(
   plotlist = nested_df$p,
   labels = c(&quot;(a)&quot;, &quot;(b)&quot;, &quot;(c)&quot;),
@@ -517,15 +461,10 @@ nested_df &lt;- iris %&gt;%
   )
 )
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-combine_plots_plyr-1.png" alt="" /></p>
-
-<h2 id="安装">安装</h2>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-combine_plots_plyr-1.png" alt=""></p>
+<h2 id="heading-4">安装</h2>
 <p>安装要写到最后，因为我知道大家看到这里，才会急于想要来一波走你。目前此包还没在CRAN上，不过作者已经准备提交到，所以很快就会在CRAN上。给大家安装和升级带来便利。</p>
-
 <p>目前可以通过github安装：</p>
-
 <pre><code>devtools::install_github(&quot;IndrajeetPatil/ggstatsplot&quot;)
 </code></pre>
               

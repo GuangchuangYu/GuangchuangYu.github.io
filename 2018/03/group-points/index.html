@@ -5,27 +5,23 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="小伙伴提出了上面的问题，点不能够打到violin里面去，即使加了aes(group=color)强行分组也不行。这个照理第一感觉都会觉得可以，但试一下都会发现不行。
-
 library(ggplot2)
 d = subset(diamonds, color %in% c(&quot;D&quot;, &quot;E&quot;))
 ggplot(d, aes(cut, carat, fill=color, color=color)) &#43; 
     geom_violin(alpha=.3) &#43; geom_jitter(width=.05, alpha=.5)
-
 
 ">
 
 
 <meta property="og:description" content="小伙伴提出了上面的问题，点不能够打到violin里面去，即使加了aes(group=color)强行分组也不行。这个照理第一感觉都会觉得可以，但试一下都会发现不行。
-
 library(ggplot2)
 d = subset(diamonds, color %in% c(&quot;D&quot;, &quot;E&quot;))
 ggplot(d, aes(cut, carat, fill=color, color=color)) &#43; 
     geom_violin(alpha=.3) &#43; geom_jitter(width=.05, alpha=.5)
-
 
 ">
 <meta property="og:type" content="article">
@@ -35,21 +31,17 @@ ggplot(d, aes(cut, carat, fill=color, color=color)) &#43;
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/03/group-points/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="小伙伴提出了上面的问题，点不能够打到violin里面去，即使加了aes(group=color)强行分组也不行。这个照理第一感觉都会觉得可以，但试一下都会发现不行。
-
 library(ggplot2)
 d = subset(diamonds, color %in% c(&quot;D&quot;, &quot;E&quot;))
 ggplot(d, aes(cut, carat, fill=color, color=color)) &#43; 
     geom_violin(alpha=.3) &#43; geom_jitter(width=.05, alpha=.5)
-
 
 ">
 <meta name="twitter:description" content="小伙伴提出了上面的问题，点不能够打到violin里面去，即使加了aes(group=color)强行分组也不行。这个照理第一感觉都会觉得可以，但试一下都会发现不行。
-
 library(ggplot2)
 d = subset(diamonds, color %in% c(&quot;D&quot;, &quot;E&quot;))
 ggplot(d, aes(cut, carat, fill=color, color=color)) &#43; 
     geom_violin(alpha=.3) &#43; geom_jitter(width=.05, alpha=.5)
-
 
 ">
 <meta property="og:locale" content="en-us">
@@ -315,18 +307,14 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>小伙伴提出了上面的问题，点不能够打到violin里面去，即使加了<code>aes(group=color)</code>强行分组也不行。这个照理第一感觉都会觉得可以，但试一下都会发现不行。</p>
-
 <pre><code>library(ggplot2)
 d = subset(diamonds, color %in% c(&quot;D&quot;, &quot;E&quot;))
 ggplot(d, aes(cut, carat, fill=color, color=color)) + 
     geom_violin(alpha=.3) + geom_jitter(width=.05, alpha=.5)
 </code></pre>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-1-1.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-1-1.png" alt=""></p>
 <p>然后我就看到大家各种猜，所谓<strong>talk is cheap show me the
 code</strong>，我看一下代码：</p>
-
 <pre><code>GeomPoint &lt;- ggproto(&quot;GeomPoint&quot;, Geom,
   required_aes = c(&quot;x&quot;, &quot;y&quot;),
   non_missing_aes = c(&quot;size&quot;, &quot;shape&quot;, &quot;colour&quot;),
@@ -355,43 +343,29 @@ code</strong>，我看一下代码：</p>
   draw_key = draw_key_point
 )
 </code></pre>
-
 <p>这显而易见，必须是不行了。因为<code>GeomPoint</code>并没有计算分组。你可能会觉得这显而易见的需求，怎么会不支持！写软件要考虑的因素很多的。</p>
-
 <p>首先打点你为什么能够分组？必须是离散型的变量，你设想一下，连续型变量你能够分组一些点画左边，一些点画右边吗？那x轴怎么搞？所以必须是离散型变量，像上面需求的例子这种。而如果你实现了上面这种需求，那么你怎么能阻止用户不把它应用于连续型变量，所以这种功能不能实现！不是说它不可能实现，我都可以改<code>GeomPoint</code>改到它可以有这个功能，但不能这么做！教育用户、避免用户做错误的事情是更为重要的事情。你应该理解为什么hadley不实现了，而我也不能去实现它。</p>
-
 <p>难道就不能分组了吗？显然可以的，请记住分面即分组！你可以通过分面来实现。所以不是不行，而是有一套哲学在里面，以一种不会出错的机制来实现。它可能不是所有人想要的，但它是不允许用户出错的方法。</p>
-
 <pre><code>ggplot(d, aes(cut, carat, fill=color, color=color)) + 
     geom_violin(alpha=.3) + geom_jitter(width=.05, alpha=.5) + 
     facet_grid(.~color)
 </code></pre>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-2-1.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-2-1.png" alt=""></p>
 <p>可能用户还是不爽，因为用户可能想把同样的cut放在一起来比较，像最初的图一样。又所谓<strong>活人不能让尿憋死</strong>，难道你不能变通一下吗？我们可以把x轴的变量换掉，同时考虑原先x轴的变量和分组变量。强行自己分组。</p>
-
 <pre><code>d$cut_color &lt;- paste(d$cut, d$color, sep=&quot;_&quot;)
 ggplot(d, aes(cut_color, carat, fill=color, color=color)) + 
     geom_violin(alpha=.3) + geom_jitter(width=.05, alpha=.5)
 </code></pre>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-3-1.png" alt="" /></p>
-
-<h2 id="活人不能让尿憋死">活人不能让尿憋死</h2>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-3-1.png" alt=""></p>
+<h2 id="heading">活人不能让尿憋死</h2>
 <p>要说到变通，你还能够乾坤大挪移，我就想按照原来的代码来画，又想把点挪到<code>violin</code>上，那就挪点呗，只要你懂得变通！凡事皆有可能：</p>
-
 <pre><code>d$xpos = as.numeric(factor(d$cut)) + c(-.22, .22)[as.numeric(factor(d$color))]
 ggplot(d, aes(cut, carat, fill=color, color=color)) + 
     geom_violin(alpha=.3) + 
     geom_jitter(aes(x=xpos), width=.05, alpha=.5)
 </code></pre>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-4-1.png" alt="" /></p>
-
-<h2 id="专业解决ggplot2画图疑难杂症">专业解决ggplot2画图疑难杂症</h2>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/group_point/unnamed-chunk-4-1.png" alt=""></p>
+<h2 id="ggplot2">专业解决ggplot2画图疑难杂症</h2>
 <ul>
 <li><a href="http://mp.weixin.qq.com/s/jegI1wWc7DJzrM7mQfz77Q">同一数据多变量分组的boxplot?</a></li>
 <li><a href="http://mp.weixin.qq.com/s/Xhi_ZkrEzUVdnCu7ECBS4w">听说你还不会画热图</a></li>

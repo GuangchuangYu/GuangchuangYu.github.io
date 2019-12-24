@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,23 +282,14 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>这一次讲解非常重要的peak注释，注释在<strong>ChIPseeker</strong>里只需要用到一个函数<strong>annotatePeak</strong>，它可以满足大家各方面的需求。</p>
-
-<h2 id="输入">输入</h2>
-
-<p>当然需要我们上次讲到的BED文件，<strong>ChIPseeker</strong>自带了5个BED文件，用<strong>getSampleFiles()</strong>可以拿到文件的全路径，它返回的是个named list，我这里取第4个文件来演示。<strong>annotatePeak</strong>的输入也可以是<strong>GRanges</strong>对象，你如果用R做peak calling的话,直接就可以衔接上<strong>ChIPseeker</strong>了。</p>
-
+<h2 id="heading">输入</h2>
+<p>当然需要我们上次讲到的BED文件，<strong>ChIPseeker</strong>自带了5个BED文件，用<strong>getSampleFiles()<strong>可以拿到文件的全路径，它返回的是个named list，我这里取第4个文件来演示。<strong>annotatePeak</strong>的输入也可以是</strong>GRanges</strong>对象，你如果用R做peak calling的话,直接就可以衔接上<strong>ChIPseeker</strong>了。</p>
 <pre><code>&gt; require(ChIPseeker)
 &gt; f = getSampleFiles()[[4]]
-</code></pre>
-
-<p>巧妇难为无米之炊，就像拿到<strong>fastq</strong>要跑<strong>BWA</strong>，你需要全基因组的序列一样，做注释当然需要注释信息，基因的起始终止，基因有那些内含子，外显子，以及它们的起始终止，非编码区的位置，功能元件的位置等各种信息。</p>
-
+</code></pre><p>巧妇难为无米之炊，就像拿到<strong>fastq</strong>要跑<strong>BWA</strong>，你需要全基因组的序列一样，做注释当然需要注释信息，基因的起始终止，基因有那些内含子，外显子，以及它们的起始终止，非编码区的位置，功能元件的位置等各种信息。</p>
 <p>很多软件会针对特定的物种去整理这些信息供软件使用，但这样就限制了软件的物种支持，有些开发者写软件本意也是解决自己的问题，可能对自己的研究无关的物种也没兴趣去支持。</p>
-
 <p>然而<strong>ChIPseeker</strong>支持所有的物种，你没有看错，<strong>ChIPseeker</strong>没有物种限制，当然这是有前提的，物种本身起码是有基因的位置这些注释信息，不然就变无米之炊了。</p>
-
 <p>这里我们需要的是一个<strong>TxDb</strong>对象，这个<strong>TxDb</strong>就包含了我们需要的各种信息，<strong>ChIPseeker</strong>会把信息抽取出来，用于注释时使用。</p>
-
 <pre><code>&gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
 &gt; txdb = TxDb.Hsapiens.UCSC.hg19.knownGene
 &gt; x = annotatePeak(f, tssRegion=c(-1000, 1000), TxDb=txdb)
@@ -309,12 +300,9 @@ if (!doNotTrack) {
 &gt;&gt; assigning genomic annotation...		 2017-03-09 11:29:20 PM 
 &gt;&gt; assigning chromosome lengths			 2017-03-09 11:29:42 PM 
 &gt;&gt; done...					 2017-03-09 11:29:42 PM 
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>这里需要注意的是，启动子区域是没有明确的定义的，所以你可能需要指定<strong>tssRegion</strong>，把基因起始转录位点的上下游区域来做为启动子区域。</p>
 </blockquote>
-
 <p>有了这两个输入（BED文件和TxDb对象），你就可以跑注释了，然后就可以出结果了。</p>
       
       <p>
@@ -374,9 +362,7 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>ChIP是指染色质免疫沉淀，它通过特异结合抗体将DNA结合蛋白免疫沉淀，可以用于捕获蛋白质（如转录因子，组蛋白修饰）的DNA靶点。这技术存在非常久了，在二代测序之前，结合microarray，它的名字叫<code>ChIP-on-chip</code>，二代测序出来之后，显而易见的，免疫沉淀拉下来的DNA拿去NGS测序，这必然是下一代的ChIP技术，优点也是显而易见的，不再需要设计探针（往往存在着一定的偏向性）。所以NGS出来以后，不差钱的牛逼实验室显然占据上风，谁先做出来，谁就定义了新技术。这是有钱人的竞赛，没钱的只能等着技术烂大街的时候跟风做。</p>
-
 <p>这是显而易见的下一代技术，外加技术上完全是可行的，所以这是一场单纯的时间竞赛，于是几乎同时出来CNS文章，基本上谁也不比谁差地同时扔出来。</p>
-
 <blockquote>
 <ul>
 <li>Johnson DS, Mortazavi A et al. (2007) Genome-wide mapping of in vivo protein–DNA interactions. Science 316: 1497–1502</li>
@@ -384,7 +370,6 @@ if (!doNotTrack) {
 <li>Schmid et al. (2007) ChIP-Seq Data reveal nucleosome architecture of human promoters. Cell 131: 831–832</li>
 </ul>
 </blockquote>
-
 <p>2007年来自三个不同的实验室，几乎是同时间出来（最长差不了3个月），分别发CNS，一起定义了这个<code>ChIPseq</code>技术。</p>
       
       <p>
@@ -444,11 +429,8 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>接下来要出一个ChIPseq系列，讲一讲ChIPseq和我的ChIPseeker包，从入门到放弃是我自己的个人写照。我做ChIPseq总共也就3个月的时间，做的事情并不多，在一知半解的情况下写下了ChIPseeker包。</p>
-
 <p>我当时被要求做ChIPseq分析是为他人做嫁衣，而且是完全白干那种，但做为学生，白干也得干。</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/1487166664.jpg" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/1487166664.jpg" alt=""></p>
 <p>当时一开始使用ChIPpeakAnno做注释，但用UCSC genome browser检验结果的时候，发现对不上。在对ChIPpeakAnno包不满意的情况下，开始着手写ChIPseeker，其实在使用ChIPpeakAnno的时候，我就有写代码对结果做一些可视化，所以未有ChIPseeker先有ChIPseeker的部分可视化功能。当时写了篇博客文说ChIPpeakAnno的问题，一个月后就在Bioconductor上发表了ChIPseeker，这包完全是我半夜在宿舍里写出来的。</p>
       
       <p>

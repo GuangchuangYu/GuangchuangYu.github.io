@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -280,34 +280,32 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>GE公司codelink芯片(这个破产品已经停产了)上的探针ID，需要转成别的ID，看了一些在线的转换ID工具，都不支持，探针ID基本上都只支持affy的。</p>
-
 <p>想起了bioconductor里的biomaRt，这个包可以检索BioMart数据库，这个数据库里有N多种ID。试了一下，果然没问题。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e">#加载biomaRt包</span>
+<span style="color:#a6e22e">library</span>(biomaRt)
 
-<pre><code class="language-r">#加载biomaRt包
-library(biomaRt)
+<span style="color:#75715e">#选取数据库</span>
+ensembl <span style="color:#f92672">=</span> <span style="color:#a6e22e">useMart</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ensembl&#34;</span>, dataset <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hsapiens_gene_ensembl&#34;</span>)
 
-#选取数据库
-ensembl = useMart(&quot;ensembl&quot;, dataset = &quot;hsapiens_gene_ensembl&quot;)
+<span style="color:#75715e">#获取可供检索的attribute</span>
+attributes<span style="color:#f92672">=</span><span style="color:#a6e22e">listAttributes</span>(mart<span style="color:#f92672">=</span>ensembl)
 
-#获取可供检索的attribute
-attributes=listAttributes(mart=ensembl)
-
-#看一下attributes里是否有codelink，得到以下的结果。
-attributes[grep(&quot;codelink&quot;,attributes[,1]), ]
+<span style="color:#75715e">#看一下attributes里是否有codelink，得到以下的结果。</span>
+attributes<span style="color:#a6e22e">[grep</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>,attributes[,<span style="color:#ae81ff">1</span>]), ]
 
 name description
-21 codelink Codelink ID
-#再搜一下其它我想要的ID
+<span style="color:#ae81ff">21</span> codelink Codelink ID
+<span style="color:#75715e">#再搜一下其它我想要的ID</span>
 
-#读进含有codelink ID的文件。
-mrna_id &lt;- read.table(&quot;mrna_id.txt&quot;)
+<span style="color:#75715e">#读进含有codelink ID的文件。</span>
+mrna_id <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mrna_id.txt&#34;</span>)
 
-#进行ID映射。
-idmap &lt;- getBM(attributes=c(&quot;codelink&quot;,&quot;refseq_dna&quot;,&quot;external_gene_id&quot;,
-                            &quot;embl&quot;,&quot;hgnc_id&quot;,&quot;hgnc_symbol&quot;), 
-               filters =&quot;codelink&quot;, values=mrna_id[,1],
-               mart=ensembl,output=&quot;list&quot;)
-</code></pre>
+<span style="color:#75715e">#进行ID映射。</span>
+idmap <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getBM</span>(attributes<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">refseq_dna&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">external_gene_id&#34;</span>,
+                            <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">embl&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hgnc_id&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hgnc_symbol&#34;</span>), 
+               filters <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>, values<span style="color:#f92672">=</span>mrna_id[,<span style="color:#ae81ff">1</span>],
+               mart<span style="color:#f92672">=</span>ensembl,output<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">list&#34;</span>)
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2008/09/mapping-codelink-id/" class="postShorten-excerpt_link link">Continue reading</a>

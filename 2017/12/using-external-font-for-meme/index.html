@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="meme无非是照片上加两行字，meme这个包本来是练手之作，用来模拟ggplot2的api。结果我后面又实现了字体阴影效果，这次我又带来了外部字体支持。
-
 加载外部字体在R上面主要有extrafont和showtext两个实现，特别是showtext用起来还是非常简单的。我在meme包里写了font_import函数，内部就是用showtext，只是简单的包装了一下，这样小白用户可以直接下个字体就开撸。有阴影效果，有搞笑字体，就万事具备了，这俨然是个专业的meme工具了。">
 
 
 <meta property="og:description" content="meme无非是照片上加两行字，meme这个包本来是练手之作，用来模拟ggplot2的api。结果我后面又实现了字体阴影效果，这次我又带来了外部字体支持。
-
 加载外部字体在R上面主要有extrafont和showtext两个实现，特别是showtext用起来还是非常简单的。我在meme包里写了font_import函数，内部就是用showtext，只是简单的包装了一下，这样小白用户可以直接下个字体就开撸。有阴影效果，有搞笑字体，就万事具备了，这俨然是个专业的meme工具了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用外部字体画meme">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/12/using-external-font-for-meme/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="meme无非是照片上加两行字，meme这个包本来是练手之作，用来模拟ggplot2的api。结果我后面又实现了字体阴影效果，这次我又带来了外部字体支持。
-
 加载外部字体在R上面主要有extrafont和showtext两个实现，特别是showtext用起来还是非常简单的。我在meme包里写了font_import函数，内部就是用showtext，只是简单的包装了一下，这样小白用户可以直接下个字体就开撸。有阴影效果，有搞笑字体，就万事具备了，这俨然是个专业的meme工具了。">
 <meta name="twitter:description" content="meme无非是照片上加两行字，meme这个包本来是练手之作，用来模拟ggplot2的api。结果我后面又实现了字体阴影效果，这次我又带来了外部字体支持。
-
 加载外部字体在R上面主要有extrafont和showtext两个实现，特别是showtext用起来还是非常简单的。我在meme包里写了font_import函数，内部就是用showtext，只是简单的包装了一下，这样小白用户可以直接下个字体就开撸。有阴影效果，有搞笑字体，就万事具备了，这俨然是个专业的meme工具了。">
 <meta property="og:locale" content="en-us">
 
@@ -293,49 +289,33 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>meme无非是照片上加两行字，<a href="https://cran.r-project.org/web/packages/meme/">meme</a>这个包本来是练手之作，用来<a href="https://guangchuangyu.github.io/2017/10/create-meme-in-r/">模拟ggplot2的api</a>。结果我后面又实现了<a href="https://guangchuangyu.github.io/2017/11/shadow-text-effect-in-grid-and-ggplot2-graphics/">字体阴影效果</a>，这次我又带来了外部字体支持。</p>
-
 <p>加载外部字体在R上面主要有extrafont和showtext两个实现，特别是showtext用起来还是非常简单的。我在meme包里写了<code>font_import</code>函数，内部就是用showtext，只是简单的包装了一下，这样小白用户可以直接下个字体就开撸。有阴影效果，有<a href="https://fontmeme.com/fonts/">搞笑字体</a>，就万事具备了，这俨然是个专业的meme工具了。</p>
-
 <p>我在meme包里还打包了个pokemon字体，用<code>font_pokemon</code>函数可以加载字体，然后用来画图，就是这么简单。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(meme)
 
-<pre><code class="language-r">library(meme)
 
+<span style="color:#75715e">## import pokemon fonts</span>
+<span style="color:#75715e">## downloaded from &lt;https://fontmeme.com/fonts/pokmon-font/&gt;</span>
+<span style="color:#a6e22e">font_pokemon</span>()
 
-## import pokemon fonts
-## downloaded from &lt;https://fontmeme.com/fonts/pokmon-font/&gt;
-font_pokemon()
-
-u &lt;- 'https://ravishly.com/sites/default/files/landscape-1456483171-pokemon2.jpg'
-meme(u, &quot;Pokemon&quot;, &quot;pikachu i choose you!&quot;, font='Pokemon_Hollow')
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-1-1.png" alt="" /></p>
-
-<pre><code class="language-r">meme(u, &quot;Pokemon&quot;, &quot;pikachu i choose you!&quot;, font='Pokemon_Solid', color='#FCCF00')
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-1-2.png" alt="" /></p>
-
+u <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">https://ravishly.com/sites/default/files/landscape-1456483171-pokemon2.jpg&#39;</span>
+<span style="color:#a6e22e">meme</span>(u, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Pokemon&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">pikachu i choose you!&#34;</span>, font<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Pokemon_Hollow&#39;</span>)
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-1-1.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">meme</span>(u, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Pokemon&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">pikachu i choose you!&#34;</span>, font<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Pokemon_Solid&#39;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">#FCCF00&#39;</span>)
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-1-2.png" alt=""></p>
 <p>上面我们先看了搞笑字体的神奇效果，当然正如我前面说的，要让用户可以在网上下载字体，然后开撸，这才是通用的大路。下面的代码给<code>font_import</code>传入<code>dir</code>，它可以是你自己下载字体的目录，这个函数就会干所有事情，然后你直接就可以用了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e">## folder that contains bubble1 font</span>
+<span style="color:#75715e">## downloaded from https://fontmeme.com/fonts/bubble-1-font/</span>
+dir <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">system.file</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">fonts/bubble&#39;</span>, package<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">meme&#39;</span>)
+<span style="color:#a6e22e">font_import</span>(dir)
 
-<pre><code class="language-r">## folder that contains bubble1 font
-## downloaded from https://fontmeme.com/fonts/bubble-1-font/
-dir &lt;- system.file('fonts/bubble', package='meme')
-font_import(dir)
-
-meme(u, &quot;the meme package&quot;, &quot;is awesome!&quot;, font=&quot;bubble1&quot;)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-2-1.png" alt="" /></p>
-
+<span style="color:#a6e22e">meme</span>(u, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">the meme package&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">is awesome!&#34;</span>, font<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">bubble1&#34;</span>)
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-2-1.png" alt=""></p>
 <p>当然这个函数虽然在<code>meme</code>包里，为了大家创作meme更尽性，但它不限于做meme，加载了字体之后，它可以用于R的其它画图系统中，比如base, grid等等。</p>
-
-<pre><code class="language-r">library(ggplot2)
-qplot(1:10, 1:10) + labs(title=&quot;meme is awesome&quot;) +
-    theme(plot.title=element_text(family='bubble1', size=30, color='firebrick'))
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-3-1.png" alt="" /></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+<span style="color:#a6e22e">qplot</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">labs</span>(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">meme is awesome&#34;</span>) <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">theme</span>(plot.title<span style="color:#f92672">=</span><span style="color:#a6e22e">element_text</span>(family<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">bubble1&#39;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">firebrick&#39;</span>))
+</code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/meme/2017-meme-font_files/figure-html/unnamed-chunk-3-1.png" alt=""></p>
               
             </div>
           </div>

@@ -5,20 +5,16 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 小密圈的问题，不是三两句话可以说明白的事情，必须要写文来解答，上一次写文是《听说你还不会画热图》，里面正好吐槽了某知乎大V的「除了ggplot2之外其它都是鸡肋」，这次正好也可以再次呼应一下。
-
 这个图明显是R的base graphics做的，图是可圈可点的，能做出这图来，也已经是告别了只会用plot的低级趣味。这其实是4个图拼起来的，第一个图只是多了个y轴而已，它们画起来是一样的，那就是只画boxplot，不画x和y轴，（你可能会说不是有x轴？），x轴是后面再加上去的，而且加x轴的时候，不写labels，只有线条没有文本（你可能又会说明明有文本！），因为axis这个函数只支持labels要么是水平的，要么是垂直的，旋转某个角度是不支持的，所以labels是额外再打上去的。这里一张小小的图，门道还是挺多的。">
 
 
 <meta property="og:description" content="
-
 小密圈的问题，不是三两句话可以说明白的事情，必须要写文来解答，上一次写文是《听说你还不会画热图》，里面正好吐槽了某知乎大V的「除了ggplot2之外其它都是鸡肋」，这次正好也可以再次呼应一下。
-
 这个图明显是R的base graphics做的，图是可圈可点的，能做出这图来，也已经是告别了只会用plot的低级趣味。这其实是4个图拼起来的，第一个图只是多了个y轴而已，它们画起来是一样的，那就是只画boxplot，不画x和y轴，（你可能会说不是有x轴？），x轴是后面再加上去的，而且加x轴的时候，不写labels，只有线条没有文本（你可能又会说明明有文本！），因为axis这个函数只支持labels要么是水平的，要么是垂直的，旋转某个角度是不支持的，所以labels是额外再打上去的。这里一张小小的图，门道还是挺多的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="同一数据多变量分组的boxplot?">
@@ -27,14 +23,10 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/10/boxplot-multiple-group/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 小密圈的问题，不是三两句话可以说明白的事情，必须要写文来解答，上一次写文是《听说你还不会画热图》，里面正好吐槽了某知乎大V的「除了ggplot2之外其它都是鸡肋」，这次正好也可以再次呼应一下。
-
 这个图明显是R的base graphics做的，图是可圈可点的，能做出这图来，也已经是告别了只会用plot的低级趣味。这其实是4个图拼起来的，第一个图只是多了个y轴而已，它们画起来是一样的，那就是只画boxplot，不画x和y轴，（你可能会说不是有x轴？），x轴是后面再加上去的，而且加x轴的时候，不写labels，只有线条没有文本（你可能又会说明明有文本！），因为axis这个函数只支持labels要么是水平的，要么是垂直的，旋转某个角度是不支持的，所以labels是额外再打上去的。这里一张小小的图，门道还是挺多的。">
 <meta name="twitter:description" content="
-
 小密圈的问题，不是三两句话可以说明白的事情，必须要写文来解答，上一次写文是《听说你还不会画热图》，里面正好吐槽了某知乎大V的「除了ggplot2之外其它都是鸡肋」，这次正好也可以再次呼应一下。
-
 这个图明显是R的base graphics做的，图是可圈可点的，能做出这图来，也已经是告别了只会用plot的低级趣味。这其实是4个图拼起来的，第一个图只是多了个y轴而已，它们画起来是一样的，那就是只画boxplot，不画x和y轴，（你可能会说不是有x轴？），x轴是后面再加上去的，而且加x轴的时候，不写labels，只有线条没有文本（你可能又会说明明有文本！），因为axis这个函数只支持labels要么是水平的，要么是垂直的，旋转某个角度是不支持的，所以labels是额外再打上去的。这里一张小小的图，门道还是挺多的。">
 <meta property="og:locale" content="en-us">
 
@@ -296,19 +288,15 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/WechatIMG111.png" alt="" /></p>
-
+              <p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/WechatIMG111.png" alt=""></p>
 <p>小密圈的问题，不是三两句话可以说明白的事情，必须要写文来解答，上一次写文是《<a href="http://mp.weixin.qq.com/s/Xhi_ZkrEzUVdnCu7ECBS4w">听说你还不会画热图</a>》，里面正好吐槽了某知乎大V的「除了ggplot2之外其它都是鸡肋」，这次正好也可以再次呼应一下。</p>
-
 <p>这个图明显是R的base graphics做的，图是可圈可点的，能做出这图来，也已经是告别了只会用plot的低级趣味。这其实是4个图拼起来的，第一个图只是多了个y轴而已，它们画起来是一样的，那就是只画boxplot，不画x和y轴，（你可能会说不是有x轴？），x轴是后面再加上去的，而且加x轴的时候，不写labels，只有线条没有文本（你可能又会说明明有文本！），因为<code>axis</code>这个函数只支持labels要么是水平的，要么是垂直的，旋转某个角度是不支持的，所以labels是额外再打上去的。这里一张小小的图，门道还是挺多的。</p>
-
 <p>set.seed(2017-10-30)
-    d &lt;- data.frame(riskScore = abs(rnorm(100)),
-                    BMI = sample(1:2, 100, replace=T),
-                    stage = sample(1:2, 100, replace=T),
-                    age = sample(1:2, 100, replace=T),
-                    gender = sample(1:2, 100, replace=T))</p>
-
+d &lt;- data.frame(riskScore = abs(rnorm(100)),
+BMI = sample(1:2, 100, replace=T),
+stage = sample(1:2, 100, replace=T),
+age = sample(1:2, 100, replace=T),
+gender = sample(1:2, 100, replace=T))</p>
 <pre><code>head(d)
 
 ##     riskScore BMI stage age gender
@@ -319,11 +307,8 @@ if (!doNotTrack) {
 ## 5 0.790797457   1     2   1      1
 ## 6 1.943465449   1     1   2      1
 </code></pre>
-
 <p>先搞一个数据集，都只是随机数，纯粹是为了演示用而已。下面我将定义一个myboxplot，它画boxplot，不带x和y轴，然后加x轴不带labels，再额外打labels，因为提问者的图中还有pvalue，我顺道把pvalue也整合进这个myboxplot里去，可以用pvalue=NULL来关掉这个功能。</p>
-
 <p>关于箱式图，可以参考我之前写的《<a href="http://mp.weixin.qq.com/s/kk3M1eoVhCiYmyu92P0zwA">boxplot</a>》，而这里用到T检验，可以参考《<a href="http://mp.weixin.qq.com/s/JAIhe2KAIKkvhw7RJt5OQw">什么是T检验</a>》。</p>
-
 <pre><code>myboxplot &lt;- function(x, data, col = NULL, xlab, pvalue=&quot;auto&quot;) {
     boxplot(x, data, axes = FALSE, col = col)
     axis(1, at = 1:2, labels =FALSE)
@@ -339,9 +324,7 @@ if (!doNotTrack) {
     }
 }
 </code></pre>
-
 <p>万事具备，有函数，有数据，我们先初始化画4个column，然后你只要调用myboxplot，分4次画4个图，就大功告成了，第一个图的时候，把y轴给加上。</p>
-
 <pre><code>layout(t(1:4))
 par(oma=c(2, 4, 4, 0), mar=c(5,2,1,1), cex=1)
 
@@ -351,11 +334,8 @@ myboxplot(riskScore~gender, data=d, col='green', xlab=c(&quot;Male&quot;, &quot;
 myboxplot(riskScore~stage, data=d, col='blue', xlab=c(&quot;pStage 1-2&quot;, &quot;pStage 1-2&quot;))
 myboxplot(riskScore~BMI, data=d, col='cyan', xlab=c(&quot;BMI &lt; 24&quot;, &quot;BMI &gt; 24&quot;))
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt=""></p>
 <p>假如我们想要用ggplot2来画，该怎么搞？首先毫无意外，要把数据整理成ggplot2喜欢的样子，我定义一个convert函数专门来搞这个数据：</p>
-
 <pre><code>convert &lt;- function(d) {
     lapply(2:ncol(d), function(i) {
         d2 &lt;- d[, c(1,i)]
@@ -377,37 +357,24 @@ head(dd)
 ## 5 0.790797457        1  BMI
 ## 6 1.943465449        1  BMI
 </code></pre>
-
 <p>然后就可以直接ggplot来画了，这里蛋疼的是颜色不是我们想要的那种用type来上色，如果你指定用type，那么不好意思，不会用category分组，如果你指定<code>group = factor(category)</code>呢？又不好意思了，不会让type来分组了，也就是说你画出来的是按category分的两个box，而不会有不同type是不同组数据的切分了，这就是ggplot2蛋疼之外，语法太高级，以至于有些情况没办法以它的语法表达的时候，是非常困难的。</p>
-
 <pre><code>library(ggplot2)
 ggplot(dd, aes(type, riskScore, fill=factor(category))) + geom_boxplot()
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/figure-markdown_strict/unnamed-chunk-1-2.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/figure-markdown_strict/unnamed-chunk-1-2.png" alt=""></p>
 <p>当然可以通过分面来补救：</p>
-
 <pre><code>ggplot(dd, aes(type, riskScore, group=factor(category), fill=type)) +
     geom_boxplot() + facet_grid(.~type, scales = &quot;free_x&quot;)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/boxplot_facet.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/boxplot_facet.png" alt=""></p>
 <p>分面也不好啊，分面的strip text和x axis text重了，当然这个x axis text不是我们想要的。</p>
-
 <p>如果我不想用分面呢？你就得用另外的变量去欺骗它，让它分好组，比如这里我用<code>color=factor(category)</code>，这样会给boxplot的外框加颜色，但这个颜色不是我们想要用的，category分1和2,在不同的type里意义是不一样的。第二点，它的legend也不是我们想要的，所以这里又需要额外的设置了，我们要指定颜色统一，要去掉legend。</p>
-
 <pre><code>ggplot(dd, aes(type, riskScore, color=factor(category), fill=type)) + geom_boxplot() +
     scale_color_manual(values=rep('black',2), guide=FALSE)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/figure-markdown_strict/unnamed-chunk-1-3.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/figure-markdown_strict/unnamed-chunk-1-3.png" alt=""></p>
 <p>这个图就像模像样了，和上面分面的其实差不多，有一个共同点，x axis text不是我们想要的，怎么改？还是illustrator吧，带着ggplot2的枷锁改起来可费劲了。</p>
-
 <p>当然画图嘛，功夫一半在画图上，另一半在于对数据的操作，既要用ggplot2，又要用得爽，你得有70岁的觉悟，「七十而从心所欲,不逾矩」，在矩（俗称枷锁）之下，从心所欲，关键还是对数据和作图系统的理解。这数据还得再变一下，我们不分组了，不就画8个boxplot么，把不同category的1和2全部换掉，换成不同的变量，然后画8个box就完事了。</p>
-
 <pre><code>bmi = c(&quot;BMI &lt; 24&quot;, &quot;BMI &gt; 24&quot;)
 stage = c(&quot;pStage 1-2&quot;, &quot;pStage 3-4&quot;)
 age = c(&quot;age &lt; 60&quot;, &quot;age &gt; 60&quot;)
@@ -423,9 +390,7 @@ p1 = ggplot(dd, aes(category, riskScore, fill=type)) + geom_boxplot() +
 p2 = p1 + facet_grid(.~type, scales=&quot;free_x&quot;)
 cowplot::plot_grid(p1, p2, ncol=2)    
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/boxplot_v2.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/R/boxplot_multiple_group_files/boxplot_v2.png" alt=""></p>
 <p>数据使然，我们很容易就想到这有4组，每一组有两类，我们要分组，枷锁就来了，后面要改细节，标x axis text，简直是恶梦，除非你放弃治疗用illustrator。如果我们能够放开分组的概念，出王八拳，倒是豁然开朗。这里额外强调一点的是base graphics的作图，容易理解，符合直觉这一块，还是很厉害的，hadley wikham也说ggplot2是试图结合base + lattice的优点。多学一点「外语」对理解和应用「母语」是有帮助的。第二点，放开套路，多试试王八拳，能把对方打趴下的拳，就是好拳！</p>
               
             </div>

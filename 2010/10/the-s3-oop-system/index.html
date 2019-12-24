@@ -5,23 +5,21 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="R currently supports two internal OOP systems (S3 and S4), and several
 others as add-on packages, such as
 R.oo, and
 OOP.
-
-S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&rsquo;s a function centric system which is different from class centric system like JAVA.">
+S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&#39;s a function centric system which is different from class centric system like JAVA.">
 
 
 <meta property="og:description" content="R currently supports two internal OOP systems (S3 and S4), and several
 others as add-on packages, such as
 R.oo, and
 OOP.
-
-S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&rsquo;s a function centric system which is different from class centric system like JAVA.">
+S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&#39;s a function centric system which is different from class centric system like JAVA.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="The S3 OOP system">
 <meta name="twitter:title" content="The S3 OOP system">
@@ -32,14 +30,12 @@ S3 is easy to use but not reliable enough for large software projects. The S3 sy
 others as add-on packages, such as
 R.oo, and
 OOP.
-
-S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&rsquo;s a function centric system which is different from class centric system like JAVA.">
+S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&#39;s a function centric system which is different from class centric system like JAVA.">
 <meta name="twitter:description" content="R currently supports two internal OOP systems (S3 and S4), and several
 others as add-on packages, such as
 R.oo, and
 OOP.
-
-S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&rsquo;s a function centric system which is different from class centric system like JAVA.">
+S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&#39;s a function centric system which is different from class centric system like JAVA.">
 <meta property="og:locale" content="en-us">
 
   
@@ -308,15 +304,10 @@ if (!doNotTrack) {
 others as add-on packages, such as
 <a href="http://cran.r-project.org/web/packages/R.oo/index.html">R.oo</a>, and
 <a href="http://www.omegahat.org/OOP/">OOP</a>.</p>
-
-<p>S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It&rsquo;s a function centric system which is different from class centric system like JAVA.</p>
-
+<p>S3 is easy to use but not reliable enough for large software projects. The S3 system emphasize on generic functions and polymorphism. It's a function centric system which is different from class centric system like JAVA.</p>
 <p>Computations are carried out by methods. In many OOP languages, that is, a call to <code>obj.method()</code> which will find the first ancestor class of <code>obj</code> that has a method <code>.method()</code>. R makes the same dicision in a different way, it turns the idea of inheritance &ldquo;inside out&rdquo;. In R, a special type of function called generic function decides which method to invoke. Methods are defined in the same way as a normal function, but with a tag describing what type of object they were designed to process.</p>
-
 <h2 id="object-class">Object Class</h2>
-
 <p>The class of an object is defined by a character vector of class names.</p>
-
 <pre><code>&gt; x &lt;- 1
 &gt; class(x) &lt;- &quot;foo&quot;
 #or 
@@ -328,51 +319,35 @@ others as add-on packages, such as
 attr(,&quot;class&quot;)
 [1] &quot;foo&quot;
 </code></pre>
-
 <p>Objects can have many classes:</p>
-
 <pre><code>&gt; class(x) &lt;- c(&quot;foo&quot;, &quot;bar&quot;)
 &gt; x
 [1] 1
 attr(,&quot;class&quot;)
 [1] &quot;foo&quot; &quot;bar&quot;
 </code></pre>
-
 <h2 id="generic-functions-and-method-dispatch">Generic functions and method dispatch</h2>
-
 <p>A generic function is a function that examines the class of its first argument, and thus decides which specific method to dispatch to.</p>
-
 <p>Generic functions are defined by <code>UseMethod</code> with the generic name and the object to dispatch on as its parameters.</p>
-
 <p>The following example shows how to define a generic function:</p>
-
 <pre><code>sound &lt;- function(x) UseMethod(&quot;sound&quot;, x)
 </code></pre>
-
 <p>Methods are defined with a naming convention: <code>generic.class</code>:</p>
-
 <pre><code>sound.dog &lt;- function(x) &quot;bark&quot;
 sound.cow &lt;- function(x) &quot;moo&quot;
 sound.default &lt;- function(x) &quot;animal sound&quot;
 </code></pre>
-
 <p>The <code>methods</code> function can find out which classes a generic function was designed for.</p>
-
 <pre><code>&gt; methods(&quot;sound&quot;)
 [1] sound.cow     sound.default sound.dog   
 </code></pre>
-
 <p>R looks for methods in the order in which they appear in the class vector until it found the appropriate method to operate on.</p>
-
 <pre><code>&gt; x &lt;- structure(&quot;cat&quot;, class = c(&quot;cat&quot;, &quot;dog&quot;, &quot;cow&quot;))
 &gt; sound(x)
 [1] &quot;bark&quot;
 </code></pre>
-
 <h2 id="inheritance">Inheritance</h2>
-
 <p>In S3 system, evaluation may be passed to a less specific method by calling <code>NextMethod</code> which provide a simple inheritance mechanism. <code>NextMethod</code> will dispatch on the second element of the class vector:</p>
-
 <pre><code>&gt; class(x) &lt;- c(&quot;dog&quot;, &quot;cow&quot;)
 &gt; sound(x)
 [1] &quot;bark&quot;

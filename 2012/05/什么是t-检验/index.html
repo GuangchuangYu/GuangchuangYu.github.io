@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="跟某同学讲了T test之后，整理一下。
@@ -339,48 +339,29 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>跟某同学讲了T test之后，整理一下。</p>
-
 <p>很多的检验和我们的直觉是一致的，前阵子在一个群里，有管理学院的人问说想看两个样本是不是来自于同一个分布，我叫他画两个CDF，一看就知道。对方说不要看图，我就让他用Kolmogorov-Smirnov
 Tests。我自己搜了一下，发现ks.test检验的就是拿两个CDF的距离做为统计量，虽然计算很复杂，但是和intuition那是相当一致啊。</p>
-
 <p>最简单也最常用的，莫过于T检验，用我们的直觉就可以理解了，但是我发现不理解还有用错的人也挺多的。</p>
-
 <p>我们要看一个样本的均值是不是等于0，最naive的办法就是看样本的均值和0差别多大。</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/distribution.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/distribution.png" alt=""></p>
 <p>这个比较之所以naive，因为没有考虑到数据的分布，从上图的两个populations来看，它们的均值都是0，从绿色的分布中抽到一个均值为3的样本，概率并不小，但是从红色的分布中得到这样一个样本，那就是小概率事件。所以不能单纯比较均值，而是要看均值的分布，从上面的populations上看，和数据的离散程度有关。
 我们随机抽取100个sample，得到以下的均值分布：</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/meandist2.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/meandist2.png" alt=""></p>
 <p>我们需要对均值的离散程度做penalty，那么就可以考虑这样一个统计量mean(x)/SEM, SEM代表standard error of the mean，那么这个统计量比单纯的均值要科学得多。这个统计量，就是学生氏所定义的t。</p>
-
 <p>如果没有大量的样本，是没办法估计SEM的，但是从上面两个图上看，样本间均值的标准误SEM，和总体数据的标准误是正相关的。而总体的标准误可以用样本的标准误,sd(x),来估计。如果我们考虑最简单的形式呢？定义统计量mean(x)/sd(x)。</p>
-
 <p>那么，请等一下，我们还需要考虑到样本量的影响，如果sample
 size没有影响，那么我们就不需要采集大样本了。从我们的直觉上看，肯定是样本量越大，对总体参数的估计越准确了。</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/meandist.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/meandist.png" alt=""></p>
 <p>从图上看，还是和直觉很一致。sample size越大，分布越compact，对总体均值的估计也就越准确。那么就需要使用sample size进行加权，把统计量修改为mean(x)/sd(x) * f(n)，其中n为sample size。</p>
-
 <p>我们可以想像，学生氏当年try了几种形式的f(n)，发现sqrt(n)效果最好。于是他就定义了统计量:
 t = mean(x)/(sd(x)/sqrt(n))。
 sqrt(n)效果好，因为sd(x)/sqrt(n)正好是对样本间均值标准误SEM的估计。</p>
-
 <p>我们又可以想像，学生氏当年收集了很多个样本，计算了多个t值，发现这些t值的分布是有规律的，有点像正态分布，学生氏把它定义为t分布，利用t分布的probability density function，就可以计算p-value啦。</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/t.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2012/05/t.png" alt=""></p>
 <p>上图就是从标准正态分布里抽取100个样本，所计算的t值分布。</p>
-
 <p>很多人上课学不懂，我觉得是因为一上来告诉你t怎么算，但是没让你理解SEM，SEM是理解t值计算的关键。</p>
-
 <p>算完t之后，一句话，符合t分布，然后就是查表看p值,或者让计算机算，太抽象，这世界本来没有t分布，是学生氏定义了t统计量，并发现符合某分布，把它定义为t分布，有计算机做simulation，重现这个过程，就不抽象了，也就好理解了。</p>
-
 <p>至于两样本，如果是paired的话，那就是paired之间相减，用差值做单样本t检验。如果不是成对，那就是t=(mean(x1)-mean(x2))/SEDM.</p>
-
 <p>其中SEDM代表standard error of difference of means，这里有一个pool与否的问题，SEDM看上去稍微复杂了一点点，但是basic idea是一样的，非常好理解。</p>
 
               

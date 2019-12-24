@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
-<meta name="description" content="Usually Roche&rsquo;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
+<meta name="description" content="Usually Roche&#39;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
 I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian derived distribution, lspci command is located in /bin folder. This issue is easy to solve by adding a soft link to /sbin/lspci.">
 
 
-<meta property="og:description" content="Usually Roche&rsquo;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
+<meta property="og:description" content="Usually Roche&#39;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
 I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian derived distribution, lspci command is located in /bin folder. This issue is easy to solve by adding a soft link to /sbin/lspci.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="install 454 GS Data Analysis Software on ubuntu">
@@ -20,9 +20,9 @@ I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian der
 <meta property="og:url" content="https://guangchuangyu.github.io/2014/09/install-454-gs-data-analysis-software-on-ubuntu/">
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2014/09/install-454-gs-data-analysis-software-on-ubuntu/">
 <meta property="og:site_name" content="Guangchuang Yu">
-<meta property="og:description" content="Usually Roche&rsquo;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
+<meta property="og:description" content="Usually Roche&#39;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
 I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian derived distribution, lspci command is located in /bin folder. This issue is easy to solve by adding a soft link to /sbin/lspci.">
-<meta name="twitter:description" content="Usually Roche&rsquo;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
+<meta name="twitter:description" content="Usually Roche&#39;s installer is a catastrophe, they only provides rpm packages of the software for 454 GS FLX (version 2.9). Although the package contains setup.sh, the script is useless since it is actually a binary payload.
 I run the setup.sh, and it throw error of not finding /sbin/lspci. In debian derived distribution, lspci command is located in /bin folder. This issue is easy to solve by adding a soft link to /sbin/lspci.">
 <meta property="og:locale" content="en-us">
 
@@ -290,66 +290,47 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              
-
-<p>Usually Roche&rsquo;s installer is a catastrophe, they only provides <code>rpm</code>
+              <p>Usually Roche's installer is a catastrophe, they only provides <code>rpm</code>
 packages of the <a href="http://454.com/products/analysis-software/index.asp">software for 454 GS FLX</a> (version 2.9).
 Although the package contains setup.sh, the script is useless since it
 is actually a binary payload.</p>
-
 <p>I run the setup.sh, and it throw error of not finding <code>/sbin/lspci</code>. In
 debian derived distribution, lspci command is located in /bin folder.
 This issue is easy to solve by adding a soft link to <code>/sbin/lspci</code>.</p>
-
-<p>The second error message popping up says: <code>&quot;Error: Could not execute
-command: type rocks 2&gt;&amp;1&quot;</code>, and I used the command, sudo ln -s
+<p>The second error message popping up says: <code>&quot;Error: Could not execute command: type rocks 2&gt;&amp;1&quot;</code>, and I used the command, sudo ln -s
 /bin/true /bin/rocks, to solve it.</p>
-
 <p>The third error is lack of libraries <code>zlib.i386</code>, <code>libXi.i386</code>,
 <code>libXtst.i386</code>, and <code>libXaw.i386</code>. Since my OS is 64bit ubuntu 14.04 LTS, I
 used, <code>sudo apt-get install ia32-libs</code>, to install all the 32bit
 compatible libraries.</p>
-
-<p>The fourth error is weird for it can&rsquo;t found <code>/bin/sh</code> which is available
+<p>The fourth error is weird for it can't found <code>/bin/sh</code> which is available
 for all unix-like systems. Since debian links sh to dash, while most of
 the Linux distributions links to bash, I changed the link to bash but
 the error still exists.</p>
-
-<p>I can&rsquo;t figure out how to solve the fourth error and tried to install
-the rpm packages by using <code>rpm -ivh</code> command but the error doesn&rsquo;t change.</p>
-
-<p>Although I can&rsquo;t install the software using setup.sh, it install java6
+<p>I can't figure out how to solve the fourth error and tried to install
+the rpm packages by using <code>rpm -ivh</code> command but the error doesn't change.</p>
+<p>Although I can't install the software using setup.sh, it install java6
 successfully. I do believe I can install the software since it is java
 program. I start to extract the contents of these rpm packages and then
 it is very clear. Some programs, mostly tools of <code>gsSeqTools</code>, are binary
 files that needs shared libs and it is the reason why it throw error of
 lacking libraries. This issue had been solved.</p>
-
 <p>Most of the programs are jar files, and shell scripts that wrap the
 calling of these jar files. All these jar and shell script files can run
 properly by copying them to the right place.</p>
-
 <p>The contents of rpm file can be extracted using the command like:</p>
-
 <pre><code>rpm2cpio gsAmplicons-2.9-1.noarch.rpm| cpio -idmv
 </code></pre>
-
 <p>This is the key point of successfully installing 454 GS Data Analysis
 Software. I believe it can be installed on most of the Unix-like system.</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2014/08/screenshot-2014-08-29-165830.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2014/08/screenshot-2014-08-29-165830.png" alt=""></p>
 <h2 id="update">update</h2>
-
 <p>When I upgrade Ubuntu to 16.04, I found that ia-32 is no more exist in package repo.</p>
-
 <p>So, we need to download corresponding old packages:</p>
-
 <ul>
 <li><a href="http://launchpadlibrarian.net/105344356/ia32-libs-multiarch_20090808ubuntu36_i386.deb">http://launchpadlibrarian.net/105344356/ia32-libs-multiarch_20090808ubuntu36_i386.deb</a></li>
 <li><a href="http://mirrors.kernel.org/ubuntu/pool/universe/i/ia32-libs/ia32-libs_20090808ubuntu36_amd64.deb">http://mirrors.kernel.org/ubuntu/pool/universe/i/ia32-libs/ia32-libs_20090808ubuntu36_amd64.deb</a></li>
 </ul>
-
 <p>Then, use <code>sudo dpkg --force-all -i</code> to install them and <code>sudo apt-get install -f --fix-missing</code> to install corresponding <code>i386</code> packages.</p>
 
               

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -279,21 +279,15 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/doseplot/p1.jpg" alt="" /></p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/doseplot/p2.jpg" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.gitee.io/blog_images/doseplot/p1.jpg" alt=""></p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/doseplot/p2.jpg" alt=""></p>
 <blockquote>
 <p>I have been using clusterProfiler, which is a very useful package for gene set analysis and visualisation. I would like to use the &lsquo;cnetplot&rsquo; function to plot a network of GO terms and the related genes. However for larger networks, the automatic display can be confusing and it would be helpful to be able to move nodes around. In the past I could do this with with cnetplot(fixed=FALSE) option, but after updating R and re-installing clusterProfiler, the output remains static.</p>
-
 <p>I am using R 3.5.3 with clusterProfiler v3.10.1 which I installed using Bioconductor 3.8. I have installed and loaded the &lsquo;igraph&rsquo; package, and the following test code produces output in an interactive window, as desired:</p>
-
 <p>library(igraph)
-   g &lt;- make_ring(10)
-   tkplot(g)</p>
-
+g &lt;- make_ring(10)
+tkplot(g)</p>
 <p>Is there any way to make cnetplot output interactive, or is that functionality simply not available in the latest release?</p>
-
 <p>Any help would be greatly appreciated!</p>
 </blockquote>
       
@@ -351,8 +345,7 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-1.png" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-1.png" alt=""></p>
 <p>在《<a href="http://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247487870&amp;idx=1&amp;sn=836f75a9e6bd17a77a0b886056e51e29&amp;chksm=ec43a039db34292fcd3a618ce4b5f9bebe5bc8414a6d7de196e51bd77177886f9cd81a2472b9&amp;scene=21#wechat_redirect">ggplotify - version 0.0.4</a>》一文中，有粉丝说想要支持Gviz包，画图包如果输出的是对象，那么我们可以写方法针对这个对象，然而Gviz的输出，却是list，显然这个方法走不通。</p>
       
       <p>
@@ -410,19 +403,18 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>上次推送的《geom_bgimage》，竟然有人问说用ggplot2怎么搞。明明我的例子就是了，虽然用的是ggtree的例子，但与ggplot2何异？</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<span style="color:#a6e22e">require</span>(ggimage)
 
-<pre><code class="language-r">require(ggplot2)
-require(ggimage)
+d <span style="color:#f92672">=</span> <span style="color:#a6e22e">data.frame</span>(x<span style="color:#f92672">=</span><span style="color:#66d9ef">LETTERS</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>], y <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>)
+d<span style="color:#f92672">$</span>y2 <span style="color:#f92672">=</span> <span style="color:#a6e22e">rev</span>(<span style="color:#a6e22e">cumsum</span>(<span style="color:#a6e22e">rev</span>(d<span style="color:#f92672">$</span>y)))
 
-d = data.frame(x=LETTERS[1:3], y = 1:3)
-d$y2 = rev(cumsum(rev(d$y)))
-
-p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +  
- geom_bgimage(&quot;img/blackboard.jpg&quot;) + theme_void() +
- coord_polar(&quot;y&quot;) + theme(legend.position='none') + 
- geom_text(aes(y = y2 - y/2, label=x),family='xkcd', size=8) + 
- xlim(-1, NA) + scale_fill_viridis_d()
-</code></pre>
+p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, y, fill<span style="color:#f92672">=</span>x)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_col</span>(color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">white&#39;</span>) <span style="color:#f92672">+</span>  
+ <span style="color:#a6e22e">geom_bgimage</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">img/blackboard.jpg&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span>
+ <span style="color:#a6e22e">coord_polar</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">y&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>) <span style="color:#f92672">+</span> 
+ <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(y <span style="color:#f92672">=</span> y2 <span style="color:#f92672">-</span> y<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>, label<span style="color:#f92672">=</span>x),family<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">xkcd&#39;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> 
+ <span style="color:#a6e22e">xlim</span>(<span style="color:#ae81ff">-1</span>, <span style="color:#66d9ef">NA</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_fill_viridis_d</span>()
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/08/geom-bgimage/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -479,8 +471,7 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>刚到南医大的时候，装R包感觉速度挺慢，虽然说教育网嘛，反正用教育网的镜像就对了，但我还是产生了要给镜像测测速的想法。于是着手写了mirrorselect这个包。</p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/mirrorselect-1.jpg" alt="" /></p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/mirrorselect-1.jpg" alt=""></p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/06/mirrorselect/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -536,8 +527,7 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/position-jitter-email.jpg" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/position-jitter-email.jpg" alt=""></p>
 <p>《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247485644&amp;idx=1&amp;sn=a273d17668d4847b1df8c12546f78351&amp;scene=21#wechat_redirect">画图给点分组?</a>》这一篇文章中给出了方法，画出两层分组的点图，一层分组是按照离散型变量在x轴上分组，第二层是每一个分组里，再来一个离散型变量再分一次。非常感谢读者们的反馈，原来这第二层分组在ggplot2中是有内置的实现方式的，那就是<code>position_jitterdodge</code>。</p>
       
       <p>
@@ -594,10 +584,8 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-1.jpg" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-1.jpg" alt=""></p>
 <p>有一个叫CellMarker的数据库，专门收录组织和细胞的基因标记物，收录还比较全，而且是手工校对的（可怜一下干这种脏活的研究生三秒钟）。</p>
-
 <blockquote>
 <p>By manually curating over 100 000 published papers, 4124 entries including the cell marker information, tissue type, cell type, cancer information and source, were recorded. At last, 13 605 cell markers of 467 cell types in 158 human tissues/sub-tissues and 9148 cell makers of 389 cell types in 81 mouse tissues/sub-tissues were collected and deposited in CellMarker.</p>
 </blockquote>
@@ -656,12 +644,9 @@ p = ggplot(d, aes(x=1, y, fill=x)) + geom_col(color='white') +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/apply.jpg" alt="" /></p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-apply.jpg" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/apply.jpg" alt=""></p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-apply.jpg" alt=""></p>
 <p>群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。</p>
-
 <p>套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？</p>
       
       <p>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -349,7 +349,6 @@ if (!doNotTrack) {
         <blockquote>
 <p>I am trying to add a scale to an unrooted tree with <code>geom_treescale</code>, but when I use it, the tree completely collapses and I am not able to set anything that fix it. Anybody has any idea on how to do it ?</p>
 </blockquote>
-
 <p><a href="https://groups.google.com/d/msgid/bioc-ggtree/9d69f444-94cf-42df-8382-bca2962b08c9%40googlegroups.com">google group</a>里的问题，说他加<code>geom_treescale</code>之后，树被压缩了，由于他没有给出可重复性的例子，所以我们并不知道情况到底有多么糟糕，但这种情况是可能发生的，因为加<strong>treescale</strong>这种东西，默认情况下<code>geom_treescale</code>会自己去计算该加多大的scale bar，该放在什么位置上，而这种默认情况是基于rectangular布局来的，在假设的情况下，都不可能尽善尽美，假设不成立的情况下当然有可能搞得很差。</p>
       
       <p>
@@ -411,7 +410,6 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>据说1024是程序员的节日，就在这一天，Y叔开始了第一次的网络讲座，首次在网络上露面。内容就是上一周预告的《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484958&amp;idx=1&amp;sn=d58e3bb5b43899849101c60efd29df53&amp;chksm=ec43b759db343e4fefd48ec618a5a2d42f46256e7f455bf9373d90157be0b47df9bd7fd069a9#rd">线上沙龙</a>》。</p>
-
 <p>很多人想要学ggplot2 + ggtree，但我的定位不是技术性的培训，而是学术讲座，所以一开始把问题摆出来，是有一些问题存在，有knowledge gap，然后我要去解决它。当然考虑到听众的knowledge gap也很大，我在介绍ggtree的之前，也帮大众撸了一篇R的画图，在这简短的时间里，你应该了解了R几个画图系统的关系，base和grid我在slides里写graphic system，但lattice和ggplot2我写的是data visualization system，我对它们是有区别对待的，像lattice和ggplot2自己是不成一体的，但提供了高阶的数据可视化方法/语法。听完讲座你也应该了解ggplot2，知道要怎样去入门，知道重点该学什么。</p>
       
       <p>
@@ -473,13 +471,12 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>This is a question from <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/uPgksYWkwCA/oMtHKW7KEgAJ">ggtree google group</a>:</p>
-
 <blockquote>
 <p>Dear ggtree team,</p>
-
+</blockquote>
+<blockquote>
 <p>how can I apply a geom_xxx to only one facet panel? For example if i want to get <code>geom_hline(yintersect=1:30)</code> or a <code>geom_text()</code> in the dot panel?
-I cant see the <code>facet_grid(. ~ var)</code> function call, so I don&rsquo;t know which subsetting to use. I have already read <a href="http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working">http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working</a></p>
-
+I cant see the <code>facet_grid(. ~ var)</code> function call, so I don't know which subsetting to use. I have already read <a href="http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working">http://stackoverflow.com/questions/29873155/geom-text-and-facets-not-working</a></p>
 <pre><code>  tr &lt;- rtree(30)
   
   d1 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
@@ -489,12 +486,9 @@ I cant see the <code>facet_grid(. ~ var)</code> function call, so I don&rsquo;t 
   d2 &lt;- data.frame(id=tr$tip.label, value = abs(rnorm(30, mean=100, sd=50)))
   
   p3 &lt;- facet_plot(p2, panel='bar', data=d2, geom=geom_segment, aes(x=0, xend=value, y=y, yend=y), size=3, color='steelblue') + theme_tree2()
-</code></pre>
-
-<p>Thanks!
+</code></pre><p>Thanks!
 Andreas</p>
 </blockquote>
-
 <p>If this can be done, we can create even more <a href="https://guangchuangyu.github.io/2016/12/ggtree-version-of-plottree/">comprehensive tree plots</a>.</p>
       
       <p>
@@ -556,14 +550,13 @@ Andreas</p>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>A <a href="https://guangchuangyu.github.io/ggtree">ggtree</a> user recently asked me the following question in <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ">google group</a>:</p>
-
 <blockquote>
 <p>I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.</p>
-
-<p>Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?</p>
 </blockquote>
-
-<p>This is indeed a desire feature, as <code>ggplot2</code> can&rsquo;t automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
+<blockquote>
+<p>Is it possible to work around this and only affect the tree and it's tip labels leaving the other plots in facet_plot unaffected?</p>
+</blockquote>
+<p>This is indeed a desire feature, as <code>ggplot2</code> can't automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2016/10/xlim_tree-set-x-axis-limits-for-only-tree-panel/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -624,12 +617,9 @@ Andreas</p>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p><a href="https://guangchuangyu.github.io/ggtree">ggtree</a> provides <code>gheatmap</code> for visualizing heatmap and <code>msaplot</code> for visualizing multiple sequence alignment with phylogenetic tree.</p>
-
 <p>We may have different data types and want to visualize and align them with the tree. For example, <code>dotplot</code> of SNP site (e.g. using <code>geom_point(shape='|')</code>), <code>barplot</code> of trait values (e.g. using <code>geom_barh(stat='identity')</code>) <em>et al</em>.</p>
-
 <p>To make it easy to associate different types of data with phylogenetic tree, I implemented the <code>facet_plot</code> function which accepts a <code>geom</code> function to draw the input <code>data.frame</code> and display it in an additional <code>panel</code>.</p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/2019-11-20_23-16.png" alt="" /></p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/2019-11-20_23-16.png" alt=""></p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2016/10/facet_plot-a-general-solution-to-associate-data-with-phylogenetic-tree/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -690,11 +680,8 @@ Andreas</p>
         <blockquote>
 <p>本文受魏太云（<a href="http://www.weibo.com/taiyun">@cloud_wei</a>)的邀请，最初在2015年发表于<a href="http://cos.name/2015/11/to-achieve-the-visualization-and-annotation-of-evolutionary-tree-using-ggtree/">统计之都</a>。</p>
 </blockquote>
-
 <p>进化树看起来和层次聚类很像。有必要解释一下两者的一些区别。</p>
-
 <p>层次聚类的侧重点在于分类，把距离近的聚在一起。而进化树的构建可以说也是一个聚类过程，但侧重点在于推测进化关系和进化距离(evolutionary distance)。</p>
-
 <p>层次聚类的输入是距离，比如euclidean或manhattan距离。把距离近的聚在一起。而进化树推断是从生物序列（DNA或氨基酸）的比对开始。最简单的方法是计算一下序列中不匹配的数目，称之为hamming distance（通常用序列长度做归一化），使用距离当然也可以应用层次聚类的方法。进化树的构建最简单的方法是非加权配对平均法（Unweighted Pair Group Method with Arithmetic Mean, UPGMA），这其实是使用average linkage的层次聚类。这种方法在进化树推断上现在基本没人用。更为常用的是邻接法（neighbor joining），两个节点距离其它节点都比较远，而这两个节点又比较近，它们就是neighbor，可以看出neighbor不一定是距离最近的两个节点。真正做进化的人，这个方法也基本不用。现在主流的方法是最大似然法(Maximum likelihood, ML)，通过进化模型（evolutionary model)估计拓朴结构和分支长度，估计的结果具有最高的概率能够产生观测数据（多序列比对）。另外还有最大简约法和贝叶斯推断等方法用于构建进化树。</p>
       
       <p>

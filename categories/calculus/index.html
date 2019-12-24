@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,7 +282,6 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>刚看完《<a href="http://book.douban.com/subject/4324593/">Introduction to Scientific Programming and Simulation Using R</a>》这本书，</p>
-
 <p>第一部分是R编程入门； 第二部分是数值计算，主要是解方程，求积分和优化；第三部分是概率和统计，主要讲概率、随机变量等概念和参数估计；
 第四部分是simulation，主要讲Monte Carlo积分和方差降低。</p>
       
@@ -344,10 +343,8 @@ if (!doNotTrack) {
       
         <p>Monte Carlo方法由冯·诺伊曼于二战时提出，1777年法国人布丰用此思路<a href="http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/">估计pi值</a>被认为是Monte
 Carlo的起源，这个方法简单又快速，通过产生随机数，将数值计算问题变成随机变量的某些特征值（比如期望值）。</p>
-
 <p>积分运算，和<a href="http://guangchuangyu.github.io/cn/2011/09/monte-carlo-estimate-pi/">估计pi值</a>一样，用hit
 and miss法估计。</p>
-
 <pre><code>hit_miss &lt;- function(fun, lower, upper, n=500) {
     # Monte Carlo integration using the hit and miss method
     x &lt;- runif(n, lower, upper)
@@ -360,7 +357,6 @@ and miss法估计。</p>
     return(area)
 }
 </code></pre>
-
 <p>hit and miss方法收敛太慢，效率并不高，通常所说的MC积分是指下面这个方法。</p>
       
       <p>
@@ -418,7 +414,6 @@ and miss法估计。</p>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>Optimization means to seek minima or maxima of a funtion within a given defined domain.</p>
-
 <p>If a function reach its maxima or minima, the derivative at that point is approaching to 0. If we apply <a href="https://mp.weixin.qq.com/s/qhT_sooSINjjvWpwq2d1VA">Newton-Raphson method</a> for root finding to <code>f'</code>, we can get the optimized <code>f</code>.</p>
       
       <p>
@@ -478,7 +473,7 @@ and miss法估计。</p>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         The foundamental idea of numerical integration is to estimate the area of the region in the xy-plane bounded by the graph of function f(x). The integral was esimated by dividing x into small intervals, then adds all the small approximations to give a total approximation.
-Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&rsquo;s rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.
+Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson's rule and quadrature rules. R has a built-in function, integrate, which performs adaptive quadrature.
       
       <p>
         <a href="https://guangchuangyu.github.io/2010/12/one-dimensional-integrals/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -537,9 +532,7 @@ Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>Numerical root finding methods use iteration, producing a sequence of numbers that hopefully converge towards a limits which is a root. This post only focuses four basic algorithms on root finding, and covers bisection method, fixed point method, Newton-Raphson method, and secant method.</p>
-
 <p>The simplest root finding algorithms is the <a href="https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/">bisection method</a>. It works when <code>f</code> is a continuous function and it requires previous knowledge of two initial gueeses, <code>u</code> and <code>v</code>, such that <code>f(u)</code> and <code>f(v)</code> have opposite signs. This method is reliable, but converges slowly. For detail, see <a href="https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/">https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/</a> .</p>
-
 <p>Root finding can be reduced to the problem of finding fixed points of the function <code>g(x) = c*f(x) +x</code>, where <code>c</code> is a non-zero constant. It is clearly that <code>f(a) = 0</code> if and only if <code>g(a) = a</code>. This is the so called fixed point algorithm.</p>
       
       <p>
@@ -598,10 +591,8 @@ Trapezoidal rule Numerical integration can be done by trapezoidal rule, simpson&
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>泰勒公式学过微积分都应该知道，可以翻wiki复习一下，<a href="https://zh.wikipedia.org/wiki/泰勒公式">https://zh.wikipedia.org/wiki/泰勒公式</a>.</p>
-
+        <p>泰勒公式学过微积分都应该知道，可以翻wiki复习一下，<a href="https://zh.wikipedia.org/wiki/%E6%B3%B0%E5%8B%92%E5%85%AC%E5%BC%8F">https://zh.wikipedia.org/wiki/泰勒公式</a>.</p>
 <p>用R简单实现一下：</p>
-
 <pre><code> efv &lt;- function(f, value, variable=&quot;x&quot;, a=0, eps=0.001) {
      #estimate function value using Taylor theorem
      assign(eval(variable), a)

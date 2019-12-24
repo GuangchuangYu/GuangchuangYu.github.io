@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,20 +282,14 @@ if (!doNotTrack) {
         <blockquote>
 <p>之前公众号上有人说，我回大陆了会有一波科学上网的教程，今天的推文算一个吧。真的是被你们言中了！</p>
 </blockquote>
-
 <p>做为Bioconductor包作者，而<code>git push</code>传代码到Bioconductor上是被封的。这很是恼火，随着10月份将迎来新一版本的Bioconductor发布，不能够push代码是多么惨的一件事。</p>
-
 <p>代理其实也挺恼火的，因为各种协议啊，你要各种设置啊，<code>http/https/ssh/git</code>都是各种配置，其实我只要有一个<code>socks5</code>的代理，然后你们所有需要走代理的程序都通过它就好了。</p>
-
 <p>谁特么有空天天在琢磨怎么配置各种不同协议的代理！只要我们想得到的，一般都有人做了。</p>
-
 <p>于是万能的github上找到了<a href="https://github.com/haad/proxychains">proxychains</a>。</p>
-
 <pre><code>A hook preloader that allows to redirect TCP traffic of existing
 dynamically linked programs through one or more SOCKS or HTTP
 proxies
 </code></pre>
-
 <p>它强制给定程序发起的TCP连接通过事先配置的代理。可以涵盖所有需要代理的情景。就以git为例，没有proxychains的话，就必须为每个协议（<code>https</code>, <code>git</code>, <code>ssh</code>）按照git文档的要求分别设置代理，过程复杂且不稳定。有了<code>proxychains</code>，这些完全可以不用管，当然应用场景不限于<code>git</code>，任何一个需要代理的命令行程序都是一样在运行的指令前面加<code>proxychains</code>完事。</p>
       
       <p>

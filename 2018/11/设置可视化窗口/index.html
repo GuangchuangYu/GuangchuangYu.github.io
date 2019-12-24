@@ -5,52 +5,66 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 小伙伴发来这个图，问我是不是bug，这真是犯了程序员的社交礼仪。
-
 
 你如果对一个程序员说，“你的代码有bug。”
 他的第一反应是：
 
 
-1. 你的环境有问题吧
-2. 傻逼你会用吗。
+
+
+
+你的环境有问题吧
+
+
+
+
+傻逼你会用吗。
+
+
+
 
 
 如果你委婉地说：“你这个程序和预期的有点不一致，你看看是不是我的使用方法有问题。”
 
+
 他本能地会想：“操，是不是出bug了！”
 
-
 这显然不是bug，这是绝大多数人对ggplot2的误解，他们认为用xlim和ylim是放置一个窗口去看你的图，然而在ggplot2是限定一个窗口去过滤你的数据，并重新画图！你的数据被过滤了！如果是放置窗口在图上，一条线从A到B，如果B在窗口之外，那么线被截断了，你看到半条线，但如果是过滤数据呢？B不复存在，那么线条A到B也不复存在，没有B，A到B的线画不出来。就是这样，所以这绝逼不是bug，而是程序员本能反应的第二种情况，你用错了。
-
 那么怎么样不过滤数据，而只是设置可视化窗口呢？你基本上很少看到有人这么用，因为几乎99%的人都只知道xlim和ylim，一般人我也不告诉他，快点拿去小抄把下面的代码记录一下。">
 
 
 <meta property="og:description" content="
-
 小伙伴发来这个图，问我是不是bug，这真是犯了程序员的社交礼仪。
-
 
 你如果对一个程序员说，“你的代码有bug。”
 他的第一反应是：
 
 
-1. 你的环境有问题吧
-2. 傻逼你会用吗。
+
+
+
+你的环境有问题吧
+
+
+
+
+傻逼你会用吗。
+
+
+
 
 
 如果你委婉地说：“你这个程序和预期的有点不一致，你看看是不是我的使用方法有问题。”
 
+
 他本能地会想：“操，是不是出bug了！”
 
-
 这显然不是bug，这是绝大多数人对ggplot2的误解，他们认为用xlim和ylim是放置一个窗口去看你的图，然而在ggplot2是限定一个窗口去过滤你的数据，并重新画图！你的数据被过滤了！如果是放置窗口在图上，一条线从A到B，如果B在窗口之外，那么线被截断了，你看到半条线，但如果是过滤数据呢？B不复存在，那么线条A到B也不复存在，没有B，A到B的线画不出来。就是这样，所以这绝逼不是bug，而是程序员本能反应的第二种情况，你用错了。
-
 那么怎么样不过滤数据，而只是设置可视化窗口呢？你基本上很少看到有人这么用，因为几乎99%的人都只知道xlim和ylim，一般人我也不告诉他，快点拿去小抄把下面的代码记录一下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设置可视化窗口">
@@ -59,46 +73,60 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/11/%E8%AE%BE%E7%BD%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AA%97%E5%8F%A3/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 小伙伴发来这个图，问我是不是bug，这真是犯了程序员的社交礼仪。
-
 
 你如果对一个程序员说，“你的代码有bug。”
 他的第一反应是：
 
 
-1. 你的环境有问题吧
-2. 傻逼你会用吗。
+
+
+
+你的环境有问题吧
+
+
+
+
+傻逼你会用吗。
+
+
+
 
 
 如果你委婉地说：“你这个程序和预期的有点不一致，你看看是不是我的使用方法有问题。”
 
+
 他本能地会想：“操，是不是出bug了！”
 
-
 这显然不是bug，这是绝大多数人对ggplot2的误解，他们认为用xlim和ylim是放置一个窗口去看你的图，然而在ggplot2是限定一个窗口去过滤你的数据，并重新画图！你的数据被过滤了！如果是放置窗口在图上，一条线从A到B，如果B在窗口之外，那么线被截断了，你看到半条线，但如果是过滤数据呢？B不复存在，那么线条A到B也不复存在，没有B，A到B的线画不出来。就是这样，所以这绝逼不是bug，而是程序员本能反应的第二种情况，你用错了。
-
 那么怎么样不过滤数据，而只是设置可视化窗口呢？你基本上很少看到有人这么用，因为几乎99%的人都只知道xlim和ylim，一般人我也不告诉他，快点拿去小抄把下面的代码记录一下。">
 <meta name="twitter:description" content="
-
 小伙伴发来这个图，问我是不是bug，这真是犯了程序员的社交礼仪。
-
 
 你如果对一个程序员说，“你的代码有bug。”
 他的第一反应是：
 
 
-1. 你的环境有问题吧
-2. 傻逼你会用吗。
+
+
+
+你的环境有问题吧
+
+
+
+
+傻逼你会用吗。
+
+
+
 
 
 如果你委婉地说：“你这个程序和预期的有点不一致，你看看是不是我的使用方法有问题。”
 
+
 他本能地会想：“操，是不是出bug了！”
 
-
 这显然不是bug，这是绝大多数人对ggplot2的误解，他们认为用xlim和ylim是放置一个窗口去看你的图，然而在ggplot2是限定一个窗口去过滤你的数据，并重新画图！你的数据被过滤了！如果是放置窗口在图上，一条线从A到B，如果B在窗口之外，那么线被截断了，你看到半条线，但如果是过滤数据呢？B不复存在，那么线条A到B也不复存在，没有B，A到B的线画不出来。就是这样，所以这绝逼不是bug，而是程序员本能反应的第二种情况，你用错了。
-
 那么怎么样不过滤数据，而只是设置可视化窗口呢？你基本上很少看到有人这么用，因为几乎99%的人都只知道xlim和ylim，一般人我也不告诉他，快点拿去小抄把下面的代码记录一下。">
 <meta property="og:locale" content="en-us">
 
@@ -364,28 +392,34 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/cartesian/1148940491.jpg" alt="" /></p>
-
+              <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/cartesian/1148940491.jpg" alt=""></p>
 <p>小伙伴发来这个图，问我是不是<code>bug</code>，这真是犯了程序员的社交礼仪。</p>
-
 <blockquote>
 <p>你如果对一个程序员说，“你的代码有bug。”
 他的第一反应是：</p>
-
+</blockquote>
+<blockquote>
 <ul>
-<li>1. 你的环境有问题吧</li>
-<li>2. 傻逼你会用吗。</li>
+<li>
+<ol>
+<li>你的环境有问题吧</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>傻逼你会用吗。</li>
+</ol>
+</li>
 </ul>
-
+</blockquote>
+<blockquote>
 <p>如果你委婉地说：“你这个程序和预期的有点不一致，你看看是不是我的使用方法有问题。”</p>
-
+</blockquote>
+<blockquote>
 <p>他本能地会想：“操，是不是出bug了！”</p>
 </blockquote>
-
 <p>这显然不是<code>bug</code>，这是绝大多数人对<code>ggplot2</code>的误解，他们认为用<code>xlim</code>和<code>ylim</code>是放置一个窗口去看你的图，然而在<code>ggplot2</code>是限定一个窗口去过滤你的数据，并重新画图！你的数据被过滤了！如果是放置窗口在图上，一条线从A到B，如果B在窗口之外，那么线被截断了，你看到半条线，但如果是过滤数据呢？B不复存在，那么线条A到B也不复存在，没有B，A到B的线画不出来。就是这样，所以这绝逼不是<code>bug</code>，而是程序员本能反应的第二种情况，你用错了。</p>
-
 <p>那么怎么样不过滤数据，而只是设置可视化窗口呢？你基本上很少看到有人这么用，因为几乎99%的人都只知道<code>xlim</code>和<code>ylim</code>，一般人我也不告诉他，快点拿去小抄把下面的代码记录一下。</p>
-
 <pre><code>library(ggplot2)
 library(ggtree)
 
@@ -393,21 +427,19 @@ tr = rtree(30)
 p = ggtree(tr) + geom_tiplab()
 p + geom_point(color='red', size=5) + 
     coord_cartesian(xlim=c(-1,2))
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/cartesian/xx.png" alt="" /></p>
-
-<hr />
-
-<p><strong>往期精彩</strong>
-+ <a href="https://mp.weixin.qq.com/s/mlo9ZRl8ujHcagZZKd5Orw">百二秦关终属楚</a>
-+ <a href="https://mp.weixin.qq.com/s/JLon7oaddmTpsMzL03OJIA">dotplot for GSEA</a>
-+ <a href="http://mp.weixin.qq.com/s/oSZlH-HZQ3uPKSmNmD_5Yg">VSCode里愉快地使用R</a>
-+ <a href="https://mp.weixin.qq.com/s/U1yVeRJJVLfT0zLTS-SllA">用图片当ggplot2画布</a>
-+ <a href="http://mp.weixin.qq.com/s/X9K7fqRqlg6ty4wAE7NwQQ">s04 - Computing GC Content</a>
-+ <a href="https://mp.weixin.qq.com/s/HoiMrcE0fib_a9EaIGocGQ">飞天猫：长着蝙蝠翅膀的猫！</a>
-+ <a href="https://mp.weixin.qq.com/s/X7hbjzJUIbn9Pbcz9YIoQw">用R玩一个小游戏吧！拖延症的老毛病又犯了！</a>
-+ <a href="https://mp.weixin.qq.com/s/rn6HL8Yn89Ua1uM8SpwtZw">怎样用HOMER算出的P-value画出CNS级别的泡泡图？</a></p>
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/cartesian/xx.png" alt=""></p>
+<hr>
+<p><strong>往期精彩</strong></p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/mlo9ZRl8ujHcagZZKd5Orw">百二秦关终属楚</a></li>
+<li><a href="https://mp.weixin.qq.com/s/JLon7oaddmTpsMzL03OJIA">dotplot for GSEA</a></li>
+<li><a href="http://mp.weixin.qq.com/s/oSZlH-HZQ3uPKSmNmD_5Yg">VSCode里愉快地使用R</a></li>
+<li><a href="https://mp.weixin.qq.com/s/U1yVeRJJVLfT0zLTS-SllA">用图片当ggplot2画布</a></li>
+<li><a href="http://mp.weixin.qq.com/s/X9K7fqRqlg6ty4wAE7NwQQ">s04 - Computing GC Content</a></li>
+<li><a href="https://mp.weixin.qq.com/s/HoiMrcE0fib_a9EaIGocGQ">飞天猫：长着蝙蝠翅膀的猫！</a></li>
+<li><a href="https://mp.weixin.qq.com/s/X7hbjzJUIbn9Pbcz9YIoQw">用R玩一个小游戏吧！拖延症的老毛病又犯了！</a></li>
+<li><a href="https://mp.weixin.qq.com/s/rn6HL8Yn89Ua1uM8SpwtZw">怎样用HOMER算出的P-value画出CNS级别的泡泡图？</a></li>
+</ul>
               
             </div>
           </div>

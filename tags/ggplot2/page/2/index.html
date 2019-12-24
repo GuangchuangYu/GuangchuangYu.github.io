@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -280,15 +280,10 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>当年我准备考博的时候，健康院某PI（本来的意向导师）找我帮他在iMac上安装盗版的<code>Papers</code>（文献管理器）和<code>Illustrator</code>（PS的兄弟），安装后，跟我说：“我们做科研的，最重要的软件就是Papers和Illustrator。”，当然后来感觉挺坑我，就放弃了。</p>
-
 <p>这么多年过去了，至今这两个软件我都没用过！我画图，追求的是全部由代码产生，至今还没有修图的需求，也就没有试过<code>Illustrator</code>了。</p>
-
 <p><code>Illustrator</code>必须有些门槛，而且关键是<code>Adobe</code>绑死在PDF上，实际上如果80%的问题都可以用<code>PowerPoint</code>解决，剩下那20%，反正也不常用。而<code>PowerPoint</code>的优点是没有门槛，傻瓜式操作，像我这种怀疑自己智商的人，都会用啊！</p>
-
 <p>要是<code>R</code>画的图，能够在<code>PowerPoint</code>里面编辑就好了！</p>
-
 <p>要是<code>R</code>画的图，能够在<code>PowerPoint</code>里面编辑就好了！</p>
-
 <p>要是<code>R</code>画的图，能够在<code>PowerPoint</code>里面编辑就好了！</p>
       
       <p>
@@ -345,21 +340,18 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <pre><code class="language-r">library(ggplot2)
+        <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 
-pups &lt;- nlme::RatPupWeight %&gt;% 
-    janitor::clean_names() %&gt;%
-    dplyr::mutate(litter = as.integer(litter))
+pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::</span>RatPupWeight <span style="color:#f92672">%&gt;%</span> 
+    janitor<span style="color:#f92672">::</span><span style="color:#a6e22e">clean_names</span>() <span style="color:#f92672">%&gt;%</span>
+    dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">mutate</span>(litter <span style="color:#f92672">=</span> <span style="color:#a6e22e">as.integer</span>(litter))
 
-p &lt;- ggplot(pups, aes(x = litter, y = weight, color = treatment))
-</code></pre>
-
-<p>针对某一个x值，我们可以画出相应y的统计量，比如均值、方差等，这些都可以“手工”的方式通过图层叠加来实现。</p>
-
-<pre><code class="language-r">p + geom_jitter(shape=1) + 
-    stat_summary(fun.y = &quot;mean&quot;, size=2, geom=&quot;point&quot;, color = 'black') + 
-    stat_summary(fun.data = mean_cl_normal, geom=&quot;errorbar&quot;, width=.1, color='black')
-</code></pre>
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(pups, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> litter, y <span style="color:#f92672">=</span> weight, color <span style="color:#f92672">=</span> treatment))
+</code></pre></div><p>针对某一个x值，我们可以画出相应y的统计量，比如均值、方差等，这些都可以“手工”的方式通过图层叠加来实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">stat_summary</span>(fun.y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mean&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">point&#34;</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">black&#39;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">stat_summary</span>(fun.data <span style="color:#f92672">=</span> mean_cl_normal, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">errorbar&#34;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">.1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">black&#39;</span>)
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/02/layer-stats/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -418,18 +410,12 @@ p &lt;- ggplot(pups, aes(x = litter, y = weight, color = treatment))
         <blockquote>
 <p>有小伙伴问为什么R里循环出不来图？</p>
 </blockquote>
-
 <p>其实看我公众号的各位读者们，你们不应该有这个问题，如果有，那么证明我的文章没有好好看！有两篇很重要的文章《<a href="http://mp.weixin.qq.com/s/BPY4dPFrrNrDKccMvax07w">扪心自问，meme几何？</a>》和《<a href="http://mp.weixin.qq.com/s/Uhx3l3lKQS88OJ4SHntkNg">树变图，图变树？</a>
 ？》，特别是第二篇，和这个问题息息相关。</p>
-
 <p>首先假设我们有一个图：</p>
-
-<pre><code class="language-r">require(ggplot2)
-p = qplot(1:10)
-</code></pre>
-
-<h3 id="为什么在终端打p可以出图">为什么在终端打p可以出图？</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+p <span style="color:#f92672">=</span> <span style="color:#a6e22e">qplot</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>)
+</code></pre></div><h3 id="p">为什么在终端打p可以出图？</h3>
 <p>因为在R里，所有都是对象，而在终端里你输入一个对象回车，R会去找相应的方法去打印出来，如果是S3对象，会去寻找print方法，而如果是S4会去找show方法。</p>
       
       <p>
@@ -487,9 +473,7 @@ p = qplot(1:10)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>我在2018年4月份的一条推特文，<a href="https://twitter.com/guangchuangyu/status/988672880551518210">https://twitter.com/guangchuangyu/status/988672880551518210</a>，可以把<code>UpSetR</code>变成<code>ggplot</code>然后可以各种玩，比较我在推特文中所展示的，图上嵌入venn图、使用<code>cowplot</code>拼图等。然而过了大半年，我的<a href="https://github.com/hms-dbmi/UpSetR/pull/112">pull request</a>并没有被作者接收，也就是说这功能还不存在于官方的版本中。</p>
-
 <p>如果有兴趣的话，应该安装我fork的版本。</p>
-
 <pre><code>devtools::install_github(&quot;GuangchuangYu/UpSetR&quot;)
 </code></pre>
       
@@ -548,7 +532,6 @@ p = qplot(1:10)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用<a href="http://mp.weixin.qq.com/s/kk3M1eoVhCiYmyu92P0zwA">boxplot</a>，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。</p>
-
 <p>然而事情是不断在进化的，我们的手段是要跟上潮流的，现在的潮流就是除了要有统计量，还要有原始数据，甚至于有统计推断，全集中一图中，揭开数据的红盖头，给大家呈现全方位无死角的面貌。</p>
       
       <p>
@@ -607,26 +590,33 @@ p = qplot(1:10)
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/cartesian/1148940491.jpg" alt="" /></p>
-
+        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/cartesian/1148940491.jpg" alt=""></p>
 <p>小伙伴发来这个图，问我是不是<code>bug</code>，这真是犯了程序员的社交礼仪。</p>
-
 <blockquote>
 <p>你如果对一个程序员说，“你的代码有bug。”
 他的第一反应是：</p>
-
+</blockquote>
+<blockquote>
 <ul>
-<li>1. 你的环境有问题吧</li>
-<li>2. 傻逼你会用吗。</li>
+<li>
+<ol>
+<li>你的环境有问题吧</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>傻逼你会用吗。</li>
+</ol>
+</li>
 </ul>
-
+</blockquote>
+<blockquote>
 <p>如果你委婉地说：“你这个程序和预期的有点不一致，你看看是不是我的使用方法有问题。”</p>
-
+</blockquote>
+<blockquote>
 <p>他本能地会想：“操，是不是出bug了！”</p>
 </blockquote>
-
 <p>这显然不是<code>bug</code>，这是绝大多数人对<code>ggplot2</code>的误解，他们认为用<code>xlim</code>和<code>ylim</code>是放置一个窗口去看你的图，然而在<code>ggplot2</code>是限定一个窗口去过滤你的数据，并重新画图！你的数据被过滤了！如果是放置窗口在图上，一条线从A到B，如果B在窗口之外，那么线被截断了，你看到半条线，但如果是过滤数据呢？B不复存在，那么线条A到B也不复存在，没有B，A到B的线画不出来。就是这样，所以这绝逼不是<code>bug</code>，而是程序员本能反应的第二种情况，你用错了。</p>
-
 <p>那么怎么样不过滤数据，而只是设置可视化窗口呢？你基本上很少看到有人这么用，因为几乎99%的人都只知道<code>xlim</code>和<code>ylim</code>，一般人我也不告诉他，快点拿去小抄把下面的代码记录一下。</p>
       
       <p>
@@ -684,7 +674,6 @@ p = qplot(1:10)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>在《<a href="http://mp.weixin.qq.com/s/P7yUFLwW4OLGBrPw05iQ_A">漫画版的进化树你见过吗？</a>》一文中，我介绍过一个R包，可以把<code>ggplot2</code>转成漫画风格，今天介绍一个新的包，<code>ggrough</code>，它封装了一个叫<code>roughjs</code>的javascript库，可以把<code>ggplot2</code>转成手绘风格：</p>
-
 <pre><code>require(dplyr)
 library(ggplot2)
 count(mtcars, carb) %&gt;%

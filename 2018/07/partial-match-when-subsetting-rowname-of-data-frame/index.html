@@ -5,15 +5,16 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
 Hello!
 First of all, I would like to thank you for this wonderful and very powerful package!
 
+
 I have tried to plot a phylogenetic tree with heatmap of associated matrix (with gheatmap).
-I found that the row names of matrix doesn&rsquo;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
+I found that the row names of matrix doesn&#39;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
 In other words, if we have two species (e.g., Species198 and Species1981), but only one of them is represented in the associated matrix, we will have colored cells for both species in the heatmap.
 ">
 
@@ -22,8 +23,9 @@ In other words, if we have two species (e.g., Species198 and Species1981), but o
 Hello!
 First of all, I would like to thank you for this wonderful and very powerful package!
 
+
 I have tried to plot a phylogenetic tree with heatmap of associated matrix (with gheatmap).
-I found that the row names of matrix doesn&rsquo;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
+I found that the row names of matrix doesn&#39;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
 In other words, if we have two species (e.g., Species198 and Species1981), but only one of them is represented in the associated matrix, we will have colored cells for both species in the heatmap.
 ">
 <meta property="og:type" content="article">
@@ -36,16 +38,18 @@ In other words, if we have two species (e.g., Species198 and Species1981), but o
 Hello!
 First of all, I would like to thank you for this wonderful and very powerful package!
 
+
 I have tried to plot a phylogenetic tree with heatmap of associated matrix (with gheatmap).
-I found that the row names of matrix doesn&rsquo;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
+I found that the row names of matrix doesn&#39;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
 In other words, if we have two species (e.g., Species198 and Species1981), but only one of them is represented in the associated matrix, we will have colored cells for both species in the heatmap.
 ">
 <meta name="twitter:description" content="
 Hello!
 First of all, I would like to thank you for this wonderful and very powerful package!
 
+
 I have tried to plot a phylogenetic tree with heatmap of associated matrix (with gheatmap).
-I found that the row names of matrix doesn&rsquo;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
+I found that the row names of matrix doesn&#39;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
 In other words, if we have two species (e.g., Species198 and Species1981), but only one of them is represented in the associated matrix, we will have colored cells for both species in the heatmap.
 ">
 <meta property="og:locale" content="en-us">
@@ -311,15 +315,15 @@ if (!doNotTrack) {
               <blockquote>
 <p>Hello!
 First of all, I would like to thank you for this wonderful and very powerful package!</p>
-
+</blockquote>
+<blockquote>
 <p>I have tried to plot a phylogenetic tree with heatmap of associated matrix (with <code>gheatmap</code>).
-I found that the row names of matrix doesn&rsquo;t exactly match to the tip names of tree in case if there is missing data in associated matrix.
+I found that the row names of matrix doesn't exactly match to the tip names of tree in case if there is missing data in associated matrix.
 In other words, if we have two species (e.g., Species<strong>198</strong> and Species<strong>1981</strong>), but only one of them is represented in the associated matrix, we will have colored cells for both species in the heatmap.</p>
 </blockquote>
-
 <blockquote>
 <p>Here is a reproducible example:</p>
-
+</blockquote>
 <pre><code>library(ggtree)
 
 set.seed(111)
@@ -342,20 +346,19 @@ abunds &lt;- abunds[-which(rownames(abunds) == &quot;Cryptococcus&quot;), ]
 
 tt &lt;- ggtree(trr) + geom_tiplab()
 gheatmap(tt, abunds)
-</code></pre>
-
+</code></pre><blockquote>
 <p>Here is the resulting picture:
-<img src="https://user-images.githubusercontent.com/7162120/40344814-f8a03256-5daf-11e8-8762-6ecd4f5cad65.png" alt="example" /></p>
-
+<img src="https://user-images.githubusercontent.com/7162120/40344814-f8a03256-5daf-11e8-8762-6ecd4f5cad65.png" alt="example"></p>
+</blockquote>
+<blockquote>
 <p>You may see that heatmap cells are blank for Cryptococcus (as expected).
 However, cells corresponding to Species198 are colored with Species1981 data (marked with red arrow).</p>
-
+</blockquote>
+<blockquote>
 <p>With best regards,
 Vladimir</p>
 </blockquote>
-
 <p>有人在<a href="https://github.com/GuangchuangYu/ggtree/issues/182">GitHub上对我报了这个bug</a>，说我的<code>gheatmap</code>函数不是精确匹配，这不能够吧？！但可重复性的代码已经说明了一切，我翻一下代码，最终发现是R的问题，R再一次给了我们惊喜，比如下面演示的：</p>
-
 <pre><code>&gt; dd
                  Samp1 Samp2 Samp3 Samp4
 Fomes               47    58     3    13
@@ -369,60 +372,56 @@ Species1981         30    48    34    41
 &gt; dd['Species198',]
             Samp1 Samp2 Samp3 Samp4
 Species1981    30    48    34    41
-</code></pre>
-
-<p>这就是问题之所在，当然这个bug我已经修正了，现在再使用<code>gheatmap</code>将不会有这个问题，但我们在使用R的时候，还是要小心哦，以后按名字取子集的时候，还是不要用<code>[</code>的好，R总是能给人惊喜，比如《<a href="https://mp.weixin.qq.com/s/PF8r-VxZVsJdxrxgn1QqjQ">你的数据被化了妆？</a>》，以及集中吐槽的《<a href="https://mp.weixin.qq.com/s/nt3siXtdTGKQfTBt_vhf_g">R的诡异事件</a>》，都值得重新温习一遍.</p>
-
+</code></pre><p>这就是问题之所在，当然这个bug我已经修正了，现在再使用<code>gheatmap</code>将不会有这个问题，但我们在使用R的时候，还是要小心哦，以后按名字取子集的时候，还是不要用<code>[</code>的好，R总是能给人惊喜，比如《<a href="https://mp.weixin.qq.com/s/PF8r-VxZVsJdxrxgn1QqjQ">你的数据被化了妆？</a>》，以及集中吐槽的《<a href="https://mp.weixin.qq.com/s/nt3siXtdTGKQfTBt_vhf_g">R的诡异事件</a>》，都值得重新温习一遍.</p>
 <p>在《<a href="https://mp.weixin.qq.com/s/nt3siXtdTGKQfTBt_vhf_g">R的诡异事件</a>》中也讲到了部分匹配的问题，但讲的是<code>$</code>与<code>[[</code>的默认行为不一致，事实上<code>[</code>在matrix和data frame上的默认行为也不一致，在matrix上，<code>[</code>是精确匹配的，而data.frame则是部分匹配。</p>
-
 <p>如果我们通过?base::<code>[</code>看<code>[</code>的文档的话，可以发现文档里写的就是精确匹配：</p>
-
 <blockquote>
 <p>Character indices:</p>
-
+</blockquote>
+<blockquote>
 <pre><code>Character indices can in some circumstances be partially matched
- (see ‘pmatch’) to the names or dimnames of the object being
+</code></pre>
+</blockquote>
+<pre><code> (see ‘pmatch’) to the names or dimnames of the object being
  subsetted (but never for subassignment).  Unlike S (Becker _et al_
  p. 358), R never uses partial matching when extracting by ‘[’, and
  partial matching is not by default used by ‘[[’ (see argument
  ‘exact’).
-
-Thus the default behaviour is to use partial matching only when
- extracting from recursive objects (except environments) by ‘$’.
+</code></pre>
+<blockquote>
+<pre><code>Thus the default behaviour is to use partial matching only when
+</code></pre>
+</blockquote>
+<pre><code> extracting from recursive objects (except environments) by ‘$’.
  Even in that case, warnings can be switched on by
  ‘options(warnPartialMatchDollar = TRUE)’.
-
-Neither empty (‘&quot;&quot;’) nor ‘NA’ indices match any names, not even
- empty nor missing names.  If any object has no names or
+</code></pre>
+<blockquote>
+<pre><code>Neither empty (‘&quot;&quot;’) nor ‘NA’ indices match any names, not even
+</code></pre>
+</blockquote>
+<pre><code> empty nor missing names.  If any object has no names or
  appropriate dimnames, they are taken as all ‘&quot;&quot;’ and so match
  nothing.
 </code></pre>
-</blockquote>
-
 <p>这一句非常明确：</p>
-
 <blockquote>
 <p>R never uses partial matching when extracting by ‘[’, and partial matching is not by default used by ‘[[’ (see argument ‘exact’).</p>
 </blockquote>
-
 <p><code>[</code>和<code>[[</code>从来都是精确匹配的，而且只有<code>[[</code>可以通过参数使用部分匹配，<code>[</code>只有精确一种。</p>
-
 <p>而如果我们看?base::<code>[.data.frame</code>的文档，则会看到相反的文档：</p>
-
 <blockquote>
 <pre><code>Both ‘[’ and ‘[[’ extraction methods partially match row names.
- By default neither partially match column names, but ‘[[’ will if
+</code></pre>
+</blockquote>
+<pre><code> By default neither partially match column names, but ‘[[’ will if
  ‘exact = FALSE’ (and with a warning if ‘exact = NA’).  If you want
  to exact matching on row names use ‘match’, as in the examples.
 </code></pre>
-</blockquote>
-
 <p>文档中的例子是这样子的：</p>
-
 <pre><code> sw[&quot;C&quot;, ] # partially matches
  sw[match(&quot;C&quot;, row.names(sw)), ] # no exact match
 </code></pre>
-
 <p>所以以后用<code>[</code>要小心了，各种不一致，matrix全是精确，而data frame取column名的是精确，取rowname的是部分匹配，再者这会导致一些潜在的bug，很多对象会自定义<code>[</code>方法，使用它去取某个slot的子集，这个非常不一致，容易出现惊喜的行为，鬼知道哪些对象的<code>[</code>方法有这个bug，不知道什么时候就坑爹了！就像我的<code>gheatmap</code>函数一样，如果不是细心的用户发现，根本就不知道这个bug的存在。</p>
               
             </div>

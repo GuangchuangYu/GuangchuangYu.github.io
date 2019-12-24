@@ -5,21 +5,17 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="I just discovered an interesting ggplot2 extension, geofacet, that supports arranging facet panels that mimics geographic topoloty.
-
 After playing with it, I realized that it is not only for visualizing geo-related data, but also can be fun for presenting data to mimics pixel art.
-
-">
+![](https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png)">
 
 
 <meta property="og:description" content="I just discovered an interesting ggplot2 extension, geofacet, that supports arranging facet panels that mimics geographic topoloty.
-
 After playing with it, I realized that it is not only for visualizing geo-related data, but also can be fun for presenting data to mimics pixel art.
-
-">
+![](https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pixel art of ggplot2 faceting using geofacet">
 <meta name="twitter:title" content="pixel art of ggplot2 faceting using geofacet">
@@ -27,15 +23,11 @@ After playing with it, I realized that it is not only for visualizing geo-relate
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/06/pixel-art-geofacet/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="I just discovered an interesting ggplot2 extension, geofacet, that supports arranging facet panels that mimics geographic topoloty.
-
 After playing with it, I realized that it is not only for visualizing geo-related data, but also can be fun for presenting data to mimics pixel art.
-
-">
+![](https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png)">
 <meta name="twitter:description" content="I just discovered an interesting ggplot2 extension, geofacet, that supports arranging facet panels that mimics geographic topoloty.
-
 After playing with it, I realized that it is not only for visualizing geo-related data, but also can be fun for presenting data to mimics pixel art.
-
-">
+![](https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png)">
 <meta property="og:locale" content="en-us">
 
   
@@ -301,42 +293,33 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>I just discovered an interesting <code>ggplot2</code> extension, <code>geofacet</code>, that supports arranging facet panels that mimics geographic topoloty.</p>
-
 <p>After playing with it, I realized that it is not only for visualizing <code>geo</code>-related data, but also can be fun for presenting data to mimics pixel art.</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/Screenshot 2017-06-26 15.49.50.png" alt="" /></p>
-
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/2017/Screenshot">https://guangchuangyu.github.io/blog_images/2017/Screenshot</a> 2017-06-26 15.49.50.png)</p>
 <p>Here is an example using the Turkey shape:</p>
-
-<pre><code class="language-r">Turkey &lt;- read.csv(&quot;http://pages.iu.edu/~cdesante/turkey.csv&quot;)
-colnames(Turkey)[2:1] = c(&quot;row&quot;, &quot;col&quot;)
-Turkey$row = max(Turkey$row) - Turkey$row +1
-Turkey$name &lt;- Turkey$code &lt;- paste0('turkey', 1:nrow(Turkey))
-require(ggplot2)
-require(geofacet)
-x &lt;- split(eu_gdp, eu_gdp$code)
-x &lt;- x[sample.int(length(x), nrow(Turkey), replace=T)]
-for (i in 1:length(x)) {
-  x[[i]]$code = Turkey$code[i]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">Turkey <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://pages.iu.edu/~cdesante/turkey.csv&#34;</span>)
+<span style="color:#a6e22e">colnames</span>(Turkey)[2<span style="color:#f92672">:</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">row&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">col&#34;</span>)
+Turkey<span style="color:#f92672">$</span>row <span style="color:#f92672">=</span> <span style="color:#a6e22e">max</span>(Turkey<span style="color:#f92672">$</span>row) <span style="color:#f92672">-</span> Turkey<span style="color:#f92672">$</span>row <span style="color:#ae81ff">+1</span>
+Turkey<span style="color:#f92672">$</span>name <span style="color:#f92672">&lt;-</span> Turkey<span style="color:#f92672">$</span>code <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">turkey&#39;</span>, <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#a6e22e">nrow</span>(Turkey))
+<span style="color:#a6e22e">require</span>(ggplot2)
+<span style="color:#a6e22e">require</span>(geofacet)
+x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">split</span>(eu_gdp, eu_gdp<span style="color:#f92672">$</span>code)
+x <span style="color:#f92672">&lt;-</span> x<span style="color:#a6e22e">[sample.int</span>(<span style="color:#a6e22e">length</span>(x), <span style="color:#a6e22e">nrow</span>(Turkey), replace<span style="color:#f92672">=</span>T)]
+<span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#a6e22e">length</span>(x)) {
+  x[[i]]<span style="color:#f92672">$</span>code <span style="color:#f92672">=</span> Turkey<span style="color:#f92672">$</span>code[i]
 }
-y &lt;-  do.call(rbind, x)
+y <span style="color:#f92672">&lt;-</span>  <span style="color:#a6e22e">do.call</span>(rbind, x)
 
-color = Turkey$Turkey.Colors
-names(color) = Turkey$code
-y$color = color[y$code]
-Turkey = Turkey[, -3]
+color <span style="color:#f92672">=</span> Turkey<span style="color:#f92672">$</span>Turkey.Colors
+<span style="color:#a6e22e">names</span>(color) <span style="color:#f92672">=</span> Turkey<span style="color:#f92672">$</span>code
+y<span style="color:#f92672">$</span>color <span style="color:#f92672">=</span> color[y<span style="color:#f92672">$</span>code]
+Turkey <span style="color:#f92672">=</span> Turkey[, <span style="color:#ae81ff">-3</span>]
 
-p1 &lt;- ggplot(y, aes(gdp_pc, year))+ geom_line() +
-  facet_geo(~code, grid=Turkey, scales='free')
-print(p1)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 14.00.53.png" alt="" /></p>
-
-<pre><code class="language-r">p1 + theme_void() + aes(color=color) + theme(strip.text.x = element_blank(), legend.position='none')
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-06-26 19.44.30.png" alt="" /></p>
+p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(y, <span style="color:#a6e22e">aes</span>(gdp_pc, year))<span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_line</span>() <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">facet_geo</span>(<span style="color:#f92672">~</span>code, grid<span style="color:#f92672">=</span>Turkey, scales<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">free&#39;</span>)
+<span style="color:#a6e22e">print</span>(p1)
+</code></pre></div><p>![](<a href="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot">https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot</a> 2017-06-26 14.00.53.png)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">aes</span>(color<span style="color:#f92672">=</span>color) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(strip.text.x <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>(), legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>)
+</code></pre></div><p>![](<a href="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot">https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot</a> 2017-06-26 19.44.30.png)</p>
               
             </div>
           </div>

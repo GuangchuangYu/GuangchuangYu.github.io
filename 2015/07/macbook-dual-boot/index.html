@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="11年的老机器，闲置了两年，终于在我来HKU的时候发挥了作用，我第一次遇到做生物信息学要自己背电脑去干活。于是每天学校宿舍两头背，当时
-
 唯一的问题是headphone亮着红光，这个本身不难解决，用alsamixer把S/PDIF给mute了就OK了，但坑爹的是每次启动都是亮着红光，这让我很是纠结，我只能通过rc.local，让它每次开机都把alsamixer的状态都给恢复一下：">
 
 
 <meta property="og:description" content="11年的老机器，闲置了两年，终于在我来HKU的时候发挥了作用，我第一次遇到做生物信息学要自己背电脑去干活。于是每天学校宿舍两头背，当时
-
 唯一的问题是headphone亮着红光，这个本身不难解决，用alsamixer把S/PDIF给mute了就OK了，但坑爹的是每次启动都是亮着红光，这让我很是纠结，我只能通过rc.local，让它每次开机都把alsamixer的状态都给恢复一下：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Macbook Pro 双系统记">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2015/07/macbook-dual-boot/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="11年的老机器，闲置了两年，终于在我来HKU的时候发挥了作用，我第一次遇到做生物信息学要自己背电脑去干活。于是每天学校宿舍两头背，当时
-
 唯一的问题是headphone亮着红光，这个本身不难解决，用alsamixer把S/PDIF给mute了就OK了，但坑爹的是每次启动都是亮着红光，这让我很是纠结，我只能通过rc.local，让它每次开机都把alsamixer的状态都给恢复一下：">
 <meta name="twitter:description" content="11年的老机器，闲置了两年，终于在我来HKU的时候发挥了作用，我第一次遇到做生物信息学要自己背电脑去干活。于是每天学校宿舍两头背，当时
-
 唯一的问题是headphone亮着红光，这个本身不难解决，用alsamixer把S/PDIF给mute了就OK了，但坑爹的是每次启动都是亮着红光，这让我很是纠结，我只能通过rc.local，让它每次开机都把alsamixer的状态都给恢复一下：">
 <meta property="og:locale" content="en-us">
 
@@ -293,29 +289,16 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p><a href="https://guangchuangyu.github.io/cn/2011/06/screen-shot/">11年的老机器</a>，闲置了两年，终于在我来HKU的时候发挥了作用，我第一次遇到做生物信息学要自己背电脑去干活。于是每天学校宿舍两头背，当时</p>
-
 <p>唯一的问题是headphone亮着红光，这个本身不难解决，用alsamixer把S/PDIF给mute了就OK了，但坑爹的是每次启动都是亮着红光，这让我很是纠结，我只能通过rc.local，让它每次开机都把alsamixer的状态都给恢复一下：</p>
-
 <pre><code>/usr/sbin/alsactl restore
-</code></pre>
-
-<p>但每次开机还是会亮，rc.local通过测试是没有问题的：</p>
-
+</code></pre><p>但每次开机还是会亮，rc.local通过测试是没有问题的：</p>
 <pre><code>sudo service rc.local start
-</code></pre>
-
-<p>开机后跑上面的命令，红灯立刻就灭了。我以为rc.local不跑，但经过不断重启测试，确定它是开机有运行的。那么就有可能开机时的系统环境和开机后不同，所以开机后能跑，开机的时候却有问题。于是加了一行：</p>
-
+</code></pre><p>开机后跑上面的命令，红灯立刻就灭了。我以为rc.local不跑，但经过不断重启测试，确定它是开机有运行的。那么就有可能开机时的系统环境和开机后不同，所以开机后能跑，开机的时候却有问题。于是加了一行：</p>
 <pre><code>/usr/bin/printenv &gt; /var/tmp/rc.local-$(date +%T)
-</code></pre>
-
-<p>对比一个before, after时的运行环境，也没发现问题。这就奇了怪了。后来想到，会不会是pulseaudio在作怪。linux系统通常两套软件都装alsa较为成熟，但pulseaudio提供更多的特性。于是打开pulseaudio的配置文件，
+</code></pre><p>对比一个before, after时的运行环境，也没发现问题。这就奇了怪了。后来想到，会不会是pulseaudio在作怪。linux系统通常两套软件都装alsa较为成熟，但pulseaudio提供更多的特性。于是打开pulseaudio的配置文件，
 /etc/pulse/client.conf， 加入如下一行：</p>
-
 <pre><code>autospawn = no
-</code></pre>
-
-<p>它的意思就是不要启动pulse audio daemon了，再重启，整个世界就清净了。不过它也有负作用，就是键盘上调音量的按键失灵了，因为这功能是pulseaudio提供的，当然比起每次都要关红灯来说，问题不大，囧rz&hellip;</p>
+</code></pre><p>它的意思就是不要启动pulse audio daemon了，再重启，整个世界就清净了。不过它也有负作用，就是键盘上调音量的按键失灵了，因为这功能是pulseaudio提供的，当然比起每次都要关红灯来说，问题不大，囧rz&hellip;</p>
               
             </div>
           </div>

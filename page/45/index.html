@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -249,6 +249,67 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2013/06/compress-tiff/">
+          使用ImageMagick压缩TIFF
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2013-06-07T15:10:00&#43;08:00">
+        
+  June 7, 2013
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/software">Software</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        TIFF (Tagged Image File Format)拥有更宽的线性动态范围，所以在专业的图片处理上，一直是一个通用的文件格式。
+最近一篇发表在Metallomics的文章，我本来做的图片都是PDF格式，矢量图最好了，文件特别小，还可以任意放大。不过杂志社要求600DPI的TIFF或EPS。
+我第一反应是拒绝使用TIFF，600DPI的TIFF文件肯定非常大，EPS也是矢量图，我用R重新把图画一遍，存为EPS就OK了。画图的过程，我发现对EPS的支持不太好，老报些某字体不存在的错误。这当然不是什么大不了的事，自己指定字体就好了。问题在于有张图是拼的，我只能借助于软件转换，我用Inkscape处理，导出EPS，出来的图我发现有些细节并不太好。
+无奈之下还是用TIFF吧，Fig1和3都是R画的，直接指定分辨率和压缩算法，存为TIFF文件。Fig1是3000x3000pixel 600dpi的图，只有320k，Fig3是4200x4200pixel的图，也是600dpi，只有558k，用R产生TIFF还是非常靠谱的。
+关键是Fig2，这一张拼的图，存成PDF矢量图，需要用ImageMagick转换成600DPI的TIFF图片，ImageMagick需要安装Xcode才能在Mac下编译成功。
+Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tifYus-Mac-Pro:others ygc$ identify -verbose fig2.tifImage: fig2.tifFormat: TIFF (Tagged Image File Format)Class: DirectClassGeometry: 6000x4500+0+0Resolution: 600x600Print size: 10x7.5Units: UndefinedType: PaletteMatteBase type: TrueColorEndianess: MSB...Yus-Mac-Pro:others ygc$ convert -density 600 -compress lzw fig2.pdf fig2_compress.tifYus-Mac-Pro:others ygc$ ls -l fig2*.tif-rw-r--r-- 1 ygc admin 216036263 May 23 17:53 fig2.
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2013/06/compress-tiff/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2013/01/talen%E5%9F%BA%E5%9B%A0%E7%BC%96%E8%BE%91/">
           TALEN基因编辑
         </a>
@@ -277,7 +338,7 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         分子生物学的基础和兴起离不开各种酶的发现和抗体的制备。没有抗体，蛋白质就玩不转，没有限制性内切酶和连接酶，就没有基因工程，如果没有耐高温酶的发现，连PCR都是件痛苦的事情，写到这里，我突然觉得做细菌也是蛮好的，因为比较有可能发现一些功能比较奇特的蛋白，而这些蛋白，一经改造，可能就是技术上的革新。
-TALE(transcription activator-like effector)也不例外，最初在植物致病菌黄单胞菌（_Xanthomonas_）中被发现，在致病过程中，能够特异性地结合和调控植物基因。
+TALE(transcription activator-like effector)也不例外，最初在植物致病菌黄单胞菌（Xanthomonas）中被发现，在致病过程中，能够特异性地结合和调控植物基因。
 TALE的结构中间（红色部分）是重复序列，介导DNA识别，每一个重复片段为33-35个氨基酸，其中12和13位置两个氨基酸决定碱基偏好性，这两个相邻的氨基酸被称之为重复可变双残基（repeat variable di-residue, RVD），RVD所编码的靶标碱基由上图b所示，基本上你看一段TALE的重复序列，就可以预测到它将结合到什么样的DNA序列上，或者你看一段DNA序列，可以很容易地设计结合它的TALE重复序列。
 N端通常是288个残基，其中Δ152做为截断点，去掉前面用于进入植物细胞的功能，而保留TALE蛋白的其它功能。C端通常是278个残基。
 中间重复片段的特性使得TALE很容易被改造，应用于各种定点靶向的场景。 Activator 2011年发表在NBT上的文章《A TALE nuclease architecture for efficient genome editing》将TALE改造成促进特定基因表达。将天然TALE进行PCR扩增，去掉前面152个残基，重复序列改造为结合NTF3的启动子邻近区域(proximal promoter)，C端连上VP16（转录激活结构域），结果诱导超过20倍的表达。NTF3基因编码一个分泌性的生长因子，对神经退行性疾病有一个的治疗功效。作者把C端截断，保留95个残基再接上VP16，同样也是mRNA超过20倍的表达。 Nuclease 位点特异性的核酸酶是基因组工程的有力工具，产生断裂的双链DNA（double strand breaks, DSBs），可以进行同源重组、靶向插入、删除。锌指蛋白（zinc finger protein）连接FokI的水解结构域，构成了锌指核酶(zinc finger nuclease, ZFN)被用来进行基因组编辑，但是ZFN的特异性和效率较差，可重复性不好。
@@ -285,7 +346,7 @@ TALE的单碱基识别能力，显然在特异性上是无可比拟的，有了T
 两端切割后，产生DSB，就会引起系统对其进行修复，Miller等使用TALEN对NTF3基因进行切割，产生DSB，随后进行非同源末端连接（non-homologous end joining, NHEJ）修复，NHEJ在没有同源序列做为模版的情况下进行修复，这是一个不精确的修复途径，结果产生了3-30bp的删除。
 NHEJ是容易出错也不好控制的，可喜的是还存在一条精确可控的途径，同源依赖修复（homology dependent repair, HDR），在有供体ssDNA存在的情况下，通过HDR途径，可以对基因进行编辑，插入和缺失处理。
 于是牛B的事情就产生了，2012年Nature的文章报道在斑马鱼活体组织里使用TALEN技术，引入了定制的EcoRV位点和修改的loxP序列。
-Reference 1. Miller, Jeffrey C., Siyuan Tan, Guijuan Qiao, Kyle A. Barlow, Jianbin Wang, Danny F. Xia, Xiangdong Meng, et al. “A TALE Nuclease Architecture for Efficient Genome Editing.
+Reference 1. Miller, Jeffrey C., Siyuan Tan, Guijuan Qiao, Kyle A. Barlow, Jianbin Wang, Danny F. Xia, Xiangdong Meng, et al. “A TALE Nuclease Architecture for Efficient Genome Editing.” Nature Biotechnology 29, no.
       
       <p>
         <a href="https://guangchuangyu.github.io/2013/01/talen%E5%9F%BA%E5%9B%A0%E7%BC%96%E8%BE%91/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -341,8 +402,7 @@ Reference 1. Miller, Jeffrey C., Siyuan Tan, Guijuan Qiao, Kyle A. Barlow, Jianb
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="https://guangchuangyu.github.io/blog_images/2012/12/douban2012-1024x1024.png" alt="" /></p>
-
+        <p><img src="https://guangchuangyu.github.io/blog_images/2012/12/douban2012-1024x1024.png" alt=""></p>
 <p>又一年过去了，看书的数目总算是追上看碟了。
 5本R方面的书，两本是入门书，快速翻阅过，<a href="http://ygc.name/2011/09/24/scientific-programming/">Introduction to Scientific
 Programming and Simulation Using
@@ -412,7 +472,7 @@ Inferno讲了R的各种陷阱，ggplot2是关于画图，比如上面的拆线�
 pubmed上不去，完全没影响，因为有hubmed,hubmed主页上写着：An alternative interface to the PubMed medical literature database，所以完全可以把它当作是pubmed的镜像。这个站点至少我在暨大上是超级快的。搜完底上还有链接，让你很方便地用同样的关键词在google (scholar)，Scirus, CrossRef，EBIMed等其它数据库里搜。
 另外一个备选的站点是gopubmed，这个站点的亮点是整合了ontology。
 最近欧洲大名鼎鼎的EBI也开始搞文献服务了，新开的Europe PubMed Central，我比较喜欢它的排序功能，可以按文章的相关性或引用数来排。除了文献之后，还可以biological patents, clinical guidelines, PhD theses and research reports。这个站点现在刚创立，我觉得一两年之后，肯定会有更多的服务提供，前途无量啊。
- 文献管理 读文献是人干的事，管理文献却是疯子干的事。如果你还活在手工整理文献的黑客帝国里，请赶紧吞下红色药丸。  3.个性化推荐 上网买本书，电商都会推荐给你，某本书可能你也想买。这是个性化推荐的时代，读文献也不例外，Google Scholar的新功能My updates，干的就是这个事，可以根据自己文章的内容，推荐相关的最新文献，想要用到这个功能，你需要建立google scholar profile页面。
+文献管理 读文献是人干的事，管理文献却是疯子干的事。如果你还活在手工整理文献的黑客帝国里，请赶紧吞下红色药丸。  3.个性化推荐 上网买本书，电商都会推荐给你，某本书可能你也想买。这是个性化推荐的时代，读文献也不例外，Google Scholar的新功能My updates，干的就是这个事，可以根据自己文章的内容，推荐相关的最新文献，想要用到这个功能，你需要建立google scholar profile页面。
 4.订阅 RSS改变了人类的阅读，很多的期刊都提供了RSS，如果你是火星人，不知道啥是RSS，那么打开你的QQ邮箱，点一下阅读空间，那玩意实现的就是RSS订阅了。个人比较推荐google reader。
 另一个值得一提的是NCBI的个性化服务My NCBI，你可以设定关键词，当pubmed上有新文献和这个关键词匹配的话，NCBI可以定期给你发邮件提醒。
 5.求文献
@@ -489,12 +549,10 @@ pubmed上不去，完全没影响，因为有hubmed,hubmed主页上写着：An a
                 ||----w |
                 ||     ||
 </code></pre>
-
 <ol>
 <li>赋值</li>
 </ol>
-
-<p>从一开始学R就知道R的赋值符号和别的语言不一样，用的是<code>&lt;-</code>，虽然<code>=</code>也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用<code>&lt;-</code>。所以我基本上就抛弃用<code>=</code>号了，反正在ESS里用shift+-就会自动输入<code>&lt;-</code>，也是很方便的。直到有一天，我发现<a href="https://guangchuangyu.github.io/2009/03/assignment-token-of-r/">在switch里，必须用<code>=</code>号</a>，而不能用<code>&lt;-</code>，才发现坑爹啊，这两符号是不一样的。</p>
+<p>从一开始学R就知道R的赋值符号和别的语言不一样，用的是<code>&lt;-</code>，虽然<code>=</code>也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用<code>&lt;-</code>。所以我基本上就抛弃用<code>=</code>号了，反正在ESS里用shift+-就会自动输入<code>&lt;-</code>，也是很方便的。直到有一天，我发现<!-- raw HTML omitted -->在switch里，必须用<code>=</code>号<!-- raw HTML omitted -->，而不能用<code>&lt;-</code>，才发现坑爹啊，这两符号是不一样的。</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2012/07/tricky-things-in-r/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -628,74 +686,6 @@ pubmed上不去，完全没影响，因为有hubmed,hubmed主页上写着：An a
       
       <p>
         <a href="https://guangchuangyu.github.io/2012/04/enrichment-analysis/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2012/04/support-vector-machine/">
-          Support Vector Machine
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2012-04-12T05:37:55&#43;08:00">
-        
-  April 12, 2012
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/statistics">statistics</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>支持向量机(Support Vector Machines, SVM)最初由Vladimir
-Vapnik于1997年提出，SVM最简单的形式就是找出一下区分界限（descision
-boundary），也称之为超平面(hyperplane)，使得离它最近的点（称之为support
-vectors）与之间隔最大。
-<img src="http://guangchuangyu.github.io/blog_images/2012/04/linearSVM.png" alt="" /></p>
-
-<p>这和logistic regression有些相似，区别在于logistic
-regression要求所有的点尽可能地远离中间那条线，而SVM是要求最接近中间线的点尽可能地远离中间线。也就是说SVM的主要目标是区分那些最难区分的点。</p>
-
-<p>SVM对于hyperplane的定义，在形式上和logistic regression一样,logistic
-regression的decision boundary由$\theta^TX=0$确定,SVM则用$w^TX+b=0$表示,其中b相当于logistic regression中的$\theta_0$，从形式上看，两者并无区别，当然如前面所说，两者的目标不一样，logistic regression着眼于全局，SVM着眼于support
-vectors。有监督算法都有label变量y，logistic
-regression取值是<code>{0,1}</code>，而SVM为了计算距离方便，取值为<code>{-1,1}</code>。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2012/04/support-vector-machine/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

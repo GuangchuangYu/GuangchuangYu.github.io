@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="One day, I am looking for R packages that can analyze PPI and after
 searching, I found the
 ppiPre
 package in CRAN.
-
 ">
 
 
@@ -20,7 +19,6 @@ package in CRAN.
 searching, I found the
 ppiPre
 package in CRAN.
-
 ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="proper use of GOSemSim">
@@ -32,13 +30,11 @@ package in CRAN.
 searching, I found the
 ppiPre
 package in CRAN.
-
 ">
 <meta name="twitter:description" content="One day, I am looking for R packages that can analyze PPI and after
 searching, I found the
 ppiPre
 package in CRAN.
-
 ">
 <meta property="og:locale" content="en-us">
 
@@ -306,9 +302,7 @@ if (!doNotTrack) {
 searching, I found the
 <a href="http://cran.r-project.org/web/packages/ppiPre/index.html">ppiPre</a>
 package in CRAN.</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/11/2014-11-22-215959_895x256_scrot.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/11/2014-11-22-215959_895x256_scrot.png" alt=""></p>
 <p>The function of this package is not impressive, and I already knew some
 related works, including <a href="http://intscore.molgen.mpg.de/">http://intscore.molgen.mpg.de/</a>. The authors
 of this webserver contacted me for the usages of GOSemSim when they
@@ -318,14 +312,12 @@ package can calculate GO semantic similarity and supports 20 species
 exactly like GOSemSim. I opened the source tarball, and surprisingly
 found that its sources related to semantic similarity calculation are
 totally copied from GOSemSim.</p>
-
 <p>GOSemSim was <a href="http://guangchuangyu.github.io/2008/08/gosemsim/">firstly released in 2008 Bioconductor 2.4</a> (at that time, devel version)
 and published in <a href="http://guangchuangyu.github.io/2010/05/gosemsim-an-r-package-for-measuring-semantic-similarity-among-go-terms-and-gene-products/">Bioinformatics in 2010</a>.
 After compared the sources, I found the sources in ppiPre were copied
 from <a href="http://www.bioconductor.org/packages/2.6/bioc/html/GOSemSim.html">GOSemSim version 1.6.8</a>
 which released in 2010 Bioconductor 2.6. The Wang method defined in
 GOKEGGSims.r file of ppiPre is:</p>
-
 <pre><code>   119  WangMethod &lt;- function(GOID1, GOID2, ont=&quot;MF&quot;, organism=&quot;yeast&quot;) {
    120      if(!exists(&quot;ppiPreEnv&quot;)) .initial()
    121      weight.isa = 0.8
@@ -403,9 +395,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    193      return (sv)
    194  }
 </code></pre>
-
 <p>It is identical to the one I defined in GOSemSim 1.6.8:</p>
-
 <pre><code>   196  ygcWangMethod &lt;- function(GOID1, GOID2, ont=&quot;MF&quot;, organism=&quot;human&quot;) {
    197      if(!exists(&quot;GOSemSimEnv&quot;)) .initial()
    198      weight.isa = 0.8
@@ -490,9 +480,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    277      return(get(goid.ont, envir=GOSemSimCache))
    278  }
 </code></pre>
-
 <p>The information content based method in ppiPre:</p>
-
 <pre><code>   495  GetLatestCommonAncestor&lt;-function(GOID1, GOID2, ont, organism){
    496  #message(&quot;Calulating Latest Common Ancestor...&quot;)
    497      if(!exists(&quot;ppiPreEnv&quot;)) .initial()
@@ -541,9 +529,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    540
    541  }
 </code></pre>
-
 <p>also identical to the one in GOSemSim 1.6.8:</p>
-
 <pre><code>   280  `ygcInfoContentMethod` &lt;- function(GOID1, GOID2, ont, measure, organism) {
    281      if(!exists(&quot;GOSemSimEnv&quot;)) .initial()
    282      fname &lt;- paste(&quot;Info_Contents&quot;, ont, organism, sep=&quot;_&quot;)
@@ -588,9 +574,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    321      return (sim)
    322  }
 </code></pre>
-
-<p>Let&rsquo;s look at some helper functions in ppiPre:</p>
-
+<p>Let's look at some helper functions in ppiPre:</p>
 <pre><code>   477  rebuildICdata &lt;- function(){
    478      ont &lt;- c(&quot;MF&quot;,&quot;CC&quot;, &quot;BP&quot;)
    479      species &lt;- c(&quot;human&quot;, &quot;rat&quot;, &quot;mouse&quot;, &quot;fly&quot;, &quot;yeast&quot;, &quot;zebrafish&quot;, &quot;arabidopsis&quot;,&quot;worm&quot;, &quot;ecolik12&quot;, &quot;bovine&quot;,&quot;canine&quot;,&quot;anopheles&quot;,&quot;ecsakai&quot;,&quot;chicken&quot;,&quot;chimp&quot;,&quot;malaria&quot;,&quot;rhesus&quot;,&quot;pig&quot;,&quot;xenopus&quot;,&quot;coelicolor&quot;)
@@ -609,9 +593,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    492      message(&quot;done...&quot;)
    493  }
 </code></pre>
-
 <p>Again, it is identical to GOSemSim 1.6.8:</p>
-
 <pre><code>   390  rebuildICdata &lt;- function(){
    391      ont &lt;- c(&quot;MF&quot;,&quot;CC&quot;, &quot;BP&quot;)
    392      species &lt;- c(&quot;human&quot;, &quot;rat&quot;, &quot;mouse&quot;, &quot;fly&quot;, &quot;yeast&quot;, &quot;zebrafish&quot;, &quot;arabidopsis&quot;,&quot;worm&quot;, &quot;ecolik12&quot;, &quot;bovine&quot;,&quot;canine&quot;,&quot;anopheles&quot;,&quot;ecsakai&quot;,&quot;chicken&quot;,&quot;chimp&quot;,&quot;malaria&quot;,&quot;rhesus&quot;,&quot;pig&quot;,&quot;xenopus&quot;)
@@ -630,9 +612,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    405      print(&quot;done...&quot;)
    406  }
 </code></pre>
-
-<p>Let&rsquo;s look at the internal function TCSSComputeIC in ppiPre:</p>
-
+<p>Let's look at the internal function TCSSComputeIC in ppiPre:</p>
 <pre><code>   410  TCSSComputeIC &lt;- function(dropCodes=&quot;IEA&quot;, ont, organism) {
    411  message(&quot;Calulating IC...&quot;)
    412      wh_ont &lt;- match.arg(ont, c(&quot;MF&quot;, &quot;BP&quot;, &quot;CC&quot;))
@@ -701,9 +681,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    475      return (IC)
    476  }
 </code></pre>
-
 <p>and ygcCompute_Information_Content in GOSemSim 1.6.8:</p>
-
 <pre><code>   326  ygcCompute_Information_Content &lt;- function(dropCodes=&quot;NULL&quot;, ont, organism) {
    327      wh_ont &lt;- match.arg(ont, c(&quot;MF&quot;, &quot;BP&quot;, &quot;CC&quot;))
    328      wh_organism &lt;- match.arg(organism, c(&quot;human&quot;, &quot;fly&quot;, &quot;mouse&quot;, &quot;rat&quot;, &quot;yeast&quot;, &quot;zebrafish&quot;, &quot;worm&quot;, &quot;arabidopsis&quot;, &quot;ecolik12&quot;, &quot;bovine&quot;,&quot;canine&quot;,&quot;anopheles&quot;,&quot;ecsakai&quot;,&quot;chicken&quot;,&quot;chimp&quot;,&quot;malaria&quot;,&quot;rhesus&quot;,&quot;pig&quot;,&quot;xenopus&quot;))
@@ -768,9 +746,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    387      save(IC, file=paste(paste(&quot;Info_Contents&quot;, wh_ont, organism, sep=&quot;_&quot;), &quot;.rda&quot;, sep=&quot;&quot;))
    388  }
 </code></pre>
-
 <p>Another helper function GetGOMap in ppiPre:</p>
-
 <pre><code>   308  GetGOMap &lt;- function(organism=&quot;yeast&quot;) {
    309      if(!exists(&quot;ppiPreEnv&quot;)) .initial()
    310      CheckAnnotationPackage(organism) #download and install the packages
@@ -823,9 +799,7 @@ GOKEGGSims.r file of ppiPre is:</p>
    357      assign(eval(species), gomap, envir=ppiPreEnv)
    358  }
 </code></pre>
-
 <p>My ygcGetGOMap in GOSemSim 1.6.8:</p>
-
 <pre><code>   100  ygcGetGOMap &lt;- function(organism=&quot;human&quot;) {
    101      if(!exists(&quot;GOSemSimEnv&quot;)) .initial()
    102      ygcCheckAnnotationPackage(organism)
@@ -874,12 +848,10 @@ GOKEGGSims.r file of ppiPre is:</p>
    145      assign(eval(species), gomap, envir=GOSemSimEnv)
    146  }
 </code></pre>
-
 <p>There are many other small helper functions that are identical. ppiPre
 copy most of the source code of GOSemSim. There is 862 lines in
 GOKEGGSims.r, in which only the following function is about KEGG that is
 not related to GOSemSim.</p>
-
 <pre><code>    10  KEGGSim &lt;- function(protein1, protein2)    # KEGG-based similarity of two proteins
     11  {
     12
@@ -894,43 +866,43 @@ not related to GOSemSim.</p>
     21      return(sim)
     22  }
 </code></pre>
-
 <p>This function is only 12 lines, and it calculates the similarity by
 divide the intersect to the total sum. The other lines in GOKEGGSims.r,
 more than 800 lines, were totally copied from GOSemSim. Other source
-files in the ppiPre only has less than 450 lines in sum. <strong>About <sup>2</sup>&frasl;<sub>3</sub> of
+files in the ppiPre only has less than 450 lines in sum. <strong>About 2/3 of
 ppiPre were copied from GOSemSim</strong>.</p>
-
 <p>The author of ppiPre changed the function names and pretend it is their
 original works. They just copy and paste and take the credit of months
 of development of GOSemSim. This is really sucks.</p>
-
 <p>After I found this issue, I add a proper use of GOSemSim statement in
 its <a href="https://github.com/GuangchuangYu/GOSemSim">github page</a>:</p>
-
 <blockquote>
 <p>I am very glad that many people find GOSemSim useful and GOSemSim has been cited by 114 (by google scholar, Aug, 2014).</p>
-
+</blockquote>
+<blockquote>
 <p>There are two R packages BiSEp and tRanslatome depend on GOSemSim and three R packages clusterProfiler, DOSE and Rcpi import GOSemSim.</p>
-
+</blockquote>
+<blockquote>
 <p>SemDist package copy some of the source code from GOSemSim with acknowledging within source code and document.</p>
-
+</blockquote>
+<blockquote>
 <p>ppiPre package copy many source code from GOSemSim without any acknowledgement in souce code or document and did not cited GOSemSim in their publication. This violates the restriction of open source license.</p>
-
-<p>For R developers, if you found functions provided in GOSemSim useful, please depends or imports GOSemSim. If you would like to copy and paste source code, you should acknowledge the source code was copied/derived from GOSemSim authored by Guangchuang Yu guangchuangyu@gmail.com within source code, add GOSemSim in Suggests field and also includes the following reference in the man files for functions that copied/derived from GOSemSim and cited in vignettes.</p>
-
+</blockquote>
+<blockquote>
+<p>For R developers, if you found functions provided in GOSemSim useful, please depends or imports GOSemSim. If you would like to copy and paste source code, you should acknowledge the source code was copied/derived from GOSemSim authored by Guangchuang Yu <a href="mailto:guangchuangyu@gmail.com">guangchuangyu@gmail.com</a> within source code, add GOSemSim in Suggests field and also includes the following reference in the man files for functions that copied/derived from GOSemSim and cited in vignettes.</p>
+</blockquote>
+<blockquote>
 <p>\references{
- Yu et al. (2010) GOSemSim: an R package for measuring
- semantic similarity among GO terms and gene products
- \emph{Bioinformatics} (Oxford, England), 26:7 976&ndash;978,
- April 2010. ISSN 1367-4803
- \url{<a href="http://bioinformatics.oxfordjournals.org/cgi/content/abstract/26/7/976">http://bioinformatics.oxfordjournals.org/cgi/content/abstract/26/7/976</a>}
- PMID: 20179076
+Yu et al. (2010) GOSemSim: an R package for measuring
+semantic similarity among GO terms and gene products
+\emph{Bioinformatics} (Oxford, England), 26:7 976&ndash;978,
+April 2010. ISSN 1367-4803
+\url{http://bioinformatics.oxfordjournals.org/cgi/content/abstract/26/7/976}
+PMID: 20179076
 }</p>
 </blockquote>
-
-<p>You are welcome to use GOSemSim in the way you like, but please cite it and give it the proper credit. I hope you can understand.
-```</p>
+<p>You are welcome to use GOSemSim in the way you like, but please cite it and give it the proper credit. I hope you can understand.</p>
+<pre><code></code></pre>
               
             </div>
           </div>

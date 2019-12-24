@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="有小伙伴在说可以用par(mar)来设置画图的margin，但不能应用于ggplot2，这个可能很多新手都会很困扰，可能需要一段时间的探索之后，才能发现原来是用theme来设定。
-
 这当然你可以归结于说ggplot2和base plot是不同的东西，但从实质画图参数这一点而言，并没有什么同与不同，无非是设置的方式不同而已，而这种方式都是人定义的，我们完全可以人为定义它们兼容。">
 
 
 <meta property="og:description" content="有小伙伴在说可以用par(mar)来设置画图的margin，但不能应用于ggplot2，这个可能很多新手都会很困扰，可能需要一段时间的探索之后，才能发现原来是用theme来设定。
-
 这当然你可以归结于说ggplot2和base plot是不同的东西，但从实质画图参数这一点而言，并没有什么同与不同，无非是设置的方式不同而已，而这种方式都是人定义的，我们完全可以人为定义它们兼容。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用par设置ggplot2参数？这个可以有！">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/03/ggpar/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="有小伙伴在说可以用par(mar)来设置画图的margin，但不能应用于ggplot2，这个可能很多新手都会很困扰，可能需要一段时间的探索之后，才能发现原来是用theme来设定。
-
 这当然你可以归结于说ggplot2和base plot是不同的东西，但从实质画图参数这一点而言，并没有什么同与不同，无非是设置的方式不同而已，而这种方式都是人定义的，我们完全可以人为定义它们兼容。">
 <meta name="twitter:description" content="有小伙伴在说可以用par(mar)来设置画图的margin，但不能应用于ggplot2，这个可能很多新手都会很困扰，可能需要一段时间的探索之后，才能发现原来是用theme来设定。
-
 这当然你可以归结于说ggplot2和base plot是不同的东西，但从实质画图参数这一点而言，并没有什么同与不同，无非是设置的方式不同而已，而这种方式都是人定义的，我们完全可以人为定义它们兼容。">
 <meta property="og:locale" content="en-us">
 
@@ -293,21 +289,13 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>有小伙伴在说可以用par(mar)来设置画图的margin，但不能应用于ggplot2，这个可能很多新手都会很困扰，可能需要一段时间的探索之后，才能发现原来是用theme来设定。</p>
-
 <p>这当然你可以归结于说ggplot2和base plot是不同的东西，但从实质画图参数这一点而言，并没有什么同与不同，无非是设置的方式不同而已，而这种方式都是人定义的，我们完全可以人为定义它们兼容。</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/ggpar.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/ggpar.png" alt=""></p>
 <p>这里我用了一个<code>ggpar</code>的函数，我们传入<code>mar=rep(6,4)</code>，就像我们用<code>par</code>一样，而这个<code>ggpar</code>它事实上就设置了<code>par</code>，所以我画第一张图，用base plot，我们发现margin已经按照我们的设定分配了。</p>
-
 <p>然后我打开另一个画图窗口，再用<code>ggplot2</code>画，我们发现咦<code>ggplot2</code>也认这个参数，margin也设置好了。当然细心的你可能发现<code>ggplot2</code>的画图区域更小，这是base plot和<code>ggplot2</code>对margin的定义不同的缘故，base plot的margin是画图框外面的区域，而<code>ggplot2</code>的margin是画图内容之外的区域，像axis text和label都在画图区域之内,这样你再对比右边的两张图，你就会发现margin果然是一致的，<code>ggpar</code>果然同时改变了base plot和<code>ggplot2</code>的默认设置。</p>
-
 <p>然后我再改变<code>ggplot2</code>的主题，再打开一个画图窗口，然后再设置<code>ggpar</code>，证明<code>ggpar</code>可以应用于<code>ggplot2</code>当前的任何主题。画出了图中代码下面的图。</p>
-
 <p>就是这么神奇！你只要能够深入了解，很多东西就不是不可以，而是可能，以及该如何实现。</p>
-
 <p>产生上面图的代码如下：</p>
-
 <pre><code>library(yyplot2)
 ggpar(mar=rep(6,4))
 d=data.frame(x=rnorm(10), y=rnorm(10))
@@ -318,42 +306,22 @@ theme_set(theme_minimal())
 X11()
 ggpar(mar=rep(1,4))
 ggplot(d, aes(x,y)) + geom_point() 
-</code></pre>
-
-<p>到上面为止，已经让人掉下巴了，但不够完美，因为它引入了一个新函数！这简直是废话，因为没有新函数的引入就没有这个可以兼容彼此的功能。能不能不要搞多个函数？我早上醒来的时候这样问自己，并且跟自己说做为男人不能说不行！（这可咋整？请思考3分钟再往下看）</p>
-
-<hr />
-
+</code></pre><p>到上面为止，已经让人掉下巴了，但不够完美，因为它引入了一个新函数！这简直是废话，因为没有新函数的引入就没有这个可以兼容彼此的功能。能不能不要搞多个函数？我早上醒来的时候这样问自己，并且跟自己说做为男人不能说不行！（这可咋整？请思考3分钟再往下看）</p>
+<hr>
 <p><code>ggpar</code>必须要有，不然没这功能，你需要用<code>ggpar</code>来设置，或者你不带参数单独跑<code>ggpar()</code>，它会去获取你已经设置或者没有设置（默认值）的par参数。再者你用<code>theme_set</code>换默认主题时，你需要再跑<code>ggpar()</code>去追加<code>par</code>的设置到默认主题中，这合情合理，也就每次多跑一下<code>ggpar()</code>，让彼此兼容！</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/ggpar2.png" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/ggpar2.png" alt=""></p>
 <p>但能不能让它存在于无形之中？也就是说我还像往常一样，用了<code>par()</code>来设置，然后<code>ggplot2</code>也认，而我用<code>theme_set</code>设置主题的时候，也不需要跑<code>ggpar</code>去追加<code>par</code>设置。这听起来特别美好！</p>
-
 <p>要实现其实也不难，就是重置函数，我们把R的<code>par</code>函数给换掉，你<code>par</code>还是你<code>par</code>，该干的话照干，你<code>par</code>已经不是你<code>par</code>，它还跑了<code>ggpar</code>.</p>
-
 <pre><code>par = function(...) { graphics:::par(...); ggpar()}
-</code></pre>
-
-<p>一句话的事情，然后你用<code>par</code>，<code>ggplot2</code>就认了。</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/mypar.png" alt="" /></p>
-
+</code></pre><p>一句话的事情，然后你用<code>par</code>，<code>ggplot2</code>就认了。</p>
+<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/mypar.png" alt=""></p>
 <pre><code>theme_set = function(...) {ggplot2::theme_set(...); yyplot::ggpar()}
-</code></pre>
-
-<p><code>theme_set</code>也是一样，当你换主题的时候，自动追加<code>par</code>的设置。</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/my_theme_set.png" alt="" /></p>
-
+</code></pre><p><code>theme_set</code>也是一样，当你换主题的时候，自动追加<code>par</code>的设置。</p>
+<p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/my_theme_set.png" alt=""></p>
 <p>什么叫存在于无形之中？你不是也得重定义<code>par</code>和<code>theme_set</code>函数嘛，如果你能这样问我？我给你点个赞，我们再把这两个简单的函数放在.Rprofile中，这样你每次打开R，这两个函数就被定义了，而你啥都没有干！然后你用的<code>par</code>，该怎么用还怎么用，但是<code>ggplot2</code>认你的设置，你用<code>theme_set</code>换主题，会自己追加<code>par</code>设置，你啥额外的事情都不用干！！！这就叫存在于无形中，这就叫完全兼容。</p>
-
 <p>这个<code>ggpar</code>函数我放在<code>yyplot</code>包中，只是给大家开个眼界，是知识限制了我们的想像力。目前版本只适用于设置margin，其它一些参数也是可以的，大家有兴趣可以去github上fork，或者我以后在实践中觉得有必要搞（因为可以让设置<code>ggplot2</code>默认主题参数变得容易），再继续搞吧。目前只是抛砖引玉，放飞大家的想像力。</p>
-
 <p>这个需求可能还是比较大的，毕竟<code>ggplot2</code>的设置还是比较困难的，而且R新手多半是有学base plot的，会让主题设置变得非常容易。</p>
-
-<h2 id="值得重温的yyplot系列">值得重温的yyplot系列</h2>
-
+<h2 id="yyplot">值得重温的yyplot系列</h2>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s/ne2AEUxmD7EDcWzh7i-jAQ">Y叔的新玩意&ndash;yyplot</a></li>
 <li><a href="http://mp.weixin.qq.com/s/yVAP09kfE0af79egYENBRA">一次解决ggplot2所有字体</a></li>
@@ -361,7 +329,7 @@ ggplot(d, aes(x,y)) + geom_point()
 <li><a href="https://mp.weixin.qq.com/s/YaDxF4ZUISWlUR_7bQnbSQ">pubmed年度趋势，你的开题报告需要它！</a></li>
 <li><a href="https://mp.weixin.qq.com/s/Iqcqo5YTy1qmXdsuIrlrYQ">130岁了，祝你生快</a></li>
 <li><a href="https://mp.weixin.qq.com/s/8kqTVSDjuHpivGaim6ukNg">画个小圈圈</a></li>
-<li><a href="https://mp.weixin.qq.com/s/_XH6u2hPv_JJi_MbGbeoHA">ggplot扩展学习笔记&ndash;逐行解析Y叔的&rdquo;geom_ord_ellipse.R&rdquo;</a></li>
+<li><a href="https://mp.weixin.qq.com/s/_XH6u2hPv_JJi_MbGbeoHA">ggplot扩展学习笔记&ndash;逐行解析Y叔的&quot;geom_ord_ellipse.R&rdquo;</a></li>
 </ul>
               
             </div>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content=" ________________________________________________________________
@@ -23,9 +23,7 @@
                 ||     ||
 
 
-
 赋值
-
 
 从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
 
@@ -45,9 +43,7 @@
                 ||     ||
 
 
-
 赋值
-
 
 从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
 <meta property="og:type" content="article">
@@ -71,9 +67,7 @@
                 ||     ||
 
 
-
 赋值
-
 
 从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
 <meta name="twitter:description" content=" ________________________________________________________________
@@ -91,9 +85,7 @@
                 ||     ||
 
 
-
 赋值
-
 
 从一开始学R就知道R的赋值符号和别的语言不一样，用的是&lt;-，虽然=也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用&lt;-。所以我基本上就抛弃用=号了，反正在ESS里用shift&#43;-就会自动输入&lt;-，也是很方便的。直到有一天，我发现在switch里，必须用=号，而不能用&lt;-，才发现坑爹啊，这两符号是不一样的。">
 <meta property="og:locale" content="en-us">
@@ -370,111 +362,76 @@ if (!doNotTrack) {
                 ||----w |
                 ||     ||
 </code></pre>
-
 <ol>
 <li>赋值</li>
 </ol>
-
-<p>从一开始学R就知道R的赋值符号和别的语言不一样，用的是<code>&lt;-</code>，虽然<code>=</code>也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用<code>&lt;-</code>。所以我基本上就抛弃用<code>=</code>号了，反正在ESS里用shift+-就会自动输入<code>&lt;-</code>，也是很方便的。直到有一天，我发现<a href="https://guangchuangyu.github.io/2009/03/assignment-token-of-r/">在switch里，必须用<code>=</code>号</a>，而不能用<code>&lt;-</code>，才发现坑爹啊，这两符号是不一样的。</p>
-
-<ol>
+<p>从一开始学R就知道R的赋值符号和别的语言不一样，用的是<code>&lt;-</code>，虽然<code>=</code>也用，很多书会告诉你两者是一样的，完全通用，不过用R的人习惯也推倡用<code>&lt;-</code>。所以我基本上就抛弃用<code>=</code>号了，反正在ESS里用shift+-就会自动输入<code>&lt;-</code>，也是很方便的。直到有一天，我发现<!-- raw HTML omitted -->在switch里，必须用<code>=</code>号<!-- raw HTML omitted -->，而不能用<code>&lt;-</code>，才发现坑爹啊，这两符号是不一样的。</p>
+<ol start="2">
 <li>函数中给全局变量赋值</li>
 </ol>
-
 <p>R里可以用<code>&lt;&lt;-</code>来进行全局赋值，比如我在解Project Euler 15题时，就用了<code>&lt;&lt;-</code>，这个最好还是不要用，用全局赋值可能会给你surprise，会给出惊喜的代码不是好代码。</p>
-
-<!--more-->
-
+<!-- raw HTML omitted -->
 <p>当然所谓的全局和局部，都是相对的，主要看内存管理的实现方式，内存堆栈，在R里通过environment来实现，S中称之为frames。所谓的全局变量就是位于.GlobalEnv中而已。</p>
-
 <p>所以如果要用<code>&lt;&lt;-</code>来进行全局赋值的话，安全的做法是使用局部的全局变量。如果要做个类比的话，这有点像C/C++里的静态变量。</p>
-
 <p>比如下面这段计算fibonacci数的函数：</p>
-
-<pre><code class="language-r">fibonacci &lt;- local({
-    memo &lt;- c(1, 1, rep(NA, 20))
-    f &lt;- function(x) {
-        if(x == 0) return(0)
-        if(x &lt; 0) return(NA)
-        if(x &gt; length(memo))
-            stop(&quot;''x'' too big for implementation&quot;)
-        if(!is.na(memo[x])) return(memo[x])
-        ans &lt;- f(x-2) + f(x-1)
-        memo[x] &lt;&lt;- ans
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fibonacci <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">local</span>({
+    memo <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">rep</span>(<span style="color:#66d9ef">NA</span>, <span style="color:#ae81ff">20</span>))
+    f <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x) {
+        <span style="color:#a6e22e">if</span>(x <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#a6e22e">return</span>(<span style="color:#ae81ff">0</span>)
+        <span style="color:#a6e22e">if</span>(x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#a6e22e">return</span>(<span style="color:#66d9ef">NA</span>)
+        <span style="color:#a6e22e">if</span>(x <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">length</span>(memo))
+            <span style="color:#a6e22e">stop</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#39;&#39;x&#39;&#39; too big for implementation&#34;</span>)
+        <span style="color:#a6e22e">if</span>(<span style="color:#f92672">!</span><span style="color:#a6e22e">is.na</span>(memo[x])) <span style="color:#a6e22e">return</span>(memo[x])
+        ans <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">f</span>(x<span style="color:#ae81ff">-2</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">f</span>(x<span style="color:#ae81ff">-1</span>)
+        memo[x] <span style="color:#f92672">&lt;&lt;-</span> ans
         ans
     }
 })
-</code></pre>
-
-<pre><code>&gt; fibonacci(15)
+</code></pre></div><pre><code>&gt; fibonacci(15)
 [1] 610
 &gt; get(&quot;memo&quot;, envir=environment(fibonacci))
  [1]   1   1   2   3   5   8  13  21  34  55  89 144 233 377 610
 [16]  NA  NA  NA  NA  NA  NA  NA
-</code></pre>
-
-<p>environment是个好东西，我很惊讶于我看过的书里基本都没讲到。R的面向对象系统R5，就目前来看，是纯R实现的，用的就是S4和environment。</p>
-
+</code></pre><p>environment是个好东西，我很惊讶于我看过的书里基本都没讲到。R的面向对象系统R5，就目前来看，是纯R实现的，用的就是S4和environment。</p>
 <p>PS:S3面向对象就是加个class属性，通常用list来存储数据。我一直觉得，把数据存在封闭的environment里，再加个class属性，基本上就可以当成是个简易版的S4了，当然S4怎么实现，我并不清楚。</p>
-
-<ol>
+<ol start="3">
 <li>精度</li>
 </ol>
-
-<p>精度的问题，这是所有计算机语言的问题，就像<a href="http://www.ituring.com.cn/article/details/2058">图灵社区里的笑话</a>，0.1 + 0.2 &gt; 0.3 答案是TRUE.</p>
-
+<p>精度的问题，这是所有计算机语言的问题，就像<!-- raw HTML omitted -->图灵社区里的笑话<!-- raw HTML omitted -->，0.1 + 0.2 &gt; 0.3 答案是TRUE.</p>
 <pre><code>&gt; .1 == .3/3
 [1] FALSE
 &gt; print(.3/3, digits=16)
 [1] 0.09999999999999999
 &gt; as.integer(.3/3)
 [1] 0
-</code></pre>
-
-<ol>
+</code></pre><ol start="4">
 <li>操作符优先度</li>
 </ol>
-
 <p>这个也是所有语言所共有的问题，加（）才是万能的。这个之所以tricky，是因为有些优先度和我们的直觉不符合，如果不注意，就很有可能出错。</p>
-
 <p>比如下面的例子：</p>
-
 <pre><code>&gt; -1.2^2.3
 [1] -1.52
 &gt; (-1.2)^2.3
 [1] NaN
 &gt; as.complex(-1.2)^2.3
 [1] 0.89+1.23i
-</code></pre>
-
-<p>在R里，可以用<code>?Syntax</code>通过在线文档查看操作符的优先度。</p>
-
-<ol>
+</code></pre><p>在R里，可以用<code>?Syntax</code>通过在线文档查看操作符的优先度。</p>
+<ol start="5">
 <li>类属性</li>
 </ol>
-
 <p>在R里，所有的东西，都是对象，都有类属性。比如下面的例子，我想看x和y是否是一样的。</p>
-
 <pre><code>&gt; x &lt;- 1:2
 &gt; y &lt;- c(1,2)
 &gt; all(x == y)
 [1] TRUE
-</code></pre>
-
-<p>显然它们应该是一样的，但是如果用identical函数来看，答案却是FALSE。原因是x是整数型数据，而y是浮点型数据，所以它们不一样。这么tricky的事情，原因在于函数c会把数字都存成浮点型。</p>
-
+</code></pre><p>显然它们应该是一样的，但是如果用identical函数来看，答案却是FALSE。原因是x是整数型数据，而y是浮点型数据，所以它们不一样。这么tricky的事情，原因在于函数c会把数字都存成浮点型。</p>
 <pre><code>&gt; print(y, digits=10)
 [1] 1 2
-</code></pre>
-
-<p>其实y就是整数，被认为是浮点数，完全是因为类属性。</p>
-
-<ol>
+</code></pre><p>其实y就是整数，被认为是浮点数，完全是因为类属性。</p>
+<ol start="6">
 <li>缺失值</li>
 </ol>
-
 <p>比如下面的例子，我想取x中的2，因为x含有NA，就出问题了。当然这个还是比较好解决的，用which就可以了。</p>
-
 <pre><code>&gt; x &lt;- c(1:4,NA, 2)
 &gt; x
 [1]  1  2  3  4 NA  2
@@ -482,28 +439,17 @@ if (!doNotTrack) {
 [1]  2 NA  2
 &gt; x[which(x==2)]
 [1] 2 2
-</code></pre>
-
-<p>这个不算tricky，但是如果我想把x中大于5的数剔除掉，上面这个x没有数字是大于5的，我们期望它返回x自身。</p>
-
+</code></pre><p>这个不算tricky，但是如果我想把x中大于5的数剔除掉，上面这个x没有数字是大于5的，我们期望它返回x自身。</p>
 <pre><code>&gt; x[-which(x&gt;5)]
 numeric(0)
-</code></pre>
-
-<p>结果却是返回空向量。因为which(x&gt;5)是空的，做为index去取x的subset，自然也就取不到。</p>
-
+</code></pre><p>结果却是返回空向量。因为which(x&gt;5)是空的，做为index去取x的subset，自然也就取不到。</p>
 <p>对于各种membership的处理，万能又安全的还是<code>%in%</code>操作符。</p>
-
 <pre><code>&gt; x[! x %in% 5]
 [1]  1  2  3  4 NA  2
-</code></pre>
-
-<ol>
+</code></pre><ol start="7">
 <li>空向量</li>
 </ol>
-
 <p>上面例子出现空向量numeric(0),空向量如果出现于计算中，也是很weird的。</p>
-
 <pre><code>&gt; sum(numeric(0))
 [1] 0
 &gt; prod(numeric(0))
@@ -512,34 +458,25 @@ numeric(0)
 [1] FALSE
 &gt; all(logical(0))
 [1] TRUE
-</code></pre>
-
-<ol>
-<li><p>操作符是函数</p>
-
+</code></pre><ol start="8">
+<li>操作符是函数</li>
+</ol>
 <pre><code>&gt; &quot;+&quot;(1,2)
 [1] 3
 &gt; &quot;==&quot;(1,2)
 [1] FALSE
 &gt; &quot;&lt;&quot;(1,2)
 [1] TRUE
-</code></pre></li>
-
-<li><p>纯数字的data.frame</p></li>
+</code></pre><ol start="9">
+<li>纯数字的data.frame</li>
 </ol>
-
 <p>如果一个data.frame的内容全是数字，它看起来和matrix长得一模一样，但是它们的实现方式是不一样的，matrix是dimention=2的array，而data.frame是等长的list。</p>
-
 <p>长得像有时候不注意，就会出现confuse，比如你要求一个matrix的均值，很容易，用mean函数就行。但如果你用mean去求一个data.frame的均值，就不work了，给出的结果是每个column的均值所组成的向量，当然你可以对这个column mean再求一次mean就行了，也可以先as.matrix或unlist处理一下，再求mean。</p>
-
 <p>各种函数，包括apply系列，对于data.frame和matrix的行为，很多都是不一样的，需要谨慎。</p>
-
-<ol>
+<ol start="10">
 <li>哈希表</li>
 </ol>
-
 <p>R的数据类型中没有哈希表，通常我们可以用named vector或者list来实现，可以通过name来取得所对应的值。但这并不是真正意义上的哈希，同样我们可以用environment来实现。</p>
-
 <pre><code>&gt; ee &lt;- new.env()
 &gt; assign(&quot;a&quot;, 10, ee)
 &gt; assign(&quot;b&quot;, 22, ee)
@@ -552,22 +489,15 @@ numeric(0)
 &gt; values
  a  b 
 10 22 
-</code></pre>
-
-<ol>
+</code></pre><ol start="11">
 <li>用数字当变量名</li>
 </ol>
-
-<p>几乎所有的编程语言都不允许以_开头或者数字当变量名，但在R里，这却是可能的，请<a href="http://ygc.name/2009/11/23/using-number-as-variable/">猛击此处</a>。</p>
-
+<p>几乎所有的编程语言都不允许以_开头或者数字当变量名，但在R里，这却是可能的，请<!-- raw HTML omitted -->猛击此处<!-- raw HTML omitted -->。</p>
 <p>这么tricky的事情，也是通过environment来实现的。</p>
-
-<ol>
+<ol start="12">
 <li>部分匹配</li>
 </ol>
-
 <p>正如第一点提到的<code>&lt;-</code>和=是通用的，取list元素是<code>$</code>和<code>[[</code>也是通用的，然而它们的默认行为也是不一样的，<code>$</code>默认支持部分匹配，而<code>[[</code>则不是。</p>
-
 <pre><code>&gt; ll &lt;- list(aa=1:2, ab=2:4, cc=1:3) 
 &gt; ll$c
 [1] 1 2 3
@@ -575,10 +505,7 @@ numeric(0)
 NULL
 &gt; ll[[&quot;c&quot;, exact=FALSE]]
 [1] 1 2 3
-</code></pre>
-
-<p>部分匹配不是好东西，比如下面的例子：</p>
-
+</code></pre><p>部分匹配不是好东西，比如下面的例子：</p>
 <pre><code>&gt; ll$c
 [1] 1 2 3
 &gt; ll$c &lt;- 5:6
@@ -593,15 +520,11 @@ $cc
 [1] 1 2 3
 $c
 [1] 5 6
-</code></pre>
-
-<p>如果你习惯用部分匹配去取元素，在对此元素进行重新赋值的时候，就很可能会犯错。</p>
-
+</code></pre><p>如果你习惯用部分匹配去取元素，在对此元素进行重新赋值的时候，就很可能会犯错。</p>
 <p>函数参数也支持部分匹配，比如有个参数trim，而你一直用t去传这个参数，如果以后函数加了参数比如treat，那么你原先的代码就会莫名其妙的不干活了。</p>
-
-<ol>
-<li><p>factor</p>
-
+<ol start="13">
+<li>factor</li>
+</ol>
 <pre><code>&gt; x &lt;- factor(8:12)
 &gt; as.numeric(x)
 [1] 1 2 3 4 5
@@ -609,13 +532,8 @@ $c
 [1]  8  9 10 11 12
 &gt; as.numeric(levels(x))
 [1]  8  9 10 11 12
-</code></pre></li>
-</ol>
-
-<p>factor由于内部是使用自然数去存储的，所以如果想把factor转换成数字，就必须要麻烦点。</p>
-
+</code></pre><p>factor由于内部是使用自然数去存储的，所以如果想把factor转换成数字，就必须要麻烦点。</p>
 <p>这个问题出现于data.frame中，就是个另人upset的玩意了。</p>
-
 <pre><code>&gt; df &lt;- data.frame(a=1:2, b=c(&quot;x&quot;,&quot;y&quot;))
 &gt; df[1,]
   a b
@@ -624,16 +542,11 @@ $c
 [1] &quot;1&quot; &quot;1&quot;
 &gt; as.character(df)
 [1] &quot;1:2&quot; &quot;1:2&quot;
-</code></pre>
-
-<p>解决的办法是，你先把df转换成matrix。</p>
-
-<ol>
+</code></pre><p>解决的办法是，你先把df转换成matrix。</p>
+<ol start="14">
 <li>不存在的subscript</li>
 </ol>
-
 <p>接着使用上面的df。</p>
-
 <pre><code>&gt; rownames(df) &lt;- c(&quot;a&quot;, &quot;b&quot;)
 &gt; colnames(df) &lt;- c(&quot;p&quot;, &quot;q&quot;)
 &gt; df[c(&quot;a&quot;, &quot;e&quot;),]
@@ -642,22 +555,14 @@ a   1    x
 NA NA &lt;NA&gt;
 &gt; df[,c(&quot;p&quot;, &quot;e&quot;)]
 Error in `[.data.frame`(df, , c(&quot;p&quot;, &quot;e&quot;)) : undefined columns selected
-</code></pre>
-
-<p>row和column的行为是不一致的，而对于不同的数据类型，其返回值也会不同。</p>
-
+</code></pre><p>row和column的行为是不一致的，而对于不同的数据类型，其返回值也会不同。</p>
 <p>vector会返回NA,list则是NULL,matrix会报错，subscript out of bouds。</p>
-
-<ol>
+<ol start="15">
 <li>从剪贴板里读数据</li>
 </ol>
-
 <p>在windows和linux下，都可以用<code>read.table(&quot;paste&quot;)</code>来读取剪贴板里的数据，在Mac OS X下，就不行了。你必须要用<code>read.table(pipe(&quot;pbpaste&quot;))</code>，而在Linux下，则是用<code>read.table(&quot;clipboard&quot;)</code>，我其实很纳闷，为什么就不能包装一下，让语法统一。</p>
-
 <p>最后，附送一个tips，从我<a href="https://guangchuangyu.github.io/cn/2007/06/screenshot/">以前的截屏</a>上看，我最喜欢干的事，就是一打开终端，自动运行一次fortune，顺道看看名言嘛-,-</p>
-
 <p>在R里，有个<a href="http://cran.r-project.org/web/packages/fortunes/index.html">fortunes</a>包，收集的是R相关的言论，有事没事看一看，有益身心健康啊！</p>
-
 <pre><code>&gt; require(fortunes)
 Loading required package: fortunes
 &gt; fortune()

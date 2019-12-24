@@ -5,24 +5,18 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
 
-
-
 群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
-
 套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
 
 
 <meta property="og:description" content="
 
-
-
 群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
-
 套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="史前人类怎么使用R">
@@ -32,17 +26,11 @@
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
 
-
-
 群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
-
 套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
 <meta name="twitter:description" content="
 
-
-
 群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。
-
 套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？">
 <meta property="og:locale" content="en-us">
 
@@ -304,36 +292,27 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/apply.jpg" alt="" /></p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-apply.jpg" alt="" /></p>
-
+              <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/apply.jpg" alt=""></p>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-apply.jpg" alt=""></p>
 <p>群里大家给出各种解法，但似乎避开了dplyr之后，大家还是会用到plyr或者purrr，没人给出我讲的apply套split的纯base R的解法。</p>
-
 <p>套两重for循环，会让人容易理解一点，而且代码也非常简单，但效率不行，用apply的话，处理各种list，特别如果要list套list，很多人就比较懵逼，需要借助于plyr或purrr，甚至还有人的解法虽然不用dplyr的group_by套summarise，但用了dplyr其它的函数。tidyverse真的太好用，对低端R用户照顾得太好，大家都被惯坏了，但想一下，以前的人真的就不用活了吗？</p>
-
 <p>用我说的split + apply，完全不需要额外的library，其实也蛮简单的，下面是我写的代码，仅供参考：</p>
-
 <blockquote>
 <p>PS: 尽管这里用到了管道，但管道可有可无，无非是把从里到外变成从左到右，让代码易读性高一点而已。</p>
 </blockquote>
-
-<pre><code class="language-r">res &lt;- read.delim(&quot;Temperature.txt&quot;)[,c(&quot;Year&quot;, &quot;Month&quot;, &quot;Temperature&quot;)] %&gt;%
-    split(.$Year) %&gt;%
-    lapply(function(y) split(y, y$Month)) %&gt;%
-    lapply(function(m) lapply(m, function(x)
-        mean(x$Temperature, na.rm=TRUE))) %&gt;%
-    lapply(function(x)
-        data.frame(Month=names(x),
-                   Temperature=unlist(x))) %&gt;%
-    do.call(&quot;rbind&quot;, .) %&gt;%
-    cbind(Year=sub(&quot;\\.\\d{1,2}&quot;, &quot;&quot;,
-                   rownames(.)), .,
-          row.names=NULL)
-</code></pre>
-
-<p>结果如下：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.delim</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature.txt&#34;</span>)[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature&#34;</span>)] <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">split</span>(.$Year) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(y) <span style="color:#a6e22e">split</span>(y, y<span style="color:#f92672">$</span>Month)) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(m) <span style="color:#a6e22e">lapply</span>(m, <span style="color:#a6e22e">function</span>(x)
+        <span style="color:#a6e22e">mean</span>(x<span style="color:#f92672">$</span>Temperature, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>))) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(x)
+        <span style="color:#a6e22e">data.frame</span>(Month<span style="color:#f92672">=</span><span style="color:#a6e22e">names</span>(x),
+                   Temperature<span style="color:#f92672">=</span><span style="color:#a6e22e">unlist</span>(x))) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">do.call</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">rbind&#34;</span>, .) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">cbind</span>(Year<span style="color:#f92672">=</span><span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\.\\d{1,2}&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>,
+                   <span style="color:#a6e22e">rownames</span>(.)), .,
+          row.names<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>)
+</code></pre></div><p>结果如下：</p>
 <pre><code>&gt; head(res)
   Year Month Temperature
 1 1990     1    6.313889
@@ -351,81 +330,50 @@ if (!doNotTrack) {
 191 2005    11   11.562759
 192 2005    12    7.111481
 &gt; 
-</code></pre>
-
-<h3 id="拆解代码">拆解代码</h3>
-
+</code></pre><h3 id="heading">拆解代码</h3>
 <p>这个代码看着挺复杂，其实很简单，我们来拆解一下：</p>
-
 <p><strong>读数据：</strong></p>
-
-<pre><code class="language-r">x &lt;- read.delim(&quot;Temperature.txt&quot;)[,c(&quot;Year&quot;, &quot;Month&quot;, &quot;Temperature&quot;)]
-</code></pre>
-
-<p><strong>切分数据，并计算</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.delim</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature.txt&#34;</span>)[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature&#34;</span>)]
+</code></pre></div><p><strong>切分数据，并计算</strong></p>
 <p>按照两个因子分层切分，对第二层数据进行求均值。</p>
-
-<pre><code class="language-r">x %&gt;%
-  split(.$Year) %&gt;%
-  lapply(function(y) split(y, y$Month)) %&gt;%
-    lapply(function(m) lapply(m, function(x)
-        mean(x$Temperature, na.rm=TRUE)))
-</code></pre>
-
-<p>对于第二步，如果我们套用tapply的话，就可以少一行，因为tapply相当于是sapply + split，所以对于Month可以不用切，交给tapply。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">split</span>(.$Year) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(y) <span style="color:#a6e22e">split</span>(y, y<span style="color:#f92672">$</span>Month)) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(m) <span style="color:#a6e22e">lapply</span>(m, <span style="color:#a6e22e">function</span>(x)
+        <span style="color:#a6e22e">mean</span>(x<span style="color:#f92672">$</span>Temperature, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)))
+</code></pre></div><p>对于第二步，如果我们套用tapply的话，就可以少一行，因为tapply相当于是sapply + split，所以对于Month可以不用切，交给tapply。</p>
 <pre><code>x %&gt;%
     split(.$Year) %&gt;%
     lapply(function(x)
         tapply(x$Temperature, x$Month, mean, na.rm=TRUE))
-</code></pre>
-
-<p><strong>结果转为data.frame</strong></p>
-
+</code></pre><p><strong>结果转为data.frame</strong></p>
 <p>这里写成函数，因为后面会重用到</p>
-
-<pre><code class="language-r">ls2df &lt;- function(ls) {
-   lapply(ls, function(x)
-     data.frame(Month=names(x),
-                Temperature=unlist(x))) %&gt;%
-     do.call(&quot;rbind&quot;, .) %&gt;%
-     cbind(Year=sub(&quot;\\.\\d{1,2}&quot;, &quot;&quot;,
-                    rownames(.)), .,
-           row.names=NULL)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">ls2df <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(ls) {
+   <span style="color:#a6e22e">lapply</span>(ls, <span style="color:#a6e22e">function</span>(x)
+     <span style="color:#a6e22e">data.frame</span>(Month<span style="color:#f92672">=</span><span style="color:#a6e22e">names</span>(x),
+                Temperature<span style="color:#f92672">=</span><span style="color:#a6e22e">unlist</span>(x))) <span style="color:#f92672">%&gt;%</span>
+     <span style="color:#a6e22e">do.call</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">rbind&#34;</span>, .) <span style="color:#f92672">%&gt;%</span>
+     <span style="color:#a6e22e">cbind</span>(Year<span style="color:#f92672">=</span><span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\.\\d{1,2}&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>,
+                    <span style="color:#a6e22e">rownames</span>(.)), .,
+           row.names<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>)
 }
-</code></pre>
-
-<h3 id="来个简单版本">来个简单版本</h3>
-
+</code></pre></div><h3 id="heading-1">来个简单版本</h3>
 <p>其实啊，split可以一次切两个因子，所以用split一切，套个sapply即可。</p>
-
-<pre><code class="language-r">temp &lt;- sapply(split(x$Temperature, x[,c(&quot;Year&quot;, &quot;Month&quot;)]), mean, na.rm=TRUE)
-res &lt;- data.frame(Year = sub(&quot;(\\d{4}).*&quot;, &quot;\\1&quot;, names(temp)),
-                  Month = sub(&quot;\\d{4}.&quot;, &quot;&quot;, names(temp)),
-                  Temperature = temp,
-                  row.names = NULL)
-</code></pre>
-
-<h3 id="一行代码版本">一行代码版本</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">temp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#a6e22e">split</span>(x<span style="color:#f92672">$</span>Temperature, x[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>)]), mean, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
+res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(Year <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">(\\d{4}).*&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\1&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
+                  Month <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\d{4}.&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
+                  Temperature <span style="color:#f92672">=</span> temp,
+                  row.names <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>)
+</code></pre></div><h3 id="heading-2">一行代码版本</h3>
 <p>前面我说过tapply相当于sapply + split，所以用tapply可以一行代码解决：</p>
-
-<pre><code class="language-r">tapply(x$Temperature, list(x$Year, x$Month), mean, na.rm=TRUE)
-</code></pre>
-
-<p>不过这个输出是以Year为row, Month为column的matrix，如果要转成像上面的tidy data frame的话，还需要额外的操作。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">tapply</span>(x<span style="color:#f92672">$</span>Temperature, <span style="color:#a6e22e">list</span>(x<span style="color:#f92672">$</span>Year, x<span style="color:#f92672">$</span>Month), mean, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
+</code></pre></div><p>不过这个输出是以Year为row, Month为column的matrix，如果要转成像上面的tidy data frame的话，还需要额外的操作。</p>
 <p>用aggregate也可以实现一行代码，不过没有tapply快，当然输出不完全一致的情况下，比较速度也有点bias。</p>
-
-<pre><code class="language-r">b &lt;- microbenchmark(
-    tapply(x$Temperature, list(x$Year, x$Month), mean, na.rm=TRUE),
-    aggregate(x, by=list(x$Year, x$Month), mean, na.rm=T)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">b <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">microbenchmark</span>(
+    <span style="color:#a6e22e">tapply</span>(x<span style="color:#f92672">$</span>Temperature, <span style="color:#a6e22e">list</span>(x<span style="color:#f92672">$</span>Year, x<span style="color:#f92672">$</span>Month), mean, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>),
+    <span style="color:#a6e22e">aggregate</span>(x, by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(x<span style="color:#f92672">$</span>Year, x<span style="color:#f92672">$</span>Month), mean, na.rm<span style="color:#f92672">=</span>T)
     )
-</code></pre>
-
-<p>tapply胜出：</p>
-
+</code></pre></div><p>tapply胜出：</p>
 <pre><code>&gt; b
 Unit: milliseconds
                                                              expr    min
@@ -434,70 +382,42 @@ Unit: milliseconds
       lq     mean  median     uq     max neval
  1.33325 1.499571 1.41000 1.4750  5.6744   100
  7.37845 8.205050 8.07395 8.3865 15.9764   100
-</code></pre>
-
-<h3 id="强行总结">强行总结</h3>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/slogan/perl.jpg" alt="" /></p>
-
+</code></pre><h3 id="heading-3">强行总结</h3>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/slogan/perl.jpg" alt=""></p>
 <p>尽管split、aggregate和tapply都可以支持多重因子，我还是喜欢各种split+apply套一堆的版本，因为做为练习，这才是好的学习代码，而且我写的这个，已经非常模块化了，三个步骤，非常明确，再者多玩一下list，熟悉一下不规则的数据，才好应对现实世界中的数据，总是data.frame进，data.frame出是不太现实的。尽管tapply一行可以解决，但内部的逻辑无非也是与我们的代码类似。</p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-moment-1.jpg" alt="" /></p>
-
-<h3 id="番外篇-假如我要用r包呢">番外篇：假如我要用R包呢？</h3>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/gif/dance.gif" alt="" /></p>
-
+<p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-moment-1.jpg" alt=""></p>
+<h3 id="r">番外篇：假如我要用R包呢？</h3>
+<p><img src="http://guangchuangyu.gitee.io/blog_images/gif/dance.gif" alt=""></p>
 <p><strong>plyr</strong></p>
-
-<pre><code class="language-r">library(plyr)
-ddply(x, .(Year,Month), summarize, 
-      Temperature=mean(Temperature, na.rm=T))
-</code></pre>
-
-<p><strong>reshape2</strong></p>
-
-<pre><code class="language-r">library(reshape2)
-dcast(x, Year+Month~..., fun=function(x) mean(x, na.rm=T), 
-      value.var = c(&quot;Temperature&quot;))
-</code></pre>
-
-<p><strong>purrr</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(plyr)
+<span style="color:#a6e22e">ddply</span>(x, .(Year,Month), summarize, 
+      Temperature<span style="color:#f92672">=</span><span style="color:#a6e22e">mean</span>(Temperature, na.rm<span style="color:#f92672">=</span>T))
+</code></pre></div><p><strong>reshape2</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(reshape2)
+<span style="color:#a6e22e">dcast</span>(x, Year<span style="color:#f92672">+</span>Month<span style="color:#f92672">~</span><span style="color:#66d9ef">...</span>, fun<span style="color:#f92672">=</span><span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">mean</span>(x, na.rm<span style="color:#f92672">=</span>T), 
+      value.var <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature&#34;</span>))
+</code></pre></div><p><strong>purrr</strong></p>
 <p>用purrr就跟用lapply似的，所以并不显示有什么优势，当然如果你直接按照Year + Month去split的话，用lapply跟用map一样，非常简单出结果，也就是上面的来个简单版本所写的版本。并没有什么新玩意。</p>
-
 <p>如果要用purrr的话，我想还是用我原先的代码，先产生list of list，再对第二层求均值，最后用ls2df函数（上面拆解代码的第三步）整理为data.frame，这样子的话，在第二步求均值的时候，用purrr就显得有优势了，因为要对两层list操作的时候，不用套两个lapply，可以用map_depth，这样逻辑还是一样，但代码简洁了，可读性，易于理解等都有所改善。</p>
-
-<pre><code class="language-r">library(purrr)
-lapply(split(x, x$Year), function(.) split(., .$Month)) %&gt;%
-  map_depth(2, function(.) mean(.$Temperature, na.rm=T)) %&gt;%
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(purrr)
+<span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">split</span>(x, x<span style="color:#f92672">$</span>Year), <span style="color:#a6e22e">function</span>(.) <span style="color:#a6e22e">split</span>(., .$Month)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">map_depth</span>(<span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">function</span>(.) <span style="color:#a6e22e">mean</span>(.$Temperature, na.rm<span style="color:#f92672">=</span>T)) <span style="color:#f92672">%&gt;%</span>
   ls2df
-</code></pre>
-
-<p><strong>sqldf</strong></p>
-
+</code></pre></div><p><strong>sqldf</strong></p>
 <p>让你用SQL语法来summarize数据。</p>
-
-<pre><code class="language-r">library(sqldf)
-sqldf(&quot;SELECT Year, Month, avg(Temperature)
-       FROM x
-       GROUP BY Year, Month&quot;)
-</code></pre>
-
-<p><strong>doBy</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(sqldf)
+<span style="color:#a6e22e">sqldf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SELECT Year, Month, avg(Temperature)
+</span><span style="color:#e6db74">       FROM x
+</span><span style="color:#e6db74">       GROUP BY Year, Month&#34;</span>)
+</code></pre></div><p><strong>doBy</strong></p>
 <p>顾名思义，干的就是这档事。</p>
-
-<pre><code class="language-r">library(doBy)
-summaryBy(Temperature ~ Year + Month, data = x, FUN=mean, na.rm=T)
-</code></pre>
-
-<p><strong>data.table</strong></p>
-
-<pre><code class="language-r">library(data.table)
-data.table(x)[, list(mean=mean(Temperature, na.rm=TRUE)), 
-              by=c(&quot;Year&quot;, &quot;Month&quot;)]
-</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(doBy)
+<span style="color:#a6e22e">summaryBy</span>(Temperature <span style="color:#f92672">~</span> Year <span style="color:#f92672">+</span> Month, data <span style="color:#f92672">=</span> x, FUN<span style="color:#f92672">=</span>mean, na.rm<span style="color:#f92672">=</span>T)
+</code></pre></div><p><strong>data.table</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(data.table)
+<span style="color:#a6e22e">data.table</span>(x)[, <span style="color:#a6e22e">list</span>(mean<span style="color:#f92672">=</span><span style="color:#a6e22e">mean</span>(Temperature, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)), 
+              by<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>)]
+</code></pre></div>
               
             </div>
           </div>

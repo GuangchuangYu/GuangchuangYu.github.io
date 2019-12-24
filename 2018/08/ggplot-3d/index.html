@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="在《扪心自问，meme几何？》一文中，我画了一只兔子，今天给大家演示一下画一只3D版本的兔子，我们知道ggplot2不支持3D，只能画2D的图，但3D其实只是视觉上的，显示在你屏幕上的，同样只是2D。所以我们要做的，就是把3D的坐标转换成2D，然后画出2D的图片来，而这2D看上去有3D的效果。">
@@ -285,9 +285,7 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>在《<a href="http://mp.weixin.qq.com/s/BPY4dPFrrNrDKccMvax07w">扪心自问，meme几何？</a>》一文中，我画了一只兔子，今天给大家演示一下画一只3D版本的兔子，我们知道<code>ggplot2</code>不支持3D，只能画2D的图，但3D其实只是视觉上的，显示在你屏幕上的，同样只是2D。所以我们要做的，就是把3D的坐标转换成2D，然后画出2D的图片来，而这2D看上去有3D的效果。</p>
-
 <p>我们首先定义一个转换函数：</p>
-
 <pre><code>trans_3d_2d &lt;- function(data, theta=135, phi=60) {
 	pmat &lt;- plot3D::perspbox(z=diag(2), plot=F, theta=theta, phi=phi)
 	
@@ -304,10 +302,7 @@ if (!doNotTrack) {
 
 	return(data[, c('x', 'y')])
 }
-</code></pre>
-
-<p>然后我们使用一个3D兔子的坐标来测试一下，当然一般画3D的程序都支持你用鼠标交互，比如旋转角度什么的，但我们用<code>ggplot2</code>就不可以，我们能做到的，就是在调用上面的转换函数时，指定不同的角度而已。</p>
-
+</code></pre><p>然后我们使用一个3D兔子的坐标来测试一下，当然一般画3D的程序都支持你用鼠标交互，比如旋转角度什么的，但我们用<code>ggplot2</code>就不可以，我们能做到的，就是在调用上面的转换函数时，指定不同的角度而已。</p>
 <pre><code>require(onion)
 data(bunny)
 d &lt;- trans_3d_2d(bunny)
@@ -317,9 +312,7 @@ ggplot(d, aes(x, y, color=x)) + geom_point(alpha=.2)  +
 	coord_flip() + 
 	theme(legend.position=&quot;none&quot;) + 
 	scale_y_reverse()
-</code></pre>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/2018-08-13-3d-rabbit_1280x800_scrot.png" alt="" /></p>
+</code></pre><p><img src="http://guangchuangyu.github.io/blog_images/R/ggplot2/2018-08-13-3d-rabbit_1280x800_scrot.png" alt=""></p>
               
             </div>
           </div>

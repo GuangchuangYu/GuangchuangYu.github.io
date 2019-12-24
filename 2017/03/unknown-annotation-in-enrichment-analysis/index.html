@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="小伙伴说注释不全，比如KEGG只有不到1万个基因有注释，但他一次RNA-seq出来的基因有2万多个，那其它没注释那1万多个岂不是扔了？！就某个通路来说，两种情况，要么属于，要么不属于这个通路。那1万多个应该放在背景里，不要扔。
-
 我的解答是三种情况，1属于，2不属于，3不知道。对于缺失信息的，当然是扔。">
 
 
 <meta property="og:description" content="小伙伴说注释不全，比如KEGG只有不到1万个基因有注释，但他一次RNA-seq出来的基因有2万多个，那其它没注释那1万多个岂不是扔了？！就某个通路来说，两种情况，要么属于，要么不属于这个通路。那1万多个应该放在背景里，不要扔。
-
 我的解答是三种情况，1属于，2不属于，3不知道。对于缺失信息的，当然是扔。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="unknown annotation in enrichment analysis">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/03/unknown-annotation-in-enrichment-analysis/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="小伙伴说注释不全，比如KEGG只有不到1万个基因有注释，但他一次RNA-seq出来的基因有2万多个，那其它没注释那1万多个岂不是扔了？！就某个通路来说，两种情况，要么属于，要么不属于这个通路。那1万多个应该放在背景里，不要扔。
-
 我的解答是三种情况，1属于，2不属于，3不知道。对于缺失信息的，当然是扔。">
 <meta name="twitter:description" content="小伙伴说注释不全，比如KEGG只有不到1万个基因有注释，但他一次RNA-seq出来的基因有2万多个，那其它没注释那1万多个岂不是扔了？！就某个通路来说，两种情况，要么属于，要么不属于这个通路。那1万多个应该放在背景里，不要扔。
-
 我的解答是三种情况，1属于，2不属于，3不知道。对于缺失信息的，当然是扔。">
 <meta property="og:locale" content="en-us">
 
@@ -289,17 +285,11 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>小伙伴说注释不全，比如KEGG只有不到1万个基因有注释，但他一次RNA-seq出来的基因有2万多个，那其它没注释那1万多个岂不是扔了？！就某个通路来说，两种情况，要么属于，要么不属于这个通路。那1万多个应该放在背景里，不要扔。</p>
-
 <p>我的解答是三种情况，1属于，2不属于，3不知道。对于缺失信息的，当然是扔。</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/685336006.jpg" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/685336006.jpg" alt=""></p>
 <p>然而他觉得影响不大，这必须是有影响的。我们算一下p值就知道了。</p>
-
-<hr />
-
-<h2 id="第一种情况-只搞大n">第一种情况，只搞大N</h2>
-
+<hr>
+<h2 id="n">第一种情况，只搞大N</h2>
 <pre><code>&gt; k
 [1] 10
 &gt; n
@@ -310,46 +300,26 @@ if (!doNotTrack) {
 [1] 10000
 &gt; phyper(k-1, M, N1-M, n, lower.tail=F)
 [1] 0.02751124
-</code></pre>
-
-<p>比如有这样的情况，算出来<strong>0.0275</strong>，假如背景现在翻一翻，我们来看一下：</p>
-
+</code></pre><p>比如有这样的情况，算出来<strong>0.0275</strong>，假如背景现在翻一翻，我们来看一下：</p>
 <pre><code>&gt; N2
 [1] 20000
 &gt; phyper(k-1, M, N2-M, n, lower.tail=F)
 [1] 0.0002018491
-</code></pre>
-
-<p>p值变成正确的100分之一了。影响是如此之大！</p>
-
-<h2 id="第二种情况-n和n都搞大">第二种情况，N和n都搞大</h2>
-
+</code></pre><p>p值变成正确的100分之一了。影响是如此之大！</p>
+<h2 id="nn">第二种情况，N和n都搞大</h2>
 <p>第一种情况是最常见的，有些web-server或软件，会有参数说估计一下物种的基因总数，这就是在搞大<strong>N</strong>啊。</p>
-
 <p>然后你可能会觉得，N大了，那你的基因列表里没注释的也不能扔啊，N翻倍了，n也应该翻倍？！</p>
-
 <p>我们就当n也翻倍吧，看一下：</p>
-
 <pre><code>&gt; phyper(k-1, M, N2-M, n*2, lower.tail=F)
 [1] 0.02930878
-</code></pre>
-
-<p>好像是和正确答案差不多，然而大家有没有想到，这是有前提条件的，建立在完全随机的基因上，也就是说基因有没有注释的概率是一样的，我们在一个基因池子里随机捞一些出来研究，这显然是不成立的，有些通路就是被研究得很透，有些就是基本未知。科学上有些东西，就像个死火山，要靠某个突破之后突然喷发，研究上的东西，从来不是随机在发展。还拿KEGG来说吧，也就是代谢通路比较全。</p>
-
+</code></pre><p>好像是和正确答案差不多，然而大家有没有想到，这是有前提条件的，建立在完全随机的基因上，也就是说基因有没有注释的概率是一样的，我们在一个基因池子里随机捞一些出来研究，这显然是不成立的，有些通路就是被研究得很透，有些就是基本未知。科学上有些东西，就像个死火山，要靠某个突破之后突然喷发，研究上的东西，从来不是随机在发展。还拿KEGG来说吧，也就是代谢通路比较全。</p>
 <p>所以第一点，N翻倍了，n在事实上不会刚好也翻倍的。假如n是乘1.5吧，我们来看p值:</p>
-
 <pre><code>&gt; phyper(k-1, M, N2-M, n*1.5, lower.tail=F)
 [1] 0.004529063
-</code></pre>
-
-<p>是正确p值的1/7，差别还有蛮大的。</p>
-
-<hr />
-
+</code></pre><p>是正确p值的1/7，差别还有蛮大的。</p>
+<hr>
 <p>即使第二种情况成立，注释是随机的，你拿到的基因列表，也不应该是随机的，你无法对缺失注释的基因的分布做任何的估计，特别是对你的基因列表，不扔是错的。</p>
-
 <p>三种情况，属于、不属于和不知道，分别可以说是true, false, NA，不过滤的做法，其实是把NA全当成false了，这问题太明显了，不可能全是false，是不是false的比例对于不同的pathway来说也不一样！而具体情况当然NA的东西，它就是NA，鬼知道。</p>
-
 <p>所以必须要扔，注释信息本身是不全的，是有bias的，但这是现实，你没办法改善现实的情况下，起码不要想当然去把情况弄得更糟。</p>
               
             </div>

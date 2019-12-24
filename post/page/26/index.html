@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -250,6 +250,73 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/">
+          Phylomoji with ggtree and emojifont
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-05-17T11:11:11&#43;08:00">
+        
+  May 17, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>With ggtree (Yu et al. 2017), it is very easy to create phylomoji. Emoji is internally supported by ggtree.</p>
+<h2 id="use-emoji-in-taxa-labels">Use emoji in taxa labels</h2>
+<pre><code class="language-{r}" data-lang="{r}">library(ggtree)
+tree_text &lt;- &quot;(((((cow, (whale, dolphin)), (pig2, boar)), camel), fish), seedling);&quot;
+x &lt;- read.tree(text=tree_text)
+ggtree(x, linetype=&quot;dashed&quot;, color='firebrick') +
+    xlim(NA, 7) + ylim(NA, 8.5) +
+    geom_tiplab(aes(color=label), parse='emoji', size=14, vjust=0.25) +
+    labs(title=&quot;phylomoji&quot;, caption=&quot;powered by ggtree + emojifont&quot;)
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/phylomoji_files/figure-markdown_github/unnamed-chunk-2-1.png" alt=""></p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2017/05/phylomoji-with-ggtree-and-emojifont/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/05/enrichdavid-user-bg/">
           enrichDAVID支持自定义背景
         </a>
@@ -278,19 +345,14 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>虽然我不喜欢DAVID，但很多用户喜欢，所以clusterProfiler也支持了，最近github上又有人<a href="https://github.com/GuangchuangYu/clusterProfiler/issues/87">要求支持自定义背景</a>。</p>
-
 <blockquote>
 <p>Dear Guangchuang,</p>
-
 <p>I am using clusterProfiler in Kegg pathway enrichment analysis, it is useful and nice. I am looking for a function which accept background and has ability to deal with Ensembl gene ID.</p>
-
 <p>In a function enrichDAVID it can takes ensembl gene id as an input format, but not allows to enter background.
 <code>enrichDAVID(gene = gene, idType=&quot;ENSEMBL_GENE_ID&quot;, annotation=&quot;KEGG_PATHWAY&quot;, species= &quot;hsa&quot;)</code></p>
-
 <p>Other command enrichKEGG has a background input but only takes entrez gene id,
 <code>enrichKEGG(gene, organism = &quot;hsa&quot;, keyType = &quot;kegg&quot;, universe)</code></p>
-
-<p>I have tried to convert my ensembl gene IDs to entrez gene id, but some ensembl gene IDs represent more than one entrez gene ID.
+<p>I have tried to convert my ensembl gene IDs to entrez gene id, but some ensembl gene IDs represent more than one entrez gene ID. 
 I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are in entrez ID and i am still dont know how to convert.</p>
 </blockquote>
       
@@ -349,16 +411,14 @@ I downloaded KEGG pathway dataset to apply fisher exact test. however, genes are
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>想要分段标记bootstrap，比如<code>0-70</code>, <code>70-90</code>, <code>90-100</code>之类的。这个对于ggtree来说，太简单。</p>
-
 <p>首先我们要读树，用<code>treeio</code>的<code>read.newick</code>，它和<code>read.tree</code>的不同之处是，加入了参数<code>node.label</code>，当<code>node.label</code>存的不是<code>label</code>，而是<code>bootstrap</code>等数字型的时候，你可以传入<code>node.label='support'</code>，这样它会把node label解析为support value，另存为树注释数据，而不是和tip label混在一起。label变量只能存为字符型，因为和tip label混了，而字符型会让数字操作稍微复杂点。所以我们要用<code>read.newick</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tree <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.newick</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">RMI.phy_phyml_tree_rooted_labeled.txt&#34;</span>, node.label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">support&#39;</span>)
+root <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getRoot</span>(tree<span style="color:#f92672">@</span>phylo)
 
-<pre><code class="language-r">tree &lt;- read.newick(&quot;RMI.phy_phyml_tree_rooted_labeled.txt&quot;, node.label='support')
-root &lt;- getRoot(tree@phylo)
-
-p &lt;- ggtree(tree, color=&quot;black&quot;, size=1.5, linetype=1,  ladderize=TRUE) + 
-     ggtitle(label=&quot;Figure A&quot;) + 
-    geom_tiplab(size=4.5, hjust = -0.060, fontface=&quot;bold&quot;) +  xlim(0, 0.09)
-</code></pre>
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</span>(tree, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">black&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">1.5</span>, linetype<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,  ladderize<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>) <span style="color:#f92672">+</span> 
+     <span style="color:#a6e22e">ggtitle</span>(label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Figure A&#34;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_tiplab</span>(size<span style="color:#f92672">=</span><span style="color:#ae81ff">4.5</span>, hjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">-0.060</span>, fontface<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">bold&#34;</span>) <span style="color:#f92672">+</span>  <span style="color:#a6e22e">xlim</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.09</span>)
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/05/bootstrap-value%E5%88%86%E6%AE%B5%E6%A0%87%E8%AE%B0/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -414,12 +474,9 @@ p &lt;- ggtree(tree, color=&quot;black&quot;, size=1.5, linetype=1,  ladderize=T
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2017-04-29 at 1.46.28 PM.png" alt="" /></p>
-
+        <p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen">https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen</a> Shot 2017-04-29 at 1.46.28 PM.png)</p>
 <p>最新的一个问题，大致讲他有两个trait, A和B，想拿A来给label上色，B来画热图。</p>
-
 <p>加载用户数据我们有<code>%&lt;+%</code>操作符，热图有<code>gheatmap</code>函数。</p>
-
 <p>我给了他一个简单的例子：</p>
       
       <p>
@@ -477,7 +534,6 @@ p &lt;- ggtree(tree, color=&quot;black&quot;, size=1.5, linetype=1,  ladderize=T
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>苹果和企鹅分赃没谈好，反正林子大了，就不顾小鸟的死活！取消了iOS的赞赏功能，一个个觉得错过了一个亿，我真不知道原来你们的赞赏有这么多！我半年来得到的还不够我的日薪多。虽然少得可怜，但我还是及时地在当天给出方案来吸引眼球，创作了一个绿色的赞赏按纽。</p>
-
 <p>我的文章排版都是<a href="https://guangchuangyu.github.io/cn/2017/01/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E6%96%87markdown%E4%B8%80%E9%94%AE%E6%8E%92%E7%89%88/">markdown</a>，markdown是外部驱动的，要什么效果，CSS话事。这个赞赏按纽无非是个链接，赞赏二字链接到转帐二维码，而要实现按纽的效果，可以专门定义一个style来实现。</p>
       
       <p>
@@ -537,10 +593,9 @@ p &lt;- ggtree(tree, color=&quot;black&quot;, size=1.5, linetype=1,  ladderize=T
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <blockquote>
-<p>Virtual Network Computing (VNC) is a special way to remotely control a computer. Like Secure Shell (SSH), a computer user can login to a remote machine on the network and execute commands and access files on the system. However, VNC displays the remote system&rsquo;s desktop while SSH displays a terminal shell. It may be beneficial to learn more about VNC and similar technologies.</p>
+<p>Virtual Network Computing (VNC) is a special way to remotely control a computer. Like Secure Shell (SSH), a computer user can login to a remote machine on the network and execute commands and access files on the system. However, VNC displays the remote system's desktop while SSH displays a terminal shell. It may be beneficial to learn more about VNC and similar technologies.</p>
 </blockquote>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/2017-04-13-011729_1280x800_scrot.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/2017/2017-04-13-011729_1280x800_scrot.png" alt=""></p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/04/realvnc/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -597,96 +652,19 @@ p &lt;- ggtree(tree, color=&quot;black&quot;, size=1.5, linetype=1,  ladderize=T
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p><strong>notifier</strong>包实现了跨平台的桌面提醒功能，当然它是调用了外部的命令，比如windows使用了<strong>toaster</strong>，老版本windows使用的是<strong>notifu</strong>，在linux下使用<strong>notify-send</strong>，而在OSX下，则调用了<strong>terminal-notifier</strong>，通过了简单的封装之后，就可以给桌面发布消息提醒了。</p>
-
 <p>比如：</p>
-
-<pre><code class="language-r">library(notifier)
-notify(
-  title = &quot;15 Packages out of date&quot;,
-  msg = c(&quot;You can run update.packages() to update them.&quot;,
-  &quot;Outdated packages: Boom colorspace desc memuse networkD3&quot;,
-  &quot;pbapply revealjs rgl rmdformats timevis and 5 more&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(notifier)
+<span style="color:#a6e22e">notify</span>(
+  title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">15 Packages out of date&#34;</span>,
+  msg <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">You can run update.packages() to update them.&#34;</span>,
+  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Outdated packages: Boom colorspace desc memuse networkD3&#34;</span>,
+  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">pbapply revealjs rgl rmdformats timevis and 5 more&#34;</span>)
 )
-</code></pre>
-
-<p>​
+</code></pre></div><p>​
 效果如下：</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/04/%E6%9D%A5%E8%87%AAr%E7%9A%84%E6%A1%8C%E9%9D%A2%E6%8F%90%E9%86%92/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/04/ggimage/">
-          ggimage：ggplot2中愉快地使用图片
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2017-04-11T10:06:59&#43;08:00">
-        
-  April 11, 2017
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <h1 id="导言">导言</h1>
-
-<p>本文介绍了<strong>ggimage</strong>包，允许在<strong>ggplot2</strong>作图时嵌入图片，并支持<code>aes</code>映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用<strong>ggimage</strong>来展示在这些特定领域里的应用，<strong>ggimage</strong>的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。</p>
-
-<h1 id="图上嵌图片">图上嵌图片</h1>
-
-<p>R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是<code>graphics::rasterImage</code>：</p>
-
-<pre><code class="language-r">imgurl &lt;- &quot;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&quot;
-library(EBImage)
-x &lt;- readImage(imgurl)
-plot(1, type = &quot;n&quot;, xlab = &quot;&quot;, ylab = &quot;&quot;, xlim = c(0, 8), ylim = c(0, 8))
-rasterImage(x, 2, 2, 6, 4)
-</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/raster.png" alt="R绘图嵌入图片演示" /></p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2017/04/ggimage/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

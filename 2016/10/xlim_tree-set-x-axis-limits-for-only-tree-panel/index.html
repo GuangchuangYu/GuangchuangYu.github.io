@@ -5,29 +5,27 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="A ggtree user recently asked me the following question in google group:
 
-
 I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.
 
-Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?
 
+Is it possible to work around this and only affect the tree and it&#39;s tip labels leaving the other plots in facet_plot unaffected?
 
-This is indeed a desire feature, as ggplot2 can&rsquo;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
+This is indeed a desire feature, as ggplot2 can&#39;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
 
 
 <meta property="og:description" content="A ggtree user recently asked me the following question in google group:
 
-
 I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.
 
-Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?
 
+Is it possible to work around this and only affect the tree and it&#39;s tip labels leaving the other plots in facet_plot unaffected?
 
-This is indeed a desire feature, as ggplot2 can&rsquo;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
+This is indeed a desire feature, as ggplot2 can&#39;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
 <meta property="og:type" content="article">
 <meta property="og:title" content="xlim_tree: set x axis limits for only Tree panel">
 <meta name="twitter:title" content="xlim_tree: set x axis limits for only Tree panel">
@@ -36,22 +34,20 @@ This is indeed a desire feature, as ggplot2 can&rsquo;t automatically adjust xli
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="A ggtree user recently asked me the following question in google group:
 
-
 I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.
 
-Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?
 
+Is it possible to work around this and only affect the tree and it&#39;s tip labels leaving the other plots in facet_plot unaffected?
 
-This is indeed a desire feature, as ggplot2 can&rsquo;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
+This is indeed a desire feature, as ggplot2 can&#39;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
 <meta name="twitter:description" content="A ggtree user recently asked me the following question in google group:
 
-
 I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.
 
-Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?
 
+Is it possible to work around this and only affect the tree and it&#39;s tip labels leaving the other plots in facet_plot unaffected?
 
-This is indeed a desire feature, as ggplot2 can&rsquo;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
+This is indeed a desire feature, as ggplot2 can&#39;t automatically adjust xlim for text since the units are in two different spaces (data and pixel).">
 <meta property="og:locale" content="en-us">
 
   
@@ -321,17 +317,14 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>A <a href="https://guangchuangyu.github.io/ggtree">ggtree</a> user recently asked me the following question in <a href="https://groups.google.com/forum/?utm_medium=email&amp;utm_source=footer#!msg/bioc-ggtree/6ec5krxpBMc/sd6jr53KBQAJ">google group</a>:</p>
-
 <blockquote>
 <p>I try to plot long tip labels in ggtree and usually adjust them using xlim(), however when creating a facet_plot xlim affects all plots and minimizes them.</p>
-
-<p>Is it possible to work around this and only affect the tree and it&rsquo;s tip labels leaving the other plots in facet_plot unaffected?</p>
 </blockquote>
-
-<p>This is indeed a desire feature, as <code>ggplot2</code> can&rsquo;t automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
-
+<blockquote>
+<p>Is it possible to work around this and only affect the tree and it's tip labels leaving the other plots in facet_plot unaffected?</p>
+</blockquote>
+<p>This is indeed a desire feature, as <code>ggplot2</code> can't automatically adjust <code>xlim</code> for text since the units are in two different spaces (data and pixel).</p>
 <p>Here is an example, the tip labels are truncated.</p>
-
 <pre><code>library(ggtree)
 set.seed(2016-10-31)
 tr =rtree(50)
@@ -342,36 +335,25 @@ d = data.frame(id = tr$tip.label, v= rnorm(50))
 facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
         ggtitle(&quot;truncated tip labels&quot;)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.31.39 AM.png" alt="" /></p>
-
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen">https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen</a> Shot 2016-10-31 at 11.31.39 AM.png)</p>
 <p>If we only visualize the tree, it is easy to solve by using <code>xlim()</code> to allocate more space for the lables. But <code>xlim()</code> works for all panels. Combination of <code>facet_plot()</code> and <code>xlim()</code> will produce figure with many spaces.</p>
-
 <pre><code>facet_plot(p+xlim(NA, 6), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
         ggtitle(&quot;xlim applies to all panels&quot;)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.33.05 AM.png" alt="" /></p>
-
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen">https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen</a> Shot 2016-10-31 at 11.33.05 AM.png)</p>
 <p>To overcome this issue, <code>ggtree</code> provides <code>xlim_tree</code> to set <code>x</code> axis limits for only the <code>Tree</code> panel.</p>
-
 <pre><code>facet_plot(p+xlim_tree(6), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
         ggtitle('*xlim_tree* only change x axis limits of *Tree* panel')
 
 # or using:
 # facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + xlim_tree(6)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen Shot 2016-10-31 at 11.34.56 AM.png" alt="" /></p>
-
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen">https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen</a> Shot 2016-10-31 at 11.34.56 AM.png)</p>
 <p>Actually, you can set <code>xlim</code> for selected panel by using <code>+xlim_expand(xlim, panel)</code>.</p>
-
 <h2 id="citation">Citation</h2>
-
-<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<sup>*</sup>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <strong><em>Methods in Ecology and Evolution</em></strong>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
-
-<p><script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
-<div data-badge-popover="right" data-badge-type="donut" data-doi="10.1111/2041-210X.12628" class="altmetric-embed"></div></p>
+<p><strong>G Yu</strong>, DK Smith, H Zhu, Y Guan, TTY Lam<!-- raw HTML omitted -->*<!-- raw HTML omitted -->. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data</a>. <em><strong>Methods in Ecology and Evolution</strong></em>. <a href="http://dx.doi.org/10.1111/2041-210X.12628"><code>doi:10.1111/2041-210X.12628</code></a>.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
               
             </div>
           </div>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -335,10 +335,8 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.github.io/blog_images/MISC/ke.jpg" width=600></p>
-
-<p>Today is my birthday and it happened to be the release day of Bioconductor 3.3. It&rsquo;s again the time to reflect what I&rsquo;ve done in the past year.</p>
-
+        <!-- raw HTML omitted -->
+<p>Today is my birthday and it happened to be the release day of Bioconductor 3.3. It's again the time to reflect what I've done in the past year.</p>
 <ul>
 <li><a href="http://guangchuangyu.github.io/ChIPseeker">ChIPseeker</a></li>
 <li><a href="http://guangchuangyu.github.io/clusterProfiler">clusterProfiler</a></li>
@@ -403,9 +401,7 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <h2 id="bitr-kegg">bitr_kegg</h2>
-
 <p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
-
 <pre><code>library(clusterProfiler)
 data(gcSample)
 hg &lt;- gcSample[[1]]
@@ -440,7 +436,6 @@ head(np2up)
 ## 5      NP_006054  O60662
 ## 6   NP_001092002  O95398
 </code></pre>
-
 <p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
       
       <p>
@@ -499,7 +494,8 @@ head(np2up)
       
         <blockquote>
 <p>KEGG MODULE is a collection of manually defined functional units, called KEGG modules and identified by the M numbers, used for annotation and biological interpretation of sequenced genomes. There are four types of KEGG modules:</p>
-
+</blockquote>
+<blockquote>
 <ul>
 <li>pathway modules – representing tight functional units in KEGG metabolic pathway maps, such as M00002 (Glycolysis, core module involving three-carbon compounds)</li>
 <li>structural complexes – often forming molecular machineries, such as M00072 (Oligosaccharyltransferase)</li>
@@ -564,10 +560,8 @@ head(np2up)
       
         <p><code>clusterProfiler</code> supports over-representation test and gene set
 enrichment analysis of Gene Ontology. It supports GO annotation from
-OrgDb object, GMT file and user&rsquo;s own data.</p>
-
+OrgDb object, GMT file and user's own data.</p>
 <h2 id="support-many-species">support many species</h2>
-
 <p>In github version of clusterProfiler, <code>enrichGO</code> and <code>gseGO</code> functions
 removed the parameter <em>organism</em> and add another parameter <em>OrgDb</em>, so
 that any species that have <code>OrgDb</code> object available can be analyzed in
@@ -633,18 +627,14 @@ users can build <code>OrgDb</code> via <code>AnnotationHub</code>.</p>
         <p>Thanks <a href="https://github.com/mevers">@mevers</a> for raising <a href="https://github.com/GuangchuangYu/clusterProfiler/issues/31">the issue</a> to me
 and his efforts in benchmarking
 <a href="https://github.com/GuangchuangYu/clusterProfiler">clusterProfiler</a>.</p>
-
 <p>He pointed out two issues:</p>
-
 <ul>
 <li>outputs from gseGO and GSEA-P are poorly overlap.</li>
-<li>pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
+<li>pvalues from gseGO are generally smaller and don't show a lot of
 variation</li>
 </ul>
-
 <p>For GSEA analysis, we have two inputs, a ranked gene list and gene set
 collections.</p>
-
 <p>First of all, the gene set collections are very different. The GMT file
 used in his test is <em>c5.cc.v5.0.symbols.gmt</em>, which is a tiny subset of
 GO CC, while clusterProfiler used the whole GO CC corpus.</p>
@@ -708,7 +698,6 @@ GO CC, while clusterProfiler used the whole GO CC corpus.</p>
         <p>To simplify enriched GO result, we can use slim version of GO and use
 <em><a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">enricher</a></em>
 function to analyze.</p>
-
 <p>Another strategy is to use
 <a href="http://www.bioconductor.org/packages/GOSemSim">GOSemSim</a> to calculate
 similarity of GO terms and remove those highly similar terms by keeping
@@ -716,7 +705,6 @@ one representative term. To make this feature available to
 <a href="http://www.bioconductor.org/packages/clusterProfiler">clusterProfiler</a>
 users, I develop a <em>simplify</em> method to reduce redundant GO terms from
 output of <em>enrichGO</em> function.</p>
-
 <pre><code>require(clusterProfiler)
 data(geneList, package=&quot;DOSE&quot;)
 de &lt;- names(geneList)[abs(geneList) &gt; 2]

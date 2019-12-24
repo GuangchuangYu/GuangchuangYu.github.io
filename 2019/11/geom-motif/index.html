@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
-
 像上图这种高级货是可以使用ggtree来画的。">
 
 
 <meta property="og:description" content="
-
 像上图这种高级货是可以使用ggtree来画的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="进化树和基因组结构">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2019/11/geom-motif/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
-
 像上图这种高级货是可以使用ggtree来画的。">
 <meta name="twitter:description" content="
-
 像上图这种高级货是可以使用ggtree来画的。">
 <meta property="og:locale" content="en-us">
 
@@ -286,63 +282,45 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-1.png" alt="" /></p>
-
+              <p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-1.png" alt=""></p>
 <p>像上图这种高级货是可以使用ggtree来画的。</p>
-
 <p>有一个叫gggenes的R包，画出来的图是这样子的。</p>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-2.jpeg" alt="" /></p>
-
+<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-2.jpeg" alt=""></p>
 <p>但是这个包的图层不能直接使用《文章发表：两种方法在进化树上可视化数据》所提到的<code>facet_plot</code>（以及新版的geom_facet）来画。于是我在ggtree里写了一个图层叫geom_motif，包装一下，然后就可以愉快地使用了，而且让画基因组结构按照某个基因来对齐更加容易，只需要使用on参数，并且直接支持在上面label基因的名字。</p>
-
 <p>废话少说，直接开撸上例子，这里使用gggenes自带的数据。当然这个数据没有配套的进化树，所以我们要无中生有创建一颗树出来。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
+<span style="color:#a6e22e">library</span>(ggplot2)
+<span style="color:#a6e22e">library</span>(gggenes)
+<span style="color:#a6e22e">library</span>(ggtree)
 
-<pre><code class="language-r">library(dplyr)
-library(ggplot2)
-library(gggenes)
-library(ggtree)
-
-get_genes &lt;- function(data, genome) {
-    filter(data, molecule == genome) %&gt;% pull(gene)
+get_genes <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(data, genome) {
+    <span style="color:#a6e22e">filter</span>(data, molecule <span style="color:#f92672">==</span> genome) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">pull</span>(gene)
 }
 
-g &lt;- unique(example_genes[,1])
-n &lt;- length(g)
-d &lt;- matrix(nrow = n, ncol = n)
-rownames(d) &lt;- colnames(d) &lt;- g
-genes &lt;- lapply(g, get_genes, data = example_genes)
-</code></pre>
-
-<p>上面定义一个函数，从数据中把归属于某个基因组的基因列表拿出来。然后应用于这个示例数据，拿到所有基因组的基因列表。我们通过这个列表来生成距离矩阵。</p>
-
+g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">unique</span>(example_genes[,<span style="color:#ae81ff">1</span>])
+n <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">length</span>(g)
+d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">matrix</span>(nrow <span style="color:#f92672">=</span> n, ncol <span style="color:#f92672">=</span> n)
+<span style="color:#a6e22e">rownames</span>(d) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">colnames</span>(d) <span style="color:#f92672">&lt;-</span> g
+genes <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(g, get_genes, data <span style="color:#f92672">=</span> example_genes)
+</code></pre></div><p>上面定义一个函数，从数据中把归属于某个基因组的基因列表拿出来。然后应用于这个示例数据，拿到所有基因组的基因列表。我们通过这个列表来生成距离矩阵。</p>
 <p>很简单，按照overlap了多少基因，算一下jaccard相似性，1-sim就得到dist。</p>
-
-<pre><code class="language-r">for (i in 1:n) {
-    for (j in 1:i) {
-        jaccard_sim &lt;- length(intersect(genes[[i]], genes[[j]])) / 
-                       length(union(genes[[i]], genes[[j]]))
-        d[j, i] &lt;- d[i, j] &lt;- 1 - jaccard_sim
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>n) {
+    <span style="color:#a6e22e">for </span>(j in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>i) {
+        jaccard_sim <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">length</span>(<span style="color:#a6e22e">intersect</span>(genes[[i]], genes[[j]])) <span style="color:#f92672">/</span> 
+                       <span style="color:#a6e22e">length</span>(<span style="color:#a6e22e">union</span>(genes[[i]], genes[[j]]))
+        d[j, i] <span style="color:#f92672">&lt;-</span> d[i, j] <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> jaccard_sim
     }
 }
-</code></pre>
-
-<p>有了距离矩阵，树也就可以生成了：</p>
-
-<pre><code class="language-r">tree &lt;- ape::bionj(d)
-</code></pre>
-
-<p>最后可视化也就跟着来了。</p>
-
-<pre><code class="language-r">ggtree(tree, branch.length='none') + 
-    geom_tiplab() + xlim_tree(5) + 
-    geom_facet(mapping = aes(xmin = start, xmax = end, fill = gene),
-               data=example_genes, geom=geom_motif, panel='Alignment',
-               on = 'genE', label = 'gene') +
-    scale_fill_brewer(palette = &quot;Set3&quot;) 
-</code></pre>
-
-<p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-3.jpeg" alt="" /></p>
+</code></pre></div><p>有了距离矩阵，树也就可以生成了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tree <span style="color:#f92672">&lt;-</span> ape<span style="color:#f92672">::</span><span style="color:#a6e22e">bionj</span>(d)
+</code></pre></div><p>最后可视化也就跟着来了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggtree</span>(tree, branch.length<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_tiplab</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim_tree</span>(<span style="color:#ae81ff">5</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_facet</span>(mapping <span style="color:#f92672">=</span> <span style="color:#a6e22e">aes</span>(xmin <span style="color:#f92672">=</span> start, xmax <span style="color:#f92672">=</span> end, fill <span style="color:#f92672">=</span> gene),
+               data<span style="color:#f92672">=</span>example_genes, geom<span style="color:#f92672">=</span>geom_motif, panel<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Alignment&#39;</span>,
+               on <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">genE&#39;</span>, label <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">gene&#39;</span>) <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">scale_fill_brewer</span>(palette <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Set3&#34;</span>) 
+</code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-3.jpeg" alt=""></p>
               
             </div>
           </div>
@@ -367,7 +345,7 @@ genes &lt;- lapply(g, get_genes, data = example_genes)
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/11/patchwork/" data-tooltip="cowplot是旧爱，patchwork乃新欢">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/11/why-hate-ggpubr/" data-tooltip="我为什么是个ggpubr黑？">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -453,7 +431,7 @@ genes &lt;- lapply(g, get_genes, data = example_genes)
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/11/patchwork/" data-tooltip="cowplot是旧爱，patchwork乃新欢">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2019/11/why-hate-ggpubr/" data-tooltip="我为什么是个ggpubr黑？">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>

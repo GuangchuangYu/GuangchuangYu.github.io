@@ -18,29 +18,26 @@
       
       <guid>https://guangchuangyu.github.io/2019/11/patchwork/</guid>
       <description>&lt;p&gt;Thomas Lin Pedersen简直是个天才，最近&lt;code&gt;patchwork&lt;/code&gt;动作很大，看到我都准备转投它的怀抱，把旧爱&lt;code&gt;cowplot&lt;/code&gt;给扔了。&lt;/p&gt;
-
 &lt;p&gt;我们知道&lt;code&gt;patchwork&lt;/code&gt;一出来，就推出&lt;code&gt;+&lt;/code&gt;号来拼图，最近又搞出了&lt;code&gt;|&lt;/code&gt;和&lt;code&gt;/&lt;/code&gt;两个操作符。让整个拼图看起来很舒服。&lt;/p&gt;
-
 &lt;p&gt;先来画几张图：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(ggplot2)
+p1 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(mtcars) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_point&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(mpg, disp)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggtitle&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;图一&amp;#39;&lt;/span&gt;)
 
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(ggplot2)
-p1 &amp;lt;- ggplot(mtcars) + 
-  geom_point(aes(mpg, disp)) + 
-  ggtitle(&#39;图一&#39;)
+p2 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(mtcars) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_boxplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(gear, disp, group &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gear)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggtitle&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;图二&amp;#39;&lt;/span&gt;)
 
-p2 &amp;lt;- ggplot(mtcars) + 
-  geom_boxplot(aes(gear, disp, group = gear)) + 
-  ggtitle(&#39;图二&#39;)
+p3 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(mtcars) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_point&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(hp, wt, colour &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mpg)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggtitle&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;图三&amp;#39;&lt;/span&gt;)
 
-p3 &amp;lt;- ggplot(mtcars) + 
-  geom_point(aes(hp, wt, colour = mpg)) + 
-  ggtitle(&#39;图三&#39;)
-
-p4 &amp;lt;- ggplot(mtcars) + 
-  geom_bar(aes(gear)) + 
-  facet_wrap(~cyl) + 
-  ggtitle(&#39;图四&#39;)
-&lt;/code&gt;&lt;/pre&gt;</description>
+p4 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(mtcars) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(gear)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;facet_wrap&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt;cyl) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggtitle&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;图四&amp;#39;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
   </channel>

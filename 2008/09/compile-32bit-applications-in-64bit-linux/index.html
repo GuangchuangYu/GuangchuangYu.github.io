@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="用PITA算法做靶标预测的时候，要用到ViennaRNA包做结构的折叠，这个包是被修改过的，原来的包在我机子上是可以装的。但是这个修改过的包编译不通过。很奇怪的错误，不知道怎么改。
-
 好在它有两个版本，64位和32位的。我弄到大型机上去编译32位的，也是出错，不过是命名空间的问题，我改两个头文件就可以通过了。最近又要算。那个大型机最近被搬走了。只能本机上做。">
 
 
 <meta property="og:description" content="用PITA算法做靶标预测的时候，要用到ViennaRNA包做结构的折叠，这个包是被修改过的，原来的包在我机子上是可以装的。但是这个修改过的包编译不通过。很奇怪的错误，不知道怎么改。
-
 好在它有两个版本，64位和32位的。我弄到大型机上去编译32位的，也是出错，不过是命名空间的问题，我改两个头文件就可以通过了。最近又要算。那个大型机最近被搬走了。只能本机上做。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在64位环境下编译32位的应用程序">
@@ -23,10 +21,8 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2008/09/compile-32bit-applications-in-64bit-linux/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="用PITA算法做靶标预测的时候，要用到ViennaRNA包做结构的折叠，这个包是被修改过的，原来的包在我机子上是可以装的。但是这个修改过的包编译不通过。很奇怪的错误，不知道怎么改。
-
 好在它有两个版本，64位和32位的。我弄到大型机上去编译32位的，也是出错，不过是命名空间的问题，我改两个头文件就可以通过了。最近又要算。那个大型机最近被搬走了。只能本机上做。">
 <meta name="twitter:description" content="用PITA算法做靶标预测的时候，要用到ViennaRNA包做结构的折叠，这个包是被修改过的，原来的包在我机子上是可以装的。但是这个修改过的包编译不通过。很奇怪的错误，不知道怎么改。
-
 好在它有两个版本，64位和32位的。我弄到大型机上去编译32位的，也是出错，不过是命名空间的问题，我改两个头文件就可以通过了。最近又要算。那个大型机最近被搬走了。只能本机上做。">
 <meta property="og:locale" content="en-us">
 
@@ -291,61 +287,43 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>用PITA算法做靶标预测的时候，要用到ViennaRNA包做结构的折叠，这个包是被修改过的，原来的包在我机子上是可以装的。但是这个修改过的包编译不通过。很奇怪的错误，不知道怎么改。</p>
-
 <p>好在它有两个版本，64位和32位的。我弄到大型机上去编译32位的，也是出错，不过是命名空间的问题，我改两个头文件就可以通过了。最近又要算。那个大型机最近被搬走了。只能本机上做。</p>
-
 <p>所以折腾了一下，在64位的系统里编译32位的程序。</p>
-
 <blockquote>
-<p>CPU: AMD Athlon&trade; 64 X2 Dual Core Processor 3800+ OS: Ubuntu
+<p>CPU: AMD Athlon(tm) 64 X2 Dual Core Processor 3800+ OS: Ubuntu
 7.10/Linux 2.6.20-15-server #2 SMP Sun Apr 15 06:22:36 UTC 2007
 x86_64 GNU/Linux GCC: gcc (GCC) 4.1.2 (Ubuntu 4.1.2-0ubuntu4)</p>
 </blockquote>
-
 <p>首先需要安装32位的兼容库</p>
-
 <blockquote>
 <p>apt-get install ia32-libs libc6-dev-i386 linux32</p>
 </blockquote>
-
 <p>1.用linux32命令在configure时改一下CHOST，设置一下编译环境</p>
-
 <blockquote>
-<p>\$ linux32 ./configure</p>
+<p>$ linux32 ./configure</p>
 </blockquote>
-
 <p>#系统类型将变为：i686-pc-linux-gnu #而不是x86_64-unknown-linux-gnu</p>
-
 <p>2.设定GCC的参数</p>
-
 <blockquote>
-<p>export CFLAGS=&ldquo;-m32 -04 -march=i386 -mtune=i386&rdquo;</p>
+<p>export CFLAGS=&rdquo;-m32 -04 -march=i386 -mtune=i386&rdquo;</p>
 </blockquote>
-
 <p>#最关键是-m32</p>
-
 <blockquote>
 <p>-m32, -m64 Generate code for a 32-bit or 64-bit environment. The
 32-bit environment sets int, long and pointer to 32 bits and generates
 code that runs on any i386 system. The 64-bit environment sets int to
-32 bits and long and pointer to 64 bits and generates code for AMD&rsquo;s
+32 bits and long and pointer to 64 bits and generates code for AMD's
 x86-64 architecture.</p>
 </blockquote>
-
 <p>3.编译</p>
-
 <blockquote>
 <p>make</p>
 </blockquote>
-
 <p>4.安装</p>
-
 <blockquote>
 <p>sudo make install</p>
 </blockquote>
-
 <p>最终是成功地安装了。破PC机又得跑好多天了。</p>
-
 <p>参考<a href="http://wiki.winehq.org/WineOn64bit">How to build 32-bit Wine on a 64-bit (x86-64)
 system</a></p>
               

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -283,19 +283,12 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <h2 id="声音">声音</h2>
-
+        <h2 id="heading">声音</h2>
 <p>没有声音，在<code>/etc/modprobe.d/modprobe.conf</code>里加入：</p>
-
 <pre><code>options snd-hda-intel model=mbp3 position_fix=2
-</code></pre>
-
-<h2 id="网络">网络</h2>
-
+</code></pre><h2 id="heading-1">网络</h2>
 <p>dhcpcd禁止<code>ipv6</code>:</p>
-
 <p>在<code>/etc/dhcpcd.conf</code>中加入:</p>
-
 <pre><code>noipv6rs
 noipv6
 </code></pre>
@@ -357,8 +350,12 @@ noipv6
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>看到一个帖子, <a href="https://www.maketecheasier.com/make-arch-linux-more-stable/">https://www.maketecheasier.com/make-arch-linux-more-stable/</a>， 说避免老升级内核，用lts版，装完可以把原先内核干掉：</p>
-
 <blockquote>
+<pre><code>sudo pacman -S linux-lts
+</code></pre><p>When you’ve installed the LTS kernel, it’s a good idea to remove the bleeding edge kernel from your system.</p>
+<pre><code>sudo pacman -R linux 
+</code></pre></blockquote>
+<p>我内心闪过一个想法，难道不用配置启动么？也没去确认，照做后重启，你妹啊，太坑了，直接就找不到内核死掉！</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2018/11/arch-lts/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -417,20 +414,14 @@ noipv6
         <blockquote>
 <p>之前公众号上有人说，我回大陆了会有一波科学上网的教程，今天的推文算一个吧。真的是被你们言中了！</p>
 </blockquote>
-
 <p>做为Bioconductor包作者，而<code>git push</code>传代码到Bioconductor上是被封的。这很是恼火，随着10月份将迎来新一版本的Bioconductor发布，不能够push代码是多么惨的一件事。</p>
-
 <p>代理其实也挺恼火的，因为各种协议啊，你要各种设置啊，<code>http/https/ssh/git</code>都是各种配置，其实我只要有一个<code>socks5</code>的代理，然后你们所有需要走代理的程序都通过它就好了。</p>
-
 <p>谁特么有空天天在琢磨怎么配置各种不同协议的代理！只要我们想得到的，一般都有人做了。</p>
-
 <p>于是万能的github上找到了<a href="https://github.com/haad/proxychains">proxychains</a>。</p>
-
 <pre><code>A hook preloader that allows to redirect TCP traffic of existing
 dynamically linked programs through one or more SOCKS or HTTP
 proxies
 </code></pre>
-
 <p>它强制给定程序发起的TCP连接通过事先配置的代理。可以涵盖所有需要代理的情景。就以git为例，没有proxychains的话，就必须为每个协议（<code>https</code>, <code>git</code>, <code>ssh</code>）按照git文档的要求分别设置代理，过程复杂且不稳定。有了<code>proxychains</code>，这些完全可以不用管，当然应用场景不限于<code>git</code>，任何一个需要代理的命令行程序都是一样在运行的指令前面加<code>proxychains</code>完事。</p>
       
       <p>
@@ -488,13 +479,9 @@ proxies
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>试想一下，每次重装系统，都要安装一堆常用的小软件，7zip, notepad++, filezilla, winrar等等，每次都要搜索下载地址，下载，安装，摆明了是木兰要从军一般，“东市买骏马，西市买鞍鞯，南市买辔头，北市买长鞭”，当然Windows现在也有各种软件管家之类的软件，但很多是流氓软件，要带各种全家桶的，我宁愿自己来一次木兰从军记。</p>
-
 <p>大家都喜欢Linux的包管理，比如<code>apt-get</code>，而OSX也有homebrew，可以brew install一大票Unix-like的软件，而Windows用户只有羡慕的份，上面提到的流氓软件管理，当然也是装不了Unix-like软件的，所以我们羡慕，我们妒忌，外加恨！</p>
-
-<hr />
-
+<hr>
 <p>今天要跟大家介绍一个为windows设计的包管理器，Chocolatey，有了它，你也能<code>choco install wget</code>, <code>choco install docker</code>这样装软件了，不用再羡慕水果用户，不用再木兰从军般装软件了。</p>
-
 <blockquote>
 <p><strong>Chocolatey is a package manager for Windows (like apt-get or yum but for Windows)</strong>. It was designed to be a decentralized framework for quickly installing applications and tools that you need. It is built on the NuGet infrastructure currently using PowerShell as its focus for delivering packages from the distros to your door, err computer.</p>
 </blockquote>
@@ -554,13 +541,10 @@ proxies
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>kopernio是个浏览器插件，可以通过<a href="http://kopernio.com/">http://kopernio.com/</a>获得，现在这类插件其实挺多，当然多半是结合sci-hub，而sci-hub也是下文献领域绝对的王者，而且很多插件还有额外的一些功能，比如显示影响因子之类的，甚至于还有些给加二维码，微信扫一扫直接把文章分享到朋友圈，反正是啥都有人干。所以虽然我知道这个插件已经很久了，我一直没有介绍它的原因就在于此，它似乎也并不出彩。</p>
-
 <p>但今天我要介绍它，因为当你打开它的主页时，你会发现赫然公布着一个消息：</p>
-
 <blockquote>
 <p>We are excited to announce that Kopernio has joined Clarivate Analytics, the home of Web of Science and the Journal Impact Factor.</p>
 </blockquote>
-
 <p>它被Clarivate Analytics收购了，已经是Clarivate Analytics旗下的产品，这意味着以后可能会与Web of Science有更好的整合，它现在支持PubMed和Google Scholar，以后支持Web of Science肯定不在话下，现在是给你一个按钮，直接点击下PDF，以后可能通过整合Web of Science，比如给你期刊的影响因子、学科排名等Clarivate Analytics的拳头产品。</p>
       
       <p>
@@ -620,9 +604,7 @@ proxies
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>R <code>3.5.0</code>已经发布了，我昨天已经更新了，Bioconductor也将在5月初发布<code>3.7</code>版本，就我个人而言，新版的Bioconductor主要有以下一些新东西：</p>
-
 <h2 id="enrichplot">enrichplot</h2>
-
 <p>新包<code>enrichplot</code>，《<a href="https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA">enrichplot: 让你们对clusterProfiler系列包无法自拔</a>
 》，以后<code>clusterProfiler</code>系列出图更好看了，而且所有图你都可以用<code>cowplot</code>拼图。</p>
       
@@ -683,7 +665,6 @@ proxies
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>在《<a href="http://mp.weixin.qq.com/s/BsEm76Eq9_tbw3myobD_SA">你所不知道的，R的N种打开方式</a>》我介绍了N多种打开R的方式，甚至于你还能用python写的号称21世纪的R界面：《<a href="https://mp.weixin.qq.com/s/VbMq3ZKMdn0E3wauC4l_hg">R，python喊你回家吃饭啦</a>》。</p>
-
 <p>我自己一直很少用RStudio，而是用Emacs，虽然Emacs比较小众，也不适合这个公众号的粉丝，但文本编辑器之于程序程好比剑客手中的剑，一个用着顺手、长期使用的文本编辑器比什么都好，在《<a href="http://mp.weixin.qq.com/s/BsEm76Eq9_tbw3myobD_SA">你所不知道的，R的N种打开方式</a>》中我介绍了Emacs, Vim, textMate, sublime，今天要介绍另一款，VSCode，这是微软开源的文本编辑器，非常现代化，有很好的扩展生态。</p>
       
       <p>

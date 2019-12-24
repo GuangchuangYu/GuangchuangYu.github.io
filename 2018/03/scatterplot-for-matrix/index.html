@@ -5,27 +5,21 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
 
-
 当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。
 
-
 这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：
-
 首先我们读入一个FASTA数据：
-
 require(treeio)
 
 fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
 aa &lt;- read.fasta(fasta)
 
-
 数据用treeio包里的read.fasta去读这个氨基酸序列，它有个好处是你直接as.character(aa[[i]])就是个字母的向量，方便比较。
-
 n = length(aa)
 d = matrix(NA, ncol=n, nrow=n)
 nm = labels(aa)
@@ -37,29 +31,22 @@ for (i in seq_len(n)) {
         d[j, i] = d[i, j]
     }
 } 
-
 
 这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。">
 
 
 <meta property="og:description" content="
 
-
 当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。
 
-
 这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：
-
 首先我们读入一个FASTA数据：
-
 require(treeio)
 
 fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
 aa &lt;- read.fasta(fasta)
 
-
 数据用treeio包里的read.fasta去读这个氨基酸序列，它有个好处是你直接as.character(aa[[i]])就是个字母的向量，方便比较。
-
 n = length(aa)
 d = matrix(NA, ncol=n, nrow=n)
 nm = labels(aa)
@@ -71,7 +58,6 @@ for (i in seq_len(n)) {
         d[j, i] = d[i, j]
     }
 } 
-
 
 这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。">
 <meta property="og:type" content="article">
@@ -82,22 +68,16 @@ for (i in seq_len(n)) {
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="
 
-
 当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。
 
-
 这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：
-
 首先我们读入一个FASTA数据：
-
 require(treeio)
 
 fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
 aa &lt;- read.fasta(fasta)
 
-
 数据用treeio包里的read.fasta去读这个氨基酸序列，它有个好处是你直接as.character(aa[[i]])就是个字母的向量，方便比较。
-
 n = length(aa)
 d = matrix(NA, ncol=n, nrow=n)
 nm = labels(aa)
@@ -109,27 +89,20 @@ for (i in seq_len(n)) {
         d[j, i] = d[i, j]
     }
 } 
-
 
 这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。">
 <meta name="twitter:description" content="
 
-
 当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。
 
-
 这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：
-
 首先我们读入一个FASTA数据：
-
 require(treeio)
 
 fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
 aa &lt;- read.fasta(fasta)
 
-
 数据用treeio包里的read.fasta去读这个氨基酸序列，它有个好处是你直接as.character(aa[[i]])就是个字母的向量，方便比较。
-
 n = length(aa)
 d = matrix(NA, ncol=n, nrow=n)
 nm = labels(aa)
@@ -141,7 +114,6 @@ for (i in seq_len(n)) {
         d[j, i] = d[i, j]
     }
 } 
-
 
 这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。">
 <meta property="og:locale" content="en-us">
@@ -408,24 +380,18 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/WechatIMG601.jpeg" alt="" /></p>
-
+              <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/WechatIMG601.jpeg" alt=""></p>
 <blockquote>
 <p>当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。</p>
 </blockquote>
-
 <p>这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：</p>
-
 <p>首先我们读入一个FASTA数据：</p>
-
 <pre><code>require(treeio)
 
 fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
 aa &lt;- read.fasta(fasta)
 </code></pre>
-
 <p>数据用<code>treeio</code>包里的<code>read.fasta</code>去读这个氨基酸序列，它有个好处是你直接<code>as.character(aa[[i]])</code>就是个字母的向量，方便比较。</p>
-
 <pre><code>n = length(aa)
 d = matrix(NA, ncol=n, nrow=n)
 nm = labels(aa)
@@ -438,11 +404,8 @@ for (i in seq_len(n)) {
     }
 } 
 </code></pre>
-
 <p>这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。</p>
-
-<h2 id="画图实战">画图实战</h2>
-
+<h2 id="heading">画图实战</h2>
 <pre><code>require(tibble)
 
 dd &lt;- as_data_frame(d)
@@ -451,9 +414,7 @@ dd$seq1 &lt;- nm
 require(tidyr)
 td &lt;- gather(dd,seq2, dist, -seq1)
 </code></pre>
-
 <p>这里宽变长，这种tidy格式适合于我们用<code>ggplot2</code>可视化。</p>
-
 <pre><code>&gt; td
 # A tibble: 5,776 x 3
    seq1                          seq2                             dist
@@ -469,20 +430,14 @@ td &lt;- gather(dd,seq2, dist, -seq1)
  9 A/Swine/GX_NS3106/2011        A/Swine/Binh_Duong/03_08/2010 0.0285
 10 A/Swine/GX_NS3108/2011        A/Swine/Binh_Duong/03_08/2010 0.0249
 # ... with 5,766 more rows
-</code></pre>
-
-<p>看了上面的数据，看懂了我的解释，画图似乎是显而易见的。这里legend太多，所以用<code>theme</code>去掉不显示，实际操作中，比如提问者的图中，颜色没这么多，一般分clade来上色，或者如果你单纯想画这个图，你可以聚类，然后cut tree，通过子树来分类上色，或者使用kmeans聚类，直接上k种颜色。</p>
-
+</code></pre><p>看了上面的数据，看懂了我的解释，画图似乎是显而易见的。这里legend太多，所以用<code>theme</code>去掉不显示，实际操作中，比如提问者的图中，颜色没这么多，一般分clade来上色，或者如果你单纯想画这个图，你可以聚类，然后cut tree，通过子树来分类上色，或者使用kmeans聚类，直接上k种颜色。</p>
 <pre><code>require(ggplot2)
 ggplot(td, aes(dist, seq1, group=seq2, color=seq2)) + 
     geom_point() + geom_line() + 
     theme(legend.position=&quot;none&quot;)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/figure-markdown_strict/unnamed-chunk-1-1.png" alt=""></p>
 <p>那么如何与树关联，首先我们要可视化相应的树，然后找出taxa在这颗树上的排列（可视化的角度，从上到下的顺序），我在<code>ggtree</code>里提供了<code>get_taxa_name</code>这个函数，方便用户得到这个排列，这样方便用户按照这个排列去做别的图，然后可以去拼图，这样可以保证图中的顺序与树是对应的。你可以用别的软件做图，你可以在AI里拼图，只要你能够按照顺序对应就行。</p>
-
 <pre><code>require(ggtree)
 beast_file &lt;- system.file(&quot;examples/MCC_FluA_H3.tree&quot;, package=&quot;ggtree&quot;)
 beast_tree &lt;- read.beast(beast_file)
@@ -493,30 +448,22 @@ lv &lt;- get_taxa_name(p)
 
 td$seq1 = factor(td$seq1, levels=rev(lv))
 </code></pre>
-
 <p>我们排序后，重新画，会发现规律就出来了，其实你如果是单纯要画这个图，用聚类算法来排个序，也能出来挺好的效果，如果减少了颜色的数目，如我前面所说，规律应该更加清楚。当然我这个演示的，没有用户提问的图那么清楚漂亮，你知道原因吗？因为我这颗树的树型是梯子状的，而用户的那颗树是平衡的。可以说不看树，从这个矩阵点图，我们也可以大致猜出来树的形状！</p>
-
 <pre><code>p2 &lt;- ggplot(td, aes(dist, as.numeric(seq1), group=seq2, color=seq2)) + 
     geom_point() + geom_line() + theme(legend.position=&quot;none&quot;)
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/figure-markdown_strict/unnamed-chunk-1-2.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/figure-markdown_strict/unnamed-chunk-1-2.png" alt=""></p>
 <p>好了，最后是拼图，用<code>cowplot</code>，要使用<code>align=&quot;h&quot;</code>参数，好对齐，<code>ggtree</code>画的图，y轴是数字型的，这也是为什么我在生成<code>p2</code>的时候，要使用<code>as.numeric(seq1)</code>把y轴变为数字型，大家都是数字型的，好对齐。</p>
-
 <pre><code> p2 &lt;- p2 + theme(axis.text.y=element_blank(), 
                 axis.ticks.y=element_blank(), 
                 axis.line.y=element_blank()) + 
           xlab(NULL) + ylab(NULL) 
-
+          
 require(cowplot)
 plot_grid(p, p2, align=&quot;h&quot;, rel_widths=c(1, .8))
 </code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/figure-markdown_strict/unnamed-chunk-1-3.png" alt="" /></p>
-
-<h2 id="向我提问">向我提问</h2>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/figure-markdown_strict/unnamed-chunk-1-3.png" alt=""></p>
+<h2 id="heading-1">向我提问</h2>
 <ul>
 <li><a href="http://mp.weixin.qq.com/s/vB7mJG9FQYXsYZh9Bcp0_g">怀疑人生！我不欠你们钱，好吗？</a></li>
 <li><a href="http://mp.weixin.qq.com/s/jegI1wWc7DJzrM7mQfz77Q">同一数据多变量分组的boxplot?</a></li>

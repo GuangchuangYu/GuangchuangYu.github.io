@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -249,6 +249,69 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/12/subsetting-in-ggplot2-ggtree/">
+          ggplot2/ggtree取子集画图
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-12-01T08:28:48&#43;08:00">
+        
+  December 1, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>取子集对于进化树可视化来说是非常常见的，我们要区分内部节点和外部节点，我们也可能想针对某些特点的节点进行注释。</p>
+<p>ggplot2现在所有图层都不支持直接取子集，所以呢ggtree就自己定义了一些修改的图层，包括<code>geom_text2</code>, <code>geom_label2</code>,  <code>geom_point2</code> 和 <code>geom_segment2</code>，这些图层和ggplot2的版本唯一差别就是支持取子集。这样对于我们做注释来说，就更方便了。</p>
+<p>比如说我想给内部节点打点，可以用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggtree</span>(tree) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_text2</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span>label, subset<span style="color:#f92672">=</span><span style="color:#f92672">!</span>isTip), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">-.2</span>) <span style="color:#f92672">+</span>
+        <span style="color:#a6e22e">geom_point2</span>(<span style="color:#a6e22e">aes</span>(subset<span style="color:#f92672">=</span><span style="color:#f92672">!</span>isTip), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">red&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
+</code></pre></div>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2017/12/subsetting-in-ggplot2-ggtree/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/11/sci-hub-tor/">
           再不用担心打不开sci-hub了
         </a>
@@ -277,7 +340,6 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>之前有写过<a href="https://mp.weixin.qq.com/s/AGQn7Lfn_nHHrtVQyJSTmg">读文献的文章</a>，也介绍了<a href="https://mp.weixin.qq.com/s/TMmsOsEn0wV9yXKOLma3Rw">如何获取文献</a>，那是我还在读硕士的时候写的，覆盖了找文献、文献管理、下载文献、订阅期刊等方方面面，说到下文献，最大的神器当然是sci-hub，但是sci-hub的域名sci-hub.cc, sci-hub.bz, sci-hub.io纷纷都沦陷，最近国内有一神器geenmedical，整合了影响因子、引用数等指标，然而这一神器的下文献功能只是提供外链，有一种说法是geenmedical=pubmed+scihub，当然geenmedical的资源还可能来自于百度学术、researchGate等，不都是来自于sci-hub，然而我们必须承认的是最大的文献提供来源必须还得是sci-hub，所以如果sci-hub挂了，基于sci-hub的神器也就神奇不起来了。如果有人跟你说忘记sci-hub吧，用geenmedical，那绝对是标题党！这里并没有说geenmedical不好，它整合了多方面的资源并且本地化得非常好，很适合国内使用。</p>
-
 <p>比如我在geenmedical里搜clusterProfiler，给出的下载链接第一个就是sci-hub的：<a href="http://doi.org.sci-hub.cc/10.1089/omi.2011.0118">http://doi.org.sci-hub.cc/10.1089/omi.2011.0118</a>，然而这个链接是不可用的！当然它给出了比如百度学术的链接是可以下载到文献的。然而还是那句话，论「海盗精神」我只服sci-hub，虽然我之前也介绍了《<a href="http://mp.weixin.qq.com/s/aaIby87LSQgxpvCAECFxkw">sci-hub如果挂了，你还有神器下文献吗？</a>》，但任何下文献的神器，在sci-hub面前都是渣渣。</p>
       
       <p>
@@ -335,15 +397,10 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>我这个公众号不像大多数所谓的生信从入门到精通的各种其实只是搬运点入门教程的群众喜闻乐见的公众号。正如我在《<a href="http://mp.weixin.qq.com/s/f-c5Q63SY166ZGzYCsqthA">为什么要开这个公众号</a>》里说的，这是小众的，有个人色彩的各种原创文。我不可能像其它公众号一样招两小弟当客服，很多人在公众号后台向我扔了许多问题，由于个人精力有限，只能优先解答「知识星球」的问题，上次写的《<a href="http://mp.weixin.qq.com/s/jegI1wWc7DJzrM7mQfz77Q">同一数据多变量分组的boxplot?</a>》，图虽然简单，却穿着好多件马甲，而我把它扒光了给你看🙈</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/zhishixingqiu/ggplot-bg_question.jpg" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/zhishixingqiu/ggplot-bg_question.jpg" alt=""></p>
 <p>上面这个图，你看着高大上吧，我都可以吐它一脸口水。每一个有灰色背景的图，在x轴上violin都够到边界了，其实所有的violin都够到了，这证明什么？每个violin之间其实不可比较！你能想像几个独立的数据，在统一的bin width情况下，画density curve，竟然最高点都一样高吗？显然可能性几乎为0。这个如果使用ggplot2的话，可以使用<code>scale='width'</code>强制拉成一样高，但我不推荐，正如我前面说的，不可比较了。默认参数<code>scale='area'</code>，积分面积一样，和density curve一样解析，另外的参数<code>scale=&quot;count&quot;</code>，高度与计数同比例，和histogram一样解析，而<code>scale='width'</code>强制拉成一样高，如果没有在显眼处说明，误导性太强。</p>
-
 <p>画这种图也可以手工拼，这样就简单了。在你需要的情况下，加个灰色背景嘛，最后拼图嘛。当然拼图不一定要在illustrator里拼，比如你用grid，先画好坐标轴，然后水平上定义几个一样大的viewport，每一个violin都画在相应的viewport里面，对于画图函数来说，viewport就是整个画布了（虽然只是画布里的一块区域），所以你要么画violin，要么在画之前先画个矩阵，一路画下来，代码可以直接生成这样的图，但这图每一个violin都是独立画的（当然也不是完全独立，每一个水平上的ylim是有统一的），就算代码一步生成，也跟illustrator里拼没两样。</p>
-
-<hr />
-
+<hr>
 <p>这里我要教你用ggplot2自动生成，其实解决思路早已推送过，请看《<a href="http://mp.weixin.qq.com/s/PnbasfW4HKILuZNdrLVX_g">facet_plot：加图层到特定分面，方法二</a>》，也正如我在《<a href="http://mp.weixin.qq.com/s/8bzkJY1zzNc83iBUq4Fy1w">什么！你的图上有一双看不见的手</a>》里说的，你们以为我在教ggtree，其实同时在教ggplot2。</p>
       
       <p>
@@ -400,18 +457,13 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.github.io/blog_images/R/misc/WechatIMG216.png" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.github.io/blog_images/R/misc/WechatIMG216.png" alt=""></p>
 <p>这个问题，其实答案就存在于《<a href="http://mp.weixin.qq.com/s/Xhi_ZkrEzUVdnCu7ECBS4w">听说你还不会画热图</a>》，我们先生成一个矩阵：</p>
-
 <pre><code>set.seed(2017-11-12)
 d = data.frame(matrix(rnorm(100), ncol=10))
 colnames(d) = paste0('t', 1:10)
 rownames(d) = paste0('g', 1:10)
-</code></pre>
-
-<p>这个矩阵是<code>rnorm</code>生成的随机数，有正有负，我们再生成一个矩阵，只有正数，并且数值上比第一个矩阵要大：</p>
-
+</code></pre><p>这个矩阵是<code>rnorm</code>生成的随机数，有正有负，我们再生成一个矩阵，只有正数，并且数值上比第一个矩阵要大：</p>
 <pre><code>d2 = abs(d) * 1.2
 </code></pre>
       
@@ -470,9 +522,7 @@ rownames(d) = paste0('g', 1:10)
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>《<a href="http://mp.weixin.qq.com/s/miGQs6U1d3aHwcm7vgNCVw">你昨天才做的分析，可能是几年前的结果！</a>》这篇文章给大家敲了警钟，各种各样的web-server，要小心看有没有维护更新，有些是五年十年都不更新的，十分可怕。文章虽然讲的是富集分析，但其它分析工具你同样需要小心。</p>
-
 <p>当然并不是说独立的软件/软件包就一定靠谱，如果软件自己打包了数据，同样要注意数据是否有更新，而如果数据不打包在软件里，而是在线获取，你同样也该留一下心。这也是clusterProfiler做富集分析的优势所在，KEGG数据是在线的，永远是最新的，而GO的数据不在软件包里，而依赖于别的数据包，而这些数据包是社区维护的（相对而言，个人的维护比较难以为继），就确保了数据一直在有更新维护的。</p>
-
 <p>Bioconductor每半年发行一次，注释包同样每半年更新一次，所以你用clusterProfiler做GO分析，你用的GO数据库不会说超过半年没更新，而不像有些公司给出的结果，落后于这个世界不是一年两年这么简单。</p>
       
       <p>
@@ -531,10 +581,8 @@ rownames(d) = paste0('g', 1:10)
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.github.io/blog_images/R/ppipre/Screenshot 2017-11-10 00.10.22.png" alt="" /></p>
-
+        <p>![](<a href="http://guangchuangyu.github.io/blog_images/R/ppipre/Screenshot">http://guangchuangyu.github.io/blog_images/R/ppipre/Screenshot</a> 2017-11-10 00.10.22.png)</p>
 <p>Scientific Report上有一篇文章是抄袭的，然而杂志最终决定不撤稿，而被抄的人是Johns Hopkins的，于是jh的人全都要离开Scientific Report的编委。我也被人抄了不撤稿，然而我人微言轻，不单被编辑部欺负，还要被我们国内生信界的网红欺负。</p>
-
 <p>SR与jh的事情，我和BMC的故事，是相似的，我们可以想像这样的学术界惨剧比想像中的要多。学术圈，真是有时候得呵呵哒。</p>
       
       <p>
@@ -591,12 +639,9 @@ rownames(d) = paste0('g', 1:10)
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.github.io/blog_images/R/meme/WechatIMG165.png" alt="" /></p>
-
+        <p><img src="http://guangchuangyu.github.io/blog_images/R/meme/WechatIMG165.png" alt=""></p>
 <p>正如我在《<a href="http://mp.weixin.qq.com/s/jDXjkrkq_YVhW-Z5Vx2-Fg">用R画meme ;)</a>》里说的，meme包就可以拿来画，当然这个包是设计来画meme的，所以文本只会打在中间，如果你想在右下角之类的，不好意思，我没提供选项让你调文本位置，氮素，meme依然是你的好帮手，怎么说呢，meme不单能帮你读图片，还能用grid画出来，这意味着你可以用<code>grid.text</code>随便加个文本就OK了。</p>
-
 <p>实例演示一发：</p>
-
 <pre><code>library(meme)
 u &lt;- system.file(&quot;angry8.jpg&quot;, package=&quot;meme&quot;)
 x &lt;- meme(u)
@@ -607,74 +652,6 @@ grid.text(&quot;biobabble&quot;, x=.9, y=.05,
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/11/watermark/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/11/bmc-journal-protect-paper-of-plagiarism/">
-          BMC journal protects paper of plagiarism
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2017-11-09T21:51:43&#43;08:00">
-        
-  November 9, 2017
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/biology">Biology</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/research">Research</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>My friend who doing his PhD study at Johns Hopkins just send me the link about <a href="https://retractionwatch.com/2017/11/07/17-johns-hopkins-researchers-resign-protest-ed-board-nature-journal/">a SR paper of plagiarism</a>. I have very similar experence of <a href="https://bmcsystbiol.biomedcentral.com/articles/10.1186/1752-0509-7-S2-S8">a paper published on BMC Systems Biology</a>, which plagiarized <a href="https://www.ncbi.nlm.nih.gov/pubmed/20179076">my work</a> and the editor just decided to publish an erratum.</p>
-
-<p>Deng <em>etc.</em> published an R package, ppiPre, that copied source code of my package, GOSemSim, and pretended that they developed these algorithms by themselves in their paper.</p>
-
-<p>Here is the screenshot of the source code (left: ppiPre, right: GOSemSim).</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/screenshots/Screenshot 2017-07-17 19.43.51.png" alt="" /></p>
-
-<p>You can find out more on <a href="http://guangchuangyu.github.io/2014/11/proper-use-of-gosemsim/">my blog post</a>.</p>
-
-<p>As a developer of several open source software, I am glad that someone find my source code useful and happy if someone use my source code to make something better. But I am not happy if someone copies my source code by removing author information and changing function names to pretend the code was developed by himself. The situation is even worse in academic. Taking someone else&rsquo;s works and passing it off as one&rsquo;s own is definitely plagiarism and not allow in academic.</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2017/11/bmc-journal-protect-paper-of-plagiarism/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

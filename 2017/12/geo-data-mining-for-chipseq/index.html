@@ -5,32 +5,24 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
-
 今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
-
 
 There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
 
-
 并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
-
 我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
 
 
 <meta property="og:description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
-
 今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
-
 
 There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
 
-
 并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
-
 我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ChIPseq-GEO数据挖掘">
@@ -39,26 +31,18 @@ There are increasing evidences shown that combinations of TFs are important for 
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2017/12/geo-data-mining-for-chipseq/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
-
 今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
-
 
 There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
 
-
 并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
-
 我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
 <meta name="twitter:description" content="ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）》）。
-
 今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：
-
 
 There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.
 
-
 并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。
-
 我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。">
 <meta property="og:locale" content="en-us">
 
@@ -323,27 +307,17 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>ChIPseeker系列文章已经介绍了很多内容，包括注释的方方面面，也包括强大的可视化功能（《<a href="http://mp.weixin.qq.com/s/MqpfgkMJSFj0pYwcEjV9kQ">CS6: ChIPseeker的可视化方法（中秋节的视觉饕餮）</a>》）。</p>
-
 <p>今天要介绍一下数据挖掘，从大量已有的数据来产生新的hypothesis。正如我在ChIPseeker的文章里写的：</p>
-
 <blockquote>
 <p>There are increasing evidences shown that combinations of TFs are important for regulating gene expression (Perez-Pinera et al., 2013; Zhu et al., 2008). However, systematically identification of TF interactions by ChIP-seq is still not available. Even if a specific TF binding is essential for a particular regulation was known, we do not have prior knowledge of all its co-factors. There are no systematic strategies available to identified un-known co-factors by ChIP- seq.</p>
 </blockquote>
-
 <p>并没有方法可以大规模地预测未知的共同调控因子，而数据挖掘就是要给我们这种预测的能力。</p>
-
 <p>我当年在写ChIPseeker的时候，我有纠结是写篇Bioinformatics的application note呢，还是写篇长文灌水NAR，毕竟NAR影响因子高一点，最后还是发了Bioinformatics，因为我没钱，囧，Bioinformatics不要版面费啊。然后限于篇幅，ChIPseeker有大量可视化的函数，我在文章中一张图都没放！！！如果当时决定发NAR的话，这个数据挖掘这一块我就会写多点。</p>
-
 <p>做注释在Windows上有个软件CisGenome，是Hongkai Ji课题组做的，他们还做了一个hmChIP的database：</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/hmChIP.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/hmChIP.png" alt=""></p>
 <p>这个hmChIP可以说是先行者，它只支持人和鼠，收集了一些GEO的数据，这个数据库做得比较早，当年GEO上的ChIPseq数据并不多，当由于搞得早，也发了一篇Bioinformatics，当然灌水之后，就不维护了，数据没更新，而基因组版本号还停留在hg18和mm8之上，所以即使它还能用，我想也不会有人去用了。这个数据库做一个事情，你可以上传自己的数据，然后它会和数据库中的数据进行比较，给你报道出你的数据和数据库中的数据overlap了多少，仅此而已。</p>
-
 <p>可以说这是一个雏形，我一直在想overlap了多少，不是很能说明问题，多少算多？能不能算个p值出来，overlap了这么多，随机情况下是不太可能产生的。思来想去，没办法直接算啊，于是求助于permutation，没有枪没有炮，我们自己造。</p>
-
 <p>写了一个shuffle函数，也就是传说中的洗牌，你给基因位置信息，<strong>随机</strong>给你返回等长的片段，但位置改变了。</p>
-
 <pre><code>p &lt;- GRanges(seqnames=c(&quot;chr1&quot;, &quot;chr3&quot;),
              ranges=IRanges(start=c(1, 100), end=c(50, 130)))
 shuffle(p, TxDb=txdb)
@@ -355,10 +329,7 @@ shuffle(p, TxDb=txdb)
 ##   [2]     chr3 [163562934, 163562964]      *
 ##   -------
 ##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
-</code></pre>
-
-<p>有了这个函数，我们可以对数据洗牌洗它一千次、一万次，那么就可以计算一千一万个overlap，来形成背景分布，实际数据的overlap在这一背景分布中产生的概率就可以计算出来。</p>
-
+</code></pre><p>有了这个函数，我们可以对数据洗牌洗它一千次、一万次，那么就可以计算一千一万个overlap，来形成背景分布，实际数据的overlap在这一背景分布中产生的概率就可以计算出来。</p>
 <pre><code>enrichPeakOverlap(queryPeak     = files[[5]],
                   targetPeak    = unlist(files[1:4]),
                   TxDb          = txdb,
@@ -381,16 +352,10 @@ shuffle(p, TxDb=txdb)
 ## ARmo_1nM   0.25490196 0.4444444
 ## ARmo_100nM 0.33333333 0.4444444
 ## CBX6_BF    0.05882353 0.2352941
-</code></pre>
-
-<p>函数里有一个<code>chainFile</code>的参数，如果你提供了，数据的比较可以跨基因组版本，甚至于可以跨物种比较。</p>
-
+</code></pre><p>函数里有一个<code>chainFile</code>的参数，如果你提供了，数据的比较可以跨基因组版本，甚至于可以跨物种比较。</p>
 <p>有了这个函数，那么我再打通GEO，让用户可以检索下载GEO的数据，如此一来，你就可以用自己的数据去和GEO的数据做比较，或者就可能挖出overlap非常significant但没被报道到的co-factor呢！</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/geo_stats.png" alt="" /></p>
-
+<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/geo_stats.png" alt=""></p>
 <p>ChIPseeker已经收集了超过90个物种，超过2万个BED文件的信息。你可以用getGEOgenomeVersion列出所有支持的基因组及相应的BED文件数目。</p>
-
 <pre><code>getGEOgenomeVersion()
 
 ##                         organism genomeVersion Freq
@@ -421,15 +386,9 @@ shuffle(p, TxDb=txdb)
 ## 25      Saccharomyces cerevisiae       sacCer3  227
 ## 26                    Sus scrofa       susScr2   17
 ## 27 Xenopus (Silurana) tropicalis       xenTro3    3
-</code></pre>
-
-<p>比如说斑马鱼，文件也就几十个，你大可全部下载下来。</p>
-
+</code></pre><p>比如说斑马鱼，文件也就几十个，你大可全部下载下来。</p>
 <pre><code>downloadGEObedFiles(genome=&quot;danRer7&quot;, destDir=&quot;danRer7&quot;)
-</code></pre>
-
-<p>而比如人鼠这些明显特种，实在太多，一般来说全部下载也不太现实。ChIPseeker可以给你列出信息，连pubmed ID都给出来了，也方便翻阅文献，如果<code>simplify=FALSE</code>的话，还会给出protocal和data processing等信息哦。</p>
-
+</code></pre><p>而比如人鼠这些明显特种，实在太多，一般来说全部下载也不太现实。ChIPseeker可以给你列出信息，连pubmed ID都给出来了，也方便翻阅文献，如果<code>simplify=FALSE</code>的话，还会给出protocal和data processing等信息哦。</p>
 <pre><code>hg19 &lt;- getGEOInfo(genome=&quot;hg19&quot;, simplify=TRUE)
 head(hg19)
 
@@ -461,10 +420,7 @@ head(hg19)
 ## 114          hg19  19829295
 ## 115          hg19  19829295
 ## 116          hg19  19829295
-</code></pre>
-
-<p>然后经过你的过滤，你就可以选择性地下载部分文件来分析了。</p>
-
+</code></pre><p>然后经过你的过滤，你就可以选择性地下载部分文件来分析了。</p>
 <pre><code>gsm &lt;- hg19$gsm[sample(nrow(hg19), 10)]
 downloadGSMbedFiles(gsm, destDir=&quot;hg19&quot;)
 </code></pre>

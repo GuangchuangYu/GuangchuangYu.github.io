@@ -5,36 +5,28 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="小伙伴说他写个CSV文件，名字就变了，无缘无故|就被改了，还有些名字被强加了X。我注意到了他写的对象是data.frame(d)，这锅绝对是data.frame的。
-
 我们可以试一下：
-
 &gt; d = matrix(rnorm(4), ncol=2)
 &gt; colnames(d) = c(&quot;A|B&quot;, &quot;123&quot;)
 &gt; write.csv(data.frame(d))
 &quot;&quot;,&quot;A.B&quot;,&quot;X123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-
-
 没错，自己给变了。">
 
 
 <meta property="og:description" content="小伙伴说他写个CSV文件，名字就变了，无缘无故|就被改了，还有些名字被强加了X。我注意到了他写的对象是data.frame(d)，这锅绝对是data.frame的。
-
 我们可以试一下：
-
 &gt; d = matrix(rnorm(4), ncol=2)
 &gt; colnames(d) = c(&quot;A|B&quot;, &quot;123&quot;)
 &gt; write.csv(data.frame(d))
 &quot;&quot;,&quot;A.B&quot;,&quot;X123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-
-
 没错，自己给变了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="R给你的数据化了妆？">
@@ -43,30 +35,22 @@
 <meta property="twitter:url" content="https://guangchuangyu.github.io/2018/03/colnames-of-data-frame/">
 <meta property="og:site_name" content="Guangchuang Yu">
 <meta property="og:description" content="小伙伴说他写个CSV文件，名字就变了，无缘无故|就被改了，还有些名字被强加了X。我注意到了他写的对象是data.frame(d)，这锅绝对是data.frame的。
-
 我们可以试一下：
-
 &gt; d = matrix(rnorm(4), ncol=2)
 &gt; colnames(d) = c(&quot;A|B&quot;, &quot;123&quot;)
 &gt; write.csv(data.frame(d))
 &quot;&quot;,&quot;A.B&quot;,&quot;X123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-
-
 没错，自己给变了。">
 <meta name="twitter:description" content="小伙伴说他写个CSV文件，名字就变了，无缘无故|就被改了，还有些名字被强加了X。我注意到了他写的对象是data.frame(d)，这锅绝对是data.frame的。
-
 我们可以试一下：
-
 &gt; d = matrix(rnorm(4), ncol=2)
 &gt; colnames(d) = c(&quot;A|B&quot;, &quot;123&quot;)
 &gt; write.csv(data.frame(d))
 &quot;&quot;,&quot;A.B&quot;,&quot;X123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-
-
 没错，自己给变了。">
 <meta property="og:locale" content="en-us">
 
@@ -327,38 +311,25 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>小伙伴说他写个CSV文件，名字就变了，无缘无故<code>|</code>就被改了，还有些名字被强加了<code>X</code>。我注意到了他写的对象是<code>data.frame(d)</code>，这锅绝对是<code>data.frame</code>的。</p>
-
 <p>我们可以试一下：</p>
-
 <pre><code>&gt; d = matrix(rnorm(4), ncol=2)
 &gt; colnames(d) = c(&quot;A|B&quot;, &quot;123&quot;)
 &gt; write.csv(data.frame(d))
 &quot;&quot;,&quot;A.B&quot;,&quot;X123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-</code></pre>
-
-<p><strong>没错，自己给变了。</strong></p>
-
+</code></pre><p><strong>没错，自己给变了。</strong></p>
 <p>其实如果我们不<code>data.frame</code>强转的话，一切都是OK的。</p>
-
 <pre><code>&gt; write.csv(d)
 &quot;&quot;,&quot;A|B&quot;,&quot;123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-</code></pre>
-
-<p>我们不防再试一下，自己转为<code>data.frame</code>，看看是不是这样，结果必须也是，所以这锅就是<code>data.frame</code>的。</p>
-
+</code></pre><p>我们不防再试一下，自己转为<code>data.frame</code>，看看是不是这样，结果必须也是，所以这锅就是<code>data.frame</code>的。</p>
 <pre><code>&gt; d = data.frame(d)
 &gt; colnames(d)
 [1] &quot;A.B&quot;  &quot;X123&quot;
-</code></pre>
-
-<h2 id="解决方案">解决方案</h2>
-
+</code></pre><h2 id="heading">解决方案</h2>
 <p>既然转成<code>data.frame</code>之后，它变了，那我们就再变回去呗。</p>
-
 <pre><code>&gt; colnames(d) = c(&quot;A|B&quot;, &quot;123&quot;)
 &gt; colnames(d)
 [1] &quot;A|B&quot; &quot;123&quot;
@@ -366,34 +337,22 @@ if (!doNotTrack) {
 &quot;&quot;,&quot;A|B&quot;,&quot;123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-</code></pre>
-
-<h2 id="问题到底出在那里">问题到底出在那里？</h2>
-
+</code></pre><h2 id="heading-1">问题到底出在那里？</h2>
 <p>因为<code>|</code>是保留字符，还有数字不能当变量名这些，几乎是共识，所以<code>data.frame()</code>这个函数就不允许它们当名字。但是我们想一想，保留字符出现在字符串中是OK的吧？数字开头的字符串是OK的吧？必须是，而名字必须就只是单纯的字符串吧？必须也是，所以这是两码事，你看我们可以给<code>d</code>的colnames设置回去就知道了，这些都是合法的！到了这里，我们只能说<code>data.frame()</code>这个函数死蠢！</p>
-
 <p>第二点，你可能以为是matrix转data.frame才会有这问题， 那我们可以再试一下，data.frame转data.frame，你以为它啥都不干吧，不是的，<code>data.frame()</code>这个函数，就是会给你改名字，给你惊喜。</p>
-
 <pre><code>&gt; write.csv(data.frame(d))
 &quot;&quot;,&quot;A.B&quot;,&quot;X123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
 &gt; class(d)
 [1] &quot;data.frame&quot;
-</code></pre>
-
-<h2 id="如何能够避免这个坑">如何能够避免这个坑</h2>
-
+</code></pre><h2 id="heading-2">如何能够避免这个坑</h2>
 <p>使用<code>data.frame(d, check.names=FALSE)</code>或者使用<code>tibble</code>：</p>
-
 <pre><code>&gt; tibble::as_data_frame(d) %&gt;% write.csv
 &quot;&quot;,&quot;A|B&quot;,&quot;123&quot;
 &quot;1&quot;,-0.601247669017546,0.802654193340092
 &quot;2&quot;,-0.128752028398414,0.430829592244036
-</code></pre>
-
-<h2 id="看完你还想看">看完你还想看</h2>
-
+</code></pre><h2 id="heading-3">看完你还想看</h2>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s/nt3siXtdTGKQfTBt_vhf_g">R的诡异事件</a></li>
 <li><a href="https://mp.weixin.qq.com/s/9jQQlLRpWL01K2Py8CsnNw">听说你想学R？</a></li>

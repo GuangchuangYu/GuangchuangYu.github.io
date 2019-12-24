@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -280,8 +280,8 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         去年ubuntu下apt-get了R-3.0.2, 用了没多久就发现了system命令有问题，通常情况下调用系统命令是正常的，但是我调用bowtie的时候，就会报错：
-Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping... Error: Encountered internal Bowtie 2 exception (#1) Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2  这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
-&gt; library(doParallel) &gt; Loading required package: foreach foreach: simple, scalable parallel programming from Revolution Analytics Use Revolution R for scalability, fault tolerance and more. http://www.revolutionanalytics.com Loading required package: iterators Loading required package: parallel &gt; registerDoParallel(11) &gt; &gt; foreach(i = 1:10) %dopar% { getwd() } &gt; *** caught segfault *** address 0x7fbeb6d399d0, cause 'memory not mapped'  其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。
+Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; skipping...Error: Encountered internal Bowtie 2 exception (#1)Command: /usr/bin/bowtie2-align --wrapper basic-0 -p 12 -x /ssd/genomes/hg19 -S tmp.sam -1 /tmp/8156.inpipe1 -2 /tmp/8156.inpipe2 这很明显是因为fasta.gz文件，bowtie需要调用zcat来读的，在R里调用bowtie就找不到好基友zcat的输出管道。当时没在意，R不干，那就找shell。 去年用NMF包的时候，报出了人类不友好的错误，联系了包作者Gaujoux，在作者的帮助下，找到了是doParallel包的问题：
+&gt; library(doParallel)&gt; Loading required package: foreachforeach: simple, scalable parallel programming from Revolution AnalyticsUse Revolution R for scalability, fault tolerance and more.http://www.revolutionanalytics.comLoading required package: iteratorsLoading required package: parallel&gt;registerDoParallel(11)&gt; &gt;foreach(i = 1:10) %dopar% { getwd() }&gt;*** caught segfault ***address 0x7fbeb6d399d0, cause 'memory not mapped' 其实parallel包中用mclapply也是同样报错。于是又把维护deb包的Dirk拉进来，Dirk是Rcpp的作者，高人就是不一样，看了错误，立刻就指出是BLAS库的问题。
       
       <p>
         <a href="https://guangchuangyu.github.io/2014/07/r-binary-is-untrustworthy/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -340,10 +340,8 @@ Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; ski
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>从2007年写了<a href="http://cjbmb.bjmu.edu.cn/CN/abstract/abstract17570.shtml">第一篇文章</a>之后，我发现管理文献真不是人干的，一直以来使用Zotero来管理文献，自从有了dropbox之后，就想把文献库放在dropbox上，一来有个云备份，不怕硬盘坏，二来嘛，实验室电脑和个人电脑可以实时同步化，无奈dropbox空间太小，而我的zotero早已超过10G，因为电子书也放在里面，只能做罢。</p>
-
 <p>度娘出手还是很大方的，我现在的网盘已经有3T，包括之前在推广阶段用1元买的1T。</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/Screenshot-2014-05-05-21.31.57.png" alt="" /></p>
+<p><img src="http://guangchuangyu.github.io/blog_images/2014/05/Screenshot-2014-05-05-21.31.57.png" alt=""></p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2014/05/%E6%9B%B4%E6%94%B9%E7%99%BE%E5%BA%A6%E4%BA%91%E5%90%8C%E6%AD%A5%E7%9B%98%E8%B7%AF%E5%BE%84/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -402,7 +400,7 @@ Warning: Could not open read file &quot;/tmp/8156.inpipe1&quot; for reading; ski
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         I was asked to set up a local blast for the lab. Blast can be installed directly using apt in debian and it turns out to be easy.
-root@jz:/ssd/genomes# apt-get install ncbi-blast+ Reading package lists... Done Building dependency tree Reading state information... Done The following NEW packages will be installed: ncbi-blast+ 0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded. Need to get 11.2 MB of archives. After this operation, 32.
+root@jz:/ssd/genomes# apt-get install ncbi-blast+Reading package lists... DoneBuilding dependency treeReading state information... DoneThe following NEW packages will be installed:ncbi-blast+0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded.Need to get 11.2 MB of archives.After this operation, 32.
       
       <p>
         <a href="https://guangchuangyu.github.io/2013/11/local-blast/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -519,7 +517,7 @@ root@jz:/ssd/genomes# apt-get install ncbi-blast+ Reading package lists... Done 
 我第一反应是拒绝使用TIFF，600DPI的TIFF文件肯定非常大，EPS也是矢量图，我用R重新把图画一遍，存为EPS就OK了。画图的过程，我发现对EPS的支持不太好，老报些某字体不存在的错误。这当然不是什么大不了的事，自己指定字体就好了。问题在于有张图是拼的，我只能借助于软件转换，我用Inkscape处理，导出EPS，出来的图我发现有些细节并不太好。
 无奈之下还是用TIFF吧，Fig1和3都是R画的，直接指定分辨率和压缩算法，存为TIFF文件。Fig1是3000x3000pixel 600dpi的图，只有320k，Fig3是4200x4200pixel的图，也是600dpi，只有558k，用R产生TIFF还是非常靠谱的。
 关键是Fig2，这一张拼的图，存成PDF矢量图，需要用ImageMagick转换成600DPI的TIFF图片，ImageMagick需要安装Xcode才能在Mac下编译成功。
-Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:others ygc$ identify -verbose fig2.tif Image: fig2.tif Format: TIFF (Tagged Image File Format) Class: DirectClass Geometry: 6000x4500+0+0 Resolution: 600x600 Print size: 10x7.5 Units: Undefined Type: PaletteMatte Base type: TrueColor Endianess: MSB ... Yus-Mac-Pro:others ygc$ convert -density 600 -compress lzw fig2.pdf fig2_compress.tif Yus-Mac-Pro:others ygc$ ls -l fig2*.tif -rw-r--r-- 1 ygc admin 216036263 May 23 17:53 fig2.
+Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tifYus-Mac-Pro:others ygc$ identify -verbose fig2.tifImage: fig2.tifFormat: TIFF (Tagged Image File Format)Class: DirectClassGeometry: 6000x4500+0+0Resolution: 600x600Print size: 10x7.5Units: UndefinedType: PaletteMatteBase type: TrueColorEndianess: MSB...Yus-Mac-Pro:others ygc$ convert -density 600 -compress lzw fig2.pdf fig2_compress.tifYus-Mac-Pro:others ygc$ ls -l fig2*.tif-rw-r--r-- 1 ygc admin 216036263 May 23 17:53 fig2.
       
       <p>
         <a href="https://guangchuangyu.github.io/2013/06/compress-tiff/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -579,10 +577,8 @@ Yus-Mac-Pro:others ygc$ convert -density 600 fig2.pdf fig2.tif Yus-Mac-Pro:other
       
         <p>最近老收到那个<a href="http://www.douban.com/group/topic/23848309/">“消灭”文科生的词频页面</a>。好吧，我也来跟风娱乐一下
 =,=</p>
-
 <p>对着原贴那样的题目，做为理科生，拿着随机数对着看啥的，哪好意思啊。搞几行代码才好装13。</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/2011/12/random_word.png" alt="" /></p>
+<p><img src="https://guangchuangyu.github.io/blog_images/2011/12/random_word.png" alt=""></p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2011/12/word-freq/" class="postShorten-excerpt_link link">Continue reading</a>

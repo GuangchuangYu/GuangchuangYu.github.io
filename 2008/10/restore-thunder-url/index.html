@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="迅雷的url很恶心，硬是把你绑死在它的流氓软件上，今天试了一个用base64解码，果然用这个伎俩来欺骗用户。在原始的url前面和后面各加两个字符，然后用base64编码。写了下面一段script来还原出原始的url，这样随便用那个下载工具都可以用了。">
@@ -279,35 +279,32 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>迅雷的url很恶心，硬是把你绑死在它的流氓软件上，今天试了一个用base64解码，果然用这个伎俩来欺骗用户。在原始的url前面和后面各加两个字符，然后用base64编码。写了下面一段script来还原出原始的url，这样随便用那个下载工具都可以用了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl"> <span style="color:#75715e">#!/usr/bin/perl -w</span>
+ <span style="color:#66d9ef">use</span> strict;
+ <span style="color:#66d9ef">use</span> MIME::Base64;
 
-<pre><code class="language-perl"> #!/usr/bin/perl -w
- use strict;
- use MIME::Base64;
+ <span style="color:#66d9ef">my</span> $thunder_url <span style="color:#f92672">=</span> shift;
+ <span style="color:#66d9ef">my</span> $encode_url;
 
- my $thunder_url = shift;
- my $encode_url;
-
- ## remove 'thunder://' 
- if ($thunder_url =~ /^thunder:\/\/(\w+)$/) {
-     $encode_url = $1;
- }else {
-     die &quot; Not a valid input!!\n&quot; ;
+ <span style="color:#75715e">## remove &#39;thunder://&#39; </span>
+ <span style="color:#66d9ef">if</span> ($thunder_url <span style="color:#f92672">=~</span><span style="color:#e6db74"> /^thunder:\/\/(\w+)$/</span>) {
+     $encode_url <span style="color:#f92672">=</span> $1;
+ }<span style="color:#66d9ef">else</span> {
+     die <span style="color:#e6db74">&#34; Not a valid input!!\n&#34;</span> ;
  }
 
- my $decoded = decode_base64($encode_url) ;
+ <span style="color:#66d9ef">my</span> $decoded <span style="color:#f92672">=</span> decode_base64($encode_url) ;
 
- ## remove the first and last two characters.
- $decoded =~ s/^\w{2}// ;
- $decoded =~ s/\w{2}$// ;
+ <span style="color:#75715e">## remove the first and last two characters.</span>
+ $decoded <span style="color:#f92672">=~</span> <span style="color:#e6db74">s/^\w{2}//</span> ;
+ $decoded <span style="color:#f92672">=~</span> <span style="color:#e6db74">s/\w{2}$//</span> ;
 
- print &quot;$decoded\n&quot;;
-</code></pre>
-
-<pre><code class="language-shell">$ perl decode_thunder_url.pl
+ <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;$decoded\n&#34;</span>;
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ perl decode_thunder_url.pl
 thunder://QUFmdHA6Ly8xMTYuNTIuMTEuOTE6OTUyNy96aC1oYW5zX3dpbmRvd3
 NfdmlzdGFfd2l0aF9zZXJ2aWNlX3BhY2tfMV94NjRfZHZkX3gxNC0zMDczMy5pc29aWg $
 ftp://116.52.11.91:9527/zh-hans_windows_vista_with_service_pack_1_x64_dvd_x14-30733.iso
-</code></pre>
+</code></pre></div>
               
             </div>
           </div>

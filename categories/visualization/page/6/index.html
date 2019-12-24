@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -282,26 +282,20 @@ if (!doNotTrack) {
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>小伙伴发来这个文章中的图，想要实现类似的图，用变量给axis text上色，并生成legend：</p>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot 2017-07-04 14.10.55.png" alt="" /></p>
-
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot">https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot</a> 2017-07-04 14.10.55.png)</p>
 <p>这个可以说ggplot2是不支持的，aes映射不会被应用于axis上，而theme也不支持aes映射，你只能自己手动搞个color vector传给theme来上色，但这无法生成legend。</p>
-
 <p>我只能打开脑洞，legend借助于额外的图层来生成，但这个额外的图层又不是我们想要在图形上展示的，这又是个无米之炊，我能想到的就是让图层透明，实际有，但你看不到，当然这样自动生成的legend也会看不到，但legend可以后面再修改，于是这不支持的事情，就通过变通变得可能：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
 
-<pre><code class="language-r">require(ggplot2)
-
-set.seed(2017-07-04)
-d &lt;- data.frame(x = letters[1:5], y = rnorm(5), 
-		group = sample(c(&quot;Control&quot;, &quot;Treatment&quot;), 5, replace=TRUE),
-		type = sample(LETTERS[1:2], 5, replace=TRUE)
+<span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2017</span><span style="color:#ae81ff">-07</span><span style="color:#ae81ff">-04</span>)
+d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(x <span style="color:#f92672">=</span> <span style="color:#66d9ef">letters</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">5</span>], y <span style="color:#f92672">=</span> <span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">5</span>), 
+		group <span style="color:#f92672">=</span> <span style="color:#a6e22e">sample</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Control&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Treatment&#34;</span>), <span style="color:#ae81ff">5</span>, replace<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>),
+		type <span style="color:#f92672">=</span> <span style="color:#a6e22e">sample</span>(<span style="color:#66d9ef">LETTERS</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">2</span>], <span style="color:#ae81ff">5</span>, replace<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
 )
 
-p &lt;- ggplot(d, aes(x,y)) + 
-	geom_col(aes(fill=group))
-</code></pre>
-
-<p>这个代码很好懂，画一个柱状图，按<code>group</code>上色。</p>
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x,y)) <span style="color:#f92672">+</span> 
+	<span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>group))
+</code></pre></div><p>这个代码很好懂，画一个柱状图，按<code>group</code>上色。</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/10/set_axis_text_color/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -360,11 +354,8 @@ p &lt;- ggplot(d, aes(x,y)) +
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>2017眼看要结束，立下写《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247483886&amp;idx=1&amp;sn=cb76891dff5787025f6b99cdcc723d86&amp;chksm=ec43b0a9db3439bfcec1c9ac3c0d00e6190cf4d3d02d9d3dc767007e0ff68b4fbd8064bb0f77#rd">CS0: ChIPseq从入门到放弃</a>》的flag还没完成，当时ChIPseeker是33个引用，现在已经80了，时间过得好快。</p>
-
 <p>最近放羊的Jimmy给我发来了一个截屏：</p>
-
-<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/WechatIMG51.jpeg" alt="" /></p>
-
+<p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/WechatIMG51.jpeg" alt=""></p>
 <p>说了一篇新文章，大段在称赞ChIPseeker：</p>
       
       <p>
@@ -423,8 +414,7 @@ p &lt;- ggplot(d, aes(x,y)) +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/WechatIMG52.png" alt="" /></p>
-
+        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/WechatIMG52.png" alt=""></p>
 <p>群众纷纷表示图二是Excel画的，我觉得也是！Excel是生物学家的最爱啊。虽然做生信的人都看不上，最主要是没有记录，不具备可重复性。但现实就是大家都爱Excel。</p>
       
       <p>
@@ -483,9 +473,8 @@ p &lt;- ggplot(d, aes(x,y)) +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot 2017-10-17 10.31.23.png" alt="" /></p>
-
-<p>这个题目可以放好多不正经的图，我在这个公众号里面已经写过太多，比如《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247483816&amp;amp;idx=1&amp;amp;sn=cbfbc284f4edb165ac65f7926f7f8fcc&amp;amp;chksm=ec43b0efdb3439f91ec4f570f7be65e442e21e403481b969d69449464ae1986c7983551de04d#rd">邪恶的曲线</a>》和它的3D版本，《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484823&amp;amp;idx=1&amp;amp;sn=4af972da15535c1d7dcf837ace320592&amp;amp;chksm=ec43b4d0db343dc6ec2e622523a5aabb67f25e4b9e4b93a67ab37125570fbab907741351da18#rd">3D版邪恶的曲线</a>》，但这里不涉及太多，只用<code>geofacet</code>这个包为例。</p>
+        <p>![](<a href="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot">https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot</a> 2017-10-17 10.31.23.png)</p>
+<p>这个题目可以放好多不正经的图，我在这个公众号里面已经写过太多，比如《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247483816&amp;idx=1&amp;sn=cbfbc284f4edb165ac65f7926f7f8fcc&amp;chksm=ec43b0efdb3439f91ec4f570f7be65e442e21e403481b969d69449464ae1986c7983551de04d#rd">邪恶的曲线</a>》和它的3D版本，《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484823&amp;idx=1&amp;sn=4af972da15535c1d7dcf837ace320592&amp;chksm=ec43b4d0db343dc6ec2e622523a5aabb67f25e4b9e4b93a67ab37125570fbab907741351da18#rd">3D版邪恶的曲线</a>》，但这里不涉及太多，只用<code>geofacet</code>这个包为例。</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/09/geofacet_index/" class="postShorten-excerpt_link link">Continue reading</a>
@@ -545,10 +534,8 @@ p &lt;- ggplot(d, aes(x,y)) +
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247484507&amp;amp;idx=1&amp;amp;sn=295454a59613bfd977f407958bec787e&amp;amp;chksm=ec43b51cdb343c0acea87661fe5144a5817503a2fdc8f316d56fd28d33291084bc718330c428#rd">你所不知道的，R的N种打开方式</a>》一文中，我介绍了R的N种界面，这里将介绍一个用python写的极其现代化的R命令行界面，rtichoke（之前叫rice）之于R，就像ipython之于python一样。</p>
-
-<h2 id="特性">特性</h2>
-
+        <p>在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484507&amp;idx=1&amp;sn=295454a59613bfd977f407958bec787e&amp;chksm=ec43b51cdb343c0acea87661fe5144a5817503a2fdc8f316d56fd28d33291084bc718330c428#rd">你所不知道的，R的N种打开方式</a>》一文中，我介绍了R的N种界面，这里将介绍一个用python写的极其现代化的R命令行界面，rtichoke（之前叫rice）之于R，就像ipython之于python一样。</p>
+<h2 id="heading">特性</h2>
 <ul>
 <li>轻量，不需要编译</li>
 <li>多行编辑，这点很重要啊，长长的命令可以换行后，随便回去编辑前面的指令</li>
@@ -617,9 +604,7 @@ p &lt;- ggplot(d, aes(x,y)) +
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>最初github上用户（<a href="https://github.com/JustGitting">@JustGitting</a>）报告说<code>geom_hilight</code>和<code>geom_cladelabel</code>不能用于unrooted树。详见：<a href="https://github.com/GuangchuangYu/ggtree/issues/118">https://github.com/GuangchuangYu/ggtree/issues/118</a></p>
-
 <p>我表示这确实是不行的，然后这就变成了feature request。我继续表示unrooted tree在ggtree中的实现并不好，我只实现了equal angle algorithm，在写注释图层之前，如果我有时间的话，我希望可以先实现更好的layout algorithm。</p>
-
 <p>然后JustGitting表示，他发现python的ETE和R的ape，在无根树的可视化上好像都不太行。问我有什么unrooted的layout algorithm，有没有什么参考文献，或许他可以帮忙实现，因为他觉得ggtree是最成熟的软件。</p>
       
       <p>
@@ -679,17 +664,14 @@ p &lt;- ggplot(d, aes(x,y)) +
     <div class="postShorten-excerpt" itemprop="articleBody">
       
         <p>最近公众号「生信媛」和「生信宝典」的小伙伴在说ggplot2无法一次性设置所有字体，<code>theme</code>只能设置axis text, title这些，而搞不了<code>geom_text</code>，<code>geom_text</code>必须要手工输入<code>family=XXX</code>来设置，因为不能使用<code>theme</code>来更换，也就是说没办法通过后处理来设定，比较麻烦。</p>
-
 <p>这显然是不对的，后处理必须可以的，一次性满足所有愿望也只是因为没人写个神奇的函数而已。于是我就动手写了个<code>set_font</code>的函数。</p>
-
 <p>假设我们有下图：</p>
-
-<pre><code class="language-r">library(ggplot2)
-d &lt;- data.frame(x=rnorm(10), y=rnorm(10), lab=LETTERS[1:10])
-p &lt;- ggplot(d, aes(x, y)) + 
-    geom_text(aes(label=lab, color=lab), size=10) + 
-	geom_text(aes(y, x, label=lab), size=3)
-</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(x<span style="color:#f92672">=</span><span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">10</span>), y<span style="color:#f92672">=</span><span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">10</span>), lab<span style="color:#f92672">=</span><span style="color:#66d9ef">LETTERS</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>])
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x, y)) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span>lab, color<span style="color:#f92672">=</span>lab), size<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>) <span style="color:#f92672">+</span> 
+	<span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(y, x, label<span style="color:#f92672">=</span>lab), size<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
+</code></pre></div>
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/09/ggplot2-set-font/" class="postShorten-excerpt_link link">Continue reading</a>

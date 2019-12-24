@@ -5,19 +5,17 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
 I post this because I am facing the same problem: I want to change the text of the label (not the font, the face, the colour, etc: the text itself) of the leftmost panel which is automatically called &ldquo;Tree&rdquo; by ggtree. As far as I understand, and contrary to what is posted below, the &ldquo;theme&rdquo; thing of ggplot2 only allows to change the appearance of the panel header, not the text of the panel title itself&hellip; So how to go about that?
-
 
 这是google group里的问题，说的是facet_plot会把画树的panel叫做Tree，而他想改名，于是我就写了一个函数，facet_labeller来回应这个问题。">
 
 
 <meta property="og:description" content="
 I post this because I am facing the same problem: I want to change the text of the label (not the font, the face, the colour, etc: the text itself) of the leftmost panel which is automatically called &ldquo;Tree&rdquo; by ggtree. As far as I understand, and contrary to what is posted below, the &ldquo;theme&rdquo; thing of ggplot2 only allows to change the appearance of the panel header, not the text of the panel title itself&hellip; So how to go about that?
-
 
 这是google group里的问题，说的是facet_plot会把画树的panel叫做Tree，而他想改名，于是我就写了一个函数，facet_labeller来回应这个问题。">
 <meta property="og:type" content="article">
@@ -29,11 +27,9 @@ I post this because I am facing the same problem: I want to change the text of t
 <meta property="og:description" content="
 I post this because I am facing the same problem: I want to change the text of the label (not the font, the face, the colour, etc: the text itself) of the leftmost panel which is automatically called &ldquo;Tree&rdquo; by ggtree. As far as I understand, and contrary to what is posted below, the &ldquo;theme&rdquo; thing of ggplot2 only allows to change the appearance of the panel header, not the text of the panel title itself&hellip; So how to go about that?
 
-
 这是google group里的问题，说的是facet_plot会把画树的panel叫做Tree，而他想改名，于是我就写了一个函数，facet_labeller来回应这个问题。">
 <meta name="twitter:description" content="
 I post this because I am facing the same problem: I want to change the text of the label (not the font, the face, the colour, etc: the text itself) of the leftmost panel which is automatically called &ldquo;Tree&rdquo; by ggtree. As far as I understand, and contrary to what is posted below, the &ldquo;theme&rdquo; thing of ggplot2 only allows to change the appearance of the panel header, not the text of the panel title itself&hellip; So how to go about that?
-
 
 这是google group里的问题，说的是facet_plot会把画树的panel叫做Tree，而他想改名，于是我就写了一个函数，facet_labeller来回应这个问题。">
 <meta property="og:locale" content="en-us">
@@ -301,12 +297,9 @@ if (!doNotTrack) {
               <blockquote>
 <p>I post this because I am facing the same problem: I want to change the text of the label (not the font, the face, the colour, etc: the text itself) of the leftmost panel which is automatically called &ldquo;Tree&rdquo; by ggtree. As far as I understand, and contrary to what is posted below, the &ldquo;theme&rdquo; thing of ggplot2 only allows to change the appearance of the panel header, not the text of the panel title itself&hellip; So how to go about that?</p>
 </blockquote>
-
 <p>这是<a href="https://groups.google.com/d/msgid/bioc-ggtree/154a6acc-bf78-40d9-ad95-8dc1877a4f97%40googlegroups.com?utm_medium=email&amp;utm_source=footer">google group</a>里的问题，说的是<code>facet_plot</code>会把画树的panel叫做Tree，而他想改名，于是我就写了一个函数，<code>facet_labeller</code>来回应这个问题。</p>
-
 <p>使用起来很简单，比如下面这个<code>p2</code>的图，就是用<code>facet_plot</code>产生，它包含两个panel，一个叫Tree，另一个叫dot。</p>
-
-<pre><code class="language-r">library(ggtree)
+<pre><code class="language-{r}" data-lang="{r}">library(ggtree)
 tr &lt;- rtree(30) 
 p &lt;- ggtree(tr) 
 d1 &lt;- data.frame(id=tr$tip.label, location=sample(c(&quot;GZ&quot;, &quot;HK&quot;, &quot;CZ&quot;), 30, replace=TRUE)) 
@@ -314,23 +307,14 @@ p1 &lt;- p %&lt;+% d1 + geom_tippoint(aes(color=location))
 d2 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3)) 
 p2 &lt;- facet_plot(p1, panel=&quot;dot&quot;, data=d2, geom=geom_point,
  aes(x=val), color='firebrick') + theme_tree2()
-</code></pre>
-
-<p>那么要改panel的名字，很容易，你只需要传入一个named vector，那么对应的名字就会被改变。比如：</p>
-
-<pre><code class="language-r">lbs &lt;- c(Tree = &quot;tree panel&quot;, dot = &quot;dot panel&quot;)
+</code></pre><p>那么要改panel的名字，很容易，你只需要传入一个named vector，那么对应的名字就会被改变。比如：</p>
+<pre><code class="language-{r}" data-lang="{r}">lbs &lt;- c(Tree = &quot;tree panel&quot;, dot = &quot;dot panel&quot;)
 facet_labeller(p2, lbs)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2018-facet-labeller_files/figure-html/unnamed-chunk-2-1.png" alt="" /></p>
-
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2018-facet-labeller_files/figure-html/unnamed-chunk-2-1.png" alt=""></p>
 <p>当然你可以只改变其中某一个或某一些panel，全靠你自己指定：</p>
-
-<pre><code class="language-r">lbs &lt;- c(Tree = &quot;tree panel&quot;)
+<pre><code class="language-{r}" data-lang="{r}">lbs &lt;- c(Tree = &quot;tree panel&quot;)
 facet_labeller(p2, lbs)
-</code></pre>
-
-<p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2018-facet-labeller_files/figure-html/unnamed-chunk-3-1.png" alt="" /></p>
+</code></pre><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/2018-facet-labeller_files/figure-html/unnamed-chunk-3-1.png" alt=""></p>
               
             </div>
           </div>
