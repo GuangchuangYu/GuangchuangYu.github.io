@@ -321,11 +321,11 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_pointrange(aes(y=mean, ymin=mean-sd, ymax=mean+sd, color=Species), data=d, size=2) 
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b2.png" alt=""></p>
 <h3 id="1">云雨图1：加上均值和标准误差。</h3>
-<pre><code>## devtools::install_github(&quot;GuangchuangYu/gglayer&quot;)
-require(gglayer)
+<pre><code>library(gghalves)
+
 
 ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
-    geom_flat_violin(position=position_nudge(x=.2)) +
+    geom_half_violin(position=position_nudge(x=.2), side=2) +
     geom_jitter(aes(color=Species), width=.15) +
     geom_pointrange(aes(y=mean, ymin=mean-sd, ymax=mean+sd),
                     data=d, size=1, position=position_nudge(x=.25)) +
@@ -334,7 +334,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b3.png" alt=""></p>
 <h3 id="2boxplot">云雨图2：加上boxplot</h3>
 <pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
-    geom_flat_violin(position=position_nudge(x=.3)) +
+    geom_half_violin(position=position_nudge(x=.3), side=2) +
     geom_jitter(aes(color=Species), width=.15) +
     geom_boxplot(width=.1, position=position_nudge(x=.22)) +
     coord_flip() + theme_bw() +
@@ -342,7 +342,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b4.png" alt=""></p>
 <h3 id="3">云雨图3：用堆叠的点图当雨点</h3>
 <pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
-    geom_flat_violin(position=position_nudge(x=.2)) +
+    geom_half_violin(position=position_nudge(x=.2), side=2) +
     geom_dotplot(binaxis=&quot;y&quot;, stackdir=&quot;down&quot;, dotsize=.35) +
     geom_boxplot(width=.1, position=position_nudge(x=.1)) +
     coord_flip() + theme_bw() +
@@ -447,7 +447,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2019 Guangchuang Yu. All Rights Reserved
+    &copy; 2020 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 
