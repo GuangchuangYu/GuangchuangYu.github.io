@@ -329,7 +329,9 @@ pacman -S linux-headers
 <p>当然还需要再拷贝一份：</p>
 <pre><code>cp /boot/efi/EFI/boot/grubx64.efi /boot/efi/EFI/boot/bootx64.efi
 </code></pre><p>然后这个EFI分区，在我的<code>/etc/fstab</code>中，其实就是挂在<code>/boot</code>下面。</p>
-<p>然后再启动，还是一样，在进入系统之前，黑了，当然比之前的好一点，按Ctrl-Atl-Del还能重启。</p>
+<p>在这样的前提下，配置grub才能成功：</p>
+<pre><code>grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre><p>然后再启动，还是一样，在进入系统之前，黑了，当然比之前的好一点，按Ctrl-Atl-Del还能重启。</p>
 <p>这还能怎么样呢？因为<code>/boot</code>被不小心干掉，所以不完全时光机了，因为重新装了新版本的内核，鬼知道会不会又有什么版本不兼容的事情发生。那只能一路滚到黑了。</p>
 <p>于是又进入U盘，<code>chroot</code>到硬盘的系统，滚动升级系统。升完重启，系统进去了，死马终于医活了。时隔搞坏系统，已经是十个小时过去了。</p>
 <p>被困实验室，结果搞机通宵的尴尬一晚，就这样过去了。</p>
