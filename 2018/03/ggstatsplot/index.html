@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="大家是否还记得我写的文章《画个小圈圈》？里面吐槽了ggpubr这个包的存在是制造混乱，徒增学习成本。我们知道ggplot2包里有个qplot函数，而在《ggplot2》的第一版中，hadley先用了一章介绍qplot，再介绍grammar of graphics，然后这个qplot就被吐槽，先入为主，给学习grammar of graphics，学习ggplot2语法制造了不必要的麻烦。然后如果你看《ggplot2》第二版，你就会发现qplot这一章被删掉了。我说ggpubr制造混乱，徒增学习成本并不是为了吐槽某公众号，而是实事求是。
@@ -397,14 +397,14 @@ ggpiestats(data = mtcars,
  ──────────────────────────── 
 </code></pre>
 <p>省了多少时间？如果我只是看一看，最终这个结果我不要，那只花了3秒，如果这是我要的，我不懂卡方的情况下，也能做出来，那么我再有的放矢地去学习，甚至可以自己手工来一遍，这比毫无目的在各种手工学习或试错强太多，OK，我也懂用卡方的情况下，它做的东西，里面也可能有我不懂的东西，比如这个Cramer’s V，就打在图上，不懂，又可以去学习了，学习使我快乐，如果不是在图上看到，我不要说看不懂，根本都不知道有这东西的存在！所以不单单好用，也能让我们学到新东西。最重要的是老板说你先试一下，明天给我看个初步的结果，bingo，今晚可以愉快地睡觉！</p>
-<h2 id="heading">组间比较</h2>
+<h2 id="组间比较">组间比较</h2>
 <pre><code>ggbetweenstats(data = iris, 
                x = Species, 
                y = Sepal.Length)
 </code></pre>
 <p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggbetweenstats1-1.png" alt=""></p>
 <p>组间比较还有生物狗最喜欢的标注<strong>均值</strong>，不管是用点和/或数字都行。</p>
-<h2 id="heading-1">相关性</h2>
+<h2 id="相关性">相关性</h2>
 <pre><code>ggscatterstats(data = iris, 
                x = Sepal.Length, 
                y = Petal.Length,
@@ -413,13 +413,13 @@ ggpiestats(data = mtcars,
 <p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-ggscatterstats1-1.png" alt=""></p>
 <p>这里展示的只是最简单的，有很多参数，比如<code>marginal.type = &quot;density&quot;</code>那么marginal画出来的就不是histogram，而是density
 curve。也可以是boxplot哦。</p>
-<h2 id="heading-2">相关性矩阵</h2>
+<h2 id="相关性矩阵">相关性矩阵</h2>
 <pre><code>ggcorrmat(
    data = subset(iris, Species == &quot;versicolor&quot;),
    cor.vars = c(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)）
 </code></pre>
 <p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/corr.png" alt=""></p>
-<h2 id="heading-3">分组做图并拼图</h2>
+<h2 id="分组做图并拼图">分组做图并拼图</h2>
 <p>像上面的相关性矩阵，我只是切了versicolor一个物种来画，iris数据我们知道有三个物种，我们可以一个一个做，然后用<code>cowplot</code>来拼图。</p>
 <p>下面我先定义一个函数来画图：</p>
 <pre><code>plot_fun = function(data) {
@@ -462,7 +462,7 @@ nested_df &lt;- iris %&gt;%
 )
 </code></pre>
 <p><img src="https://guangchuangyu.github.io/blog_images/R/ggstatsplot/README-combine_plots_plyr-1.png" alt=""></p>
-<h2 id="heading-4">安装</h2>
+<h2 id="安装">安装</h2>
 <p>安装要写到最后，因为我知道大家看到这里，才会急于想要来一波走你。目前此包还没在CRAN上，不过作者已经准备提交到，所以很快就会在CRAN上。给大家安装和升级带来便利。</p>
 <p>目前可以通过github安装：</p>
 <pre><code>devtools::install_github(&quot;IndrajeetPatil/ggstatsplot&quot;)

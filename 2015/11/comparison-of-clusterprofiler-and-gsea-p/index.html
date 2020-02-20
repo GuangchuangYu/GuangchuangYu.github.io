@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Thanks @mevers for raising the issue to me
@@ -14,7 +14,7 @@ clusterProfiler.
 He pointed out two issues:
 
 outputs from gseGO and GSEA-P are poorly overlap.
-pvalues from gseGO are generally smaller and don&#39;t show a lot of
+pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
 variation
 
 For GSEA analysis, we have two inputs, a ranked gene list and gene set
@@ -30,7 +30,7 @@ clusterProfiler.
 He pointed out two issues:
 
 outputs from gseGO and GSEA-P are poorly overlap.
-pvalues from gseGO are generally smaller and don&#39;t show a lot of
+pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
 variation
 
 For GSEA analysis, we have two inputs, a ranked gene list and gene set
@@ -50,7 +50,7 @@ clusterProfiler.
 He pointed out two issues:
 
 outputs from gseGO and GSEA-P are poorly overlap.
-pvalues from gseGO are generally smaller and don&#39;t show a lot of
+pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
 variation
 
 For GSEA analysis, we have two inputs, a ranked gene list and gene set
@@ -64,7 +64,7 @@ clusterProfiler.
 He pointed out two issues:
 
 outputs from gseGO and GSEA-P are poorly overlap.
-pvalues from gseGO are generally smaller and don&#39;t show a lot of
+pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
 variation
 
 For GSEA analysis, we have two inputs, a ranked gene list and gene set
@@ -336,7 +336,7 @@ and his efforts in benchmarking
 <p>He pointed out two issues:</p>
 <ul>
 <li>outputs from gseGO and GSEA-P are poorly overlap.</li>
-<li>pvalues from gseGO are generally smaller and don't show a lot of
+<li>pvalues from gseGO are generally smaller and don&rsquo;t show a lot of
 variation</li>
 </ul>
 <p>For GSEA analysis, we have two inputs, a ranked gene list and gene set
@@ -347,7 +347,7 @@ GO CC, while clusterProfiler used the whole GO CC corpus.</p>
 <p>For instance, with his gene list as input, clusterProfiler annotates 195
 genes as ribosome, while GSEA-P (using c5.cc.v5.0.symbols.gmt) only
 annotates 38 genes.</p>
-<p>As the gene set collections is so different, I don't believe the
+<p>As the gene set collections is so different, I don&rsquo;t believe the
 comparison can produce any valuable results.</p>
 <p>The first step should be extending clusterProfiler to support using GMT
 file as gene set annotation, thereafter we can use identical input (both
@@ -355,10 +355,10 @@ gene list and gene sets) and then benchmarking will be valuable for
 detecting issues that exclusively attributed to the implementation of
 GSEA algorithm.</p>
 <h3 id="clusterprofiler-supports-gmt-file">clusterProfiler supports GMT file</h3>
-<p>Currently clusterProfiler supports <a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">user's own annotations</a>
+<p>Currently clusterProfiler supports <a href="http://guangchuangyu.github.io/2015/05/use-clusterprofiler-as-an-universal-enrichment-analysis-tool/">user&rsquo;s own annotations</a>
 via <em>enricher</em> and <em>GSEA</em> functions which require users provide their
 own annotation in a <em>data.frame</em>. This is a general interface for using
-user's own annotation.</p>
+user&rsquo;s own annotation.</p>
 <p>To support GMT file, we only need a function, <em>read.gmt</em>, to parse GMT
 file and output a <em>data.frame</em> that is suitable for <em>enricher</em> and
 <em>GSEA</em>. Now this function is available in devel branch (in BioC 3.3 or
@@ -438,7 +438,7 @@ ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
 <p>Now the comparison tells! clusterProfiler indeed produce smaller
 pvalues. As I said in <a href="http://guangchuangyu.github.io/2014/08/why-clusterprofiler-fails/">why clusterProfiler fails</a>, in
 general software produce more conservative result is more trustable.
-This is indeed an issue I couldn't omit.</p>
+This is indeed an issue I couldn&rsquo;t omit.</p>
 <p>This issue is attributed to DOSE package, which serves as a backend of
 both clusterProfiler and ReactomePA.</p>
 <p>In DOSE, we calculate the pvalue in the following way:</p>
@@ -466,7 +466,7 @@ branches. The fixed will affect DOSE, clusterProfiler and ReactomePA.</p>
 clusterProfiler never produce pvalue=0 since we add pseudocount, 1, in
 both numerator and demoninator. Some software may not accept pvalue=0,
 for example if you want to use topGO to visualize enrichment with GO
-topology, the result can't contain any pvalue=0.</p>
+topology, the result can&rsquo;t contain any pvalue=0.</p>
 <h4 id="clusterprofiler-test-whole-gene-set-collections">clusterProfiler test whole gene set collections</h4>
 <pre><code>&gt; g=read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
 &gt; dim(g)
@@ -477,16 +477,16 @@ topology, the result can't contain any pvalue=0.</p>
 [1] 152   8
 &gt; all(g$NAME %in% yy$ID)
 [1] TRUE
-</code></pre><p>GSEA-P didn't filter result by pvalues, as it reported pvalues ranging
+</code></pre><p>GSEA-P didn&rsquo;t filter result by pvalues, as it reported pvalues ranging
 from 0 to 1.</p>
 <p>We cut our result by setSize in $[15, 500]$ as default parameter of
 GSEA-P.</p>
 <p>clusterProfiler tests all the gene sets while GSEA-P only tests a
 subset.</p>
 <p>If I have some free time, I will figure out how they select gene sets to
-test. If it's reasonable, we can add a parameter for clusterProfiler
+test. If it&rsquo;s reasonable, we can add a parameter for clusterProfiler
 users to switch between two modes (full sets or subset). This is still
-an open issue/question. If you have any idea, don't hesitate to let me
+an open issue/question. If you have any idea, don&rsquo;t hesitate to let me
 know. :)</p>
 <h2 id="citation">Citation</h2>
 <p><em><strong>Yu G</strong></em>, Wang L, Han Y and He Q<!-- raw HTML omitted -->*<!-- raw HTML omitted -->. <a href="http://online.liebertpub.com/doi/abs/10.1089/omi.2011.0118">clusterProfiler: an R package for comparing biological themes among gene clusters</a>. <em><strong>OMICS: A Journal of Integrative Biology</strong></em>. 2012, 16(5):284-287.</p>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -331,10 +331,10 @@ tree_text
 ## [2] &quot;(K #0.0224 , N #0.0095 , (D #0.0385 , (L #0.0001 , (J #0.0457 , (G #0.1621 , ((C #0.0461 , (E #0.0641 , O #0.0538 ) #0.0001 ) #0.0395 , (H #0.1028 , (I #0.0001 , (B #0.0001 , (A #0.0646 , (F #0.2980 , M #0.0738 ) #0.0453 ) #0.0863 ) #1.5591 ) #0.0001 ) #0.0001 ) #0.0549 ) #0.0419 ) #0.0001 ) #0.0964 ) #0.0129 );&quot;
 </code></pre>
 <p>这种做法只能展示一元信息，而且修改节点label真心是个脏活，满满的都是不爽，我心中理想的方式是树与注释信息分开，注释信息可以方便地通过图层加上去，而且可以自由组合。于是着手开发<a href="http://www.bioconductor.org/packages/ggtree">ggtree</a>。<a href="http://www.bioconductor.org/packages/ggtree">ggtree</a>是个简单易用的R包，一行代码<code>ggtree(read.tree(file))</code>即可实现树的可视化。而注释通过图层来实现，多个图层可以完成复杂的注释，这得力于<a href="http://www.bioconductor.org/packages/ggtree">ggtree</a>的设计。其中最重要的一点是如何来解析进化树。</p>
-<h2 id="ggtree">ggtree的设计</h2>
-<h3 id="heading">进化树的解析</h3>
+<h2 id="ggtree的设计">ggtree的设计</h2>
+<h3 id="进化树的解析">进化树的解析</h3>
 <p>除了<a href="http://www.bioconductor.org/packages/ggtree">ggtree</a>之外，我所了解到的其它画树软件在画树的时候都把树当成是线条的集合。很明显画出来的进化树就是在画一堆线条，但是线条表示的是父节点和子节点的关系，除此之外没有任何意义，而节点在进化树上代表物种，叶子节点是我们构建进化树的物种，内部节点是根据叶子节点推断的共同祖先。我们所有的进化分析、推断、实验都是针对节点，节点才是进化树上有意义的实体。这是<a href="http://www.bioconductor.org/packages/ggtree">ggtree</a>设计的基础，<a href="http://www.bioconductor.org/packages/ggtree">ggtree</a>只映射节点到坐标系统中，而线条在<code>geom_tree</code>图层中计算并画出来。这是与其它软件最根本的不同，也是ggtree能够简单地用图层加注释信息的基础。</p>
-<h3 id="ggplot2">扩展ggplot2</h3>
+<h3 id="扩展ggplot2">扩展ggplot2</h3>
 <p>有很多可视化包基于ggplot2实现，包括各种<code>gg</code>打头的，号称扩展了ggplot2，支持图形语法(grammar of graphics)，我并不认同。虽然基于<code>ggplot2</code>产生的图，我们可以用<code>theme</code>来进一步调整细节，用<code>scale_</code>系列函数来调整颜色和标尺的映射，但这些不足以称之为'支持图形语法&rsquo;，图形语法最关键核心的部分我认为是图层和映射。</p>
 <p>像<code>ggphylo</code>, <code>OutbreakTools</code>和<code>phyloseq</code>这几个包都有基于ggplot2的画树函数，但其实都不支持图形语法，它们所实现的是复杂的函数，画完就完事了，用户并不能使用图层来添加相关的信息。</p>
 <p>如果在<code>OutbreakTools</code>这个包中：</p>
@@ -361,7 +361,7 @@ ggplot(tree, aes(x, y)) + geom_tree()
 <pre><code>ggtree(tree) + geom_tiplab() + geom_point(color='firebrick')
 </code></pre>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_cos_files/figure-markdown_strict/unnamed-chunk-4-1.png" alt=""><!-- raw HTML omitted --></p>
-<h2 id="heading-1">树的操作与注释</h2>
+<h2 id="树的操作与注释">树的操作与注释</h2>
 <p>ggtree提供了多个函数可以把clade放大缩小(scaleClade)，折叠(collapse)和展开(expand)，位置调换和旋转，以及分类(groupOTU,
 groupClade)。</p>
 <pre><code>nwk &lt;- system.file(&quot;extdata&quot;, &quot;sample.nwk&quot;, package=&quot;ggtree&quot;)
@@ -375,7 +375,7 @@ library(gridExtra)
 grid.arrange(cp, ep, hp, rp, ncol=2)
 </code></pre>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_cos_files/figure-markdown_strict/unnamed-chunk-5-1.png" alt=""><!-- raw HTML omitted --></p>
-<h2 id="heading-2">支持多种文件格式</h2>
+<h2 id="支持多种文件格式">支持多种文件格式</h2>
 <p>ggtree支持的文件格式包括Newick, Nexus, NHX和jplace。</p>
 <p>上面已经展示了Newick格式，下面的例子是NHX格式：</p>
 <pre><code>nhxfile = system.file(&quot;extdata&quot;, &quot;ADH.nhx&quot;, package=&quot;ggtree&quot;)
@@ -386,12 +386,12 @@ ggtree(nhx, ladderize=F) + geom_tiplab() + geom_point(aes(color=S), size=8, alph
            xlim(NA, 0.3)
 </code></pre>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_cos_files/figure-markdown_strict/unnamed-chunk-6-1.png" alt=""></p>
-<h2 id="heading-3">支持解析多种软件的输出文件</h2>
+<h2 id="支持解析多种软件的输出文件">支持解析多种软件的输出文件</h2>
 <p>我们知道FigTree是针对<a href="http://guangchuangyu.github.io/2015/04/an-example-of-drawing-beast-tree-using-ggtree/">BEAST</a>的输出设计的，可以把BEAST的统计推断拿来给树做注释，但很多的进化分析软件并没有相应的画树软件支持，用户很难把信息展示出来。</p>
 <p><code>ggtree</code>支持<code>ape</code>, <code>phangorn</code>, <code>r8s</code>, <code>RAxML</code>, <code>PAML</code>, <code>HYPHY</code>, <code>EPA</code>,
 <code>pplacer</code>和<code>BEAST</code>的输出。相应的统计分析结果可以应用于树的注释。可以说<code>ggtree</code>把这些软件分析的结果带给了R用户，通过ggtree的解析，
 这些进化分析结果可以进一点在R里进行处理和统计分析，并不单单是在ggtree中展示而已。</p>
-<h3 id="raxml-bootstrap">RAxML bootstrap分析</h3>
+<h3 id="raxml-bootstrap分析">RAxML bootstrap分析</h3>
 <pre><code>raxml_file &lt;- system.file(&quot;extdata/RAxML&quot;, &quot;RAxML_bipartitionsBranchLabels.H3&quot;, package=&quot;ggtree&quot;)
 raxml &lt;- read.raxml(raxml_file)
 ggtree(raxml) + geom_text(aes(label=bootstrap, color=bootstrap)) + 
@@ -429,7 +429,7 @@ ggtree(mlc, aes(color=dN_vs_dS)) +
       theme(legend.position='right')
 </code></pre>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/ggtree_cos_files/figure-markdown_strict/unnamed-chunk-11-1.png" alt=""></p>
-<h3 id="heading-4">使用用户定义数据</h3>
+<h3 id="使用用户定义数据">使用用户定义数据</h3>
 <p>进化树已经被广泛应用于各种跨学科的研究中，随着实验技术的发展，各种数据也更易于获得，使用用户数据注释进化树，也是ggtree所支持的。</p>
 <pre><code>nwk &lt;- system.file(&quot;extdata&quot;, &quot;sample.nwk&quot;, package=&quot;ggtree&quot;)
 tree &lt;- read.tree(nwk)
@@ -469,7 +469,7 @@ p+theme(legend.position=&quot;right&quot;)
 <p>ggtree还支持用户把自己的数据和树保存为jplace格式。</p>
 <p>更多的实例请参考<a href="http://www.bioconductor.org/packages/release/bioc/vignettes/ggtree/inst/doc/ggtree.html">vignette</a>。</p>
 <p>ggtree允许把不同软件的分析结果整合在一起，同时在树上展示或者比较结果。在我们提交的论文中，使用了整合BEAST和CodeML的例子，在树上展示dN/dS、时间轴、氨基酸替换、clade support values、物种和基因型 (genotype）等多维信息，6种不同的信息同时展示在一颗进化树上，这是个复杂的例子，我们在附件1中展示了可重复的代码。如果有兴趣，可以留意一下我们的文章。:)</p>
-<h2 id="heading-5">其它好玩的功能</h2>
+<h2 id="其它好玩的功能">其它好玩的功能</h2>
 <p>我们把树当成节点的集合，而不是线条的集合，这一点回归到了进化树的本质意义上，使这一实现成为可能。而支持图形语法，与ggplot2的无缝衔接又让注释变得更加容易。<code>ggtree</code>为我们打开了各种注释和操作的可能性。甚至于可以创造出好玩的图，比如使用showtext来<a href="http://guangchuangyu.github.io/2015/06/ggtree-with-funny-fonts/">加载图形化的字体</a>、<a href="http://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/">用emoji来画树</a>、<a href="http://guangchuangyu.github.io/2015/08/ggtree-annotate-phylogenetic-tree-with-local-images/">使用图片来注释树</a>等等。</p>
 <p>一个比较正经又好玩的是使用PhyloPic数据库上的图形。</p>
 <pre><code>pp &lt;- ggtree(tree) + geom_phylopic(image=&quot;79ad5f09-cf21-4c89-8e7d-0c82a00ce728&quot;, color=&quot;steelblue&quot;, alpha = .3, size=Inf)

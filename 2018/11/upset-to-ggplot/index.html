@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="我在2018年4月份的一条推特文，https://twitter.com/guangchuangyu/status/988672880551518210，可以把UpSetR变成ggplot然后可以各种玩，比较我在推特文中所展示的，图上嵌入venn图、使用cowplot拼图等。然而过了大半年，我的pull request并没有被作者接收，也就是说这功能还不存在于官方的版本中。
@@ -301,7 +301,7 @@ if (!doNotTrack) {
               <p>我在2018年4月份的一条推特文，<a href="https://twitter.com/guangchuangyu/status/988672880551518210">https://twitter.com/guangchuangyu/status/988672880551518210</a>，可以把<code>UpSetR</code>变成<code>ggplot</code>然后可以各种玩，比较我在推特文中所展示的，图上嵌入venn图、使用<code>cowplot</code>拼图等。然而过了大半年，我的<a href="https://github.com/hms-dbmi/UpSetR/pull/112">pull request</a>并没有被作者接收，也就是说这功能还不存在于官方的版本中。</p>
 <p>如果有兴趣的话，应该安装我fork的版本。</p>
 <pre><code>devtools::install_github(&quot;GuangchuangYu/UpSetR&quot;)
-</code></pre><h3 id="upsetrggplot">UpSetR变ggplot?</h3>
+</code></pre><h3 id="upsetr变ggplot">UpSetR变ggplot?</h3>
 <p>首先github版本的<code>UpSetR</code>就不是直接画图，而是像《<a href="https://mp.weixin.qq.com/s/NaUQ5KhRRN8cx4v798w9Qg">一个更好用的pheatmap</a>》一样，输出一个对象，这就使得我的<code>ggplotify</code>支持转换成为了可能，然而<code>UpSetR</code>的输出是有问题，导致无法准确捕捉画图内容，于是我给它打了个补丁，如果大家有兴趣的话，可以去github围观。总之有了我这个补丁之后，就可以顺利转成<code>ggplot</code>对象。</p>
 <pre><code>require(UpSetR)
 movies &lt;- read.csv( system.file(&quot;extdata&quot;, &quot;movies.csv&quot;, package = &quot;UpSetR&quot;), header=T, sep=&quot;;&quot; )
@@ -309,7 +309,7 @@ p1 &lt;- upset(movies)
 
 require(ggplotify)
 g1 &lt;- as.ggplot(p1)
-</code></pre><h3 id="ggplotupset">用熟悉的<code>ggplot</code>方式来给UpSet图加注（图）释（层）！</h3>
+</code></pre><h3 id="用熟悉的ggplot方式来给upset图加注图释层">用熟悉的<code>ggplot</code>方式来给UpSet图加注（图）释（层）！</h3>
 <p>转成<code>ggplot</code>好处很多，比如你可以随意在上面加图层，画个图，做文字标记等自然不在话下。就是嵌个小图也是随手拈来，因为我们用<a href="http://mp.weixin.qq.com/s/eVX3-3zT4p3s0JU_oy7lIQ"><code>ggimage</code>包</a>。</p>
 <p>这里我使用<code>yyplot</code>来画venn图，《<a href="https://mp.weixin.qq.com/s/bRgrC2QRH59vt-0gKGTQNQ">ggplot2版本的维恩图</a>》，然后使用<code>ggimage</code>包来嵌图，这样就可以结合venn和upset两种图的优势，并且可以让upset图更加紧凑些。</p>
 <pre><code>require(yyplot)
@@ -318,7 +318,7 @@ g2 &lt;- ggvenn(movies[, c(3,6,9,15,17)])
 require(ggimage)
 g3 &lt;- g1 + geom_subview(subview = g2 + theme_void(), x=.7, y=.7, w=.6, h=.6)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/ggplotify/upset-venn.png" alt=""></p>
-<h3 id="heading">方便拼图</h3>
+<h3 id="方便拼图">方便拼图</h3>
 <p>除了上面讲的加图层更方便之外，还方便我们进行拼图。</p>
 <pre><code>p4 &lt;- upset(movies,attribute.plots=list(gridrows=60,
     plots=list(list(plot=scatter_plot, x=&quot;ReleaseDate&quot;, y=&quot;AvgRating&quot;),

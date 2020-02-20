@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -250,6 +250,70 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2011/08/love-function-plot/">
+          love function plot
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-08-06T05:37:55&#43;08:00">
+        
+  August 6, 2011
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        今天在微博上看到这坑爹的方程： $ (x^2+y^2-1)^3 = {x^2} {y^3}$
+画出来如下：
+跟个屁股似的，sigh&hellip;
+翻出azalea的老文：http://azaleasays.com/2008/06/18/fomula-of-love/
+用ggplot2画一下这个爱的方程：$17x^2-16|x|y+17y^2 = 225 $
+x &lt;- seq(-sqrt(17), sqrt(17), 0.001)y1 &lt;- 8*abs(x)/17 + 15* sqrt(17 - x^2)/17y2 &lt;- 8*abs(x)/17 - 15* sqrt(17 - x^2)/17d &lt;- data.frame(x=c(x,x),y=c(y1,y2))require(ggplot2)p &lt;- ggplot(d, aes(x,y))p + geom_point(color=&quot;red&quot;) 还可以画出红心，适合今天七夕的日子。
+p + geom_line(color=&quot;red&quot;) 画函数图，这种事情，还是用CAS方便点。
+通过maxima来画，一条指令就行，还不用解方程：
+contour_plot(17*x^2-16*abs(x)*y+17*y^2-225, [x,-sqrt(17),sqrt(17)],[y,-15*sqrt(17)/17, sqrt(17)]) 
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2011/08/love-function-plot/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2011/08/qq-plot/">
           QQ plot
         </a>
@@ -337,7 +401,7 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>开完了IBW这个会，感觉比较面向学生，会议前的龙星课程，倒是不错，我就冲着它的题目过去的，我想听的是概率图模型和系统生物学，结果只有最后一天，早上讲了点bayesian network，下午讲了会GSEA，BN讲的只是基本的概念，GSEA讲的内容还不到位，只讲到fisher's test做enrichment analysis，并没有讲如何把表达量通过某些方法把它转化为统计量，再进行enrichment analysis，没有考虑表达量，是不叫GSEA的，提出GSEA的那篇PNAS文章，讲的就是expression+prior knowledge (gene set)。</p>
+        <p>开完了IBW这个会，感觉比较面向学生，会议前的龙星课程，倒是不错，我就冲着它的题目过去的，我想听的是概率图模型和系统生物学，结果只有最后一天，早上讲了点bayesian network，下午讲了会GSEA，BN讲的只是基本的概念，GSEA讲的内容还不到位，只讲到fisher&rsquo;s test做enrichment analysis，并没有讲如何把表达量通过某些方法把它转化为统计量，再进行enrichment analysis，没有考虑表达量，是不叫GSEA的，提出GSEA的那篇PNAS文章，讲的就是expression+prior knowledge (gene set)。</p>
 <p>几天的时间，基本上是讲Hidden Markov Model用于序列比对，Prof Tang以前是在Waterman那里做post-doc，估计也是搞了很长时间的序列。我对这块兴趣不大。</p>
       
       <p>
@@ -407,7 +471,7 @@ if (!doNotTrack) {
 E.coli.</p>
 <p>Procedure</p>
 <p>Collect 100 gene sequences from the bacterium E. coli in the genbank
-(<a href="http://www.ncbi.nlm.nihh.gov)">http://www.ncbi.nlm.nihh.gov)</a>. Compute the codon usage table based on
+(<a href="http://www.ncbi.nlm.nihh.gov">http://www.ncbi.nlm.nihh.gov</a>). Compute the codon usage table based on
 these genes (and the translated protein sequences from them); Build a
 probabilistic model based on the codon usages; Implement a random
 sequence model in which the nucleotide frequency is computed from the
@@ -556,10 +620,10 @@ waving about central limit theorem can only get you so far. Wherever
 possible you should use a non parameteric test. This is Mann-Whitney (or
 Wilcoxon if you prefer) for testing &ldquo;medians&rdquo; (Medians is in quotes
 because this is not quite true. They test something which is closely
-related to the median) of two distributions, Spearman's Rho (rather
-pearson's r2) for correlation, and the Kruskal test rather than ANOVAs
-(though if I get this right, you can't in Kruskal do the more
-sophisticated nested models you can do with ANOVA). Finally, don't
+related to the median) of two distributions, Spearman&rsquo;s Rho (rather
+pearson&rsquo;s r2) for correlation, and the Kruskal test rather than ANOVAs
+(though if I get this right, you can&rsquo;t in Kruskal do the more
+sophisticated nested models you can do with ANOVA). Finally, don&rsquo;t
 forget the rather wonderful Kolmogorov-Smirnov (I always think it sounds
 like really good vodka) test of whether two sets of observations come
 from the same distribution. All of these methods have a basic theme of
@@ -636,68 +700,6 @@ vignette of R package
       
       <p>
         <a href="https://guangchuangyu.github.io/2011/06/r-package-dose-released/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2011/05/birthday/">
-          又虚长了一岁
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2011-05-05T05:54:16&#43;08:00">
-        
-  May 5, 2011
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/paper">Paper</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>08年的时候，结合mRNA芯片和miRNA芯片数据，做靶标预测。某一天晚上，没睡着，想到可以通过靶标来计算miRNA的相似性，正好可以利用当时写的软件包<a href="http://bioconductor.org/packages/release/bioc/html/GOSemSim.html">GOSemSim</a>来计算。</p>
-<p>09年看到BMC Systems Biology上有一篇文章，<a href="http://www.biomedcentral.com/1752-0509/3/65">利用miRNA所调控的蛋白相互作用网络对miRNA进行聚类</a>，当时我就觉得，利用靶标来计算，这想法不发出去，它就不再新鲜了。</p>
-<p>记得Watson说过，科研有三大动力，其一是赶在竞争对手之前，其二用于泡妞，其三，忘记了-,-</p>
-<p>第三点和Watson对不上，所以记不住，第一是DNA双螺旋时，谁看到那个X射线衍射结果，谁拿炸药奖，Linus
-Pauling当时是他们最大的竞争对手。第二点是Watson 39岁时，娶了自己的学生，19岁。</p>
-<p>08年的时候，算好了相似性矩阵，这事就一直掠着。老板压着我第一篇文章没发，这是最主要的原因，当然自己当时在搞申请，也有影响。</p>
-<p>毕业后，我想把它扔了。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2011/05/birthday/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

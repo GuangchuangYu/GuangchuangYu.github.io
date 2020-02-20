@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Thomas Lin Pedersen简直是个天才，最近patchwork动作很大，看到我都准备转投它的怀抱，把旧爱cowplot给扔了。
@@ -384,22 +384,22 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
   <span style="color:#a6e22e">geom_bar</span>(<span style="color:#a6e22e">aes</span>(gear)) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">facet_wrap</span>(<span style="color:#f92672">~</span>cyl) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图四&#39;</span>)
-</code></pre></div><h2 id="heading">拼图专用空白</h2>
+</code></pre></div><h2 id="拼图专用空白">拼图专用空白</h2>
 <p>用<code>plot_spacer()</code>来填空白，一如既往地用<code>+</code>号来拼：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">plot_spacer</span>() <span style="color:#f92672">+</span> 
 	p2 <span style="color:#f92672">+</span> <span style="color:#a6e22e">plot_spacer</span>() <span style="color:#f92672">+</span> 
 	p3 <span style="color:#f92672">+</span> <span style="color:#a6e22e">plot_spacer</span>()
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/patchwork/2019-11-22_18-04.png" alt=""></p>
-<h2 id="heading-1">拼图语法</h2>
+<h2 id="拼图语法">拼图语法</h2>
 <p><code>+</code>号大家都知道，按照row来拼，用<code>/</code>，按照column来拼，用<code>|</code>，这个语法绝了！而且一堆<code>+</code>号，在拼图多的时候也很乱，用<code>/</code>和<code>|</code>配以<code>()</code>和换行，可读性太强了。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">(p2 <span style="color:#f92672">/</span> p3 ) <span style="color:#f92672">|</span> p1
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/patchwork/2019-11-22_18-05.png" alt=""></p>
-<h2 id="heading-2">控制细节</h2>
+<h2 id="控制细节">控制细节</h2>
 <p><code>+</code>，<code>/</code>和<code>|</code>毕竟是语法糖，要控制细节，全在<code>plot_layout</code>里。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">+</span> p2 <span style="color:#f92672">+</span> p3 <span style="color:#f92672">+</span> p4 <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">plot_layout</span>(widths <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">1</span>))
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/patchwork/2019-11-22_18-05_1.png" alt=""></p>
-<h2 id="heading-3">超越网格</h2>
+<h2 id="超越网格">超越网格</h2>
 <p>拼图都是把整张图分为网格，往里面填，当你要拼复杂点的时候，那就是嵌套去拼，比如在<code>cowplot</code>里，<code>plot_grid</code>套<code>plot_grid</code>，这样你才能够使一张图在网格里占用不止一个格子。但嵌套有时候很难保证对齐。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">layout <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">
 </span><span style="color:#e6db74">##BBBB
@@ -419,7 +419,7 @@ p1 <span style="color:#f92672">+</span> p2 <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">plot_layout</span>(design <span style="color:#f92672">=</span> layout)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/patchwork/2019-11-22_18-06_1.png" alt=""></p>
 <p>当然这些格子的相对高度和宽度，也是可以通过<code>playout_layout</code>中的<code>widths</code>和<code>heights</code>参数控制的。</p>
-<h2 id="legend">控制legend</h2>
+<h2 id="控制legend">控制legend</h2>
 <p>指定<code>guides='collect'</code>可以帮助我们把<code>legend</code>都给集中在一起，放到图的一侧：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(mpg, disp, colour <span style="color:#f92672">=</span> mpg, size <span style="color:#f92672">=</span> wt))

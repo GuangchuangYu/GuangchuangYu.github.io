@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -330,7 +330,7 @@ if (!doNotTrack) {
 191 2005    11   11.562759
 192 2005    12    7.111481
 &gt; 
-</code></pre><h3 id="heading">拆解代码</h3>
+</code></pre><h3 id="拆解代码">拆解代码</h3>
 <p>这个代码看着挺复杂，其实很简单，我们来拆解一下：</p>
 <p><strong>读数据：</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.delim</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature.txt&#34;</span>)[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature&#34;</span>)]
@@ -357,14 +357,14 @@ if (!doNotTrack) {
                     <span style="color:#a6e22e">rownames</span>(.)), .,
            row.names<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>)
 }
-</code></pre></div><h3 id="heading-1">来个简单版本</h3>
+</code></pre></div><h3 id="来个简单版本">来个简单版本</h3>
 <p>其实啊，split可以一次切两个因子，所以用split一切，套个sapply即可。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">temp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#a6e22e">split</span>(x<span style="color:#f92672">$</span>Temperature, x[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>)]), mean, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
 res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(Year <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">(\\d{4}).*&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\1&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
                   Month <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\d{4}.&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
                   Temperature <span style="color:#f92672">=</span> temp,
                   row.names <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>)
-</code></pre></div><h3 id="heading-2">一行代码版本</h3>
+</code></pre></div><h3 id="一行代码版本">一行代码版本</h3>
 <p>前面我说过tapply相当于sapply + split，所以用tapply可以一行代码解决：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">tapply</span>(x<span style="color:#f92672">$</span>Temperature, <span style="color:#a6e22e">list</span>(x<span style="color:#f92672">$</span>Year, x<span style="color:#f92672">$</span>Month), mean, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
 </code></pre></div><p>不过这个输出是以Year为row, Month为column的matrix，如果要转成像上面的tidy data frame的话，还需要额外的操作。</p>
@@ -382,11 +382,11 @@ Unit: milliseconds
       lq     mean  median     uq     max neval
  1.33325 1.499571 1.41000 1.4750  5.6744   100
  7.37845 8.205050 8.07395 8.3865 15.9764   100
-</code></pre><h3 id="heading-3">强行总结</h3>
+</code></pre><h3 id="强行总结">强行总结</h3>
 <p><img src="http://guangchuangyu.gitee.io/blog_images/slogan/perl.jpg" alt=""></p>
 <p>尽管split、aggregate和tapply都可以支持多重因子，我还是喜欢各种split+apply套一堆的版本，因为做为练习，这才是好的学习代码，而且我写的这个，已经非常模块化了，三个步骤，非常明确，再者多玩一下list，熟悉一下不规则的数据，才好应对现实世界中的数据，总是data.frame进，data.frame出是不太现实的。尽管tapply一行可以解决，但内部的逻辑无非也是与我们的代码类似。</p>
 <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/uncle_y-moment-1.jpg" alt=""></p>
-<h3 id="r">番外篇：假如我要用R包呢？</h3>
+<h3 id="番外篇假如我要用r包呢">番外篇：假如我要用R包呢？</h3>
 <p><img src="http://guangchuangyu.gitee.io/blog_images/gif/dance.gif" alt=""></p>
 <p><strong>plyr</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(plyr)

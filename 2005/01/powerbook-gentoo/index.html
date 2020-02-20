@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="下面是我在PowerBook G3上安装Gentoo的全过程。。
@@ -376,10 +376,10 @@ if (!doNotTrack) {
 <p><a href="http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml">http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml</a></p>
 <p>基本的安装步骤如下：</p>
 <p>用2004.3LiveCD进入。</p>
-<h2 id="1-">1. 配置网络</h2>
+<h2 id="1-配置网络">1. 配置网络</h2>
 <pre><code>＃net-setup eth0
 </code></pre><p>回答它几个问题就行了。</p>
-<h2 id="2">2.分区</h2>
+<h2 id="2分区">2.分区</h2>
 <pre><code>#mac-fdisk /dev/hda
 </code></pre><p>以下是我的分区。</p>
 <pre><code>/dev/hda
@@ -392,18 +392,18 @@ if (!doNotTrack) {
 
 Block size=512, Number of Blocks=19640880
 DeviceType=0x0, DeviceId=0x0
-</code></pre><h2 id="3">3.建立文件系统</h2>
+</code></pre><h2 id="3建立文件系统">3.建立文件系统</h2>
 <pre><code>#mke2fs -j /dev/hda3
 #mkswap /dev/hda4
 #mke2fs -j /dev/hda5
 #swapon /dev/hda4
-</code></pre><h2 id="4">4.挂载分区</h2>
+</code></pre><h2 id="4挂载分区">4.挂载分区</h2>
 <pre><code>#mount /dev/hda3 /mnt/gentoo
-</code></pre><h2 id="5stage-tarballportgage">5.解开Stage Tarball用Portgage</h2>
+</code></pre><h2 id="5解开stage-tarball用portgage">5.解开Stage Tarball用Portgage</h2>
 <pre><code>#cd /mnt/gentoo
 #tar xvjpf /mnt/cdrom/stages/stage3-\*g3\*.tar.bz2
 #tar xvjf portage-20040926.tar.bz2 -C /mnt/gentoo/usr
-</code></pre><h2 id="6">6.设置编译选项</h2>
+</code></pre><h2 id="6设置编译选项">6.设置编译选项</h2>
 <p>以下是我的make.conf</p>
 <pre><code># These settings were set by the catalyst build script that automatically built this stage
 # Please consult /etc/make.conf.example for a more detailed example
@@ -417,15 +417,15 @@ ACCEPT_KEYWORDS=&quot;~ppc&quot;
 
 USE=&quot;acpi cjk nls ppc freetype fbdev f77 java ncurses gpm gtk gtk2 -gnome qt -kde rage128 dvd alsa -arts mmx clisp&quot;
 LINGUAS=&quot;zh_CN&quot;
-</code></pre><h2 id="7-">7. 挂载分区</h2>
+</code></pre><h2 id="7-挂载分区">7. 挂载分区</h2>
 <pre><code>#mount -t proc none /mnt/gentoo/proc
 #chroot /mnt/gentoo /bin/bash
-</code></pre><h2 id="8">8.更新系统</h2>
+</code></pre><h2 id="8更新系统">8.更新系统</h2>
 <pre><code>#env-update &amp;&amp; source /etc/profile
 #emerge sync
 
 #emerge --update world
-</code></pre><h2 id="9">9.安装内核</h2>
+</code></pre><h2 id="9安装内核">9.安装内核</h2>
 <pre><code>#emerge gentoo-dev-sources
 #cd /usr/src/linux
 #make menuconfig
@@ -1859,7 +1859,7 @@ CONFIG_ZLIB_DEFLATE=y
 #nano -w /etc/modules.autoload.d/kernel-2.6
 </code></pre><p>在这文件里加入开机自动载入的模块</p>
 <pre><code>#modules-update
-</code></pre><h2 id="10">10.配置系统</h2>
+</code></pre><h2 id="10配置系统">10.配置系统</h2>
 <h3 id="fstab">fstab</h3>
 <pre><code>#nano /etc/fstab
 </code></pre><p>下面是我的配置。</p>
@@ -1872,21 +1872,21 @@ CONFIG_ZLIB_DEFLATE=y
 none /proc proc defaults 0 0
 
 none /dev/shm tmpfs defaults 0 0
-</code></pre><h3 id="heading">网络信息</h3>
+</code></pre><h3 id="网络信息">网络信息</h3>
 <pre><code># echo tux &gt; /etc/hostname
 # echo homenetwork &gt; /etc/dnsdomainname
 # echo nis.homenetwork &gt; /etc/nisdomainname
 # rc-update add domainname default
-</code></pre><h3 id="heading-1">配置网络</h3>
+</code></pre><h3 id="配置网络">配置网络</h3>
 <pre><code>#nano /etc/conf.d/net
 #nano /etc/resolv.conf
 #rc-update add net.eth0 default
-</code></pre><h3 id="heading-2">安装系统工具</h3>
+</code></pre><h3 id="安装系统工具">安装系统工具</h3>
 <pre><code>#emerge metalog
 #rc-update add metalog default
 #emerge vixie-cron
 #rc-update add vixie-cron default
-</code></pre><h2 id="11">11.配置启动</h2>
+</code></pre><h2 id="11配置启动">11.配置启动</h2>
 <pre><code>#emerge yaboot
 #nano yaboot.conf
 </code></pre><p>下面是我的配置文件。</p>
@@ -1912,15 +1912,15 @@ image=/boot/kernel-gentoo-2.6.10
  root=/dev/hda3
  sysmap=/boot/System.map-gentoo-2.6.10
  read-only
-</code></pre><h2 id="12">12.重启系统</h2>
+</code></pre><h2 id="12重启系统">12.重启系统</h2>
 <pre><code>#exit
 #umount /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo
 #reboot
-</code></pre><h2 id="13-x">13. 安装并配置X</h2>
+</code></pre><h2 id="13-安装并配置x">13. 安装并配置X</h2>
 <p>在/etc/make.conf中加入</p>
 <pre><code>USE＝“cjk nls&quot;
 LINGUAS=&quot;zh_CN&quot;
-</code></pre><h3 id="heading-3">安装字体</h3>
+</code></pre><h3 id="安装字体">安装字体</h3>
 <pre><code>#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
 #fc-cache -f -v #(fontconfig的命令，安装字库）
 </code></pre><p>字体将装在/usr/share/fonts/arphicfonts中</p>
@@ -1929,7 +1929,7 @@ LINGUAS=&quot;zh_CN&quot;
 <p>放在/home/fonts下。</p>
 <pre><code>#ln -s /home/fonts /usr/share/fonts/MsFonts
 #fc-cache
-</code></pre><h3 id="x">安装X</h3>
+</code></pre><h3 id="安装x">安装X</h3>
 <pre><code>#emerge xorg-x11
 #emerge Xautoconfig
 

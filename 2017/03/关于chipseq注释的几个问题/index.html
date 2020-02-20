@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="为什么我要用某个基因组版本？
@@ -338,11 +338,11 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <h2 id="heading">为什么我要用某个基因组版本？</h2>
+              <h2 id="为什么我要用某个基因组版本">为什么我要用某个基因组版本？</h2>
 <p>在上一篇文章中，我用了<code>TxDb.Hsapiens.UCSC.hg19.knownGene</code>。 <strong>hg19</strong>的<strong>TxDb</strong>, 或者有人就要问了，为什么不用<strong>hg38</strong>？</p>
 <p>这个问题，不是说要用那一个，不能用那一个。而是你必须得用某一个，这取决于你最初<strong>fastq</strong>用BWA/Bowtie2比对于某个版本的基因组，你最初用了某个版本，后面就得用相应的版本，不能混，因为不同版本的位置信息有所不同。</p>
 <p>当然如果要（贵圈喜欢的）强搞，也不是不可以，你得有chain file，先跑个liftOver，实际上就是在两个基因组版本之间做了位置转换。</p>
-<h2 id="chipseeker">为什么说<strong>ChIPseeker</strong>支持所有物种？</h2>
+<h2 id="为什么说chipseeker支持所有物种">为什么说<strong>ChIPseeker</strong>支持所有物种？</h2>
 <p>背景注释信息用了<strong>TxDb</strong>就能保证所有物种都支持了？我去哪里找我要的<strong>TxDb</strong>?</p>
 <p>我写<strong>ChIPseeker</strong>的时候，我做的物种是人，<strong>ChIPseeker</strong>在线一周就有剑桥大学的人写信跟我说在用<strong>ChIPseeker</strong>做果蝇，在<a href="https://guangchuangyu.github.io/cn/2017/03/bed%E6%96%87%E4%BB%B6/">BED文件</a>一文中，也提到了最近有人在Biostars上问用<strong>ChIPseeker</strong>做裂殖酵母。</p>
 <p>首先Bioconductor提供了30个TxDb包，可以供我们使用，这当然只能覆盖到一小部分物种，我们的物种基因组信息，多半要从UCSC或者Ensembl获得，我敢说支持所有物种，就是因为UCSC和ensembl上所有的基因组都可以被<strong>ChIPseeker</strong>支持。</p>
@@ -362,19 +362,19 @@ hg19.refseq.db <span style="color:#f92672">&lt;-</span> <span style="color:#a6e2
 <span style="color:#a6e22e">require</span>(GenomicFeatures)
 spombe <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">makeTxDbFromGFF</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">schizosaccharomyces_pombe.chr.gff3&#34;</span>)
 </code></pre></div><p>所以我敢说，所有物种都支持。像Johns Hopkins出品的CisGenome就只支持到12个物种而已，极大地限制了它的应用。</p>
-<h2 id="chipseeker-1"><strong>ChIPseeker</strong>有什么不能注释的吗？</h2>
+<h2 id="chipseeker有什么不能注释的吗"><strong>ChIPseeker</strong>有什么不能注释的吗？</h2>
 <p>这个我还没想到，像CpG是不支持的，但也有人「黑」出来了：</p>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/CS/2017-03-13-003520_618x444_scrot.png" alt=""></p>
 <p>当然他的做法是把CpG也整合进去，如果你单纯只想看那些peak落在CpG上，或者说离CpG最近，不需要「黑」也能做到的，因为<strong>annotatePeak</strong>的背景注释信息除了TxDb之外，其实它还可以是自定义的<strong>GRanges</strong>对象，这保证了用户各种各样的需求，因为TxDb也不是万能的，如果能自定义，比如说我就只想看蛋白的结合位点会不会在内含子和外显子的交界处，再比如说我做的并不是编码蛋白的基因表达调控，而是非编码RNA，那么我想要用lncRNA的位置信息来做注释。像这样的需求，<strong>ChIPseeker</strong>都是可以满足的。</p>
-<h2 id="heading-1">可以按正负链分开注释吗？</h2>
+<h2 id="可以按正负链分开注释吗">可以按正负链分开注释吗？</h2>
 <p>上一篇文章中就有人问了，能否同时给出正负链上最近的基因。首先ChIPseq数据通常情况下是没有正负链信息的（有特殊的实验可以有），<strong>annotatePeak</strong>函数有参数是<strong>sameStrand</strong>，默认是FALSE，你可以给你的peak分别赋正负链，然后传入<strong>sameStrand=TRUE</strong>，分开做两次，你就可以分开拿到正链和负链的最近基因。</p>
-<h2 id="tss">最近基因位置是相对于TSS的，能否相对于整个基因？</h2>
+<h2 id="最近基因位置是相对于tss的能否相对于整个基因">最近基因位置是相对于TSS的，能否相对于整个基因？</h2>
 <p>答案也是可以的！</p>
 <p>首先如果peak和TSS有overlap，genomic annotation就是promoter，而最近基因也是同一个，所以在这种情况下，两种注释都指向同一个基因，可以说信息是冗余的，能不能不要冗余信息？这个是可以的，你可以传入参数<strong>ignoreOverlap=TRUE</strong>，那么最近基因就会去找不overlap的。</p>
 <p>最近基因是相对于TSS，如果和TSS有overlap，距离是0, 必须是最近。回到标题的问题，如果我想说只要和基因有overlap就是最近基因，这种情况其实你的最近基因就是host gene，也就是annotation这个column给出来的是相对应的，我们就想找peak所在位置的基因信息，那么这当然也是可以的，默认参数<strong>overlap=&quot;TSS&rdquo;</strong>, 如果改为<strong>overlap=&quot;all&rdquo;</strong>，它看的就是整个基因而不是TSS，当然<strong>distanceToTSS</strong>也还是会计算，如果overlap的不是TSS，而是基因体里，并不会因为而设为0。</p>
-<h2 id="heading-2">如果我只想注释上游或者是下游的基因呢？</h2>
+<h2 id="如果我只想注释上游或者是下游的基因呢">如果我只想注释上游或者是下游的基因呢？</h2>
 <p>当然也可以，我们有<strong>ignoreUpstream</strong>和<strong>ignoreDownstream</strong>参数，默认都是FALSE。随便你想看上游还是下游，都可以。</p>
-<h2 id="heading-3">为什么要有这么多参数？</h2>
+<h2 id="为什么要有这么多参数">为什么要有这么多参数？</h2>
 <p>我在前一篇，只讲了输入，输出，你知道两个输入，会看输出，你就可以做ChIPseq注释了，非常简单。但是我不能把annotatePeak能做的全列出来，会让大家觉得复杂。（而且简单的情况是最常见的行为）</p>
 <p>在大家知道输入输出，觉得简单之后，再讲一讲，它有一些参数，可以应对别的情况，这些情况可能并不是我们做ChIPseq所需要的，但不同参数的灵活组合，是可以解决和应对不同的需求的。</p>
 <p>比如说, DNA是可以断的，如果我们要对（DNA breakpoints）断点位置做注释，优先是overlap基因，再者是上游，你会发现很多软件都不能做了，但<strong>ChIPseeker</strong>可以。</p>

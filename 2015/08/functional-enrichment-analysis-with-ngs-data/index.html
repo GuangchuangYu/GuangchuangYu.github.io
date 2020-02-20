@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="I found a Bioconductor package,
@@ -16,7 +16,7 @@ coordination to genes while gene2pathway performs functional analysis
 at gene level.
 I think it would be interesting to incorporate seq2gene with
 clusterProfiler. But it fail to run due to it call absolute path of
-python installed in the author&#39;s computer.
+python installed in the author&rsquo;s computer.
 ">
 
 
@@ -28,7 +28,7 @@ coordination to genes while gene2pathway performs functional analysis
 at gene level.
 I think it would be interesting to incorporate seq2gene with
 clusterProfiler. But it fail to run due to it call absolute path of
-python installed in the author&#39;s computer.
+python installed in the author&rsquo;s computer.
 ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="functional enrichment analysis with NGS data">
@@ -44,7 +44,7 @@ coordination to genes while gene2pathway performs functional analysis
 at gene level.
 I think it would be interesting to incorporate seq2gene with
 clusterProfiler. But it fail to run due to it call absolute path of
-python installed in the author&#39;s computer.
+python installed in the author&rsquo;s computer.
 ">
 <meta name="twitter:description" content="I found a Bioconductor package,
 seq2pathway, that
@@ -54,7 +54,7 @@ coordination to genes while gene2pathway performs functional analysis
 at gene level.
 I think it would be interesting to incorporate seq2gene with
 clusterProfiler. But it fail to run due to it call absolute path of
-python installed in the author&#39;s computer.
+python installed in the author&rsquo;s computer.
 ">
 <meta property="og:locale" content="en-us">
 
@@ -332,7 +332,7 @@ coordination to genes while <em>gene2pathway</em> performs functional analysis
 at gene level.</p>
 <p>I think it would be interesting to incorporate <em>seq2gene</em> with
 clusterProfiler. But it fail to run due to it call absolute path of
-python installed in the author's computer.
+python installed in the author&rsquo;s computer.
 <img src="http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.25.52.png" alt=""></p>
 <p><img src="http://guangchuangyu.github.io/blog_images/emotion_icons/surprise.gif" alt=""></p>
 <p>THIS should never be happened in a Bioconductor package since
@@ -341,8 +341,8 @@ runnable examples in man files. It turns out that there is no runnable
 example in either the vignette or man files. This package was compiled
 successfully in all platforms but it actually can only be run in windows
 platform with python installed exactly in the same path of the author. I
-don't know why Bioconductor core team didn't detect this issue when
-reviewing this package and why reviewers of <a href="http://bioinformatics.oxfordjournals.org/content/early/2015/05/27/bioinformatics.btv289.full">Bioinformatics</a> didn't test the package.</p>
+don&rsquo;t know why Bioconductor core team didn&rsquo;t detect this issue when
+reviewing this package and why reviewers of <a href="http://bioinformatics.oxfordjournals.org/content/early/2015/05/27/bioinformatics.btv289.full">Bioinformatics</a> didn&rsquo;t test the package.</p>
 <p>I modified &lsquo;C:/Python27/python&rsquo;, to &lsquo;python&rsquo;. But it still throw error:</p>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/others/Screenshot%202015-08-20%2015.51.48.png" alt=""></p>
 <p>This is due to the author used &lsquo;\\&rsquo; as folder separator which is Windows platform specific.</p>
@@ -351,7 +351,7 @@ reviewing this package and why reviewers of <a href="http://bioinformatics.oxfor
 <p>AND I found that there are many &lsquo;\\&rsquo; in the source code.</p>
 <p>So I gave up to try this package and reinvented the wheel.</p>
 <p><img src="http://guangchuangyu.github.io/blog_images/MISC/evolution_of_the_wheel_by_echoes93-d4owse1.jpg" alt=""></p>
-<p>It's not difficult to implement a <em>seq2gene</em> function using internal functions already available in my package <a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a>. It only took me half hour and was available since version 1.5.5.</p>
+<p>It&rsquo;s not difficult to implement a <em>seq2gene</em> function using internal functions already available in my package <a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a>. It only took me half hour and was available since version 1.5.5.</p>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/Screenshot%202015-08-21%2011.08.46.png" alt=""></p>
 <p><em>seq2gene</em> provided by <a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a> considers host gene (exon/intron), promoter region and flanking gene from intergenomic region.</p>
 <p>With <a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a>, user can annotates genomic coordination by nearest gene, host gene, flanking genes or consider all of them by <em>seq2gene</em> and performs GO/KEGG/DO/Reactome analysis with <a href="http://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>/<a href="http://www.bioconductor.org/packages/release/bioc/html/DOSE.html">DOSE</a>/<a href="http://www.bioconductor.org/packages/release/bioc/html/ReactomePA.html">ReactomePA</a> at gene level. A scenario can be found in <a href="https://support.bioconductor.org/p/70227/">Bioconductor support site</a>, that used ChIPseeker to retrieve 5 genes flanking of each enhancer followed by GO analysis.</p>

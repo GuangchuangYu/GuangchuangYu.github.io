@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Disease ontology (DO) annotates human genes in the context of disease. DO is important annotation in translating molecular findings from high-throughput data to clinical relevance. DOSE is an R package providing semantic similarity computations among DO terms and genes which allows biologists to explore the similarities of diseases and of gene functions in disease perspective. Enrichment analyses including hypergeometric model and gene set enrichment analysis are also implemented to support discovering disease associations of high-throughput biological data.">
@@ -289,10 +289,10 @@ if (!doNotTrack) {
 <p>这个包说起来写了很久了，与<code>clusterProfiler</code>是同一时期，当然稍比<code>clusterProfiler</code>晚一点，一直没有发文章是有原因的，那就是Disease Ontology这个本体在发表之后，一直没有更新，一个没有更新的数据意义就不大，所以我还懒得写。</p>
 <p>最后让我开始有想要写这篇文章的原因是2012年的NAR发表了DO的更新，而2013年NAR又发表了DO-gene映射的更新。<code>DOSE</code>这个包的语义度量来自于<code>GOSemSim</code>，《<a href="https://mp.weixin.qq.com/s/FTzgf1JHXAhDta2u-cDksQ">GOSemSim：GO语义相似性度量</a>》，而富集分析是在这个包实现的，所以包括<code>clusterProfiler</code>都是调用<code>DOSE</code>，而且我在里面实现了比较多的可视化函数，不过现在是切分出来，并且重新实现了<code>enrichplot</code>包，《<a href="https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA">enrichplot: 让你们对clusterProfiler系列包无法自拔</a>》。</p>
 <p>虽然DO这个数据一直缺少维护，但我对<code>DOSE</code>包一直是没有放弃的，因为我觉得找疾病相关的线索是很重要的，所以后面我又整合了Network of Cancer Gene和DisGeNET两个数据。后面可能我还会整合其它一些和疾病有关的数据！</p>
-<h3 id="heading">一点八卦</h3>
+<h3 id="一点八卦">一点八卦</h3>
 <p>或者你还能记起来另一个可以做DO语义相似性的包，<code>DOSim</code>，这个包很有意思，在文章发表之后，主动去CRAN上要求下架，然后它的主页也随之变成了404。如果你能记我写的《<a href="http://mp.weixin.qq.com/s/AsRxsRw-0N5HOSqN0d_IIw">[连载3]：辣眼睛，一篇抄袭引发的系列血案！</a>》这一篇文章的话，原因就显而易见，因为作者深知见不得光！然而文章恒久远，一篇永流传！</p>
 <p><code>DOSim</code>那篇文章，用语义相似性计算与肥胖相关的基因，然后聚类，切出几个子类，然后再用GO，KEGG富集分析说这些子类和某些GO、KEGG通路有关，大概做了这个一个实例。我始终对聚类结果进行富集分析保持看法，因为聚类之后，等于说把非常相似的基因放在一起，那么超几何分布做富集分析的前提：随机有放回的抽样就不复存在了！算出来的p值小到简直都0还要0了。</p>
-<h3 id="heading-1">另一则八卦</h3>
+<h3 id="另一则八卦">另一则八卦</h3>
 <p>前面说了2012，2013年的时候NAR上有DO的更新，我开始觉得有时机了，可以发表<code>DOSE</code>包了，事实上我等到2014年5月才投的稿，这期间我干什么去了？</p>
 <p>我在2013年拿到港大offer，而还没到港大的时候，SBS那个专家跟我说「要是我们能发文章，对明年申请基金很有帮助，这对我们很重要」，我当年就是too simple，甚至于naive，我就跟他说我有<code>DOSE</code>，<code>ReactomePA</code>等包没有发表，首先当然是<code>DOSE</code>因为和疾病有关，而后面准备做cancer。</p>
 <p>在我到港大之前的那段时间，我就在看<code>GSEA</code>算法，因为我觉得富集分析光写个超几何分布是不够的，我需要写个<code>GSEA</code>来加码，GSEA算法就是在那段时间集中火力写出来的。</p>

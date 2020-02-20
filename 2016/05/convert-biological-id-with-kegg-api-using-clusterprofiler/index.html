@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="bitr_kegg
@@ -424,7 +424,7 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <h2 id="bitr-kegg">bitr_kegg</h2>
+              <h2 id="bitr_kegg">bitr_kegg</h2>
 <p><code>clusterProfiler</code> can convert biological IDs using <code>OrgDb</code> object via the <code>bitr</code> function. Now I implemented another function, <code>bitr_kegg</code> for converting IDs through KEGG API.</p>
 <pre><code>library(clusterProfiler)
 data(gcSample)
@@ -461,7 +461,7 @@ head(np2up)
 ## 6   NP_001092002  O95398
 </code></pre>
 <p>The ID type (both fromType &amp; toType) should be one of &lsquo;kegg&rsquo;, &lsquo;ncbi-geneid&rsquo;, &lsquo;ncbi-proteinid&rsquo; or &lsquo;uniprot&rsquo;. The &lsquo;kegg&rsquo; is the primary ID used in KEGG database. The data source of KEGG was from NCBI. A rule of thumb for the &lsquo;kegg&rsquo; ID is <code>entrezgene</code> ID for eukaryote species and <code>Locus</code> ID for prokaryotes.</p>
-<p>Many prokaryote species don't have entrezgene ID available. For example we can check the gene information of <code>ece:Z5100</code> in <a href="http://www.genome.jp/dbget-bin/www_bget?ece:Z5100">http://www.genome.jp/dbget-bin/www_bget?ece:Z5100</a>, which have <code>NCBI-ProteinID</code> and <code>UnitProt</code> links in the <code>Other DBs</code> Entry, but not <code>NCBI-GeneID</code>.</p>
+<p>Many prokaryote species don&rsquo;t have entrezgene ID available. For example we can check the gene information of <code>ece:Z5100</code> in <a href="http://www.genome.jp/dbget-bin/www_bget?ece:Z5100">http://www.genome.jp/dbget-bin/www_bget?ece:Z5100</a>, which have <code>NCBI-ProteinID</code> and <code>UnitProt</code> links in the <code>Other DBs</code> Entry, but not <code>NCBI-GeneID</code>.</p>
 <p>If we try to convert <code>Z5100</code> to <code>ncbi-geneid</code>, <code>bitr_kegg</code> will throw error of <code>ncbi-geneid is not supported</code>.</p>
 <pre><code>bitr_kegg(&quot;Z5100&quot;, fromType=&quot;kegg&quot;, toType='ncbi-geneid', organism='ece')
 
@@ -479,7 +479,7 @@ bitr_kegg(&quot;Z5100&quot;, fromType=&quot;kegg&quot;, toType='uniprot', organi
 ##    kegg uniprot
 ## 1 Z5100  Q7DB85
 </code></pre>
-<h2 id="search-kegg-organism">search_kegg_organism</h2>
+<h2 id="search_kegg_organism">search_kegg_organism</h2>
 <p><code>clusterProfiler</code> supports more than 4k species listed in <a href="http://www.genome.jp/kegg/catalog/org_list.html">http://www.genome.jp/kegg/catalog/org_list.html</a> for hypergeometric test (<code>enrichKEGG</code> &amp; <code>enrichMKEGG</code>) and GSEA (<code>gseKEGG</code> &amp; <code>gseMKEGG</code>). We can use <code>bitr_kegg</code> to convert ID for all these 4k species. To facilitate searching scientific name abbreviate used in the <code>organism</code> parameter of these functions, I implemented the <code>search_kegg_organism</code> function. We can search by <code>kegg_code</code>, <code>scientific_name</code> or <code>common_name</code> (which is not available for prokaryotes).</p>
 <pre><code>search_kegg_organism('ece', by='kegg_code')
 

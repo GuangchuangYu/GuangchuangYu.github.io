@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="2017眼看要结束，立下写《CS0: ChIPseq从入门到放弃》的flag还没完成，当时ChIPseeker是33个引用，现在已经80了，时间过得好快。
@@ -301,7 +301,7 @@ if (!doNotTrack) {
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/WechatIMG50.jpeg" alt="">这篇文章的作者以前就跟我要ChIPseeker的文章，说是上课要给学生读，所以我要感谢他，上课和文章都给我打了广告！</p>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/WechatIMG56.jpeg" alt="">最近小密圈有小伙伴问怎么对lncRNAs按基因位置进行分类，我让他去看这个ChIPseeker系列文章，不要被ChIPseeker这个名字给蒙蔽了，我当年写这个包的时候，我只是想做ChIPseq，我也没想到自己写的是个通用的包，其实应该叫genomic coordinates annotation, visualization and comparison。ChIPseeker不单用于ChIPseq，所有genomic coordination通杀。在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484084&amp;idx=1&amp;sn=b3fb1b88a9f73e26278688dfbce60679&amp;chksm=ec43b3f3db343ae5ea5a657b22bd0ed427c928f75c45484badaf6a6714777d8239cb0b1997b5#rd">CS4：关于ChIPseq注释的几个问题</a>》里我就谈到了有人做DNA breakpoints的断点位置注释。在biostars上我也展示过注释lincRNA (<a href="https://www.biostars.org/p/215069/">https://www.biostars.org/p/215069/</a>)。另外CS4里也提到了背景注释可以用GRanges对象，这保证了各种需求都可以满足。</p>
 <p>如果你用ChIPseeker做注释，那么出上面的饼图，太容易，ChIPseeker只会做得更好。</p>
-<h2 id="peak">Peak可视化</h2>
+<h2 id="peak可视化">Peak可视化</h2>
 <p>首先在分析之前，我们拿到BED文件，就可以先看看peak在整个染色体上的分布，这个在《<a href="https://mp.weixin.qq.com/s/D06NEG7blksGugb0srL7KQ">CS2: BED文件</a> 》一文里有展示，这里不在重复。</p>
 <p>另外我们可以限定在一个固定的窗口里，然后把这些peak全部align起来，看看在某个窗口上的结合谱图。比如说启动子区域，使用转录起始位点，然后指定上下游，使用<code>getPromoters</code>函数，就可以为我们准备好窗口。再使用<code>getTagMatrix</code>函数，把peak比对到这个窗口，并生成矩阵，供我们分析、可视化。</p>
 <pre><code>library(ChIPseeker)
@@ -346,8 +346,8 @@ plotAvgProf(tagMatrixList, xlim=c(-3000, 3000))
     conf=0.95,resample=500, facet=&quot;row&quot;)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/plotAvgProf3.png" alt=""></p>
 <p>这和前面的热图是一致的，前三个样品显然不是调控转录的。</p>
-<p>这里我展示的都是启动子窗口，然而ChIPseeker支持的并不止是启动子，不单单是看转录调控，比如说你是研究可变剪切的，那么蛋白结合到外显子/内含子的起始位置，显然就更感兴趣了。所以除了<code>getPromoters</code>函数之外，<code>ChIPseeker</code>还提供了<code>getBioRegion</code>函数，你可以指定'exon'或'intron&rsquo;，它会像<code>getPromoters</code>一样为你准备好数据，即使这不是你感兴趣的，你也依然可以用它来准备窗口，然后可视化看一下，或许你能意外地发现你研究的蛋白竟然在外显子/内含子起始位置上有很强的结合谱，做为前期data exploration，「妹妹你大胆地往前走啊」，尽管啥都试试！</p>
-<h2 id="heading">注释信息可视化</h2>
+<p>这里我展示的都是启动子窗口，然而ChIPseeker支持的并不止是启动子，不单单是看转录调控，比如说你是研究可变剪切的，那么蛋白结合到外显子/内含子的起始位置，显然就更感兴趣了。所以除了<code>getPromoters</code>函数之外，<code>ChIPseeker</code>还提供了<code>getBioRegion</code>函数，你可以指定&rsquo;exon'或&rsquo;intron&rsquo;，它会像<code>getPromoters</code>一样为你准备好数据，即使这不是你感兴趣的，你也依然可以用它来准备窗口，然后可视化看一下，或许你能意外地发现你研究的蛋白竟然在外显子/内含子起始位置上有很强的结合谱，做为前期data exploration，「妹妹你大胆地往前走啊」，尽管啥都试试！</p>
+<h2 id="注释信息可视化">注释信息可视化</h2>
 <p>我在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484023&amp;idx=1&amp;sn=affbe46869290ffc4f2be2c73209bdad&amp;chksm=ec43b330db343a262602f57156578195011ae6ef3d61ad928d60ef919811678bf605b5048a64#rd">CS3: peak注释</a>》和《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484084&amp;idx=1&amp;sn=b3fb1b88a9f73e26278688dfbce60679&amp;chksm=ec43b3f3db343ae5ea5a657b22bd0ed427c928f75c45484badaf6a6714777d8239cb0b1997b5#rd">CS4：关于ChIPseq注释的几个问题</a>》两篇文章里，重点讲了注释，注释后的信息当然也需要我们可视化展示，方便解析结果。</p>
 <pre><code>peakAnno &lt;- annotatePeak(files[[4]], tssRegion=c(-3000, 3000),
                          TxDb=txdb, annoDb=&quot;org.Hs.eg.db&quot;)

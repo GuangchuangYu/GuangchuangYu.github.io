@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用boxplot，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。
@@ -320,7 +320,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_jitter() +
     geom_pointrange(aes(y=mean, ymin=mean-sd, ymax=mean+sd, color=Species), data=d, size=2) 
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b2.png" alt=""></p>
-<h3 id="1">云雨图1：加上均值和标准误差。</h3>
+<h3 id="云雨图1加上均值和标准误差">云雨图1：加上均值和标准误差。</h3>
 <pre><code>library(gghalves)
 
 
@@ -332,7 +332,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     coord_flip() + theme_bw() +
     theme(legend.position=&quot;bottom&quot;)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b3.png" alt=""></p>
-<h3 id="2boxplot">云雨图2：加上boxplot</h3>
+<h3 id="云雨图2加上boxplot">云雨图2：加上boxplot</h3>
 <pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_half_violin(position=position_nudge(x=.3), side=2) +
     geom_jitter(aes(color=Species), width=.15) +
@@ -340,7 +340,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     coord_flip() + theme_bw() +
     theme(legend.position=&quot;bottom&quot;)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b4.png" alt=""></p>
-<h3 id="3">云雨图3：用堆叠的点图当雨点</h3>
+<h3 id="云雨图3用堆叠的点图当雨点">云雨图3：用堆叠的点图当雨点</h3>
 <pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_half_violin(position=position_nudge(x=.2), side=2) +
     geom_dotplot(binaxis=&quot;y&quot;, stackdir=&quot;down&quot;, dotsize=.35) +

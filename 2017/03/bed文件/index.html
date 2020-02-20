@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="BED的全称是Browser Extensible Data，顾名思义是为genome browser设计的，大名鼎鼎的bedtools可不是什么「床上用品」。
@@ -402,9 +402,9 @@ if (!doNotTrack) {
 <p>The 5th column in this file is the summit height of fragment pileup.</p>
 </blockquote>
 <p>是片段堆积的峰高，这也不难理解，为什么我在ChIPseeker是画peak coverage的函数<strong>covplot</strong>要有个<em>weightCol</em>的参数了。</p>
-<h2 id="heading">数据可视化</h2>
+<h2 id="数据可视化">数据可视化</h2>
 <p>从名字上看，它是为genome browser而生，相应的，<strong>ChIPseeker</strong>实现了<em>covplot</em>来可视化BED数据。</p>
-<h3 id="covplot"><strong>covplot</strong>支持直接读文件出图：</h3>
+<h3 id="covplot支持直接读文件出图"><strong>covplot</strong>支持直接读文件出图：</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ChIPseeker)
 <span style="color:#a6e22e">library</span>(ggplot2)
 
@@ -412,12 +412,12 @@ files <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getSa
 
 <span style="color:#a6e22e">covplot</span>(files[[4]])
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/covplot_1.png" alt=""></p>
-<h3 id="grangesgrangeslist">支持GRanges对象，同时可以多个文件或者GRangesList</h3>
+<h3 id="支持granges对象同时可以多个文件或者grangeslist">支持GRanges对象，同时可以多个文件或者GRangesList</h3>
 <pre><code>peak=GenomicRanges::GRangesList(CBX6=readPeakFile(files[[4]]),
                                 CBX7=readPeakFile(files[[5]]))
 covplot(peak, weightCol=&quot;V5&quot;) + facet_grid(chr ~ .id)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/covplot_2.png" alt=""></p>
-<h3 id="heading-1">支持可视化某个窗口</h3>
+<h3 id="支持可视化某个窗口">支持可视化某个窗口</h3>
 <pre><code>covplot(peak, weightCol=&quot;V5&quot;, chrs=c(&quot;chr17&quot;, &quot;chr18&quot;), xlim=c(4e7, 5e7)) + facet_grid(chr ~ .id)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/covplot_3.png" alt=""></p>
 <p>拿到数据后，我们首先会可视化看一下数据，接下来就会想知道这些peak都和什么样的基因有关，这将在下次讲解，如何做注释。</p>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="陈同的‘生信宝典’公众号出了篇《R语言学习 - 富集分析泡泡图》，搞个shell脚本，一步绘图。讲了这个脚本可以适用于clusterProfiler和其它软件的富集结果。
@@ -302,11 +302,11 @@ if (!doNotTrack) {
             <div class="main-content-wrap">
               <p>陈同的‘生信宝典’公众号出了篇《<a href="https://mp.weixin.qq.com/s?__biz=MzI5MTcwNjA4NQ==&amp;mid=2247483978&amp;idx=1&amp;sn=e0c158c0e92375553036cc37f4987e40&amp;chksm=ec0dc7c0db7a4ed6ac593493b7d8b52f11f2feb92d24fa00d19527fbb6f95b24f7e313ef9440#rd">R语言学习 - 富集分析泡泡图</a>》，搞个shell脚本，一步绘图。讲了这个脚本可以适用于clusterProfiler和其它软件的富集结果。</p>
 <p>浑身都是硬伤，我都不想吐槽，但由于作者邀请我提点，那就吐槽模式全开。</p>
-<h2 id="command">一个command出图，小白已经哭晕</h2>
+<h2 id="一个command出图小白已经哭晕">一个command出图，小白已经哭晕</h2>
 <p>从出的图看，应该是ggplot2画的（就算猜错，要吐槽的依然正确），小白在web-server上做了分析，存结果为xls文件，拿你这脚本，一跑报错。读xls文件（别告诉我你跟用户说读xls但其实是个tsv）和画图的依赖关系没解决！用户友好在那里？不要告诉我你的脚本0依赖，有个shell就能跑，即使我们熟悉的各种命令，很多都是独立程序，不关shell什么事。</p>
-<h2 id="heading">所谓的一步出图</h2>
+<h2 id="所谓的一步出图">所谓的一步出图</h2>
 <p>既然讲了clusterProfiler，那么clusterProfiler用户笑而不语了。我们用dotplot不也是一条命令出图，为什么要退出R，去跑你的shell脚本，这过程还得转换数据，存储数据。最后的这一步，是前面+N步为代价的。</p>
-<h2 id="heading-1">一步出图是邪恶的！</h2>
+<h2 id="一步出图是邪恶的">一步出图是邪恶的！</h2>
 <p>做为ggplot2画的图，我们用clusterProfiler的dotplot，写文件前，可以先看一下，做点调整。你搞个脚本缺少了用户互动的重要一步。</p>
 <p>生物狗开口闭口都是next generation。画图也是二代了好么！一步出图是第一代产品，因为你只有纸笔模式，画完就完事了，那是死图，你想改，illustrator啊！</p>
 <p>现在这年代，图已经不能简单地称为图，都是数据，只有在需要渲染图片时才是死图，做为数据，你是可以改的，改完再渲染，效果就变了。你用着二代产品，却在干一代产品的活，能不邪恶吗？</p>
@@ -323,23 +323,23 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">dotplot</
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p2 <span style="color:#f92672">+</span> <span style="color:#a6e22e">aes</span>(shape<span style="color:#f92672">=</span>GeneRatio <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.1</span>) 
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/dotplot_shape.png" alt=""></p>
 <p>比如<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484089&amp;idx=1&amp;sn=f6e11d54a18e96a94145a2b802c37dc1&amp;chksm=ec43b3fedb343ae89e3630900033f055af4bbe211897076291e351ae18cc89b2ddf7651ee0be#rd">字体溢出</a>、<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247483972&amp;idx=1&amp;sn=fa1f4b6299f94eeb52baf5bda6a5ff6b&amp;chksm=ec43b303db343a150806b3b1ab22a1df1c90405235bb399b155f7c50de2a0a23faf2f4ad0beb#rd">长文本截断</a>、<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484646&amp;idx=1&amp;sn=60385c9910164e5abac0e5f46107fd10&amp;chksm=ec43b5a1db343cb72eef63a338679c8edd512019e92854c8e12341d631fc8cec151ee48b5991#rd">设置点的大小</a>等等都可以搞，你还可以改图例，改背景等各种元素等等！</p>
-<h2 id="heading-2">我所说的硬伤</h2>
+<h2 id="我所说的硬伤">我所说的硬伤</h2>
 <p>下面是陈同原文里的图：</p>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/wechat1.png" alt=""></p>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/wechat2.png" alt=""></p>
 <p>我当时看了说硬伤，告诉他没overlap，他不明白，请我详细讲，于是有本文。</p>
 <p>他上面的图是给人的感觉就是两组实验非常不同，完全没有overlap，但实际并非如此，只是我们没办法把所有富集结果展示出来而已，只展示了最显著的一部分。然而我们在截取最显著的部分时，应该把其它组实验中有overlap的结果也截出来，这个在我讲解<a href="http://guangchuangyu.github.io/2016/11/showcategory-parameter-for-visualizing-comparecluster-output/">showCategory参数</a>中已经有明显明确说明。</p>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/clusterProfiler/Screen%20Shot%202016-11-03%20at%2010.56.46%20AM.png" alt=""></p>
-<h2 id="-">最后来两个硬广， 硬广一</h2>
+<h2 id="最后来两个硬广-硬广一">最后来两个硬广， 硬广一</h2>
 <p>对于富集结果没办法完全展示这个问题，我们会发现最显著的那些，其实都overlap了很多基因，特别是GO的分析结果，GO的冗余太多，clusterProfiler提供了simplify函数，可以去冗余哟，让我们解析结果更容易，这个后面也会介绍。</p>
-<h2 id="heading-3">硬广二</h2>
+<h2 id="硬广二">硬广二</h2>
 <p>有些人就喜欢自己用ggplot2画，可能觉得透明吧，自己搞有逼格吧。氮素像上面的槽点，像这个<code>includeAll</code>的参数，在把clusterProfiler的结果转变成data.frame后进行处理的时候，你是否能够考虑到？我见过太多自己画的，都是不同实验组给人一种绝然不同富集结果的错觉。</p>
 <p>然而我写的代码，模块化非常好，数据处理和可视化是分开的，clusterProfiler的输出你不用as.data.frame，就可以直接传给ggplot2，别的富集软件做的，不是data.frame对象的，都不能传给ggplot2，但clusterProfiler可以，如果你想问为什么，原因只有一个，因为那是我写的！clusterProfiler的dotplot所有参数，都可以传给ggplot2，像上面用到的<code>showCategory</code>, <code>includeAll</code>这些都可以，然后数据处理于无形中，你可以加图层自己画图了。这个功能存在了好几年，只不过我第一次公开讲。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(x, <span style="color:#a6e22e">aes</span>(Cluster, Description), showCategory<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span>
 	<span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(color<span style="color:#f92672">=</span>qvalue, size<span style="color:#f92672">=</span>GeneRatio)) 
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/dotplot_ggplot2.gif" alt=""></p>
-<h3 id="-clusterprofilerclusterprofiler">再次重申， clusterProfiler之所以好，因为真的考虑了很多细节！请放开那图，让clusterProfiler来画！</h3>
-<h2 id="heading-4">电梯直达相关阅读</h2>
+<h3 id="再次重申-clusterprofiler之所以好因为真的考虑了很多细节请放开那图让clusterprofiler来画">再次重申， clusterProfiler之所以好，因为真的考虑了很多细节！请放开那图，让clusterProfiler来画！</h3>
+<h2 id="电梯直达相关阅读">电梯直达相关阅读</h2>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484089&amp;idx=1&amp;sn=f6e11d54a18e96a94145a2b802c37dc1&amp;chksm=ec43b3fedb343ae89e3630900033f055af4bbe211897076291e351ae18cc89b2ddf7651ee0be#rd">ggplot2字体溢出的那点破事</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247483972&amp;idx=1&amp;sn=fa1f4b6299f94eeb52baf5bda6a5ff6b&amp;chksm=ec43b303db343a150806b3b1ab22a1df1c90405235bb399b155f7c50de2a0a23faf2f4ad0beb#rd">wrapping labels in ggplot2</a></li>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="下面这张吐槽LaTeX的图，太深得我心。
@@ -303,7 +303,7 @@ if (!doNotTrack) {
 <p>内行看门道，这个<code>expand_xlim</code>，我在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247483856&amp;idx=1&amp;sn=8ead6d0ed5fc303423f995a58ad75e80&amp;chksm=ec43b097db343981f0f2f08d6488dc193d5d12c44e2c5b342d5b522bc82c93db8ebf33a3b552#rd">facet_plot: 加图层到特定的分面上</a>》里已经说了，其实就是在特定的分面上加图层，这个图层把画布撑大，但这个图层你看不见。因为它不会出来visible的东西（比如点和线），用的是<code>geom_blank</code>，顾名思义，它啥都不画。</p>
 <p>然后虽然我这里讲的是<code>xlim</code>，你应该知道怎么搞<code>ylim</code>了。</p>
 <p>沿着这个思路，事情还可以更进一步，在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484959&amp;idx=1&amp;sn=022e29bd86d56c4af8a521cce3cf6942&amp;chksm=ec43b758db343e4e2b4ec36f4dd8897ff12047d83fce50a08c4f8ecbae57b8fe516ed4d78705#rd">映射变量给axis上色</a>》一文中，其实我们就是用<code>theme(element_text(color=COLOR_VECTOR))</code>这样来给axis上色。但上色容易，想要给这个上色加个legend却不容易。解决的突破口就在于「一双看不见的手」。我们可以通过某个变量去上色打印文本, <code>geom_text(aes(color=VAR))</code>，这样就可以出来个文本按某个变量上色的legend。然而这个<code>geom_text</code>的图层是我们不愿意有的，我们并不想打印这些字，但我们想要它的legend。应用「看不见的手」的思路，我们打印字，但让这些字看不见，设置<code>alpha=0</code>，得以解决。当然这样legend也会看不见，我们通过修改legend，华丽丽地就给你的图穿上了皇帝的新衣。</p>
-<h2 id="heading">电梯</h2>
+<h2 id="电梯">电梯</h2>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247483855&amp;idx=1&amp;sn=d425adcb2bc1bc3f66c64485b8a6501d&amp;chksm=ec43b088db34399e9981564df247f7c9c51274e78f0af882158b8d567b3f8d776f2313bf0985#rd">xlim_tree: set x axis limits for only Tree panel</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484089&amp;idx=1&amp;sn=f6e11d54a18e96a94145a2b802c37dc1&amp;chksm=ec43b3fedb343ae89e3630900033f055af4bbe211897076291e351ae18cc89b2ddf7651ee0be#rd">ggplot2字体溢出的那点破事</a></li>

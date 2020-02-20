@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.61.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Why use ggplot2
@@ -311,7 +311,7 @@ Wickham把这套想法在R中实现。</p>
 <li>主题（Theme）</li>
 </ul>
 <p>这里将从这些基本要素对ggplot2进行介绍。</p>
-<h3 id="datamapping">数据（Data）和映射（Mapping)</h3>
+<h3 id="数据data和映射mapping">数据（Data）和映射（Mapping)</h3>
 <p>下面以一份钻石的数据为例，这份数据非常大，随机取一个子集来画图。</p>
 <pre><code>require(ggplot2)
 data(diamonds)
@@ -366,7 +366,7 @@ p+geom_point()
 <pre><code>p &lt;- ggplot(data=small, mapping=aes(x=carat, y=price, shape=cut, colour=color))
 p+geom_point()
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig3.png" alt=""></p>
-<h3 id="geometric">几何对象（Geometric）</h3>
+<h3 id="几何对象geometric">几何对象（Geometric）</h3>
 <p>在上面的例子中，各种属性映射由ggplot函数执行，只需要加一个图层，使用geom_point()告诉ggplot要画散点，于是所有的属性都映射到散点上。</p>
 <p>geom_point()完成的就是几何对象的映射，ggplot2提供了各种几何对象映射，如geom_histogram用于直方图，geom_bar用于画柱状图，geom_boxplot用于画箱式图等等。</p>
 <p>不同的几何对象，要求的属性会有些不同，这些属性也可以在几何对象映射时提供，比如上一图，也可以用以下语法来画：</p>
@@ -429,12 +429,12 @@ geom_step       geom_text
 geom_tile       geom_violin
 geom_vline
 </code></pre>
-<h3 id="scale">标尺（Scale）</h3>
+<h3 id="标尺scale">标尺（Scale）</h3>
 <p>前面我们已经看到了，画图就是在做映射，不管是映射到不同的几何对象上，还是映射各种图形属性。这一小节介绍标尺，在对图形属性进行映射之后，使用标尺可以控制这些属性的显示方式，比如坐标刻度，可能通过标尺，将坐标进行对数变换；比如颜色属性，也可以通过标尺，进行改变。</p>
 <pre><code>ggplot(small)+geom_point(aes(x=carat, y=price, shape=cut, colour=color))+scale_y_log10()+scale_colour_manual(values=rainbow(7))
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig12.png" alt=""></p>
 <p>以数据（Data）和映射（Mapping)一节中所画散点图为例，将Y轴坐标进行log10变换，再自己定义颜色为彩虹色。</p>
-<h3 id="statistics">统计变换（Statistics）</h3>
+<h3 id="统计变换statistics">统计变换（Statistics）</h3>
 <p>统计变换对原始数据进行某种计算，然后在图上表示出来，例如对散点图上加一条回归线。</p>
 <pre><code>ggplot(small, aes(x=carat, y=price))+geom_point()+scale_y_log10()+stat_smooth()
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig13.png" alt=""></p>
@@ -450,7 +450,7 @@ stat_boxplot      stat_hline        stat_sum          stat_ydensity
 </code></pre>
 <p>统计变换是非常重要的功能，我们可以自己写函数，基于原始数据做某种计算，并在图上表现出来，也可以通过它改变geom_xxx函数画图的默认统计参数。
 比如我在<a href="http://www.sciencedirect.com/science/article/pii/S1874391912007567">Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity</a>的图一中，就把boxplot的中位线替换成了平均值来作图。</p>
-<h3 id="coordinante">坐标系统（Coordinante）</h3>
+<h3 id="坐标系统coordinante">坐标系统（Coordinante）</h3>
 <p>坐标系统控制坐标轴，可以进行变换，例如XY轴翻转，笛卡尔坐标和极坐标转换，以满足我们的各种需求。</p>
 <p>坐标轴翻转由coord_flip()实现</p>
 <pre><code>ggplot(small)+geom_bar(aes(x=cut, fill=cut))+coord_flip()
@@ -465,7 +465,7 @@ stat_boxplot      stat_hline        stat_sum          stat_ydensity
 <p>以及风玫瑰图(windrose)</p>
 <pre><code>ggplot(small)+geom_bar(aes(x=clarity, fill=cut))+coord_polar()
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig17.png" alt=""></p>
-<h3 id="layer">图层（Layer）</h3>
+<h3 id="图层layer">图层（Layer）</h3>
 <p>photoshop流行的原因在于PS
 3.0时引入图层的概念，ggplot的牛B之处在于使用+号来叠加图层，这堪称是泛型编程的典范。
 在前面散点图上，我们已经见识过，加上了一个回归线拟合的图层。</p>
@@ -537,13 +537,13 @@ multiplot &lt;- function (..., plotlist = NULL, cols = 1, layout = NULL) {
 
 multiplot(p1,p2,p3,p4,p5,p6, cols=2)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_batman.png" alt=""></p>
-<h3 id="facet">分面（Facet）</h3>
+<h3 id="分面facet">分面（Facet）</h3>
 <p>在《<a href="http://book.douban.com/subject/24527091/">ggplot2: 数据分析与图形艺术</a>》一书的翻译中，一开始译者把facet翻译成切片，我在校稿的时候发现了，给他们写信，推荐翻译成分面，如果是slice这个词，翻译成切片倒是很精准，BSD的硬盘分区就叫slice，但facet从词源上看就是小脸的意思，翻译成分面才到位。给他们写信的时候，我还专门查了<a href="http://dict.cnki.net/">CNKI翻译助手</a>，发现这词在信息学中，翻成分面早已是固定的。我感觉这是我对这本书翻译的最大贡献，校稿过程中发现的少量小问题远比不上这个关键词意思的把握上。</p>
 <p>分面可以让我们按照某种给定的条件，对数据进行分组，然后分别画图。
 在统计变换一节中，提到如果按切工分组作回归线，显然图会很乱，有了分面功能，我们可以分别作图。</p>
 <pre><code>ggplot(small, aes(x=carat, y=price))+geom_point(aes(colour=cut))+scale_y_log10() +facet_wrap(~cut)+stat_smooth()
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2_fig18.png" alt=""></p>
-<h3 id="theme">主题（Theme）</h3>
+<h3 id="主题theme">主题（Theme）</h3>
 <p>通过ggplot画图之后，我们可能还需要对图进行定制，像title, xlab,
 ylab这些高频需要用到的，自不用说，ggplot2提供了ggtitle(),
 xlab()和ylab()来实现。 比如：</p>
@@ -590,11 +590,11 @@ theme_null &lt;- function() {
 p+theme_null()+xlab(&quot;&quot;)+ylab(&quot;&quot;)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2012/02/jiong.png" alt=""></p>
 <p>详细的说明，可以参考?theme的帮助文档。</p>
-<h3 id="heading">二维密度图</h3>
+<h3 id="二维密度图">二维密度图</h3>
 <p>在这个文档里，为了作图方便，我们使用diamonds数据集的一个子集，如果使用全集，数据量太大，画出来散点就糊了，这种情况可以使用二维密度力来呈现。</p>
 <pre><code>ggplot(diamonds, aes(carat, price))+ stat_density2d(aes(fill = ..level..), geom=&quot;polygon&quot;)+ scale_fill_continuous(high='darkred',low='darkgreen')
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/2014/05/ggplot2.fig22.png" alt=""></p>
-<h3 id="ggplot2">ggplot2实例</h3>
+<h3 id="ggplot2实例">ggplot2实例</h3>
 <p>蝴蝶图：详见《Modern Applied Statistics with S-PLUS》第一章。</p>
 <pre><code>theta &lt;- seq(0,24*pi, len=2000)
 radius &lt;- exp(cos(theta)) - 2*cos(4*theta) + sin(theta/12)^5
