@@ -252,6 +252,86 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/03/peak%E6%B3%A8%E9%87%8A/">
+          peak注释
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-03-16T12:23:16&#43;08:00">
+        
+  March 16, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/chipseq">ChIPseq</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>这一次讲解非常重要的peak注释，注释在<strong>ChIPseeker</strong>里只需要用到一个函数<strong>annotatePeak</strong>，它可以满足大家各方面的需求。</p>
+<h2 id="输入">输入</h2>
+<p>当然需要我们上次讲到的BED文件，<strong>ChIPseeker</strong>自带了5个BED文件，用<strong>getSampleFiles()<strong>可以拿到文件的全路径，它返回的是个named list，我这里取第4个文件来演示。<strong>annotatePeak</strong>的输入也可以是</strong>GRanges</strong>对象，你如果用R做peak calling的话,直接就可以衔接上<strong>ChIPseeker</strong>了。</p>
+<pre><code>&gt; require(ChIPseeker)
+&gt; f = getSampleFiles()[[4]]
+</code></pre><p>巧妇难为无米之炊，就像拿到<strong>fastq</strong>要跑<strong>BWA</strong>，你需要全基因组的序列一样，做注释当然需要注释信息，基因的起始终止，基因有那些内含子，外显子，以及它们的起始终止，非编码区的位置，功能元件的位置等各种信息。</p>
+<p>很多软件会针对特定的物种去整理这些信息供软件使用，但这样就限制了软件的物种支持，有些开发者写软件本意也是解决自己的问题，可能对自己的研究无关的物种也没兴趣去支持。</p>
+<p>然而<strong>ChIPseeker</strong>支持所有的物种，你没有看错，<strong>ChIPseeker</strong>没有物种限制，当然这是有前提的，物种本身起码是有基因的位置这些注释信息，不然就变无米之炊了。</p>
+<p>这里我们需要的是一个<strong>TxDb</strong>对象，这个<strong>TxDb</strong>就包含了我们需要的各种信息，<strong>ChIPseeker</strong>会把信息抽取出来，用于注释时使用。</p>
+<pre><code>&gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+&gt; txdb = TxDb.Hsapiens.UCSC.hg19.knownGene
+&gt; x = annotatePeak(f, tssRegion=c(-1000, 1000), TxDb=txdb)
+&gt;&gt; loading peak file...				 2017-03-09 11:29:18 PM 
+&gt;&gt; preparing features information...		 2017-03-09 11:29:18 PM 
+&gt;&gt; identifying nearest features...		 2017-03-09 11:29:19 PM 
+&gt;&gt; calculating distance from peak to TSS...	 2017-03-09 11:29:20 PM 
+&gt;&gt; assigning genomic annotation...		 2017-03-09 11:29:20 PM 
+&gt;&gt; assigning chromosome lengths			 2017-03-09 11:29:42 PM 
+&gt;&gt; done...					 2017-03-09 11:29:42 PM 
+</code></pre><blockquote>
+<p>这里需要注意的是，启动子区域是没有明确的定义的，所以你可能需要指定<strong>tssRegion</strong>，把基因起始转录位点的上下游区域来做为启动子区域。</p>
+</blockquote>
+<p>有了这两个输入（BED文件和TxDb对象），你就可以跑注释了，然后就可以出结果了。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2017/03/peak%E6%B3%A8%E9%87%8A/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/03/bed%E6%96%87%E4%BB%B6/">
           BED文件
         </a>
@@ -607,67 +687,6 @@ if (!doNotTrack) {
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/01/cormut/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
-              
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/01/chipseq%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">
-          ChIPseq从入门到放弃
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2017-01-08T22:53:00&#43;08:00">
-        
-  January 8, 2017
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/chipseq">ChIPseq</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>接下来要出一个ChIPseq系列，讲一讲ChIPseq和我的ChIPseeker包，从入门到放弃是我自己的个人写照。我做ChIPseq总共也就3个月的时间，做的事情并不多，在一知半解的情况下写下了ChIPseeker包。</p>
-<p>我当时被要求做ChIPseq分析是为他人做嫁衣，而且是完全白干那种，但做为学生，白干也得干。</p>
-<p><img src="https://guangchuangyu.github.io/blog_images/2017/1487166664.jpg" alt=""></p>
-<p>当时一开始使用ChIPpeakAnno做注释，但用UCSC genome browser检验结果的时候，发现对不上。在对ChIPpeakAnno包不满意的情况下，开始着手写ChIPseeker，其实在使用ChIPpeakAnno的时候，我就有写代码对结果做一些可视化，所以未有ChIPseeker先有ChIPseeker的部分可视化功能。当时写了篇博客文说ChIPpeakAnno的问题，一个月后就在Bioconductor上发表了ChIPseeker，这包完全是我半夜在宿舍里写出来的。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2017/01/chipseq%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

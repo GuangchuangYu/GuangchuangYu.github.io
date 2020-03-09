@@ -250,6 +250,91 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/11/%E8%AE%BE%E7%BD%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AA%97%E5%8F%A3/">
+          设置可视化窗口
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-11-06T10:23:00&#43;08:00">
+        
+  November 6, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/cartesian/1148940491.jpg" alt=""></p>
+<p>小伙伴发来这个图，问我是不是<code>bug</code>，这真是犯了程序员的社交礼仪。</p>
+<blockquote>
+<p>你如果对一个程序员说，“你的代码有bug。”
+他的第一反应是：</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>
+<ol>
+<li>你的环境有问题吧</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>傻逼你会用吗。</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>如果你委婉地说：“你这个程序和预期的有点不一致，你看看是不是我的使用方法有问题。”</p>
+</blockquote>
+<blockquote>
+<p>他本能地会想：“操，是不是出bug了！”</p>
+</blockquote>
+<p>这显然不是<code>bug</code>，这是绝大多数人对<code>ggplot2</code>的误解，他们认为用<code>xlim</code>和<code>ylim</code>是放置一个窗口去看你的图，然而在<code>ggplot2</code>是限定一个窗口去过滤你的数据，并重新画图！你的数据被过滤了！如果是放置窗口在图上，一条线从A到B，如果B在窗口之外，那么线被截断了，你看到半条线，但如果是过滤数据呢？B不复存在，那么线条A到B也不复存在，没有B，A到B的线画不出来。就是这样，所以这绝逼不是<code>bug</code>，而是程序员本能反应的第二种情况，你用错了。</p>
+<p>那么怎么样不过滤数据，而只是设置可视化窗口呢？你基本上很少看到有人这么用，因为几乎99%的人都只知道<code>xlim</code>和<code>ylim</code>，一般人我也不告诉他，快点拿去小抄把下面的代码记录一下。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2018/11/%E8%AE%BE%E7%BD%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AA%97%E5%8F%A3/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/11/un-abstract-coding/">
           王八拳编程及其它
         </a>
@@ -634,66 +719,6 @@ proxies
 </article>
 
           
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/09/install-bioconductor-package/">
-          不用biocLite安装Bioconductor包
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2018-09-18T13:21:00&#43;08:00">
-        
-  September 18, 2018
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>Bioconductor包的标准安装方法是：</p>
-<pre><code>source(&quot;https://bioconductor.org/biocLite.R&quot;)
-biocLite(pkg_name)
-</code></pre><p>这其实是非常不好的，多年以来，一直没有改进，试想一下，bioconductor的网站如果被人黑了，放一段危险的代码，然后你却傻傻地去<code>source</code>它，真的是画面太美！</p>
-<p>Bioconductor终于是想要改变了，往CRAN上扔了一个叫<code>BiocManager</code>的包，以后通过CRAN安装这个包，再通过这个包来安装Bioconductor的包，显得安全多了，也不用大家费辣么多口水说你得先<code>source</code>一段网上的代码，当然这个<code>BiocManager</code>还不成熟，起码还没有在<code>BiocInstaller</code>加载的时候提示大家转而用<code>BiocManager</code>，也没有在Bioconductor的网页上介绍使用它来安装。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2018/09/install-bioconductor-package/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
           
   <div class="pagination-bar">
     <ul class="pagination">
@@ -715,7 +740,7 @@ biocLite(pkg_name)
           </li>
         
       
-      <li class="pagination-number">page 7 of 55</li>
+      <li class="pagination-number">page 7 of 56</li>
     </ul>
   </div>
 

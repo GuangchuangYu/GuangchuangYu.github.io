@@ -249,6 +249,88 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/09/mapping-codelink-id/">
+          映射codelink芯片ID
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2008-09-23T01:18:00&#43;08:00">
+        
+  September 23, 2008
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>GE公司codelink芯片(这个破产品已经停产了)上的探针ID，需要转成别的ID，看了一些在线的转换ID工具，都不支持，探针ID基本上都只支持affy的。</p>
+<p>想起了bioconductor里的biomaRt，这个包可以检索BioMart数据库，这个数据库里有N多种ID。试了一下，果然没问题。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e">#加载biomaRt包</span>
+<span style="color:#a6e22e">library</span>(biomaRt)
+
+<span style="color:#75715e">#选取数据库</span>
+ensembl <span style="color:#f92672">=</span> <span style="color:#a6e22e">useMart</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ensembl&#34;</span>, dataset <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hsapiens_gene_ensembl&#34;</span>)
+
+<span style="color:#75715e">#获取可供检索的attribute</span>
+attributes<span style="color:#f92672">=</span><span style="color:#a6e22e">listAttributes</span>(mart<span style="color:#f92672">=</span>ensembl)
+
+<span style="color:#75715e">#看一下attributes里是否有codelink，得到以下的结果。</span>
+attributes<span style="color:#a6e22e">[grep</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>,attributes[,<span style="color:#ae81ff">1</span>]), ]
+
+name description
+<span style="color:#ae81ff">21</span> codelink Codelink ID
+<span style="color:#75715e">#再搜一下其它我想要的ID</span>
+
+<span style="color:#75715e">#读进含有codelink ID的文件。</span>
+mrna_id <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mrna_id.txt&#34;</span>)
+
+<span style="color:#75715e">#进行ID映射。</span>
+idmap <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getBM</span>(attributes<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">refseq_dna&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">external_gene_id&#34;</span>,
+                            <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">embl&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hgnc_id&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hgnc_symbol&#34;</span>), 
+               filters <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>, values<span style="color:#f92672">=</span>mrna_id[,<span style="color:#ae81ff">1</span>],
+               mart<span style="color:#f92672">=</span>ensembl,output<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">list&#34;</span>)
+</code></pre></div>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2008/09/mapping-codelink-id/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/09/compile-32bit-applications-in-64bit-linux/">
           在64位环境下编译32位的应用程序
         </a>
@@ -607,69 +689,6 @@ Bio::DB::Fasta可以实现这个，这个模块在没有安装bioperl的情况�
 </article>
 
           
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/08/gosemsim/">
-          GOSemSim
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2008-08-11T14:21:00&#43;08:00">
-        
-  August 11, 2008
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>第一次写软件包，计算基因和GO的语义相似性。</p>
-<p>实现<a href="http://bioinformatics.oxfordjournals.org/cgi/content/full/23/10/1274">Wang</a>的方法，基于GO的图结构。
-以及四种基于信息含量的计算方法（Resnik, Jiang, Lin, Rel）。</p>
-<p>可以从Bioconductor下载到。
-<a href="http://bioconductor.org/packages/release/bioc/html/GOSemSim.html">http://bioconductor.org/packages/release/bioc/html/GOSemSim.html</a>
-<a href="http://bioconductor.org/packages/devel/bioc/html/GOSemSim.html">http://bioconductor.org/packages/devel/bioc/html/GOSemSim.html</a></p>
-<p>支持human, rat, mouse, fly, yeast, zebrafish,worm, E coli,
-arabidopsis等物种。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2008/08/gosemsim/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
           
   <div class="pagination-bar">
     <ul class="pagination">
@@ -691,7 +710,7 @@ arabidopsis等物种。</p>
           </li>
         
       
-      <li class="pagination-number">page 53 of 55</li>
+      <li class="pagination-number">page 53 of 56</li>
     </ul>
   </div>
 
