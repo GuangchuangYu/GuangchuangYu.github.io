@@ -249,6 +249,88 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/03/scatterplot-for-matrix/">
+          用散点可视化一个矩阵
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-03-26T14:33:50&#43;08:00">
+        
+  March 26, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/WechatIMG601.jpeg" alt=""></p>
+<blockquote>
+<p>当然是ggplot2画，才好和ggtree兼容，你首先问自己，抛开树，你能右边吗？本身你有个矩阵，row的顺序要跟着树来，你可以先不管，先随意，这是y轴。那x轴呢？你矩阵里的数字，打点你总该会的，而点连线，同样column的数字打出来的点，就连在一起，你先按这个思路画出来，再来问后续的。</p>
+</blockquote>
+<p>这是我在「知识星球」中的回答，然而小伙伴表示还是不懂。那么我来详细讲解一下：</p>
+<p>首先我们读入一个FASTA数据：</p>
+<pre><code>require(treeio)
+
+fasta &lt;- system.file(&quot;examples/FluA_H3_AA.fas&quot;, package=&quot;ggtree&quot;)
+aa &lt;- read.fasta(fasta)
+</code></pre>
+<p>数据用<code>treeio</code>包里的<code>read.fasta</code>去读这个氨基酸序列，它有个好处是你直接<code>as.character(aa[[i]])</code>就是个字母的向量，方便比较。</p>
+<pre><code>n = length(aa)
+d = matrix(NA, ncol=n, nrow=n)
+nm = labels(aa)
+rownames(d) = colnames(d) = nm
+
+for (i in seq_len(n)) {
+    for (j in seq_len(i)) {
+        d[i, j] = mean(as.character(aa[[i]]) != as.character(aa[[j]]))
+        d[j, i] = d[i, j]
+    }
+} 
+</code></pre>
+<p>这段代码生成了pairwise distance矩阵，你可以搞其它的统计量，都OK的。大家可以想一想，一般这种矩阵怎么可视化？用热图！热图用数字来填充颜色，而现在我们把数字当成x轴上的变量，然后打点，仅此而已，我们有没有办法画出来，当然可以。同样row的数值会在同一y轴上，如果是热图，同一column的数值会在同一x轴上，方便横向和纵向比较，而现在同一column的数值不在同一直线一了，因为我们打的点的位置使用了矩阵中的数值，同一column的点被拉扯到不同的位置上去了，所以为了能够比较或者是看清楚同一column上的点的走势，我们把同一column上的点用线条连接在一起。这就是小伙伴提问的图，就是这么画出来的，非常简单。我在「知识星球」里其实已经解答得很清楚了。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2018/03/scatterplot-for-matrix/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/03/colnames-of-data-frame/">
           R给你的数据化了妆？
         </a>
@@ -595,63 +677,6 @@ ggplot(d, aes(cut, carat, fill=color, color=color)) +
       
       <p>
         <a href="https://guangchuangyu.github.io/2018/03/ggpar/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/02/elementaryos/">
-          elementary-美观而易用的Linux发行版
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2018-02-24T04:33:00&#43;08:00">
-        
-  February 24, 2018
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/linux">Linux</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p><img src="http://guangchuangyu.github.io/blog_images/2018/linux_win.jpg" alt=""></p>
-<p>想当年还在读本科那会，debian还是比较阳春的东西，然后就被ubuntu给普及了，ubuntu我实际上是不喜欢的，如果有linux的问题，搜出来是ubuntu的链接，我基本不会点开，ubuntu用的人实在太多，而且是特别多的小白，真正好的发行版是gentoo和arch，文档齐全，小白少。我目前使用的就是arch，因为gentoo实在是笔记本吃不消天天在编译。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2018/02/elementaryos/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

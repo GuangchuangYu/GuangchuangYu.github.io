@@ -249,8 +249,8 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
-          新冠全球历史数据爆款风玫瑰图：新冠肺炎全球疫情形势
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/03/ncov2019-global-trend/">
+          欧洲很方，一不小心得要「意大利」了
         </a>
       </h1>
       
@@ -259,6 +259,75 @@ if (!doNotTrack) {
       <time itemprop="datePublished" datetime="2020-03-12T11:08:00&#43;08:00">
         
   March 12, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>![](<a href="https://gitee.com/GuangchuangYu/blog_images/raw/master/2020-03-12_21-40.png">https://gitee.com/GuangchuangYu/blog_images/raw/master/2020-03-12_21-40.png</a>）</p>
+<p>今天我们来重复一下这张图，首先用我们的<a href="https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A">nCov2019包</a>,我们可以容易地访问到历史记录，<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247488896&amp;idx=1&amp;sn=25e9a7ab2fd81b97052c5941cd0c0c4b&amp;chksm=ec43a4c7db342dd1b417f5c75204ad104dcae252982e9685f8b2d7fab7bccb70d5f83fbeaf69&amp;token=948980768&amp;lang=zh_CN#rd">nCov2019包中的全球历史数据</a>， 然后稍微操作一下，就可以拿到所有确诊数超过100的国家，把这个时间当做0点，然后我们就可以对比一下发展趋势了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(nCov2019)
+<span style="color:#a6e22e">require</span>(dplyr)
+
+d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">load_nCov2019</span>()
+dd <span style="color:#f92672">&lt;-</span> d[<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">global&#39;</span>] <span style="color:#f92672">%&gt;%</span> 
+  as_tibble <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(confirm<span style="color:#f92672">=</span>cum_confirm) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(confirm <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">group_by</span>(country) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(days_since_100 <span style="color:#f92672">=</span> <span style="color:#a6e22e">as.numeric</span>(time <span style="color:#f92672">-</span> <span style="color:#a6e22e">min</span>(time))) <span style="color:#f92672">%&gt;%</span>
+  ungroup 
+</code></pre></div>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2020/03/ncov2019-global-trend/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+          新冠全球历史数据爆款风玫瑰图：新冠肺炎全球疫情形势
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-03-10T11:08:00&#43;08:00">
+        
+  March 10, 2020
 
       </time>
     
@@ -635,63 +704,6 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/11/patchwork/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/geom-motif/">
-          进化树和基因组结构
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2019-11-21T10:10:00&#43;08:00">
-        
-  November 21, 2019
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-1.png" alt=""></p>
-<p>像上图这种高级货是可以使用ggtree来画的。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2019/11/geom-motif/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

@@ -12,9 +12,31 @@
     
     
     <item>
+      <title>欧洲很方，一不小心得要「意大利」了</title>
+      <link>https://guangchuangyu.github.io/2020/03/ncov2019-global-trend/</link>
+      <pubDate>Thu, 12 Mar 2020 11:08:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2020/03/ncov2019-global-trend/</guid>
+      <description>&lt;p&gt;![](&lt;a href=&#34;https://gitee.com/GuangchuangYu/blog_images/raw/master/2020-03-12_21-40.png&#34;&gt;https://gitee.com/GuangchuangYu/blog_images/raw/master/2020-03-12_21-40.png&lt;/a&gt;）&lt;/p&gt;
+&lt;p&gt;今天我们来重复一下这张图，首先用我们的&lt;a href=&#34;https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A&#34;&gt;nCov2019包&lt;/a&gt;,我们可以容易地访问到历史记录，&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;amp;mid=2247488896&amp;amp;idx=1&amp;amp;sn=25e9a7ab2fd81b97052c5941cd0c0c4b&amp;amp;chksm=ec43a4c7db342dd1b417f5c75204ad104dcae252982e9685f8b2d7fab7bccb70d5f83fbeaf69&amp;amp;token=948980768&amp;amp;lang=zh_CN#rd&#34;&gt;nCov2019包中的全球历史数据&lt;/a&gt;， 然后稍微操作一下，就可以拿到所有确诊数超过100的国家，把这个时间当做0点，然后我们就可以对比一下发展趋势了。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(nCov2019)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(dplyr)
+
+d &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;load_nCov2019&lt;/span&gt;()
+dd &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; d[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;global&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+  as_tibble &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;rename&lt;/span&gt;(confirm&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;cum_confirm) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(confirm &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(country) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(days_since_100 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as.numeric&lt;/span&gt;(time &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;min&lt;/span&gt;(time))) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  ungroup 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
       <title>新冠全球历史数据爆款风玫瑰图：新冠肺炎全球疫情形势</title>
       <link>https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/</link>
-      <pubDate>Thu, 12 Mar 2020 11:08:00 +0800</pubDate>
+      <pubDate>Tue, 10 Mar 2020 11:08:00 +0800</pubDate>
       
       <guid>https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/</guid>
       <description>&lt;p&gt;最近人民日报新媒体发布的「新冠肺炎全球疫情形势」图，很多人想重复，但画不出来。这其实是几行代码的事情而已。&lt;/p&gt;
