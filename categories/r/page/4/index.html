@@ -252,6 +252,73 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/02/layer-stats/">
+          图层中的统计量，你自己说的算！
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-02-21T18:06:59&#43;08:00">
+        
+  February 21, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+
+pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::</span>RatPupWeight <span style="color:#f92672">%&gt;%</span> 
+    janitor<span style="color:#f92672">::</span><span style="color:#a6e22e">clean_names</span>() <span style="color:#f92672">%&gt;%</span>
+    dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">mutate</span>(litter <span style="color:#f92672">=</span> <span style="color:#a6e22e">as.integer</span>(litter))
+
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(pups, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> litter, y <span style="color:#f92672">=</span> weight, color <span style="color:#f92672">=</span> treatment))
+</code></pre></div><p>针对某一个x值，我们可以画出相应y的统计量，比如均值、方差等，这些都可以“手工”的方式通过图层叠加来实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">stat_summary</span>(fun.y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mean&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">point&#34;</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">black&#39;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">stat_summary</span>(fun.data <span style="color:#f92672">=</span> mean_cl_normal, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">errorbar&#34;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">.1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">black&#39;</span>)
+</code></pre></div>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2019/02/layer-stats/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/01/lmgtfy/">
           请问，你是要我帮你google吗？
         </a>
@@ -607,65 +674,6 @@ p = qplot(1:10)
       
       <p>
         <a href="https://guangchuangyu.github.io/2018/11/dose-citation-above-100/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
-              
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2018/11/how-to-define-downstream-range/">
-          如何定义基因下游的区间
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2018-11-22T12:20:16&#43;08:00">
-        
-  November 22, 2018
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/chipseq">ChIPseq</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>首先基因下游是什么？</p>
-<p>我们知道上游很重要啊，因为可能会调控转录，但注释的时候，没有上游这个东西，为什么呢？因为转录起始位点TSS的上下游被定义为promoter，所以啊上游被包括在promoter中，也就没有上游这个category了。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2018/11/how-to-define-downstream-range/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

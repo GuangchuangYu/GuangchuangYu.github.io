@@ -250,6 +250,84 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2009/03/estimate-function-value-by-taylor-theorem/">
+          用Taylor公式估计函数值
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2009-03-17T05:23:16&#43;08:00">
+        
+  March 17, 2009
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/calculus">Calculus</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>泰勒公式学过微积分都应该知道，可以翻wiki复习一下，<a href="https://zh.wikipedia.org/wiki/%E6%B3%B0%E5%8B%92%E5%85%AC%E5%BC%8F">https://zh.wikipedia.org/wiki/泰勒公式</a>.</p>
+<p>用R简单实现一下：</p>
+<pre><code> efv &lt;- function(f, value, variable=&quot;x&quot;, a=0, eps=0.001) {
+     #estimate function value using Taylor theorem
+     assign(eval(variable), a)
+     fv.old &lt;- eval(f)
+     k &lt;- 1     
+     repeat {
+         df &lt;- D(f, variable)
+         if (df == 0)
+             break
+         fv.new &lt;- fv.old + eval(df)*(value-a)^k/factorial(k)
+         if (fv.new - fv.old &lt; eps)
+             break
+         fv.old &lt;- fv.new
+         f &lt;- df
+         k &lt;- k+1
+     }
+     return (fv.new)
+ }
+</code></pre>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2009/03/estimate-function-value-by-taylor-theorem/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2009/03/assignment-token-of-r/">
           Assignment token of R
         </a>
@@ -598,64 +676,6 @@ DNA重组也使用标记，我们无法直接检测到是否重组了，是否�
       
       <p>
         <a href="https://guangchuangyu.github.io/2008/11/my-google-reader/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/10/blind-approach/">
-          生物研究=盲人摸象？
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2008-10-17T00:53:00&#43;08:00">
-        
-  October 17, 2008
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/biology">Biology</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>今天看了一篇文章<a href="http://www.ncbi.nlm.nih.gov/sites/entrez?cmd=Retrieve&amp;db=PubMed&amp;list_uids=12242150">Can a biologist fix a radio?</a>, 作者讲了个悖论，越多事实的积累，对于所研究的process理解的越少。</p>
-<p>这确实是现在的现实。许多的科研结果，其实就是便这个本来很混乱的世界更加混乱。文中还讲到了科研的淘金热。昨天我正好看到了science上的文章说impact
-factor fever。当科研成为一种职业，真正对科学有热情的scientist并不多，更多的人仅仅是为了拿grant，要拿grant，就要发高分的文章，哪里好发文章，那里就有一堆人在抢。顺带一下，大家都说生物是火坑，其实学科在发展的初期，对于科研人员来说还是有利的。如果说工作的话，确实是火坑，其实生物是个暴利行业，如果你身在火海中，那是因为你处于生物链的最底层。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2008/10/blind-approach/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

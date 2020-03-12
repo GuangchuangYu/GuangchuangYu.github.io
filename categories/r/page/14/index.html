@@ -252,6 +252,78 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/10/set_axis_text_color/">
+          映射变量给axis上色
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-10-16T12:23:16&#43;08:00">
+        
+  October 16, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>小伙伴发来这个文章中的图，想要实现类似的图，用变量给axis text上色，并生成legend：</p>
+<p>![](<a href="https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot">https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot</a> 2017-07-04 14.10.55.png)</p>
+<p>这个可以说ggplot2是不支持的，aes映射不会被应用于axis上，而theme也不支持aes映射，你只能自己手动搞个color vector传给theme来上色，但这无法生成legend。</p>
+<p>我只能打开脑洞，legend借助于额外的图层来生成，但这个额外的图层又不是我们想要在图形上展示的，这又是个无米之炊，我能想到的就是让图层透明，实际有，但你看不到，当然这样自动生成的legend也会看不到，但legend可以后面再修改，于是这不支持的事情，就通过变通变得可能：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+
+<span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2017</span><span style="color:#ae81ff">-07</span><span style="color:#ae81ff">-04</span>)
+d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(x <span style="color:#f92672">=</span> <span style="color:#66d9ef">letters</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">5</span>], y <span style="color:#f92672">=</span> <span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">5</span>), 
+		group <span style="color:#f92672">=</span> <span style="color:#a6e22e">sample</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Control&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Treatment&#34;</span>), <span style="color:#ae81ff">5</span>, replace<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>),
+		type <span style="color:#f92672">=</span> <span style="color:#a6e22e">sample</span>(<span style="color:#66d9ef">LETTERS</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">2</span>], <span style="color:#ae81ff">5</span>, replace<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
+)
+
+p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x,y)) <span style="color:#f92672">+</span> 
+	<span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>group))
+</code></pre></div><p>这个代码很好懂，画一个柱状图，按<code>group</code>上色。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2017/10/set_axis_text_color/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/10/enrichgo-more-conserve/">
           enrichGO出不来结果？没结果也是正确的结果
         </a>
@@ -630,77 +702,6 @@ if (!doNotTrack) {
       
       <p>
         <a href="https://guangchuangyu.github.io/2017/09/goodbye-joyplot/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
-              
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2017/09/rtichoke/">
-          R, python喊你回家吃饭啦
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2017-09-13T13:37:55&#43;08:00">
-        
-  September 13, 2017
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/python">python</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484507&amp;idx=1&amp;sn=295454a59613bfd977f407958bec787e&amp;chksm=ec43b51cdb343c0acea87661fe5144a5817503a2fdc8f316d56fd28d33291084bc718330c428#rd">你所不知道的，R的N种打开方式</a>》一文中，我介绍了R的N种界面，这里将介绍一个用python写的极其现代化的R命令行界面，rtichoke（之前叫rice）之于R，就像ipython之于python一样。</p>
-<h2 id="特性">特性</h2>
-<ul>
-<li>轻量，不需要编译</li>
-<li>多行编辑，这点很重要啊，长长的命令可以换行后，随便回去编辑前面的指令</li>
-<li>语法高亮，这可是R命令行所没有的，看起来舒服多了</li>
-<li>自动补齐，减少输入</li>
-<li>支持bracketed paste mode，也就是说你copy-paste了有换行符的字符串，不会拷进去就自动执行了</li>
-<li>支持Windows, macOS 和 Linux</li>
-<li>支持vi, emacs等编辑模式</li>
-<li>可以多种高亮模式</li>
-</ul>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2017/09/rtichoke/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

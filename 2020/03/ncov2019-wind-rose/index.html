@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="最近人民日报新媒体发布的「新冠肺炎全球疫情形势」图，很多人想重复，但画不出来。这其实是几行代码的事情而已。
+这个图，大名叫风玫瑰图，用R画起来分分钟的事情。但你画出来的，可能很丑，要画出爆款，还是有点门槛的。
+这个图确诊数是取过对数，这一点容易，而颜色的映射，也是取对数的，不然的话，前三是红的，其它全绿了。然后标国家和确诊数目，字体还要旋转相应的角度，这一点可能是最难的。当然细节上还有一点，就是中间还要空一个白洞​。​如果你知道怎么加白洞，那么加两圈淡淡的圈也容易了。​
+首先我们用nCov2019包中的全球历史数据，两三行代码就能拿到。">
+
+
+<meta property="og:description" content="最近人民日报新媒体发布的「新冠肺炎全球疫情形势」图，很多人想重复，但画不出来。这其实是几行代码的事情而已。
+这个图，大名叫风玫瑰图，用R画起来分分钟的事情。但你画出来的，可能很丑，要画出爆款，还是有点门槛的。
+这个图确诊数是取过对数，这一点容易，而颜色的映射，也是取对数的，不然的话，前三是红的，其它全绿了。然后标国家和确诊数目，字体还要旋转相应的角度，这一点可能是最难的。当然细节上还有一点，就是中间还要空一个白洞​。​如果你知道怎么加白洞，那么加两圈淡淡的圈也容易了。​
+首先我们用nCov2019包中的全球历史数据，两三行代码就能拿到。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="新冠全球历史数据爆款风玫瑰图：新冠肺炎全球疫情形势">
+<meta name="twitter:title" content="新冠全球历史数据爆款风玫瑰图：新冠肺炎全球疫情形势">
+<meta property="og:url" content="https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="最近人民日报新媒体发布的「新冠肺炎全球疫情形势」图，很多人想重复，但画不出来。这其实是几行代码的事情而已。
+这个图，大名叫风玫瑰图，用R画起来分分钟的事情。但你画出来的，可能很丑，要画出爆款，还是有点门槛的。
+这个图确诊数是取过对数，这一点容易，而颜色的映射，也是取对数的，不然的话，前三是红的，其它全绿了。然后标国家和确诊数目，字体还要旋转相应的角度，这一点可能是最难的。当然细节上还有一点，就是中间还要空一个白洞​。​如果你知道怎么加白洞，那么加两圈淡淡的圈也容易了。​
+首先我们用nCov2019包中的全球历史数据，两三行代码就能拿到。">
+<meta name="twitter:description" content="最近人民日报新媒体发布的「新冠肺炎全球疫情形势」图，很多人想重复，但画不出来。这其实是几行代码的事情而已。
+这个图，大名叫风玫瑰图，用R画起来分分钟的事情。但你画出来的，可能很丑，要画出爆款，还是有点门槛的。
+这个图确诊数是取过对数，这一点容易，而颜色的映射，也是取对数的，不然的话，前三是红的，其它全绿了。然后标国家和确诊数目，字体还要旋转相应的角度，这一点可能是最难的。当然细节上还有一点，就是中间还要空一个白洞​。​如果你知道怎么加白洞，那么加两圈淡淡的圈也容易了。​
+首先我们用nCov2019包中的全球历史数据，两三行代码就能拿到。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-03-12T11:08:00">
+  
+  
+    <meta property="article:modified_time" content="2020-03-12T11:08:00">
+  
+  
+  
+    
+      <meta property="article:section" content="R">
+    
+  
+  
+    
+      <meta property="article:tag" content="nCov2019">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@guangchuangyu">
+
+
+  <meta name="twitter:creator" content="@guangchuangyu">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+
+
+    <title>新冠全球历史数据爆款风玫瑰图：新冠肺炎全球疫情形势</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">Bioinformatics Professor @ SMU</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/GuangchuangYu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/guangchuangyu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/blog_images/biobabble.jpg">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-weixin"></i>
+      
+      <span class="sidebar-button-desc">WeChat</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      新冠全球历史数据爆款风玫瑰图：新冠肺炎全球疫情形势
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-03-12T11:08:00&#43;08:00">
+        
+  March 12, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>最近人民日报新媒体发布的「新冠肺炎全球疫情形势」图，很多人想重复，但画不出来。这其实是几行代码的事情而已。</p>
+<p>这个图，大名叫风玫瑰图，用R画起来分分钟的事情。但你画出来的，可能很丑，要画出爆款，还是有点门槛的。</p>
+<p>这个图确诊数是取过对数，这一点容易，而颜色的映射，也是取对数的，不然的话，前三是红的，其它全绿了。然后标国家和确诊数目，字体还要旋转相应的角度，这一点可能是最难的。当然细节上还有一点，就是中间还要空一个白洞​。​如果你知道怎么加白洞，那么加两圈淡淡的圈也容易了。​</p>
+<p>首先我们用<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247488896&amp;idx=1&amp;sn=25e9a7ab2fd81b97052c5941cd0c0c4b&amp;chksm=ec43a4c7db342dd1b417f5c75204ad104dcae252982e9685f8b2d7fab7bccb70d5f83fbeaf69&amp;token=948980768&amp;lang=zh_CN#rd">nCov2019包中的全球历史数据</a>，两三行代码就能拿到。</p>
+<h2 id="海外新冠数据">海外新冠数据</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(nCov2019)
+y <span style="color:#f92672">=</span> <span style="color:#a6e22e">load_nCov2019</span>(lang<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">zh&#39;</span>)
+d <span style="color:#f92672">=</span> y[<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">global&#39;</span>]
+</code></pre></div><h2 id="过滤数据">过滤数据</h2>
+<p>过滤一下，只拿上一天的数据，并排除中国，只留海外数据，然后这里又进一步过滤，只保留海外前40的数据。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(dplyr)
+dd <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">filter</span>(d, time <span style="color:#f92672">==</span> <span style="color:#a6e22e">time</span>(y) <span style="color:#f92672">&amp;</span> country <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">中国&#39;</span>) <span style="color:#f92672">%&gt;%</span> 
+    <span style="color:#a6e22e">arrange</span>(<span style="color:#a6e22e">desc</span>(cum_confirm)) 
+
+dd <span style="color:#f92672">=</span> dd[1<span style="color:#f92672">:</span><span style="color:#ae81ff">40</span>, ]
+dd<span style="color:#f92672">$</span>country <span style="color:#f92672">=</span> <span style="color:#a6e22e">factor</span>(dd<span style="color:#f92672">$</span>country, levels<span style="color:#f92672">=</span>dd<span style="color:#f92672">$</span>country)
+</code></pre></div><h2 id="画图">画图</h2>
+<p>最后一步，是画图。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">
+dd<span style="color:#f92672">$</span>angle <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">40</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">360</span><span style="color:#f92672">/</span><span style="color:#ae81ff">40</span>
+i <span style="color:#f92672">=</span> dd<span style="color:#f92672">$</span>angle <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">90</span> <span style="color:#f92672">&amp;</span> dd<span style="color:#f92672">$</span>confirm <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>
+dd<span style="color:#f92672">$</span>angle[i] <span style="color:#f92672">=</span> dd<span style="color:#f92672">$</span>angle[i] <span style="color:#f92672">+</span> <span style="color:#ae81ff">180</span>
+dd<span style="color:#f92672">$</span>vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+dd<span style="color:#f92672">$</span>vjust[i] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+<span style="color:#a6e22e">require</span>(ggplot2)
+p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ggplot</span>(dd, <span style="color:#a6e22e">aes</span>(name, confirm, fill<span style="color:#f92672">=</span>confirm)) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_col</span>(width<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">grey90&#39;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(y<span style="color:#f92672">=</span><span style="color:#a6e22e">I</span>(<span style="color:#ae81ff">5</span>)), width<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, fill<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">grey90&#39;</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">.2</span>) <span style="color:#f92672">+</span>       
+    <span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(y<span style="color:#f92672">=</span><span style="color:#a6e22e">I</span>(<span style="color:#ae81ff">3</span>)), width<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, fill<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">grey90&#39;</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">.2</span>) <span style="color:#f92672">+</span>    
+    <span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(y<span style="color:#f92672">=</span><span style="color:#a6e22e">I</span>(<span style="color:#ae81ff">2</span>)), width<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">white&#34;</span>) <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">scale_y_log10</span>() <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">scale_fill_gradientn</span>(colors<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">darkgreen&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">green&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">orange&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">firebrick&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">red&#34;</span>), trans<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">log&#34;</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span><span style="color:#a6e22e">paste</span>(name, confirm, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\n&#34;</span>), 
+                  y <span style="color:#f92672">=</span> confirm <span style="color:#f92672">*</span><span style="color:#ae81ff">.8</span>, angle<span style="color:#f92672">=</span>angle, vjust<span style="color:#f92672">=</span>vjust), 
+            data<span style="color:#f92672">=</span><span style="color:#a6e22e">function</span>(d) d[d<span style="color:#f92672">$</span>confirm <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>,], 
+            size<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">white&#34;</span>, fontface<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">bold&#34;</span>)  <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span><span style="color:#a6e22e">paste0</span>(confirm, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">例 &#34;</span>, name), 
+                  y <span style="color:#f92672">=</span> confirm <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>, angle<span style="color:#f92672">=</span>angle<span style="color:#ae81ff">+90</span>), 
+            data<span style="color:#f92672">=</span><span style="color:#a6e22e">function</span>(d) d[d<span style="color:#f92672">$</span>confirm <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">100</span>,], 
+            size<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, vjust<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">coord_polar</span>(direction<span style="color:#f92672">=</span><span style="color:#ae81ff">-1</span>) <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span> 
+    <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>)
+
+ggplotify<span style="color:#f92672">::</span><span style="color:#a6e22e">as.ggplot</span>(p, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1.45</span>, vjust<span style="color:#f92672">=</span><span style="color:#ae81ff">-.18</span>, hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">.05</span>)
+</code></pre></div><p>角度嘛，我们可以预先算好，把一个圆周40等份了。用<code>scale_y_log10</code>把柱子给取对数了。而颜色按对数映射，在<code>scale_fill_gradientn</code>中加入<code>trans=&quot;log&quot;</code>的参数。</p>
+<p>中间白色的圆，再加一层，盖住就行。画图无非是视觉上的错觉。</p>
+<p>加label嘛，这里把数据分成两份，一份是确诊数大于100的，一份是小于100的，分别标白色和黑色，标记的相应位置也不同。切分数据，用到了《<a href="https://mp.weixin.qq.com/s/isw1ZHkYIMseF6dK9CXA5g">ggplot2小技巧-数据没有，函数倒是有一个</a>》中介绍的技巧。最后是极坐标变换。出图如下：</p>
+<p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/wind-rose.png" alt=""></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/ncov2019/">nCov2019</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2020/03/ncov-global-data/" data-tooltip="新冠全球历史数据">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2020/03/ncov-global-data/" data-tooltip="新冠全球历史数据">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2020/03/ncov2019-wind-rose/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2020%2F03%2Fncov2019-wind-rose%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2020%2F03%2Fncov2019-wind-rose%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2020%2F03%2Fncov2019-wind-rose%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">Bioinformatics Professor @ SMU</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2020\/03\/ncov2019-wind-rose\/';
+          
+            this.page.identifier = '\/2020\/03\/ncov2019-wind-rose\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'gcyu';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
