@@ -252,6 +252,69 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/02/plot-legend-manual/">
+          活人不能让尿憋死，自动出来的图例不好调？自己徒手画一个！
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-02-18T11:08:00&#43;08:00">
+        
+  February 18, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        答案嘛，就是自己画legend啊，你看看legend函数，还不是些简单的代码在画，自己画即可。不要被这些条条框框给套住。
+从ggplot2拿legend 为了突破你的想像力，在此处甚至于我要给你个例子，用ggplot2来生成个legend，放在base plot上去。
+自己画legend，有何不可？！如果base有现成的函数画图，而你只熟悉ggplot2，你甚至于可以互搞。而互搞，当然要借助于ggplotify包：《ggplotify简史》。
+col = colorspace::rainbow_hcl(3) names(col) = unique(iris$Species) library(ggplotify) color = col[iris$Species] p = as.ggplot(~plot(iris$Sepal.Length, iris$Sepal.Width, col=color, pch=15)) library(ggplot2) p2 = ggplot(iris, aes(Sepal.Length, Sepal.Width, color=Species)) + geom_point() + scale_color_manual(values=col, name=&quot;&quot;) legend = cowplot::get_legend(p2) p + ggimage::geom_subview(x=.7, y=.6, subview=legend) 这里用base plot画了一个图，又用ggplot2画了一个，用cowplot把legend抽出来，然后再用我的另一个包ggimage进行图上嵌图，完事。ggimage实例可以参考这篇《shit，拟合的残差这么大！》。
+用ggplot2画legend 上面这例子是不是还不过瘾，因为啊我还是用ggplot2给重新画了一遍，如果你这么看，那么你的脑洞不够大，画是画了，但不一定要画一样的图，比如说有现成的base函数画复杂的图，而你不会用ggplot2画，但不妨碍你画个简单的图，但这简单的图中的图例可以切出来使用啊。
+呼应我上面讲到的，图例自己徒手画，我们用ggplot2来来徒手一下。画出下面这个图例：
+p2 &lt;- ggplot() + annotate(&quot;point&quot;, x=1,y=1:3,shape=15, color=col) + annotate(&quot;text&quot;, x=1.01, y=1:3, label=names(col), hjust=0) + xlim(0.99, 1.2) + ylim(0, 4) + theme_void() 对着代码看，不应该有什么问题，打了三个点，再打了三个相应的文本。然后再让我们把这图当做图例，嵌套到base plot上去。
+p + ggimage::geom_subview(x=.
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2020/02/plot-legend-manual/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/patchwork/">
           cowplot是旧爱，patchwork乃新欢
         </a>
@@ -647,63 +710,6 @@ p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ggplot</span>
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/08/geom-bgimage/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
-              
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/06/position-jitter/">
-          画点之组内再分组
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2019-06-05T18:06:59&#43;08:00">
-        
-  June 5, 2019
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/position-jitter-email.jpg" alt=""></p>
-<p>《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247485644&amp;idx=1&amp;sn=a273d17668d4847b1df8c12546f78351&amp;scene=21#wechat_redirect">画图给点分组?</a>》这一篇文章中给出了方法，画出两层分组的点图，一层分组是按照离散型变量在x轴上分组，第二层是每一个分组里，再来一个离散型变量再分一次。非常感谢读者们的反馈，原来这第二层分组在ggplot2中是有内置的实现方式的，那就是<code>position_jitterdodge</code>。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2019/06/position-jitter/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

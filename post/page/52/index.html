@@ -250,6 +250,263 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/12/opinion-in-programming/">
+          关于编程，我的理解
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2008-12-14T09:18:00&#43;08:00">
+        
+  December 14, 2008
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/programming">programming</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>写给某个小朋友看，希望我的一点看法，能有用。欢迎讨论。。</p>
+<p><strong>为什么会有编程语言？</strong></p>
+<p>计算机史前有过不同的理论，但最后活下来的，只有图灵机一个模型。现在的计算机，都是基于此发展的，跟二战前那个三层楼高的计算机，没啥区别，那个机器一堆开关，人工操作。CPU做的计算也是开关的逻辑计算。所以计算机的语言是01二进制，一开一关，告诉计算机要不要发出电子脉冲。写一个程序全是01数字组成的，对于人来说是mission impossible！所以必须要有编程语言。编程语言就是为了<strong>抽象</strong>计算机机械原理的一面。</p>
+<p>LOAD A ADD B STORE C</p>
+<p>实现两个数的加和，这是人类可读的语言，而不是一串01所组成的不可读的机器语言。</p>
+<p><strong>抽象</strong>是最关键的。所有的编程语言都是为了实现抽象。越是高级的语言，抽象度越高，抽象度越高越好！</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2008/12/opinion-in-programming/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/12/creat-r-package/">
+          创建R包
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2008-12-07T05:23:16&#43;08:00">
+        
+  December 7, 2008
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <pre><code>&gt; source(&quot;code.R&quot;) #载入写好的代码 
+&gt; package.skeleton(name=&quot;pkgname&quot;, list=c(&quot;function_name_list&quot;))
+# 生成R源码包的目录结构 
+</code></pre><p>到man目录下改*.Rd文档。latex格式。这是包和函数的帮助文档。</p>
+<p>如果需要vignette文档的话。在包目录下，新建inst/doc，在里面写pkgname.Rnw文档。基本上是latex格式，不过允许你插入R代码。make的时候，会先跑代码。再自动转换成latex，再编译成pdf。</p>
+<pre><code>$ R CMD check pkgname 
+# 检验代码和文档。这个很重要。通常一些小问题都能在这一步发现。 
+$ R CMD build pkgname 
+# 打包，源码包格式 
+$ R CMD build --binary pkgname
+#编译后打包，二进制格式。
+</code></pre>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2008/12/creat-r-package/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/11/bisect-to-solve-equation/">
+          用中值定理求根
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2008-11-25T10:40:22&#43;08:00">
+        
+  November 25, 2008
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/calculus">Calculus</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/programming">Programming</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>翻看了以前写的<a href="https://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/">使用Newton-Raphson Method求一个数的开方</a>，想到其实也可以用中值定理来实现。
+中值定理：f(x)是一个连续性的函数，在[u,v]区间内，当c的值位于f(u)和f(v)之间时，至少存在一个点，满足f(x) = c 当f(u)和f(v)一正一负时，那么在[u,v]之间至少有一个根的存在，这个定理本来就是拿来证明根的存在的，但是其实也可以用来求解根。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2008/11/bisect-to-solve-equation/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/11/basic-principle-of-biological-experiment/">
+          生物实验的基本原理
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2008-11-25T00:53:00&#43;08:00">
+        
+  November 25, 2008
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/biology">Biology</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        几年前自己总结出来的，就两个字“标记”，可以概括大部分的生物学实验的基本原理。 这个方法，中国人民老早就在用了，八仙张果老成仙那段，张果老吃的人参精，就是因为被弄了根绣花针才被捉的，还有蓝色的葫芦娃，会隐身，小时候看的，记不清怎么被捉的，肯定也是被标记了。。
+生物学实验都是些看不见，摸不着的东西，所以基本上都是使用这个方法，看不见的，我们拿看的见的去标记它，测不着的或者不好测的，拿可以测容易测的去标记它。很多的实验手段，其实最初都是很简单的，为了提高灵敏度和精度，不断改进，越来越烦琐，抑或者出现了一些分支。通常这时候，最初那个简单的，最根本的东西就被人所忘记。看到的尽是表面上的细节。至少现在的书太二了，本来基本上一样的实验，阐述原理的时候被描成了两样的东西。
+同位素标记，荧光标记自不用说。芯片实验也是标记，array上的spot序列是已知的，它会跟什么基因杂交，也是已知的。我们并不知道会有什么基因表达，但是当抽提的东西，跟某个spot有杂交信号的时候，我们就知道某个基因有表达。这就是标记。还有我们需要知道表达的量，这个依然不好测。同样也是使用标记，用cy3或cy5来标记，通过检测荧光的强度，就知道了表达的量。
+所有的杂交实验都是标记，southern blot, northern blot, western blot都是。不管是核酸还是蛋白，不管它是用什么介质。都是用一个已知的，去标记一个未知的。通过测已知来估计未知的东西。
+跑胶的时候，拿去紫外灯光下看。同样也是因为标记。DNA我们是看不到的，但是在DNA下嵌入了EB，可以在紫外灯光下看到EB，所以我们也就看到DNA。
+所有的切片，都是在做标记，不管是用于光镜还是电镜，其实电镜本身和光镜是没本质区别的，因为可见光的波长范围很有限，电子也是一种波，成像原理是一样的，只是我们不能直接看到而已。使用电子是为了突破可见光的局限而已，使用光镜需要对细胞进行染色，使用电镜也是一样，不过染的不是染料，而是金属。
+测蛋白，用考马斯亮蓝染。在280nm有吸收，那是因为苯环的共轭电子对。虽然不是标记上去的，但也可以这么想，反正是测一个我们已知的东西，来估计未知道的东西。
+DNA测序，给四种碱基标上不同的荧光。
+还记得脂肪代谢是怎么被揭开的吗？使用接了苯环的脂肪酸喂马，收集马尿去检验，因为马不能代谢苯环。所以拿苯环去标记脂肪酸。
+还有那个DNA还是蛋白是遗传物质的实验，肺炎双球菌实验。分别用S和P的同位素标记蛋白和DNA。
+还有一些看似不是标记的，其实也是标记，比如酵母双杂交，因为转录因子都有一个DNA-binding domain和一个RNA-binding domain，我们并不能直接检测到蛋白X和Y是否有相互作用，但我们可以表达溶合蛋白DBD-X和RBD-Y，如果XY有相互用用的话DBD和RBD就会在一起，就是一个有功能的转录因子，就可以转录报告基因，检测到报告基因，就表明了XY有相互作用，这就是标记，拿DBD和RBD去标记X和Y，通过DBD和RBD的行为去估计X和Y的行为。
+DNA重组也使用标记，我们无法直接检测到是否重组了，是否在需要的位点重组了，所以使用了报告基因来做标记，检测到报告基因了，表明重组了，使用抗药基因，在加了药物的培养基上筛选，活下来的表明重组正确。当然有假阳性。抗药基因也是“标记”。
+基本上绝大多数的实验原理，最根本的一个想法，就是使用一个已知的，或者容易检测的，去标记一个未知的，或是难以检测的。
+实验的手段太多了，很多人搞不清原理。做实验的人，通常就是照着实验手册，一步一步在加东西而已。只要稍微思考一个，很多东西，其实不用记。细节的东西不需要记，需要的时候查就行了，当是基本的原理还是需要理解的。不然白学了。
+很多人觉得生化就是一堆描述性的实验结果。其实很多东西也是不需要记的。举个例子，比如说DNA转录的时候，组蛋白会被乙酰化，这个细节很多人就是死记下来的，当然国内的书太二了，很多书没说乙酰化的位点是Arg和Lys，不过告诉这个事实，很多人还是死记下来。其实想一下，理解了，就不用记。为什么是这两个AA，而不是其它的？组蛋白之所以带正电就是因为富含这两个AA，这两个AA都有-NH，带正电，正是由于乙酰化了这两个位点，屏蔽了正电，DNA是带负电的，所以乙酰化之后正负电引力变小了，结构就松散了。有利于转录。这个东西就变得理所当然一样，根本不需要记。
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2008/11/basic-principle-of-biological-experiment/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/11/my-google-reader/">
           曝一下我的google reader
         </a>
@@ -401,244 +658,6 @@ Learn!</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2008/10/educational-games/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/10/restore-thunder-url/">
-          还原迅雷的url
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2008-10-05T05:08:02&#43;08:00">
-        
-  October 5, 2008
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/software">Software</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>迅雷的url很恶心，硬是把你绑死在它的流氓软件上，今天试了一个用base64解码，果然用这个伎俩来欺骗用户。在原始的url前面和后面各加两个字符，然后用base64编码。写了下面一段script来还原出原始的url，这样随便用那个下载工具都可以用了。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2008/10/restore-thunder-url/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/09/wordpress/">
-          博客转WordPress
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2008-09-30T16:20:43&#43;08:00">
-        
-  September 30, 2008
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/blog">Blog</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>找了一个叫<strong>博客备份软件</strong>的小工具,备份了新浪和ChinaUnix上的blog,导出为RSS
-2.0, sina的blog导出没问题,但是cu的blog导出后,文不对题.狂汗啊&hellip;
-但是生成的xml文件导入到wordpress里不成功.需要改一下才行.</p>
-<p>从导出的xml文件里,把&lt;description&gt;&lt;![CDATA[替换成&lt;content:encoded&gt;&lt;![CDATA[</p>
-<p>相应地把]]&gt;&lt;/description&gt;替换成]]&gt;&lt;/content:encoded&gt;</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2008/09/wordpress/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/09/data-backup/">
-          备份苹果硬盘的数据
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2008-09-29T12:32:00&#43;08:00">
-        
-  September 29, 2008
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/linux">Linux</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/powerbook">Powerbook</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/bsd">BSD</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>powerbook笔记本装Mac OSX 10.2，我嫌太慢了，<a href="https://guangchuangyu.github.io/cn/2005/01/powerbook-gentoo/">就装了gentoo</a>，所有的东西都是从软件编译，费了很长的时间，CPU太慢了。原来的硬盘只有10G，后来我又换了60G的硬盘，就是现在要备份数据的硬盘了。换硬盘的时候，没有换系统，我从livecd里进去，把系统打包，并对新硬盘进行分区。然后拆机换硬盘，还是从livecd进去，把新硬盘格式化，把原来的硬盘挂上去，把打包的系统解压到新的分区里，并初始化一些系统的设定，把用户数据拷进去。换硬盘不换系统。这个当时没记录下来。后来有一次手痒，重新编译了glibc，把其它的local都去掉，只留下中文的。可是这一次搞了有问题，系统总有点莫名其妙的问题。</p>
-<p>06年，我就想换个系统算了。找人刻了张os9.2的盘，自己刻了张netbsd的盘。<a href="https://guangchuangyu.github.io/cn/2006/06/os9-netbsd-dual-boot">装双系统</a>。</p>
-<p>os9.2可以用微软的office 2001，还有ie5.5，不过都不是很好用。最爽的是可以用很多做图软件，photoshop,coredraw,illustrator等等啊。当年在合肥还帮很多同学处理过照片，因为6级考试要上传的图片要求是10k以下，很多人压到10k都看不清了，我用photoshop压到10k还能看清人.^_^.</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2008/09/data-backup/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/09/ntlmaps/">
-          穿透院内的代理
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2008-09-28T10:27:00&#43;08:00">
-        
-  September 28, 2008
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/software">software</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>院里使用Microsoft ISA proxy作代理，我用linux，firefox可以通过代理验证，在终端export代理的环境变量也可以用。虽然很多软件不能支持认证，我也懒得理了。由于要用Cytoscape来分析蛋白相互作用网络，这个软件能支持代理却不支持NTLM认证，为了突破这个限制，只能作二级跳了，在本地设一个代理，软件通过这个代理上，而用本机代理负责去连接院内的代理并进行认证。</p>
-<p>搜了一下，发现ntlmaps这个包可以用来做认证，这个包是用python写的。</p>
-<pre><code>&gt; apt-get install ntlmaps # 安装。
-</code></pre><p>安装完就是修改配置文件<code>/etc/ntlmaps/server.cfg</code></p>
-<p>设定网络监听的端口、父级代理的IP和端口、账号、密码、网域。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2008/09/ntlmaps/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

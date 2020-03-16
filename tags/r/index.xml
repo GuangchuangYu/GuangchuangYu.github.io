@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on Guangchuang Yu</title>
+    <link>https://guangchuangyu.github.io/tags/r/</link>
+    <description>Recent content in R on Guangchuang Yu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 26 Feb 2020 11:08:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://guangchuangyu.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>nCov2019英文版，歪果仁也能用这次武汉疫情的数据了</title>
+      <link>https://guangchuangyu.github.io/2020/02/english-version-ncov2019/</link>
+      <pubDate>Wed, 26 Feb 2020 11:08:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2020/02/english-version-ncov2019/</guid>
+      <description>&lt;p&gt;首先你只要用&lt;code&gt;lang=&#39;en&#39;&lt;/code&gt;就行。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;require(nCov2019)
+x = get_nCov2019(lang=&#39;en&#39;)
+x[]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;用法完全一样，输出为：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>nCov2019：历史数据实现自动更新</title>
+      <link>https://guangchuangyu.github.io/2020/02/ncov2019-auto-update/</link>
+      <pubDate>Mon, 24 Feb 2020 11:08:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2020/02/ncov2019-auto-update/</guid>
+      <description>&lt;h2 id=&#34;安装新方式&#34;&gt;安装新方式&lt;/h2&gt;
+&lt;p&gt;在《&lt;a href=&#34;https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A&#34;&gt;检索疫情数据的R包来了&lt;/a&gt;》一文写的安装方式，依然是可行的。但鉴于许多国内的用户，可能在访问github上存在一些问题，我把nCov2019在国内的码云上做了个同步的镜像，所以呢，你也可以通过码云去安装了，安装代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## 方法一，使用github
+remotes::install_github(&amp;quot;GuangchuangYu/nCov2019&amp;quot;)
+
+## 方法二，使用gitee
+remotes::install_git(&#39;https://gitee.com/GuangchuangYu/nCov2019&#39;)
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>活人不能让尿憋死，自动出来的图例不好调？自己徒手画一个！</title>
+      <link>https://guangchuangyu.github.io/2020/02/plot-legend-manual/</link>
+      <pubDate>Tue, 18 Feb 2020 11:08:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2020/02/plot-legend-manual/</guid>
+      <description>答案嘛，就是自己画legend啊，你看看legend函数，还不是些简单的代码在画，自己画即可。不要被这些条条框框给套住。
+从ggplot2拿legend 为了突破你的想像力，在此处甚至于我要给你个例子，用ggplot2来生成个legend，放在base plot上去。
+自己画legend，有何不可？！如果base有现成的函数画图，而你只熟悉ggplot2，你甚至于可以互搞。而互搞，当然要借助于ggplotify包：《ggplotify简史》。
+col = colorspace::rainbow_hcl(3) names(col) = unique(iris$Species) library(ggplotify) color = col[iris$Species] p = as.ggplot(~plot(iris$Sepal.Length, iris$Sepal.Width, col=color, pch=15)) library(ggplot2) p2 = ggplot(iris, aes(Sepal.Length, Sepal.Width, color=Species)) + geom_point() + scale_color_manual(values=col, name=&amp;quot;&amp;quot;) legend = cowplot::get_legend(p2) p + ggimage::geom_subview(x=.7, y=.6, subview=legend) 这里用base plot画了一个图，又用ggplot2画了一个，用cowplot把legend抽出来，然后再用我的另一个包ggimage进行图上嵌图，完事。ggimage实例可以参考这篇《shit，拟合的残差这么大！》。
+用ggplot2画legend 上面这例子是不是还不过瘾，因为啊我还是用ggplot2给重新画了一遍，如果你这么看，那么你的脑洞不够大，画是画了，但不一定要画一样的图，比如说有现成的base函数画复杂的图，而你不会用ggplot2画，但不妨碍你画个简单的图，但这简单的图中的图例可以切出来使用啊。
+呼应我上面讲到的，图例自己徒手画，我们用ggplot2来来徒手一下。画出下面这个图例：
+p2 &amp;lt;- ggplot() + annotate(&amp;quot;point&amp;quot;, x=1,y=1:3,shape=15, color=col) + annotate(&amp;quot;text&amp;quot;, x=1.01, y=1:3, label=names(col), hjust=0) + xlim(0.99, 1.2) + ylim(0, 4) + theme_void() 对着代码看，不应该有什么问题，打了三个点，再打了三个相应的文本。然后再让我们把这图当做图例，嵌套到base plot上去。
+p + ggimage::geom_subview(x=.</description>
+    </item>
+    
+  </channel>
+</rss>

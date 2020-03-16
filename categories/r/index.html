@@ -279,7 +279,7 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>![](<a href="https://gitee.com/GuangchuangYu/blog_images/raw/master/2020-03-12_21-40.png">https://gitee.com/GuangchuangYu/blog_images/raw/master/2020-03-12_21-40.png</a>）</p>
+        <p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/2020-03-12_21-40.png" alt=""></p>
 <p>今天我们来重复一下这张图，首先用我们的<a href="https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A">nCov2019包</a>,我们可以容易地访问到历史记录，<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247488896&amp;idx=1&amp;sn=25e9a7ab2fd81b97052c5941cd0c0c4b&amp;chksm=ec43a4c7db342dd1b417f5c75204ad104dcae252982e9685f8b2d7fab7bccb70d5f83fbeaf69&amp;token=948980768&amp;lang=zh_CN#rd">nCov2019包中的全球历史数据</a>， 然后稍微操作一下，就可以拿到所有确诊数超过100的国家，把这个时间当做0点，然后我们就可以对比一下发展趋势了。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(nCov2019)
 <span style="color:#a6e22e">require</span>(dplyr)
@@ -458,16 +458,16 @@ Loading required package: nCov2019
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/patchwork/">
-          cowplot是旧爱，patchwork乃新欢
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/03/check-impact-factor-in-biobabble/">
+          biobabble：一个可以查影响因子和分区的公众号
         </a>
       </h1>
       
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2019-11-22T15:06:59&#43;08:00">
+      <time itemprop="datePublished" datetime="2020-03-07T11:08:00&#43;08:00">
         
-  November 22, 2019
+  March 7, 2020
 
       </time>
     
@@ -476,9 +476,7 @@ Loading required package: nCov2019
   
     <span>in</span>
     
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
     
   
 
@@ -487,30 +485,13 @@ Loading required package: nCov2019
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>Thomas Lin Pedersen简直是个天才，最近<code>patchwork</code>动作很大，看到我都准备转投它的怀抱，把旧爱<code>cowplot</code>给扔了。</p>
-<p>我们知道<code>patchwork</code>一出来，就推出<code>+</code>号来拼图，最近又搞出了<code>|</code>和<code>/</code>两个操作符。让整个拼图看起来很舒服。</p>
-<p>先来画几张图：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
-p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(mpg, disp)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图一&#39;</span>)
-
-p2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">geom_boxplot</span>(<span style="color:#a6e22e">aes</span>(gear, disp, group <span style="color:#f92672">=</span> gear)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图二&#39;</span>)
-
-p3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(hp, wt, colour <span style="color:#f92672">=</span> mpg)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图三&#39;</span>)
-
-p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">geom_bar</span>(<span style="color:#a6e22e">aes</span>(gear)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">facet_wrap</span>(<span style="color:#f92672">~</span>cyl) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图四&#39;</span>)
-</code></pre></div>
+        <p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/biobabble/sci-1.jpeg" alt=""></p>
+<p>正如图中所展示的，你在公众号的后台，发送期刊的全称或简称，它就会返回来这个期刊的信息，当然包括我们最想要知道的影响因子和分区信息。</p>
+<p>这里的简称是官方简称，像图中Methods Ecol Evol，就是Methods in Ecology and Evolution的简称，这是官方的简称，非官方的，比如我们可以说这个杂志是MEE，这种基本上是不被支持的，因为期刊太多，容易撞名。</p>
+<p>所以用起来很简单，全称或简称，输进去，立马出来相关的信息，比如</p>
       
       <p>
-        <a href="https://guangchuangyu.github.io/2019/11/patchwork/" class="postShorten-excerpt_link link">Continue reading</a>
+        <a href="https://guangchuangyu.github.io/2020/03/check-impact-factor-in-biobabble/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
@@ -536,16 +517,16 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/xlim2-ylim2/">
-          拼图？我掐指一算，发现事情没那么简单！
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/02/english-version-ncov2019/">
+          nCov2019英文版，歪果仁也能用这次武汉疫情的数据了
         </a>
       </h1>
       
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2019-11-18T15:10:00&#43;08:00">
+      <time itemprop="datePublished" datetime="2020-02-26T11:08:00&#43;08:00">
         
-  November 18, 2019
+  February 26, 2020
 
       </time>
     
@@ -563,11 +544,14 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/1.png" alt=""></p>
-<p>拼图很容易，像上面这张图，就是三张图拼在一起，但你仔细看一下，这结果可能不是你想要的，如果我们想要坐标轴按照值的大小对齐呢？</p>
+        <p>首先你只要用<code>lang='en'</code>就行。</p>
+<pre><code>require(nCov2019)
+x = get_nCov2019(lang='en')
+x[]
+</code></pre><p>用法完全一样，输出为：</p>
       
       <p>
-        <a href="https://guangchuangyu.github.io/2019/11/xlim2-ylim2/" class="postShorten-excerpt_link link">Continue reading</a>
+        <a href="https://guangchuangyu.github.io/2020/02/english-version-ncov2019/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
@@ -593,16 +577,16 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/chipseeker-atac-dnase-seq/">
-          ChIPseeker其实支持顺反组的各种测序数据
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/02/ncov2019-auto-update/">
+          nCov2019：历史数据实现自动更新
         </a>
       </h1>
       
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2019-11-15T15:10:00&#43;08:00">
+      <time itemprop="datePublished" datetime="2020-02-24T11:08:00&#43;08:00">
         
-  November 15, 2019
+  February 24, 2020
 
       </time>
     
@@ -620,12 +604,17 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>ChIPseeker是为ChIP-seq所设计的，因为当年我在做ChIP-seq，一不小心就写了这个包，然而我的知识是有限的，这名字取得太过于限定在ChIP-seq了，其实顺反组的其它类型的测序技术都是支持的，包括DNase-seq和ATAC-seq，此处为了说明我当前的知识是有限的，必须强调不仅限于此，免得出现开头说的这种尴尬。</p>
-<p>8月份去开会，有中大肿瘤医院的PI跟我说，他们希望ChIPseeker可以支持ATAC-seq，因为我的ChIPseeker太好用了，然后他们想要用在ATAC-seq上，然而我的包真的是支持的啊。</p>
-<p>哈佛大学的网站上有一份ATAC-seq分析指南[1]，就明确地写了，ChIPseeker虽然是为ChIP-seq所设计，但对ATAC-seq一样支持得非常好，并且把ChIPseeker列为这份指南的关键步骤之一。</p>
+        <h2 id="安装新方式">安装新方式</h2>
+<p>在《<a href="https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A">检索疫情数据的R包来了</a>》一文写的安装方式，依然是可行的。但鉴于许多国内的用户，可能在访问github上存在一些问题，我把nCov2019在国内的码云上做了个同步的镜像，所以呢，你也可以通过码云去安装了，安装代码如下：</p>
+<pre><code>## 方法一，使用github
+remotes::install_github(&quot;GuangchuangYu/nCov2019&quot;)
+
+## 方法二，使用gitee
+remotes::install_git('https://gitee.com/GuangchuangYu/nCov2019')
+</code></pre>
       
       <p>
-        <a href="https://guangchuangyu.github.io/2019/11/chipseeker-atac-dnase-seq/" class="postShorten-excerpt_link link">Continue reading</a>
+        <a href="https://guangchuangyu.github.io/2020/02/ncov2019-auto-update/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
@@ -651,16 +640,16 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
-          clusterProfiler.dplyr：用dplyr操作富集分析结果
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/02/plot-legend-manual/">
+          活人不能让尿憋死，自动出来的图例不好调？自己徒手画一个！
         </a>
       </h1>
       
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2019-11-01T15:10:00&#43;08:00">
+      <time itemprop="datePublished" datetime="2020-02-18T11:08:00&#43;08:00">
         
-  November 1, 2019
+  February 18, 2020
 
       </time>
     
@@ -678,13 +667,17 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/qestion.jpeg" alt=""></p>
-<p>出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。</p>
-<p>但这样的图，对于我们来说，简直简单的不要不要的。</p>
-<p>首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：</p>
+        答案嘛，就是自己画legend啊，你看看legend函数，还不是些简单的代码在画，自己画即可。不要被这些条条框框给套住。
+从ggplot2拿legend 为了突破你的想像力，在此处甚至于我要给你个例子，用ggplot2来生成个legend，放在base plot上去。
+自己画legend，有何不可？！如果base有现成的函数画图，而你只熟悉ggplot2，你甚至于可以互搞。而互搞，当然要借助于ggplotify包：《ggplotify简史》。
+col = colorspace::rainbow_hcl(3) names(col) = unique(iris$Species) library(ggplotify) color = col[iris$Species] p = as.ggplot(~plot(iris$Sepal.Length, iris$Sepal.Width, col=color, pch=15)) library(ggplot2) p2 = ggplot(iris, aes(Sepal.Length, Sepal.Width, color=Species)) + geom_point() + scale_color_manual(values=col, name=&quot;&quot;) legend = cowplot::get_legend(p2) p + ggimage::geom_subview(x=.7, y=.6, subview=legend) 这里用base plot画了一个图，又用ggplot2画了一个，用cowplot把legend抽出来，然后再用我的另一个包ggimage进行图上嵌图，完事。ggimage实例可以参考这篇《shit，拟合的残差这么大！》。
+用ggplot2画legend 上面这例子是不是还不过瘾，因为啊我还是用ggplot2给重新画了一遍，如果你这么看，那么你的脑洞不够大，画是画了，但不一定要画一样的图，比如说有现成的base函数画复杂的图，而你不会用ggplot2画，但不妨碍你画个简单的图，但这简单的图中的图例可以切出来使用啊。
+呼应我上面讲到的，图例自己徒手画，我们用ggplot2来来徒手一下。画出下面这个图例：
+p2 &lt;- ggplot() + annotate(&quot;point&quot;, x=1,y=1:3,shape=15, color=col) + annotate(&quot;text&quot;, x=1.01, y=1:3, label=names(col), hjust=0) + xlim(0.99, 1.2) + ylim(0, 4) + theme_void() 对着代码看，不应该有什么问题，打了三个点，再打了三个相应的文本。然后再让我们把这图当做图例，嵌套到base plot上去。
+p + ggimage::geom_subview(x=.
       
       <p>
-        <a href="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/" class="postShorten-excerpt_link link">Continue reading</a>
+        <a href="https://guangchuangyu.github.io/2020/02/plot-legend-manual/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
@@ -707,7 +700,7 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
           </li>
         
       
-      <li class="pagination-number">page 1 of 35</li>
+      <li class="pagination-number">page 1 of 36</li>
     </ul>
   </div>
 

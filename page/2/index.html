@@ -249,6 +249,279 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2020/02/plot-legend-manual/">
+          活人不能让尿憋死，自动出来的图例不好调？自己徒手画一个！
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-02-18T11:08:00&#43;08:00">
+        
+  February 18, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        答案嘛，就是自己画legend啊，你看看legend函数，还不是些简单的代码在画，自己画即可。不要被这些条条框框给套住。
+从ggplot2拿legend 为了突破你的想像力，在此处甚至于我要给你个例子，用ggplot2来生成个legend，放在base plot上去。
+自己画legend，有何不可？！如果base有现成的函数画图，而你只熟悉ggplot2，你甚至于可以互搞。而互搞，当然要借助于ggplotify包：《ggplotify简史》。
+col = colorspace::rainbow_hcl(3) names(col) = unique(iris$Species) library(ggplotify) color = col[iris$Species] p = as.ggplot(~plot(iris$Sepal.Length, iris$Sepal.Width, col=color, pch=15)) library(ggplot2) p2 = ggplot(iris, aes(Sepal.Length, Sepal.Width, color=Species)) + geom_point() + scale_color_manual(values=col, name=&quot;&quot;) legend = cowplot::get_legend(p2) p + ggimage::geom_subview(x=.7, y=.6, subview=legend) 这里用base plot画了一个图，又用ggplot2画了一个，用cowplot把legend抽出来，然后再用我的另一个包ggimage进行图上嵌图，完事。ggimage实例可以参考这篇《shit，拟合的残差这么大！》。
+用ggplot2画legend 上面这例子是不是还不过瘾，因为啊我还是用ggplot2给重新画了一遍，如果你这么看，那么你的脑洞不够大，画是画了，但不一定要画一样的图，比如说有现成的base函数画复杂的图，而你不会用ggplot2画，但不妨碍你画个简单的图，但这简单的图中的图例可以切出来使用啊。
+呼应我上面讲到的，图例自己徒手画，我们用ggplot2来来徒手一下。画出下面这个图例：
+p2 &lt;- ggplot() + annotate(&quot;point&quot;, x=1,y=1:3,shape=15, color=col) + annotate(&quot;text&quot;, x=1.01, y=1:3, label=names(col), hjust=0) + xlim(0.99, 1.2) + ylim(0, 4) + theme_void() 对着代码看，不应该有什么问题，打了三个点，再打了三个相应的文本。然后再让我们把这图当做图例，嵌套到base plot上去。
+p + ggimage::geom_subview(x=.
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2020/02/plot-legend-manual/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/12/biobabble-2019/">
+          biobabble公众号2019每月精选
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-12-24T12:10:00&#43;08:00">
+        
+  December 24, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/babble">babble</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <h2 id="1月">1月</h2>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/IpO3tE7MD0VS1tOdKor1fw">请问，你需要我帮你google吗？</a></li>
+</ul>
+<p>很多人在网络上寻找帮忙而得不到帮助，通常是自己的问题，不要做伸手党，没人欠你一个答案。</p>
+<h2 id="2月">2月</h2>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/ypxeZX_gQW98caoxV_DpOw">听说你想把pheatmap和ggplot2拼在一起</a></li>
+</ul>
+<p>我给<code>pheatmap</code>加了个输出为<code>pheatmap</code>对象的功能，再给<code>ggplotify</code>写个方法，让<code>pheatmap</code>的输出转为<code>ggplot</code>，这样就可以不需要grid的知识也可以愉快地进行拼图了。</p>
+<blockquote>
+<p>PS: 之前的版本，也是可以拼的，但你需要一点grid的知识。</p>
+</blockquote>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2019/12/biobabble-2019/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/12/why-hate-ggpubr/">
+          我为什么是个ggpubr黑？
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-12-21T15:10:00&#43;08:00">
+        
+  December 21, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/ggplot2">ggplot2</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>很多人用<code>ggpubr</code>，其实应了那一句「越低俗越舒服」的话，无非是因为用起来简单，当然还有另一个因素，是很多公众号搬运了<code>ggpubr</code>的文档，而这些写公众号的，多半也是半吊子水平而已，根本没有分辨的能力。</p>
+<p>之前有水生所的小伙伴，在朋友圈发了自己的代码调不好的状态，我评论了一下。</p>
+<p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/ggpubr/1130620159.jpg" alt=""></p>
+<p>引出了一个<code>text_grob</code>的问题，这就是我说的制造混乱，把<code>gpar</code>几个参数放到<code>gpar</code>外面提供给用户。</p>
+<p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/ggpubr/2019-11-21_13-59.png" alt=""></p>
+<p>我不知道你们看出问题在那里没有，这个<code>text_grob</code>相对于被封装的<code>textGrob</code>没有提供任何额外的功能，而这个封装就等于把<code>gpar</code>的参数给写死了，你想调别的参数，没门，除非你用回<code>textGrob</code>。真是一手好包装。</p>
+<h2 id="有人说它有好配色">有人说它有好配色</h2>
+<p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/ggpubr/2019-11-21_14-09.png" alt=""></p>
+<p>显然是包装的，特别是说什么杂志的配色。</p>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2019/12/why-hate-ggpubr/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/patchwork/">
+          cowplot是旧爱，patchwork乃新欢
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-11-22T15:06:59&#43;08:00">
+        
+  November 22, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/visualization">Visualization</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>Thomas Lin Pedersen简直是个天才，最近<code>patchwork</code>动作很大，看到我都准备转投它的怀抱，把旧爱<code>cowplot</code>给扔了。</p>
+<p>我们知道<code>patchwork</code>一出来，就推出<code>+</code>号来拼图，最近又搞出了<code>|</code>和<code>/</code>两个操作符。让整个拼图看起来很舒服。</p>
+<p>先来画几张图：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(mpg, disp)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图一&#39;</span>)
+
+p2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_boxplot</span>(<span style="color:#a6e22e">aes</span>(gear, disp, group <span style="color:#f92672">=</span> gear)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图二&#39;</span>)
+
+p3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(hp, wt, colour <span style="color:#f92672">=</span> mpg)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图三&#39;</span>)
+
+p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_bar</span>(<span style="color:#a6e22e">aes</span>(gear)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">facet_wrap</span>(<span style="color:#f92672">~</span>cyl) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图四&#39;</span>)
+</code></pre></div>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2019/11/patchwork/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/geom-motif/">
           进化树和基因组结构
         </a>
@@ -396,277 +669,6 @@ if (!doNotTrack) {
       
       <p>
         <a href="https://guangchuangyu.github.io/2019/11/chipseeker-atac-dnase-seq/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/">
-          clusterProfiler.dplyr：用dplyr操作富集分析结果
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2019-11-01T15:10:00&#43;08:00">
-        
-  November 1, 2019
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p><img src="http://guangchuangyu.gitee.io/blog_images/clusterProfiler/qestion.jpeg" alt=""></p>
-<p>出错的原因在于，我根本就没给GSEA分析的结果写barplot方法，所以默认去调用graphics::barplot.default了，于是出错。</p>
-<p>但这样的图，对于我们来说，简直简单的不要不要的。</p>
-<p>首先跑一下GSEA的分析, 这里用ReactomePA来跑一下通路的GSEA分析：</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2019/11/clusterprofiler-dplyr/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/10/funtion-for-data/">
-          ggplot2小技巧-数据没有，函数倒是有一个
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2019-10-27T18:06:59&#43;08:00">
-        
-  October 27, 2019
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>今天讲一个小技巧，首先数据还是得有，很简单地生成一些随机数：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2019</span><span style="color:#ae81ff">-10</span><span style="color:#ae81ff">-23</span>)
-d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(val<span style="color:#f92672">=</span><span style="color:#a6e22e">abs</span>(<span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">20</span>)), 
-                type<span style="color:#f92672">=</span><span style="color:#a6e22e">rep</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">A&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">B&#39;</span>), <span style="color:#ae81ff">10</span>))
-</code></pre></div><p>20个数长这样子：</p>
-<pre><code>          val type
-1  0.04625141    A
-2  0.28000082    B
-3  0.25317063    A
-4  0.96411077    B
-5  0.49222664    A
-6  0.69874551    B
-7  0.82134409    A
-8  0.70966741    B
-9  1.56752284    A
-10 1.12881681    B
-11 0.82488089    A
-12 0.19897743    B
-13 0.76739568    A
-14 0.70597703    B
-15 0.24332380    A
-16 0.55423292    B
-17 2.49008811    A
-18 1.35153628    B
-19 2.13711738    A
-20 0.92299795    B
-</code></pre>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2019/10/funtion-for-data/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/10/open-all-files/">
-          一条相见恨晚的指令
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2019-10-09T18:06:59&#43;08:00">
-        
-  October 9, 2019
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/os">OS</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <h2 id="macos">MacOS</h2>
-<p>MacOS用户如果有用命令行的话，大多数人应该知道open .会打开Finder。事实上它能打开所有的目录，比如:</p>
-<pre><code>$ open ~/Library/Preferences
-$ open /etc
-$ open ../..
-</code></pre><p>你还能同时打开多个目录：</p>
-<pre><code>$ open ~/Documents ~/Desktop ~/Downloads
-$ open ~/D*
-</code></pre><p>然后它还能打开各种文件，比如：</p>
-<pre><code>$ open document.pdf
-</code></pre>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2019/10/open-all-files/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2019/09/a-different-upset-plot/">
-          一样的函数，不一样的upset
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2019-09-27T18:06:59&#43;08:00">
-        
-  September 27, 2019
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>upsetplot大家见得多，首先来个富集分析的实例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(DOSE)
-<span style="color:#a6e22e">data</span>(geneList)
-de <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">names</span>(geneList)<span style="color:#a6e22e">[abs</span>(geneList) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>]
-edo <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">enrichDGN</span>(de)
-
-<span style="color:#a6e22e">library</span>(enrichplot)
-<span style="color:#a6e22e">upsetplot</span>(edo)
-</code></pre></div>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2019/09/a-different-upset-plot/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>

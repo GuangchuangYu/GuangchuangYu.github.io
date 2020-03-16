@@ -6,10 +6,26 @@
     <description>Recent content in ggplot2 on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Nov 2019 15:06:59 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 18 Feb 2020 11:08:00 +0800</lastBuildDate>
     
 	<atom:link href="https://guangchuangyu.github.io/tags/ggplot2/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>活人不能让尿憋死，自动出来的图例不好调？自己徒手画一个！</title>
+      <link>https://guangchuangyu.github.io/2020/02/plot-legend-manual/</link>
+      <pubDate>Tue, 18 Feb 2020 11:08:00 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2020/02/plot-legend-manual/</guid>
+      <description>答案嘛，就是自己画legend啊，你看看legend函数，还不是些简单的代码在画，自己画即可。不要被这些条条框框给套住。
+从ggplot2拿legend 为了突破你的想像力，在此处甚至于我要给你个例子，用ggplot2来生成个legend，放在base plot上去。
+自己画legend，有何不可？！如果base有现成的函数画图，而你只熟悉ggplot2，你甚至于可以互搞。而互搞，当然要借助于ggplotify包：《ggplotify简史》。
+col = colorspace::rainbow_hcl(3) names(col) = unique(iris$Species) library(ggplotify) color = col[iris$Species] p = as.ggplot(~plot(iris$Sepal.Length, iris$Sepal.Width, col=color, pch=15)) library(ggplot2) p2 = ggplot(iris, aes(Sepal.Length, Sepal.Width, color=Species)) + geom_point() + scale_color_manual(values=col, name=&amp;quot;&amp;quot;) legend = cowplot::get_legend(p2) p + ggimage::geom_subview(x=.7, y=.6, subview=legend) 这里用base plot画了一个图，又用ggplot2画了一个，用cowplot把legend抽出来，然后再用我的另一个包ggimage进行图上嵌图，完事。ggimage实例可以参考这篇《shit，拟合的残差这么大！》。
+用ggplot2画legend 上面这例子是不是还不过瘾，因为啊我还是用ggplot2给重新画了一遍，如果你这么看，那么你的脑洞不够大，画是画了，但不一定要画一样的图，比如说有现成的base函数画复杂的图，而你不会用ggplot2画，但不妨碍你画个简单的图，但这简单的图中的图例可以切出来使用啊。
+呼应我上面讲到的，图例自己徒手画，我们用ggplot2来来徒手一下。画出下面这个图例：
+p2 &amp;lt;- ggplot() + annotate(&amp;quot;point&amp;quot;, x=1,y=1:3,shape=15, color=col) + annotate(&amp;quot;text&amp;quot;, x=1.01, y=1:3, label=names(col), hjust=0) + xlim(0.99, 1.2) + ylim(0, 4) + theme_void() 对着代码看，不应该有什么问题，打了三个点，再打了三个相应的文本。然后再让我们把这图当做图例，嵌套到base plot上去。
+p + ggimage::geom_subview(x=.</description>
+    </item>
     
     <item>
       <title>cowplot是旧爱，patchwork乃新欢</title>
