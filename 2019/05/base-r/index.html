@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -300,7 +300,7 @@ if (!doNotTrack) {
 <blockquote>
 <p>PS: 尽管这里用到了管道，但管道可有可无，无非是把从里到外变成从左到右，让代码易读性高一点而已。</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.delim</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature.txt&#34;</span>)[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature&#34;</span>)] <span style="color:#f92672">%&gt;%</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.delim</span>(<span style="color:#e6db74">&#34;Temperature.txt&#34;</span>)[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;Year&#34;</span>, <span style="color:#e6db74">&#34;Month&#34;</span>, <span style="color:#e6db74">&#34;Temperature&#34;</span>)] <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">split</span>(.$Year) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(y) <span style="color:#a6e22e">split</span>(y, y<span style="color:#f92672">$</span>Month)) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(m) <span style="color:#a6e22e">lapply</span>(m, <span style="color:#a6e22e">function</span>(x)
@@ -308,8 +308,8 @@ if (!doNotTrack) {
     <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">function</span>(x)
         <span style="color:#a6e22e">data.frame</span>(Month<span style="color:#f92672">=</span><span style="color:#a6e22e">names</span>(x),
                    Temperature<span style="color:#f92672">=</span><span style="color:#a6e22e">unlist</span>(x))) <span style="color:#f92672">%&gt;%</span>
-    <span style="color:#a6e22e">do.call</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">rbind&#34;</span>, .) <span style="color:#f92672">%&gt;%</span>
-    <span style="color:#a6e22e">cbind</span>(Year<span style="color:#f92672">=</span><span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\.\\d{1,2}&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>,
+    <span style="color:#a6e22e">do.call</span>(<span style="color:#e6db74">&#34;rbind&#34;</span>, .) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">cbind</span>(Year<span style="color:#f92672">=</span><span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;\\.\\d{1,2}&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>,
                    <span style="color:#a6e22e">rownames</span>(.)), .,
           row.names<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>)
 </code></pre></div><p>结果如下：</p>
@@ -333,7 +333,7 @@ if (!doNotTrack) {
 </code></pre><h3 id="拆解代码">拆解代码</h3>
 <p>这个代码看着挺复杂，其实很简单，我们来拆解一下：</p>
 <p><strong>读数据：</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.delim</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature.txt&#34;</span>)[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature&#34;</span>)]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.delim</span>(<span style="color:#e6db74">&#34;Temperature.txt&#34;</span>)[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;Year&#34;</span>, <span style="color:#e6db74">&#34;Month&#34;</span>, <span style="color:#e6db74">&#34;Temperature&#34;</span>)]
 </code></pre></div><p><strong>切分数据，并计算</strong></p>
 <p>按照两个因子分层切分，对第二层数据进行求均值。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">%&gt;%</span>
@@ -352,16 +352,16 @@ if (!doNotTrack) {
    <span style="color:#a6e22e">lapply</span>(ls, <span style="color:#a6e22e">function</span>(x)
      <span style="color:#a6e22e">data.frame</span>(Month<span style="color:#f92672">=</span><span style="color:#a6e22e">names</span>(x),
                 Temperature<span style="color:#f92672">=</span><span style="color:#a6e22e">unlist</span>(x))) <span style="color:#f92672">%&gt;%</span>
-     <span style="color:#a6e22e">do.call</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">rbind&#34;</span>, .) <span style="color:#f92672">%&gt;%</span>
-     <span style="color:#a6e22e">cbind</span>(Year<span style="color:#f92672">=</span><span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\.\\d{1,2}&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>,
+     <span style="color:#a6e22e">do.call</span>(<span style="color:#e6db74">&#34;rbind&#34;</span>, .) <span style="color:#f92672">%&gt;%</span>
+     <span style="color:#a6e22e">cbind</span>(Year<span style="color:#f92672">=</span><span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;\\.\\d{1,2}&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>,
                     <span style="color:#a6e22e">rownames</span>(.)), .,
            row.names<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>)
 }
 </code></pre></div><h3 id="来个简单版本">来个简单版本</h3>
 <p>其实啊，split可以一次切两个因子，所以用split一切，套个sapply即可。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">temp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#a6e22e">split</span>(x<span style="color:#f92672">$</span>Temperature, x[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>)]), mean, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
-res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(Year <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">(\\d{4}).*&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\1&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
-                  Month <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\d{4}.&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">temp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#a6e22e">split</span>(x<span style="color:#f92672">$</span>Temperature, x[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;Year&#34;</span>, <span style="color:#e6db74">&#34;Month&#34;</span>)]), mean, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
+res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(Year <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;(\\d{4}).*&#34;</span>, <span style="color:#e6db74">&#34;\\1&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
+                  Month <span style="color:#f92672">=</span> <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;\\d{4}.&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">names</span>(temp)),
                   Temperature <span style="color:#f92672">=</span> temp,
                   row.names <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>)
 </code></pre></div><h3 id="一行代码版本">一行代码版本</h3>
@@ -395,7 +395,7 @@ Unit: milliseconds
 </code></pre></div><p><strong>reshape2</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(reshape2)
 <span style="color:#a6e22e">dcast</span>(x, Year<span style="color:#f92672">+</span>Month<span style="color:#f92672">~</span><span style="color:#66d9ef">...</span>, fun<span style="color:#f92672">=</span><span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">mean</span>(x, na.rm<span style="color:#f92672">=</span>T), 
-      value.var <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Temperature&#34;</span>))
+      value.var <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;Temperature&#34;</span>))
 </code></pre></div><p><strong>purrr</strong></p>
 <p>用purrr就跟用lapply似的，所以并不显示有什么优势，当然如果你直接按照Year + Month去split的话，用lapply跟用map一样，非常简单出结果，也就是上面的来个简单版本所写的版本。并没有什么新玩意。</p>
 <p>如果要用purrr的话，我想还是用我原先的代码，先产生list of list，再对第二层求均值，最后用ls2df函数（上面拆解代码的第三步）整理为data.frame，这样子的话，在第二步求均值的时候，用purrr就显得有优势了，因为要对两层list操作的时候，不用套两个lapply，可以用map_depth，这样逻辑还是一样，但代码简洁了，可读性，易于理解等都有所改善。</p>
@@ -406,7 +406,7 @@ Unit: milliseconds
 </code></pre></div><p><strong>sqldf</strong></p>
 <p>让你用SQL语法来summarize数据。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(sqldf)
-<span style="color:#a6e22e">sqldf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SELECT Year, Month, avg(Temperature)
+<span style="color:#a6e22e">sqldf</span>(<span style="color:#e6db74">&#34;SELECT Year, Month, avg(Temperature)
 </span><span style="color:#e6db74">       FROM x
 </span><span style="color:#e6db74">       GROUP BY Year, Month&#34;</span>)
 </code></pre></div><p><strong>doBy</strong></p>
@@ -416,7 +416,7 @@ Unit: milliseconds
 </code></pre></div><p><strong>data.table</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(data.table)
 <span style="color:#a6e22e">data.table</span>(x)[, <span style="color:#a6e22e">list</span>(mean<span style="color:#f92672">=</span><span style="color:#a6e22e">mean</span>(Temperature, na.rm<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)), 
-              by<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Month&#34;</span>)]
+              by<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;Year&#34;</span>, <span style="color:#e6db74">&#34;Month&#34;</span>)]
 </code></pre></div>
               
             </div>

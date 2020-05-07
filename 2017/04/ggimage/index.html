@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="导言
@@ -324,10 +324,10 @@ if (!doNotTrack) {
 <p>本文介绍了<strong>ggimage</strong>包，允许在<strong>ggplot2</strong>作图时嵌入图片，并支持<code>aes</code>映射，可以把离散型变量映射到不同图片。目前有几个包可以使用图片嵌入做图，但都是针对特定的场景，这里使用<strong>ggimage</strong>来展示在这些特定领域里的应用，<strong>ggimage</strong>的设计是通用的，并不被特定场景所限定，文末又介绍了用R图标来画出R、用饼图来画气泡图等实例。</p>
 <h1 id="图上嵌图片">图上嵌图片</h1>
 <p>R 基础图形库（base graphics）可以在做图的时候嵌入图片，使用的是<code>graphics::rasterImage</code>：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">imgurl <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">imgurl <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;http://phylopic.org/assets/images/submissions/295cd9f7-eef2-441e-ba7e-40c772ca7611.256.png&#34;</span>
 <span style="color:#a6e22e">library</span>(EBImage)
 x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">readImage</span>(imgurl)
-<span style="color:#a6e22e">plot</span>(<span style="color:#ae81ff">1</span>, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">n&#34;</span>, xlab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, ylab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, xlim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>), ylim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>))
+<span style="color:#a6e22e">plot</span>(<span style="color:#ae81ff">1</span>, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;n&#34;</span>, xlab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>, ylab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>, xlim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>), ylim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>))
 <span style="color:#a6e22e">rasterImage</span>(x, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">4</span>)
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/raster.png" alt="R绘图嵌入图片演示"></p>
 <p>如果我们搜索&quot;ggplot2 image&rdquo;，会找到类似于下面这样的帖子/博文：</p>
@@ -350,7 +350,7 @@ p <span style="color:#f92672">+</span> <span style="color:#a6e22e">annotation_cu
 <h1 id="安装">安装</h1>
 <p><strong>ggimage</strong>依赖于<strong>EBImage</strong>来读图片，这是个Bioconductor包，所以我们需要额外的动作来安装它，用<code>setRepositories</code>把Bioconductor软件仓库加进来，这样<code>install.packages</code>也可以搜索到它的包。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">setRepositories</span>(ind <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2</span>)
-<span style="color:#a6e22e">install.packages</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ggimage&#34;</span>)
+<span style="color:#a6e22e">install.packages</span>(<span style="color:#e6db74">&#34;ggimage&#34;</span>)
 </code></pre></div><h1 id="实例分析">实例分析</h1>
 <p>据我所知目前支持使用图片的R包有<strong>CatterPlots</strong>, <strong>rphylopic</strong>, <strong>emoGG</strong>,
 <strong>ggflags</strong>这几个，都是为特定的目的而实现的，都有其特定的应用场景，而<strong>ggimage</strong>是的
@@ -366,12 +366,12 @@ mytheme <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">the
 x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(<span style="color:#ae81ff">-2</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">pi</span>, <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">pi</span>, length.out <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>)
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(x <span style="color:#f92672">=</span> x, y <span style="color:#f92672">=</span> <span style="color:#a6e22e">sin</span>(x))
 
-img <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://www.belleamibengals.com/bengal_cat_2.png&#34;</span>
+img <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;http://www.belleamibengals.com/bengal_cat_2.png&#34;</span>
 <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x, y)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_image</span>(image <span style="color:#f92672">=</span> img, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">.1</span>)
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/ggimage_CatterPlots.png" alt="ggimage画猫散点图演示"></p>
 <p><strong>CatterPlots</strong>实现的方式就是上面谈到的<code>rasterImage</code>内部使用了循环。<strong>rphylopic</strong>同时支持基础图形库（base graphics）和<strong>ggplot2</strong>，也是一样的实现方式，不过<strong>rphylopic</strong>内部没有使用循环，一次只能加一个图，它使用的图来自于<a href="http://phylopic.org/">phylopic</a>数据库。</p>
 <p>我们用<strong>ggimage</strong>同样可以使用<code>phylopic</code>图片：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x, y)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_phylopic</span>(image <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">500bd7c6-71c1-4b86-8e54-55f72ad1beca&#34;</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">.1</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x, y)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_phylopic</span>(image <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;500bd7c6-71c1-4b86-8e54-55f72ad1beca&#34;</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">.1</span>)
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/ggimage_rphylopic.png" alt="ggimage使用phylopic图片演示"></p>
 <blockquote>
 <p>图中是<code>翼足目</code>动物。</p>
@@ -385,32 +385,32 @@ iris2<span style="color:#f92672">$</span>fitted <span style="color:#f92672">&lt;
 
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(iris2, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> Sepal.Length, y <span style="color:#f92672">=</span> Petal.Length)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_linerange</span>(<span style="color:#a6e22e">aes</span>(ymin <span style="color:#f92672">=</span> fitted, ymax <span style="color:#f92672">=</span> Petal.Length),
-                 colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">purple&#34;</span>) <span style="color:#f92672">+</span>
+                 colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;purple&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_abline</span>(intercept <span style="color:#f92672">=</span> model<span style="color:#f92672">$</span>coefficients[1],
               slope <span style="color:#f92672">=</span> model<span style="color:#f92672">$</span>coefficients[2])
 
-p <span style="color:#f92672">+</span> ggimage<span style="color:#f92672">::</span><span style="color:#a6e22e">geom_emoji</span>(<span style="color:#a6e22e">aes</span>(image <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(<span style="color:#a6e22e">abs</span>(Petal.Length<span style="color:#f92672">-</span>fitted) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">1f622&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">1f600&#39;</span>)))
+p <span style="color:#f92672">+</span> ggimage<span style="color:#f92672">::</span><span style="color:#a6e22e">geom_emoji</span>(<span style="color:#a6e22e">aes</span>(image <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(<span style="color:#a6e22e">abs</span>(Petal.Length<span style="color:#f92672">-</span>fitted) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>, <span style="color:#e6db74">&#39;1f622&#39;</span>, <span style="color:#e6db74">&#39;1f600&#39;</span>)))
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/emoji_residual2.png" alt="ggimage画emoji演示"></p>
 <p>如果要用<strong>emoGG</strong>来做的话，则需要自己切数据分两次来进行：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> emoGG<span style="color:#f92672">::</span><span style="color:#a6e22e">geom_emoji</span>(data <span style="color:#f92672">=</span> <span style="color:#a6e22e">subset</span>(iris2, (Petal.Length<span style="color:#f92672">-</span>fitted) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.5</span>), emoji <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">1f600&#34;</span>) <span style="color:#f92672">+</span>
-    emoGG<span style="color:#f92672">::</span><span style="color:#a6e22e">geom_emoji</span>(data <span style="color:#f92672">=</span> <span style="color:#a6e22e">subset</span>(iris2, (Petal.Length<span style="color:#f92672">-</span>fitted) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>), emoji <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">1f622&#34;</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> emoGG<span style="color:#f92672">::</span><span style="color:#a6e22e">geom_emoji</span>(data <span style="color:#f92672">=</span> <span style="color:#a6e22e">subset</span>(iris2, (Petal.Length<span style="color:#f92672">-</span>fitted) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.5</span>), emoji <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1f600&#34;</span>) <span style="color:#f92672">+</span>
+    emoGG<span style="color:#f92672">::</span><span style="color:#a6e22e">geom_emoji</span>(data <span style="color:#f92672">=</span> <span style="color:#a6e22e">subset</span>(iris2, (Petal.Length<span style="color:#f92672">-</span>fitted) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>), emoji <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1f622&#34;</span>)
 </code></pre></div><p>这里我们只分两类(残差是否大于0.5)，所以需要加两次，试想我们的分类变量有多种可能的取值，则我们需要分多次切数据加图层，<strong>CatterPlots</strong>、<strong>rphylopic</strong>和<strong>emoGG</strong>都有这个问题，这也是<code>aes</code>映射之于<strong>ggplot2</strong>的重要和强大之处，它让我们可以在更高的抽像水平思考，</p>
 <p><strong>ggflags</strong>是支持<code>aes</code>映射的，只不过它只能用来画国旗而已。同样<strong>ggimage</strong>也提供
 了相应的<code>geom_flag</code>来使用国旗用于做图。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(rvest)
 <span style="color:#a6e22e">library</span>(dplyr)
 
-url <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://www.nbcolympics.com/medals&#34;</span>
+url <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;http://www.nbcolympics.com/medals&#34;</span>
 
 medals <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_html</span>(url) <span style="color:#f92672">%&gt;%</span>
-    <span style="color:#a6e22e">html_nodes</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">table&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">html_nodes</span>(<span style="color:#e6db74">&#34;table&#34;</span>) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">html_table</span>() <span style="color:#f92672">%&gt;%</span> .[[1]]
 
 <span style="color:#a6e22e">library</span>(countrycode)
 <span style="color:#a6e22e">library</span>(tidyr)
 
 medals <span style="color:#f92672">&lt;-</span> medals <span style="color:#f92672">%&gt;%</span>
-    <span style="color:#a6e22e">mutate</span>(code <span style="color:#f92672">=</span> <span style="color:#a6e22e">countrycode</span>(Country, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">country.name&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">iso2c&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">mutate</span>(code <span style="color:#f92672">=</span> <span style="color:#a6e22e">countrycode</span>(Country, <span style="color:#e6db74">&#34;country.name&#34;</span>, <span style="color:#e6db74">&#34;iso2c&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">gather</span>(medal, count, Gold<span style="color:#f92672">:</span>Bronze) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">filter</span>(Total <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>)
 
@@ -475,7 +475,7 @@ medals <span style="color:#f92672">&lt;-</span> medals <span style="color:#f9267
 
 p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_flag</span>(y <span style="color:#f92672">=</span> <span style="color:#ae81ff">-2</span>, <span style="color:#a6e22e">aes</span>(image <span style="color:#f92672">=</span> code)) <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">expand_limits</span>(y <span style="color:#f92672">=</span> <span style="color:#ae81ff">-2</span>)  <span style="color:#f92672">+</span>
-    <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Gold&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">gold&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Bronze&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#cd7f32&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Silver&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#C0C0C0&#34;</span>))
+    <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;Gold&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;gold&#34;</span>, <span style="color:#e6db74">&#34;Bronze&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#cd7f32&#34;</span>, <span style="color:#e6db74">&#34;Silver&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#C0C0C0&#34;</span>))
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/olympics_2016.png" alt="ggimage画国旗演示"></p>
 <h2 id="ggimage"><strong>ggimage</strong></h2>
 <p>前面我们介绍了<strong>ggimage</strong>在一些场景的应用实例，虽然有专门的包针对这些应用场景，但<strong>ggimage</strong>在这些领域中的表现要比大多数的包要好（支持aes映射）。但<strong>ggimage</strong>的使用并不限于这些(<code>geom_phylopic</code>，<code>geom_emoji</code>和<code>geom_flag</code>只是通用图层<code>geom_image</code>的简单封装)，这里将展示一些有趣的例子。</p>
@@ -484,7 +484,7 @@ p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_flag</sp
 y <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>)
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(x <span style="color:#f92672">=</span> x, y <span style="color:#f92672">=</span> y)
 
-img <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">system.file</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">img&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Rlogo.png&#34;</span>, package <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">png&#34;</span>)
+img <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">system.file</span>(<span style="color:#e6db74">&#34;img&#34;</span>, <span style="color:#e6db74">&#34;Rlogo.png&#34;</span>, package <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;png&#34;</span>)
 <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(x, y)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_image</span>(image <span style="color:#f92672">=</span> img, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">.1</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">xlim</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">6</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylim</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">7</span>)
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/R.png" alt="用R图标画R形状演示"></p>
@@ -492,8 +492,8 @@ img <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">system.
 <p>这里我要展示的是非常有名的气泡图（Bubble Plot），但气泡不是圆圈，而是使用
 <strong>ggplot2</strong>画的饼图，我先把饼图保存起来，再用<strong>ggimage</strong>拿来画，饼图的大小
 与人口总数正相关。这个例子可以应用到很多场景中去，比如一个时间序列的曲线，你要用统计图在某些时间点上展示相关的信息，比如你要在地图上加某些地方的相关统计信息（如果要在地图上画饼图，可以使用我写的<a href="https://cran.r-project.org/package=scatterpie"><strong>scatterpie</strong></a>包）。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">crime <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://datasets.flowingdata.com/crimeRatesByState2005.tsv&#34;</span>,
-                  header <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\t&#34;</span>, stringsAsFactors <span style="color:#f92672">=</span> F)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">crime <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.csv</span>(<span style="color:#e6db74">&#34;http://datasets.flowingdata.com/crimeRatesByState2005.tsv&#34;</span>,
+                  header <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\t&#34;</span>, stringsAsFactors <span style="color:#f92672">=</span> F)
 </code></pre></div><table>
 <thead>
 <tr>
@@ -582,16 +582,16 @@ img <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">system.
 plot_pie <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(i) {
     df <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gather</span>(crime[i, ], type, value, murder<span style="color:#f92672">:</span>motor_vehicle_theft)
     <span style="color:#a6e22e">ggplot</span>(df, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, value, fill <span style="color:#f92672">=</span> type)) <span style="color:#f92672">+</span>
-        <span style="color:#a6e22e">geom_col</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">coord_polar</span>(theta <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">y&#39;</span>) <span style="color:#f92672">+</span>
-        <span style="color:#a6e22e">ggtitle</span>(crime[i, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">state&#34;</span>]) <span style="color:#f92672">+</span>
+        <span style="color:#a6e22e">geom_col</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">coord_polar</span>(theta <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;y&#39;</span>) <span style="color:#f92672">+</span>
+        <span style="color:#a6e22e">ggtitle</span>(crime[i, <span style="color:#e6db74">&#34;state&#34;</span>]) <span style="color:#f92672">+</span>
         <span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_transparent</span>() <span style="color:#f92672">+</span>
-        <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>,
+        <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span>,
               plot.title <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_text</span>(size <span style="color:#f92672">=</span> <span style="color:#a6e22e">rel</span>(<span style="color:#ae81ff">6</span>), hjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>))
 }
 
 pies <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#a6e22e">nrow</span>(crime), <span style="color:#a6e22e">function</span>(i) {
-    outfile <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">crime_&#34;</span>, i, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.png&#34;</span>)
-    <span style="color:#a6e22e">plot_pie</span>(i) <span style="color:#f92672">+</span> <span style="color:#a6e22e">ggsave</span>(outfile, bg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">transparent&#34;</span>)
+    outfile <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;crime_&#34;</span>, i, <span style="color:#e6db74">&#34;.png&#34;</span>)
+    <span style="color:#a6e22e">plot_pie</span>(i) <span style="color:#f92672">+</span> <span style="color:#a6e22e">ggsave</span>(outfile, bg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;transparent&#34;</span>)
     outfile
 })
 
@@ -601,8 +601,8 @@ crime<span style="color:#f92672">$</span>pie <span style="color:#f92672">&lt;-</
 
 leg1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gtable_filter</span>(
     <span style="color:#a6e22e">ggplot_gtable</span>(
-        <span style="color:#a6e22e">ggplot_build</span>(<span style="color:#a6e22e">plot_pie</span>(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">right&#34;</span>))
-    ), <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">guide-box&#34;</span>)
+        <span style="color:#a6e22e">ggplot_build</span>(<span style="color:#a6e22e">plot_pie</span>(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;right&#34;</span>))
+    ), <span style="color:#e6db74">&#34;guide-box&#34;</span>)
 
 <span style="color:#a6e22e">ggplot</span>(crime, <span style="color:#a6e22e">aes</span>(murder, Robbery)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_image</span>(<span style="color:#a6e22e">aes</span>(image <span style="color:#f92672">=</span> pie, size <span style="color:#f92672">=</span> <span style="color:#a6e22e">I</span>(radius))) <span style="color:#f92672">+</span>
@@ -610,7 +610,7 @@ leg1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gtable
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/us_crime.png" alt="嵌套式绘图演示：用饼图来画气泡图"></p>
 <p>我们还可以每次只画一个州的数据，制作成动图。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">plot_crime <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(i) {
-    o <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste0</span>(i, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.png&#34;</span>)
+    o <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste0</span>(i, <span style="color:#e6db74">&#34;.png&#34;</span>)
     <span style="color:#a6e22e">ggplot</span>(crime, <span style="color:#a6e22e">aes</span>(murder, Robbery)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_blank</span>() <span style="color:#f92672">+</span>
         <span style="color:#a6e22e">geom_image</span>(data <span style="color:#f92672">=</span> crime[i, ], <span style="color:#a6e22e">aes</span>(image <span style="color:#f92672">=</span> pie, size <span style="color:#f92672">=</span> <span style="color:#a6e22e">I</span>(radius))) <span style="color:#f92672">+</span>
         <span style="color:#a6e22e">geom_subview</span>(p, leg1, x <span style="color:#f92672">=</span> <span style="color:#ae81ff">8.8</span>, y <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">ggsave</span>(o)
@@ -624,7 +624,7 @@ leg1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gtable
     <span style="color:#a6e22e">map</span>(image_read) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">image_join</span>() <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">image_animate</span>(fps <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">%&gt;%</span>
-    <span style="color:#a6e22e">image_write</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">crime.gif&#34;</span>)
+    <span style="color:#a6e22e">image_write</span>(<span style="color:#e6db74">&#34;crime.gif&#34;</span>)
 </code></pre></div><p><img src="https://raw.githubusercontent.com/Lchiffon/ggimage-md-for-COS/master/figures/us_crime.gif" alt="嵌套式绘图演示，动图版本"></p>
 <p><code>geom_subview</code>可以图上嵌图，并不需要保存为图片，但对于<strong>ggplot2</strong>来讲，保存图片也是有好处的，因为<strong>ggplot2</strong>画图，点线是在数据空间上，随着我们保存图片的大小是按比例缩小或放大的，但文字是在像素空间上，和画图空间并不相关。所以当我们嵌图时缩小了画图窗口之后，字体会显得格外大，微调起来也比较繁琐，这时候保存为合适尺寸的图片，再用<code>geom_image</code>来加上去，显然就轻松得多。</p>
 <h3 id="其它来自r社区的例子">其它来自R社区的例子</h3>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="CRAN刚上线的新包geofacet，可以让ggplot2分面按指定的地理位置来，比如下面的数据，美国各州各项指标的排名：
@@ -355,26 +355,26 @@ if (!doNotTrack) {
 </code></pre></div><p>可以通过<code>grid</code>参数指定，<code>label</code>参数可以指定分面用什么变量来label:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(state_unemp, <span style="color:#a6e22e">aes</span>(year, rate)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_line</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">facet_geo</span>(<span style="color:#f92672">~</span> state, grid <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">us_state_grid2&#34;</span>, label <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">name&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_x_continuous</span>(labels <span style="color:#f92672">=</span> <span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#39;&#34;</span>, <span style="color:#a6e22e">substr</span>(x, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>))) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Seasonally Adjusted US Unemployment Rate 2000-2016&#34;</span>,
-    caption <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Data Source: bls.gov&#34;</span>,
-    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Year&#34;</span>,
-    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Unemployment Rate (%)&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">facet_geo</span>(<span style="color:#f92672">~</span> state, grid <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;us_state_grid2&#34;</span>, label <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;name&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_x_continuous</span>(labels <span style="color:#f92672">=</span> <span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;&#39;&#34;</span>, <span style="color:#a6e22e">substr</span>(x, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>))) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Seasonally Adjusted US Unemployment Rate 2000-2016&#34;</span>,
+    caption <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Data Source: bls.gov&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Year&#34;</span>,
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Unemployment Rate (%)&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(strip.text.x <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_text</span>(size <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>))
 </code></pre></div><p>![](<a href="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot">https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot</a> 2017-06-22 10.24.19.png)</p>
 <p>geofacet包里自带了一些geo grid信息：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">get_grid_names</span>()
- [1] <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">us_state_grid1&#34;</span>       <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">us_state_grid2&#34;</span>       <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">eu_grid1&#34;</span>
- [4] <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">aus_grid1&#34;</span>            <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">sa_prov_grid1&#34;</span>        <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">london_boroughs_grid&#34;</span>
- [7] <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">nhs_scot_grid&#34;</span>        <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">india_grid1&#34;</span>          <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">india_grid2&#34;</span>
-[10] <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">argentina_grid1&#34;</span>      <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">br_grid1&#34;</span>
+ [1] <span style="color:#e6db74">&#34;us_state_grid1&#34;</span>       <span style="color:#e6db74">&#34;us_state_grid2&#34;</span>       <span style="color:#e6db74">&#34;eu_grid1&#34;</span>
+ [4] <span style="color:#e6db74">&#34;aus_grid1&#34;</span>            <span style="color:#e6db74">&#34;sa_prov_grid1&#34;</span>        <span style="color:#e6db74">&#34;london_boroughs_grid&#34;</span>
+ [7] <span style="color:#e6db74">&#34;nhs_scot_grid&#34;</span>        <span style="color:#e6db74">&#34;india_grid1&#34;</span>          <span style="color:#e6db74">&#34;india_grid2&#34;</span>
+[10] <span style="color:#e6db74">&#34;argentina_grid1&#34;</span>      <span style="color:#e6db74">&#34;br_grid1&#34;</span>
 </code></pre></div><p>比如我们用欧盟国家的位置来画它们的GDP：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(eu_gdp, <span style="color:#a6e22e">aes</span>(year, gdp_pc)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_line</span>(color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">steelblue&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">facet_geo</span>(<span style="color:#f92672">~</span> name, grid <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">eu_grid1&#34;</span>, scales <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">free_y&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_x_continuous</span>(labels <span style="color:#f92672">=</span> <span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#39;&#34;</span>, <span style="color:#a6e22e">substr</span>(x, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>))) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">ylab</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GDP Per Capita in Relation to EU Index (100)&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_line</span>(color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;steelblue&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">facet_geo</span>(<span style="color:#f92672">~</span> name, grid <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;eu_grid1&#34;</span>, scales <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;free_y&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_x_continuous</span>(labels <span style="color:#f92672">=</span> <span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;&#39;&#34;</span>, <span style="color:#a6e22e">substr</span>(x, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>))) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">ylab</span>(<span style="color:#e6db74">&#34;GDP Per Capita in Relation to EU Index (100)&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_bw</span>()
 </code></pre></div><p>![](<a href="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot">https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot</a> 2017-06-22 10.25.41.png)</p>
 <p>很可惜，没有中国各个省的位置信息，不过这个分分钟我们可以搞出来，我之前为了画中国地图，打包了个中国的地图信息（分省份，且有台湾）在<code>chinamap</code>包里，我们很容易通过这个data.frame生成一个各个省相对位置的grid表格来，大家可以试一下，或者等我什么时候有这个可视化的需求，我再来搞。</p>
@@ -386,13 +386,13 @@ if (!doNotTrack) {
 <p>然后拿它来可视化美国大选：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(election, <span style="color:#a6e22e">aes</span>(candidate, votes <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000</span>, fill <span style="color:#f92672">=</span> candidate)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_col</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#4e79a7&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#e15759&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#59a14f&#34;</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#4e79a7&#34;</span>, <span style="color:#e6db74">&#34;#e15759&#34;</span>, <span style="color:#e6db74">&#34;#59a14f&#34;</span>)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">facet_geo</span>(<span style="color:#f92672">~</span> state, grid <span style="color:#f92672">=</span> mygrid) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">2016 Election Results&#34;</span>,
-    caption <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Data Source: http://bit.ly/2016votecount&#34;</span>,
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2016 Election Results&#34;</span>,
+    caption <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Data Source: http://bit.ly/2016votecount&#34;</span>,
     x <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
-    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Votes (millions)&#34;</span>) <span style="color:#f92672">+</span>
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Votes (millions)&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(strip.text.x <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_text</span>(size <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>))
 </code></pre></div><p>![](<a href="https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot">https://guangchuangyu.github.io/blog_images/R/geofacet/Screenshot</a> 2017-06-22 10.49.22.png)</p>
               

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -295,7 +295,7 @@ if (!doNotTrack) {
 <span style="color:#a6e22e">library</span>(ggtree)
 <span style="color:#a6e22e">library</span>(cowplot)
 
-no_legend<span style="color:#f92672">=</span><span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>)
+no_legend<span style="color:#f92672">=</span><span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>)
 
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">group_by</span>(mtcars, cyl) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">summarize</span>(mean<span style="color:#f92672">=</span><span style="color:#a6e22e">mean</span>(disp), sd<span style="color:#f92672">=</span><span style="color:#a6e22e">sd</span>(disp))
 d2 <span style="color:#f92672">&lt;-</span> dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">filter</span>(mtcars, cyl <span style="color:#f92672">!=</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">rename</span>(var <span style="color:#f92672">=</span> cyl)
@@ -312,7 +312,7 @@ p3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
     <span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span> no_legend
 
 pp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</span>(p1, p2, p3)
-<span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">v&#39;</span>)
+<span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;v&#39;</span>)
 </code></pre></div><p>我确实是加了align='v'的，但就是不对齐！要对齐真的不容易，因为有两个因素在影响：</p>
 <ul>
 <li>坐标轴的取值范围</li>
@@ -335,22 +335,22 @@ pp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</sp
 <p>总而言之，言而总之，这简单的问题一点都不简单！最主要是我现在造了一个轮子，于是我就给你谈各种你没有这个轮子很困难的场景，就像有了一个药之后，就大谈你好多病，得吃下这颗大力金刚丸一样。</p>
 <p>我的解决方案就是在ggtree包中实现了xlim2和ylim2两个函数，像下面这种p + xlim2(p1)，它干的事情就是把p的x轴值域设为和p1一样。如果p是翻转过坐标轴的，会去设置它的y轴。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(pp, <span style="color:#a6e22e">function</span>(p) p <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim2</span>(p1))
-<span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp2, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">v&#39;</span>)
+<span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp2, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;v&#39;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/4.png" alt=""></p>
 <p>现在我们再看，对齐了！如果这些子图的数据都是不全的，我们并不是以一个图来设置值域，而是以它们值域的并集来做，这时候，你可以传入limits参数，这种情况，基本上就相当于你在用xlim和ylim。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(pp, <span style="color:#a6e22e">function</span>(p) p <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim2</span>(limits<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">11</span>)))
-<span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp3, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">v&#39;</span>)
+<span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp3, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;v&#39;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/5.png" alt=""></p>
 <p>xlim2和ylim2最主要的一点，就是让你用一个图做为参照，方便你让其它图和它对齐。下面通过ggtree的例子来讲一下ylim2。和进化树拼图，在《用散点可视化一个矩阵》一文是有讲过的，不过那个例子，值域是一样的，假设像上面的例子中有缺失值，还得吃现在造的药丸。下面的例子中，d1的信息就不全，而且有对不上号的row。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 <span style="color:#a6e22e">library</span>(ggtree)
 
-<span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2019</span><span style="color:#ae81ff">-10</span><span style="color:#ae81ff">-31</span>)
+<span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2019-10-31</span>)
 tr <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">rtree</span>(<span style="color:#ae81ff">10</span>)
 
 d1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(
     <span style="color:#75715e"># only some labels match</span>
-    label <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(tr<span style="color:#f92672">$</span>tip.label<span style="color:#a6e22e">[sample</span>(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">5</span>)], <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">A&#34;</span>),
+    label <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(tr<span style="color:#f92672">$</span>tip.label<span style="color:#a6e22e">[sample</span>(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">5</span>)], <span style="color:#e6db74">&#34;A&#34;</span>),
     value <span style="color:#f92672">=</span> <span style="color:#a6e22e">sample</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">6</span>))
 
 d2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(
@@ -365,21 +365,21 @@ g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</s
 
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">filter</span>(g, isTip) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">select</span>(<span style="color:#a6e22e">c</span>(label, y))
 
-dd1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">left_join</span>(d1, d, by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">label&#39;</span>)
-dd2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">left_join</span>(d2, d, by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">label&#39;</span>)
+dd1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">left_join</span>(d1, d, by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;label&#39;</span>)
+dd2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">left_join</span>(d2, d, by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;label&#39;</span>)
 </code></pre></div><p>p1画一个柱状图，p2画热图：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(dd1, <span style="color:#a6e22e">aes</span>(y, value)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>label)) <span style="color:#f92672">+</span>
-    <span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_tree2</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>)
+    <span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_tree2</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>)
  
 p2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(dd2, <span style="color:#a6e22e">aes</span>(x<span style="color:#f92672">=</span>category, y<span style="color:#f92672">=</span>y)) <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">geom_tile</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>value)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_fill_viridis_c</span>() <span style="color:#f92672">+</span>
-    <span style="color:#a6e22e">theme_tree2</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">none&#39;</span>)
+    <span style="color:#a6e22e">theme_tree2</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>)
 </code></pre></div><p>如果我们正常拼，就会像开篇的图一样，是对不上的，这时候我们就拿出ylim2，让其它图都和进化树对齐，然后再拼，完美！在拼图的时候，有参照的情况下，xlim2和ylim2就是这么方便：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">&lt;-</span> p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylim2</span>(g)
 p2 <span style="color:#f92672">&lt;-</span> p2 <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylim2</span>(g)
 
 <span style="color:#a6e22e">library</span>(cowplot)
-<span style="color:#a6e22e">plot_grid</span>(g, p1, p2, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">h&#39;</span>,
+<span style="color:#a6e22e">plot_grid</span>(g, p1, p2, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;h&#39;</span>,
     labels<span style="color:#f92672">=</span><span style="color:#66d9ef">LETTERS</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>], rel_widths <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">.5</span>, <span style="color:#ae81ff">.8</span>))
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/6.png" alt=""></p>
 <blockquote>

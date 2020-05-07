@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -303,10 +303,10 @@ if (!doNotTrack) {
 </blockquote>
 <p><img src="http://guangchuangyu.gitee.io/blog_images/screenshot/cell-marker-2.jpg" alt=""></p>
 <p>数据是提供下载的，我就不下载了，直接读入R，此处只演示一下使用人的数据。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">cell_markers <span style="color:#f92672">&lt;-</span> vroom<span style="color:#f92672">::</span><span style="color:#a6e22e">vroom</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">http://bio-bigdata.hrbmu.edu.cn/CellMarker/download/Human_cell_markers.txt&#39;</span>) <span style="color:#f92672">%&gt;%</span>
-   tidyr<span style="color:#f92672">::</span><span style="color:#a6e22e">unite</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">cellMarker&#34;</span>, tissueType, cancerType, cellName, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">, &#34;</span>) <span style="color:#f92672">%&gt;%</span> 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">cell_markers <span style="color:#f92672">&lt;-</span> vroom<span style="color:#f92672">::</span><span style="color:#a6e22e">vroom</span>(<span style="color:#e6db74">&#39;http://bio-bigdata.hrbmu.edu.cn/CellMarker/download/Human_cell_markers.txt&#39;</span>) <span style="color:#f92672">%&gt;%</span>
+   tidyr<span style="color:#f92672">::</span><span style="color:#a6e22e">unite</span>(<span style="color:#e6db74">&#34;cellMarker&#34;</span>, tissueType, cancerType, cellName, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;, &#34;</span>) <span style="color:#f92672">%&gt;%</span> 
    dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">select</span>(cellMarker, geneID) <span style="color:#f92672">%&gt;%</span>
-   dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">mutate</span>(geneID <span style="color:#f92672">=</span> <span style="color:#a6e22e">strsplit</span>(geneID, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">, &#39;</span>))
+   dplyr<span style="color:#f92672">::</span><span style="color:#a6e22e">mutate</span>(geneID <span style="color:#f92672">=</span> <span style="color:#a6e22e">strsplit</span>(geneID, <span style="color:#e6db74">&#39;, &#39;</span>))
 </code></pre></div><p>整理之后，数据长这样子：</p>
 <pre><code>&gt; cell_markers
 ## # A tibble: 2,868 x 2
@@ -326,7 +326,7 @@ if (!doNotTrack) {
 </code></pre><p>然后我们就可以用clusterProfiler来做富集分析了，一如既往地使用示例数据：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(clusterProfiler)
 
-<span style="color:#a6e22e">data</span>(geneList, package<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">DOSE&#34;</span>)
+<span style="color:#a6e22e">data</span>(geneList, package<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;DOSE&#34;</span>)
 gene <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">names</span>(geneList)<span style="color:#a6e22e">[abs</span>(geneList) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>]
 </code></pre></div><p>那么分析起来，太容易，结果我用DT来展示：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">y <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">enricher</span>(gene, TERM2GENE<span style="color:#f92672">=</span>cell_markers, minGSSize<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)

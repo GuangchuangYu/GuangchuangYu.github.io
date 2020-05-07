@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -379,7 +379,7 @@ if (!doNotTrack) {
 </blockquote>
 <p><a href="https://github.com/GuangchuangYu/clusterProfiler/issues/99">这个问题</a>问说他想转KO到通路，首先这是一个常见的错误，很多人分不清<code>K</code>和<code>ko</code>，所以在我告诉他可以把<code>K number</code>转成<code>ko pathway</code>的时候，我先指出他的错误。</p>
 <p><code>ko</code> is actually pathway map. I think you are talking about <code>K</code> number mapping to <code>ko</code> pathway.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">bitr_kegg</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">K00844&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">kegg&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Path&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ko&#34;</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">bitr_kegg</span>(<span style="color:#e6db74">&#34;K00844&#34;</span>, <span style="color:#e6db74">&#34;kegg&#34;</span>, <span style="color:#e6db74">&#34;Path&#34;</span>, <span style="color:#e6db74">&#34;ko&#34;</span>)
      kegg    Path
 <span style="color:#ae81ff">1</span>  K00844 ko00010
 <span style="color:#ae81ff">2</span>  K00844 ko00051
@@ -404,9 +404,9 @@ if (!doNotTrack) {
 </blockquote>
 <p>然后对方继续问，说想要通路的名字而不是ko号。于是我随手写了个<code>ko2name</code>的函数：</p>
 <p>just write a <code>ko2name</code> function for this purpose.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">bitr_kegg</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">K00799&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">kegg&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Path&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ko&#34;</span>) <span style="color:#f92672">-&gt;</span> x
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">bitr_kegg</span>(<span style="color:#e6db74">&#34;K00799&#34;</span>, <span style="color:#e6db74">&#34;kegg&#34;</span>, <span style="color:#e6db74">&#34;Path&#34;</span>, <span style="color:#e6db74">&#34;ko&#34;</span>) <span style="color:#f92672">-&gt;</span> x
 <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">ko2name</span>(x<span style="color:#f92672">$</span>Path) <span style="color:#f92672">-&gt;</span> y
-<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">merge</span>(x, y, by.x<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Path&#39;</span>, by.y<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">ko&#39;</span>)
+<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">merge</span>(x, y, by.x<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Path&#39;</span>, by.y<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ko&#39;</span>)
      Path   kegg                                         name
 <span style="color:#ae81ff">1</span> ko00480 K00799                       Glutathione metabolism
 <span style="color:#ae81ff">2</span> ko00980 K00799 Metabolism of xenobiotics by cytochrome P450

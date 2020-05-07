@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Thomas Lin Pedersen简直是个天才，最近patchwork动作很大，看到我都准备转投它的怀抱，把旧爱cowplot给扔了。
@@ -370,20 +370,20 @@ if (!doNotTrack) {
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(mpg, disp)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图一&#39;</span>)
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;图一&#39;</span>)
 
 p2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">geom_boxplot</span>(<span style="color:#a6e22e">aes</span>(gear, disp, group <span style="color:#f92672">=</span> gear)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图二&#39;</span>)
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;图二&#39;</span>)
 
 p3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(hp, wt, colour <span style="color:#f92672">=</span> mpg)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图三&#39;</span>)
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;图三&#39;</span>)
 
 p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">geom_bar</span>(<span style="color:#a6e22e">aes</span>(gear)) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">facet_wrap</span>(<span style="color:#f92672">~</span>cyl) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">图四&#39;</span>)
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#39;图四&#39;</span>)
 </code></pre></div><h2 id="拼图专用空白">拼图专用空白</h2>
 <p>用<code>plot_spacer()</code>来填空白，一如既往地用<code>+</code>号来拼：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">plot_spacer</span>() <span style="color:#f92672">+</span> 
@@ -401,7 +401,7 @@ p4 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/patchwork/2019-11-22_18-05_1.png" alt=""></p>
 <h2 id="超越网格">超越网格</h2>
 <p>拼图都是把整张图分为网格，往里面填，当你要拼复杂点的时候，那就是嵌套去拼，比如在<code>cowplot</code>里，<code>plot_grid</code>套<code>plot_grid</code>，这样你才能够使一张图在网格里占用不止一个格子。但嵌套有时候很难保证对齐。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">layout <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">layout <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;
 </span><span style="color:#e6db74">##BBBB
 </span><span style="color:#e6db74">AACCDD
 </span><span style="color:#e6db74">##CCDD
@@ -423,16 +423,16 @@ p1 <span style="color:#f92672">+</span> p2 <span style="color:#f92672">+</span>
 <p>指定<code>guides='collect'</code>可以帮助我们把<code>legend</code>都给集中在一起，放到图的一侧：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(mtcars) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(mpg, disp, colour <span style="color:#f92672">=</span> mpg, size <span style="color:#f92672">=</span> wt))
-g1 <span style="color:#f92672">&lt;-</span> g <span style="color:#f92672">+</span> <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">图一&#34;</span>)
-g2 <span style="color:#f92672">&lt;-</span> g <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_colour_viridis_c</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">图二&#34;</span>)
+g1 <span style="color:#f92672">&lt;-</span> g <span style="color:#f92672">+</span> <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#34;图一&#34;</span>)
+g2 <span style="color:#f92672">&lt;-</span> g <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_colour_viridis_c</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#34;图二&#34;</span>)
 
 (p3 <span style="color:#f92672">|</span> (g1 <span style="color:#f92672">/</span> g2)) <span style="color:#f92672">+</span> 
-	<span style="color:#a6e22e">plot_layout</span>(guides <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">collect&#39;</span>)
+	<span style="color:#a6e22e">plot_layout</span>(guides <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;collect&#39;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/patchwork/2019-11-22_18-07.png" alt=""></p>
 <p>如果想要图例单独放在一个格子，用<code>guide_area()</code>：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">g1 <span style="color:#f92672">+</span> p2 <span style="color:#f92672">+</span> p3 <span style="color:#f92672">+</span>
 	<span style="color:#a6e22e">guide_area</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">plot_layout</span>(guides <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">collect&#39;</span>)
+  <span style="color:#a6e22e">plot_layout</span>(guides <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;collect&#39;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/patchwork/2019-11-22_18-08.png" alt=""></p>
               
             </div>

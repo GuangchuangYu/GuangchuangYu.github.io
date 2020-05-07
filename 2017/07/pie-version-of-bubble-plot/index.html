@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="在《ggimage：ggplot2中愉快地使用图片》一文中，我展示了「嵌套式绘图」，中间生成了多个饼图，再用这些产生的饼图用于做图，绘制出饼图版的气泡图：
@@ -307,16 +307,16 @@ if (!doNotTrack) {
 <span style="color:#a6e22e">library</span>(ggimage)
 <span style="color:#a6e22e">library</span>(ggrepel)
 
-crime <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://datasets.flowingdata.com/crimeRatesByState2005.tsv&#34;</span>,
-                  header<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\t&#34;</span>, stringsAsFactors<span style="color:#f92672">=</span>F)
+crime <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;http://datasets.flowingdata.com/crimeRatesByState2005.tsv&#34;</span>,
+                  header<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\t&#34;</span>, stringsAsFactors<span style="color:#f92672">=</span>F)
 </code></pre></div><p>定义一个<code>plot_pie</code>函数，用于画饼图，并返回ggplot对象。将这一函数应用于<code>crime</code>数据每一行，并把图对象又存回<code>crime</code>中。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">plot_pie <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(i) {
     df <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gather</span>(crime[i,], type, value, murder<span style="color:#f92672">:</span>motor_vehicle_theft)
     <span style="color:#a6e22e">ggplot</span>(df, <span style="color:#a6e22e">aes</span>(x<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, value,fill<span style="color:#f92672">=</span>type)) <span style="color:#f92672">+</span>
-        <span style="color:#a6e22e">geom_col</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">coord_polar</span>(theta <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">y&#39;</span>) <span style="color:#f92672">+</span>
-        <span style="color:#a6e22e">ggtitle</span>(crime[i, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">state&#34;</span>]) <span style="color:#f92672">+</span>
+        <span style="color:#a6e22e">geom_col</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">coord_polar</span>(theta <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;y&#39;</span>) <span style="color:#f92672">+</span>
+        <span style="color:#a6e22e">ggtitle</span>(crime[i, <span style="color:#e6db74">&#34;state&#34;</span>]) <span style="color:#f92672">+</span>
         <span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_transparent</span>() <span style="color:#f92672">+</span>
-        <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>,
+        <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span>,
               plot.title <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_text</span>(size<span style="color:#f92672">=</span><span style="color:#a6e22e">rel</span>(<span style="color:#ae81ff">6</span>), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>))
 }
 
@@ -332,14 +332,14 @@ crime<span style="color:#f92672">$</span>height <span style="color:#f92672">&lt;
 
 leg1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">gtable_filter</span>(
     <span style="color:#a6e22e">ggplot_gtable</span>(
-        <span style="color:#a6e22e">ggplot_build</span>(<span style="color:#a6e22e">plot_pie</span>(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">right&#34;</span>))
-    ), <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">guide-box&#34;</span>)
+        <span style="color:#a6e22e">ggplot_build</span>(<span style="color:#a6e22e">plot_pie</span>(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;right&#34;</span>))
+    ), <span style="color:#e6db74">&#34;guide-box&#34;</span>)
 </code></pre></div><p>最后是出图，用<code>geom_subview</code>加图例，再用<code>geom_subview</code>加饼图，最后加<code>geom_text_repel</code>图层，写上州名。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(crime, <span style="color:#a6e22e">aes</span>(murder, Robbery)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_subview</span>(leg1, x<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, y<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>) <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">geom_subview</span>(crime<span style="color:#f92672">$</span>pie, crime<span style="color:#f92672">$</span>murder, crime<span style="color:#f92672">$</span>Robbery, width<span style="color:#f92672">=</span>crime<span style="color:#f92672">$</span>width, height<span style="color:#f92672">=</span>crime<span style="color:#f92672">$</span>height) <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">geom_text_repel</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span>state))
 
-<span style="color:#a6e22e">ggsave</span>(p, file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">bubble_pie.png&#34;</span>)
+<span style="color:#a6e22e">ggsave</span>(p, file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bubble_pie.png&#34;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.github.io/blog_images/R/ggimage/bubble_pie.png" alt=""></p>
 <h2 id="ggimage系列">ggimage系列</h2>
 <ul>

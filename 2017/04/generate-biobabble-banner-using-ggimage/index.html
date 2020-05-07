@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -327,23 +327,23 @@ if (!doNotTrack) {
 <h2 id="加载中文字体">加载中文字体</h2>
 <p>为了打几个中文字，需要先加载字体，这里我用showtext。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(showtext)
-<span style="color:#a6e22e">font.add</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">heiti&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">/Library/Fonts/华文黑体.ttf&#34;</span>)
+<span style="color:#a6e22e">font.add</span>(<span style="color:#e6db74">&#34;heiti&#34;</span>, <span style="color:#e6db74">&#34;/Library/Fonts/华文黑体.ttf&#34;</span>)
 <span style="color:#a6e22e">showtext.auto</span>()
 </code></pre></div><h2 id="读图">读图</h2>
 <p>两个图，一个是logo，一个是二维码，分别用<strong>EBImage</strong>读入</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(EBImage)
 <span style="color:#a6e22e">require</span>(grid)
 
-gc <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">rasterGrob</span>(image<span style="color:#f92672">=</span><span style="color:#a6e22e">readImage</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">gc.png&#39;</span>))
-page <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">rasterGrob</span>(image<span style="color:#f92672">=</span><span style="color:#a6e22e">readImage</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">biobabble_page.png&#39;</span>))
+gc <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">rasterGrob</span>(image<span style="color:#f92672">=</span><span style="color:#a6e22e">readImage</span>(<span style="color:#e6db74">&#39;gc.png&#39;</span>))
+page <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">rasterGrob</span>(image<span style="color:#f92672">=</span><span style="color:#a6e22e">readImage</span>(<span style="color:#e6db74">&#39;biobabble_page.png&#39;</span>))
 </code></pre></div><h2 id="图上嵌图">图上嵌图</h2>
 <p>这里用我自己写的<strong>ggimage</strong>包的<strong>geom_subview</strong>来嵌图，然后无非打几个字，设一下字体。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggimage)
 pg <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(d<span style="color:#f92672">=</span><span style="color:#a6e22e">data.frame</span>(x<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">10</span>), y<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">5</span>)), <span style="color:#a6e22e">aes</span>(x, y)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_blank</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">coord_fixed</span>()
 pg <span style="color:#f92672">&lt;-</span> pg<span style="color:#f92672">+</span><span style="color:#a6e22e">geom_subview</span>(gc, x<span style="color:#f92672">=</span><span style="color:#ae81ff">2.5</span>, y<span style="color:#f92672">=</span><span style="color:#ae81ff">2.5</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">5.1</span>, height<span style="color:#f92672">=</span><span style="color:#ae81ff">5.1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_subview</span>(page, x<span style="color:#f92672">=</span><span style="color:#ae81ff">7.5</span>, y<span style="color:#f92672">=</span><span style="color:#ae81ff">2.5</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">4.8</span>, height<span style="color:#f92672">=</span><span style="color:#ae81ff">4.8</span>)
 
-pg <span style="color:#f92672">&lt;-</span> pg<span style="color:#f92672">+</span><span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">labs</span>(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">长按二维码关注biobabble&#34;</span>, subtitle<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">欢迎分享朋友圈&#34;</span>,caption<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">guangchuangyu@gmail.com&#39;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(title<span style="color:#f92672">=</span><span style="color:#a6e22e">element_text</span>(family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">heiti&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>))
-<span style="color:#a6e22e">ggsave</span>(pg, file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">biobabble_banner.png&#34;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, height<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
+pg <span style="color:#f92672">&lt;-</span> pg<span style="color:#f92672">+</span><span style="color:#a6e22e">theme_void</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">labs</span>(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;长按二维码关注biobabble&#34;</span>, subtitle<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;欢迎分享朋友圈&#34;</span>,caption<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;guangchuangyu@gmail.com&#39;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(title<span style="color:#f92672">=</span><span style="color:#a6e22e">element_text</span>(family<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;heiti&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>))
+<span style="color:#a6e22e">ggsave</span>(pg, file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;biobabble_banner.png&#34;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>, height<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
 </code></pre></div><p>于是产生下图：</p>
 <p><img src="https://guangchuangyu.github.io/blog_images/biobabble_banner.png" alt=""></p>
               

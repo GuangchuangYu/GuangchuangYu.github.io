@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -439,30 +439,30 @@ sh run.sh
 <p><strong><em>annotatePeak</em></strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e">#!/usr/bin/env Rscript</span>
 
-<span style="color:#a6e22e">library</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">optparse&#34;</span>)
+<span style="color:#a6e22e">library</span>(<span style="color:#e6db74">&#34;optparse&#34;</span>)
 option_list <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</span>(
-    <span style="color:#a6e22e">make_option</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">-i&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">--input_file&#34;</span>), help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">input bed file&#34;</span>),
-    <span style="color:#a6e22e">make_option</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">-o&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">--output_file&#34;</span>), help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">output file&#34;</span>)
+    <span style="color:#a6e22e">make_option</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;-i&#34;</span>, <span style="color:#e6db74">&#34;--input_file&#34;</span>), help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;input bed file&#34;</span>),
+    <span style="color:#a6e22e">make_option</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;-o&#34;</span>, <span style="color:#e6db74">&#34;--output_file&#34;</span>), help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;output file&#34;</span>)
     )
 opt <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">parse_args</span>(<span style="color:#a6e22e">OptionParser</span>(option_list<span style="color:#f92672">=</span>option_list))
 
 <span style="color:#a6e22e">library</span>(ChIPseeker)
 <span style="color:#75715e">## using default parameter to simplify this example</span>
 res <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">annotatePeak</span>(opt<span style="color:#f92672">$</span>input_file)
-<span style="color:#a6e22e">write.table</span>(<span style="color:#a6e22e">as.data.frame</span>(res), file<span style="color:#f92672">=</span>opt<span style="color:#f92672">$</span>output_file, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\t&#34;</span>)
+<span style="color:#a6e22e">write.table</span>(<span style="color:#a6e22e">as.data.frame</span>(res), file<span style="color:#f92672">=</span>opt<span style="color:#f92672">$</span>output_file, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\t&#34;</span>)
 </code></pre></div><p>这样子就造出了一个命令行的annotatePeak</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">$</span> ./annotatePeak <span style="color:#f92672">-</span>i GSM1295076_CBX6_BF_ChipSeq_mergedReps_peaks.bed.gz \
   <span style="color:#f92672">-</span>o annotatePeak_test.txt
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> loading peak file...				         <span style="color:#ae81ff">2015</span><span style="color:#ae81ff">-11</span><span style="color:#ae81ff">-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">24</span>
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> preparing features information...		 <span style="color:#ae81ff">2015</span><span style="color:#ae81ff">-11</span><span style="color:#ae81ff">-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">24</span>
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> identifying nearest features...		     <span style="color:#ae81ff">2015</span><span style="color:#ae81ff">-11</span><span style="color:#ae81ff">-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">25</span>
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> calculating distance from peak to TSS...	 <span style="color:#ae81ff">2015</span><span style="color:#ae81ff">-11</span><span style="color:#ae81ff">-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">25</span>
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> assigning genomic annotation...		     <span style="color:#ae81ff">2015</span><span style="color:#ae81ff">-11</span><span style="color:#ae81ff">-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">25</span>
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> assigning chromosome lengths			     <span style="color:#ae81ff">2015</span><span style="color:#ae81ff">-11</span><span style="color:#ae81ff">-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">39</span>
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> done...    					             <span style="color:#ae81ff">2015</span><span style="color:#ae81ff">-11</span><span style="color:#ae81ff">-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">39</span>
+<span style="color:#f92672">&gt;&gt;</span> loading peak file...				         <span style="color:#ae81ff">2015-11-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">24</span>
+<span style="color:#f92672">&gt;&gt;</span> preparing features information...		 <span style="color:#ae81ff">2015-11-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">24</span>
+<span style="color:#f92672">&gt;&gt;</span> identifying nearest features...		     <span style="color:#ae81ff">2015-11-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">25</span>
+<span style="color:#f92672">&gt;&gt;</span> calculating distance from peak to TSS...	 <span style="color:#ae81ff">2015-11-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">25</span>
+<span style="color:#f92672">&gt;&gt;</span> assigning genomic annotation...		     <span style="color:#ae81ff">2015-11-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">25</span>
+<span style="color:#f92672">&gt;&gt;</span> assigning chromosome lengths			     <span style="color:#ae81ff">2015-11-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">39</span>
+<span style="color:#f92672">&gt;&gt;</span> done...    					             <span style="color:#ae81ff">2015-11-13</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">:</span><span style="color:#ae81ff">22</span><span style="color:#f92672">:</span><span style="color:#ae81ff">39</span>
 Warning message<span style="color:#f92672">:</span>
 In <span style="color:#a6e22e">loadTxDb</span>(TxDb) <span style="color:#f92672">:</span>
-<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> TxDb is not specified, use <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">TxDb.Hsapiens.UCSC.hg19.knownGene&#39;</span> by default...
+<span style="color:#f92672">&gt;&gt;</span> TxDb is not specified, use <span style="color:#e6db74">&#39;TxDb.Hsapiens.UCSC.hg19.knownGene&#39;</span> by default...
 </code></pre></div><h3 id="定义xml">定义XML</h3>
 <p>使用Galaxy界面化，我们需要定义参数、输入、输出等等，通过XML文件来指定：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd galaxy/tools
@@ -470,20 +470,20 @@ mkdir mytools
 vim annotatePeak.xml
 </code></pre></div><p>我们编辑annotatePeak.xml文件，内容如下：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;tool</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;annotatePeak&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;annotatePeak&#34;</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;1.0&#34;</span><span style="color:#f92672">&gt;</span>
-	<span style="color:#f92672">&lt;description</span><span style="color:#f92672">&gt;</span>annotate ChIP seq data (BED file)<span style="color:#f92672">&lt;/description&gt;</span>
-	<span style="color:#f92672">&lt;command</span><span style="color:#f92672">&gt;</span> annotatePeak -i $input -o $output &gt; $output_log <span style="color:#f92672">&lt;/command&gt;</span>
-	<span style="color:#f92672">&lt;inputs</span><span style="color:#f92672">&gt;</span>
+	<span style="color:#f92672">&lt;description&gt;</span>annotate ChIP seq data (BED file)<span style="color:#f92672">&lt;/description&gt;</span>
+	<span style="color:#f92672">&lt;command&gt;</span> annotatePeak -i $input -o $output &gt; $output_log <span style="color:#f92672">&lt;/command&gt;</span>
+	<span style="color:#f92672">&lt;inputs&gt;</span>
 	  <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;input&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;data&#34;</span> <span style="color:#a6e22e">format=</span><span style="color:#e6db74">&#34;bed&#34;</span>
 		 <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;BED file of ChIP peaks&#34;</span><span style="color:#f92672">/&gt;</span>
 	<span style="color:#f92672">&lt;/inputs&gt;</span>
-	<span style="color:#f92672">&lt;outputs</span><span style="color:#f92672">&gt;</span>
+	<span style="color:#f92672">&lt;outputs&gt;</span>
 		<span style="color:#f92672">&lt;data</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;output&#34;</span> <span style="color:#a6e22e">format=</span><span style="color:#e6db74">&#34;bed&#34;</span><span style="color:#f92672">/&gt;</span>
 		<span style="color:#f92672">&lt;data</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;output_log&#34;</span> <span style="color:#a6e22e">format=</span><span style="color:#e6db74">&#34;txt&#34;</span><span style="color:#f92672">/&gt;</span>
 	<span style="color:#f92672">&lt;/outputs&gt;</span>
-	<span style="color:#f92672">&lt;stdio</span><span style="color:#f92672">&gt;</span>
+	<span style="color:#f92672">&lt;stdio&gt;</span>
 		<span style="color:#f92672">&lt;exit_code</span> <span style="color:#a6e22e">range=</span><span style="color:#e6db74">&#34;1:&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;fatal&#34;</span> <span style="color:#f92672">/&gt;</span>
 	<span style="color:#f92672">&lt;/stdio&gt;</span>
-	<span style="color:#f92672">&lt;help</span><span style="color:#f92672">&gt;</span>see http://www.bioconductor.org/packages/ChIPseeker
+	<span style="color:#f92672">&lt;help&gt;</span>see http://www.bioconductor.org/packages/ChIPseeker
 	      for details and examples<span style="color:#f92672">&lt;/help&gt;</span>
 <span style="color:#f92672">&lt;/tool&gt;</span>
 </code></pre></div><h3 id="配置galaxy工具">配置Galaxy工具</h3>

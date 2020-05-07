@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="在实际应用中，尤其是sequence数据，应该尽可能避免把整个文件读入内存，文件有可能几个G甚至更大，可能引起内存崩溃。应该放在数据库里，建索引以检索数据。Bioperl有一个module,
@@ -292,20 +292,20 @@ Bio::DB::Fasta可以实现这个，这个模块在没有安装bioperl的情况�
 <span style="color:#66d9ef">my</span> $dbFile <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">“</span><span style="color:#e6db74">/home/</span>ygc<span style="color:#e6db74">/Research/</span>Data<span style="color:#f92672">/</span><span style="color:#ae81ff">3</span>utr_hg18<span style="color:#f92672">.</span>fa<span style="color:#960050;background-color:#1e0010">”</span>; 
  
 <span style="color:#75715e"># create database from fasta files…  </span>
-<span style="color:#66d9ef">my</span> $db <span style="color:#f92672">=</span> Bio::DB::Fasta<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#66d9ef">new</span>($dbFile); 
+<span style="color:#66d9ef">my</span> $db <span style="color:#f92672">=</span> Bio::DB::Fasta<span style="color:#f92672">-&gt;</span><span style="color:#66d9ef">new</span>($dbFile); 
 
 <span style="color:#75715e">## simple access  </span>
-<span style="color:#66d9ef">my</span> @id <span style="color:#f92672">=</span> $db<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>ids; <span style="color:#75715e"># get all id…  </span>
-<span style="color:#66d9ef">my</span> $obj <span style="color:#f92672">=</span> $db<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>get_Seq_by_id(<span style="color:#e6db74">&#34;NM_032129&#34;</span>); <span style="color:#75715e"># get sequence object by id  </span>
-<span style="color:#66d9ef">my</span> $seq <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>seq; <span style="color:#75715e"># get sequence  </span>
-<span style="color:#66d9ef">my</span> $length <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>length; <span style="color:#75715e"># get the length of the sequence  # etc…  </span>
+<span style="color:#66d9ef">my</span> @id <span style="color:#f92672">=</span> $db<span style="color:#f92672">-&gt;</span>ids; <span style="color:#75715e"># get all id…  </span>
+<span style="color:#66d9ef">my</span> $obj <span style="color:#f92672">=</span> $db<span style="color:#f92672">-&gt;</span>get_Seq_by_id(<span style="color:#e6db74">&#34;NM_032129&#34;</span>); <span style="color:#75715e"># get sequence object by id  </span>
+<span style="color:#66d9ef">my</span> $seq <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-&gt;</span>seq; <span style="color:#75715e"># get sequence  </span>
+<span style="color:#66d9ef">my</span> $length <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-&gt;</span>length; <span style="color:#75715e"># get the length of the sequence  # etc…  </span>
 
 <span style="color:#75715e">## Bioperl-style access  </span>
-<span style="color:#66d9ef">my</span> $stream <span style="color:#f92672">=</span> Bio::DB::Fasta<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#66d9ef">new</span>($dbFile)<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>get_PrimarySeq_stream; 
+<span style="color:#66d9ef">my</span> $stream <span style="color:#f92672">=</span> Bio::DB::Fasta<span style="color:#f92672">-&gt;</span><span style="color:#66d9ef">new</span>($dbFile)<span style="color:#f92672">-&gt;</span>get_PrimarySeq_stream; 
 
-<span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">my</span> $obj <span style="color:#f92672">=</span> $stream<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>next_seq){     
-    <span style="color:#66d9ef">my</span> $id <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>display_id;     
-    <span style="color:#66d9ef">my</span> $seq <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>seq;     
+<span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">my</span> $obj <span style="color:#f92672">=</span> $stream<span style="color:#f92672">-&gt;</span>next_seq){     
+    <span style="color:#66d9ef">my</span> $id <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-&gt;</span>display_id;     
+    <span style="color:#66d9ef">my</span> $seq <span style="color:#f92672">=</span> $obj<span style="color:#f92672">-&gt;</span>seq;     
     <span style="color:#75715e">## process the sequence…  </span>
 }
 </code></pre></div>

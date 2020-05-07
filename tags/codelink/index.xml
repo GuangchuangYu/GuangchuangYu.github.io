@@ -23,26 +23,26 @@
 &lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(biomaRt)
 
 &lt;span style=&#34;color:#75715e&#34;&gt;#选取数据库&lt;/span&gt;
-ensembl &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;useMart&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ensembl&amp;#34;&lt;/span&gt;, dataset &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;hsapiens_gene_ensembl&amp;#34;&lt;/span&gt;)
+ensembl &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;useMart&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ensembl&amp;#34;&lt;/span&gt;, dataset &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hsapiens_gene_ensembl&amp;#34;&lt;/span&gt;)
 
 &lt;span style=&#34;color:#75715e&#34;&gt;#获取可供检索的attribute&lt;/span&gt;
 attributes&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;listAttributes&lt;/span&gt;(mart&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ensembl)
 
 &lt;span style=&#34;color:#75715e&#34;&gt;#看一下attributes里是否有codelink，得到以下的结果。&lt;/span&gt;
-attributes&lt;span style=&#34;color:#a6e22e&#34;&gt;[grep&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;codelink&amp;#34;&lt;/span&gt;,attributes[,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]), ]
+attributes&lt;span style=&#34;color:#a6e22e&#34;&gt;[grep&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;codelink&amp;#34;&lt;/span&gt;,attributes[,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]), ]
 
 name description
 &lt;span style=&#34;color:#ae81ff&#34;&gt;21&lt;/span&gt; codelink Codelink ID
 &lt;span style=&#34;color:#75715e&#34;&gt;#再搜一下其它我想要的ID&lt;/span&gt;
 
 &lt;span style=&#34;color:#75715e&#34;&gt;#读进含有codelink ID的文件。&lt;/span&gt;
-mrna_id &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;read.table&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;mrna_id.txt&amp;#34;&lt;/span&gt;)
+mrna_id &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;read.table&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mrna_id.txt&amp;#34;&lt;/span&gt;)
 
 &lt;span style=&#34;color:#75715e&#34;&gt;#进行ID映射。&lt;/span&gt;
-idmap &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getBM&lt;/span&gt;(attributes&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;codelink&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;refseq_dna&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;external_gene_id&amp;#34;&lt;/span&gt;,
-                            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;embl&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;hgnc_id&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;hgnc_symbol&amp;#34;&lt;/span&gt;), 
-               filters &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;codelink&amp;#34;&lt;/span&gt;, values&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mrna_id[,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;],
-               mart&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ensembl,output&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;list&amp;#34;&lt;/span&gt;)
+idmap &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getBM&lt;/span&gt;(attributes&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;codelink&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;refseq_dna&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;external_gene_id&amp;#34;&lt;/span&gt;,
+                            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;embl&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hgnc_id&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hgnc_symbol&amp;#34;&lt;/span&gt;), 
+               filters &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;codelink&amp;#34;&lt;/span&gt;, values&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mrna_id[,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;],
+               mart&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ensembl,output&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;list&amp;#34;&lt;/span&gt;)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     

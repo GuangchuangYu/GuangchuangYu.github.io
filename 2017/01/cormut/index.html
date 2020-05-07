@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -296,7 +296,7 @@ if (!doNotTrack) {
 <p>之前讲过某个R包我一看一堆bug，直接放弃，今天倒是拿出来晒一下，不为别的，我只想说一句，一知半解是很危险的，盲目相信软件也是很危险的。</p>
 <h2 id="比对不比对这是个严肃的问题">比对？不比对？这是个严肃的问题</h2>
 <p>话说此包的输入是alignment，我刚开始也没看代码，照着示例跑一下，但读序列的时候，我就惊呆了，怎么读个fasta这么慢，于是我开始看代码，不看不知道，一看吓一跳：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">seq_f01<span style="color:#f92672">=</span><span style="color:#a6e22e">as.list</span>(<span style="color:#a6e22e">sapply</span>(allSeq,<span style="color:#a6e22e">function</span>(x)<span style="color:#a6e22e">c2s</span>(<span style="color:#a6e22e">s2c</span>(x)[ref01<span style="color:#f92672">!=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">-&#34;</span>])))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">seq_f01<span style="color:#f92672">=</span><span style="color:#a6e22e">as.list</span>(<span style="color:#a6e22e">sapply</span>(allSeq,<span style="color:#a6e22e">function</span>(x)<span style="color:#a6e22e">c2s</span>(<span style="color:#a6e22e">s2c</span>(x)[ref01<span style="color:#f92672">!=</span><span style="color:#e6db74">&#34;-&#34;</span>])))
 </code></pre></div><p>这个s2c把string变成character vector，c2s则反过来，这一句就干一件简单的事情，就是把所有string（fasta读进来的sequences）中的-全部删除。就这么一切一贴，非常非常慢，简单地用<code>gsub(“-“, “”, allSeq)</code>就可以非常快速做同样的事情。
 然后这时候我们似乎觉得那里不妥！你把<code>-</code>全删了，等于是把比对序列变成了非比对序列。那么你要求输入是比对序列是为什么？！
 确实序列必须得是比对好的，因为这包就是要检测correlated mutations，它比的是codon, 这必须是比对好的序列才行，但在读序列的时候，就把-给删了，序列不再是比对好的，本来对应的codon现在必然很多都移位了，这在一开始就挖了巨大的坑。后面所有的计算必须都是辣鸡了。</p>
@@ -315,12 +315,12 @@ Nnum<span style="color:#f92672">=</span>NS<span style="color:#f92672">+</span>NY
 <span style="color:#a6e22e">for</span>(ii in NYs<span style="color:#f92672">:</span>Nnum){
 	per_item<span style="color:#f92672">=</span><span style="color:#a6e22e">choose</span>(Nnum,ii)<span style="color:#f92672">*</span>(q^ii)<span style="color:#f92672">*</span>((<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>q)<span style="color:#a6e22e">^</span>(Nnum<span style="color:#f92672">-</span>ii))
 	<span style="color:#75715e">#avoid the appear of NaN</span>
-	<span style="color:#a6e22e">if</span>(per_item<span style="color:#f92672">!=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">NaN&#34;</span>){
+	<span style="color:#a6e22e">if</span>(per_item<span style="color:#f92672">!=</span><span style="color:#e6db74">&#34;NaN&#34;</span>){
 		LOD<span style="color:#f92672">=</span>per_item<span style="color:#f92672">+</span>LOD
 	}
 	<span style="color:#75715e">#print(choose(dim(mat)[2],i)*(q^i)*((1-q)^(dim(mat)[2]-i)))</span>
 }
-LOD<span style="color:#f92672">=</span><span style="color:#f92672">-</span><span style="color:#a6e22e">log10</span>(LOD)
+LOD<span style="color:#f92672">=-</span><span style="color:#a6e22e">log10</span>(LOD)
 </code></pre></div><p>我们知道算p值是算积分面积，它倒好，离散性分布这一个个数字来计算，然后求合。
 这里用的是二项式分布：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">per_item<span style="color:#f92672">=</span><span style="color:#a6e22e">choose</span>(Nnum,ii)(q^ii)((<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>q)<span style="color:#a6e22e">^</span>(Nnum<span style="color:#f92672">-</span>ii))

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="上了几天的课，http://ibw2011.fmmu.edu.cn/schedule.htm
@@ -441,26 +441,26 @@ the likelihood)</p>
 <span style="color:#75715e">##&#39; @return log likelihood ratio</span>
 <span style="color:#75715e">##&#39; @author Guangchuang Yu</span>
 ECgnfinder <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(trainingSequence, testingSequence, backgroundSequence, print<span style="color:#f92672">=</span><span style="color:#66d9ef">FALSE</span>) {
-    <span style="color:#a6e22e">print </span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">reading training sequence file...&#34;</span>)
+    <span style="color:#a6e22e">print </span>(<span style="color:#e6db74">&#34;reading training sequence file...&#34;</span>)
     trainingFasta <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">readFASTA</span>(trainingSequence)
     trainSeq <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(trainingFasta, <span style="color:#a6e22e">function</span>(i) i<span style="color:#f92672">$</span>seq)
 
-    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">building Transition Probability Matrix...&#34;</span>)
+    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;building Transition Probability Matrix...&#34;</span>)
     TPM <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getTPM</span>(trainSeq)
 
-    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">building codon usage table...&#34;</span>)
+    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;building codon usage table...&#34;</span>)
     codonUsage <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getCodonUsage</span>(trainSeq)
 
-    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">building NucleoTide table...&#34;</span>)
+    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;building NucleoTide table...&#34;</span>)
     NtUsage <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getNtUsage</span>(backgroundSequence)
 
 
-    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">reading testing sequence file...&#34;</span>)
+    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;reading testing sequence file...&#34;</span>)
     testing <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">readFASTA</span>(testingSequence)
     testingSeq <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(testing, <span style="color:#a6e22e">function</span>(i) i<span style="color:#f92672">$</span>seq)
 
     x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(testingSeq, logLikelihood, transition<span style="color:#f92672">=</span>TPM, codonusage<span style="color:#f92672">=</span>codonUsage, background<span style="color:#f92672">=</span>NtUsage)
-    <span style="color:#a6e22e">names</span>(x) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Sequence&#34;</span>, <span style="color:#a6e22e">seq_along</span>(testingSeq), sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#a6e22e">names</span>(x) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste</span>(<span style="color:#e6db74">&#34;Sequence&#34;</span>, <span style="color:#a6e22e">seq_along</span>(testingSeq), sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>)
     <span style="color:#a6e22e">if </span>(print) {
         x
     }
@@ -476,8 +476,8 @@ ECgnfinder <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">
 <span style="color:#75715e">##&#39; @return a list of list which containing desc and seq.</span>
 <span style="color:#75715e">##&#39; @author Guangchuang Yu</span>
 readFASTA <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(file) {
-    x<span style="color:#f92672">=</span><span style="color:#a6e22e">scan</span>(file, what<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\n&#34;</span>)
-    idx <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">grep</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&gt;&#34;</span>, x)
+    x<span style="color:#f92672">=</span><span style="color:#a6e22e">scan</span>(file, what<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\n&#34;</span>)
+    idx <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">grep</span>(<span style="color:#e6db74">&#34;&gt;&#34;</span>, x)
     fasta <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</span>()
     <span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#a6e22e">length</span>(idx)) {
             desc <span style="color:#f92672">&lt;-</span> x[idx[i]]
@@ -488,7 +488,7 @@ readFASTA <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">f
             }
             seq.idx <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(idx[i]<span style="color:#ae81ff">+1</span>, stop)
             s <span style="color:#f92672">&lt;-</span> x[seq.idx]
-            s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste</span>(s, collapse<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>)
+            s <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste</span>(s, collapse<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>)
             ss <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</span>(desc<span style="color:#f92672">=</span>desc, seq<span style="color:#f92672">=</span>s)
             fasta[i] <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</span>(ss)
     }
@@ -526,7 +526,7 @@ getTPM <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">func
             <span style="color:#a6e22e">if </span>(codonI <span style="color:#f92672">%in%</span> codons <span style="color:#f92672">&amp;</span> codonJ <span style="color:#f92672">%in%</span> codons) {
                 transition[codonI, codonJ] <span style="color:#f92672">&lt;-</span> transition[codonI, codonJ] <span style="color:#ae81ff">+1</span>
             } else {
-                <span style="color:#a6e22e">warning</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codon &#34;</span>, codonI, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> or &#34;</span>, codonJ, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> which does not defined was detected...&#34;</span>)
+                <span style="color:#a6e22e">warning</span>(<span style="color:#e6db74">&#34;codon &#34;</span>, codonI, <span style="color:#e6db74">&#34; or &#34;</span>, codonJ, <span style="color:#e6db74">&#34; which does not defined was detected...&#34;</span>)
             }
         }
     }
@@ -538,22 +538,22 @@ getTPM <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">func
 }
 
 getCodon <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>() {
-    codons <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TTT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TTC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TTA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TTG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CTT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CTC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CTA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CTG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ATT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ATC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ATA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ATG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GTT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GTC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GTA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GTG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TCT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TCC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TCA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TCG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CCT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CCC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CCA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CCG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ACT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ACC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ACA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ACG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GCT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GCC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GCA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GCG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TAT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TAC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TAA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TAG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CAT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CAC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CAA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CAG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AAT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AAC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AAA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AAG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GAT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GAC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GAA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GAG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TGT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TGC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TGA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TGG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CGT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CGC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CGA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CGG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AGT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AGC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AGA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">AGG&#34;</span>,
-                <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GGT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GGC&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GGA&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GGG&#34;</span>
+    codons <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;TTT&#34;</span>, <span style="color:#e6db74">&#34;TTC&#34;</span>, <span style="color:#e6db74">&#34;TTA&#34;</span>, <span style="color:#e6db74">&#34;TTG&#34;</span>,
+                <span style="color:#e6db74">&#34;CTT&#34;</span>, <span style="color:#e6db74">&#34;CTC&#34;</span>, <span style="color:#e6db74">&#34;CTA&#34;</span>, <span style="color:#e6db74">&#34;CTG&#34;</span>,
+                <span style="color:#e6db74">&#34;ATT&#34;</span>, <span style="color:#e6db74">&#34;ATC&#34;</span>, <span style="color:#e6db74">&#34;ATA&#34;</span>, <span style="color:#e6db74">&#34;ATG&#34;</span>,
+                <span style="color:#e6db74">&#34;GTT&#34;</span>, <span style="color:#e6db74">&#34;GTC&#34;</span>, <span style="color:#e6db74">&#34;GTA&#34;</span>, <span style="color:#e6db74">&#34;GTG&#34;</span>,
+                <span style="color:#e6db74">&#34;TCT&#34;</span>, <span style="color:#e6db74">&#34;TCC&#34;</span>, <span style="color:#e6db74">&#34;TCA&#34;</span>, <span style="color:#e6db74">&#34;TCG&#34;</span>,
+                <span style="color:#e6db74">&#34;CCT&#34;</span>, <span style="color:#e6db74">&#34;CCC&#34;</span>, <span style="color:#e6db74">&#34;CCA&#34;</span>, <span style="color:#e6db74">&#34;CCG&#34;</span>,
+                <span style="color:#e6db74">&#34;ACT&#34;</span>, <span style="color:#e6db74">&#34;ACC&#34;</span>, <span style="color:#e6db74">&#34;ACA&#34;</span>, <span style="color:#e6db74">&#34;ACG&#34;</span>,
+                <span style="color:#e6db74">&#34;GCT&#34;</span>, <span style="color:#e6db74">&#34;GCC&#34;</span>, <span style="color:#e6db74">&#34;GCA&#34;</span>, <span style="color:#e6db74">&#34;GCG&#34;</span>,
+                <span style="color:#e6db74">&#34;TAT&#34;</span>, <span style="color:#e6db74">&#34;TAC&#34;</span>, <span style="color:#e6db74">&#34;TAA&#34;</span>, <span style="color:#e6db74">&#34;TAG&#34;</span>,
+                <span style="color:#e6db74">&#34;CAT&#34;</span>, <span style="color:#e6db74">&#34;CAC&#34;</span>, <span style="color:#e6db74">&#34;CAA&#34;</span>, <span style="color:#e6db74">&#34;CAG&#34;</span>,
+                <span style="color:#e6db74">&#34;AAT&#34;</span>, <span style="color:#e6db74">&#34;AAC&#34;</span>, <span style="color:#e6db74">&#34;AAA&#34;</span>, <span style="color:#e6db74">&#34;AAG&#34;</span>,
+                <span style="color:#e6db74">&#34;GAT&#34;</span>, <span style="color:#e6db74">&#34;GAC&#34;</span>, <span style="color:#e6db74">&#34;GAA&#34;</span>, <span style="color:#e6db74">&#34;GAG&#34;</span>,
+                <span style="color:#e6db74">&#34;TGT&#34;</span>, <span style="color:#e6db74">&#34;TGC&#34;</span>, <span style="color:#e6db74">&#34;TGA&#34;</span>, <span style="color:#e6db74">&#34;TGG&#34;</span>,
+                <span style="color:#e6db74">&#34;CGT&#34;</span>, <span style="color:#e6db74">&#34;CGC&#34;</span>, <span style="color:#e6db74">&#34;CGA&#34;</span>, <span style="color:#e6db74">&#34;CGG&#34;</span>,
+                <span style="color:#e6db74">&#34;AGT&#34;</span>, <span style="color:#e6db74">&#34;AGC&#34;</span>, <span style="color:#e6db74">&#34;AGA&#34;</span>, <span style="color:#e6db74">&#34;AGG&#34;</span>,
+                <span style="color:#e6db74">&#34;GGT&#34;</span>, <span style="color:#e6db74">&#34;GGC&#34;</span>, <span style="color:#e6db74">&#34;GGA&#34;</span>, <span style="color:#e6db74">&#34;GGG&#34;</span>
                 )
     <span style="color:#a6e22e">return</span>(codons)
 }
@@ -611,17 +611,17 @@ codonCount <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">
 <span style="color:#75715e">##&#39; @return A reverse complementary sequence</span>
 <span style="color:#75715e">##&#39; @author Guangchuang Yu</span>
 revcom <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(seqStr) {
-    seqStr.str <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">unlist</span>(<span style="color:#a6e22e">strsplit</span>(seqStr, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>))
-    idxT <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">T&#34;</span>)
-    idxG <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">G&#34;</span>)
-    idxA <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">A&#34;</span>)
-    idxC <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">C&#34;</span>)
-    seqStr.str[idxT] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">A&#34;</span>
-    seqStr.str[idxA] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">T&#34;</span>
-    seqStr.str[idxG] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">C&#34;</span>
-    seqStr.str[idxC] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">G&#34;</span>
+    seqStr.str <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">unlist</span>(<span style="color:#a6e22e">strsplit</span>(seqStr, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>))
+    idxT <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;T&#34;</span>)
+    idxG <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;G&#34;</span>)
+    idxA <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;A&#34;</span>)
+    idxC <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(seqStr.str<span style="color:#f92672">==</span><span style="color:#e6db74">&#34;C&#34;</span>)
+    seqStr.str[idxT] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;A&#34;</span>
+    seqStr.str[idxA] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;T&#34;</span>
+    seqStr.str[idxG] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;C&#34;</span>
+    seqStr.str[idxC] <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;G&#34;</span>
     seqStr.rc <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">rev</span>(seqStr.str)
-    seqStr.rc <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste</span>(seqStr.rc, collapse<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>)
+    seqStr.rc <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste</span>(seqStr.rc, collapse<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>)
     <span style="color:#a6e22e">return</span>(seqStr.rc)
 }
 
@@ -633,10 +633,10 @@ revcom <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">func
 <span style="color:#75715e">##&#39; @return A data.frame containing NTs and their corresponding frequency probabilities.</span>
 <span style="color:#75715e">##&#39; @author Guangchuang Yu</span>
 getNtUsage <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(file) {
-    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">reading FASTA file&#34;</span>)
+    <span style="color:#a6e22e">print</span>(<span style="color:#e6db74">&#34;reading FASTA file&#34;</span>)
     fasta <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">readFASTA</span>(file)
     sequences <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(fasta, <span style="color:#a6e22e">function</span>(i) i<span style="color:#f92672">$</span>seq)
-    x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(sequences, strsplit, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>)
+    x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(sequences, strsplit, split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>)
     x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">unlist</span>(x)
     NTprob <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.data.frame</span>(<span style="color:#a6e22e">table</span>(x))
     NTprob[,<span style="color:#ae81ff">2</span>] <span style="color:#f92672">&lt;-</span> NTprob[,<span style="color:#ae81ff">2</span>]<span style="color:#f92672">/</span><span style="color:#a6e22e">sum</span>(NTprob[,<span style="color:#ae81ff">2</span>])
@@ -664,7 +664,7 @@ logLikelihood <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22
     orf5 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">substr</span>(seq.rc, <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">nchar</span>(seq.rc))
     orf6 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">substr</span>(seq.rc, <span style="color:#ae81ff">3</span>, <span style="color:#a6e22e">nchar</span>(seq.rc))
     ORF <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(orf1, orf2, orf3, orf4, orf5, orf6)
-    <span style="color:#a6e22e">names</span>(ORF) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ORF1&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ORF2&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ORF3&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ORF4&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ORF5&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ORF6&#34;</span>)
+    <span style="color:#a6e22e">names</span>(ORF) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;ORF1&#34;</span>, <span style="color:#e6db74">&#34;ORF2&#34;</span>, <span style="color:#e6db74">&#34;ORF3&#34;</span>, <span style="color:#e6db74">&#34;ORF4&#34;</span>, <span style="color:#e6db74">&#34;ORF5&#34;</span>, <span style="color:#e6db74">&#34;ORF6&#34;</span>)
 
     result <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(ORF<span style="color:#f92672">=</span><span style="color:#a6e22e">names</span>(ORF), logLikelihood<span style="color:#f92672">=</span><span style="color:#a6e22e">rep</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">6</span>))
     <span style="color:#a6e22e">for </span>(j in <span style="color:#a6e22e">seq_along</span>(ORF)) {
@@ -694,14 +694,14 @@ logLikelihood <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22
             <span style="color:#a6e22e">if </span>(codonI <span style="color:#f92672">%in%</span> codons <span style="color:#f92672">&amp;</span> codonJ <span style="color:#f92672">%in%</span> codons) {
                 transitionCount[codonI, codonJ] <span style="color:#f92672">&lt;-</span> transitionCount[codonI, codonJ] <span style="color:#ae81ff">+1</span>
             } else {
-                <span style="color:#a6e22e">warning</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codon &#34;</span>, codonI, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> or &#34;</span>, codonJ, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> which does not defined was detected...&#34;</span>)
+                <span style="color:#a6e22e">warning</span>(<span style="color:#e6db74">&#34;codon &#34;</span>, codonI, <span style="color:#e6db74">&#34; or &#34;</span>, codonJ, <span style="color:#e6db74">&#34; which does not defined was detected...&#34;</span>)
             }
         }
 
         postTransition <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">log</span>(transition) <span style="color:#f92672">*</span> transitionCount
         posterior <span style="color:#f92672">&lt;-</span> initProb <span style="color:#f92672">+</span> <span style="color:#a6e22e">sum</span>(postTransition)
 
-        NTseq <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">unlist</span>(<span style="color:#a6e22e">strsplit</span>(ORF[j], split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>))
+        NTseq <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">unlist</span>(<span style="color:#a6e22e">strsplit</span>(ORF[j], split<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>))
         orf.len <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">nchar</span>(ORF[j]) <span style="color:#f92672">-</span> <span style="color:#a6e22e">nchar</span>(ORF[j]) <span style="color:#f92672">%%</span> codonLength
         NTseq <span style="color:#f92672">&lt;-</span> NTseq[1<span style="color:#f92672">:</span>orf.len]
         randomModel <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sum</span>(<span style="color:#a6e22e">log</span>(background[NTseq,<span style="color:#ae81ff">2</span>]))

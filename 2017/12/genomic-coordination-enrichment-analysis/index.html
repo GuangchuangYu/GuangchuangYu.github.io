@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="在《CS7：Genomic coordination的富集性分析（1）》说到了seq2pathway这个包，其实是两部曲，seq2gene-&gt;gene2pathway，无非是把测序片段用临近的基因注释，包括和TSS overlap的基因，宿主基因，上下游的基因等，然后拿这些基因跑ORA，做富集，仅此而已，这个包支持的物种极有限，《CS4：关于ChIPseq注释的几个问题》这一文中讲到ChIPseeker支持所有有基因组注释的物种，而《clusterProfiler for enrichment analysis》也支持所有物种（即使你自己跑的电子注释，也能支持），那么使用ChIPseeker来做基因注释，然后衔接clusterProfiler就可以支持所有物种的测序片段进行功能富集分析了。
@@ -301,7 +301,7 @@ genes<span style="color:#f92672">=</span><span style="color:#a6e22e">lapply</spa
     <span style="color:#a6e22e">seq2gene</span>(i, <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">-1000</span>, <span style="color:#ae81ff">3000</span>), <span style="color:#ae81ff">3000</span>, TxDb<span style="color:#f92672">=</span>txdb))
 
 cc <span style="color:#f92672">=</span> <span style="color:#a6e22e">compareCluster</span>(geneClusters <span style="color:#f92672">=</span> genes, 
-           fun<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">enrichKEGG&#34;</span>, organism<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hsa&#34;</span>)
+           fun<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;enrichKEGG&#34;</span>, organism<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hsa&#34;</span>)
 
 <span style="color:#a6e22e">dotplot</span>(cc, showCategory<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/cc.png" alt=""></p>

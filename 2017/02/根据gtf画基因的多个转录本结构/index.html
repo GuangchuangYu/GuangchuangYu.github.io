@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="这是生物技能树的一道习题，使用了base plot来画，做为补充，我使用ggplot2来重画一遍。">
@@ -285,20 +285,20 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>这是<a href="https://mp.weixin.qq.com/s?__biz=MzAxMDkxODM1Ng==&amp;mid=2247484044&amp;idx=2&amp;sn=56b45eaeb4ad344481afa05abeb1c53e&amp;chksm=9b484237ac3fcb219e41d5653fb800f987e7d217bbb3a5a0c0170ffb8e402f4cc5f726212ef7&amp;mpshare=1&amp;scene=1&amp;srcid=0220calgiLgIZmjiiaNXZ0BE&amp;key=df0a0b140e64a33b97880a54ee7cc95794b60a225d5338e88620674bed463405e61c5365394b7830750de8d3a88e122babd535c88c7d74b974b20c509218cf00d106c991a3a3f049c698a8f847aa5e06&amp;ascene=0&amp;uin=MTMxNjc4OTY2Mg%3D%3D&amp;devicetype=iMac14%2C2+OSX+OSX+10.11.6+build">生物技能树的一道习题</a>，使用了base plot来画，做为补充，我使用ggplot2来重画一遍。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">url <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">http://www.broadinstitute.org/cancer/cga/sites/default/files/data/tools/rnaseqc/gencode.v7.annotation_goodContig.gtf.gz&#34;</span>
-tmpfile <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">tempfile</span>(fileext<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.gtf.gz&#34;</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">url <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;http://www.broadinstitute.org/cancer/cga/sites/default/files/data/tools/rnaseqc/gencode.v7.annotation_goodContig.gtf.gz&#34;</span>
+tmpfile <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">tempfile</span>(fileext<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;.gtf.gz&#34;</span>)
 <span style="color:#a6e22e">download.file</span>(url, tmpfile)
 gtf <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(tmpfile,stringsAsFactors <span style="color:#f92672">=</span> F,
-                  header <span style="color:#f92672">=</span> F,comment.char <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#&#34;</span>,sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\t&#39;</span>
+                  header <span style="color:#f92672">=</span> F,comment.char <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#&#34;</span>,sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\t&#39;</span>
                   )
-gtf <span style="color:#f92672">&lt;-</span> gtf[gtf[,<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">HAVANA&#39;</span>,]
-gtf <span style="color:#f92672">&lt;-</span> gtf<span style="color:#a6e22e">[grepl</span>(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">protein_coding&#39;</span>,gtf[,<span style="color:#ae81ff">9</span>]),]
-gtf<span style="color:#f92672">$</span>gene <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#a6e22e">as.character</span>(gtf[,<span style="color:#ae81ff">9</span>]), <span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.*gene_name\\s([^;]+);.*&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">\\1&#34;</span>, x))
+gtf <span style="color:#f92672">&lt;-</span> gtf[gtf[,<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span><span style="color:#e6db74">&#39;HAVANA&#39;</span>,]
+gtf <span style="color:#f92672">&lt;-</span> gtf<span style="color:#a6e22e">[grepl</span>(<span style="color:#e6db74">&#39;protein_coding&#39;</span>,gtf[,<span style="color:#ae81ff">9</span>]),]
+gtf<span style="color:#f92672">$</span>gene <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sapply</span>(<span style="color:#a6e22e">as.character</span>(gtf[,<span style="color:#ae81ff">9</span>]), <span style="color:#a6e22e">function</span>(x) <span style="color:#a6e22e">sub</span>(<span style="color:#e6db74">&#34;.*gene_name\\s([^;]+);.*&#34;</span>, <span style="color:#e6db74">&#34;\\1&#34;</span>, x))
 
-draw_gene <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">ANXA1&#39;</span>
+draw_gene <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#39;ANXA1&#39;</span>
 structure <span style="color:#f92672">&lt;-</span> gtf[gtf<span style="color:#f92672">$</span>gene<span style="color:#f92672">==</span>draw_gene,<span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">3</span><span style="color:#f92672">:</span><span style="color:#ae81ff">5</span>)]
-<span style="color:#a6e22e">names</span>(structure) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">chr&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">record&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">start&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">end&#34;</span>)
-idx <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(structure<span style="color:#f92672">$</span>record <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">transcript&#34;</span>)
+<span style="color:#a6e22e">names</span>(structure) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;chr&#34;</span>, <span style="color:#e6db74">&#34;record&#34;</span>, <span style="color:#e6db74">&#34;start&#34;</span>, <span style="color:#e6db74">&#34;end&#34;</span>)
+idx <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">which</span>(structure<span style="color:#f92672">$</span>record <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;transcript&#34;</span>)
 s <span style="color:#f92672">&lt;-</span> idx<span style="color:#ae81ff">+1</span>
 e <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(idx[<span style="color:#ae81ff">-1</span>]<span style="color:#ae81ff">-1</span>, <span style="color:#a6e22e">nrow</span>(structure))
 g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">seq_along</span>(s), <span style="color:#a6e22e">function</span>(i) {
@@ -307,13 +307,13 @@ g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</s
   <span style="color:#a6e22e">return</span>(x)
 }) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">do.call</span>(rbind, .)
 
-g <span style="color:#f92672">&lt;-</span> g[g<span style="color:#f92672">$</span>record <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">exon&#34;</span>,]
+g <span style="color:#f92672">&lt;-</span> g[g<span style="color:#f92672">$</span>record <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;exon&#34;</span>,]
 g<span style="color:#f92672">$</span>transcript <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">factor</span>(g<span style="color:#f92672">$</span>transcript)
 
 <span style="color:#a6e22e">library</span>(ggplot2)
 <span style="color:#a6e22e">ggplot</span>(g) <span style="color:#f92672">+</span> 
 	<span style="color:#a6e22e">geom_segment</span>(<span style="color:#a6e22e">aes</span>(x<span style="color:#f92672">=</span>start, xend<span style="color:#f92672">=</span>end, y<span style="color:#f92672">=</span>transcript, yend<span style="color:#f92672">=</span>transcript, color<span style="color:#f92672">=</span>transcript), size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> 
-	<span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">labs</span>(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ANXA1&#34;</span>)
+	<span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;none&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">labs</span>(title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ANXA1&#34;</span>)
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/2017/gtf.png" alt=""></p>
               
             </div>

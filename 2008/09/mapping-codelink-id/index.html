@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="GE公司codelink芯片(这个破产品已经停产了)上的探针ID，需要转成别的ID，看了一些在线的转换ID工具，都不支持，探针ID基本上都只支持affy的。
@@ -394,26 +394,26 @@ if (!doNotTrack) {
 <span style="color:#a6e22e">library</span>(biomaRt)
 
 <span style="color:#75715e">#选取数据库</span>
-ensembl <span style="color:#f92672">=</span> <span style="color:#a6e22e">useMart</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ensembl&#34;</span>, dataset <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hsapiens_gene_ensembl&#34;</span>)
+ensembl <span style="color:#f92672">=</span> <span style="color:#a6e22e">useMart</span>(<span style="color:#e6db74">&#34;ensembl&#34;</span>, dataset <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hsapiens_gene_ensembl&#34;</span>)
 
 <span style="color:#75715e">#获取可供检索的attribute</span>
 attributes<span style="color:#f92672">=</span><span style="color:#a6e22e">listAttributes</span>(mart<span style="color:#f92672">=</span>ensembl)
 
 <span style="color:#75715e">#看一下attributes里是否有codelink，得到以下的结果。</span>
-attributes<span style="color:#a6e22e">[grep</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>,attributes[,<span style="color:#ae81ff">1</span>]), ]
+attributes<span style="color:#a6e22e">[grep</span>(<span style="color:#e6db74">&#34;codelink&#34;</span>,attributes[,<span style="color:#ae81ff">1</span>]), ]
 
 name description
 <span style="color:#ae81ff">21</span> codelink Codelink ID
 <span style="color:#75715e">#再搜一下其它我想要的ID</span>
 
 <span style="color:#75715e">#读进含有codelink ID的文件。</span>
-mrna_id <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mrna_id.txt&#34;</span>)
+mrna_id <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;mrna_id.txt&#34;</span>)
 
 <span style="color:#75715e">#进行ID映射。</span>
-idmap <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getBM</span>(attributes<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">refseq_dna&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">external_gene_id&#34;</span>,
-                            <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">embl&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hgnc_id&#34;</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">hgnc_symbol&#34;</span>), 
-               filters <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">codelink&#34;</span>, values<span style="color:#f92672">=</span>mrna_id[,<span style="color:#ae81ff">1</span>],
-               mart<span style="color:#f92672">=</span>ensembl,output<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">list&#34;</span>)
+idmap <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getBM</span>(attributes<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;codelink&#34;</span>,<span style="color:#e6db74">&#34;refseq_dna&#34;</span>,<span style="color:#e6db74">&#34;external_gene_id&#34;</span>,
+                            <span style="color:#e6db74">&#34;embl&#34;</span>,<span style="color:#e6db74">&#34;hgnc_id&#34;</span>,<span style="color:#e6db74">&#34;hgnc_symbol&#34;</span>), 
+               filters <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;codelink&#34;</span>, values<span style="color:#f92672">=</span>mrna_id[,<span style="color:#ae81ff">1</span>],
+               mart<span style="color:#f92672">=</span>ensembl,output<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;list&#34;</span>)
 </code></pre></div><p>乱78糟的ID都可以通过biomart进行ID映射。。生物上各种各样的ID实在是太乱了。。。</p>
 <p>没想到程序跑完竟然报错，囧~~~</p>
 <p>找到了一个codelink的注释包，<a href="http://bioconductor.org/packages/2.2/data/annotation/html/hwgcod.html">hwgcod</a>:</p>
@@ -421,7 +421,7 @@ idmap <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getBM
 Annotation Data (hwgcod)</p>
 <p>写了下面段小代码，算是解决了。5万多个点，有些没对上，有些却是一对多。这种结果很正常。。囧~~~</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(hwgcod)
-mrna_id <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mrna_id.txt&#34;</span>,header<span style="color:#f92672">=</span><span style="color:#66d9ef">FALSE</span>, stringsAsFactors<span style="color:#f92672">=</span><span style="color:#66d9ef">FALSE</span>)
+mrna_id <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;mrna_id.txt&#34;</span>,header<span style="color:#f92672">=</span><span style="color:#66d9ef">FALSE</span>, stringsAsFactors<span style="color:#f92672">=</span><span style="color:#66d9ef">FALSE</span>)
 accnum <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.list</span>(hwgcodACCNUM)
 accnum <span style="color:#f92672">&lt;-</span> accnum[<span style="color:#f92672">!</span><span style="color:#a6e22e">is.na</span>(accnum)]
 map <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(name){
@@ -429,10 +429,10 @@ map <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">functio
 }
 mrna_acc <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(mrna_id[,<span style="color:#ae81ff">1</span>],map)
 writetofile <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(idx){
-line <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>
+line <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
 <span style="color:#a6e22e">for</span>(n in mrna_acc[[idx]])
     line<span style="color:#f92672">=</span><span style="color:#a6e22e">paste</span>(line,n)
-    <span style="color:#a6e22e">write</span>(line,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mrna_acc_id.txt&#34;</span>,append<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
+    <span style="color:#a6e22e">write</span>(line,<span style="color:#e6db74">&#34;mrna_acc_id.txt&#34;</span>,append<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
 }
 <span style="color:#a6e22e">lapply</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#a6e22e">length</span>(mrna_id[[1]]),writetofile)
 </code></pre></div>

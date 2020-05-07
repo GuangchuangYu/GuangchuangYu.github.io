@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="取子集对于进化树可视化来说是非常常见的，我们要区分内部节点和外部节点，我们也可能想针对某些特点的节点进行注释。
@@ -307,8 +307,8 @@ if (!doNotTrack) {
               <p>取子集对于进化树可视化来说是非常常见的，我们要区分内部节点和外部节点，我们也可能想针对某些特点的节点进行注释。</p>
 <p>ggplot2现在所有图层都不支持直接取子集，所以呢ggtree就自己定义了一些修改的图层，包括<code>geom_text2</code>, <code>geom_label2</code>,  <code>geom_point2</code> 和 <code>geom_segment2</code>，这些图层和ggplot2的版本唯一差别就是支持取子集。这样对于我们做注释来说，就更方便了。</p>
 <p>比如说我想给内部节点打点，可以用：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggtree</span>(tree) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_text2</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span>label, subset<span style="color:#f92672">=</span><span style="color:#f92672">!</span>isTip), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">-.2</span>) <span style="color:#f92672">+</span>
-        <span style="color:#a6e22e">geom_point2</span>(<span style="color:#a6e22e">aes</span>(subset<span style="color:#f92672">=</span><span style="color:#f92672">!</span>isTip), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">red&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggtree</span>(tree) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_text2</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span>label, subset<span style="color:#f92672">=!</span>isTip), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">-.2</span>) <span style="color:#f92672">+</span>
+        <span style="color:#a6e22e">geom_point2</span>(<span style="color:#a6e22e">aes</span>(subset<span style="color:#f92672">=!</span>isTip), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
 </code></pre></div><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/subsetting.png" alt=""></p>
 <blockquote>
 <p>当然ggtree有提供<code>geom_nodepoint</code>图层，像上面的例子，用户不需要取子集操作，直接用<code>geom_nodepoint</code>即可。</p>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -296,14 +296,14 @@ if (!doNotTrack) {
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(Gviz)
 <span style="color:#a6e22e">library</span>(GenomicRanges)
 <span style="color:#a6e22e">data</span>(cpgIslands)
-atrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">AnnotationTrack</span>(cpgIslands, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CpG&#34;</span>)
+atrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">AnnotationTrack</span>(cpgIslands, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CpG&#34;</span>)
 gtrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">GenomeAxisTrack</span>()
 gen<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">genome</span>(cpgIslands)
 chr <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.character</span>(<span style="color:#a6e22e">unique</span>(<span style="color:#a6e22e">seqnames</span>(cpgIslands)))
 itrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">IdeogramTrack</span>(genome <span style="color:#f92672">=</span> gen, chromosome <span style="color:#f92672">=</span> chr)
 <span style="color:#a6e22e">data</span>(geneModels)
 grtrack <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">GeneRegionTrack</span>(geneModels, genome <span style="color:#f92672">=</span> gen,
-                           chromosome <span style="color:#f92672">=</span> chr, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Gene Model&#34;</span>)
+                           chromosome <span style="color:#f92672">=</span> chr, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Gene Model&#34;</span>)
 <span style="color:#a6e22e">plotTracks</span>(<span style="color:#a6e22e">list</span>(itrack, gtrack, atrack, grtrack))
 </code></pre></div><p>其实不使用新版，也是可以支持Gviz的，虽然它的输出（直接画图+返回一个list）不能被直接转变成grob和ggplot2，但直接画图的函数是可以直接的，于是我们只需要简单地把画图的语句包装成一个函数，诸如function() plot_something，然后把这个函数传给as.grob或者as.ggplot就可以实现转化啦，所以旧版本也是支持的，只是你不懂得用而已。</p>
 <p><img src="http://guangchuangyu.gitee.io/blog_images/ggplotify/gviz-3.png" alt=""></p>

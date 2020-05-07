@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.64.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -336,7 +336,7 @@ if (!doNotTrack) {
 <span style="color:#a6e22e">require</span>(dplyr)
 
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">load_nCov2019</span>()
-dd <span style="color:#f92672">&lt;-</span> d[<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">global&#39;</span>] <span style="color:#f92672">%&gt;%</span> 
+dd <span style="color:#f92672">&lt;-</span> d[<span style="color:#e6db74">&#39;global&#39;</span>] <span style="color:#f92672">%&gt;%</span> 
   as_tibble <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">rename</span>(confirm<span style="color:#f92672">=</span>cum_confirm) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">filter</span>(confirm <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>) <span style="color:#f92672">%&gt;%</span>
@@ -361,9 +361,9 @@ breaks<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<
 
 
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(dd, <span style="color:#a6e22e">aes</span>(days_since_100, confirm, color <span style="color:#f92672">=</span> country)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_smooth</span>(method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">lm&#39;</span>, <span style="color:#a6e22e">aes</span>(group<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>),
-              data <span style="color:#f92672">=</span> . <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">filter</span>(<span style="color:#f92672">!</span>country <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">China&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Japan&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Singapore&#34;</span>)), 
-              color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">grey10&#39;</span>, linetype<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">dashed&#39;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_smooth</span>(method<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;lm&#39;</span>, <span style="color:#a6e22e">aes</span>(group<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>),
+              data <span style="color:#f92672">=</span> . <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">filter</span>(<span style="color:#f92672">!</span>country <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;China&#34;</span>, <span style="color:#e6db74">&#34;Japan&#34;</span>, <span style="color:#e6db74">&#34;Singapore&#34;</span>)), 
+              color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;grey10&#39;</span>, linetype<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;dashed&#39;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_line</span>(size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.8</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_point</span>(pch <span style="color:#f92672">=</span> <span style="color:#ae81ff">21</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">scale_y_log10</span>(expand <span style="color:#f92672">=</span> <span style="color:#a6e22e">expansion</span>(add <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0.1</span>)), 
@@ -372,19 +372,19 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</s
   <span style="color:#a6e22e">theme_minimal</span>(base_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">14</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(
     panel.grid.minor <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>(),
-    legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>,
-    plot.margin <span style="color:#f92672">=</span> <span style="color:#a6e22e">margin</span>(<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">15</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">3</span>,<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mm&#34;</span>)
+    legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span>,
+    plot.margin <span style="color:#f92672">=</span> <span style="color:#a6e22e">margin</span>(<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">15</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">3</span>,<span style="color:#e6db74">&#34;mm&#34;</span>)
   ) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">coord_cartesian</span>(clip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">off&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Number of days since 100th case&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>, 
-       subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Total number of cases&#34;</span>)
+  <span style="color:#a6e22e">coord_cartesian</span>(clip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;off&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Number of days since 100th case&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>, 
+       subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Total number of cases&#34;</span>)
 </code></pre></div><p>首先，我们把中国、日本和新加坡这三个控制得比较好的国家去掉，然后画个回归线，看看这增长趋势如何。
 代码没啥好讲的，如果你对<code>clip=&quot;off&quot;</code>不了解的话，看这一篇：《<a href="https://mp.weixin.qq.com/s/rj3JKkLM6wKWRG-BiTfq-w">ggplot2 - 3.0.0版本的新功能</a>》</p>
 <p>然后就是加国家名了，这里为了让国家名能够凸显出来，我们需要用<code>geom_shadowtext</code>而不是<code>geom_text</code>，如果你不懂这个包，那你应该看这篇：《<a href="https://mp.weixin.qq.com/s/eZAmqeKBsbvAj9AvrTZRQQ">带你装逼带你飞，画图的文本打出阴影立体效果 </a>》。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(shadowtext)
-p <span style="color:#f92672">&lt;-</span> p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_shadowtext</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> &#34;</span>,country)), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, 
+p <span style="color:#f92672">&lt;-</span> p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_shadowtext</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34; &#34;</span>,country)), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, 
                   data <span style="color:#f92672">=</span> . <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">group_by</span>(country) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">top_n</span>(<span style="color:#ae81ff">1</span>, days_since_100), 
-                  bg.color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">white&#34;</span>) 
+                  bg.color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;white&#34;</span>) 
 </code></pre></div><p>最后出图如下：</p>
 <p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/2020-03-12_22-04.png" alt=""></p>
               
