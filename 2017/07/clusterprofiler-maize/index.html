@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="模式生物做什么都简单，非模式生物则很多缺少注释，没有注释你就没法做，只能是借助于各种软件比如blastgo，自己跑电子注释。但今天要讲的不是这种情况，很多物种还是有注释的，只是你有时候不知道该去那里下载，或者你有数据，却不知道该怎么用！很多的软件都是针对模式生物的，或者针对某一些类型的非模式生物，能够支持多种非模式生物，能够支持用户自己的注释文件的软件相对来讲，就非常少有了，然而clusterProfiler就是这类少有的软件之一。
@@ -110,7 +110,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -298,7 +297,7 @@ if (!doNotTrack) {
 <h2 id="获得orgdb">获得OrgDb</h2>
 <p>今天要讲的是通过OrgDb来做GO分析，这是clusterProfiler的<strong>enrichGO</strong>函数所支持的背景注释，Bioconductor自带20个OrgDb可供使用，多半是模式生物，难道我们要做的物种不在这20个里面就不行了吗？显然不是的，clusterProfiler能支持的物种我自己都数不过来。</p>
 <p>我们可以通过AnnotationHub在线检索并抓取OrgDb，比如这里以玉米为例：</p>
-<pre><code>&gt; require(AnnotationHub)
+<pre tabindex="0"><code>&gt; require(AnnotationHub)
 &gt; hub &lt;- AnnotationHub()
 &gt; query(hub, &quot;zea&quot;)
 AnnotationHub with 2 records
@@ -315,18 +314,18 @@ AnnotationHub with 2 records
   AH10514 | hom.Gibberella_zeae.inp8.sqlite
   AH55736 | org.Zea_mays.eg.sqlite   
 </code></pre><p>通过检索，<code>org.Zea_mays.eg.sqlite</code>就是我们所要的OrgDb，可以通过相应的accession number, <strong>AH55736</strong>抓取文件，并存入了maize对象中，它包含了51097个基因的注释：</p>
-<pre><code>&gt; maize &lt;- hub[['AH55736']]
+<pre tabindex="0"><code>&gt; maize &lt;- hub[['AH55736']]
 &gt; length(keys(maize))
 [1] 51097
 </code></pre><p>这个OrgDb，包含有以下一些注释信息：</p>
-<pre><code>&gt; columns(maize)
+<pre tabindex="0"><code>&gt; columns(maize)
  [1] &quot;ACCNUM&quot;      &quot;ALIAS&quot;       &quot;CHR&quot;         &quot;ENTREZID&quot;    &quot;EVIDENCE&quot;   
  [6] &quot;EVIDENCEALL&quot; &quot;GENENAME&quot;    &quot;GID&quot;         &quot;GO&quot;          &quot;GOALL&quot;      
 [11] &quot;ONTOLOGY&quot;    &quot;ONTOLOGYALL&quot; &quot;PMID&quot;        &quot;REFSEQ&quot;      &quot;SYMBOL&quot;     
 [16] &quot;UNIGENE&quot;
 </code></pre><h2 id="转换id">转换ID</h2>
 <p>我们可以使用bitr来转换ID，甚至于直接检索GO注释：</p>
-<pre><code>&gt; require(clusterProfiler)
+<pre tabindex="0"><code>&gt; require(clusterProfiler)
 &gt; bitr(keys(maize)[1], 'ENTREZID', c(&quot;REFSEQ&quot;, &quot;GO&quot;, &quot;ONTOLOGY&quot;), maize)
    ENTREZID         REFSEQ         GO ONTOLOGY
 1    541612 XP_008648268.1 GO:0009507       CC
@@ -350,12 +349,12 @@ AnnotationHub with 2 records
 19   541612 NM_001111367.2 GO:0046872       MF
 20   541612 NM_001111367.2 GO:0022900       BP
 </code></pre><h2 id="go富集分析">GO富集分析</h2>
-<pre><code>&gt; sample_genes &lt;- keys(maize)[1:100]
+<pre tabindex="0"><code>&gt; sample_genes &lt;- keys(maize)[1:100]
 &gt; head(sample_genes)
 [1] &quot;541612&quot; &quot;541613&quot; &quot;541614&quot; &quot;541615&quot; &quot;541617&quot; &quot;541618&quot;
 </code></pre><p>这里我只是简单地使用ID列表中前100个ENTREZ基因ID，也可以使用其它的ID，通过借助于<strong>bitr</strong>进行转换，或者通过给<strong>enrichGO</strong>指定ID类型(keyType参数）。</p>
 <p>有了OrgDb，使用起来，就跟文档中使用人类基因做为例子一样，用法一致，并且也可以通过clusterProfiler所提供的各种可视化函数对结果进行展示：</p>
-<pre><code>&gt; require(clusterProfiler)
+<pre tabindex="0"><code>&gt; require(clusterProfiler)
 &gt; res = enrichGO(sample_genes, OrgDb=maize, pvalueCutoff=1, qvalueCutoff=1)
 &gt; res
 #
@@ -495,7 +494,7 @@ AnnotationHub with 2 records
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

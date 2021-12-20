@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="1 分区
@@ -128,7 +128,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -343,10 +342,10 @@ cd:,\\ofwboot.xcf netbsd.macppc
 </code></pre>
 <p>选择Utility menu运行shell，运行<code>pdisk /dev/wd0c</code>修改分区，将第二，三，四个分区的partition 
 type改为<code>Apple_UNIX_SVR2</code>，并分别给标签a,b,g。保存退出。创建文件系统。</p>
-<pre><code>#newfs ffs /dev/wd0a 
+<pre tabindex="0"><code>#newfs ffs /dev/wd0a 
 #newfs ffs /dev/wd0g
 </code></pre><p>创建fstab</p>
-<pre><code>#mount /dev/wd0a /mnt 
+<pre tabindex="0"><code>#mount /dev/wd0a /mnt 
 #mkdir /mnt/etc 
 #cat &gt; /mnt/etc/fstab 
 
@@ -354,46 +353,46 @@ type改为<code>Apple_UNIX_SVR2</code>，并分别给标签a,b,g。保存退出�
 /dev/wd0b none swap sw 0 0 
 /dev/wd0g  /home ffs rw 1 2
 </code></pre><p>按<code>Control+D</code>结束。</p>
-<pre><code>#mkdir /home 
+<pre tabindex="0"><code>#mkdir /home 
 #cd / 
 #umount /mnt 
 #exit
 </code></pre><p>回到主菜单,选择重新安装。选择安装组件以及安装介质。安装程序将软件包解压到<code>/dev/wd0a</code>后，回到主菜单，选择Utility
 menu并运行shell，</p>
-<pre><code>#mount /dev/wd0a 
+<pre tabindex="0"><code>#mount /dev/wd0a 
 #cd /mnt/dev 
 #sh MAKEDEV all
 </code></pre><p>      
 创建设备节点 <code>#cd /mnt/dev</code> 修改rc.conf 确定<code>rc_configured=YES</code></p>
-<pre><code>#cd /
+<pre tabindex="0"><code>#cd /
 #umount /mnt 
 #exit 
 </code></pre><p>重新启动，按住<code>command+option+o+f</code>进入open firmware，
 键入<code>boot hd:9,\\ofwboot hd:10,/netbsd</code> <code>[g]</code>成功实现引导。。<code>[/g]</code></p>
 <p><code>[g]0/7/</code>默认是进入os9，因为我用netbsd较多，所以得再修改一下启动，进入open
 firmware`:</p>
-<pre><code>0&gt; setenv boot-device hd:9,\\ofwboot.xcf hd:10,/netbsd
+<pre tabindex="0"><code>0&gt; setenv boot-device hd:9,\\ofwboot.xcf hd:10,/netbsd
 0&gt; reset-all
 </code></pre><p>设置后机子重启，将自动进入netbsd,
 想要进入os9只需在进入open firmware后键入<code>boot hd:9,\\\\:tbxi[/g]</code></p>
 <p>拷一些字体到<code>\~/BackUP/fonts</code>下，</p>
-<pre><code>$cd \~/BackUP/fonts 
+<pre tabindex="0"><code>$cd \~/BackUP/fonts 
 $mkfontscale &gt; fonts.scale 
 $cp fonts.scale fonts.dir 
 $cd \~ 
 $ln -s ~/Backup/fonts .fonts
 </code></pre><p>修改<code>/etc/X11/XF86Config</code>
 添加<code>&lt;dir&gt;/home/ygc/BackUP/fonts&lt;/dir&gt;</code></p>
-<pre><code>##create index of font files... 
+<pre tabindex="0"><code>##create index of font files... 
 $fc-cache -v
 </code></pre><p>安装fcitx</p>
-<pre><code>#cd /usr/pkgsrc/inputmethod/fcitx 
+<pre tabindex="0"><code>#cd /usr/pkgsrc/inputmethod/fcitx 
 #make install
 </code></pre><p>安装qvwm</p>
-<pre><code>#cd /usr/pkgsrc/wm/qvwm 
+<pre tabindex="0"><code>#cd /usr/pkgsrc/wm/qvwm 
 #make install
 </code></pre><p>在<code>\~/.xinitrc</code>中加入</p>
-<pre><code>export LC\_CTYPE=&quot;zh\_CN.eucCN&quot; 
+<pre tabindex="0"><code>export LC\_CTYPE=&quot;zh\_CN.eucCN&quot; 
 export XMODIFIERS=&quot;@im=fcitx&quot; 
 fcitx &amp; 
 exec qvwm
@@ -499,7 +498,7 @@ exec qvwm
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

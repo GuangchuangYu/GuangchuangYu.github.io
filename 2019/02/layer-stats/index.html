@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="library(ggplot2)
@@ -138,7 +138,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -322,7 +321,7 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+              <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 
 pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::</span>RatPupWeight <span style="color:#f92672">%&gt;%</span> 
     janitor<span style="color:#f92672">::</span><span style="color:#a6e22e">clean_names</span>() <span style="color:#f92672">%&gt;%</span>
@@ -330,12 +329,12 @@ pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::
 
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(pups, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> litter, y <span style="color:#f92672">=</span> weight, color <span style="color:#f92672">=</span> treatment))
 </code></pre></div><p>针对某一个x值，我们可以画出相应y的统计量，比如均值、方差等，这些都可以“手工”的方式通过图层叠加来实现。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">stat_summary</span>(fun.y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mean&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;point&#34;</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;black&#39;</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">stat_summary</span>(fun.data <span style="color:#f92672">=</span> mean_cl_normal, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;errorbar&#34;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">.1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/layer-stats.jpg" alt=""></p>
 <p>而图层不单单是画出几何图形而已，有一些是需要计算统计量的，最常见也最容易理解的箱式图图层geom_boxplot，需要计算四分位数，而有一些图层虽然看上去不需要做计算，比如显示误差的geom_errorbar，通常需要我们提供ymin和ymax，然而它按照我们提供的值去显示，没有涉及到图层内部的计算，但这只是默认行为而已，如果有留意ggplot2图层的默认参数的话，大概是会发现很多图层都有一个stat = &ldquo;identity&quot;的参数，这表示按照输入数据的值来画，不涉及计算，比如画柱状图的geom_col就是这样，它会按照用户输入的计算来画柱子的高度，而geom_bar的参数却不stat = &ldquo;count&quot;它则会去数数。所以这些图层都有stat参数，意味着我们可以改变默认行为的统计量来画图，比如说箱式图吧，箱体是25%, 50%, 70%的分位数来画的，假设我想用mean-sd, mean, mean+sd来画呢？当然可以。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">f <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(y) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">f <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(y) {
     r <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">quantile</span>(y, probs <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0.05</span>, <span style="color:#ae81ff">0.25</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.75</span>, <span style="color:#ae81ff">0.95</span>))
     r[2] <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">mean</span>(y) <span style="color:#f92672">-</span> <span style="color:#a6e22e">sd</span>(y) 
     r[3] <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">mean</span>(y)
@@ -351,10 +350,10 @@ cowplot<span style="color:#f92672">::</span><span style="color:#a6e22e">plot_gri
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/layer-stats-2.jpg" alt=""></p>
 <p>这一招也是我在Proteomic investigation of the interactome of FMNL1 in hematopoietic cells unveils a role in calcium-dependent membrane plasticity图一中把箱式图的中位数换成均值所使用的方法。</p>
 <p>使用stat_smooth(method = &ldquo;lm&rdquo;, formula = y ~ 1)，可以展示某一x取值区间的平均y值。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">stat_smooth</span>(method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lm&#34;</span>, formula <span style="color:#f92672">=</span> y <span style="color:#f92672">~</span> <span style="color:#ae81ff">1</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">stat_smooth</span>(method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lm&#34;</span>, formula <span style="color:#f92672">=</span> y <span style="color:#f92672">~</span> <span style="color:#ae81ff">1</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/layer-stats-3.jpg" alt=""></p>
 <p>如果要计算中位数的话，可以使用rlm：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(MASS)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(MASS)
 p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">stat_smooth</span>(method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rlm&#34;</span>, formula <span style="color:#f92672">=</span> y <span style="color:#f92672">~</span> <span style="color:#ae81ff">1</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/layer-stats-4.jpg" alt=""></p>
               
@@ -454,7 +453,7 @@ p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</s
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

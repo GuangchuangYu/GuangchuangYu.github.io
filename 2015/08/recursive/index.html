@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Guangchuang Yu">
+<meta name="keywords" content="">
+<meta name="description" content="递归正如‘盗梦空间’中的场景：
+
+
+PS: 使用《windows用户, 截屏新手段》可以一句for循环生成类似这种效果的图。
+
+简言之就是不断调用自己，
+
+经常我们会拿fibonacci数来讲解递归，正如在Rabbits and Recurrence
+Relations一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考tricky things in R一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用&lt;&lt;-来赋值。
+在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但BiocCheck会把&lt;&lt;-报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。
+Example 1
+比如我们要写writeSequence这样的函数：
+Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+
+public void writeSequence(int n) {
+    if (n &lt; 1)
+    throw new IllegalArgumentException();
+
+    if (n == 1) {
+    System.out.print(1);
+    return;
+    }
+
+    if (n == 2) {
+    System.out.print(&#34;1 1&#34;);
+    return;
+    }
+
+    int x = (int) Math.ceil(n/2.0);
+    
+    System.out.print(x &#43; &#34; &#34;);
+    writeSequence(n-2);
+    System.out.print(&#34; &#34; &#43; x);
+}
+">
+
+
+<meta property="og:description" content="递归正如‘盗梦空间’中的场景：
+
+
+PS: 使用《windows用户, 截屏新手段》可以一句for循环生成类似这种效果的图。
+
+简言之就是不断调用自己，
+
+经常我们会拿fibonacci数来讲解递归，正如在Rabbits and Recurrence
+Relations一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考tricky things in R一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用&lt;&lt;-来赋值。
+在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但BiocCheck会把&lt;&lt;-报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。
+Example 1
+比如我们要写writeSequence这样的函数：
+Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+
+public void writeSequence(int n) {
+    if (n &lt; 1)
+    throw new IllegalArgumentException();
+
+    if (n == 1) {
+    System.out.print(1);
+    return;
+    }
+
+    if (n == 2) {
+    System.out.print(&#34;1 1&#34;);
+    return;
+    }
+
+    int x = (int) Math.ceil(n/2.0);
+    
+    System.out.print(x &#43; &#34; &#34;);
+    writeSequence(n-2);
+    System.out.print(&#34; &#34; &#43; x);
+}
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="递归">
+<meta name="twitter:title" content="递归">
+<meta property="og:url" content="https://guangchuangyu.github.io/2015/08/recursive/">
+<meta property="twitter:url" content="https://guangchuangyu.github.io/2015/08/recursive/">
+<meta property="og:site_name" content="Guangchuang Yu">
+<meta property="og:description" content="递归正如‘盗梦空间’中的场景：
+
+
+PS: 使用《windows用户, 截屏新手段》可以一句for循环生成类似这种效果的图。
+
+简言之就是不断调用自己，
+
+经常我们会拿fibonacci数来讲解递归，正如在Rabbits and Recurrence
+Relations一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考tricky things in R一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用&lt;&lt;-来赋值。
+在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但BiocCheck会把&lt;&lt;-报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。
+Example 1
+比如我们要写writeSequence这样的函数：
+Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+
+public void writeSequence(int n) {
+    if (n &lt; 1)
+    throw new IllegalArgumentException();
+
+    if (n == 1) {
+    System.out.print(1);
+    return;
+    }
+
+    if (n == 2) {
+    System.out.print(&#34;1 1&#34;);
+    return;
+    }
+
+    int x = (int) Math.ceil(n/2.0);
+    
+    System.out.print(x &#43; &#34; &#34;);
+    writeSequence(n-2);
+    System.out.print(&#34; &#34; &#43; x);
+}
+">
+<meta name="twitter:description" content="递归正如‘盗梦空间’中的场景：
+
+
+PS: 使用《windows用户, 截屏新手段》可以一句for循环生成类似这种效果的图。
+
+简言之就是不断调用自己，
+
+经常我们会拿fibonacci数来讲解递归，正如在Rabbits and Recurrence
+Relations一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考tricky things in R一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用&lt;&lt;-来赋值。
+在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但BiocCheck会把&lt;&lt;-报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。
+Example 1
+比如我们要写writeSequence这样的函数：
+Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+
+public void writeSequence(int n) {
+    if (n &lt; 1)
+    throw new IllegalArgumentException();
+
+    if (n == 1) {
+    System.out.print(1);
+    return;
+    }
+
+    if (n == 2) {
+    System.out.print(&#34;1 1&#34;);
+    return;
+    }
+
+    int x = (int) Math.ceil(n/2.0);
+    
+    System.out.print(x &#43; &#34; &#34;);
+    writeSequence(n-2);
+    System.out.print(&#34; &#34; &#43; x);
+}
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2015-08-11T09:12:14">
+  
+  
+    <meta property="article:modified_time" content="2015-08-11T09:12:14">
+  
+  
+  
+    
+      <meta property="article:section" content="programming">
+    
+  
+  
+    
+      <meta property="article:tag" content="java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@guangchuangyu">
+
+
+  <meta name="twitter:creator" content="@guangchuangyu">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=640">
+
+
+    <title>递归</title>
+
+    <link rel="icon" href="https://guangchuangyu.github.io/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://guangchuangyu.github.io/2015/08/recursive/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://guangchuangyu.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-77901140-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://guangchuangyu.github.io/">Guangchuang Yu</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://guangchuangyu.github.io/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://guangchuangyu.github.io/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Guangchuang Yu</h4>
+        
+          <h5 class="sidebar-profile-bio">Bioinformatics Professor @ SMU</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/GuangchuangYu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/guangchuangyu" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/blog_images/biobabble.jpg">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-weixin"></i>
+      
+      <span class="sidebar-button-desc">WeChat</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://guangchuangyu.github.io/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      递归
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2015-08-11T09:12:14&#43;08:00">
+        
+  August 11, 2015
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/programming">programming</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>递归正如‘盗梦空间’中的场景：
+<img src="https://guangchuangyu.github.io/blog_images/2015/recursive_image.jpg" alt=""></p>
+<blockquote>
+<p>PS: 使用《<a href="https://mp.weixin.qq.com/s/CP00v7HuclUcfJn2_aSplA">windows用户, 截屏新手段</a>》可以一句for循环生成类似这种效果的图。</p>
+</blockquote>
+<p>简言之就是不断调用自己，
+<img src="https://guangchuangyu.github.io/blog_images/2015/recursive.jpg" alt=""></p>
+<p>经常我们会拿fibonacci数来讲解递归，正如在<a href="http://guangchuangyu.github.io/2013/04/rabbits-and-recurrence-relations/">Rabbits and Recurrence
+Relations</a>一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考<a href="http://guangchuangyu.github.io/2012/07/tricky-things-in-r/">tricky things in R</a>一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用<code>&lt;&lt;-</code>来赋值。</p>
+<p>在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但<code>BiocCheck</code>会把<code>&lt;&lt;-</code>报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。</p>
+<h4 id="example-1">Example 1</h4>
+<p>比如我们要写writeSequence这样的函数：</p>
+<pre><code>Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeSequence</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&lt;</span> 1<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">();</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1 1&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">ceil</span><span style="color:#f92672">(</span>n<span style="color:#f92672">/</span>2<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">);</span>
+    
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>x <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">);</span>
+    writeSequence<span style="color:#f92672">(</span>n<span style="color:#f92672">-</span>2<span style="color:#f92672">);</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> x<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>先定义跳出递归的base case，然后就是不断调用自己，把结果插在中间。</p>
+<h4 id="example-2">Example 2</h4>
+<pre><code>List L              Limit n     maxSum(L, n) returns
+[7, 30, 8, 22, 6, 1, 14]    19      16
+[5, 30, 15, 13, 8]      42      41
+[30, 15, 20]            40      35
+[6, 2, 6, 9, 1]         30      24
+[11, 5, 3, 7, 2]        14      14
+[10, 20, 30]            7       0
+[10, 20, 30]            20      20
+[]                  10      0
+</code></pre>
+<p>再比如这个例子，数列中各种组合的总数，最大但不超过limit的数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">maxSum</span><span style="color:#f92672">(</span>List list<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&lt;=</span> 0 <span style="color:#f92672">||</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">int</span> item <span style="color:#f92672">=</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+    list<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+    
+    <span style="color:#66d9ef">int</span> maximum<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&lt;</span> item<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    maximum <span style="color:#f92672">=</span> maxSum<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> n<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">int</span> with <span style="color:#f92672">=</span> item <span style="color:#f92672">+</span> maxSum<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> n<span style="color:#f92672">-</span>item<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">int</span> without <span style="color:#f92672">=</span> maxSum<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> n<span style="color:#f92672">);</span>
+    maximum <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">(</span>with<span style="color:#f92672">,</span> without<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    
+    list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> item<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">(</span>maximum<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如果元素不超过n，可加可不加，然后递归应用到去掉这个元素的数列中。在调用的结尾，我用了list.add()来把删掉的元素放回去，因为我们并不希望调用此函数之后，数列变为空。</p>
+<h4 id="example-3">Example 3</h4>
+<p>假如你在爬台阶，一小步是一个台阶，一大步是两个台阶，那么爬4个台阶有以下5种可能性：</p>
+<pre><code>[1, 1, 1, 1]
+[1, 1, 2]
+[1, 2, 1]
+[2, 1, 1]
+[2, 2]
+</code></pre>
+<p>实现一个函数waysToClimb(n)，返回爬n个台阶的所有方式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">waysToClimb</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Stack steps <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Stack<span style="color:#f92672">();</span>
+    waysToClimb<span style="color:#f92672">(</span>n<span style="color:#f92672">,</span> steps<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">waysToClimb</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">,</span> Stack steps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&lt;=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>steps<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+    steps<span style="color:#f92672">.</span><span style="color:#a6e22e">push</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>            <span style="color:#75715e">// choose 1
+</span><span style="color:#75715e"></span>    waysToClimb<span style="color:#f92672">(</span>n<span style="color:#f92672">-</span>1<span style="color:#f92672">,</span> steps<span style="color:#f92672">);</span>  <span style="color:#75715e">// explore 
+</span><span style="color:#75715e"></span>    steps<span style="color:#f92672">.</span><span style="color:#a6e22e">pop</span><span style="color:#f92672">();</span>              <span style="color:#75715e">// un-choose
+</span><span style="color:#75715e"></span>
+ <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&gt;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        steps<span style="color:#f92672">.</span><span style="color:#a6e22e">push</span><span style="color:#f92672">(</span>2<span style="color:#f92672">);</span>
+        waysToClimb<span style="color:#f92672">(</span>n<span style="color:#f92672">-</span>2<span style="color:#f92672">,</span> steps<span style="color:#f92672">);</span>
+        steps<span style="color:#f92672">.</span><span style="color:#a6e22e">pop</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>这里使用了Stack来缓存结果，你可以选择一小步或者一大步来走，使用递归可以非常方便地遍历所有的可能性。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://guangchuangyu.github.io/tags/java/">java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/" data-tooltip="functional enrichment for GTEx paper">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/" data-tooltip="parsing BED coordinates">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2015/08/recursive/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2015/08/recursive/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2015/08/recursive/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/08/functional-enrichment-for-gtex-paper/" data-tooltip="functional enrichment for GTEx paper">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/" data-tooltip="parsing BED coordinates">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://guangchuangyu.github.io/2015/08/recursive/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://guangchuangyu.github.io/2015/08/recursive/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://guangchuangyu.github.io/2015/08/recursive/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguangchuangyu.github.io%2F2015%2F08%2Frecursive%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fguangchuangyu.github.io%2F2015%2F08%2Frecursive%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fguangchuangyu.github.io%2F2015%2F08%2Frecursive%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/7466436733e8691a63a9f7af4651e014?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Guangchuang Yu</h4>
+    
+      <div id="about-card-bio">Bioinformatics Professor @ SMU</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Bioinformatics Professor
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Guangzhou
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://guangchuangyu.github.io/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://guangchuangyu.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/guangchuangyu.github.io\/2015\/08\/recursive\/';
+          
+            this.page.identifier = '\/2015\/08\/recursive\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'gcyu';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

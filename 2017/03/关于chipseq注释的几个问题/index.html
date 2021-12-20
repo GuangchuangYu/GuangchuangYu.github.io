@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="为什么我要用某个基因组版本？
@@ -152,7 +152,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -354,10 +353,10 @@ if (!doNotTrack) {
 <li>makeTxDbFromGFF：通过解析GFF文件制作TxDb</li>
 </ul>
 <p>比如我想用人的参考基因信息来做注释，我们可以直接在线从UCSC生成<strong>TxDb</strong>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(GenomicFeatures)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(GenomicFeatures)
 hg19.refseq.db <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">makeTxDbFromUCSC</span>(genome<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hg19&#34;</span>, table<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;refGene&#34;</span>)
 </code></pre></div><p>比如最近在<strong>biostars</strong>上有用户问到的，做裂殖酵母的注释，我们可以下载相应的<strong>GFF</strong>文件，然后通过<strong>makeTxDbFromGFF</strong>函数生成<strong>TxDb</strong>对象，像下面的命令所演示，<strong>spombe</strong>就是生成的<strong>TxDb</strong>，就可以拿来做裂殖酵母的ChIPseq注释。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">download.file</span>(<span style="color:#e6db74">&#34;ftp://ftp.ebi.ac.uk/pub/databases/pombase/pombe/Chromosome_Dumps/gff3/schizosaccharomyces_pombe.chr.gff3&#34;</span>, <span style="color:#e6db74">&#34;schizosaccharomyces_pombe.chr.gff3&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">download.file</span>(<span style="color:#e6db74">&#34;ftp://ftp.ebi.ac.uk/pub/databases/pombase/pombe/Chromosome_Dumps/gff3/schizosaccharomyces_pombe.chr.gff3&#34;</span>, <span style="color:#e6db74">&#34;schizosaccharomyces_pombe.chr.gff3&#34;</span>)
 
 <span style="color:#a6e22e">require</span>(GenomicFeatures)
 spombe <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">makeTxDbFromGFF</span>(<span style="color:#e6db74">&#34;schizosaccharomyces_pombe.chr.gff3&#34;</span>)
@@ -371,7 +370,7 @@ spombe <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">make
 <h2 id="最近基因位置是相对于tss的能否相对于整个基因">最近基因位置是相对于TSS的，能否相对于整个基因？</h2>
 <p>答案也是可以的！</p>
 <p>首先如果peak和TSS有overlap，genomic annotation就是promoter，而最近基因也是同一个，所以在这种情况下，两种注释都指向同一个基因，可以说信息是冗余的，能不能不要冗余信息？这个是可以的，你可以传入参数<strong>ignoreOverlap=TRUE</strong>，那么最近基因就会去找不overlap的。</p>
-<p>最近基因是相对于TSS，如果和TSS有overlap，距离是0, 必须是最近。回到标题的问题，如果我想说只要和基因有overlap就是最近基因，这种情况其实你的最近基因就是host gene，也就是annotation这个column给出来的是相对应的，我们就想找peak所在位置的基因信息，那么这当然也是可以的，默认参数<strong>overlap=&quot;TSS&rdquo;</strong>, 如果改为<strong>overlap=&quot;all&rdquo;</strong>，它看的就是整个基因而不是TSS，当然<strong>distanceToTSS</strong>也还是会计算，如果overlap的不是TSS，而是基因体里，并不会因为而设为0。</p>
+<p>最近基因是相对于TSS，如果和TSS有overlap，距离是0, 必须是最近。回到标题的问题，如果我想说只要和基因有overlap就是最近基因，这种情况其实你的最近基因就是host gene，也就是annotation这个column给出来的是相对应的，我们就想找peak所在位置的基因信息，那么这当然也是可以的，默认参数<strong>overlap=&ldquo;TSS&rdquo;</strong>, 如果改为<strong>overlap=&ldquo;all&rdquo;</strong>，它看的就是整个基因而不是TSS，当然<strong>distanceToTSS</strong>也还是会计算，如果overlap的不是TSS，而是基因体里，并不会因为而设为0。</p>
 <h2 id="如果我只想注释上游或者是下游的基因呢">如果我只想注释上游或者是下游的基因呢？</h2>
 <p>当然也可以，我们有<strong>ignoreUpstream</strong>和<strong>ignoreDownstream</strong>参数，默认都是FALSE。随便你想看上游还是下游，都可以。</p>
 <h2 id="为什么要有这么多参数">为什么要有这么多参数？</h2>
@@ -478,7 +477,7 @@ spombe <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">make
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

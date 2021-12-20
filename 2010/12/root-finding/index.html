@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Numerical root finding methods use iteration, producing a sequence of numbers that hopefully converge towards a limits which is a root. This post only focuses four basic algorithms on root finding, and covers bisection method, fixed point method, Newton-Raphson method, and secant method.
@@ -104,7 +104,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -293,10 +292,10 @@ if (!doNotTrack) {
               <p>Numerical root finding methods use iteration, producing a sequence of numbers that hopefully converge towards a limits which is a root. This post only focuses four basic algorithms on root finding, and covers bisection method, fixed point method, Newton-Raphson method, and secant method.</p>
 <p>The simplest root finding algorithms is the <a href="https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/">bisection method</a>. It works when <code>f</code> is a continuous function and it requires previous knowledge of two initial gueeses, <code>u</code> and <code>v</code>, such that <code>f(u)</code> and <code>f(v)</code> have opposite signs. This method is reliable, but converges slowly. For detail, see <a href="https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/">https://guangchuangyu.github.io/cn/2008/11/bisect-to-solve-equation/</a> .</p>
 <p>Root finding can be reduced to the problem of finding fixed points of the function <code>g(x) = c*f(x) +x</code>, where <code>c</code> is a non-zero constant. It is clearly that <code>f(a) = 0</code> if and only if <code>g(a) = a</code>. This is the so called fixed point algorithm.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fixedpoint <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, x0, tol<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-07</span>, niter<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>){
-    <span style="color:#75715e">## fixed-point algorithm to find x such that fun(x) == x</span>
-    <span style="color:#75715e">## assume that fun is a function of a single variable</span>
-    <span style="color:#75715e">## x0 is the initial guess at the fixed point</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fixedpoint <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, x0, tol<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-07</span>, niter<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>){
+    <span style="color:#75715e">## fixed-point algorithm to find x such that fun(x) == x</span>
+    <span style="color:#75715e">## assume that fun is a function of a single variable</span>
+    <span style="color:#75715e">## x0 is the initial guess at the fixed point</span>
  
     xold <span style="color:#f92672">&lt;-</span> x0
     xnew <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fun</span>(xold)
@@ -320,7 +319,7 @@ if (!doNotTrack) {
 converge. Another disavantage of this method is that the speed is relatively slow.</p>
 <p><a href="http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/">Newtom-Raphson method</a> converge more quickly than bisection method and fixed point method. It assumes the function <code>f</code> to have a continuous derivative. For detail, see <a href="http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/">http://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/</a> .</p>
 <p>The secant method does not require the computation of a derivative, it only requires that the function <code>f</code> is continuous. The secant method is based on a linear approximation to the function <code>f</code>. The convergence properties of the secant method are similar to those of the Newton-Raphson method.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">secant <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, x0, x1, tol<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-07</span>, niter<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>){
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">secant <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(fun, x0, x1, tol<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-07</span>, niter<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>){
     <span style="color:#a6e22e">for </span>( i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>niter ) {
         x2 <span style="color:#f92672">&lt;-</span> x1<span style="color:#f92672">-</span><span style="color:#a6e22e">fun</span>(x1)<span style="color:#f92672">*</span>(x1<span style="color:#f92672">-</span>x0)<span style="color:#f92672">/</span>(<span style="color:#a6e22e">fun</span>(x1)<span style="color:#f92672">-</span><span style="color:#a6e22e">fun</span>(x0))
         <span style="color:#a6e22e">if </span>(<span style="color:#a6e22e">abs</span>(<span style="color:#a6e22e">fun</span>(x2)) <span style="color:#f92672">&lt;</span> tol)
@@ -431,7 +430,7 @@ converge. Another disavantage of this method is that the speed is relatively slo
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

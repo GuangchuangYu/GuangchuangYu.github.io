@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="A ggtree user recently asked me the following question in google group:
@@ -128,7 +128,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -333,17 +332,17 @@ p &lt;- ggtree(tr) + geom_tiplab(align=TRUE) + theme_tree2()
 d = data.frame(id = tr$tip.label, v= rnorm(50))
 
 facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
-        ggtitle(&quot;truncated tip labels&quot;)
+		ggtitle(&quot;truncated tip labels&quot;)
 </code></pre>
 <p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen">https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen</a> Shot 2016-10-31 at 11.31.39 AM.png)</p>
 <p>If we only visualize the tree, it is easy to solve by using <code>xlim()</code> to allocate more space for the lables. But <code>xlim()</code> works for all panels. Combination of <code>facet_plot()</code> and <code>xlim()</code> will produce figure with many spaces.</p>
 <pre><code>facet_plot(p+xlim(NA, 6), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
-        ggtitle(&quot;xlim applies to all panels&quot;)
+		ggtitle(&quot;xlim applies to all panels&quot;)
 </code></pre>
 <p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen">https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/Screen</a> Shot 2016-10-31 at 11.33.05 AM.png)</p>
 <p>To overcome this issue, <code>ggtree</code> provides <code>xlim_tree</code> to set <code>x</code> axis limits for only the <code>Tree</code> panel.</p>
 <pre><code>facet_plot(p+xlim_tree(6), geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + 
-        ggtitle('*xlim_tree* only change x axis limits of *Tree* panel')
+		ggtitle('*xlim_tree* only change x axis limits of *Tree* panel')
 
 # or using:
 # facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') + xlim_tree(6)
@@ -453,7 +452,7 @@ facet_plot(p, geom=geom_point, data=d, mapping=aes(x=v), panel='dot') +
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

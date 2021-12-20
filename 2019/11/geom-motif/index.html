@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -98,7 +98,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -288,7 +287,7 @@ if (!doNotTrack) {
 <p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/motif-2.jpeg" alt=""></p>
 <p>但是这个包的图层不能直接使用《文章发表：两种方法在进化树上可视化数据》所提到的<code>facet_plot</code>（以及新版的geom_facet）来画。于是我在ggtree里写了一个图层叫geom_motif，包装一下，然后就可以愉快地使用了，而且让画基因组结构按照某个基因来对齐更加容易，只需要使用on参数，并且直接支持在上面label基因的名字。</p>
 <p>废话少说，直接开撸上例子，这里使用gggenes自带的数据。当然这个数据没有配套的进化树，所以我们要无中生有创建一颗树出来。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
 <span style="color:#a6e22e">library</span>(ggplot2)
 <span style="color:#a6e22e">library</span>(gggenes)
 <span style="color:#a6e22e">library</span>(ggtree)
@@ -304,7 +303,7 @@ d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">matrix</s
 genes <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(g, get_genes, data <span style="color:#f92672">=</span> example_genes)
 </code></pre></div><p>上面定义一个函数，从数据中把归属于某个基因组的基因列表拿出来。然后应用于这个示例数据，拿到所有基因组的基因列表。我们通过这个列表来生成距离矩阵。</p>
 <p>很简单，按照overlap了多少基因，算一下jaccard相似性，1-sim就得到dist。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>n) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>n) {
     <span style="color:#a6e22e">for </span>(j in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>i) {
         jaccard_sim <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">length</span>(<span style="color:#a6e22e">intersect</span>(genes[[i]], genes[[j]])) <span style="color:#f92672">/</span> 
                        <span style="color:#a6e22e">length</span>(<span style="color:#a6e22e">union</span>(genes[[i]], genes[[j]]))
@@ -312,9 +311,9 @@ genes <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lappl
     }
 }
 </code></pre></div><p>有了距离矩阵，树也就可以生成了：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tree <span style="color:#f92672">&lt;-</span> ape<span style="color:#f92672">::</span><span style="color:#a6e22e">bionj</span>(d)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tree <span style="color:#f92672">&lt;-</span> ape<span style="color:#f92672">::</span><span style="color:#a6e22e">bionj</span>(d)
 </code></pre></div><p>最后可视化也就跟着来了。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggtree</span>(tree, branch.length<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>) <span style="color:#f92672">+</span> 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggtree</span>(tree, branch.length<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">geom_tiplab</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim_tree</span>(<span style="color:#ae81ff">5</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">geom_facet</span>(mapping <span style="color:#f92672">=</span> <span style="color:#a6e22e">aes</span>(xmin <span style="color:#f92672">=</span> start, xmax <span style="color:#f92672">=</span> end, fill <span style="color:#f92672">=</span> gene),
                data<span style="color:#f92672">=</span>example_genes, geom<span style="color:#f92672">=</span>geom_motif, panel<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Alignment&#39;</span>,
@@ -418,7 +417,7 @@ genes <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lappl
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

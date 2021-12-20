@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="I used R package ChIPpeakAnno for annotating peaks, and found that
@@ -178,7 +178,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -367,7 +366,7 @@ if (!doNotTrack) {
               <p>I used R package <strong>ChIPpeakAnno</strong> for annotating peaks, and found that
 it handle the DNA strand in the wrong way. Maybe the developers were
 from the computer science but not biology background.</p>
-<pre><code>&gt; require(ChIPpeakAnno)
+<pre tabindex="0"><code>&gt; require(ChIPpeakAnno)
 &gt; packageVersion(&quot;ChIPpeakAnno&quot;)
 [1] '2.10.0'
 &gt; peak &lt;- RangedData(space=&quot;chr1&quot;, IRanges(24736757, 24737528))
@@ -388,7 +387,7 @@ RangedData with 1 row and 9 value columns across 1 space
 chr1:24737528 and annotated the peak using ChIPpeakAnno package.</p>
 <p>It returns that the nearest gene is ENSG00000001461, whose gene symbol
 is NIPAL3.</p>
-<pre><code>&gt; require(org.Hs.eg.db)
+<pre tabindex="0"><code>&gt; require(org.Hs.eg.db)
 &gt; gene.ChIPpeakAnno &lt;- select(org.Hs.eg.db, key=ap$feature, keytype=&quot;ENSEMBL&quot;, columns=c(&quot;ENSEMBL&quot;, &quot;ENTREZID&quot;, &quot;SYMBOL&quot;))
 &gt; gene.ChIPpeakAnno
           ENSEMBL ENTREZID SYMBOL
@@ -397,13 +396,13 @@ is NIPAL3.</p>
 STPG1.
 <img src="http://guangchuangyu.github.io/blog_images/2014/01/Screenshot-2014-01-13-22.00.46.png" alt="">
 The gene symbol, STPG1, was converted to ENTREZID for future processing.</p>
-<pre><code>&gt; gene.nearest &lt;- select(org.Hs.eg.db, key=&quot;STPG1&quot;, keytype=&quot;SYMBOL&quot;, columns=c(&quot;ENSEMBL&quot;, &quot;ENTREZID&quot;, &quot;SYMBOL&quot;))
+<pre tabindex="0"><code>&gt; gene.nearest &lt;- select(org.Hs.eg.db, key=&quot;STPG1&quot;, keytype=&quot;SYMBOL&quot;, columns=c(&quot;ENSEMBL&quot;, &quot;ENTREZID&quot;, &quot;SYMBOL&quot;))
 &gt; gene.nearest
   SYMBOL         ENSEMBL ENTREZID
 1  STPG1 ENSG00000001460    90529
 </code></pre><p>We can query the coordination of these two genes, and compare their
 distances to the peak.</p>
-<pre><code>&gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+<pre tabindex="0"><code>&gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
 &gt; knownGene &lt;- transcriptsBy(TxDb.Hsapiens.UCSC.hg19.knownGene, by=&quot;gene&quot;)
 &gt; 
 &gt; gene.ChIPpeakAnno.info &lt;- knownGene[[gene.ChIPpeakAnno$ENTREZID]]
@@ -424,13 +423,13 @@ also found that the ranges of the gene is slightly different from the
 one returned by <em>annotatePeakInBatch</em> function. This may due to the
 variation of different versions and it&rsquo;s not a big deal.</p>
 <p>As the gene, NIPAL3, is encoded in + strand, the nearest distance is:</p>
-<pre><code>&gt; min(abs(start(peak) - start(gene.ChIPpeakAnno.info)))
+<pre tabindex="0"><code>&gt; min(abs(start(peak) - start(gene.ChIPpeakAnno.info)))
 [1] 5488
 </code></pre><p>While the gene, STPG1, is encoded in - strand, the end of the gene
 coordination is actually the start position of the gene and the start of
 the gene coordination is the end position. So the distance should be
 calculated by the end coordination.</p>
-<pre><code>&gt; gene.nearest.info &lt;- knownGene[[gene.nearest$ENTREZID]]
+<pre tabindex="0"><code>&gt; gene.nearest.info &lt;- knownGene[[gene.nearest$ENTREZID]]
 &gt; gene.nearest.info
 GRanges with 6 ranges and 2 metadata columns:
       seqnames               ranges strand |     tx_id     tx_name
@@ -450,7 +449,7 @@ GRanges with 6 ranges and 2 metadata columns:
 </code></pre><p>STPG1 is more close to the peak than NIPAL3. Those genes encoded in -
 strand can&rsquo;t be well-handled by <strong>ChIPpeakAnno</strong> package.</p>
 <p>I look careful to the source code of <em>annotatePeakInBatch</em> function.</p>
-<pre><code>    TSS.ordered &lt;- AnnotationData
+<pre tabindex="0"><code>    TSS.ordered &lt;- AnnotationData
     rm(AnnotationData)
     if (!length(rownames(TSS.ordered))) {
         rownames(TSS.ordered) = formatC(1:dim(TSS.ordered)[1],
@@ -474,7 +473,7 @@ return FALSE, the function should complain this, with warning message
 showing in the screen or even stop running. But the author just simply
 assign all the genes encoded in + strand, this is nonsense.</p>
 <p>Then for calculating the feauture location:</p>
-<pre><code>    if (FeatureLocForDistance == &quot;middle&quot; || FeatureLocForDistance ==
+<pre tabindex="0"><code>    if (FeatureLocForDistance == &quot;middle&quot; || FeatureLocForDistance ==
         &quot;m&quot;) {
         FeatureLoc = unlist(lapply(1:dim(r2)[1], function(i) {
             round(mean(c(as.numeric(r2[i, 2]), as.numeric(r2[i,
@@ -522,7 +521,7 @@ assign all the genes encoded in + strand, this is nonsense.</p>
 and &ldquo;end&rdquo;, the &ldquo;start&rdquo; should be &ldquo;end&rdquo; and &ldquo;end&rdquo; should be &ldquo;start&rdquo; when
 the gene is located at - strand. Again, the <em>annotatePeakInBatch</em>
 function omits the strand information of genes/features.</p>
-<pre><code>        TSS.ordered$FeatureLoc = FeatureLoc
+<pre tabindex="0"><code>        TSS.ordered$FeatureLoc = FeatureLoc
         myPeakList$PeakLoc = PeakLoc
         plusAnno = TSS.ordered[as.character(TSS.ordered$strand) %in%
             c(&quot;+&quot;, &quot;*&quot;, &quot;1&quot;), ]
@@ -661,7 +660,7 @@ peak. That&rsquo;s it.</p>
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

@@ -6,11 +6,7 @@
     <description>Recent content in codelink on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Sep 2008 01:18:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://guangchuangyu.github.io/tags/codelink/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 23 Sep 2008 01:18:00 +0800</lastBuildDate><atom:link href="https://guangchuangyu.github.io/tags/codelink/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>映射codelink芯片ID</title>
       <link>https://guangchuangyu.github.io/2008/09/mapping-codelink-id/</link>
@@ -19,26 +15,26 @@
       <guid>https://guangchuangyu.github.io/2008/09/mapping-codelink-id/</guid>
       <description>&lt;p&gt;GE公司codelink芯片(这个破产品已经停产了)上的探针ID，需要转成别的ID，看了一些在线的转换ID工具，都不支持，探针ID基本上都只支持affy的。&lt;/p&gt;
 &lt;p&gt;想起了bioconductor里的biomaRt，这个包可以检索BioMart数据库，这个数据库里有N多种ID。试了一下，果然没问题。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#加载biomaRt包&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#加载biomaRt包&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(biomaRt)
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#选取数据库&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#选取数据库&lt;/span&gt;
 ensembl &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;useMart&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ensembl&amp;#34;&lt;/span&gt;, dataset &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hsapiens_gene_ensembl&amp;#34;&lt;/span&gt;)
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#获取可供检索的attribute&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#获取可供检索的attribute&lt;/span&gt;
 attributes&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;listAttributes&lt;/span&gt;(mart&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;ensembl)
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#看一下attributes里是否有codelink，得到以下的结果。&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#看一下attributes里是否有codelink，得到以下的结果。&lt;/span&gt;
 attributes&lt;span style=&#34;color:#a6e22e&#34;&gt;[grep&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;codelink&amp;#34;&lt;/span&gt;,attributes[,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]), ]
 
 name description
 &lt;span style=&#34;color:#ae81ff&#34;&gt;21&lt;/span&gt; codelink Codelink ID
-&lt;span style=&#34;color:#75715e&#34;&gt;#再搜一下其它我想要的ID&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#再搜一下其它我想要的ID&lt;/span&gt;
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#读进含有codelink ID的文件。&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#读进含有codelink ID的文件。&lt;/span&gt;
 mrna_id &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;read.table&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mrna_id.txt&amp;#34;&lt;/span&gt;)
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#进行ID映射。&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#进行ID映射。&lt;/span&gt;
 idmap &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getBM&lt;/span&gt;(attributes&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;codelink&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;refseq_dna&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;external_gene_id&amp;#34;&lt;/span&gt;,
                             &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;embl&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hgnc_id&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hgnc_symbol&amp;#34;&lt;/span&gt;), 
                filters &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;codelink&amp;#34;&lt;/span&gt;, values&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mrna_id[,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;],

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -78,7 +78,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -250,6 +249,80 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2007/05/edit-partition-netbsd-macppc/">
+          Edit partition table in NetBSD/macppc
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2007-05-14T04:43:00&#43;08:00">
+        
+  May 14, 2007
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/bsd">BSD</a>, 
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/powerbook">Powerbook</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <pre tabindex="0"><code>#disklabel wd0
+</code></pre><p>可以看到原始分区如下: 7 partitions:</p>
+<pre><code>#        size    offset     fstype [fsize bsize cpg/sgs]
+a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
+b:   1048576  46139168       swap                     # (Cyl.  45772*-  46813*)
+c: 117210240         0     unused      0     0        # (Cyl.      0 - 116279)
+d:  25165824      1824        HFS                     # (Cyl.      1*-  24967*)
+e:  28079456  89130784        HFS                     # (Cyl.  88423*- 116279)
+g:  41943040  47187744     4.2BSD      0     0     0  # (Cyl.  46813*-  88423*)
+</code></pre>
+<p>a为netbsd的/分区，b为swap分区,c为整个硬盘，d为mac
+os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbsd下的/home分区。
+原本是两系统，os9.2一直都很少用，所以想删了，腾出空间来放数据。因为wd0d和wd0e不在连续的柱面上，所以无法将它们合并。</p>
+<p>新的分区方案如下：wd0d删了，分成两个，一个15M(需要一个HFS类型的分区来放置<code>ofwboot.xcf</code>，因为openfirmwire不支持从netbsd分区里加载loader),剩下的作为<code>/home</code>分区。把原来的<code>/home</code>分区(<code>wd0g</code>)和共享数据的分区(<code>wd0e</code>)合并为一个分区，用于放置数据。</p>
+<ol>
+<li>第一步，也是最关键的一步，先备份好数据。</li>
+</ol>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2007/05/edit-partition-netbsd-macppc/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2007/05/pkgsrc-tips/">
           pkgsrc tips
         </a>
@@ -279,10 +352,10 @@ if (!doNotTrack) {
       
         <h2 id="1cpuflags">1.cpuflags</h2>
 <p><strong>devel/cpuflags:Determine compiler flags to best target current cpu</strong></p>
-<pre><code>#cd /usr/pkgsrc/devel/cpuflags 
+<pre tabindex="0"><code>#cd /usr/pkgsrc/devel/cpuflags 
 #make install
 </code></pre><p>然后在/etc/mk.conf中加入:</p>
-<pre><code>.sinclude &quot;/usr/pkg/share/mk/cpuflags.mk&quot;
+<pre tabindex="0"><code>.sinclude &quot;/usr/pkg/share/mk/cpuflags.mk&quot;
 .sinclude &quot;/usr/pkg/share/mk/optimize_gcc.mk&quot;
 </code></pre><p>这样make时便能够根据cpuflags进行优化编译了。</p>
       
@@ -353,7 +426,7 @@ if (!doNotTrack) {
 <li>alpha</li>
 <li>theta参数用于指定角度，让图绘出来以某个特定的角度呈现出来。(optional)</li>
 </ul>
-<pre><code>-&gt;clear -&gt;A=[1 2 5 4 3;0 3 2 8 6;2 4 6 7 5;2 3 4 3 1];
+<pre tabindex="0"><code>-&gt;clear -&gt;A=[1 2 5 4 3;0 3 2 8 6;2 4 6 7 5;2 3 4 3 1];
 -&gt;t1=1:4; -&gt;t2=1:5;
 //plot3d1与plot3d语法类似，能够嵌入多种颜色
 -&gt;plot3d(t1,t2,A,alpha=45,theta=45);
@@ -541,16 +614,16 @@ Drivers”不然分区将不能在OS9中使用，我一共分了5个分区，12G
       
         <h2 id="下载imaxima">下载imaxima   </h2>
 <p><a href="http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz">http://members3.jcom.home.ne.jp/imaxima/Site/Download%20and%20Install_files/imaxima-imath-0.97a.tar.gz</a></p>
-<pre><code>./configure
+<pre tabindex="0"><code>./configure
 make
 sudo make install
 </code></pre><p>进行安装。
 默认将安装在/usr/local/share/emacs/site-lisp下，在~/.emacs下加入</p>
-<pre><code>(load &quot;imaxima&quot;)
+<pre tabindex="0"><code>(load &quot;imaxima&quot;)
 </code></pre><p>启动emacs,按M-x,键入imaxima运行maxima 但是进行运算时出错。
 <img src="http://guangchuangyu.github.io/blog_images/2005/05/070902122953.png" alt=""></p>
 <p>需要breqn094包，可从<a href="ftp://ftp.ams.org/pub/tex/breqn.zip">ftp://ftp.ams.org/pub/tex/breqn.zip</a>下载，</p>
-<pre><code>cd /usr/share/texmf/tex/latex/
+<pre tabindex="0"><code>cd /usr/share/texmf/tex/latex/
 sudo unzip ~/Downloads/breqn.zip
 sudo texhash
 </code></pre>
@@ -617,96 +690,16 @@ sudo texhash
 <p>我装了gentoo。最初尝试用qemu的user-mode来虚拟x86的指令集，再用xrgsu（锐捷linux版认证程序）提供运行所需的libs。最终xrgsu可以运行。但是找不到网卡。后面我就放弃了。</p>
 <p>拉了一个月ADSL，在一次偶然的机会我发现了mystar。mystar是用libnet＋libpcap写的，关键的代码不到200行（libnet和libpcap是平台无关的分组构造发送、分组截获C函数库）<code>mystar</code>是网上一个叫netxray的人写的。
 下面是源码<code>http://bbs.whnet.edu.cn/upload/mystarV0.1-src.zip</code>，解压密码是<code>netxray</code> 解压后:</p>
-<pre><code>cd mystarV0.1 
+<pre tabindex="0"><code>cd mystarV0.1 
 make
 </code></pre><p>编译。</p>
-<pre><code>#修改我的ID跟password。
+<pre tabindex="0"><code>#修改我的ID跟password。
 vim mystar.conf 
 </code></pre><p>使用<code>./mystar</code>运行，并且认证成功!</p>
 <p>随后我发现一个问题，就是不会自动重连，老是会断线。在mystar.conf里面有一段</p>
       
       <p>
         <a href="https://guangchuangyu.github.io/2005/03/scau%E6%A0%A1%E5%9B%AD%E7%BD%91%E8%AE%A4%E8%AF%81/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-          
-            
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2005/01/powerbook-gentoo/">
-          Powerbook G3上安装gentoo
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2005-01-14T04:32:00&#43;08:00">
-        
-  January 14, 2005
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/linux">Linux</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/powerbook">Powerbook</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>下面是我在PowerBook G3上安装Gentoo的全过程。。</p>
-<p>自己做一个备忘录，也给想在Powerbook上装Gentoo的做一个参考。</p>
-<p>以下为基本的安装过程，详细请参考Gentoo的文档</p>
-<p><a href="http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml">http://www.gentoo.org/doc/en/handbook/handbook-ppc.xml</a></p>
-<p>基本的安装步骤如下：</p>
-<p>用2004.3LiveCD进入。</p>
-<h2 id="1-配置网络">1. 配置网络</h2>
-<pre><code>＃net-setup eth0
-</code></pre><p>回答它几个问题就行了。</p>
-<h2 id="2分区">2.分区</h2>
-<pre><code>#mac-fdisk /dev/hda
-</code></pre><p>以下是我的分区。</p>
-<pre><code>/dev/hda
- # type name length base ( size ) system
-/dev/hda1 Apple_partition_map Apple 63 @ 1 ( 31.5k) Partition map
-/dev/hda2 Apple_Bootstrap bootstrap 1600 @ 64 (800.0k) NewWorld bootblock
-/dev/hda3 Apple_UNIX_SVR2 / 12582912 @ 1664 ( 6.0G) Linux native
-/dev/hda4 Apple_UNIX_SVR2 swap 1048576 @ 12584576 (512.0M) Linux swap
-/dev/hda5 Apple_UNIX_SVR2 /home 6007728 @ 13633152 ( 2.9G) Linux native
-
-Block size=512, Number of Blocks=19640880
-DeviceType=0x0, DeviceId=0x0
-</code></pre>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2005/01/powerbook-gentoo/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
@@ -728,8 +721,15 @@ DeviceType=0x0, DeviceId=0x0
           </li>
         
         
+          <li class="pagination-next">
+            <a class="btn btn--default btn--small" href="https://guangchuangyu.github.io/post/page/57/">
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
       
-      <li class="pagination-number">page 56 of 56</li>
+      <li class="pagination-number">page 56 of 57</li>
     </ul>
   </div>
 
@@ -737,7 +737,7 @@ DeviceType=0x0, DeviceId=0x0
         </section>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

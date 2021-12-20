@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="面向对象有多种实现方式，R里面就有3种，class-based, method-based, object-based，R6与C&#43;&#43;/JAVA一样是class-based的，S3/S4是method-based的，还有一种是object-based的，这在proto包中实现，很多人可能没听说过，但是ggplot2你们一定听过，ggplot2就是object-based的实现，它现在是自己的定制实现，称之为ggproto。
@@ -100,7 +100,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -296,20 +295,20 @@ if (!doNotTrack) {
 </blockquote>
 <hr>
 <p>过了一天，我就写了<strong>geom_emoji</strong>，于是如果我想看某个emoji长什么样，比如下面画个玫瑰花：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;rose&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;rose&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>()
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/rose.png" alt=""></p>
 <p>这次的更新，我还换个emoji字体，升级到unicode 9，也就是最新加入的鸭子也能用咯：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;duck&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;duck&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_void</span>()
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/duck.png" alt=""></p>
 <p><strong>geom_emoji</strong>让画散点也变得简单:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(<span style="color:#f92672">-</span><span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span>), <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span>), length.out<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(<span style="color:#f92672">-</span><span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span>), <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span>), length.out<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
 y1 <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">*</span><span style="color:#a6e22e">abs</span>(x)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">15</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span> <span style="color:#f92672">-</span> x^2)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span>
 y2 <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">*</span><span style="color:#a6e22e">abs</span>(x)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">15</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">17</span> <span style="color:#f92672">-</span> x^2)<span style="color:#f92672">/</span><span style="color:#ae81ff">17</span>
 <span style="color:#a6e22e">ggplot</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_emoji</span>(<span style="color:#e6db74">&#34;gift_heart&#34;</span>, x<span style="color:#f92672">=</span>x, y<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(y1, y2), color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;red&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/R/emojifont/heart_of_heart.png" alt=""></p>
 <hr>
 <p>制作动图gif也是非常简单，这个代码简直如同人类语言一般：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
 <span style="color:#a6e22e">require</span>(magick)
 <span style="color:#a6e22e">require</span>(purrr)
 
@@ -435,7 +434,7 @@ x <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">map</spa
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

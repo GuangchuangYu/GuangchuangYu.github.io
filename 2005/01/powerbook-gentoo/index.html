@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="下面是我在PowerBook G3上安装Gentoo的全过程。。
@@ -184,7 +184,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -377,12 +376,12 @@ if (!doNotTrack) {
 <p>基本的安装步骤如下：</p>
 <p>用2004.3LiveCD进入。</p>
 <h2 id="1-配置网络">1. 配置网络</h2>
-<pre><code>＃net-setup eth0
+<pre tabindex="0"><code>＃net-setup eth0
 </code></pre><p>回答它几个问题就行了。</p>
 <h2 id="2分区">2.分区</h2>
-<pre><code>#mac-fdisk /dev/hda
+<pre tabindex="0"><code>#mac-fdisk /dev/hda
 </code></pre><p>以下是我的分区。</p>
-<pre><code>/dev/hda
+<pre tabindex="0"><code>/dev/hda
  # type name length base ( size ) system
 /dev/hda1 Apple_partition_map Apple 63 @ 1 ( 31.5k) Partition map
 /dev/hda2 Apple_Bootstrap bootstrap 1600 @ 64 (800.0k) NewWorld bootblock
@@ -393,19 +392,19 @@ if (!doNotTrack) {
 Block size=512, Number of Blocks=19640880
 DeviceType=0x0, DeviceId=0x0
 </code></pre><h2 id="3建立文件系统">3.建立文件系统</h2>
-<pre><code>#mke2fs -j /dev/hda3
+<pre tabindex="0"><code>#mke2fs -j /dev/hda3
 #mkswap /dev/hda4
 #mke2fs -j /dev/hda5
 #swapon /dev/hda4
 </code></pre><h2 id="4挂载分区">4.挂载分区</h2>
-<pre><code>#mount /dev/hda3 /mnt/gentoo
+<pre tabindex="0"><code>#mount /dev/hda3 /mnt/gentoo
 </code></pre><h2 id="5解开stage-tarball用portgage">5.解开Stage Tarball用Portgage</h2>
-<pre><code>#cd /mnt/gentoo
+<pre tabindex="0"><code>#cd /mnt/gentoo
 #tar xvjpf /mnt/cdrom/stages/stage3-\*g3\*.tar.bz2
 #tar xvjf portage-20040926.tar.bz2 -C /mnt/gentoo/usr
 </code></pre><h2 id="6设置编译选项">6.设置编译选项</h2>
 <p>以下是我的make.conf</p>
-<pre><code># These settings were set by the catalyst build script that automatically built this stage
+<pre tabindex="0"><code># These settings were set by the catalyst build script that automatically built this stage
 # Please consult /etc/make.conf.example for a more detailed example
 CFLAGS=&quot;-O3 -pipe -mcpu=750 -fno-strict-aliasing -mpowerpc-gfxopt -mmultiple -mstring&quot;
 CHOST=&quot;powerpc-unknown-linux-gnu&quot;
@@ -418,15 +417,15 @@ ACCEPT_KEYWORDS=&quot;~ppc&quot;
 USE=&quot;acpi cjk nls ppc freetype fbdev f77 java ncurses gpm gtk gtk2 -gnome qt -kde rage128 dvd alsa -arts mmx clisp&quot;
 LINGUAS=&quot;zh_CN&quot;
 </code></pre><h2 id="7-挂载分区">7. 挂载分区</h2>
-<pre><code>#mount -t proc none /mnt/gentoo/proc
+<pre tabindex="0"><code>#mount -t proc none /mnt/gentoo/proc
 #chroot /mnt/gentoo /bin/bash
 </code></pre><h2 id="8更新系统">8.更新系统</h2>
-<pre><code>#env-update &amp;&amp; source /etc/profile
+<pre tabindex="0"><code>#env-update &amp;&amp; source /etc/profile
 #emerge sync
 
 #emerge --update world
 </code></pre><h2 id="9安装内核">9.安装内核</h2>
-<pre><code>#emerge gentoo-dev-sources
+<pre tabindex="0"><code>#emerge gentoo-dev-sources
 #cd /usr/src/linux
 #make menuconfig
 #make all &amp;&amp; make menuconfig
@@ -435,7 +434,7 @@ LINGUAS=&quot;zh_CN&quot;
 #cp System.map /boot/System.map-2.6.10
 #cp .config /boot/config-2.6.10
 </code></pre><p>以下是我的内核选项配置&hellip;&hellip;.</p>
-<pre><code>#
+<pre tabindex="0"><code>#
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.10-gentoo-r6
 # Fri Mar 18 14:20:13 2005
@@ -1854,16 +1853,16 @@ CONFIG_ZLIB_DEFLATE=y
 # Cryptographic options
 #
 # CONFIG_CRYPTO is not set
-</code></pre><pre><code>#find /lib/modules/&lt;kernel version&gt;/ -type f -iname '\*.o' -or
+</code></pre><pre tabindex="0"><code>#find /lib/modules/&lt;kernel version&gt;/ -type f -iname '\*.o' -or
 -iname '\*.ko'
 #nano -w /etc/modules.autoload.d/kernel-2.6
 </code></pre><p>在这文件里加入开机自动载入的模块</p>
-<pre><code>#modules-update
+<pre tabindex="0"><code>#modules-update
 </code></pre><h2 id="10配置系统">10.配置系统</h2>
 <h3 id="fstab">fstab</h3>
-<pre><code>#nano /etc/fstab
+<pre tabindex="0"><code>#nano /etc/fstab
 </code></pre><p>下面是我的配置。</p>
-<pre><code># &lt;fs&gt; &lt;mountpoint&gt; &lt;type&gt; &lt;opts&gt; &lt;dump/pass&gt;
+<pre tabindex="0"><code># &lt;fs&gt; &lt;mountpoint&gt; &lt;type&gt; &lt;opts&gt; &lt;dump/pass&gt;
 /dev/hda3 / ext3 noauto,noatime 1 1
 /dev/hda4 none swap sw 0 0
 /dev/hda5 /home ext3 noatime 0 1
@@ -1873,24 +1872,24 @@ none /proc proc defaults 0 0
 
 none /dev/shm tmpfs defaults 0 0
 </code></pre><h3 id="网络信息">网络信息</h3>
-<pre><code># echo tux &gt; /etc/hostname
+<pre tabindex="0"><code># echo tux &gt; /etc/hostname
 # echo homenetwork &gt; /etc/dnsdomainname
 # echo nis.homenetwork &gt; /etc/nisdomainname
 # rc-update add domainname default
 </code></pre><h3 id="配置网络">配置网络</h3>
-<pre><code>#nano /etc/conf.d/net
+<pre tabindex="0"><code>#nano /etc/conf.d/net
 #nano /etc/resolv.conf
 #rc-update add net.eth0 default
 </code></pre><h3 id="安装系统工具">安装系统工具</h3>
-<pre><code>#emerge metalog
+<pre tabindex="0"><code>#emerge metalog
 #rc-update add metalog default
 #emerge vixie-cron
 #rc-update add vixie-cron default
 </code></pre><h2 id="11配置启动">11.配置启动</h2>
-<pre><code>#emerge yaboot
+<pre tabindex="0"><code>#emerge yaboot
 #nano yaboot.conf
 </code></pre><p>下面是我的配置文件。</p>
-<pre><code>## yaboot.conf generated by yabootconfig 1.0.7
+<pre tabindex="0"><code>## yaboot.conf generated by yabootconfig 1.0.7
 ##
 ## run: &quot;man yaboot.conf&quot; for details. Do not make changes until you have!!
 ##
@@ -1913,32 +1912,32 @@ image=/boot/kernel-gentoo-2.6.10
  sysmap=/boot/System.map-gentoo-2.6.10
  read-only
 </code></pre><h2 id="12重启系统">12.重启系统</h2>
-<pre><code>#exit
+<pre tabindex="0"><code>#exit
 #umount /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo
 #reboot
 </code></pre><h2 id="13-安装并配置x">13. 安装并配置X</h2>
 <p>在/etc/make.conf中加入</p>
-<pre><code>USE＝“cjk nls&quot;
+<pre tabindex="0"><code>USE＝“cjk nls&quot;
 LINGUAS=&quot;zh_CN&quot;
 </code></pre><h3 id="安装字体">安装字体</h3>
-<pre><code>#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
+<pre tabindex="0"><code>#emerge arphicfonts #(台湾文鼎字体，简体繁体都有）
 #fc-cache -f -v #(fontconfig的命令，安装字库）
 </code></pre><p>字体将装在/usr/share/fonts/arphicfonts中</p>
 <p>这样了中文的问题就解决了。</p>
 <p>不过我还是从windows里拷了simsun.ttc,tahoma.ttf,mingliu.ttc tahomabd.ttf</p>
 <p>放在/home/fonts下。</p>
-<pre><code>#ln -s /home/fonts /usr/share/fonts/MsFonts
+<pre tabindex="0"><code>#ln -s /home/fonts /usr/share/fonts/MsFonts
 #fc-cache
 </code></pre><h3 id="安装x">安装X</h3>
-<pre><code>#emerge xorg-x11
+<pre tabindex="0"><code>#emerge xorg-x11
 #emerge Xautoconfig
 
 #Xautoconfig #(自动生成xorg.conf)
 #emerge xfce4
 #emerge scim-tables
 </code></pre><p>编辑.xinitrc</p>
-<pre><code>#nano .xinitrc
-</code></pre><pre><code>export LC_CTYPE=zh_CN
+<pre tabindex="0"><code>#nano .xinitrc
+</code></pre><pre tabindex="0"><code>export LC_CTYPE=zh_CN
 export LANG=zh_CN
 export XMODIFIERS=&quot;@im=SCIM&quot;
 export XIM=SCIM
@@ -1948,7 +1947,7 @@ exec starxfce4
 </code></pre><p>这样了就行了。不过有些程序字体显示还不是很好。</p>
 <p>通过编辑<code>~/.fons.conf</code>进行字体的替换</p>
 <p>以下是我的<code>.fonts.conf</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
 <span style="color:#75715e">&lt;!DOCTYPE fontconfig SYSTEM &#34;fonts.dtd&#34;&gt;</span>
 <span style="color:#75715e">&lt;!-- /etc/fonts/local.conf file for local customizations --&gt;</span>
 <span style="color:#f92672">&lt;fontconfig&gt;</span>
@@ -2080,7 +2079,7 @@ exec starxfce4
 
 <span style="color:#f92672">&lt;/fontconfig&gt;&lt; /pre&gt;</span>
 </code></pre></div><p>这样了就行啦。字体显示完善</p>
-<pre><code>#startx
+<pre tabindex="0"><code>#startx
 </code></pre><p>and enjoy&hellip;&hellip;&hellip;.</p>
 <h3 id="laptop-support">Laptop Support</h3>
 <ul>
@@ -2095,7 +2094,7 @@ to edit settings such as power-management, trackpad options and various
 other preferences.</li>
 <li>cpudyn allows cpu speed scaling for longer battery life.</li>
 </ul>
-<pre><code># emerge pbbuttonsd; rc-update add pbbuttonsd default
+<pre tabindex="0"><code># emerge pbbuttonsd; rc-update add pbbuttonsd default
 # emerge gtkpbbuttons
 # emerge powerprefs
 # emerge cpudyn
@@ -2199,7 +2198,7 @@ other preferences.</li>
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

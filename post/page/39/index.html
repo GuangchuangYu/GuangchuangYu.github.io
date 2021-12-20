@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -78,7 +78,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -476,10 +475,10 @@ library(ggtree)
 
 dd &lt;- data.frame(x=LETTERS[1:3], y=1:3)
 pie &lt;- ggplot(dd, aes(x=1, y, fill=x)) + 
-    geom_bar(stat=&quot;identity&quot;, width=1) + 
-    coord_polar(theta=&quot;y&quot;) + theme_tree() + 
-    xlab(NULL) + ylab(NULL) + 
-    theme_transparent()
+	geom_bar(stat=&quot;identity&quot;, width=1) + 
+	coord_polar(theta=&quot;y&quot;) + theme_tree() + 
+	xlab(NULL) + ylab(NULL) + 
+	theme_transparent()
 
 x &lt;- sample(2:9)
 y &lt;- sample(2:9)
@@ -489,8 +488,8 @@ height &lt;- width
 p &lt;- ggplot(data=data.frame(x=c(0, 10), y=c(0, 10)), aes(x, y))+geom_blank()
 print(p)
 for (i in seq_along(x)) {
-    p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
-    print(p)
+	p %&lt;&gt;% subview(pie, x[i], y[i], width[i], height[i])
+	print(p)
 }
 </code></pre>
       
@@ -652,16 +651,16 @@ has not been updated in the last five years.</p>
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/">
-          parsing BED coordinates
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2015/08/recursive/">
+          递归
         </a>
       </h1>
       
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2015-08-07T03:03:08&#43;08:00">
+      <time itemprop="datePublished" datetime="2015-08-11T09:12:14&#43;08:00">
         
-  August 7, 2015
+  August 11, 2015
 
       </time>
     
@@ -670,9 +669,7 @@ has not been updated in the last five years.</p>
   
     <span>in</span>
     
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/bioinformatics">Bioinformatics</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/r">R</a>
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/programming">programming</a>
     
   
 
@@ -681,19 +678,50 @@ has not been updated in the last five years.</p>
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <p>In <a href="http://bioinformatics.oxfordjournals.org/content/suppl/2015/03/11/btv145.DC1/TSS_annotation_comparision.pdf">supplemental file</a>
-of ChIPseeker <a href="http://doi.org/10.1093/bioinformatics/btv145">paper</a>, I
-compare distances to TSS reported by several ChIP annotation software,
-including <a href="http://www.bioconductor.org/packages/ChIPseeker">ChIPseeker</a>,
-<a href="http://www.bioconductor.org/packages/ChIPpeakAnno">ChIPpeakAnno</a>,
-<a href="http://homer.salk.edu/homer/chipseq/">HOMER</a> and
-<a href="http://www.bioinformatics.org/peakanalyzer/wiki/">PeakAnalyzer</a>.</p>
-<p>Although I found that the chromStart positions in HOMER output have a +1
-shift compare to other software, I did not realize this issue since all
-other software are consistent.</p>
+        <p>递归正如‘盗梦空间’中的场景：
+<img src="https://guangchuangyu.github.io/blog_images/2015/recursive_image.jpg" alt=""></p>
+<blockquote>
+<p>PS: 使用《<a href="https://mp.weixin.qq.com/s/CP00v7HuclUcfJn2_aSplA">windows用户, 截屏新手段</a>》可以一句for循环生成类似这种效果的图。</p>
+</blockquote>
+<p>简言之就是不断调用自己，
+<img src="https://guangchuangyu.github.io/blog_images/2015/recursive.jpg" alt=""></p>
+<p>经常我们会拿fibonacci数来讲解递归，正如在<a href="http://guangchuangyu.github.io/2013/04/rabbits-and-recurrence-relations/">Rabbits and Recurrence
+Relations</a>一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考<a href="http://guangchuangyu.github.io/2012/07/tricky-things-in-r/">tricky things in R</a>一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用<code>&lt;&lt;-</code>来赋值。</p>
+<p>在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但<code>BiocCheck</code>会把<code>&lt;&lt;-</code>报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。</p>
+<h4 id="example-1">Example 1</h4>
+<p>比如我们要写writeSequence这样的函数：</p>
+<pre><code>Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeSequence</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&lt;</span> 1<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">();</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1 1&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">ceil</span><span style="color:#f92672">(</span>n<span style="color:#f92672">/</span>2<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">);</span>
+    
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>x <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">);</span>
+    writeSequence<span style="color:#f92672">(</span>n<span style="color:#f92672">-</span>2<span style="color:#f92672">);</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> x<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div>
       
       <p>
-        <a href="https://guangchuangyu.github.io/2015/08/parsing-bed-coordinates/" class="postShorten-excerpt_link link">Continue reading</a>
+        <a href="https://guangchuangyu.github.io/2015/08/recursive/" class="postShorten-excerpt_link link">Continue reading</a>
         
       </p>
     </div>
@@ -723,7 +751,7 @@ other software are consistent.</p>
           </li>
         
       
-      <li class="pagination-number">page 39 of 56</li>
+      <li class="pagination-number">page 39 of 57</li>
     </ul>
   </div>
 
@@ -731,7 +759,7 @@ other software are consistent.</p>
         </section>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="2017眼看要结束，立下写《CS0: ChIPseq从入门到放弃》的flag还没完成，当时ChIPseeker是33个引用，现在已经80了，时间过得好快。
@@ -108,7 +108,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -304,52 +303,52 @@ if (!doNotTrack) {
 <h2 id="peak可视化">Peak可视化</h2>
 <p>首先在分析之前，我们拿到BED文件，就可以先看看peak在整个染色体上的分布，这个在《<a href="https://mp.weixin.qq.com/s/D06NEG7blksGugb0srL7KQ">CS2: BED文件</a> 》一文里有展示，这里不在重复。</p>
 <p>另外我们可以限定在一个固定的窗口里，然后把这些peak全部align起来，看看在某个窗口上的结合谱图。比如说启动子区域，使用转录起始位点，然后指定上下游，使用<code>getPromoters</code>函数，就可以为我们准备好窗口。再使用<code>getTagMatrix</code>函数，把peak比对到这个窗口，并生成矩阵，供我们分析、可视化。</p>
-<pre><code>library(ChIPseeker)
+<pre tabindex="0"><code>library(ChIPseeker)
 files &lt;- getSampleFiles()
 peak &lt;- readPeakFile(files[[4]])
 promoter &lt;- getPromoters(TxDb=txdb, 
     upstream=3000, downstream=3000)
 tagMatrix &lt;- getTagMatrix(peak, windows=promoter)
 </code></pre><p>这时候，我们可以用<code>tagHeatmap</code>来画热图，颜色随意指定：</p>
-<pre><code>tagHeatmap(tagMatrix, xlim=c(-3000, 3000), color=&quot;red&quot;)
+<pre tabindex="0"><code>tagHeatmap(tagMatrix, xlim=c(-3000, 3000), color=&quot;red&quot;)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/tagHeatmap.png" alt=""></p>
 <p>另外你可以直接从文件出发，ChIPseeker提供了<code>peakHeatmap</code>函数，你给文件名，就可以直接出图，两个函数都支持多种数据同时展示，方便比较，这里可以看出前三个样品结合位点不在转录起始区域，而后两个则是。</p>
-<pre><code>require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+<pre tabindex="0"><code>require(TxDb.Hsapiens.UCSC.hg19.knownGene)
 txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
 peakHeatmap(files, weightCol=&quot;V5&quot;, TxDb=txdb, 
     upstream=3000, downstream=3000, 
     color=rainbow(length(files)))
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/tagHeatmap2.png" alt=""></p>
 <p>另外我们还可以以谱图的形式来展示结合的强度：</p>
-<pre><code>plotAvgProf(tagMatrix, xlim=c(-3000, 3000),
+<pre tabindex="0"><code>plotAvgProf(tagMatrix, xlim=c(-3000, 3000),
             xlab=&quot;Genomic Region (5'-&gt;3')&quot;, 
             ylab = &quot;Read Count Frequency&quot;)
             
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/plotAvgProf0.png" alt=""></p>
 <p>上面这个图可以非常清晰地看到，这个结合位点是集中在转录起始位点的。另外ChIPseeker也提供了<code>plotAvgProf2</code>函数，支持以文件为输入一步做图。下面这个代码，会产生上面一样的图。</p>
-<pre><code>plotAvgProf2(files[[4]], TxDb=txdb, 
+<pre tabindex="0"><code>plotAvgProf2(files[[4]], TxDb=txdb, 
 			 upstream=3000, downstream=3000,
              xlab=&quot;Genomic Region (5'-&gt;3')&quot;, 
              ylab = &quot;Read Count Frequency&quot;)
 </code></pre><p>另外这个函数还支持使用bootstrap估计置信区间：</p>
-<pre><code>plotAvgProf(tagMatrix, xlim=c(-3000, 3000), 
+<pre tabindex="0"><code>plotAvgProf(tagMatrix, xlim=c(-3000, 3000), 
             conf = 0.95, resample = 1000)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/plotAvgProf1.png" alt=""></p>
 <p>这个功能由微博@Puriney贡献，你们可以去微博勾搭调戏，是个颜值很高的鲜肉。</p>
 <p>同样这个函数也支持多个数据的比较:</p>
-<pre><code>tagMatrixList &lt;- lapply(files, getTagMatrix, 
+<pre tabindex="0"><code>tagMatrixList &lt;- lapply(files, getTagMatrix, 
                         windows=promoter)
 plotAvgProf(tagMatrixList, xlim=c(-3000, 3000))
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/plotAvgProf2.png" alt=""></p>
 <p>我们可以对其进行分面展示，当然也支持估计置信区间：</p>
-<pre><code>plotAvgProf(tagMatrixList, xlim=c(-3000, 3000), 
+<pre tabindex="0"><code>plotAvgProf(tagMatrixList, xlim=c(-3000, 3000), 
     conf=0.95,resample=500, facet=&quot;row&quot;)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/plotAvgProf3.png" alt=""></p>
 <p>这和前面的热图是一致的，前三个样品显然不是调控转录的。</p>
-<p>这里我展示的都是启动子窗口，然而ChIPseeker支持的并不止是启动子，不单单是看转录调控，比如说你是研究可变剪切的，那么蛋白结合到外显子/内含子的起始位置，显然就更感兴趣了。所以除了<code>getPromoters</code>函数之外，<code>ChIPseeker</code>还提供了<code>getBioRegion</code>函数，你可以指定&rsquo;exon'或&rsquo;intron&rsquo;，它会像<code>getPromoters</code>一样为你准备好数据，即使这不是你感兴趣的，你也依然可以用它来准备窗口，然后可视化看一下，或许你能意外地发现你研究的蛋白竟然在外显子/内含子起始位置上有很强的结合谱，做为前期data exploration，「妹妹你大胆地往前走啊」，尽管啥都试试！</p>
+<p>这里我展示的都是启动子窗口，然而ChIPseeker支持的并不止是启动子，不单单是看转录调控，比如说你是研究可变剪切的，那么蛋白结合到外显子/内含子的起始位置，显然就更感兴趣了。所以除了<code>getPromoters</code>函数之外，<code>ChIPseeker</code>还提供了<code>getBioRegion</code>函数，你可以指定&rsquo;exon&rsquo;或&rsquo;intron'，它会像<code>getPromoters</code>一样为你准备好数据，即使这不是你感兴趣的，你也依然可以用它来准备窗口，然后可视化看一下，或许你能意外地发现你研究的蛋白竟然在外显子/内含子起始位置上有很强的结合谱，做为前期data exploration，「妹妹你大胆地往前走啊」，尽管啥都试试！</p>
 <h2 id="注释信息可视化">注释信息可视化</h2>
 <p>我在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484023&amp;idx=1&amp;sn=affbe46869290ffc4f2be2c73209bdad&amp;chksm=ec43b330db343a262602f57156578195011ae6ef3d61ad928d60ef919811678bf605b5048a64#rd">CS3: peak注释</a>》和《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484084&amp;idx=1&amp;sn=b3fb1b88a9f73e26278688dfbce60679&amp;chksm=ec43b3f3db343ae5ea5a657b22bd0ed427c928f75c45484badaf6a6714777d8239cb0b1997b5#rd">CS4：关于ChIPseq注释的几个问题</a>》两篇文章里，重点讲了注释，注释后的信息当然也需要我们可视化展示，方便解析结果。</p>
-<pre><code>peakAnno &lt;- annotatePeak(files[[4]], tssRegion=c(-3000, 3000),
+<pre tabindex="0"><code>peakAnno &lt;- annotatePeak(files[[4]], tssRegion=c(-3000, 3000),
                          TxDb=txdb, annoDb=&quot;org.Hs.eg.db&quot;)
 plotAnnoPie(peakAnno)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/pie.png" alt=""></p>
@@ -365,31 +364,31 @@ plotAnnoPie(peakAnno)
 </ul>
 <p>这里有下游但没有上游，因为Promter我们定义为转录起始位点的上下游区域，所以它包括了上游，而下游就是在基因间区里，而我又把它单独拿出来，因为这是紧接着基因的下游，和远程的间区分开，通常默认参数就可以。</p>
 <p>有饼图，当然有柱状图，这是躺平任调戏的柱子：</p>
-<pre><code>plotAnnoBar(peakAnno)
+<pre tabindex="0"><code>plotAnnoBar(peakAnno)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/bar.png" alt=""></p>
 <p>正如上面说的，一个结合位点可以是一个基因的Exon和另一个基因的Intron，除了按照优先级别给出唯一的注释之外，ChIPseeker其实对所有的注释都有记录，我当时就想怎么样把这些信息给展示出来，当时在笔记本上涂鸦了这样的图：</p>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/WechatIMG49.jpeg" alt="">这个图我称之为<strong>vennpie</strong>取维恩图venn plot画交集和饼图pie plot画分布的结合。
 <code>vennpie(peakAnno)</code></p>
 <p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/vennpie.png" alt=""></p>
 <p>这个图讲真我很喜欢，但不满意，因为无法展示全部的信息。所以当我看到有UpSetR这个包的时候，我立刻就把它应用于展示注释信息的交集：</p>
-<pre><code>upsetplot(peakAnno)
+<pre tabindex="0"><code>upsetplot(peakAnno)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset.png" alt=""></p>
 <p>这个可以很好的把信息全部展示出来，然而第一不够vennpie直观，第二右上角空白太多，所以我就想把vennpie强插上去，最终通过参数实现这个效果：</p>
-<pre><code>upsetplot(peakAnno, vennpie=TRUE)
+<pre tabindex="0"><code>upsetplot(peakAnno, vennpie=TRUE)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/upset_vennpie.png" alt=""></p>
 <p>ChIPseeker还注释了最近的基因，peak离最近基因的距离分布是什么样子的？ChIPseeker提供了<code>plotDistToTSS</code>函数来画这个分布：</p>
-<pre><code>plotDistToTSS(peakAnno,
+<pre tabindex="0"><code>plotDistToTSS(peakAnno,
     title=&quot;Distribution of transcription factor-binding loci\nrelative to TSS&quot;)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/distToTSS.png" alt=""></p>
 <p><code>plotAnnoBar</code>和<code>plotDistToTSS</code>这两个柱状图都支持多个数据同时展示，方便比较，比如：</p>
-<pre><code>peakAnnoList &lt;- lapply(files, annotatePeak, TxDb=txdb,
+<pre tabindex="0"><code>peakAnnoList &lt;- lapply(files, annotatePeak, TxDb=txdb,
                 tssRegion=c(-3000, 3000), verbose=FALSE)
 plotAnnoBar(peakAnnoList)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/bar2.png" alt=""></p>
-<pre><code>plotDistToTSS(peakAnnoList)
+<pre tabindex="0"><code>plotDistToTSS(peakAnnoList)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/distToTSS2.png" alt=""></p>
 <p>ChIPseeker还提供了一个vennplot函数，比如我想看注释的最近基因在不同样本中的overlap：</p>
-<pre><code>genes &lt;- lapply(peakAnnoList, function(i) 
+<pre tabindex="0"><code>genes &lt;- lapply(peakAnnoList, function(i) 
     as.data.frame(i)$geneId)
 vennplot(genes[2:4], by='Vennerable')
 </code></pre><p>![](<a href="http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/Screenshot">http://guangchuangyu.github.io/blog_images/Bioconductor/ChIPseeker/vis/Screenshot</a> 2017-09-30 22.00.41.png)</p>
@@ -500,7 +499,7 @@ vennplot(genes[2:4], by='Vennerable')
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

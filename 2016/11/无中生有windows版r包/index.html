@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="之前帮助高老师实现比对序列的做图，把代码打包为R包seqcombo，方便安装使用。花两小时的作品，发现还有些用户在使用 -，-
@@ -110,7 +110,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -302,11 +301,11 @@ if (!doNotTrack) {
 <p>在R check完之后，rhub会把check之前build的包存起来，正是这一点，为我们提供了这无米之炊，这时候我就可以下载它来放到我的repo里，这也算是一个变通的办法。</p>
 <p>然而，我要等它check完，再去下载，放到repo，push到github上，动作太多，太繁琐，所以必须写代码让它自动化起来。</p>
 <p>于是写了Makefile:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">windows</span><span style="color:#f92672">:</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">windows</span><span style="color:#f92672">:</span>
 	Rscript -e <span style="color:#e6db74">&#39;rhub::check_on_windows(&#34;.&#34;)&#39;</span>
 <span style="color:#a6e22e">addtorepo</span><span style="color:#f92672">:</span> windows
-	Rscript -e <span style="color:#e6db74">&#39;drat:::insert(&#34;../$(PKGNAME)_$(PKGVERS).tar.gz&#34;, &#34;../drat/docs&#34;)&#39;</span>;<span style="color:#ae81ff">\</span>
-	Rscript -e <span style="color:#e6db74">&#39;drat:::insert(ypages::get_windows_binary(), &#34;../drat/docs&#34;);\
+	Rscript -e <span style="color:#e6db74">&#39;drat:::insert(&#34;../$(PKGNAME)_$(PKGVERS).tar.gz&#34;, &#34;../drat/docs&#34;)&#39;</span>;<span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	Rscript -e <span style="color:#e6db74">&#39;drat:::insert(ypages::get_windows_binary(), &#34;../drat/docs&#34;);\
 </span><span style="color:#e6db74">	cd ../drat;\
 </span><span style="color:#e6db74">	git add .; git commit -m &#39;</span><span style="color:#66d9ef">$(</span>PKGNAME<span style="color:#66d9ef">)</span>_<span style="color:#66d9ef">$(</span>PKGVERS<span style="color:#66d9ef">)</span><span style="color:#960050;background-color:#1e0010">&#39;</span>; git push -u origin master
 </code></pre></div><p>我只要<code>make addtorepo</code>一条指令，它就会自动运行传到rhub的windows平台check我的包，check结束后，下载rhub平台编译的包，然后用<code>drat:::insert</code>来把它放到合适的位置，并生成相应的文件（如包的依赖关系、md5sum等），再把它push到github上去。</p>
@@ -410,7 +409,7 @@ if (!doNotTrack) {
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

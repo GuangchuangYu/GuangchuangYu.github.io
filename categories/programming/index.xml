@@ -6,10 +6,55 @@
     <description>Recent content in Programming on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Sep 2011 06:40:22 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 11 Aug 2015 09:12:14 +0800</lastBuildDate><atom:link href="https://guangchuangyu.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>递归</title>
+      <link>https://guangchuangyu.github.io/2015/08/recursive/</link>
+      <pubDate>Tue, 11 Aug 2015 09:12:14 +0800</pubDate>
+      
+      <guid>https://guangchuangyu.github.io/2015/08/recursive/</guid>
+      <description>&lt;p&gt;递归正如‘盗梦空间’中的场景：
+&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2015/recursive_image.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PS: 使用《&lt;a href=&#34;https://mp.weixin.qq.com/s/CP00v7HuclUcfJn2_aSplA&#34;&gt;windows用户, 截屏新手段&lt;/a&gt;》可以一句for循环生成类似这种效果的图。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;简言之就是不断调用自己，
+&lt;img src=&#34;https://guangchuangyu.github.io/blog_images/2015/recursive.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;经常我们会拿fibonacci数来讲解递归，正如在&lt;a href=&#34;http://guangchuangyu.github.io/2013/04/rabbits-and-recurrence-relations/&#34;&gt;Rabbits and Recurrence
+Relations&lt;/a&gt;一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考&lt;a href=&#34;http://guangchuangyu.github.io/2012/07/tricky-things-in-r/&#34;&gt;tricky things in R&lt;/a&gt;一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用&lt;code&gt;&amp;lt;&amp;lt;-&lt;/code&gt;来赋值。&lt;/p&gt;
+&lt;p&gt;在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但&lt;code&gt;BiocCheck&lt;/code&gt;会把&lt;code&gt;&amp;lt;&amp;lt;-&lt;/code&gt;报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。&lt;/p&gt;
+&lt;h4 id=&#34;example-1&#34;&gt;Example 1&lt;/h4&gt;
+&lt;p&gt;比如我们要写writeSequence这样的函数：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;writeSequence&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; n&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; 1&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; IllegalArgumentException&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; 1&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; 2&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1 1&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; Math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ceil&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;n&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
     
-	<atom:link href="https://guangchuangyu.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
-    
+    System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+    writeSequence&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;2&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+    System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>MC积分</title>
@@ -45,7 +90,7 @@ and miss法估计。&lt;/p&gt;
       <description>&lt;p&gt;&lt;img src=&#34;http://mathfaculty.fullerton.edu/mathews/n2003/montecarlopi/MonteCarloPiMod/Images/MonteCarloPiMod_gr_11.gif&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;圆和外接正方形的面积比，是$ \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$.&lt;/p&gt;
 &lt;p&gt;通过这一比值，可以使用&lt;!-- raw HTML omitted --&gt;蒙特-卡罗方法&lt;!-- raw HTML omitted --&gt;来估计Pi，这是Monte Carlo方法的最经典的一个例子。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;getPI &amp;lt;- function(N) {
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;getPI &amp;lt;- function(N) {
     x &amp;lt;- runif(N)
     y &amp;lt;- runif(N)
     hits &amp;lt;- sum(sqrt(x^2+y^2) &amp;lt; 1)
@@ -121,9 +166,9 @@ others as add-on packages, such as
       <guid>https://guangchuangyu.github.io/2007/06/newton-raphson-method/</guid>
       <description>&lt;h2 id=&#34;newton-raphson-method&#34;&gt;Newton-Raphson Method&lt;/h2&gt;
 &lt;p&gt;曲线&lt;code&gt;f(x)&lt;/code&gt;有根c,取曲线上一点$(x_1,f(x_1))$, 过此点的切线交x轴$x_2$,过曲线上$(x_2,f(x_2))$的切线交x轴$x_3$，如此反复得到一个序列 $x_1,x_2,\cdot \cdot \cdot,x_n$ 逼近c值.&lt;/p&gt;
-&lt;p&gt;过$(x_n,f(x_n))$的切线方程为 $y-f(x_n) = f&amp;rsquo;(x_n),(x-x_n)$,假设此方程与x轴的交点为$x_{n+1}$, 即有: $0 - f(x_n) = f&amp;rsquo;(x_n)(x_n+1 - x_n)$， 即$x_{n+1} = x_n - \frac{f(x_n)}{f&amp;rsquo;(x_n)}$ &lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;过$(x_n,f(x_n))$的切线方程为 $y-f(x_n) = f&#39;(x_n),(x-x_n)$,假设此方程与x轴的交点为$x_{n+1}$, 即有: $0 - f(x_n) = f&#39;(x_n)(x_n+1 - x_n)$， 即$x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}$ &lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;下面利用此法来求一个数的开方。 $f(x) = x^2 - a$ 有根$\sqrt{a}$, 
-由$f&amp;rsquo;(x_n) = 2x_n$, 代入式&lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;可得$x_{n+1} = (x_n + a/x_n)/2$; 当i -&amp;gt; INF 时, $x_i$ -&amp;gt; $\sqrt{a}$;&lt;/p&gt;
+由$f&#39;(x_n) = 2x_n$, 代入式&lt;code&gt;&amp;lt;Eq. 1&amp;gt;&lt;/code&gt;可得$x_{n+1} = (x_n + a/x_n)/2$; 当i -&amp;gt; INF 时, $x_i$ -&amp;gt; $\sqrt{a}$;&lt;/p&gt;
 &lt;h2 id=&#34;c-implementation&#34;&gt;C implementation&lt;/h2&gt;</description>
     </item>
     

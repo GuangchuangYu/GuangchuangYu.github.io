@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -128,7 +128,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -314,18 +313,18 @@ if (!doNotTrack) {
             <div class="main-content-wrap">
               <p><img src="http://guangchuangyu.github.io/blog_images/R/misc/WechatIMG216.png" alt=""></p>
 <p>这个问题，其实答案就存在于《<a href="http://mp.weixin.qq.com/s/Xhi_ZkrEzUVdnCu7ECBS4w">听说你还不会画热图</a>》，我们先生成一个矩阵：</p>
-<pre><code>set.seed(2017-11-12)
+<pre tabindex="0"><code>set.seed(2017-11-12)
 d = data.frame(matrix(rnorm(100), ncol=10))
 colnames(d) = paste0('t', 1:10)
 rownames(d) = paste0('g', 1:10)
 </code></pre><p>这个矩阵是<code>rnorm</code>生成的随机数，有正有负，我们再生成一个矩阵，只有正数，并且数值上比第一个矩阵要大：</p>
-<pre><code>d2 = abs(d) * 1.2
+<pre tabindex="0"><code>d2 = abs(d) * 1.2
 </code></pre><p>下面这个代码来自于《<a href="http://mp.weixin.qq.com/s/Xhi_ZkrEzUVdnCu7ECBS4w">听说你还不会画热图</a>》，定义一个color palette函数：</p>
-<pre><code>library(RColorBrewer)
+<pre tabindex="0"><code>library(RColorBrewer)
 cc = colorRampPalette(rev(brewer.pal(n = 7, 
      name = &quot;RdYlBu&quot;)))	
 </code></pre><p>有了这个函数，那么这个问题就极其简单，无非是不同的数据集pool在一起取最大最小值，然后切出一堆等长区间，用上面定义的<code>cc</code>函数给每个区间分配一个颜色，然后用这个配色方案给不同的热图上色，那么产生的热图就拥有了同一个颜色区间。</p>
-<pre><code>breaks = seq(min(unlist(c(d, d2))), 
+<pre tabindex="0"><code>breaks = seq(min(unlist(c(d, d2))), 
 	max(unlist(c(d, d2))), length.out=100)
 
 library(pheatmap)
@@ -442,7 +441,7 @@ cowplot::plot_grid(p1$gtable, p2$gtable, ncol=2)
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

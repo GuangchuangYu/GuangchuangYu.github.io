@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -102,7 +102,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -303,13 +302,13 @@ Opening lecture RSS 2002, Plymouth (September 2002)</p>
 <p>对于R代码无感的话，还有<code>shinyheatmap</code>，直接提供交互式的网页操作界面。</p>
 <p>基于grid graphics比较有名的有<code>pheatmap</code>和<code>ComplexHeatmap</code>包，要论复杂性，<code>ComplexHeatmap</code>最厉害，要论简单而且也还比较漂亮，那就<code>pheatmap</code>了。而且基于grid，也是保障了后续的操作，而且现在整个grid的生态最好，各种辅助的包太强大。</p>
 <p>比如我这样画一个热图：</p>
-<pre><code>d = data.frame(matrix(rnorm(100), ncol=10))
+<pre tabindex="0"><code>d = data.frame(matrix(rnorm(100), ncol=10))
 colnames(d) = paste0('t', 1:10)
 rownames(d) = paste0('g', 1:10)
 library(pheatmap)
 pheatmap(d) -&gt; x
 </code></pre><p>基本上我们发文章，图都是有多个panel拼起来的，这个pheatmap的输出，就可以用cowplot来拼，比如这里我用ggplot2画个散点图，然后拼在一起。</p>
-<pre><code>p  = ggplot(d, aes(t1, t2)) + geom_point(size=5)
+<pre tabindex="0"><code>p  = ggplot(d, aes(t1, t2)) + geom_point(size=5)
 plot_grid(x$gtable, p, labels=c('A', 'B'))
 </code></pre><p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot">https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot</a> 2017-09-29 19.49.38.png)</p>
 <p>就是这么简单，当然你还可以基于gtable进行操作，修改各种细节。</p>
@@ -322,13 +321,13 @@ plot_grid(x$gtable, p, labels=c('A', 'B'))
 <p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot">https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot</a> 2017-09-29 20.06.48.png)</p>
 <p>默认会打印出数字，在矩阵比较小的时候，还是比较好的，如果你不想打印出来，可以用<code>simplot(d, labs=F)</code>。</p>
 <p>我们可以很容易地换配色方案，比如用类似于pheatmap的风格：</p>
-<pre><code>library(RColorBrewer)
+<pre tabindex="0"><code>library(RColorBrewer)
 colorRampPalette(rev(brewer.pal(n = 7, 
      name = &quot;RdYlBu&quot;))) -&gt; cc
 simplot(d) + scale_fill_gradientn(colors=cc(100))
 </code></pre><p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot">https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot</a> 2017-09-29 20.13.40.png)</p>
 <p>再比如图例我们嫌太短了，想拉长一点：</p>
-<pre><code>simplot(d) + 
+<pre tabindex="0"><code>simplot(d) + 
    scale_fill_gradientn(colors=cc(100)) + 
    theme(legend.key.height=unit(5, 'line'))
 </code></pre><p>![](<a href="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot">https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/simplot/Screenshot</a> 2017-09-29 20.20.47.png)</p>
@@ -449,7 +448,7 @@ simplot(d) + scale_fill_gradientn(colors=cc(100))
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

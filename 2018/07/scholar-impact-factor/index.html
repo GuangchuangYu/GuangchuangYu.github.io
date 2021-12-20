@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="在《一个要复活的R包和一个404的网站》一文中第一次介绍了scholar包，它可以应用于《自动抓取论文的引用数据》，虽然数据源来自于Google Scholar，国内用户可能访问不了，但今天要介绍的这个功能，所有人都是可以用的，它允许我们检索期刊的影响因子，在《scholar包支持检索期刊影响因子》一文中第一次介绍了这个功能，当时是2016年的影响因子（2017年发布），现在数据已经更新至2018年6月26号发布的2017年影响因子。
@@ -144,7 +144,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -329,7 +328,7 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>在《<a href="https://mp.weixin.qq.com/s/kBnLyNl2anXuMa6sDepRQw">一个要复活的R包和一个404的网站</a>》一文中第一次介绍了scholar包，它可以应用于《<a href="https://mp.weixin.qq.com/s/IBrEOh92r_90DRbGb3XlKg">自动抓取论文的引用数据</a>》，虽然数据源来自于Google Scholar，国内用户可能访问不了，但今天要介绍的这个功能，所有人都是可以用的，它允许我们检索期刊的影响因子，在《<a href="https://mp.weixin.qq.com/s/qnuiepL4-nSiSWJVJH54ug">scholar包支持检索期刊影响因子</a>》一文中第一次介绍了这个功能，当时是2016年的影响因子（2017年发布），现在数据已经更新至2018年6月26号发布的2017年影响因子。</p>
-<pre><code>&gt; library(scholar)
+<pre tabindex="0"><code>&gt; library(scholar)
 &gt; jn = c(&quot;bioinformatics&quot;, &quot;methods in ecology and evolution&quot;,
 +     &quot;molecular biosystems&quot;, &quot;molecular biology and evolution&quot;)
 &gt; get_impactfactor(jn)
@@ -342,7 +341,7 @@ if (!doNotTrack) {
 4 MOLECULAR BIOLOGY AND EVOLUTION  44664        10.2       0.102
 </code></pre><p><code>Bioinformatics</code>又掉回了5分多，而<code>MBE</code>因为MEGA7的发表，从6分多一下子涨到了10分！MEGA神话依然坚挺！！！</p>
 <p>到底生信的期刊影响因子是怎样子的？我们可以很容易检索到名字含有bioinformatics的期刊，然后就可以检索影响因子了，最高分竟然是国内的<code>GPB</code>！！！</p>
-<pre><code>&gt; jn &lt;- agrep(&quot;bioinformatics&quot;, scholar:::impactfactor$Journal, ignore.case=T, value=T, max.distance=0.05)
+<pre tabindex="0"><code>&gt; jn &lt;- agrep(&quot;bioinformatics&quot;, scholar:::impactfactor$Journal, ignore.case=T, value=T, max.distance=0.05)
 &gt; jn
  [1] &quot;GENOMICS PROTEOMICS &amp; BIOINFORMATICS&quot;
  [2] &quot;BRIEFINGS IN BIOINFORMATICS&quot;
@@ -370,7 +369,7 @@ if (!doNotTrack) {
 10 Current Bioinformatics                          304        0.54     0.00063
 </code></pre><p>正如我在《<a href="https://mp.weixin.qq.com/s/IBrEOh92r_90DRbGb3XlKg">自动抓取论文的引用数据</a>》一文中所说的，我的简历中的引用数据是自动抓取并生成的，事实上我简历中相应期刊的影响因子也是自动加上去的。脚本化好处多多，比如你一条指令可以把一个人所有的publications给抓下来，那么现在你可以一条指令把所有期刊的影响因子给列出来，一个人发表的论文总影响因子、篇均影响因子等指标，不就是个求sum和mean的指令而已么！</p>
 <p>再来一点实战，抓取我的profile，选取我要的信息，再追加期刊的影响因子，过滤出我做为第一作者的文章：</p>
-<pre><code>&gt; require(scholar)
+<pre tabindex="0"><code>&gt; require(scholar)
 &gt; require(dpylr)
 &gt; x = get_publications(&quot;DO5oG40AAAAJ&quot;)
 &gt; y = x %&gt;% select(year, author, journal, title) %&gt;% 
@@ -394,7 +393,7 @@ if (!doNotTrack) {
 11  2018 G Yu               Bioinformat… Using meshes for MeSH te…         5.48
 12  2018 G Yu               bioRxiv      clusterProfiler: univers…        NA
 </code></pre><p>那么我就可以轻松地计算出我每一年发表的第一作者的文章的总影响因子数和平均影响因子数，2015年发了两篇Bioinformatics（其实有一篇应该是2014的，但因为审稿和排队等发表拖慢了），其他时间都是一年一篇文章，所以总数和平均数都一样，2013和2014没有发文章，其实2013有两篇共同第一，但因为排名第二，在我的过滤中被滤掉了。</p>
-<pre><code>&gt; y %&gt;% summarize(total_IF = sum(impactFactor, na.rm=T), 
+<pre tabindex="0"><code>&gt; y %&gt;% summarize(total_IF = sum(impactFactor, na.rm=T), 
 + mean_IF = mean(impactFactor, na.rm=T)) 
 # A tibble: 7 x 3
    year total_IF mean_IF
@@ -506,7 +505,7 @@ if (!doNotTrack) {
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

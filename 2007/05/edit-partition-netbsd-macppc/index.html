@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="#disklabel wd0
@@ -162,7 +162,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -348,7 +347,7 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <pre><code>#disklabel wd0
+              <pre tabindex="0"><code>#disklabel wd0
 </code></pre><p>可以看到原始分区如下: 7 partitions:</p>
 <pre><code>#        size    offset     fstype [fsize bsize cpg/sgs]
 a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
@@ -366,12 +365,12 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
 <li>第一步，也是最关键的一步，先备份好数据。</li>
 </ol>
 <p>2. 安装hfsutils。用于操作那个15M的HFS分区（格式化，拷贝文件等工具）。hfsutils是命令行的，xhfs是tk界面的。</p>
-<pre><code>    #cd /usr/pkgsrc/sysutils/hfsutils
+<pre tabindex="0"><code>    #cd /usr/pkgsrc/sysutils/hfsutils
     #make install
     #cd ../xhfs
     #make install
 </code></pre><p>3.    分区 pdisk : Apple partition table editor</p>
-<pre><code>    # pdisk /dev/wd0c
+<pre tabindex="0"><code>    # pdisk /dev/wd0c
     pdisk /dev/wd0c
     Edit /dev/wd0c -
     Command (? for help): p
@@ -445,14 +444,14 @@ os的系统盘。e为两系统共享分区(在os9下格式化为fat)，g为netbs
     Command (? for help): q
     q
 </code></pre><p>4. 改完分区后重新启动。此时netbsd的/分区已由10分区变为11分区，而硬盘上已经没有<code>ofwboot.xcf</code>可用来启动系统。这个时候需要用到netbsd的安装盘，开机时按住<code>command+option+o+f</code>四键。进入<code>openfirmwire</code>。放入光盘，敲命令：</p>
-<pre><code>boot
+<pre tabindex="0"><code>boot
 cd:,\ofwboot.xcf
 hd:11,/netbsd
 </code></pre><p>使用光盘上的ofwboot.xcf来引导硬盘上的系统。系统启动到了挂载分区时出错。提示wd0g非法。wd0g为/home分区，并无修改。</p>
 <p>5.    安装光盘启动。在<code>openfirmwire</code>里敲</p>
-<pre><code>boot cd:,\ofwboot.xcf netbsd.macppc
+<pre tabindex="0"><code>boot cd:,\ofwboot.xcf netbsd.macppc
 </code></pre><p>先择运行Shell. 查看分区</p>
-<pre><code>    #disklabel wd0
+<pre tabindex="0"><code>    #disklabel wd0
     7 partitions:
     #        size    offset     fstype [fsize bsize cpg/sgs]
     a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
@@ -463,19 +462,19 @@ hd:11,/netbsd
     f:  28079456  89130784     4.2BSD      0     0     0  # (Cyl.  88423*- 116279)
     g:  25135104     32544     4.2BSD      0     0     0  # (Cyl.     32*-  24967*)
 </code></pre><p>原来的wd0g变成了wd0e,我也不知道为何。但是问题还是很好解决的。</p>
-<pre><code>#mount /dev/wd0a /mnt 
+<pre tabindex="0"><code>#mount /dev/wd0a /mnt 
 #chroot /mnt 
 ##修改fstab，改wd0g为wd0e
 #vi /etc/fstab 
 #reboot
 </code></pre><p>6. 返回第4步启动系统。正常启动后。由第5步disklabel中的输出知道，9分区是wd0d.</p>
-<pre><code>## 将其格式化为hfs
+<pre tabindex="0"><code>## 将其格式化为hfs
 #hformat -l loader /dev/wd0d  
 $sudo xhfs
 </code></pre><p>运行xhfs，把ofwboot.xcf拷入此分区。</p>
 <p><img src="http://guangchuangyu.github.io/blog_images/2007/05/xhfs.png" alt=""></p>
 <p>7.  改变home分区</p>
-<pre><code>#newfs /dev/wd0g 
+<pre tabindex="0"><code>#newfs /dev/wd0g 
 #cd /home 
 ##打包用户数据，并保留原始权限
 #tar cjpvf ygc.tar.bz2 ygc     
@@ -485,7 +484,7 @@ $sudo xhfs
 #vim /etc/fstab
 </code></pre><p>把wd0e换成wd0g，修改home分区的挂载设备。</p>
 <p>8.  合并wd0e,wd0f 也就是原来的home分区和两系统的共享分区。</p>
-<pre><code>    #pdisk /dev/wd0c
+<pre tabindex="0"><code>    #pdisk /dev/wd0c
     Command (? for help): d
     d
     Partition number: 14
@@ -521,12 +520,12 @@ $sudo xhfs
     q
 </code></pre><p>9.    重设openfirmwire
 修改后保存重启，进入<code>openfirmwire</code>.使用<code>setenv</code>命令重设启动的环境变量</p>
-<pre><code>setenv
+<pre tabindex="0"><code>setenv
 boot-device hd:9,\ofwboot.xcf hd:11,/netbsd 
 reset-all
 </code></pre><p>重新设置后，开机就会自动进入netbsd.</p>
 <p>10.    重启进入系统后</p>
-<pre><code>    #disklabel wd0
+<pre tabindex="0"><code>    #disklabel wd0
     6 partitions:
     #        size    offset     fstype [fsize bsize cpg/sgs]
     a:  20971520  25167648     4.2BSD      0     0     0  # (Cyl.  24967*-  45772*)
@@ -536,7 +535,7 @@ reset-all
     e:  70022496  47187744     4.2BSD      0     0     0  # (Cyl.  46813*- 116279)
     g:  25135104     32544     4.2BSD      0     0     0  # (Cyl.     32*-  24967*)
 </code></pre><p>新建的分区是wd0e</p>
-<pre><code>#newfs /dev/wd0e 
+<pre tabindex="0"><code>#newfs /dev/wd0e 
 #chmod 777 /dev/wd0e      
 ##让用户对其有读写执行的权限 
 #chmod 777 /data ## 在/etc/fstab里添加：
@@ -641,7 +640,7 @@ reset-all
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="ggtree can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. ggtree not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.
@@ -110,7 +110,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -299,7 +298,7 @@ if (!doNotTrack) {
               <p><a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree</a> can parse many software outputs and the evolution evidences inferred by these software can be used directly for tree annotation. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree</a> not only works as an infrastructure that enables evolutionary data that inferred by commonly used software packages to be used in R, but also serves as a general tree visualization and annotation tool for the R community as it supports many S3/S4 objects defined by other R packages.</p>
 <h2 id="phyloseq-for-microbiome-data">phyloseq for microbiome data</h2>
 <p><code>phyloseq</code> class defined in the <a href="https://www.bioconductor.org/package/phyloseq">phyloseq</a> package was designed for microbiome data. <code>phyloseq</code> package implemented <code>plot_tree</code> function using <code>ggplot2</code>. Although the function was implemented by <code>ggplot2</code> and we can use <code>theme</code>, <code>scale_color_manual</code> etc for customization, the most valuable part of <code>ggplot2</code>, adding layer, is missing. <code>plot_tree</code> only provides limited parameters to control the output graph and it is hard to add layer unless user has expertise in both <code>phyloseq</code> and <code>ggplot2</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(phyloseq)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(phyloseq)
 
 <span style="color:#a6e22e">data</span>(GlobalPatterns)
 GP <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">prune_taxa</span>(<span style="color:#a6e22e">taxa_sums</span>(GlobalPatterns) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>, GlobalPatterns)
@@ -310,7 +309,7 @@ GP.chl <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">subs
 <p>PS: If we look at the plot careful, we will find that legend produce by <code>plot_tree</code> is not correct (<code>plot_tree</code> map <code>SampleType</code> to color text which was shown in legend, but we can&rsquo;t find the mapping in the plot).</p>
 <h2 id="ggtree-supports-phyloseq-object">ggtree supports phyloseq object</h2>
 <p>One of the advantage of R is the community. R users develop packages that can work together and complete each other. <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12628/abstract">ggtree</a> fits the R ecosystem in phylogenetic analysis. It supports several classes defined in other R packages that designed for storing phylogenetic tree with associated data, including <code>phyloseq</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(scales)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(scales)
 <span style="color:#a6e22e">library</span>(ggtree)
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</span>(GP.chl, ladderize <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_text2</span>(<span style="color:#a6e22e">aes</span>(subset<span style="color:#f92672">=!</span>isTip, label<span style="color:#f92672">=</span>label), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">-.2</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>) <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">geom_tiplab</span>(<span style="color:#a6e22e">aes</span>(label<span style="color:#f92672">=</span>Genus), hjust<span style="color:#f92672">=</span><span style="color:#ae81ff">-.3</span>) <span style="color:#f92672">+</span>
@@ -320,7 +319,7 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</s
 <span style="color:#a6e22e">print</span>(p)
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/tree_ggtree.png" alt=""></p>
 <p>With <a href="https://guangchuangyu.github.io/ggtree">ggtree</a>, it would be more flexible to combine different layers using grammar of graphics syntax and more powerful since layers can be added without limitation (i.e. those predefined in <code>plot_tree</code> function). As an example, I extract the barcode sequence from the tree object and use <code>msaplot</code> to visualize the barcode sequence with the tree.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">df <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fortify</span>(GP.chl)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">df <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fortify</span>(GP.chl)
 barcode <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.character</span>(df<span style="color:#f92672">$</span>Barcode_full_length)
 <span style="color:#a6e22e">names</span>(barcode) <span style="color:#f92672">&lt;-</span> df<span style="color:#f92672">$</span>label
 barcode <span style="color:#f92672">&lt;-</span> barcode[<span style="color:#f92672">!</span><span style="color:#a6e22e">is.na</span>(barcode)]
@@ -434,7 +433,7 @@ barcode <span style="color:#f92672">&lt;-</span> barcode[<span style="color:#f92
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="今天讲一个小技巧，首先数据还是得有，很简单地生成一些随机数：
@@ -198,7 +198,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -383,11 +382,11 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>今天讲一个小技巧，首先数据还是得有，很简单地生成一些随机数：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2019-10-23</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2019-10-23</span>)
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(val<span style="color:#f92672">=</span><span style="color:#a6e22e">abs</span>(<span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">20</span>)), 
                 type<span style="color:#f92672">=</span><span style="color:#a6e22e">rep</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;A&#39;</span>, <span style="color:#e6db74">&#39;B&#39;</span>), <span style="color:#ae81ff">10</span>))
 </code></pre></div><p>20个数长这样子：</p>
-<pre><code>          val type
+<pre tabindex="0"><code>          val type
 1  0.04625141    A
 2  0.28000082    B
 3  0.25317063    A
@@ -409,18 +408,18 @@ d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.fram
 19 2.13711738    A
 20 0.92299795    B
 </code></pre><p>开始进入主题，我们首先用ggplot2来画个图。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(type, val, colour<span style="color:#f92672">=</span>type)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</span>()
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/fun-1.jpg" alt=""></p>
 <p>毫无惊喜，毫无意外地画出了散点图，因为这个两个组的数据，正如我们有实验组和对照组一般，我们画个箱式图吧。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(type, val, colour<span style="color:#f92672">=</span>type)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(type, val, colour<span style="color:#f92672">=</span>type)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_boxplot</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>type), colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;black&#39;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">.2</span>, 
                position<span style="color:#f92672">=</span><span style="color:#a6e22e">position_nudge</span>(x<span style="color:#f92672">=</span><span style="color:#ae81ff">-.2</span>))
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggplot2/fun-2.png" alt=""></p>
 <p>依然没有惊喜，你可能只学到用position_nudge去调整一个位移而已，这里为什么要用箱式图呢，因为箱式图不同于我们散点，它用的不是原始数据来画图，而是原始数据的统计量（四分位数）来画图，而这些统计量，你并没有提供给ggplot2，它能够画出来，是因为geom_boxplot已经帮你算了。</p>
 <p>接下来，就要讲今天的重点，我们经常也需要计算一些统计量，然后拿来画图，这时候你怎么搞，当然是先计算，算好了，再拿来画图。so easy&hellip;.</p>
 <p>但这里我想要介绍的技巧是你不需要跳出ggplot2去计算，算好才回到ggplot2，而是直接就在ggplot2里算，这怎么搞？你需要做的，就是在图层的data这个参数中定义一个函数，然后这个函数会去应用于ggplot2中传入的data，而计算出来的统计量，就会被用于这个图层去画图。语言是苍白的，让我们来点code:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 <span style="color:#a6e22e">library</span>(dplyr)
 <span style="color:#a6e22e">ggplot</span>(d, <span style="color:#a6e22e">aes</span>(type, val, colour<span style="color:#f92672">=</span>type)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_boxplot</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>type), colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;black&#39;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">.2</span>, 
@@ -530,7 +529,7 @@ d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.fram
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="答案嘛，就是自己画legend啊，你看看legend函数，还不是些简单的代码在画，自己画即可。不要被这些条条框框给套住。
@@ -126,7 +126,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -315,7 +314,7 @@ if (!doNotTrack) {
 <h2 id="从ggplot2拿legend">从ggplot2拿legend</h2>
 <p>为了突破你的想像力，在此处甚至于我要给你个例子，用ggplot2来生成个legend，放在base plot上去。</p>
 <p>自己画legend，有何不可？！如果base有现成的函数画图，而你只熟悉ggplot2，你甚至于可以互搞。而互搞，当然要借助于ggplotify包：《<a href="https://mp.weixin.qq.com/s/zzs0xIlEqxN7XO2IUxNBiA">ggplotify简史</a>》。</p>
-<pre><code>col = colorspace::rainbow_hcl(3)
+<pre tabindex="0"><code>col = colorspace::rainbow_hcl(3)
 names(col) = unique(iris$Species)
 
 library(ggplotify)
@@ -335,17 +334,17 @@ p + ggimage::geom_subview(x=.7, y=.6, subview=legend)
 <h2 id="用ggplot2画legend">用ggplot2画legend</h2>
 <p>上面这例子是不是还不过瘾，因为啊我还是用ggplot2给重新画了一遍，如果你这么看，那么你的脑洞不够大，画是画了，但不一定要画一样的图，比如说有现成的base函数画复杂的图，而你不会用ggplot2画，但不妨碍你画个简单的图，但这简单的图中的图例可以切出来使用啊。</p>
 <p>呼应我上面讲到的，图例自己徒手画，我们用ggplot2来来徒手一下。画出下面这个图例：</p>
-<pre><code>p2 &lt;- ggplot() +
+<pre tabindex="0"><code>p2 &lt;- ggplot() +
     annotate(&quot;point&quot;, x=1,y=1:3,shape=15, color=col) +
     annotate(&quot;text&quot;, x=1.01, y=1:3, label=names(col), hjust=0) +
     xlim(0.99, 1.2) + ylim(0, 4) + theme_void()
 </code></pre><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/ggplot2/legend-3.jpeg" alt=""></p>
 <p>对着代码看，不应该有什么问题，打了三个点，再打了三个相应的文本。然后再让我们把这图当做图例，嵌套到base plot上去。</p>
-<pre><code>p + ggimage::geom_subview(x=.25, y=.8, subview=p2)
+<pre tabindex="0"><code>p + ggimage::geom_subview(x=.25, y=.8, subview=p2)
 </code></pre><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/ggplot2/legend-4.png" alt=""></p>
 <h2 id="直接画出legend">直接画出legend</h2>
 <p>当然如果是徒手画，那么也就没必要单独画legend了，直接画到图上，因为我们有ggplotify包，啥都能转成ggplot，像这个base plot已经是ggplot对象了，直接把画legend的代码搬上去就行。</p>
-<pre><code>y = c(.77,.8,.83)
+<pre tabindex="0"><code>y = c(.77,.8,.83)
 p + annotate(&quot;point&quot;, x=.2,y=y,shape=15, color=col, size=3) +
     annotate(&quot;text&quot;, x=.21, y=y, label=names(col), hjust=0)
 </code></pre><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/ggplot2/legend-5.png" alt=""></p>
@@ -452,7 +451,7 @@ p + annotate(&quot;point&quot;, x=.2,y=y,shape=15, color=col, size=3) +
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

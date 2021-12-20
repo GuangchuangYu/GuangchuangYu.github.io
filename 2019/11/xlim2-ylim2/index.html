@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -102,7 +102,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -289,7 +288,7 @@ if (!doNotTrack) {
               <p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/1.png" alt=""></p>
 <p>拼图很容易，像上面这张图，就是三张图拼在一起，但你仔细看一下，这结果可能不是你想要的，如果我们想要坐标轴按照值的大小对齐呢？</p>
 <p>首先来一段产生上面图片的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
 <span style="color:#a6e22e">library</span>(ggplot2)
 <span style="color:#a6e22e">library</span>(ggstance)
 <span style="color:#a6e22e">library</span>(ggtree)
@@ -313,16 +312,16 @@ p3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</
 
 pp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</span>(p1, p2, p3)
 <span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;v&#39;</span>)
-</code></pre></div><p>我确实是加了align='v'的，但就是不对齐！要对齐真的不容易，因为有两个因素在影响：</p>
+</code></pre></div><p>我确实是加了align=&lsquo;v&rsquo;的，但就是不对齐！要对齐真的不容易，因为有两个因素在影响：</p>
 <ul>
 <li>坐标轴的取值范围</li>
 <li>画布的扩充区域</li>
 </ul>
 <p>这两个因素必须要一致才好对齐。要搞也挺容易，标尺可以设定limits和expand两个参数，一次解决。要是使用xlim或ylim就只能解决第一部分。虽然有标记可以解决，但依然不容易啊。比如说p1的x轴取值是[4,8]，我们设一下看看:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim</span>(<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">8</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim</span>(<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">8</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/2.png" alt=""></p>
 <p>4和8的柱子都不见了，为何？因为xlim会去过滤数据啊，柱子是用矩形画的，这矩形有四个点，比如以4为中心的这个矩形，4个点有两个小于4,两个大于4,那小于4的被xlim干掉了，矩形就画不出来了。然后我们试试用标尺，给它扩充一些区域：</p>
-<pre><code>p1 + scale_x_continuous(limits=c(4,8), expand=c(0, 1))
+<pre tabindex="0"><code>p1 + scale_x_continuous(limits=c(4,8), expand=c(0, 1))
 </code></pre><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/3.png" alt=""></p>
 <p>一方面确实如我们所想，x轴从[4,8]扩充到了[3,9]，但柱子还是不见了，因为xlim先干事，干完再扩充，该没的还是没有了。</p>
 <p>这告诉我们一个什么事情？我们不能简单地从这些输入的数据集中计算range，取个并集了事，这是第二点，做完第二点得搞一下第一点，才能统一。然后还有第三点，如果连续型的数值，第一点容易搞，把limit range变大一点，但如果是字符型的，想想都觉得好难！然后还有第四点，你的输入可能不是一个data.frame，比如ggtree的输入是一个树对象，还有各种封装的函数，你的输入可能进行了各种操作之后，才来画图，然后就算你拿到了最终画图的data.frame，你还得拿到映射关系，到底什么变量映射到坐标轴上，在这基础上，才能谈什么1,2,3点。</p>
@@ -334,15 +333,15 @@ pp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</sp
 </ol>
 <p>总而言之，言而总之，这简单的问题一点都不简单！最主要是我现在造了一个轮子，于是我就给你谈各种你没有这个轮子很困难的场景，就像有了一个药之后，就大谈你好多病，得吃下这颗大力金刚丸一样。</p>
 <p>我的解决方案就是在ggtree包中实现了xlim2和ylim2两个函数，像下面这种p + xlim2(p1)，它干的事情就是把p的x轴值域设为和p1一样。如果p是翻转过坐标轴的，会去设置它的y轴。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(pp, <span style="color:#a6e22e">function</span>(p) p <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim2</span>(p1))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(pp, <span style="color:#a6e22e">function</span>(p) p <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim2</span>(p1))
 <span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp2, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;v&#39;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/4.png" alt=""></p>
 <p>现在我们再看，对齐了！如果这些子图的数据都是不全的，我们并不是以一个图来设置值域，而是以它们值域的并集来做，这时候，你可以传入limits参数，这种情况，基本上就相当于你在用xlim和ylim。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(pp, <span style="color:#a6e22e">function</span>(p) p <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim2</span>(limits<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">11</span>)))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp3 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(pp, <span style="color:#a6e22e">function</span>(p) p <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlim2</span>(limits<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">11</span>)))
 <span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp3, ncol<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, align<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;v&#39;</span>)
 </code></pre></div><p><img src="http://guangchuangyu.gitee.io/blog_images/ggtree/axis-align/5.png" alt=""></p>
 <p>xlim2和ylim2最主要的一点，就是让你用一个图做为参照，方便你让其它图和它对齐。下面通过ggtree的例子来讲一下ylim2。和进化树拼图，在《用散点可视化一个矩阵》一文是有讲过的，不过那个例子，值域是一样的，假设像上面的例子中有缺失值，还得吃现在造的药丸。下面的例子中，d1的信息就不全，而且有对不上号的row。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 <span style="color:#a6e22e">library</span>(ggtree)
 
 <span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2019-10-31</span>)
@@ -360,7 +359,7 @@ d2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.fra
 
 g <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</span>(tr) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_tiplab</span>(align<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
 </code></pre></div><p>我们可以使用tidytree包实现的dplyr动词来操作ggtree对象，然后就可以把相应的y值给加上，用来画图。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(dplyr)
 <span style="color:#a6e22e">library</span>(tidytree)
 
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">filter</span>(g, isTip) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">select</span>(<span style="color:#a6e22e">c</span>(label, y))
@@ -368,14 +367,14 @@ d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">filter</s
 dd1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">left_join</span>(d1, d, by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;label&#39;</span>)
 dd2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">left_join</span>(d2, d, by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;label&#39;</span>)
 </code></pre></div><p>p1画一个柱状图，p2画热图：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(dd1, <span style="color:#a6e22e">aes</span>(y, value)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>label)) <span style="color:#f92672">+</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(dd1, <span style="color:#a6e22e">aes</span>(y, value)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_col</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>label)) <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme_tree2</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>)
  
 p2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(dd2, <span style="color:#a6e22e">aes</span>(x<span style="color:#f92672">=</span>category, y<span style="color:#f92672">=</span>y)) <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">geom_tile</span>(<span style="color:#a6e22e">aes</span>(fill<span style="color:#f92672">=</span>value)) <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_fill_viridis_c</span>() <span style="color:#f92672">+</span>
     <span style="color:#a6e22e">theme_tree2</span>() <span style="color:#f92672">+</span> <span style="color:#a6e22e">theme</span>(legend.position<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>)
 </code></pre></div><p>如果我们正常拼，就会像开篇的图一样，是对不上的，这时候我们就拿出ylim2，让其它图都和进化树对齐，然后再拼，完美！在拼图的时候，有参照的情况下，xlim2和ylim2就是这么方便：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">&lt;-</span> p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylim2</span>(g)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p1 <span style="color:#f92672">&lt;-</span> p1 <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylim2</span>(g)
 p2 <span style="color:#f92672">&lt;-</span> p2 <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylim2</span>(g)
 
 <span style="color:#a6e22e">library</span>(cowplot)
@@ -486,7 +485,7 @@ p2 <span style="color:#f92672">&lt;-</span> p2 <span style="color:#f92672">+</sp
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

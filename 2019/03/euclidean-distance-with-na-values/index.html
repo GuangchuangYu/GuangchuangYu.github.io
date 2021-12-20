@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="biobabble作者群有一个小伙伴提出来的问题。
@@ -168,7 +168,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -359,7 +358,7 @@ if (!doNotTrack) {
 <p>没错，凡是给biobabble投稿的小伙伴都会被拉入作者群。</p>
 </blockquote>
 <p>话说有一个矩阵，我们让它某个值缺失，算出来的距离和原来的竟然是一样的：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> dat <span style="color:#f92672">=</span> <span style="color:#a6e22e">matrix</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">2</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> dat <span style="color:#f92672">=</span> <span style="color:#a6e22e">matrix</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">2</span>)
 <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">dist</span>(dat)
          <span style="color:#ae81ff">1</span>
 <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">2.236068</span>
@@ -368,13 +367,13 @@ if (!doNotTrack) {
          <span style="color:#ae81ff">1</span>
 <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">2.236068</span>
 </code></pre></div><p>这有点反直觉，实际上你再搞个缺失值，它算出来还是一样的：</p>
-<pre><code>&gt; dat[1,3] = NA
+<pre tabindex="0"><code>&gt; dat[1,3] = NA
 &gt; dist(dat)
          1
 2 2.236068
 </code></pre><p>但以我的经验，我通常不敢轻易说人家有bug，我们得确认一下。</p>
 <p>于是我读了R的源代码中欧式距离的代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">R_euclidean</span>(<span style="color:#66d9ef">double</span> <span style="color:#f92672">*</span>x, <span style="color:#66d9ef">int</span> nr, <span style="color:#66d9ef">int</span> nc, <span style="color:#66d9ef">int</span> i1, <span style="color:#66d9ef">int</span> i2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">R_euclidean</span>(<span style="color:#66d9ef">double</span> <span style="color:#f92672">*</span>x, <span style="color:#66d9ef">int</span> nr, <span style="color:#66d9ef">int</span> nc, <span style="color:#66d9ef">int</span> i1, <span style="color:#66d9ef">int</span> i2)
 {
     <span style="color:#66d9ef">double</span> dev, dist;
     <span style="color:#66d9ef">int</span> count, j;
@@ -406,10 +405,10 @@ if (!doNotTrack) {
 <p>从这里我们可以看到，缺失值越多，距离是越小的，这个从欧式距离的公式上也反映出来，所有的量都是正值，少了就小了。所以如果我们简单地去NA值，那么对距离的估算会<strong>低估</strong>。</p>
 <h3 id="怎么补救">怎么补救？</h3>
 <p>这就是倒数第二句干的事情：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">    <span style="color:#66d9ef">if</span>(count <span style="color:#f92672">!=</span> nc) dist <span style="color:#f92672">/=</span> ((<span style="color:#66d9ef">double</span>)count<span style="color:#f92672">/</span>nc);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">    <span style="color:#66d9ef">if</span>(count <span style="color:#f92672">!=</span> nc) dist <span style="color:#f92672">/=</span> ((<span style="color:#66d9ef">double</span>)count<span style="color:#f92672">/</span>nc);
 </code></pre></div><p>如果有缺少，用已知的点的均值来估计。也就是用mean((qi-pi)^2)去代替缺失点。</p>
 <p>不难验证一下，前面第二种情况时距离是2，那么被一下缺失值：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">2</span>^2 <span style="color:#f92672">/</span> (<span style="color:#ae81ff">4</span><span style="color:#f92672">/</span><span style="color:#ae81ff">5</span>))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">sqrt</span>(<span style="color:#ae81ff">2</span>^2 <span style="color:#f92672">/</span> (<span style="color:#ae81ff">4</span><span style="color:#f92672">/</span><span style="color:#ae81ff">5</span>))
 [1] <span style="color:#ae81ff">2.236068</span>
 </code></pre></div><p>出来的就是第一种情况时的值了。</p>
 <p>如果你看不明白的话，我再拆一下给你看：</p>
@@ -425,7 +424,7 @@ if (!doNotTrack) {
 <p>这其实是个巧合，真的是巧合。你如果是一般的随机数拿来试试，肯定无法一模一样的值。</p>
 <p>当然对于一个determinant的计算，巧合也是算出来的，必定是巧合，原因必须存在于数值之中。</p>
 <p>如果你对<code>dat</code>算相关系数的话，就明白了。我们对原始值算一下：</p>
-<pre><code>&gt; cor(dat[1,], dat[2,])
+<pre tabindex="0"><code>&gt; cor(dat[1,], dat[2,])
 [1] 1
 </code></pre><p>能够完美估算出距离，其实等同于能够完美复原缺失点，而这种情况只在于数据的相关系数等于一的情况下，数据的相关性越好，也就能够复原得越好，这很好理解。</p>
 <p>欧式距离对于outlier是很敏感的，你可以试试不同的值去替换掉原始值，再看看缺失值的情况下，计算出来的距离和不缺失的情况下，差距有多少。</p>
@@ -527,7 +526,7 @@ if (!doNotTrack) {
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

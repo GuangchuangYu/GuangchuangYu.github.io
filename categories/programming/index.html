@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -78,7 +78,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -252,6 +251,102 @@ if (!doNotTrack) {
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://guangchuangyu.github.io/2015/08/recursive/">
+          递归
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2015-08-11T09:12:14&#43;08:00">
+        
+  August 11, 2015
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://guangchuangyu.github.io/categories/programming">programming</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        <p>递归正如‘盗梦空间’中的场景：
+<img src="https://guangchuangyu.github.io/blog_images/2015/recursive_image.jpg" alt=""></p>
+<blockquote>
+<p>PS: 使用《<a href="https://mp.weixin.qq.com/s/CP00v7HuclUcfJn2_aSplA">windows用户, 截屏新手段</a>》可以一句for循环生成类似这种效果的图。</p>
+</blockquote>
+<p>简言之就是不断调用自己，
+<img src="https://guangchuangyu.github.io/blog_images/2015/recursive.jpg" alt=""></p>
+<p>经常我们会拿fibonacci数来讲解递归，正如在<a href="http://guangchuangyu.github.io/2013/04/rabbits-and-recurrence-relations/">Rabbits and Recurrence
+Relations</a>一题中所实现的，我使用了静态变量来缓存，以加快运行速度。R版本的实现可以参考<a href="http://guangchuangyu.github.io/2012/07/tricky-things-in-r/">tricky things in R</a>一文，相对应于C的静态变量，在R中使用了局部的全局变量，这需要用<code>&lt;&lt;-</code>来赋值。</p>
+<p>在开发ggtree时，unrooted layout最早的版本就是使用递归实现，但<code>BiocCheck</code>会把<code>&lt;&lt;-</code>报出来，而Bioconductor的人不喜欢看到这个赋值符，于是我改成了现在的版本，使用for loop。递归和循环一样，都只是程序的一种控制机制，某些递归实现代码非常短的同时，可读性非常强。</p>
+<h4 id="example-1">Example 1</h4>
+<p>比如我们要写writeSequence这样的函数：</p>
+<pre><code>Call                    Output
+writeSequence(1);   1
+writeSequence(2);   1 1
+writeSequence(3);   2 1 2
+writeSequence(4);   2 1 1 2
+writeSequence(5);   3 2 1 2 3
+writeSequence(6);   3 2 1 1 2 3
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeSequence</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">&lt;</span> 1<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">();</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;1 1&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">ceil</span><span style="color:#f92672">(</span>n<span style="color:#f92672">/</span>2<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">);</span>
+    
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>x <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">);</span>
+    writeSequence<span style="color:#f92672">(</span>n<span style="color:#f92672">-</span>2<span style="color:#f92672">);</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> x<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div>
+      
+      <p>
+        <a href="https://guangchuangyu.github.io/2015/08/recursive/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://guangchuangyu.github.io/2011/09/mc-integration/">
           MC积分
         </a>
@@ -356,7 +451,7 @@ and miss法估计。</p>
         <p><img src="http://mathfaculty.fullerton.edu/mathews/n2003/montecarlopi/MonteCarloPiMod/Images/MonteCarloPiMod_gr_11.gif" alt=""></p>
 <p>圆和外接正方形的面积比，是$ \frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$.</p>
 <p>通过这一比值，可以使用<!-- raw HTML omitted -->蒙特-卡罗方法<!-- raw HTML omitted -->来估计Pi，这是Monte Carlo方法的最经典的一个例子。</p>
-<pre><code>getPI &lt;- function(N) {
+<pre tabindex="0"><code>getPI &lt;- function(N) {
     x &lt;- runif(N)
     y &lt;- runif(N)
     hits &lt;- sum(sqrt(x^2+y^2) &lt; 1)
@@ -617,65 +712,6 @@ others as add-on packages, such as
 </article>
 
             
-              
-  
-    
-      
-        
-      
-    
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://guangchuangyu.github.io/2008/11/bisect-to-solve-equation/">
-          用中值定理求根
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2008-11-25T10:40:22&#43;08:00">
-        
-  November 25, 2008
-
-      </time>
-    
-    
-  
-  
-    <span>in</span>
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/calculus">Calculus</a>, 
-    
-      <a class="category-link" href="https://guangchuangyu.github.io/categories/programming">Programming</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      
-        <p>翻看了以前写的<a href="https://guangchuangyu.github.io/cn/2007/06/newton-raphson-method/">使用Newton-Raphson Method求一个数的开方</a>，想到其实也可以用中值定理来实现。
-中值定理：f(x)是一个连续性的函数，在[u,v]区间内，当c的值位于f(u)和f(v)之间时，至少存在一个点，满足f(x) = c 当f(u)和f(v)一正一负时，那么在[u,v]之间至少有一个根的存在，这个定理本来就是拿来证明根的存在的，但是其实也可以用来求解根。</p>
-      
-      <p>
-        <a href="https://guangchuangyu.github.io/2008/11/bisect-to-solve-equation/" class="postShorten-excerpt_link link">Continue reading</a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
-
-            
             
   <div class="pagination-bar">
     <ul class="pagination">
@@ -699,7 +735,7 @@ others as add-on packages, such as
         
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

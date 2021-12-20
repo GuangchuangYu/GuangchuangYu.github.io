@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -132,7 +132,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -319,7 +318,7 @@ if (!doNotTrack) {
               <p><img src="http://guangchuangyu.github.io/blog_images/R/meme/WechatIMG165.png" alt=""></p>
 <p>正如我在《<a href="http://mp.weixin.qq.com/s/jDXjkrkq_YVhW-Z5Vx2-Fg">用R画meme ;)</a>》里说的，meme包就可以拿来画，当然这个包是设计来画meme的，所以文本只会打在中间，如果你想在右下角之类的，不好意思，我没提供选项让你调文本位置，氮素，meme依然是你的好帮手，怎么说呢，meme不单能帮你读图片，还能用grid画出来，这意味着你可以用<code>grid.text</code>随便加个文本就OK了。</p>
 <p>实例演示一发：</p>
-<pre><code>library(meme)
+<pre tabindex="0"><code>library(meme)
 u &lt;- system.file(&quot;angry8.jpg&quot;, package=&quot;meme&quot;)
 x &lt;- meme(u)
 print(x)
@@ -329,7 +328,7 @@ grid.text(&quot;biobabble&quot;, x=.9, y=.05,
 <p>由于提问说到ggplot2，这里讲一下。meme要支持ggplot2的输出也容易，不过我没看出必要性，所以懒得搞，要想用meme，你的ggplot2输出要先写图片。</p>
 <p>如果想要ggplot2直接加水印，这有何难，不就是打个文本是吧？如果你想到<code>geom_text</code>或者<code>annotate(&quot;text&quot;)</code>之类的，赶紧面壁去，水平太差，这些只能打在画图区域里。你应该想到的是<code>labs(caption=XXX)</code>，但是这里也有个问题，caption的位置是相对于画图区域的，你的图legend区域的大小是不一样的，或者有些图legend在画图区域之外，有些在内部，这会导致你加的水印在不同的图中相对的位置是不统一的。怎么办？！上面已经有答案了，还是一样的<code>grid.text</code>，因为ggplot2也是用grid画的，所以通用。</p>
 <p>下面这个代码，黑色的biobabble是通过caption画的，相对位置是没法保障的，但红色的biobabble通过grid.text，位置在整张图片中，是固定的，在不同的图片中，是可以统一的。</p>
-<pre><code>p = ggplot(iris, aes(Sepal.Width, Petal.Width)) + 
+<pre tabindex="0"><code>p = ggplot(iris, aes(Sepal.Width, Petal.Width)) + 
 	geom_point(aes(color=Species))
 p + labs(caption=&quot;biobabble&quot;)
 grid.text(&quot;biobabble&quot;, x=.9, y=.05, 
@@ -440,7 +439,7 @@ grid.text(&quot;biobabble&quot;, x=.9, y=.05,
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

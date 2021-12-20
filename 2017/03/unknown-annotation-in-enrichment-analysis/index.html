@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="小伙伴说注释不全，比如KEGG只有不到1万个基因有注释，但他一次RNA-seq出来的基因有2万多个，那其它没注释那1万多个岂不是扔了？！就某个通路来说，两种情况，要么属于，要么不属于这个通路。那1万多个应该放在背景里，不要扔。
@@ -100,7 +100,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -290,7 +289,7 @@ if (!doNotTrack) {
 <p>然而他觉得影响不大，这必须是有影响的。我们算一下p值就知道了。</p>
 <hr>
 <h2 id="第一种情况只搞大n">第一种情况，只搞大N</h2>
-<pre><code>&gt; k
+<pre tabindex="0"><code>&gt; k
 [1] 10
 &gt; n
 [1] 100
@@ -301,7 +300,7 @@ if (!doNotTrack) {
 &gt; phyper(k-1, M, N1-M, n, lower.tail=F)
 [1] 0.02751124
 </code></pre><p>比如有这样的情况，算出来<strong>0.0275</strong>，假如背景现在翻一翻，我们来看一下：</p>
-<pre><code>&gt; N2
+<pre tabindex="0"><code>&gt; N2
 [1] 20000
 &gt; phyper(k-1, M, N2-M, n, lower.tail=F)
 [1] 0.0002018491
@@ -310,11 +309,11 @@ if (!doNotTrack) {
 <p>第一种情况是最常见的，有些web-server或软件，会有参数说估计一下物种的基因总数，这就是在搞大<strong>N</strong>啊。</p>
 <p>然后你可能会觉得，N大了，那你的基因列表里没注释的也不能扔啊，N翻倍了，n也应该翻倍？！</p>
 <p>我们就当n也翻倍吧，看一下：</p>
-<pre><code>&gt; phyper(k-1, M, N2-M, n*2, lower.tail=F)
+<pre tabindex="0"><code>&gt; phyper(k-1, M, N2-M, n*2, lower.tail=F)
 [1] 0.02930878
 </code></pre><p>好像是和正确答案差不多，然而大家有没有想到，这是有前提条件的，建立在完全随机的基因上，也就是说基因有没有注释的概率是一样的，我们在一个基因池子里随机捞一些出来研究，这显然是不成立的，有些通路就是被研究得很透，有些就是基本未知。科学上有些东西，就像个死火山，要靠某个突破之后突然喷发，研究上的东西，从来不是随机在发展。还拿KEGG来说吧，也就是代谢通路比较全。</p>
 <p>所以第一点，N翻倍了，n在事实上不会刚好也翻倍的。假如n是乘1.5吧，我们来看p值:</p>
-<pre><code>&gt; phyper(k-1, M, N2-M, n*1.5, lower.tail=F)
+<pre tabindex="0"><code>&gt; phyper(k-1, M, N2-M, n*1.5, lower.tail=F)
 [1] 0.004529063
 </code></pre><p>是正确p值的1/7，差别还有蛮大的。</p>
 <hr>
@@ -420,7 +419,7 @@ if (!doNotTrack) {
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="你是否对《R包辣鸡之CorMut》之篇还有印象？没有的话，快点打开阅读一下，这文章让作者毕业了，毕竟发表的是一篇Bioinformatics。
@@ -110,7 +110,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -300,14 +299,14 @@ if (!doNotTrack) {
 <p><img src="https://guangchuangyu.github.io/blog_images/R/gogadget/workflow.jpg" alt=""></p>
 <p>当然前面的事情是goseq干的，它的功能就是衔接了goseq的输出，让我们还看看它每一步都在做什么。</p>
 <h3 id="gogadgetpadjust">gogadget.p.adjust</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.p.adjust <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;BH&#34;</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.p.adjust <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;BH&#34;</span>) {
     adjustedP <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">p.adjust</span>(x<span style="color:#f92672">$</span>over_represented_pvalue, method <span style="color:#f92672">=</span> method)
     x[<span style="color:#e6db74">&#34;adjusted_pvalue&#34;</span>] <span style="color:#f92672">&lt;-</span> adjustedP
     <span style="color:#a6e22e">return</span>(x)
 }
 </code></pre></div><p>这一步干的事情，就是给goseq的输出加一个adjusted pvalue，仅此而已。</p>
 <h3 id="gogadgetexplore">gogadget.explore</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.explore <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x , nmin <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>, stepmin <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>, nmax <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>, stepmax <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>, steps <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>, cutoff <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>, legend <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;topleft&#34;</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.explore <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x , nmin <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>, stepmin <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>, nmax <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>, stepmax <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>, steps <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>, cutoff <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>, legend <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;topleft&#34;</span>) {
     seqmin <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(nmin, nmin<span style="color:#f92672">+</span>stepmin<span style="color:#f92672">*</span>steps, by <span style="color:#f92672">=</span> stepmin)
     seqmax <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">seq</span>(nmax, nmax<span style="color:#f92672">+</span>stepmax<span style="color:#f92672">*</span>steps, by <span style="color:#f92672">=</span> stepmax)
     x.bar <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>()
@@ -326,14 +325,14 @@ if (!doNotTrack) {
 </code></pre></div><p>这个函数就是取不同的gene set size去过滤数据，看看能留下多少结果，比如说基因集的大小在[10, 100]的情况下，过滤后有多少个结果，在[20, 100]的情况下又有多少个结果，以此类推，然后画一个柱状图，这就是所谓的结果探索了，探索是为了衔接下一步的过滤。</p>
 <p>它的理由在于富集的结果冗余度很大，看不过来，于是过滤一下，比如说就限制在基因集[50, 100]之间吧，结果出来的数目比较少。这简直是掩耳盗铃！因为完全没有任何生物学意义的过滤。结果太多，你不是去冗余，而是随意的过滤，只为了数目少。</p>
 <h3 id="gogadgetfilter">gogadget.filter</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.filter <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, cutoff <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>, nmin <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>, nmax <span style="color:#f92672">=</span> <span style="color:#ae81ff">250</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.filter <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, cutoff <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>, nmin <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>, nmax <span style="color:#f92672">=</span> <span style="color:#ae81ff">250</span>) {
     x.sig <span style="color:#f92672">&lt;-</span> x[x[, <span style="color:#e6db74">&#34;adjusted_pvalue&#34;</span>] <span style="color:#f92672">&lt;</span> cutoff,]
     x.sig.filter <span style="color:#f92672">&lt;-</span> x.sig[x.sig[, <span style="color:#e6db74">&#34;numInCat&#34;</span>] <span style="color:#f92672">&gt;=</span> nmin <span style="color:#f92672">&amp;</span> x.sig[, <span style="color:#e6db74">&#34;numInCat&#34;</span>] <span style="color:#f92672">&lt;=</span> nmax,]
     <span style="color:#a6e22e">return</span>(x.sig.filter)
 }
 </code></pre></div><p>有了上面的解说，你该看得懂这个过滤了，一方面是p值，另一方面是指定基因集的大小进行过滤，而根据嘛，就是上面所谓的探索，就是一个柱状图，让你看什么样的基因集大小区间，出来的结果比较符合你想要的数目，真的就只是看数目，你很可能把最有用的信息都去掉，留下来一些高度冗余的，几乎没有信息量的结果。</p>
 <h3 id="gogadgetheatmap">gogadget.heatmap</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.heatmap <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, genes, genome, id, fetch.cats <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;GO:CC&#34;</span>,<span style="color:#e6db74">&#34;GO:BP&#34;</span>,<span style="color:#e6db74">&#34;GO:MF&#34;</span>), symm <span style="color:#f92672">=</span> T, trace <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span>, density.info <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span>, cexRow <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.4</span>, cexCol <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.4</span>, col <span style="color:#f92672">=</span> my_palette, margins <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">11</span>), revC <span style="color:#f92672">=</span> T, <span style="color:#66d9ef">...</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.heatmap <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, genes, genome, id, fetch.cats <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;GO:CC&#34;</span>,<span style="color:#e6db74">&#34;GO:BP&#34;</span>,<span style="color:#e6db74">&#34;GO:MF&#34;</span>), symm <span style="color:#f92672">=</span> T, trace <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span>, density.info <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span>, cexRow <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.4</span>, cexCol <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.4</span>, col <span style="color:#f92672">=</span> my_palette, margins <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">11</span>), revC <span style="color:#f92672">=</span> T, <span style="color:#66d9ef">...</span>) {
     allGOs <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">stack</span>(<span style="color:#a6e22e">getgo</span>(genes, genome, id, fetch.cats <span style="color:#f92672">=</span> fetch.cats))
     b <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span>
     name <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">list</span>()
@@ -361,7 +360,7 @@ if (!doNotTrack) {
 </code></pre></div><p>富集到的GO，两两计算一下两个基因集overlap了多少，以此形成一个矩阵，然后对矩阵求pearson相关系数，对相关系数用heatmap.2画热图。这就是所谓对冗余GO进行层次聚类。</p>
 <p>PS：这里犯了一个大忌，用了&laquo;-。</p>
 <h3 id="gogadgetcytoscape">gogadget.cytoscape</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.cytoscape <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;File4cytoscape.txt&#34;</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.cytoscape <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;File4cytoscape.txt&#34;</span>) {
     x.cytoscape <span style="color:#f92672">&lt;-</span> x[,<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;category&#34;</span>, <span style="color:#e6db74">&#34;term&#34;</span>, <span style="color:#e6db74">&#34;over_represented_pvalue&#34;</span>, <span style="color:#e6db74">&#34;adjusted_pvalue&#34;</span>)]
     <span style="color:#a6e22e">colnames</span>(x.cytoscape) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;GO.ID&#34;</span>, <span style="color:#e6db74">&#34;Description&#34;</span>, <span style="color:#e6db74">&#34;p.Val&#34;</span>, <span style="color:#e6db74">&#34;FDR&#34;</span>)
     <span style="color:#a6e22e">write.table</span>(x.cytoscape, file <span style="color:#f92672">=</span> file, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\t&#34;</span>, row.names <span style="color:#f92672">=</span> F, quote <span style="color:#f92672">=</span> F)
@@ -369,7 +368,7 @@ if (!doNotTrack) {
 }
 </code></pre></div><p>这个就是把goseq的结果写成一个table，这样可以导入到cytoscape里去。当然光这个文件是不够的，所以需要下面这一步的文件。</p>
 <h3 id="gogadgetgmt">gogadget.gmt</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.gmt <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, genes, genome, id, fetch.cats<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;GO:CC&#34;</span>,<span style="color:#e6db74">&#34;GO:BP&#34;</span>,<span style="color:#e6db74">&#34;GO:MF&#34;</span>), file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cytoscape.gmt&#34;</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.gmt <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, genes, genome, id, fetch.cats<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;GO:CC&#34;</span>,<span style="color:#e6db74">&#34;GO:BP&#34;</span>,<span style="color:#e6db74">&#34;GO:MF&#34;</span>), file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cytoscape.gmt&#34;</span>) {
     allGOs <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">stack</span>(<span style="color:#a6e22e">getgo</span>(genes, genome, id, fetch.cats <span style="color:#f92672">=</span> fetch.cats))
     newdf<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">as.data.frame</span>(<span style="color:#a6e22e">cbind</span>(x<span style="color:#f92672">$</span>category,x<span style="color:#f92672">$</span>term))
     <span style="color:#a6e22e">colnames</span>(newdf)<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;values&#34;</span>,<span style="color:#e6db74">&#34;term&#34;</span>)
@@ -389,7 +388,7 @@ if (!doNotTrack) {
 <p><img src="https://guangchuangyu.github.io/blog_images/R/gogadget/paper.jpg" alt=""></p>
 <p>你能想象作者竟然敢把它submit到Bioinformatics上吗？而Bioinformatics的Editor竟然还送审了！想我8年前提交clusterProfiler到Bioinformatics上，起码那年头也是第一次你可以在R包里批量对多个条件做富集分析并且把结果用点图呈现出来，好比较。记住这是8年前！然后Editor直接reject，并且说你不要再提交了，我们不接受这篇文章以任何形式再次提交！我真的好受伤。</p>
 <p>这篇gogadget的文章就是我审的稿，我直接就reject了，9月底reject，作者很快投了个小杂志，以极快的速度就被接收了：</p>
-<pre><code>Manuscript accepted:
+<pre tabindex="0"><code>Manuscript accepted:
 02 December 2016
 Manuscript received:
 06 October 2016
@@ -429,7 +428,7 @@ This package is just too simple without innovation.</p>
 <p>网友给出代码，天了撸，他竟然继续提问，如果要用GO Description而不是Term，该怎么搞，这就是简单的merge而已啊，网友给出的是dplyr的代码，告诉他用left_join。</p>
 <p><img src="https://guangchuangyu.github.io/blog_images/R/gogadget/support_site-2.jpg" alt=""></p>
 <p>让我们再翻出来gogadget.gmt函数：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.gmt <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, genes, genome, id, fetch.cats<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;GO:CC&#34;</span>,<span style="color:#e6db74">&#34;GO:BP&#34;</span>,<span style="color:#e6db74">&#34;GO:MF&#34;</span>), file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cytoscape.gmt&#34;</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">gogadget.gmt <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, genes, genome, id, fetch.cats<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;GO:CC&#34;</span>,<span style="color:#e6db74">&#34;GO:BP&#34;</span>,<span style="color:#e6db74">&#34;GO:MF&#34;</span>), file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cytoscape.gmt&#34;</span>) {
     allGOs <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">stack</span>(<span style="color:#a6e22e">getgo</span>(genes, genome, id, fetch.cats <span style="color:#f92672">=</span> fetch.cats))
     newdf<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">as.data.frame</span>(<span style="color:#a6e22e">cbind</span>(x<span style="color:#f92672">$</span>category,x<span style="color:#f92672">$</span>term))
     <span style="color:#a6e22e">colnames</span>(newdf)<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;values&#34;</span>,<span style="color:#e6db74">&#34;term&#34;</span>)
@@ -439,9 +438,9 @@ This package is just too simple without innovation.</p>
     <span style="color:#a6e22e">write.table</span>(reshaped.terms, file <span style="color:#f92672">=</span> file, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\t&#34;</span>, quote <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>, row.names <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>, col.names <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>)
 }
 </code></pre></div><p>后面几行和网友回答中给出的（下面的）代码，是不是一模一样？</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">reshaped <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">group_by</span>(sorted, values) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">summarise</span>(genes <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste</span>(ind, collapse <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\t&#34;</span>))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">reshaped <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">group_by</span>(sorted, values) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">summarise</span>(genes <span style="color:#f92672">=</span> <span style="color:#a6e22e">paste</span>(ind, collapse <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\t&#34;</span>))
 added.terms <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">left_join</span>(reshaped, newdf, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;values&#34;</span>)
-<span style="color:#75715e">## this won&#39;t have to columns in the order you&#39;d like, so change them</span>
+<span style="color:#75715e">## this won&#39;t have to columns in the order you&#39;d like, so change them</span>
 added.terms <span style="color:#f92672">&lt;-</span> added.terms[,<span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">2</span>)]
 <span style="color:#a6e22e">write.table</span>(added.terms, file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/tmp/tmp.txt&#34;</span>, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\t&#34;</span>, quote <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>, row.names <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>, col.names <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>)
 </code></pre></div><p>这只是我搜了一下Bioconductor support site之后的发现，如果你有心去搜biostar的话，你会发现更多的代码来自于网友。</p>
@@ -544,7 +543,7 @@ added.terms <span style="color:#f92672">&lt;-</span> added.terms[,<span style="c
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

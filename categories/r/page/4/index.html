@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -78,7 +78,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -347,7 +346,7 @@ if (!doNotTrack) {
 <p>没错，凡是给biobabble投稿的小伙伴都会被拉入作者群。</p>
 </blockquote>
 <p>话说有一个矩阵，我们让它某个值缺失，算出来的距离和原来的竟然是一样的：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> dat <span style="color:#f92672">=</span> <span style="color:#a6e22e">matrix</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">2</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> dat <span style="color:#f92672">=</span> <span style="color:#a6e22e">matrix</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">2</span>)
 <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">dist</span>(dat)
          <span style="color:#ae81ff">1</span>
 <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">2.236068</span>
@@ -356,7 +355,7 @@ if (!doNotTrack) {
          <span style="color:#ae81ff">1</span>
 <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">2.236068</span>
 </code></pre></div><p>这有点反直觉，实际上你再搞个缺失值，它算出来还是一样的：</p>
-<pre><code>&gt; dat[1,3] = NA
+<pre tabindex="0"><code>&gt; dat[1,3] = NA
 &gt; dist(dat)
          1
 2 2.236068
@@ -418,8 +417,8 @@ if (!doNotTrack) {
       
         <p>在《<a href="https://mp.weixin.qq.com/s/PPtYmZdCbAzFdvTI1Tb6gQ">一图告诉你venn plot和upset plot的关系</a>》一文中，我们应该很清楚这两者的关系，upset plot是更清晰的呈现方式，而且能够支持无数多个分类，在《<a href="https://mp.weixin.qq.com/s/g6rRGhtKQd_mdRMKxteNVw">转UpSet图为ggplot?</a>》一文中，又介绍了一个转化UpSetR输出为ggplot2便于嵌图和拼图的方法，但这个需要一个补丁，然后我提交的这个补丁，一直没有被作者接收。而且毕竟UpSetR是用grid写的，像grid这种高级货，玩起来还是有点难度，我一直在想应该有一个<code>ggplot2</code>版本的upset plot，最近就让我在gayhub上发现了。</p>
 <p>这包已经在CRAN上，所以可以用最简单的方式安装：</p>
-<pre><code>install.packages(&quot;ggupset&quot;)
-</code></pre><pre><code>library(tidyverse)
+<pre tabindex="0"><code>install.packages(&quot;ggupset&quot;)
+</code></pre><pre tabindex="0"><code>library(tidyverse)
 library(ggupset)
 
 tidy_movies %&gt;%
@@ -604,7 +603,7 @@ tidy_movies %&gt;%
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+        <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 
 pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::</span>RatPupWeight <span style="color:#f92672">%&gt;%</span> 
     janitor<span style="color:#f92672">::</span><span style="color:#a6e22e">clean_names</span>() <span style="color:#f92672">%&gt;%</span>
@@ -612,7 +611,7 @@ pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::
 
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(pups, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> litter, y <span style="color:#f92672">=</span> weight, color <span style="color:#f92672">=</span> treatment))
 </code></pre></div><p>针对某一个x值，我们可以画出相应y的统计量，比如均值、方差等，这些都可以“手工”的方式通过图层叠加来实现。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">stat_summary</span>(fun.y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mean&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;point&#34;</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;black&#39;</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">stat_summary</span>(fun.data <span style="color:#f92672">=</span> mean_cl_normal, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;errorbar&#34;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">.1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>)
 </code></pre></div>
@@ -719,7 +718,7 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</s
         
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

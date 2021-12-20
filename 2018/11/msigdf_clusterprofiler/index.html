@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -102,7 +102,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -293,67 +292,67 @@ if (!doNotTrack) {
 <hr>
 <p>好了，那么有这个包之后，我们连下载gmt文件都省了，直接载入这个包的数据，然后就可以无缝衔接<code>clusterProfiler</code>进行分析，还是原来的配方，还是熟悉的味道，你拥有了《<a href="https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA">enrichplot: 让你们对clusterProfiler系列包无法自拔</a>》的各种可视化功能。</p>
 <h2 id="msigdf包"><code>msigdf</code>包</h2>
-<pre><code>## devtools::install_github(&quot;ToledoEM/msigdf&quot;)
+<pre tabindex="0"><code>## devtools::install_github(&quot;ToledoEM/msigdf&quot;)
 library(msigdf)
 </code></pre><p><code>msigdf</code>包含了人和鼠的数据，总共有以下8个类别：</p>
 <table>
 <thead>
 <tr>
-<th align="left">category</th>
-<th align="left">description</th>
+<th style="text-align:left">category</th>
+<th style="text-align:left">description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">H</td>
-<td align="left">hallmark gene sets</td>
+<td style="text-align:left">H</td>
+<td style="text-align:left">hallmark gene sets</td>
 </tr>
 <tr>
-<td align="left">C1</td>
-<td align="left">positional gene sets</td>
+<td style="text-align:left">C1</td>
+<td style="text-align:left">positional gene sets</td>
 </tr>
 <tr>
-<td align="left">C2</td>
-<td align="left">curated gene sets</td>
+<td style="text-align:left">C2</td>
+<td style="text-align:left">curated gene sets</td>
 </tr>
 <tr>
-<td align="left">C3</td>
-<td align="left">motif gene sets</td>
+<td style="text-align:left">C3</td>
+<td style="text-align:left">motif gene sets</td>
 </tr>
 <tr>
-<td align="left">C4</td>
-<td align="left">computational gene sets</td>
+<td style="text-align:left">C4</td>
+<td style="text-align:left">computational gene sets</td>
 </tr>
 <tr>
-<td align="left">C5</td>
-<td align="left">GO gene sets</td>
+<td style="text-align:left">C5</td>
+<td style="text-align:left">GO gene sets</td>
 </tr>
 <tr>
-<td align="left">C6</td>
-<td align="left">oncogenic signatures</td>
+<td style="text-align:left">C6</td>
+<td style="text-align:left">oncogenic signatures</td>
 </tr>
 <tr>
-<td align="left">C7</td>
-<td align="left">immunologic signatures</td>
+<td style="text-align:left">C7</td>
+<td style="text-align:left">immunologic signatures</td>
 </tr>
 </tbody>
 </table>
 <p>在这里我将过滤出<code>C2</code>拿来做分析：</p>
-<pre><code>library(dplyr)
+<pre tabindex="0"><code>library(dplyr)
 
 c2 &lt;- msigdf.human %&gt;% 
     filter(category_code == &quot;c2&quot;) %&gt;% select(geneset, symbol) %&gt;% as.data.frame
 </code></pre><p>下面这就是我们拿到的<code>C2</code>的注释，一个<code>data.frame</code>：</p>
-<pre><code>&gt; head(c2, 3)
+<pre tabindex="0"><code>&gt; head(c2, 3)
                               geneset  symbol
 1 NAKAMURA_CANCER_MICROENVIRONMENT_UP  COL1A2
 2 NAKAMURA_CANCER_MICROENVIRONMENT_UP GPIHBP1
 3 NAKAMURA_CANCER_MICROENVIRONMENT_UP     RET
 </code></pre><p>接下来是<code>clusterProfiler</code>的表演时间，我们还是使用<code>DOSE</code>包里的<code>geneList</code>数据来做演示，如果不知道怎么搞自己的<code>geneList</code>，请移步《<a href="http://mp.weixin.qq.com/s/aht5fQ10nH_07CYttKFH7Q">听说你有RNAseq数据却不知道怎么跑GSEA</a>》。</p>
-<pre><code>library(clusterProfiler)
+<pre tabindex="0"><code>library(clusterProfiler)
 data(geneList, package=&quot;DOSE&quot;)
 </code></pre><p>这里涉及到一个问题，<code>geneList</code>里的基因是<code>ENTREZID</code>，而这里<code>msigdf</code>包里是<code>SYMBOL</code>，这个简单，无非是个基因ID转换的过程而已，一般而言，对于你自己的注释数据，你不应当有这个问题；假如有，也是一个转换步骤而已，这里做为演示，我把<code>geneList</code>的ID给转了，你当然也可以转注释<code>c2</code>里的ID。</p>
-<pre><code>&gt; id = bitr(names(geneList), &quot;ENTREZID&quot;, &quot;SYMBOL&quot;, &quot;org.Hs.eg.db&quot;)
+<pre tabindex="0"><code>&gt; id = bitr(names(geneList), &quot;ENTREZID&quot;, &quot;SYMBOL&quot;, &quot;org.Hs.eg.db&quot;)
 'select()' returned 1:1 mapping between keys and columns
 Warning message:
 In bitr(names(geneList), &quot;ENTREZID&quot;, &quot;SYMBOL&quot;, &quot;org.Hs.eg.db&quot;) :
@@ -364,7 +363,7 @@ In bitr(names(geneList), &quot;ENTREZID&quot;, &quot;SYMBOL&quot;, &quot;org.Hs.
 2     8318  CDC45
 3    10874    NMU
 </code></pre><p>我们看到<code>bitr</code>的输出，有部分ID是没法转的，这些应该过滤掉，然后用新的ID去给<code>geneList</code>重命名即可，要注意ID要一一对应，不能搞错，我这里用了<code>match</code>，确保操作没问题：</p>
-<pre><code>&gt; geneList = geneList[names(geneList) %in% id[,1]]
+<pre tabindex="0"><code>&gt; geneList = geneList[names(geneList) %in% id[,1]]
 &gt; names(geneList) = id[match(names(geneList), id[,1]), 2]    
 </code></pre><p>好了，现在轮到熟悉的<code>clusterProfiler</code>分析了，大家应该都不陌生，在下面的文章中都有介绍过：</p>
 <ul>
@@ -373,10 +372,10 @@ In bitr(names(geneList), &quot;ENTREZID&quot;, &quot;SYMBOL&quot;, &quot;org.Hs.
 <li><a href="https://mp.weixin.qq.com/s/17ujVhcrkX1DLsUJBtUGEw">使用新姿势玩KEGG，是种什么体验&hellip;</a></li>
 </ul>
 <p>用<code>enricher</code>做超几何分布检验：</p>
-<pre><code>de &lt;- names(geneList)[1:100]
+<pre tabindex="0"><code>de &lt;- names(geneList)[1:100]
 x &lt;- enricher(de, TERM2GENE = c2)
 </code></pre><p>用<code>head</code>瞄一眼结果：</p>
-<pre><code>&gt; head(x, 3)
+<pre tabindex="0"><code>&gt; head(x, 3)
                                                                                      ID
 ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER
 SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP           SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP
@@ -402,9 +401,9 @@ ROSTY_CERVICAL_CANCER_PROLIFERATION_CLUSTER    49
 SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP         46
 SHEDDEN_LUNG_CANCER_POOR_SURVIVAL_A6           58
 </code></pre><p>然后<code>GSEA</code>分析用<code>GSEA</code>函数：</p>
-<pre><code>y &lt;- GSEA(geneList, TERM2GENE = c2)
+<pre tabindex="0"><code>y &lt;- GSEA(geneList, TERM2GENE = c2)
 </code></pre><p>同样我们也用<code>head</code>瞄一眼结果：</p>
-<pre><code>&gt; head(y, 3)
+<pre tabindex="0"><code>&gt; head(y, 3)
                                                                                                      ID
 ONKEN_UVEAL_MELANOMA_DN                                                         ONKEN_UVEAL_MELANOMA_DN
 NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN               NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN
@@ -435,9 +434,9 @@ NAKAMURA_TUMOR_ZONE_PERIPHERAL_VS_CENTRAL_DN                                    
 BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING                                                                                                                                                            STOM/SDC2/STAT5B/ENPP2/FRMD4A/PTPRD/SCAPER/DNAJB4/OBSL1/AVPR2/PTPRS/TCF15/PEX3/ASPSCR1/NR2F1/SMARCA2/MORC3/TTC37/SIRT1/SEMA3F/TLE3/SRSF11/CCNH/NR2F2/SETD2/TMEM47/TNKS/CDK14/BCAT2/ADCY9/LRRC8E/CRTC3/AKAP10/RANBP3/GSTM5/PPP3CB/PDE4A/TM2D1/RECK/SPOP/PCGF3/RASA1/ECE1/BTF3/SPRED2/RAD17/KCNQ1/KCNAB1/ERLIN2/RB1/MRPS27/PPP3CA/EXOC7/METTL3/WBP4/HDAC4/EPB41L3/AP1G2/FEZ1/HOXD3/TMEM168/CCPG1/EID1/PIK3R1/CREBBP/AMH/MAN2A1/ITM2B/BNIP3L/SCAMP1/NID1/UBE2B/KDR/LIMCH1/ASAH1/NHLRC2/STK39/WNT5A/GPR39/FBXO38/FILIP1L/WFS1/ACSL3/PDS5B/LINC00260/HOOK2/ZNF235/F2R/PSD4/GULP1/COL15A1/SLC24A3/APC/SNCAIP/GATM/SFI1/CAMK2N1/NDN/PTPRN2/ARHGEF10/FBXL5/ITM2A/PDCD6/ZNF444/MEF2C/RPS6KA2/RARRES2/LPAR1/EDEM3/FNDC3A/DCHS1/ZFYVE16/LEPR/REEP5/THSD7A/RUNX1T1/ZNF839/COL21A1/UBL3/JAM2/SNAI2/GIPC2/PJA2/SPOCK1/CDH13/SOCS2/SYNE1/NBL1/MYOF/JAM3/PNISR/PDE1A/TRPC1/KL/ANKRA2/FAM172A/FAT4/PTGER3/EFEMP1/TSPAN7/IRAK3/SESN1/CAV1/MKL2/SEMA3C/EDNRA/ZBTB16/TGFB1I1/SPATA7/NBR2/SPDEF/CCDC106/ECM2/ABCG2/MEOX2/IKBKB/AGTR1/ZEB1/GPRASP1/DKK2/IGFBP4/SPARCL1/IRS1/AMIGO2/LMOD1/DCN/MAOA/IL6ST/ZCCHC24/PDZRN3/PDGFD/MAOB/RNASE4/C7/PSD3/CILP/ABCA8
 </code></pre><p>用<code>clusterProfiler</code>分析有多种好处，一个是你可以用<code>compareCluster</code>比较不同的条件，还有就是有非常好的可视化函数，《<a href="https://mp.weixin.qq.com/s/93XIeDF3mUFX0koX6mTRpA">enrichplot: 让你们对clusterProfiler系列包无法自拔</a>》这篇文章你不容错过。</p>
 <p>比如：</p>
-<pre><code>&gt; cnetplot(x, foldChange=geneList)  
+<pre tabindex="0"><code>&gt; cnetplot(x, foldChange=geneList)  
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/enrichplot/2018-11-01-125817_1280x800_scrot.png" alt=""></p>
-<pre><code>&gt; gseaplot2(y, 1)
+<pre tabindex="0"><code>&gt; gseaplot2(y, 1)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/enrichplot/2018-11-01-125757_1280x800_scrot.png" alt=""></p>
               
             </div>
@@ -536,7 +535,7 @@ BONOME_OVARIAN_CANCER_SURVIVAL_SUBOPTIMAL_DEBULKING                             
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

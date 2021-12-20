@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="陈同的‘生信宝典’公众号出了篇《R语言学习 - 富集分析泡泡图》，搞个shell脚本，一步绘图。讲了这个脚本可以适用于clusterProfiler和其它软件的富集结果。
@@ -116,7 +116,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -311,16 +310,16 @@ if (!doNotTrack) {
 <p>生物狗开口闭口都是next generation。画图也是二代了好么！一步出图是第一代产品，因为你只有纸笔模式，画完就完事了，那是死图，你想改，illustrator啊！</p>
 <p>现在这年代，图已经不能简单地称为图，都是数据，只有在需要渲染图片时才是死图，做为数据，你是可以改的，改完再渲染，效果就变了。你用着二代产品，却在干一代产品的活，能不邪恶吗？</p>
 <p>比如下面这个：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(clusterProfiler)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(clusterProfiler)
 <span style="color:#a6e22e">data</span>(gcSample)
 x <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">compareCluster</span>(gcSample, <span style="color:#e6db74">&#39;enrichDO&#39;</span>)
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">dotplot</span>(x, showCategory<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/dotplot.png" alt=""></p>
 <p>clusterProfiler出的图，我们可以随意改啊，比如改颜色：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p2 <span style="color:#f92672">&lt;-</span> p <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_color_continuous</span>(low<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;purple&#39;</span>, high<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;green&#39;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p2 <span style="color:#f92672">&lt;-</span> p <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_color_continuous</span>(low<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;purple&#39;</span>, high<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;green&#39;</span>)
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/dotplot_color.png" alt=""></p>
 <p>再比如改点的形状：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p2 <span style="color:#f92672">+</span> <span style="color:#a6e22e">aes</span>(shape<span style="color:#f92672">=</span>GeneRatio <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.1</span>) 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p2 <span style="color:#f92672">+</span> <span style="color:#a6e22e">aes</span>(shape<span style="color:#f92672">=</span>GeneRatio <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.1</span>) 
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/dotplot_shape.png" alt=""></p>
 <p>比如<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484089&amp;idx=1&amp;sn=f6e11d54a18e96a94145a2b802c37dc1&amp;chksm=ec43b3fedb343ae89e3630900033f055af4bbe211897076291e351ae18cc89b2ddf7651ee0be#rd">字体溢出</a>、<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247483972&amp;idx=1&amp;sn=fa1f4b6299f94eeb52baf5bda6a5ff6b&amp;chksm=ec43b303db343a150806b3b1ab22a1df1c90405235bb399b155f7c50de2a0a23faf2f4ad0beb#rd">长文本截断</a>、<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484646&amp;idx=1&amp;sn=60385c9910164e5abac0e5f46107fd10&amp;chksm=ec43b5a1db343cb72eef63a338679c8edd512019e92854c8e12341d631fc8cec151ee48b5991#rd">设置点的大小</a>等等都可以搞，你还可以改图例，改背景等各种元素等等！</p>
 <h2 id="我所说的硬伤">我所说的硬伤</h2>
@@ -335,7 +334,7 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">dotplot</
 <h2 id="硬广二">硬广二</h2>
 <p>有些人就喜欢自己用ggplot2画，可能觉得透明吧，自己搞有逼格吧。氮素像上面的槽点，像这个<code>includeAll</code>的参数，在把clusterProfiler的结果转变成data.frame后进行处理的时候，你是否能够考虑到？我见过太多自己画的，都是不同实验组给人一种绝然不同富集结果的错觉。</p>
 <p>然而我写的代码，模块化非常好，数据处理和可视化是分开的，clusterProfiler的输出你不用as.data.frame，就可以直接传给ggplot2，别的富集软件做的，不是data.frame对象的，都不能传给ggplot2，但clusterProfiler可以，如果你想问为什么，原因只有一个，因为那是我写的！clusterProfiler的dotplot所有参数，都可以传给ggplot2，像上面用到的<code>showCategory</code>, <code>includeAll</code>这些都可以，然后数据处理于无形中，你可以加图层自己画图了。这个功能存在了好几年，只不过我第一次公开讲。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(x, <span style="color:#a6e22e">aes</span>(Cluster, Description), showCategory<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ggplot</span>(x, <span style="color:#a6e22e">aes</span>(Cluster, Description), showCategory<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span>
 	<span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(color<span style="color:#f92672">=</span>qvalue, size<span style="color:#f92672">=</span>GeneRatio)) 
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/DOSE/dotplot/dotplot_ggplot2.gif" alt=""></p>
 <h3 id="再次重申-clusterprofiler之所以好因为真的考虑了很多细节请放开那图让clusterprofiler来画">再次重申， clusterProfiler之所以好，因为真的考虑了很多细节！请放开那图，让clusterProfiler来画！</h3>
@@ -445,7 +444,7 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">dotplot</
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

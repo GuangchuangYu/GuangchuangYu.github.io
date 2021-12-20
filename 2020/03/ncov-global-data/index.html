@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="我们的nCov2019包，悄咪咪地加入了全球的历史数据。
@@ -182,7 +182,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -368,7 +367,7 @@ if (!doNotTrack) {
             <div class="main-content-wrap">
               <p>我们的<code>nCov2019</code>包，悄咪咪地加入了全球的历史数据。</p>
 <p>历史数据，一如既往地用<code>load_nCov2019()</code>函数获得。然后历史数据嘛，也是一样使用<code>x['global']</code>获得。</p>
-<pre><code>&gt; require(nCov2019)
+<pre tabindex="0"><code>&gt; require(nCov2019)
 Loading required package: nCov2019
 &gt; x = load_nCov2019()
 &gt; d = x['global']
@@ -390,20 +389,20 @@ Loading required package: nCov2019
 1611 2020-03-08                   South Africa           2        0        0
 </code></pre><p>之前的<code>lang</code>参数照常使用，用于指定语言。如果不指定，则会通过R的语言设定来自动设置语言，简单点讲就是你的R是中文的，自动使用中文，其它情况则使用英文。</p>
 <p>首先让我们把中国的数据去掉。</p>
-<pre><code>&gt; d = d[d$country != 'China',]
+<pre tabindex="0"><code>&gt; d = d[d$country != 'China',]
 </code></pre><p>再过滤出确诊人数最多的十个国家：</p>
-<pre><code>require(dplyr)
+<pre tabindex="0"><code>require(dplyr)
 n &lt;- d %&gt;% filter(time == time(x)) %&gt;%
     top_n(10, cum_confirm) %&gt;% 
     arrange(desc(cum_confirm)) %&gt;%
     pull(country)
 </code></pre><p>这十个国家，我们按照人数排个序:</p>
-<pre><code>&gt; n
+<pre tabindex="0"><code>&gt; n
  [1] &quot;South Korea&quot;    &quot;Iran&quot;           &quot;Italy&quot;          &quot;Japan&quot;         
  [5] &quot;France&quot;         &quot;Germany&quot;        &quot;Spain&quot;          &quot;United States&quot; 
  [9] &quot;Switzerland&quot;    &quot;United Kingdom&quot;
 </code></pre><p>接下来，就拿这前十，简单地画个图：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
 <span style="color:#a6e22e">require</span>(ggrepel)
 <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">filter</span>(d, country <span style="color:#f92672">%in%</span> n), 
         <span style="color:#a6e22e">aes</span>(time, cum_confirm, color<span style="color:#f92672">=</span>country)) <span style="color:#f92672">+</span> 
@@ -415,7 +414,7 @@ n &lt;- d %&gt;% filter(time == time(x)) %&gt;%
     <span style="color:#a6e22e">xlab</span>(<span style="color:#66d9ef">NULL</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">ylab</span>(<span style="color:#66d9ef">NULL</span>)
 </code></pre></div><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/2020-03-09_16-34.png" alt=""></p>
 <p>另外我们的地图函数也更新了，可以指定国家，把特定国家给画出来，比如此处我们画前四的国家。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp <span style="color:#f92672">=</span> <span style="color:#a6e22e">lapply</span>(n[1<span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>], <span style="color:#a6e22e">function</span>(cc) <span style="color:#a6e22e">plot</span>(x, region<span style="color:#f92672">=</span>cc))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pp <span style="color:#f92672">=</span> <span style="color:#a6e22e">lapply</span>(n[1<span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>], <span style="color:#a6e22e">function</span>(cc) <span style="color:#a6e22e">plot</span>(x, region<span style="color:#f92672">=</span>cc))
 cowplot<span style="color:#f92672">::</span><span style="color:#a6e22e">plot_grid</span>(plotlist<span style="color:#f92672">=</span>pp)
 </code></pre></div><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/2020-03-09_16-33.png" alt=""></p>
               
@@ -515,7 +514,7 @@ cowplot<span style="color:#f92672">::</span><span style="color:#a6e22e">plot_gri
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

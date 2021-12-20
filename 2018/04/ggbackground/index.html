@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="require(ggplot2)
@@ -128,7 +128,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -314,22 +313,22 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <pre><code>require(ggplot2)
+              <pre tabindex="0"><code>require(ggplot2)
  p &lt;- ggplot(iris) + aes(x = Sepal.Length, y = Sepal.Width, color=Species) + 
     geom_point(size=5) + theme_classic()
 </code></pre><p>首先我们有一个图，是用<code>ggplot2</code>画的，上面这图大家太熟悉，不打印出来都知道是什么了。</p>
 <p>我在最新版的<code>ggimage</code>中加入了一个<code>ggbackground</code>的函数，我随便从网上找一张<code>iris</code>的图片，我们把<code>p</code>和<code>img</code>同时传给<code>ggbackground</code>就好了，非常容易，于是图的内容还是一样，但加了一张我们给定的图片做为背景。</p>
-<pre><code>require(ggimage) 
+<pre tabindex="0"><code>require(ggimage) 
 img = &quot;https://assets.bakker.com/ProductPics/560x676/10028-00-BAKI_20170109094316.jpg&quot;
 ggbackground(p, img)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/R/ggimage/ggbackground_iris1.png" alt=""></p>
 <p>哇这背景太花了，数据点的pattern并不能容易看清楚，其实图片我们还可以处理的，我们可以用<code>magick</code>包中处理图片的函数传给<code>ggbackground</code>，这里我套了两个函数，也是OK的。</p>
-<pre><code>require(magick)
+<pre tabindex="0"><code>require(magick)
 ggbackground(p, img, 
     image_fun = function(x) image_negate(image_convolve(x, 'DoG:0,0,2')))
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/R/ggimage/ggbackground_iris2.png" alt=""></p>
 <p>于是变成上面这样子，有点艺术感。然而还不仅仅是这样，我们可以设置透明度，可以给背景图片填充指定的颜色，喜欢阿猫阿狗的人可以用你喜欢的猫狗图片来做背景了，如果背景太花，除了上面处理一下图片之后，你还可以只用阿猫阿狗的轮廓，然后填充一定的颜色，还可以设置透明，弱化一下背景。</p>
-<pre><code>img = &quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&quot;
+<pre tabindex="0"><code>img = &quot;http://phylopic.org/assets/images/submissions/bf5fe2c5-1247-4ed9-93e2-d5af255ec462.512.png&quot;
 p1 = ggbackground(p, img) + ggtitle(&quot;ggbackground(p, img)&quot;)
 p2 = ggbackground(p, img, alpha=.3) + ggtitle(&quot;ggbackground(p, img, alpha=.3)&quot;)
 p3 = ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;) + ggtitle('ggbackground(p, img, alpha=.3, color=&quot;steelblue&quot;)')
@@ -444,7 +443,7 @@ cowplot::plot_grid(p1, p2, p3, ncol=1)
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

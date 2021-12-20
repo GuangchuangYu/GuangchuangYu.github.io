@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Bioconductor包的标准安装方法是：
@@ -110,7 +110,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -295,12 +294,12 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>Bioconductor包的标准安装方法是：</p>
-<pre><code>source(&quot;https://bioconductor.org/biocLite.R&quot;)
+<pre tabindex="0"><code>source(&quot;https://bioconductor.org/biocLite.R&quot;)
 biocLite(pkg_name)
 </code></pre><p>这其实是非常不好的，多年以来，一直没有改进，试想一下，bioconductor的网站如果被人黑了，放一段危险的代码，然后你却傻傻地去<code>source</code>它，真的是画面太美！</p>
 <p>Bioconductor终于是想要改变了，往CRAN上扔了一个叫<code>BiocManager</code>的包，以后通过CRAN安装这个包，再通过这个包来安装Bioconductor的包，显得安全多了，也不用大家费辣么多口水说你得先<code>source</code>一段网上的代码，当然这个<code>BiocManager</code>还不成熟，起码还没有在<code>BiocInstaller</code>加载的时候提示大家转而用<code>BiocManager</code>，也没有在Bioconductor的网页上介绍使用它来安装。</p>
 <p>个人的经验嘛，我安装之后，加载出错，认不出我用的Bioconductor版本。</p>
-<pre><code>&gt; require(BiocManager)
+<pre tabindex="0"><code>&gt; require(BiocManager)
 Loading required package: BiocManager
 Error: package or namespace load failed for ‘BiocManager’:
  .onAttach failed in attachNamespace() for 'BiocManager', details:
@@ -309,7 +308,7 @@ Error: package or namespace load failed for ‘BiocManager’:
 </code></pre><p>希望以后会好起来，然而现在你还只能傻傻地去<code>source</code>一段网上的代码。</p>
 <p>今天要告诉大家一个小贴士，让你用<code>install.packages</code>来安装CRAN和Bioconductor所有的包，我最近就这么干，因为我回到广州之后，发现<code>library(BiocInstaller)</code>有些慢，而我是个没耐心的人。</p>
 <p>你要做的很简单，在<code>~/.Rprofile</code>里加入以下两行：</p>
-<pre><code>options(BioC_mirror=&quot;https://mirrors.tuna.tsinghua.edu.cn/bioconductor&quot;)
+<pre tabindex="0"><code>options(BioC_mirror=&quot;https://mirrors.tuna.tsinghua.edu.cn/bioconductor&quot;)
 
 utils::setRepositories(ind=1:2)
 </code></pre><p>第一行，使用国内的镜像，我这里用的是清华大学的，第二行，设定<code>install.packages</code>从CRAN和Bioconductor中搜索包，其实你还可以让它支持比如R-Forge以及各种第三方的仓库。</p>
@@ -412,7 +411,7 @@ utils::setRepositories(ind=1:2)
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

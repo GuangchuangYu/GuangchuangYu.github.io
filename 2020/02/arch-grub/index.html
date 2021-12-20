@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Arch滚起来一时爽，一直滚啊一直爽，上一次滚出问题还是在笔记本上，《记一次搞死linux又医活的经历》。
@@ -120,7 +120,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -318,19 +317,19 @@ if (!doNotTrack) {
 <p>于是那个传说中的<code>rm -rf /</code>，我差不多就是这么干了。全删了之后，我再解压一次，这次的时光机就是干净的了，然后重启。启动不了，因为我把<code>/boot</code>也给干掉了，而这是独立分区，我在打包时光机的时候，没打包<code>/boot</code>，这下子连启动都没有了，尴尬一笑。</p>
 <p>那么就得重新装内核，搞启动了。</p>
 <p>安装内核：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">pacman -S linux
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">pacman -S linux
 pacman -S linux-headers
 </code></pre></div><p>然后是安装grub，然而下面这个代码始终报错，这也是我要写本文的原因，给自己一个记录，不然下次遇到要浪费时间在上面。</p>
-<pre><code>grub-install --efi-directory=/boot --target=x86_64-efi --bootloader-id=boot
+<pre tabindex="0"><code>grub-install --efi-directory=/boot --target=x86_64-efi --bootloader-id=boot
 </code></pre><p>报的错误是，这不是有效的efi系统，无法识别。这里一个神奇的地方在于，要把这个分区挂在<code>/boot</code>下面。</p>
 <p>我把分区挂在<code>/boot/efi</code>。然后再跑：</p>
-<pre><code>grub-install --efi-directory=/boot/efi --target=x86_64-efi --bootloader-id=boot
+<pre tabindex="0"><code>grub-install --efi-directory=/boot/efi --target=x86_64-efi --bootloader-id=boot
 </code></pre><p>就安装成功了。</p>
 <p>当然还需要再拷贝一份：</p>
-<pre><code>cp /boot/efi/EFI/boot/grubx64.efi /boot/efi/EFI/boot/bootx64.efi
+<pre tabindex="0"><code>cp /boot/efi/EFI/boot/grubx64.efi /boot/efi/EFI/boot/bootx64.efi
 </code></pre><p>然后这个EFI分区，在我的<code>/etc/fstab</code>中，其实就是挂在<code>/boot</code>下面。</p>
 <p>在这样的前提下，配置grub才能成功：</p>
-<pre><code>grub-mkconfig -o /boot/grub/grub.cfg
+<pre tabindex="0"><code>grub-mkconfig -o /boot/grub/grub.cfg
 </code></pre><p>然后再启动，还是一样，在进入系统之前，黑了，当然比之前的好一点，按Ctrl-Atl-Del还能重启。</p>
 <p>这还能怎么样呢？因为<code>/boot</code>被不小心干掉，所以不完全时光机了，因为重新装了新版本的内核，鬼知道会不会又有什么版本不兼容的事情发生。那只能一路滚到黑了。</p>
 <p>于是又进入U盘，<code>chroot</code>到硬盘的系统，滚动升级系统。升完重启，系统进去了，死马终于医活了。时隔搞坏系统，已经是十个小时过去了。</p>
@@ -432,7 +431,7 @@ pacman -S linux-headers
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

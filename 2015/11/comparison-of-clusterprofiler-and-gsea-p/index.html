@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Thanks @mevers for raising the issue to me
@@ -146,7 +146,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -367,7 +366,7 @@ clusterProfiler.</p>
 <p>As <a href="https://github.com/mevers">@mevers</a> used <em>c5.cc</em>, I also use it for
 further comparison. I have packed the file into clusterProfiler, so that
 users can use it for testing/practice.</p>
-<pre><code>&gt; gmtfile &lt;- system.file(&quot;extdata&quot;, &quot;c5.cc.v5.0.entrez.gmt&quot;, 
+<pre tabindex="0"><code>&gt; gmtfile &lt;- system.file(&quot;extdata&quot;, &quot;c5.cc.v5.0.entrez.gmt&quot;, 
                          package=&quot;clusterProfiler&quot;)
 ## only 207K.
 ## It's indeed a tiny subset of CC.
@@ -375,7 +374,7 @@ users can use it for testing/practice.</p>
 [1] 207.608
 &gt; c5 &lt;- read.gmt(gmtfile)
 </code></pre><h4 id="hypergeometric-test-with-gmt-annotation">hypergeometric test with GMT annotation</h4>
-<pre><code>&gt; require(clusterProfiler)
+<pre tabindex="0"><code>&gt; require(clusterProfiler)
 &gt; data(geneList, package=&quot;DOSE&quot;)
 &gt; de &lt;- names(geneList)[abs(geneList) &gt; 2]
 &gt; head(de)
@@ -392,7 +391,7 @@ SPINDLE                  7.667674e-12 6.594200e-10 5.327016e-10
 MICROTUBULE_CYTOSKELETON 8.449298e-10 3.633198e-08 2.935019e-08
 CYTOSKELETAL_PART        2.414879e-06 6.623386e-05 5.350593e-05
 </code></pre><h4 id="gene-set-enrichment-analysis-with-gmt-annotation">gene set enrichment analysis with GMT annotation</h4>
-<pre><code>&gt; y &lt;- GSEA(geneList, TERM2GENE=c5)
+<pre tabindex="0"><code>&gt; y &lt;- GSEA(geneList, TERM2GENE=c5)
 &gt; head(summary(y)[, -c(1,2)], 2)
                           setSize enrichmentScore       NES      pvalue
 EXTRACELLULAR_REGION          401      -0.3860230 -1.694322 0.001237624
@@ -404,7 +403,7 @@ EXTRACELLULAR_REGION_PART 0.03047874 0.02316228
 <p>Now with <em>read.gmt</em>, we can compare clusterProfiler and GSEA-P with the
 same input.</p>
 <p>First of all, I export <em>geneList</em> to a <em>rnk</em> file.</p>
-<pre><code>data(geneList, package=&quot;DOSE&quot;)
+<pre tabindex="0"><code>data(geneList, package=&quot;DOSE&quot;)
 d=data.frame(gene=names(geneList), FC=geneList)
 write.table(d, row.names=F,col.names=F, quote=F, file=&quot;geneList.rnk&quot;, sep=&quot;\t&quot;)
 </code></pre><p>And run GSEA-P with the following parameters:</p>
@@ -430,7 +429,7 @@ param   zip_report  false
 param   set_max 500
 </code></pre>
 <p>Re-run clusterProfiler::GSEA with pvalueCutoff=1.</p>
-<pre><code>g &lt;- read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
+<pre tabindex="0"><code>g &lt;- read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
 xx &lt;- GSEA(geneList, TERM2GENE=c5, nPerm=1000, pvalueCutoff=1)
 gy = merge(g, summary(xx), by.x=&quot;NAME&quot;, by.y=&quot;ID&quot;)
 ggplot(gy, aes(NOM.p.val, pvalue)) + geom_point() + xlim(0, 1) + ylim(0, 1)
@@ -468,7 +467,7 @@ both numerator and demoninator. Some software may not accept pvalue=0,
 for example if you want to use topGO to visualize enrichment with GO
 topology, the result can&rsquo;t contain any pvalue=0.</p>
 <h4 id="clusterprofiler-test-whole-gene-set-collections">clusterProfiler test whole gene set collections</h4>
-<pre><code>&gt; g=read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
+<pre tabindex="0"><code>&gt; g=read.delim(&quot;gsea_report_for_na_neg_1445941169480.xls&quot;)
 &gt; dim(g)
 [1] 56 12
 &gt; yy = summary(xx)
@@ -588,7 +587,7 @@ know. :)</p>
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

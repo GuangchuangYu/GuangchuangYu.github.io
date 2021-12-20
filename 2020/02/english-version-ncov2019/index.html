@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="首先你只要用lang=&#39;en&#39;就行。
@@ -112,7 +112,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -297,11 +296,11 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>首先你只要用<code>lang='en'</code>就行。</p>
-<pre><code>require(nCov2019)
+<pre tabindex="0"><code>require(nCov2019)
 x = get_nCov2019(lang='en')
 x[]
 </code></pre><p>用法完全一样，输出为：</p>
-<pre><code>             name confirm suspect dead deadRate showRate  heal healRate showHeal
+<pre tabindex="0"><code>             name confirm suspect dead deadRate showRate  heal healRate showHeal
 1           Hubei   63454       0 2250     3.55    FALSE 13557    21.37     TRUE
 2       Guangdong    1339       0    5     0.37    FALSE   720    53.77     TRUE
 3           Henan    1270       0   19     1.50    FALSE   802    63.15     TRUE
@@ -337,7 +336,7 @@ x[]
 33          Macau      10       0    0     0.00    FALSE     6    60.00     TRUE
 34          Tibet       1       0    0     0.00    FALSE     1   100.00     TRUE
 </code></pre><p>历史数据也是一样，<code>lang=&quot;en&quot;</code>就可以：</p>
-<pre><code>&gt; y &lt;- load_nCov2019(lang='en')
+<pre tabindex="0"><code>&gt; y &lt;- load_nCov2019(lang='en')
 &gt; summary(y, 'Guangdong')
             time  province cum_confirm
 32020-01-25 Guangdong          78
@@ -368,22 +367,22 @@ x[]
 96782020-02-20 Guangdong        1332
 101042020-02-21 Guangdong        1333
 </code></pre><p>画个地图试一下：</p>
-<pre><code>plot(x)
+<pre tabindex="0"><code>plot(x)
 </code></pre><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/en-1.png" alt=""></p>
 <h2 id="翻译">翻译</h2>
 <p>我们提供了<code>trans_province</code>和<code>trans_city</code>两个函数，可以中英文互相翻译，所以如果你需要在别的地方用这翻译功能的话，用这个包就对了。</p>
-<pre><code>&gt; trans_province(c('湖北', '浙江'))
+<pre tabindex="0"><code>&gt; trans_province(c('湖北', '浙江'))
 [1] &quot;Hubei&quot;&quot;Zhejiang&quot;
 </code></pre><p>默认是中文翻英文，但如果你告诉它你的输入是英文的话，它会尝试翻成中文：</p>
-<pre><code>&gt; trans_province(c(&quot;Hubei&quot;, &quot;Guangdong&quot;), lang='en')
+<pre tabindex="0"><code>&gt; trans_province(c(&quot;Hubei&quot;, &quot;Guangdong&quot;), lang='en')
 [1] &quot;湖北&quot;&quot;广东&quot;
 </code></pre><p>另外我还从这两个软件学到一点东西，比如甘孜，翻出来，我就得去查一下，才发现是对的。</p>
-<pre><code>&gt; trans_city('甘孜')
+<pre tabindex="0"><code>&gt; trans_city('甘孜')
 [1] &quot;Garzê&quot;
 </code></pre><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/en-2.png" alt=""></p>
 <h2 id="画地图">画地图</h2>
 <p>如果你使用英文版，又使用英文地图的话，当然没有问题，但问题是如果你只有中文的地图呢？那也容易，把地图翻成英文就行，即使是歪果仁，只有中文的地图，照样用<code>trans_province</code>和<code>trans_city</code>搞定，然后出图。</p>
-<pre><code>require(chinamap)
+<pre tabindex="0"><code>require(chinamap)
 cn = get_map_china()
 
 ## 只需加这一句，翻译一下
@@ -394,7 +393,7 @@ plot(x, region='china', chinamap=cn,
      palette='Blues', font.size=2)
 </code></pre><p><img src="https://gitee.com/GuangchuangYu/blog_images/raw/master/nCov2019/en-3.png" alt=""></p>
 <p>而画市界的，也是照样，只需要翻译一下城市：</p>
-<pre><code>m &lt;- sf::st_read(&quot;../Downloads/市界.shp&quot;)
+<pre tabindex="0"><code>m &lt;- sf::st_read(&quot;../Downloads/市界.shp&quot;)
 map &lt;- tibble::as_tibble(m)
 map$NAME &lt;- trans_city(map$NAME)
 plot(x, region='Hubei', chinamap=map)
@@ -499,7 +498,7 @@ plot(x, region='Hubei', chinamap=map)
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

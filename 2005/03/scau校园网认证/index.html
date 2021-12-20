@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="锐捷认证。非标准的802.1认证。 我采用mystar来认证，但是不会重连。。
@@ -144,7 +144,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -336,14 +335,14 @@ if (!doNotTrack) {
 <p>我装了gentoo。最初尝试用qemu的user-mode来虚拟x86的指令集，再用xrgsu（锐捷linux版认证程序）提供运行所需的libs。最终xrgsu可以运行。但是找不到网卡。后面我就放弃了。</p>
 <p>拉了一个月ADSL，在一次偶然的机会我发现了mystar。mystar是用libnet＋libpcap写的，关键的代码不到200行（libnet和libpcap是平台无关的分组构造发送、分组截获C函数库）<code>mystar</code>是网上一个叫netxray的人写的。
 下面是源码<code>http://bbs.whnet.edu.cn/upload/mystarV0.1-src.zip</code>，解压密码是<code>netxray</code> 解压后:</p>
-<pre><code>cd mystarV0.1 
+<pre tabindex="0"><code>cd mystarV0.1 
 make
 </code></pre><p>编译。</p>
-<pre><code>#修改我的ID跟password。
+<pre tabindex="0"><code>#修改我的ID跟password。
 vim mystar.conf 
 </code></pre><p>使用<code>./mystar</code>运行，并且认证成功!</p>
 <p>随后我发现一个问题，就是不会自动重连，老是会断线。在mystar.conf里面有一段</p>
-<pre><code>#enable intelligent reconnect?
+<pre tabindex="0"><code>#enable intelligent reconnect?
 # 1 means enable, and 0 means disable
 
 intelligentReconnect=1
@@ -351,7 +350,7 @@ intelligentReconnect=1
 <p>这样每次过几分钟我就要<code>^C</code>，再<code>./mystar</code>，很不爽。。于是我决定写个script来实现自动重连。</p>
 <p>一开始我采用一个笨方法。写一个循环让它过三分钟就kill
 mystar，再重新运行。 如下：</p>
-<pre><code>#!/bin/bash
+<pre tabindex="0"><code>#!/bin/bash
 cd ~/mystarV0.1
 while :
 do
@@ -360,7 +359,7 @@ do
     killall mystar
 done
 </code></pre><p>后面我改进了这个脚本。代码如下：</p>
-<pre><code>#!/bin/bash
+<pre tabindex="0"><code>#!/bin/bash
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 cd ~/mystarV0.1
 ./mystar &amp;
@@ -475,7 +474,7 @@ kill掉，并重新运行。</p>
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

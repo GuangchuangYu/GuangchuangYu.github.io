@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -130,7 +130,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -320,19 +319,19 @@ if (!doNotTrack) {
 <p>其实看我公众号的各位读者们，你们不应该有这个问题，如果有，那么证明我的文章没有好好看！有两篇很重要的文章《<a href="http://mp.weixin.qq.com/s/BPY4dPFrrNrDKccMvax07w">扪心自问，meme几何？</a>》和《<a href="http://mp.weixin.qq.com/s/Uhx3l3lKQS88OJ4SHntkNg">树变图，图变树？</a>
 ？》，特别是第二篇，和这个问题息息相关。</p>
 <p>首先假设我们有一个图：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
 p <span style="color:#f92672">=</span> <span style="color:#a6e22e">qplot</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>)
 </code></pre></div><h3 id="为什么在终端打p可以出图">为什么在终端打p可以出图？</h3>
 <p>因为在R里，所有都是对象，而在终端里你输入一个对象回车，R会去找相应的方法去打印出来，如果是S3对象，会去寻找print方法，而如果是S4会去找show方法。</p>
 <p>所以你在终端里打p，其实等同于你打print(p)，它其实调用了ggplot2:::print.ggplot，</p>
 <p>你打plot(p)也可以，如果你看过代码的话，画图这个动作是定义在plot.ggplot方法里的，而</p>
-<pre><code>print.ggplot &lt;- plot.ggplot。
+<pre tabindex="0"><code>print.ggplot &lt;- plot.ggplot。
 </code></pre><h3 id="为什么在循环里就不行">为什么在循环里就不行？</h3>
 <p>很多人认为这是ggplot2的问题，而且这也是一个FAQ了，我也遇到好多人问我，其实这不是ggplot2的问题，如果你认为是ggplot2的问题，你看到的只是皮毛。</p>
 <p>我上面已经说了，是面向对象的问题，所以这是R里普遍的现象，而ggplot2之所以有这个问题，因为返回的不是图，而是对象。</p>
 <p>假设你有一个变量x &lt;- 5，你打x，它会显示5，而如果在循环里呢？</p>
 <p>不信你试试以下两段循环：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>) x
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>) x
 <span style="color:#a6e22e">for </span>(i in <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">3</span>) <span style="color:#a6e22e">print</span>(x)
 </code></pre></div><p>第一段啥都不显示，第二段显示了。在循环里你的x，啥都没干，扔了。</p>
 <p>那么为什么呢？因为在循环里，R不会自做聪明地去打印任何东西，或者做其它任何的操作，除非你让它干。</p>
@@ -441,7 +440,7 @@ p <span style="color:#f92672">=</span> <span style="color:#a6e22e">qplot</span>(
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

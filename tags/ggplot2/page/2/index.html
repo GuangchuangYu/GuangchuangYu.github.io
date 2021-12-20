@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="Guangchuang&#39;s Blog">
@@ -78,7 +78,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -397,7 +396,7 @@ if (!doNotTrack) {
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
       
-        <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
+        <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(ggplot2)
 
 pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::</span>RatPupWeight <span style="color:#f92672">%&gt;%</span> 
     janitor<span style="color:#f92672">::</span><span style="color:#a6e22e">clean_names</span>() <span style="color:#f92672">%&gt;%</span>
@@ -405,7 +404,7 @@ pups <span style="color:#f92672">&lt;-</span> nlme<span style="color:#f92672">::
 
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</span>(pups, <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> litter, y <span style="color:#f92672">=</span> weight, color <span style="color:#f92672">=</span> treatment))
 </code></pre></div><p>针对某一个x值，我们可以画出相应y的统计量，比如均值、方差等，这些都可以“手工”的方式通过图层叠加来实现。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_jitter</span>(shape<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">stat_summary</span>(fun.y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mean&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;point&#34;</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;black&#39;</span>) <span style="color:#f92672">+</span> 
     <span style="color:#a6e22e">stat_summary</span>(fun.data <span style="color:#f92672">=</span> mean_cl_normal, geom<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;errorbar&#34;</span>, width<span style="color:#f92672">=</span><span style="color:#ae81ff">.1</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>)
 </code></pre></div>
@@ -470,7 +469,7 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</s
 <p>其实看我公众号的各位读者们，你们不应该有这个问题，如果有，那么证明我的文章没有好好看！有两篇很重要的文章《<a href="http://mp.weixin.qq.com/s/BPY4dPFrrNrDKccMvax07w">扪心自问，meme几何？</a>》和《<a href="http://mp.weixin.qq.com/s/Uhx3l3lKQS88OJ4SHntkNg">树变图，图变树？</a>
 ？》，特别是第二篇，和这个问题息息相关。</p>
 <p>首先假设我们有一个图：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
 p <span style="color:#f92672">=</span> <span style="color:#a6e22e">qplot</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">10</span>)
 </code></pre></div><h3 id="为什么在终端打p可以出图">为什么在终端打p可以出图？</h3>
 <p>因为在R里，所有都是对象，而在终端里你输入一个对象回车，R会去找相应的方法去打印出来，如果是S3对象，会去寻找print方法，而如果是S4会去找show方法。</p>
@@ -531,7 +530,7 @@ p <span style="color:#f92672">=</span> <span style="color:#a6e22e">qplot</span>(
       
         <p>我在2018年4月份的一条推特文，<a href="https://twitter.com/guangchuangyu/status/988672880551518210">https://twitter.com/guangchuangyu/status/988672880551518210</a>，可以把<code>UpSetR</code>变成<code>ggplot</code>然后可以各种玩，比较我在推特文中所展示的，图上嵌入venn图、使用<code>cowplot</code>拼图等。然而过了大半年，我的<a href="https://github.com/hms-dbmi/UpSetR/pull/112">pull request</a>并没有被作者接收，也就是说这功能还不存在于官方的版本中。</p>
 <p>如果有兴趣的话，应该安装我fork的版本。</p>
-<pre><code>devtools::install_github(&quot;GuangchuangYu/UpSetR&quot;)
+<pre tabindex="0"><code>devtools::install_github(&quot;GuangchuangYu/UpSetR&quot;)
 </code></pre>
       
       <p>
@@ -716,7 +715,7 @@ p <span style="color:#f92672">=</span> <span style="color:#a6e22e">qplot</span>(
         
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

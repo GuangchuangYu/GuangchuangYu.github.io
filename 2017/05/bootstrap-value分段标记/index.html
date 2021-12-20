@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="想要分段标记bootstrap，比如0-70, 70-90, 90-100之类的。这个对于ggtree来说，太简单。
@@ -126,7 +126,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -312,7 +311,7 @@ if (!doNotTrack) {
             <div class="main-content-wrap">
               <p>想要分段标记bootstrap，比如<code>0-70</code>, <code>70-90</code>, <code>90-100</code>之类的。这个对于ggtree来说，太简单。</p>
 <p>首先我们要读树，用<code>treeio</code>的<code>read.newick</code>，它和<code>read.tree</code>的不同之处是，加入了参数<code>node.label</code>，当<code>node.label</code>存的不是<code>label</code>，而是<code>bootstrap</code>等数字型的时候，你可以传入<code>node.label='support'</code>，这样它会把node label解析为support value，另存为树注释数据，而不是和tip label混在一起。label变量只能存为字符型，因为和tip label混了，而字符型会让数字操作稍微复杂点。所以我们要用<code>read.newick</code>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tree <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.newick</span>(<span style="color:#e6db74">&#34;RMI.phy_phyml_tree_rooted_labeled.txt&#34;</span>, node.label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;support&#39;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tree <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.newick</span>(<span style="color:#e6db74">&#34;RMI.phy_phyml_tree_rooted_labeled.txt&#34;</span>, node.label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;support&#39;</span>)
 root <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">getRoot</span>(tree<span style="color:#f92672">@</span>phylo)
 
 p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</span>(tree, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;black&#34;</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">1.5</span>, linetype<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,  ladderize<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>) <span style="color:#f92672">+</span> 
@@ -321,13 +320,13 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</s
 </code></pre></div><p>首先用ggtree画出树的结构，用ggtitle加title，用geom_tiplab加tip label，出图如下：</p>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/640.jpg" alt=""></p>
 <p>然后我们就可以用geom_point2来打点了，我们要指定只打内部节点，但不打root node，因为root和外部节点都是没有值的。然后这个support值是数字型，我们想按区间分段，这太容易，用cut来切就可以了。这里的值是做了1000次的bootstrap。于是得到下面的图：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">&lt;-</span> p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point2</span>(<span style="color:#a6e22e">aes</span>(subset<span style="color:#f92672">=!</span>isTip <span style="color:#f92672">&amp;</span> node <span style="color:#f92672">!=</span> root, 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">&lt;-</span> p <span style="color:#f92672">+</span> <span style="color:#a6e22e">geom_point2</span>(<span style="color:#a6e22e">aes</span>(subset<span style="color:#f92672">=!</span>isTip <span style="color:#f92672">&amp;</span> node <span style="color:#f92672">!=</span> root, 
                          fill<span style="color:#f92672">=</span><span style="color:#a6e22e">cut</span>(support, <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">700</span>, <span style="color:#ae81ff">900</span>, <span style="color:#ae81ff">1000</span>))), 
                      shape<span style="color:#f92672">=</span><span style="color:#ae81ff">21</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>) <span style="color:#f92672">+</span> 
         <span style="color:#a6e22e">theme_tree</span>(legend.position<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">0.3</span>))
 </code></pre></div><p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/641.jpg" alt=""></p>
 <p>已然是近乎完美，但我们仍需要修图，想用简单的颜色来填充，低值用白色，中间值用灰色，而高值用黑色。 label想除以1000，换成百分比，legend的名字想换成bootstrap百分值，legend的label想到数学公式表达区间，这些都可以在scale_fill_manual中实现：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_fill_manual</span>(values<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;white&#34;</span>, <span style="color:#e6db74">&#34;grey&#34;</span>, <span style="color:#e6db74">&#34;black&#34;</span>), 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">p <span style="color:#f92672">+</span> <span style="color:#a6e22e">scale_fill_manual</span>(values<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;white&#34;</span>, <span style="color:#e6db74">&#34;grey&#34;</span>, <span style="color:#e6db74">&#34;black&#34;</span>), 
                       guide<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;legend&#39;</span>, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Bootstrap Percentage(BP)&#39;</span>, 
                       breaks<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;(900,1e+03]&#39;</span>, <span style="color:#e6db74">&#39;(700,900]&#39;</span>, <span style="color:#e6db74">&#39;(0,700]&#39;</span>), 
                       labels<span style="color:#f92672">=</span><span style="color:#a6e22e">expression</span>(BP<span style="color:#f92672">&gt;=</span><span style="color:#ae81ff">90</span>,<span style="color:#ae81ff">70</span> <span style="color:#f92672">&lt;=</span> BP <span style="color:#f92672">*</span> <span style="color:#e6db74">&#34; &lt; 90&#34;</span>, BP <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">70</span>))
@@ -430,7 +429,7 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggtree</s
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

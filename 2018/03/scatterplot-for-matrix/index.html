@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -194,7 +194,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -415,7 +414,7 @@ require(tidyr)
 td &lt;- gather(dd,seq2, dist, -seq1)
 </code></pre>
 <p>这里宽变长，这种tidy格式适合于我们用<code>ggplot2</code>可视化。</p>
-<pre><code>&gt; td
+<pre tabindex="0"><code>&gt; td
 # A tibble: 5,776 x 3
    seq1                          seq2                             dist
    &lt;fct&gt;                         &lt;chr&gt;                           &lt;dbl&gt;
@@ -450,7 +449,7 @@ td$seq1 = factor(td$seq1, levels=rev(lv))
 </code></pre>
 <p>我们排序后，重新画，会发现规律就出来了，其实你如果是单纯要画这个图，用聚类算法来排个序，也能出来挺好的效果，如果减少了颜色的数目，如我前面所说，规律应该更加清楚。当然我这个演示的，没有用户提问的图那么清楚漂亮，你知道原因吗？因为我这颗树的树型是梯子状的，而用户的那颗树是平衡的。可以说不看树，从这个矩阵点图，我们也可以大致猜出来树的形状！</p>
 <pre><code>p2 &lt;- ggplot(td, aes(dist, as.numeric(seq1), group=seq2, color=seq2)) + 
-    geom_point() + geom_line() + theme(legend.position=&quot;none&quot;)
+	geom_point() + geom_line() + theme(legend.position=&quot;none&quot;)
 </code></pre>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/align_tree_pairwise_dist_files/figure-markdown_strict/unnamed-chunk-1-2.png" alt=""></p>
 <p>好了，最后是拼图，用<code>cowplot</code>，要使用<code>align=&quot;h&quot;</code>参数，好对齐，<code>ggtree</code>画的图，y轴是数字型的，这也是为什么我在生成<code>p2</code>的时候，要使用<code>as.numeric(seq1)</code>把y轴变为数字型，大家都是数字型的，好对齐。</p>
@@ -573,7 +572,7 @@ plot_grid(p, p2, align=&quot;h&quot;, rel_widths=c(1, .8))
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

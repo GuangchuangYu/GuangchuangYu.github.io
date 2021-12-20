@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="小伙伴发来这个文章中的图，想要实现类似的图，用变量给axis text上色，并生成legend：
@@ -154,7 +154,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -344,7 +343,7 @@ if (!doNotTrack) {
 <p>![](<a href="https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot">https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot</a> 2017-07-04 14.10.55.png)</p>
 <p>这个可以说ggplot2是不支持的，aes映射不会被应用于axis上，而theme也不支持aes映射，你只能自己手动搞个color vector传给theme来上色，但这无法生成legend。</p>
 <p>我只能打开脑洞，legend借助于额外的图层来生成，但这个额外的图层又不是我们想要在图形上展示的，这又是个无米之炊，我能想到的就是让图层透明，实际有，但你看不到，当然这样自动生成的legend也会看不到，但legend可以后面再修改，于是这不支持的事情，就通过变通变得可能：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggplot2)
 
 <span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">2017-07-04</span>)
 d <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(x <span style="color:#f92672">=</span> <span style="color:#66d9ef">letters</span>[1<span style="color:#f92672">:</span><span style="color:#ae81ff">5</span>], y <span style="color:#f92672">=</span> <span style="color:#a6e22e">rnorm</span>(<span style="color:#ae81ff">5</span>), 
@@ -364,15 +363,15 @@ p <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ggplot</s
 <li>colors：上什么色</li>
 <li>mapping：用什么变量来生成legend</li>
 <li>fake_aes: 用什么假aes来生成legend，这个假aes是你传入的p里没用过的</li>
-<li>axis:给哪个axis上色，可以是&rsquo;x&rsquo;,&lsquo;y'或&rsquo;xy&rsquo;</li>
+<li>axis:给哪个axis上色，可以是&rsquo;x',&lsquo;y&rsquo;或&rsquo;xy&rsquo;</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(yyplot)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(yyplot)
 
 cols <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(A <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;red&#34;</span>, B <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;blue&#34;</span>)
 p2 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">set_axis_text_color</span>(p, colors<span style="color:#f92672">=</span>cols,
 		mapping<span style="color:#f92672">=~</span>type, fake_aes<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;color&#39;</span>, axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x&#34;</span>)
 </code></pre></div><p>最后再把输入的表格也画在图上，用<code>grid::tableGrob</code>来画，用<code>ggimage::geom_subview</code>来嵌图，三张图组合起来：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggimage)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(ggimage)
 <span style="color:#a6e22e">require</span>(gridExtra)
 
 p3 <span style="color:#f92672">&lt;-</span> p2 <span style="color:#f92672">+</span> 
@@ -490,7 +489,7 @@ p3 <span style="color:#f92672">&lt;-</span> p2 <span style="color:#f92672">+</sp
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

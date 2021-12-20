@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="最近人民日报新媒体发布的「新冠肺炎全球疫情形势」图，很多人想重复，但画不出来。这其实是几行代码的事情而已。
@@ -106,7 +106,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -295,12 +294,12 @@ if (!doNotTrack) {
 <p>这个图确诊数是取过对数，这一点容易，而颜色的映射，也是取对数的，不然的话，前三是红的，其它全绿了。然后标国家和确诊数目，字体还要旋转相应的角度，这一点可能是最难的。当然细节上还有一点，就是中间还要空一个白洞​。​如果你知道怎么加白洞，那么加两圈淡淡的圈也容易了。​</p>
 <p>首先我们用<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247488896&amp;idx=1&amp;sn=25e9a7ab2fd81b97052c5941cd0c0c4b&amp;chksm=ec43a4c7db342dd1b417f5c75204ad104dcae252982e9685f8b2d7fab7bccb70d5f83fbeaf69&amp;token=948980768&amp;lang=zh_CN#rd">nCov2019包中的全球历史数据</a>，两三行代码就能拿到。</p>
 <h2 id="海外新冠数据">海外新冠数据</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(nCov2019)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(nCov2019)
 y <span style="color:#f92672">=</span> <span style="color:#a6e22e">load_nCov2019</span>(lang<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;zh&#39;</span>)
 d <span style="color:#f92672">=</span> y[<span style="color:#e6db74">&#39;global&#39;</span>]
 </code></pre></div><h2 id="过滤数据">过滤数据</h2>
 <p>过滤一下，只拿上一天的数据，并排除中国，只留海外数据，然后这里又进一步过滤，只保留海外前40的数据。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(dplyr)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">require</span>(dplyr)
 dd <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">filter</span>(d, time <span style="color:#f92672">==</span> <span style="color:#a6e22e">time</span>(y) <span style="color:#f92672">&amp;</span> country <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;中国&#39;</span>) <span style="color:#f92672">%&gt;%</span> 
     <span style="color:#a6e22e">arrange</span>(<span style="color:#a6e22e">desc</span>(cum_confirm)) 
 
@@ -308,7 +307,7 @@ dd <span style="color:#f92672">=</span> dd[1<span style="color:#f92672">:</span>
 dd<span style="color:#f92672">$</span>country <span style="color:#f92672">=</span> <span style="color:#a6e22e">factor</span>(dd<span style="color:#f92672">$</span>country, levels<span style="color:#f92672">=</span>dd<span style="color:#f92672">$</span>country)
 </code></pre></div><h2 id="画图">画图</h2>
 <p>最后一步，是画图。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">
 dd<span style="color:#f92672">$</span>angle <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">40</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">360</span><span style="color:#f92672">/</span><span style="color:#ae81ff">40</span>
 i <span style="color:#f92672">=</span> dd<span style="color:#f92672">$</span>angle <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">90</span> <span style="color:#f92672">&amp;</span> dd<span style="color:#f92672">$</span>confirm <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">100</span>
 dd<span style="color:#f92672">$</span>angle[i] <span style="color:#f92672">=</span> dd<span style="color:#f92672">$</span>angle[i] <span style="color:#f92672">+</span> <span style="color:#ae81ff">180</span>
@@ -436,7 +435,7 @@ ggplotify<span style="color:#f92672">::</span><span style="color:#a6e22e">as.ggp
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="周日是港大医学院的198届毕业典礼，Y叔要去参加，今年也正好是医学院130周年，做为画图界的传说，我决定画一个蛋糕。
@@ -100,7 +100,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -286,16 +285,16 @@ if (!doNotTrack) {
             <div class="main-content-wrap">
               <p>周日是港大医学院的198届毕业典礼，Y叔要去参加，今年也正好是医学院130周年，做为画图界的传说，我决定画一个蛋糕。</p>
 <p>要画蛋糕，这有何难，我们有<code>emojifont</code>啊，还记得《<a href="http://mp.weixin.qq.com/s/ARxyTRpMs6OeCqOQPp9OwA">emojifont新功能（有视频哦）</a>》一文中的<code>geom_emoji</code>图层吗？</p>
-<pre><code>require(emojifont)
+<pre tabindex="0"><code>require(emojifont)
 ggplot() + geom_emoji('cake')
 </code></pre><p>蛋糕上还有草莓，好想咬一口吧？请看蛋糕的眼神～</p>
 <p><img src="http://guangchuangyu.github.io/blog_images/R/emojifont/cake.png" alt=""></p>
 <p>圣诞节就要来了，你该知道怎么画一颗圣诞树了，到时候可以装逼了。</p>
-<pre><code>ggplot() + geom_emoji('christmas_tree')
+<pre tabindex="0"><code>ggplot() + geom_emoji('christmas_tree')
 </code></pre><hr>
 <p>当然用我的emojifont包，画的是emoji，不是本事！没有诚意！这世道不来个手工制作都不显得上档次。</p>
 <p>画蛋糕无非是搞些椭圆和线条来拼，再者是矩形和菱形来拼凑个蜡烛。这个当然是用grid来写grob对象咯，然后再拼grob对象成为一个新的对象cakeCandleGrob：</p>
-<pre><code>require(grid)
+<pre tabindex="0"><code>require(grid)
 require(gridExtra)
 require(yyplot)
 
@@ -305,7 +304,7 @@ grid.arrange(grobs=gList(cake1, cake2), ncol=2)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/ggcake2.jpg" alt=""></p>
 <p>这个cakeCandleGrob对象虽然是打了一组王八拳，用多个对象组合起来的，但它自己就是一个实实在在的对象，我们可以不断提高姿（chou）势（xiang）水平，最后大家看到的却是一套少林长拳。</p>
 <p>我们来封装一下，变成一个ggplot2图层，这里我写一个geom_cake的图层。然后我们拿它来画散点图：</p>
-<pre><code>require(ggplot2)
+<pre tabindex="0"><code>require(ggplot2)
 
 t &lt;- seq(0,2*pi, by=0.2)
 x &lt;- 16*sin(t)^3
@@ -316,7 +315,7 @@ ggplot(d, aes(x, y)) + geom_cake()
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/ggcake_ggimage.png" alt=""></p>
 <p>当你分类太多，不够形状来区分的时候，不要怪别人，要怪自己不会造形状，这里蛋糕就是个形状有点奇怪的点，各种形状你都可以自己造。</p>
 <p>我们还可以映射不同的颜色，不同的大小。</p>
-<pre><code>d$color.cake = sample(colorspace::rainbow_hcl(5), nrow(d), replace=T)
+<pre tabindex="0"><code>d$color.cake = sample(colorspace::rainbow_hcl(5), nrow(d), replace=T)
 d$color.candle = sample(rainbow(5), nrow(d), replace=T)
 ggplot(d, aes(x, y)) + 
 	geom_cake(aes(color.cake=color.cake, 
@@ -324,7 +323,7 @@ ggplot(d, aes(x, y)) +
 	          size=.2)
 </code></pre><p><img src="http://guangchuangyu.github.io/blog_images/R/yyplot/color_cake.png" alt=""></p>
 <p>蜡烛的火也是可以设置的，这里再画一个，把它和蛋糕设为一样的颜色。做为一个实实在在的对象，我们除了指定位置来画，画多大之外，还可以随意旋转，这就是抽象的魔力，我们拥有了更牛逼的表达力。</p>
-<pre><code>d$color.cake = sample(colorspace::rainbow_hcl(5), nrow(d), replace=T)
+<pre tabindex="0"><code>d$color.cake = sample(colorspace::rainbow_hcl(5), nrow(d), replace=T)
 d$color.candle = sample(rainbow(5), nrow(d), replace=T)
 d$size = runif(nrow(d), 0.05, 0.2)
 d$angle = runif(nrow(d), -360, 360)
@@ -435,7 +434,7 @@ ggplot(d, aes(x, y)) +
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

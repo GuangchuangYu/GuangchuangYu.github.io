@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="今天以ggplot2的一个坑来说一下，坑无处不在，防不胜防，你大可以试一下下面的代码：
@@ -130,7 +130,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -315,7 +314,7 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               <p>今天以ggplot2的一个坑来说一下，坑无处不在，防不胜防，你大可以试一下下面的代码：</p>
-<pre><code>&gt; set.seed(123)
+<pre tabindex="0"><code>&gt; set.seed(123)
 &gt; require(ggplot2)
 Loading required package: ggplot2
 &gt; rnorm(3)
@@ -324,7 +323,7 @@ Loading required package: ggplot2
 &gt; rnorm(3)
 [1] -0.5604756 -0.2301775  1.5587083
 </code></pre><p>在两次set.seed和rnorm之间，第一次因为加载了ggplot2，结果就不一样了！这必须是第二次是正确答案，也就是说加载ggplot2把你的seed给吃了！加载包会改变R环境？这绝对不是好主意，我们来试试加载别的包试试，比如我的clusterProfiler:</p>
-<pre><code>&gt; set.seed(123)
+<pre tabindex="0"><code>&gt; set.seed(123)
 &gt; require(clusterProfiler)
 Loading required package: clusterProfiler
 Loading required package: DOSE
@@ -343,7 +342,7 @@ Guangchuang Yu., Li-Gen Wang, Yanyan Han, Qing-Yu He. clusterProfiler: an R pack
 </code></pre><p>显然并不影响！这才是正确的打开方式。而这种雷，你不小心踩了，都不知道在那里死的！</p>
 <p>我们来看看代码：</p>
 <p><a href="https://github.com/tidyverse/ggplot2/blob/master/R/zzz.r">https://github.com/tidyverse/ggplot2/blob/master/R/zzz.r</a></p>
-<pre><code>.onAttach &lt;- function(...) {
+<pre tabindex="0"><code>.onAttach &lt;- function(...) {
   if (!interactive() || stats::runif(1) &gt; 0.1) return()
 
   tips &lt;- c(
@@ -359,7 +358,7 @@ Guangchuang Yu., Li-Gen Wang, Yanyan Han, Qing-Yu He. clusterProfiler: an R pack
   packageStartupMessage(paste(strwrap(tip), collapse = &quot;\n&quot;))
 }
 </code></pre><p>因为你加载包的时候，hadley用了sample，也就是说你的seed，被加载时候的sample指令给用掉了。这个坑，就在两天前被Jim Hester给修复了，用了<code>withr::with_preserve_seed</code>，这个坑存在了两年多啊！</p>
-<pre><code>.onAttach &lt;- function(...) {
+<pre tabindex="0"><code>.onAttach &lt;- function(...) {
   withr::with_preserve_seed({
     if (!interactive() || stats::runif(1) &gt; 0.1) return()
 
@@ -500,7 +499,7 @@ Guangchuang Yu., Li-Gen Wang, Yanyan Han, Qing-Yu He. clusterProfiler: an R pack
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

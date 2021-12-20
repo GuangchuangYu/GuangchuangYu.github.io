@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="ggtree provides gheatmap for visualizing heatmap and msaplot for visualizing multiple sequence alignment with phylogenetic tree.
@@ -114,7 +114,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -311,8 +310,8 @@ p &lt;- ggtree(tr)
 d1 &lt;- data.frame(id=tr$tip.label, location=sample(c(&ldquo;GZ&rdquo;, &ldquo;HK&rdquo;, &ldquo;CZ&rdquo;), 30, replace=TRUE))
 p1 &lt;- p %&lt;+% d1 + geom_tippoint(aes(color=location))
 d2 &lt;- data.frame(id=tr$tip.label, val=rnorm(30, sd=3))
-p2 &lt;- facet_plot(p1, panel=&quot;dot&rdquo;, data=d2, geom=geom_point, 
-aes(x=val), color='firebrick&rsquo;) + theme_tree2()</p>
+p2 &lt;- facet_plot(p1, panel=&ldquo;dot&rdquo;, data=d2, geom=geom_point, 
+aes(x=val), color=&lsquo;firebrick&rsquo;) + theme_tree2()</p>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_dot2.png" alt=""></p>
 <p>Most of the <code>geom</code> in <code>ggplot2</code> draw vertical graph object, while for associating graph object with phylogenetic tree, we need horizontal versions. Luckily, we have <a href="https://github.com/lionel-/ggstance">ggstance</a> which provides horizontal versions of <code>geoms</code>, including:</p>
 <ul>
@@ -328,20 +327,20 @@ aes(x=val), color='firebrick&rsquo;) + theme_tree2()</p>
 <p>With <code>ggstance</code>, we can associate <code>barplot</code>, <code>boxplot</code> or other graphs to phylogenetic trees.</p>
 <pre><code>library(ggstance)
 d3 &lt;- data.frame(id = rep(tr$tip.label, each=2),
-                    value = abs(rnorm(60, mean=100, sd=50)),
-                    category = rep(LETTERS[1:2], 30))
+					value = abs(rnorm(60, mean=100, sd=50)),
+					category = rep(LETTERS[1:2], 30))
 p3 &lt;- facet_plot(p2, panel = 'Stacked Barplot', data = d3, 
-                geom = geom_barh, 
-                mapping = aes(x = value, fill = as.factor(category)), 
-                stat='identity' ) 
+				geom = geom_barh, 
+				mapping = aes(x = value, fill = as.factor(category)), 
+				stat='identity' ) 
 </code></pre>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_bar2.png" alt=""></p>
 <pre><code>d4 = data.frame(id=rep(tr$tip.label, each=20), 
-                val=as.vector(sapply(1:30, function(i) 
-                                rnorm(20, mean=i)))
-                )				
+				val=as.vector(sapply(1:30, function(i) 
+								rnorm(20, mean=i)))
+				)				
 p4 &lt;- facet_plot(p3, panel=&quot;Boxplot&quot;, data=d4, geom_boxploth, 
-            mapping = aes(x=val, group=label, color=location))									
+			mapping = aes(x=val, group=label, color=location))									
 </code></pre>
 <p><img src="https://guangchuangyu.github.io/blog_images/Bioconductor/ggtree/facet_plot_boxplot2.png" alt=""></p>
 <h2 id="citation">Citation</h2>
@@ -449,7 +448,7 @@ p4 &lt;- facet_plot(p3, panel=&quot;Boxplot&quot;, data=d4, geom_boxploth,
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

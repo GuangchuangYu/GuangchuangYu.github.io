@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="
@@ -202,7 +202,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -416,7 +415,7 @@ if (!doNotTrack) {
 <p>最近clusterProfiler用户的问题，这个问题还蛮普遍。这个我在《<a href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&amp;mid=2247484414&amp;idx=1&amp;sn=096f758f04f875e25c333c345f530742&amp;chksm=ec43b2b9db343baf4e2a8640f48e7e72b3ef1b057c91c68905debb2bb54e5d2fdda62438628a#rd">why clusterProfiler fails</a>》中也有谈到，并不是能出结果就是好的。没有结果也是一种结果。</p>
 <p>这里首先他用了<code>universe = universe.ENSEMBLID</code>，而报错信息又是<code>No gene set have size &gt; 10 ...</code>，可以看出他来当背景的基因集应该比较小，而<code>enrichGO</code>默认只[10，500]区间的基因集，太小和太大的基因集，通常意义不大，而且也容易给出很小的p值。当然这个参数是可以调的，你可以用全集，或者自己设置大小。</p>
 <p>他在信中并没有给出<code>universe.ENSEMBLID</code>，而只是给了<code>gene.df</code>给我，如果没有设定<code>universe</code>的情况下，是可以跑出结果的：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> go.bp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">enrichGO</span>(gene <span style="color:#f92672">=</span> gene.df<span style="color:#f92672">$</span>ENSEMBL, 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">&gt;</span> go.bp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">enrichGO</span>(gene <span style="color:#f92672">=</span> gene.df<span style="color:#f92672">$</span>ENSEMBL, 
            keytype <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ENSEMBL&#39;</span>, 
            OrgDb <span style="color:#f92672">=</span> org.Ce.eg.db, 
            ont <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;BP&#39;</span>, 
@@ -427,15 +426,15 @@ if (!doNotTrack) {
 
 <span style="color:#f92672">&gt;</span>
 <span style="color:#f92672">&gt;</span> go.bp
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># over-representation test</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e">#...@organism      Caenorhabditis elegans</span>
-<span style="color:#75715e">#...@ontology      BP</span>
-<span style="color:#75715e">#...@keytype      ENSEMBL</span>
-<span style="color:#75715e">#...@gene      chr [1:101] &#34;WBGene00013475&#34; &#34;WBGene00002198&#34; &#34;WBGene00004395&#34; ...</span>
-<span style="color:#75715e">#...pvalues adjusted by &#39;BH&#39; with cutoff &lt;0.01</span>
-<span style="color:#75715e">#...23 enriched terms found</span>
+<span style="color:#75715e">#</span>
+<span style="color:#75715e"># over-representation test</span>
+<span style="color:#75715e">#</span>
+<span style="color:#75715e">#...@organism      Caenorhabditis elegans</span>
+<span style="color:#75715e">#...@ontology      BP</span>
+<span style="color:#75715e">#...@keytype      ENSEMBL</span>
+<span style="color:#75715e">#...@gene      chr [1:101] &#34;WBGene00013475&#34; &#34;WBGene00002198&#34; &#34;WBGene00004395&#34; ...</span>
+<span style="color:#75715e">#...pvalues adjusted by &#39;BH&#39; with cutoff &lt;0.01</span>
+<span style="color:#75715e">#...23 enriched terms found</span>
 <span style="color:#e6db74">&#39;data.frame&#39;</span><span style="color:#f92672">:</span>    <span style="color:#ae81ff">23</span> obs. of  <span style="color:#ae81ff">9</span> variables<span style="color:#f92672">:</span>
  <span style="color:#f92672">$</span> ID         <span style="color:#f92672">:</span> chr  <span style="color:#e6db74">&#34;GO:0018193&#34;</span> <span style="color:#e6db74">&#34;GO:0008360&#34;</span> <span style="color:#e6db74">&#34;GO:0018105&#34;</span> <span style="color:#e6db74">&#34;GO:0018209&#34;</span> <span style="color:#66d9ef">...</span>
  <span style="color:#f92672">$</span> Description<span style="color:#f92672">:</span> chr  <span style="color:#e6db74">&#34;peptidyl-amino acid modification&#34;</span> <span style="color:#e6db74">&#34;regulation of cell shape&#34;</span> <span style="color:#e6db74">&#34;peptidyl-serine phosphorylation&#34;</span> <span style="color:#e6db74">&#34;peptidyl-serine modification&#34;</span> <span style="color:#66d9ef">...</span>
@@ -446,7 +445,7 @@ if (!doNotTrack) {
  <span style="color:#f92672">$</span> qvalue     <span style="color:#f92672">:</span> num  <span style="color:#ae81ff">6.35e-106</span> <span style="color:#ae81ff">5.23e-90</span> <span style="color:#ae81ff">1.04e-79</span> <span style="color:#ae81ff">1.23e-79</span> <span style="color:#ae81ff">6.32e-76</span> <span style="color:#66d9ef">...</span>
  <span style="color:#f92672">$</span> geneID     <span style="color:#f92672">:</span> chr  <span style="color:#e6db74">&#34;Y69E1A.3/kin-14/rol-3/C35E7.10/kin-5/Y116A8C.24/F59A3.8/F26E4.5/spe-8/C25A8.5/T21G5.1/F57B9.8/T25B9.5/W01B6.5/k&#34;</span><span style="color:#f92672">|</span> __truncated__ <span style="color:#e6db74">&#34;ZK507.3/K09C6.8/C09D4.3/R13H9.5/C56C10.6/Y65B4A.9/D2045.5/C39H7.1/B0218.5/ttbk-2/T05A7.6/M04F3.3/Y39G8C.2/K09E4&#34;</span><span style="color:#f92672">|</span> __truncated__ <span style="color:#e6db74">&#34;Y39G8B.5/ZK507.3/K09C6.8/C09D4.3/R13H9.5/C56C10.6/Y65B4A.9/D2045.5/C39H7.1/B0218.5/ttbk-2/T05A7.6/M04F3.3/Y39G8&#34;</span><span style="color:#f92672">|</span> __truncated__ <span style="color:#e6db74">&#34;Y39G8B.5/ZK507.3/K09C6.8/C09D4.3/R13H9.5/C56C10.6/Y65B4A.9/D2045.5/C39H7.1/B0218.5/ttbk-2/T05A7.6/M04F3.3/Y39G8&#34;</span><span style="color:#f92672">|</span> __truncated__ <span style="color:#66d9ef">...</span>
  <span style="color:#f92672">$</span> Count      <span style="color:#f92672">:</span> int  <span style="color:#ae81ff">85</span> <span style="color:#ae81ff">55</span> <span style="color:#ae81ff">56</span> <span style="color:#ae81ff">56</span> <span style="color:#ae81ff">55</span> <span style="color:#ae81ff">56</span> <span style="color:#ae81ff">55</span> <span style="color:#ae81ff">55</span> <span style="color:#ae81ff">24</span> <span style="color:#ae81ff">29</span> <span style="color:#66d9ef">...</span>
-<span style="color:#75715e">#...Citation</span>
+<span style="color:#75715e">#...Citation</span>
   Guangchuang Yu, Li<span style="color:#f92672">-</span>Gen Wang, Yanyan Han and Qing<span style="color:#f92672">-</span>Yu He.
   clusterProfiler<span style="color:#f92672">:</span> an R package for comparing biological themes among
   gene clusters. OMICS<span style="color:#f92672">:</span> A Journal of Integrative Biology
@@ -577,7 +576,7 @@ if (!doNotTrack) {
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

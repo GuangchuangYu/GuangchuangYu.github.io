@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="generator" content="Hugo 0.89.4 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Guangchuang Yu">
 <meta name="keywords" content="">
 <meta name="description" content="生物狗喜欢画barplot，但毕竟只有均值和标准误差信息量太低，万一有outliers呢？万一不是正态分布呢？所以就吐槽了又吐槽，但大家还是乐此不疲，因为大家都在用，因为很多人只会画barplot，所以产生各种反barplot运动，并呼吁大家使用boxplot，boxplot有四分位数的统计量，可以反应outlier和数据的分布，比barplot高得多了。
@@ -100,7 +100,6 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
     
     
   </head>
@@ -302,7 +301,7 @@ if (!doNotTrack) {
 <li><a href="https://mp.weixin.qq.com/s/8kqTVSDjuHpivGaim6ukNg">画个小圈圈</a></li>
 </ul>
 <h3 id="violin--boxplot--raw-data">violin + boxplot + raw data</h3>
-<pre><code>require(ggplot2)
+<pre tabindex="0"><code>require(ggplot2)
 ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_violin(alpha=.5) +
     geom_boxplot(width=.1) +
@@ -310,7 +309,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b1.png" alt=""></p>
 <h3 id="violin--mean-sd--raw-data">violin + mean+-sd + raw data</h3>
 <p>统计量不一定要用boxplot来展示四分位数，你也可以是均值+-标准误差的方式，这样相当于你把barplot的信息也放进去了，所以说单纯barplot有多弱鸡。当然统计量也不限于此，有合适的都可以放进去。无非是拼图层，这也是图形语法的灵活所在，封装失去了自由组合的灵活性。</p>
-<pre><code>require(dplyr)
+<pre tabindex="0"><code>require(dplyr)
 d &lt;- group_by(iris, Species) %&gt;%
     summarize(mean = mean(Petal.Length),
               sd = sd(Petal.Length))
@@ -321,7 +320,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_pointrange(aes(y=mean, ymin=mean-sd, ymax=mean+sd, color=Species), data=d, size=2) 
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b2.png" alt=""></p>
 <h3 id="云雨图1加上均值和标准误差">云雨图1：加上均值和标准误差。</h3>
-<pre><code>library(gghalves)
+<pre tabindex="0"><code>library(gghalves)
 
 
 ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
@@ -333,7 +332,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     theme(legend.position=&quot;bottom&quot;)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b3.png" alt=""></p>
 <h3 id="云雨图2加上boxplot">云雨图2：加上boxplot</h3>
-<pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
+<pre tabindex="0"><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_half_violin(position=position_nudge(x=.3), side=2) +
     geom_jitter(aes(color=Species), width=.15) +
     geom_boxplot(width=.1, position=position_nudge(x=.22)) +
@@ -341,7 +340,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     theme(legend.position=&quot;bottom&quot;)
 </code></pre><p><img src="https://guangchuangyu.github.io/blog_images/R/gglayer/b4.png" alt=""></p>
 <h3 id="云雨图3用堆叠的点图当雨点">云雨图3：用堆叠的点图当雨点</h3>
-<pre><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
+<pre tabindex="0"><code>ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
     geom_half_violin(position=position_nudge(x=.2), side=2) +
     geom_dotplot(binaxis=&quot;y&quot;, stackdir=&quot;down&quot;, dotsize=.35) +
     geom_boxplot(width=.1, position=position_nudge(x=.1)) +
@@ -447,7 +446,7 @@ ggplot(iris, aes(Species, Petal.Length, fill=Species))  +
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Guangchuang Yu. All Rights Reserved
+    &copy; 2021 Guangchuang Yu. All Rights Reserved
   </span>
 </footer>
 

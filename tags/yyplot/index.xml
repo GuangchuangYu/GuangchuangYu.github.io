@@ -6,11 +6,7 @@
     <description>Recent content in yyplot on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 23 Apr 2018 19:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://guangchuangyu.github.io/tags/yyplot/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 23 Apr 2018 19:00:00 +0800</lastBuildDate><atom:link href="https://guangchuangyu.github.io/tags/yyplot/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用ggplot2画维恩图</title>
       <link>https://guangchuangyu.github.io/2018/04/ggvenn/</link>
@@ -76,7 +72,7 @@
 &lt;p&gt;![](&lt;a href=&#34;https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot&#34;&gt;https://guangchuangyu.github.io/blog_images/R/ggplot2/Screenshot&lt;/a&gt; 2017-07-04 14.10.55.png)&lt;/p&gt;
 &lt;p&gt;这个可以说ggplot2是不支持的，aes映射不会被应用于axis上，而theme也不支持aes映射，你只能自己手动搞个color vector传给theme来上色，但这无法生成legend。&lt;/p&gt;
 &lt;p&gt;我只能打开脑洞，legend借助于额外的图层来生成，但这个额外的图层又不是我们想要在图形上展示的，这又是个无米之炊，我能想到的就是让图层透明，实际有，但你看不到，当然这样自动生成的legend也会看不到，但legend可以后面再修改，于是这不支持的事情，就通过变通变得可能：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(ggplot2)
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;require&lt;/span&gt;(ggplot2)
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;set.seed&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;2017-07-04&lt;/span&gt;)
 d &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;letters&lt;/span&gt;[1&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;], y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rnorm&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;), 
@@ -98,7 +94,7 @@ p &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span styl
       <description>&lt;p&gt;最近公众号「生信媛」和「生信宝典」的小伙伴在说ggplot2无法一次性设置所有字体，&lt;code&gt;theme&lt;/code&gt;只能设置axis text, title这些，而搞不了&lt;code&gt;geom_text&lt;/code&gt;，&lt;code&gt;geom_text&lt;/code&gt;必须要手工输入&lt;code&gt;family=XXX&lt;/code&gt;来设置，因为不能使用&lt;code&gt;theme&lt;/code&gt;来更换，也就是说没办法通过后处理来设定，比较麻烦。&lt;/p&gt;
 &lt;p&gt;这显然是不对的，后处理必须可以的，一次性满足所有愿望也只是因为没人写个神奇的函数而已。于是我就动手写了个&lt;code&gt;set_font&lt;/code&gt;的函数。&lt;/p&gt;
 &lt;p&gt;假设我们有下图：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(ggplot2)
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(ggplot2)
 d &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(x&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;rnorm&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;), y&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;rnorm&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;), lab&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;LETTERS&lt;/span&gt;[1&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;])
 p &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(d, &lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(x, y)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
     &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;lab, color&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;lab), size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 

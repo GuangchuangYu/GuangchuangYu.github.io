@@ -6,11 +6,7 @@
     <description>Recent content in ChIPseq on Guangchuang Yu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Jan 2019 12:20:16 +0800</lastBuildDate>
-    
-	<atom:link href="https://guangchuangyu.github.io/categories/chipseq/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 10 Jan 2019 12:20:16 +0800</lastBuildDate><atom:link href="https://guangchuangyu.github.io/categories/chipseq/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>自定义注释分类</title>
       <link>https://guangchuangyu.github.io/2019/01/custom-annotation-in-annotatepeak/</link>
@@ -111,7 +107,7 @@
 &lt;li&gt;only three steps&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;克隆galaxy项目&#34;&gt;克隆galaxy项目&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;git clone https://github.com/galaxyproject/galaxy/
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;git clone https://github.com/galaxyproject/galaxy/
 cd galaxy
 &lt;span style=&#34;color:#75715e&#34;&gt;## switch to master branch, stable release&lt;/span&gt;
 git checkout -b master origin/master
@@ -150,13 +146,13 @@ git checkout -b master origin/master
       <description>&lt;p&gt;这一次讲解非常重要的peak注释，注释在&lt;strong&gt;ChIPseeker&lt;/strong&gt;里只需要用到一个函数&lt;strong&gt;annotatePeak&lt;/strong&gt;，它可以满足大家各方面的需求。&lt;/p&gt;
 &lt;h2 id=&#34;输入&#34;&gt;输入&lt;/h2&gt;
 &lt;p&gt;当然需要我们上次讲到的BED文件，&lt;strong&gt;ChIPseeker&lt;/strong&gt;自带了5个BED文件，用&lt;strong&gt;getSampleFiles()&lt;strong&gt;可以拿到文件的全路径，它返回的是个named list，我这里取第4个文件来演示。&lt;strong&gt;annotatePeak&lt;/strong&gt;的输入也可以是&lt;/strong&gt;GRanges&lt;/strong&gt;对象，你如果用R做peak calling的话,直接就可以衔接上&lt;strong&gt;ChIPseeker&lt;/strong&gt;了。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; require(ChIPseeker)
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;gt; require(ChIPseeker)
 &amp;gt; f = getSampleFiles()[[4]]
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;巧妇难为无米之炊，就像拿到&lt;strong&gt;fastq&lt;/strong&gt;要跑&lt;strong&gt;BWA&lt;/strong&gt;，你需要全基因组的序列一样，做注释当然需要注释信息，基因的起始终止，基因有那些内含子，外显子，以及它们的起始终止，非编码区的位置，功能元件的位置等各种信息。&lt;/p&gt;
 &lt;p&gt;很多软件会针对特定的物种去整理这些信息供软件使用，但这样就限制了软件的物种支持，有些开发者写软件本意也是解决自己的问题，可能对自己的研究无关的物种也没兴趣去支持。&lt;/p&gt;
 &lt;p&gt;然而&lt;strong&gt;ChIPseeker&lt;/strong&gt;支持所有的物种，你没有看错，&lt;strong&gt;ChIPseeker&lt;/strong&gt;没有物种限制，当然这是有前提的，物种本身起码是有基因的位置这些注释信息，不然就变无米之炊了。&lt;/p&gt;
 &lt;p&gt;这里我们需要的是一个&lt;strong&gt;TxDb&lt;/strong&gt;对象，这个&lt;strong&gt;TxDb&lt;/strong&gt;就包含了我们需要的各种信息，&lt;strong&gt;ChIPseeker&lt;/strong&gt;会把信息抽取出来，用于注释时使用。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;gt; require(TxDb.Hsapiens.UCSC.hg19.knownGene)
 &amp;gt; txdb = TxDb.Hsapiens.UCSC.hg19.knownGene
 &amp;gt; x = annotatePeak(f, tssRegion=c(-1000, 1000), TxDb=txdb)
 &amp;gt;&amp;gt; loading peak file...				 2017-03-09 11:29:18 PM 
